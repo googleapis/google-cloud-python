@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Maintenance API.
+This package includes clients for multiple versions of Maintenance.
 By default, you will get version ``maintenance_api_v1``.
 
 

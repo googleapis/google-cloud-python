@@ -19,7 +19,6 @@ types defined in the ``google.appengine.api.datastore_errors`` module in
 legacy Google App Engine runtime.
 """
 
-
 __all__ = [
     "Error",
     "ContextError",

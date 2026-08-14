@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -125,6 +125,12 @@ class NodeType(proto.Enum):
             Redis highmem xlarge node_type.
         REDIS_STANDARD_SMALL (4):
             Redis standard small node_type.
+        REDIS_HIGHCPU_MEDIUM (7):
+            Redis highcpu medium node_type.
+        REDIS_STANDARD_LARGE (8):
+            Redis standard large node_type.
+        REDIS_HIGHMEM_2XLARGE (9):
+            Redis highmem 2xlarge node_type.
     """
 
     NODE_TYPE_UNSPECIFIED = 0
@@ -132,6 +138,9 @@ class NodeType(proto.Enum):
     REDIS_HIGHMEM_MEDIUM = 2
     REDIS_HIGHMEM_XLARGE = 3
     REDIS_STANDARD_SMALL = 4
+    REDIS_HIGHCPU_MEDIUM = 7
+    REDIS_STANDARD_LARGE = 8
+    REDIS_HIGHMEM_2XLARGE = 9
 
 
 class TransitEncryptionMode(proto.Enum):
@@ -815,6 +824,15 @@ class Cluster(proto.Message):
         encryption_info (google.cloud.redis_cluster_v1.types.EncryptionInfo):
             Output only. Encryption information of the
             data at rest of the cluster.
+        async_cluster_endpoints_deletion_enabled (bool):
+            Optional. If true, cluster endpoints that are
+            created and registered by customers can be
+            deleted asynchronously. That is, such a cluster
+            endpoint can be de-registered before the
+            forwarding rules in the cluster endpoint are
+            deleted.
+
+            This field is a member of `oneof`_ ``_async_cluster_endpoints_deletion_enabled``.
         server_ca_mode (google.cloud.redis_cluster_v1.types.ServerCaMode):
             Optional. Server CA mode for the cluster.
 
@@ -1094,6 +1112,11 @@ class Cluster(proto.Message):
         proto.MESSAGE,
         number=43,
         message="EncryptionInfo",
+    )
+    async_cluster_endpoints_deletion_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=44,
+        optional=True,
     )
     server_ca_mode: "ServerCaMode" = proto.Field(
         proto.ENUM,

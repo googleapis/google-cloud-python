@@ -12,22 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
+from unittest import mock
 
-from google.cloud.bigtable_v2.types import MutateRowsResponse
-from google.cloud.bigtable.data.mutations import RowMutationEntry
-from google.cloud.bigtable.data.mutations import DeleteAllFromRow
+import pytest
+from google.api_core.exceptions import DeadlineExceeded, Forbidden
 from google.rpc import status_pb2
-from google.api_core.exceptions import DeadlineExceeded
-from google.api_core.exceptions import Forbidden
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-except ImportError:  # pragma: NO COVER
-    import mock  # type: ignore
+from google.cloud.bigtable.data._metrics import ActiveOperationMetric
+from google.cloud.bigtable.data.mutations import DeleteAllFromRow, RowMutationEntry
+from google.cloud.bigtable_v2.types import MutateRowsResponse
 
 __CROSS_SYNC_OUTPUT__ = "tests.unit.data._sync_autogen.test__mutate_rows"
 
@@ -48,6 +42,9 @@ class TestMutateRowsOperationAsync:
             kwargs["attempt_timeout"] = kwargs.pop("attempt_timeout", 0.1)
             kwargs["retryable_exceptions"] = kwargs.pop("retryable_exceptions", ())
             kwargs["mutation_entries"] = kwargs.pop("mutation_entries", [])
+            kwargs["metric"] = kwargs.pop(
+                "metric", ActiveOperationMetric("MUTATE_ROWS")
+            )
         return self._target_class()(*args, **kwargs)
 
     def _make_mutation(self, count=1, size=1):
@@ -80,16 +77,17 @@ class TestMutateRowsOperationAsync:
         """
         test that constructor sets all the attributes correctly
         """
+        from google.api_core.exceptions import Aborted, DeadlineExceeded
+
         from google.cloud.bigtable.data._async._mutate_rows import _EntryWithProto
         from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
-        from google.api_core.exceptions import DeadlineExceeded
-        from google.api_core.exceptions import Aborted
 
         client = mock.Mock()
         table = mock.Mock()
         entries = [self._make_mutation(), self._make_mutation()]
         operation_timeout = 0.05
         attempt_timeout = 0.01
+        metric = mock.Mock()
         retryable_exceptions = ()
         instance = self._make_one(
             client,
@@ -97,6 +95,7 @@ class TestMutateRowsOperationAsync:
             entries,
             operation_timeout,
             attempt_timeout,
+            metric,
             retryable_exceptions,
         )
         # running gapic_fn should trigger a client call with baked-in args
@@ -116,6 +115,7 @@ class TestMutateRowsOperationAsync:
         assert instance.is_retryable(RuntimeError("")) is False
         assert instance.remaining_indices == list(range(len(entries)))
         assert instance.errors == {}
+        assert instance._operation_metric == metric
 
     def test_ctor_too_many_entries(self):
         """
@@ -139,6 +139,7 @@ class TestMutateRowsOperationAsync:
                 entries,
                 operation_timeout,
                 attempt_timeout,
+                mock.Mock(),
             )
         assert "mutate_rows requests can contain at most 100000 mutations" in str(
             e.value
@@ -152,6 +153,7 @@ class TestMutateRowsOperationAsync:
         """
         client = mock.Mock()
         table = mock.Mock()
+        metric = ActiveOperationMetric("MUTATE_ROWS")
         entries = [self._make_mutation(), self._make_mutation()]
         operation_timeout = 0.05
         cls = self._target_class()
@@ -159,7 +161,7 @@ class TestMutateRowsOperationAsync:
             f"{cls.__module__}.{cls.__name__}._run_attempt", CrossSync.Mock()
         ) as attempt_mock:
             instance = self._make_one(
-                client, table, entries, operation_timeout, operation_timeout
+                client, table, entries, operation_timeout, operation_timeout, metric
             )
             await instance.start()
             assert attempt_mock.call_count == 1
@@ -173,6 +175,7 @@ class TestMutateRowsOperationAsync:
         client = CrossSync.Mock()
         table = mock.Mock()
         table._request_path = {"table_name": "table"}
+        metric = ActiveOperationMetric("MUTATE_ROWS")
         table.app_profile_id = None
         entries = [self._make_mutation(), self._make_mutation()]
         operation_timeout = 0.05
@@ -181,7 +184,7 @@ class TestMutateRowsOperationAsync:
         found_exc = None
         try:
             instance = self._make_one(
-                client, table, entries, operation_timeout, operation_timeout
+                client, table, entries, operation_timeout, operation_timeout, metric
             )
             await instance._run_attempt()
         except Exception as e:
@@ -198,11 +201,14 @@ class TestMutateRowsOperationAsync:
         """
         exceptions raised from retryable should be raised in MutationsExceptionGroup
         """
-        from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
-        from google.cloud.bigtable.data.exceptions import FailedMutationEntryError
+        from google.cloud.bigtable.data.exceptions import (
+            FailedMutationEntryError,
+            MutationsExceptionGroup,
+        )
 
         client = mock.Mock()
         table = mock.Mock()
+        metric = ActiveOperationMetric("MUTATE_ROWS")
         entries = [self._make_mutation(), self._make_mutation()]
         operation_timeout = 0.05
         expected_cause = exc_type("abort")
@@ -215,7 +221,7 @@ class TestMutateRowsOperationAsync:
             found_exc = None
             try:
                 instance = self._make_one(
-                    client, table, entries, operation_timeout, operation_timeout
+                    client, table, entries, operation_timeout, operation_timeout, metric
                 )
                 await instance.start()
             except MutationsExceptionGroup as e:
@@ -239,6 +245,7 @@ class TestMutateRowsOperationAsync:
 
         client = mock.Mock()
         table = mock.Mock()
+        metric = ActiveOperationMetric("MUTATE_ROWS")
         entries = [self._make_mutation()]
         operation_timeout = 1
         expected_cause = exc_type("retry")
@@ -255,6 +262,7 @@ class TestMutateRowsOperationAsync:
                 entries,
                 operation_timeout,
                 operation_timeout,
+                metric,
                 retryable_exceptions=(exc_type,),
             )
             await instance.start()
@@ -265,12 +273,16 @@ class TestMutateRowsOperationAsync:
         """
         MutateRowsIncomplete exceptions should not be added to error list
         """
-        from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
-        from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
         from google.api_core.exceptions import DeadlineExceeded
+
+        from google.cloud.bigtable.data.exceptions import (
+            MutationsExceptionGroup,
+            _MutateRowsIncomplete,
+        )
 
         client = mock.Mock()
         table = mock.Mock()
+        metric = ActiveOperationMetric("MUTATE_ROWS")
         entries = [self._make_mutation()]
         operation_timeout = 0.05
         with mock.patch.object(
@@ -282,7 +294,7 @@ class TestMutateRowsOperationAsync:
             found_exc = None
             try:
                 instance = self._make_one(
-                    client, table, entries, operation_timeout, operation_timeout
+                    client, table, entries, operation_timeout, operation_timeout, metric
                 )
                 await instance.start()
             except MutationsExceptionGroup as e:

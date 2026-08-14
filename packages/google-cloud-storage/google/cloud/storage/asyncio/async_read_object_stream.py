@@ -79,6 +79,9 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
         self.socket_like_rpc: Optional[AsyncBidiRpc] = None
         self._is_stream_open: bool = False
         self.persisted_size: Optional[int] = None
+        self.is_finalized: bool = False
+        self.full_obj_server_crc32c: Optional[int] = None
+        self.object_metadata: Optional[_storage_v2.Object] = None
 
     async def open(self, metadata: Optional[List[Tuple[str, str]]] = None) -> None:
         """Opens the bidi-gRPC connection to read from the object.
@@ -132,6 +135,18 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
                 self.generation_number = response.metadata.generation
             # update persisted size
             self.persisted_size = response.metadata.size
+            self.object_metadata = response.metadata
+            if (
+                hasattr(response.metadata, "finalize_time")
+                and response.metadata.finalize_time
+                and response.metadata.finalize_time.second > 0
+            ):
+                self.is_finalized = True
+                if (
+                    hasattr(response.metadata, "checksums")
+                    and response.metadata.checksums
+                ):
+                    self.full_obj_server_crc32c = response.metadata.checksums.crc32c
 
         if response and response.read_handle:
             self.read_handle = response.read_handle

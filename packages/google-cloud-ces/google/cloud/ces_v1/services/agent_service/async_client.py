@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@ except AttributeError:  # pragma: NO COVER
 
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
@@ -56,6 +57,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.cloud.ces_v1.services.agent_service import pagers
 from google.cloud.ces_v1.types import (
     agent,
+    agent_card,
     agent_service,
     agent_tool,
     agent_transfers,
@@ -653,11 +655,11 @@ class AgentServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_app(request=request)
+                operation = await client.create_app(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -928,11 +930,11 @@ class AgentServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_app(request=request)
+                operation = await client.delete_app(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1062,11 +1064,11 @@ class AgentServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.export_app(request=request)
+                operation = await client.export_app(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1190,11 +1192,11 @@ class AgentServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.import_app(request=request)
+                operation = await client.import_app(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3130,11 +3132,11 @@ class AgentServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_delete_conversations(request=request)
+                operation = await client.batch_delete_conversations(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5906,11 +5908,11 @@ class AgentServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.restore_app_version(request=request)
+                operation = await client.restore_app_version(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6602,9 +6604,7 @@ class AgentServiceAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("AgentServiceAsyncClient",)

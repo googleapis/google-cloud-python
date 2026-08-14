@@ -3,13 +3,13 @@ WITH `bfcte_0` AS (
     `O_ORDERKEY` AS `bfcol_0`,
     `O_ORDERDATE` AS `bfcol_1`,
     `O_ORDERPRIORITY` AS `bfcol_2`
-  FROM `bigframes-dev`.`tpch`.`ORDERS` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`ORDERS` AS `bft_1`
 ), `bfcte_1` AS (
   SELECT
     `L_ORDERKEY` AS `bfcol_3`,
     `L_COMMITDATE` AS `bfcol_4`,
     `L_RECEIPTDATE` AS `bfcol_5`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_0`
 ), `bfcte_2` AS (
   SELECT
     `bfcol_3`,
@@ -33,8 +33,7 @@ WITH `bfcte_0` AS (
     `bfcol_4` < `bfcol_5` AS `bfcol_27`
   FROM `bfcte_1`
   INNER JOIN `bfcte_0`
-    ON COALESCE(`bfcol_3`, 0) = COALESCE(`bfcol_0`, 0)
-    AND COALESCE(`bfcol_3`, 1) = COALESCE(`bfcol_0`, 1)
+    ON `bfcol_3` = `bfcol_0`
   WHERE
     (
       `bfcol_1` >= CAST('1993-07-01' AS DATE)
@@ -49,8 +48,6 @@ WITH `bfcte_0` AS (
     `bfcol_25`,
     COUNT(1) AS `bfcol_33`
   FROM `bfcte_2`
-  WHERE
-    NOT `bfcol_26` IS NULL AND NOT `bfcol_25` IS NULL
   GROUP BY
     `bfcol_26`,
     `bfcol_25`

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,12 +21,40 @@ from google.cloud.appengine_admin_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER
-    from importlib import metadata
-else:  # pragma: NO COVER
-    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
-    # this code path once we drop support for Python 3.7
-    import importlib_metadata as metadata
+from importlib import metadata
+
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.appengine_admin_v1.services.applications",
+    "google.cloud.appengine_admin_v1.services.authorized_certificates",
+    "google.cloud.appengine_admin_v1.services.authorized_domains",
+    "google.cloud.appengine_admin_v1.services.domain_mappings",
+    "google.cloud.appengine_admin_v1.services.firewall",
+    "google.cloud.appengine_admin_v1.services.instances",
+    "google.cloud.appengine_admin_v1.services.services",
+    "google.cloud.appengine_admin_v1.services.versions",
+    "google.cloud.appengine_admin_v1.types.app_yaml",
+    "google.cloud.appengine_admin_v1.types.appengine",
+    "google.cloud.appengine_admin_v1.types.application",
+    "google.cloud.appengine_admin_v1.types.audit_data",
+    "google.cloud.appengine_admin_v1.types.certificate",
+    "google.cloud.appengine_admin_v1.types.deploy",
+    "google.cloud.appengine_admin_v1.types.deployed_files",
+    "google.cloud.appengine_admin_v1.types.domain",
+    "google.cloud.appengine_admin_v1.types.domain_mapping",
+    "google.cloud.appengine_admin_v1.types.firewall",
+    "google.cloud.appengine_admin_v1.types.instance",
+    "google.cloud.appengine_admin_v1.types.location",
+    "google.cloud.appengine_admin_v1.types.network_settings",
+    "google.cloud.appengine_admin_v1.types.operation",
+    "google.cloud.appengine_admin_v1.types.service",
+    "google.cloud.appengine_admin_v1.types.version",
+}
 
 
 from .services.applications import ApplicationsAsyncClient, ApplicationsClient
@@ -157,34 +185,23 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import sys
         import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.appengine_admin_v1"
-        if sys.version_info < (3, 9):
+        if sys.version_info < (3, 10):
             warnings.warn(
                 "You are using a non-supported Python version "
                 + f"({_py_version_str}).  Google will not post any further "
                 + f"updates to {_package_label} supporting this Python version. "
                 + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.9, and then update {_package_label}.",
-                FutureWarning,
-            )
-        if sys.version_info[:2] == (3, 9):
-            warnings.warn(
-                f"You are using a Python version ({_py_version_str}) "
-                + f"which Google will stop supporting in {_package_label} in "
-                + "January 2026. Please "
-                + "upgrade to the latest Python version, or at "
-                + "least to Python 3.10, before then, and "
-                + f"then update {_package_label}.",
+                + f"least to Python 3.10, and then update {_package_label}.",
                 FutureWarning,
             )
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -213,9 +230,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(

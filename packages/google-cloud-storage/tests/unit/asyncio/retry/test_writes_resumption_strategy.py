@@ -125,9 +125,24 @@ class TestWriteResumptionStrategy:
 
         requests = strategy.generate_requests(state)
 
-        expected_crc = google_crc32c.Checksum(chunk_data).digest()
-        expected_int = int.from_bytes(expected_crc, "big")
+        expected_int = google_crc32c.value(chunk_data)
         assert requests[0].checksummed_data.crc32c == expected_int
+
+    def test_generate_requests_checksum_disabled(self, strategy):
+        """Verify CRC32C is not calculated if enable_checksum is False."""
+        chunk_data = b"test_data"
+        mock_buffer = io.BytesIO(chunk_data)
+        write_state = _WriteState(
+            chunk_size=10,
+            user_buffer=mock_buffer,
+            flush_interval=10,
+            enable_checksum=False,
+        )
+        state = {"write_state": write_state}
+
+        requests = strategy.generate_requests(state)
+
+        assert not requests[0].checksummed_data.crc32c
 
     def test_generate_requests_flush_logic_exact_interval(self, strategy):
         """Verify the flush bit is set exactly when the interval is reached."""

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,7 +41,6 @@ async def sample_generate_audit_scope_report():
     # Initialize request argument(s)
     request = auditmanager_v1.GenerateAuditScopeReportRequest(
         scope="scope_value",
-        compliance_standard="compliance_standard_value",
         report_format="AUDIT_SCOPE_REPORT_FORMAT_ODF",
         compliance_framework="compliance_framework_value",
     )

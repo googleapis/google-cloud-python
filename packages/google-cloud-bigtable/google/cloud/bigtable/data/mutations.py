@@ -13,17 +13,16 @@
 # limitations under the License.
 #
 from __future__ import annotations
-from typing import Any
+
 import time
-from dataclasses import dataclass
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from sys import getsizeof
+from typing import Any
 
 import google.cloud.bigtable_v2.types.bigtable as types_pb
 import google.cloud.bigtable_v2.types.data as data_pb
-
 from google.cloud.bigtable.data.read_modify_write_rules import _MAX_INCREMENT_VALUE
-
 
 # special value for SetCell mutation timestamps. If set, server will assign a timestamp
 _SERVER_SIDE_TIMESTAMP = -1

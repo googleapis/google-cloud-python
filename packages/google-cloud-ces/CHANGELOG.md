@@ -4,6 +4,43 @@
 
 [1]: https://pypi.org/project/google-cloud-ces/#history
 
+## [0.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ces-v0.7.0...google-cloud-ces-v0.7.1) (2026-06-25)
+
+
+### Features
+
+* update googleapis and regenerate ([#17554](https://github.com/googleapis/google-cloud-python/issues/17554)) ([03d0574](https://github.com/googleapis/google-cloud-python/commit/03d0574da8485e918f16e90666928f5c7b7f1c92))
+
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ces-v0.6.0...google-cloud-ces-v0.7.0) (2026-06-11)
+
+
+### Features
+
+* update API sources and regenerate (#17413) ([59fe7cf83c123102baf5439af4acd6218d7ce01b](https://github.com/googleapis/google-cloud-python/commit/59fe7cf83c123102baf5439af4acd6218d7ce01b))
+
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ces-v0.5.0...google-cloud-ces-v0.6.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-c packages (#17091) ([165839343695fc74d09fc7900d4c55ddcb31a4d8](https://github.com/googleapis/google-cloud-python/commit/165839343695fc74d09fc7900d4c55ddcb31a4d8))
+
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ces-v0.4.0...google-cloud-ces-v0.5.0) (2026-05-06)
+
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ces-v0.3.0...google-cloud-ces-v0.4.0) (2026-04-02)
+
+
+### Documentation
+
+* A comment for field `root_agent` in message `.google.cloud.ces.v1beta.AgentTool` is changed ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+
+
+### Features
+
+* deprecate `root_agent` in message `.google.cloud.ces.v1beta.AgentTool` in favor of new `agent` field. ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+* add support for generating app resources with LLM ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+* update public libraries for CES v1beta ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ces-v0.2.0...google-cloud-ces-v0.3.0) (2026-03-26)
 
 

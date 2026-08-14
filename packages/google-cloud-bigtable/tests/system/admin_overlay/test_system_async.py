@@ -12,34 +12,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+from datetime import datetime, timedelta
 from typing import Tuple
 
-from google.cloud import bigtable_admin_v2 as admin_v2
-from google.cloud.bigtable.data._cross_sync import CrossSync
-from google.cloud.bigtable.data import mutations, read_rows_query
+import pytest
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
+from google.cloud import bigtable_admin_v2 as admin_v2
+from google.cloud.bigtable.data import mutations, read_rows_query
+from google.cloud.bigtable.data._cross_sync import CrossSync
+
 from .conftest import (
-    INSTANCE_PREFIX,
     BACKUP_PREFIX,
-    ROW_PREFIX,
     DEFAULT_CLUSTER_LOCATIONS,
+    INITIAL_CELL_VALUE,
+    INSTANCE_PREFIX,
+    NEW_CELL_VALUE,
+    NUM_ROWS,
     REPLICATION_CLUSTER_LOCATIONS,
-    TEST_TABLE_NAME,
+    ROW_PREFIX,
     TEST_BACKUP_TABLE_NAME,
     TEST_COLUMMN_FAMILY_NAME,
     TEST_COLUMN_NAME,
-    NUM_ROWS,
-    INITIAL_CELL_VALUE,
-    NEW_CELL_VALUE,
+    TEST_TABLE_NAME,
     generate_unique_suffix,
 )
-
-from datetime import datetime, timedelta
-
-import pytest
-import os
-
 
 if CrossSync.is_async:
     from google.api_core import operation_async as api_core_operation
@@ -90,27 +88,49 @@ async def instance_admin_client(admin_overlay_project_id):
 
 
 @CrossSync.convert
-@CrossSync.pytest_fixture(scope="session")
+@CrossSync.pytest_fixture(scope="session", autouse=True)
+async def cleanup_old_instances(admin_overlay_project_id):
+    """
+    Automatically deletes any test instances older than 1 day.
+
+    This fixture runs once per test session and helps prevent resource leakage
+    by cleaning up instances that failed to be deleted during previous test runs.
+    """
+    from tests.system.utils import clear_stale_instances
+
+    from .conftest import INSTANCE_PREFIX
+
+    clear_stale_instances(admin_overlay_project_id, INSTANCE_PREFIX, older_than_days=1)
+
+
+@CrossSync.convert
+@CrossSync.pytest_fixture(scope="function")
 async def instances_to_delete(instance_admin_client):
     instances = []
 
     try:
         yield instances
     finally:
-        for instance in instances:
-            await instance_admin_client.delete_instance(name=instance.name)
+        for instance in reversed(instances):
+            try:
+                await instance_admin_client.delete_instance(name=instance.name)
+            except Exception as e:
+                print(f"Failed to delete instance {instance.name}: {e}")
 
 
 @CrossSync.convert
-@CrossSync.pytest_fixture(scope="session")
+@CrossSync.pytest_fixture(scope="function")
 async def backups_to_delete(table_admin_client):
     backups = []
 
     try:
         yield backups
     finally:
-        for backup in backups:
-            await table_admin_client.delete_backup(name=backup.name)
+        for backup in reversed(backups):
+            try:
+                await table_admin_client.delete_backup(name=backup.name)
+            except Exception as e:
+                print(f"Failed to delete backup {backup.name}: {e}")
 
 
 @CrossSync.convert
@@ -161,9 +181,16 @@ async def create_instance(
             clusters=clusters,
         )
         operation = await instance_admin_client.create_instance(create_instance_request)
+
+        # add to cleanup list before waiting for result, in case of timeout
+        instance_name = instance_admin_client.instance_path(project_id, instance_id)
+        instance_placeholder = admin_v2.Instance(name=instance_name)
+        instances_to_delete.append(instance_placeholder)
+
         instance = await operation.result()
 
-        instances_to_delete.append(instance)
+        # replace with full instance object
+        instances_to_delete[-1] = instance
 
     # Create a table within the instance
     create_table_request = admin_v2.CreateTableRequest(
@@ -248,8 +275,16 @@ async def create_backup(
         )
     )
 
+    # add to cleanup list before waiting for result, in case of timeout
+    backup_name = f"{cluster_name}/backups/{backup_id}"
+    backup_placeholder = admin_v2.Backup(name=backup_name)
+    backups_to_delete.append(backup_placeholder)
+
     backup = await operation.result()
-    backups_to_delete.append(backup)
+
+    # replace with full backup object
+    backups_to_delete[-1] = backup
+
     return backup
 
 

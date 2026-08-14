@@ -20,12 +20,13 @@ WITH `bfcte_0` AS (
 ), `bfcte_4` AS (
   SELECT
     *,
-    STRUCT(COALESCE(`bfcol_4`, 0) AS `bfpart1`, COALESCE(`bfcol_4`, 1) AS `bfpart2`) IN (
-      (
-        SELECT
-          STRUCT(COALESCE(`bfcol_0`, 0) AS `bfpart1`, COALESCE(`bfcol_0`, 1) AS `bfpart2`)
-        FROM `bfcte_3`
-      )
+    EXISTS(
+      SELECT
+        1
+      FROM `bfcte_3`
+      WHERE
+        COALESCE(`bfcol_4`, 0) = COALESCE(`bfcol_0`, 0)
+        AND COALESCE(`bfcol_4`, 1) = COALESCE(`bfcol_0`, 1)
     ) AS `bfcol_5`
   FROM `bfcte_1`
 )

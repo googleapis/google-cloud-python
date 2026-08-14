@@ -12,26 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from sqlalchemy import func, select, text
-from sqlalchemy.orm import Session
-from sqlalchemy.testing import eq_, is_instance_of
+import google.cloud.spanner_v1.types.result_set as result_set
+import google.cloud.spanner_v1.types.type as spanner_type
+from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
 from google.cloud.spanner_v1 import (
-    ResultSet,
+    CommitRequest,
     CreateSessionRequest,
     ExecuteSqlRequest,
-    CommitRequest,
-    BeginTransactionRequest,
-    TypeCode,
     JsonObject,
+    ResultSet,
+    TypeCode,
 )
+from sqlalchemy import func, select, text
+from sqlalchemy.orm import Session
+from sqlalchemy.testing import eq_, is_instance_of, is_not_none
+
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_result,
     add_update_count,
 )
-from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
-import google.cloud.spanner_v1.types.type as spanner_type
-import google.cloud.spanner_v1.types.result_set as result_set
 
 
 class TestJson(MockServerTestBase):
@@ -105,12 +105,13 @@ LIMIT 1
 
         # Verify the requests that we got.
         requests = self.spanner_service.requests
-        eq_(4, len(requests))
+        # Dialect now inlines BeginTransaction into the first statement.
+        eq_(3, len(requests))
         is_instance_of(requests[0], CreateSessionRequest)
-        is_instance_of(requests[1], BeginTransactionRequest)
-        is_instance_of(requests[2], ExecuteSqlRequest)
-        is_instance_of(requests[3], CommitRequest)
-        request: ExecuteSqlRequest = requests[2]
+        is_instance_of(requests[1], ExecuteSqlRequest)
+        is_instance_of(requests[2], CommitRequest)
+        is_not_none(requests[1].transaction.begin)  # First request inlines begin
+        request: ExecuteSqlRequest = requests[1]
         eq_(3, len(request.params))
         eq_("1", request.params["a0"])
         eq_("Test", request.params["a1"])
@@ -134,7 +135,7 @@ LIMIT 1
     def _test_select_json(self, description, expected):
         from tests.mockserver_tests.json_model import Venue
 
-        sql = "SELECT venues.id, venues.name, venues.description \n" "FROM venues"
+        sql = "SELECT venues.id, venues.name, venues.description \nFROM venues"
         add_venue_query_result(sql, description)
         engine = self.create_engine()
 

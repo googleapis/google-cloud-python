@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -890,6 +890,31 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
                 response_deserializer=catalog.Entry.deserialize,
             )
         return self._stubs["lookup_entry"]
+
+    @property
+    def modify_entry(self) -> Callable[[catalog.ModifyEntryRequest], catalog.Entry]:
+        r"""Return a callable for the modify entry method over gRPC.
+
+        Modifies an entry using the permission on the source
+        system.
+
+        Returns:
+            Callable[[~.ModifyEntryRequest],
+                    ~.Entry]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "modify_entry" not in self._stubs:
+            self._stubs["modify_entry"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.CatalogService/ModifyEntry",
+                request_serializer=catalog.ModifyEntryRequest.serialize,
+                response_deserializer=catalog.Entry.deserialize,
+            )
+        return self._stubs["modify_entry"]
 
     @property
     def search_entries(

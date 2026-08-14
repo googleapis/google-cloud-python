@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -60,6 +60,7 @@ from google.shopping.merchant_products_v1.types.products_common import (
     LoyaltyPoints,
     LoyaltyProgram,
     Pause,
+    PickupCost,
     PickupMethod,
     PickupSla,
     ProductAttributes,
@@ -67,6 +68,7 @@ from google.shopping.merchant_products_v1.types.products_common import (
     ProductDetail,
     ProductDimension,
     ProductInstallment,
+    ProductMinimumOrderValue,
     ProductStatus,
     ProductSustainabilityIncentive,
     ProductWeight,
@@ -102,11 +104,13 @@ __all__ = (
     "HandlingCutoffTime",
     "LoyaltyPoints",
     "LoyaltyProgram",
+    "PickupCost",
     "ProductAttributes",
     "ProductCertification",
     "ProductDetail",
     "ProductDimension",
     "ProductInstallment",
+    "ProductMinimumOrderValue",
     "ProductStatus",
     "ProductSustainabilityIncentive",
     "ProductWeight",

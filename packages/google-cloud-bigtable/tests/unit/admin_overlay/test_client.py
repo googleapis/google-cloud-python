@@ -13,36 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-except ImportError:  # pragma: NO COVER
-    import mock
+from unittest import mock
 
-from google.api_core import exceptions
-from google.api_core import gapic_v1
+import pytest
+from google.api_core import exceptions, gapic_v1
 from google.api_core import retry as retries
 from google.auth.credentials import AnonymousCredentials
-from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import transports
-from google.cloud.bigtable_admin_v2.types import bigtable_table_admin
-from google.cloud.bigtable_admin_v2.overlay.services.bigtable_table_admin.client import (
-    BigtableTableAdminClient,
-    DEFAULT_CLIENT_INFO,
-)
-from google.cloud.bigtable_admin_v2.overlay.types import (
-    restore_table,
-    wait_for_consistency_request,
-)
-
-from google.cloud.bigtable import __version__ as bigtable_version
-
 from test_consistency import (
     FALSE_CONSISTENCY_RESPONSE,
     TRUE_CONSISTENCY_RESPONSE,
 )
 
-import pytest
-
+from google.cloud.bigtable import __version__ as bigtable_version
+from google.cloud.bigtable_admin_v2.overlay.services.bigtable_table_admin.client import (
+    DEFAULT_CLIENT_INFO,
+    BigtableTableAdminClient,
+)
+from google.cloud.bigtable_admin_v2.overlay.types import (
+    restore_table,
+    wait_for_consistency_request,
+)
+from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import transports
+from google.cloud.bigtable_admin_v2.types import bigtable_table_admin
 
 PARENT_NAME = "my_parent"
 TABLE_NAME = "my_table"
@@ -72,10 +64,7 @@ def test_bigtable_table_admin_client_client_version(transport_class, transport_n
         patched.return_value = None
         _make_client(transport=transport_name)
 
-        # call_args.kwargs is not supported in Python 3.7, so find them from the tuple
-        # instead. It's always the last item in the call_args tuple.
-        transport_init_call_kwargs = patched.call_args[-1]
-        assert transport_init_call_kwargs["client_info"] == DEFAULT_CLIENT_INFO
+        assert patched.call_args.kwargs["client_info"] == DEFAULT_CLIENT_INFO
 
     assert (
         DEFAULT_CLIENT_INFO.client_library_version

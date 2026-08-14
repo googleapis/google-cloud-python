@@ -15,31 +15,39 @@
 #
 
 import json
-from typing import Any, Callable, Coroutine, Dict, Optional, Sequence, Tuple
 import warnings
+from typing import Any, Callable, Coroutine, Dict, Optional, Sequence, Tuple
 
 from google.auth import __version__ as auth_version
 
 try:
-    from google.auth.aio.transport.sessions import AsyncAuthorizedSession  # type: ignore
+    from google.auth.aio.transport.sessions import (
+        AsyncAuthorizedSession,  # type: ignore
+    )
 except ImportError as e:  # pragma: NO COVER
     raise ImportError(
         "The `async_rest` extra of `google-api-core` is required to use long-running operations.  Install it by running "
         "`pip install google-api-core[async_rest]`."
     ) from e
 
-from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import general_helpers
-from google.api_core import path_template  # type: ignore
-from google.api_core import rest_helpers  # type: ignore
-from google.api_core import retry_async as retries_async  # type: ignore
 from google.auth.aio import credentials as ga_credentials_async  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import json_format  # type: ignore
+from google.protobuf import (
+    empty_pb2,  # type: ignore
+    json_format,  # type: ignore
+)
 
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO, OperationsTransport
+from google.api_core import exceptions as core_exceptions  # type: ignore
+from google.api_core import (
+    gapic_v1,  # type: ignore
+    general_helpers,
+    path_template,  # type: ignore
+    rest_helpers,  # type: ignore
+)
+from google.api_core import retry_async as retries_async  # type: ignore
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .base import OperationsTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -307,7 +315,9 @@ class AsyncOperationsRestTransport(OperationsTransport):
         if response.status_code >= 400:
             payload = json.loads(content.decode("utf-8"))
             request_url = "{host}{uri}".format(host=self._host, uri=uri)
-            raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+            raise core_exceptions.format_http_response_error(
+                response, method, request_url, payload
+            )  # type: ignore
 
         # Return the response
         api_response = operations_pb2.ListOperationsResponse()
@@ -385,7 +395,9 @@ class AsyncOperationsRestTransport(OperationsTransport):
         if response.status_code >= 400:
             payload = json.loads(content.decode("utf-8"))
             request_url = "{host}{uri}".format(host=self._host, uri=uri)
-            raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+            raise core_exceptions.format_http_response_error(
+                response, method, request_url, payload
+            )  # type: ignore
 
         # Return the response
         api_response = operations_pb2.Operation()
@@ -459,7 +471,9 @@ class AsyncOperationsRestTransport(OperationsTransport):
             content = await response.read()
             payload = json.loads(content.decode("utf-8"))
             request_url = "{host}{uri}".format(host=self._host, uri=uri)
-            raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+            raise core_exceptions.format_http_response_error(
+                response, method, request_url, payload
+            )  # type: ignore
 
         return empty_pb2.Empty()
 
@@ -539,7 +553,9 @@ class AsyncOperationsRestTransport(OperationsTransport):
             content = await response.read()
             payload = json.loads(content.decode("utf-8"))
             request_url = "{host}{uri}".format(host=self._host, uri=uri)
-            raise core_exceptions.format_http_response_error(response, method, request_url, payload)  # type: ignore
+            raise core_exceptions.format_http_response_error(
+                response, method, request_url, payload
+            )  # type: ignore
 
         return empty_pb2.Empty()
 

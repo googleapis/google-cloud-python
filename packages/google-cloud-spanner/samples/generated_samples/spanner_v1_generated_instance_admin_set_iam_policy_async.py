@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-spanner-admin-instance
+#   python3 -m pip install google-cloud-spanner
 
 
 # [START spanner_v1_generated_InstanceAdmin_SetIamPolicy_async]
@@ -31,8 +31,9 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import spanner_admin_instance_v1
 import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+
+from google.cloud import spanner_admin_instance_v1
 
 
 async def sample_set_iam_policy():
@@ -49,5 +50,6 @@ async def sample_set_iam_policy():
 
     # Handle the response
     print(response)
+
 
 # [END spanner_v1_generated_InstanceAdmin_SetIamPolicy_async]

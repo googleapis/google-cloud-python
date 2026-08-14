@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -62,6 +62,12 @@ class DbSystemShape(proto.Message):
         min_db_node_storage_per_node_gb (int):
             Optional. Minimum node storage per database
             server in gigabytes.
+        minimum_core_count (int):
+            Optional. Minimum core count per node.
+        available_core_count (int):
+            Optional. Available core count.
+        core_count_increment (int):
+            Optional. Core count increment.
     """
 
     name: str = proto.Field(
@@ -111,6 +117,18 @@ class DbSystemShape(proto.Message):
     min_db_node_storage_per_node_gb: int = proto.Field(
         proto.INT32,
         number=12,
+    )
+    minimum_core_count: int = proto.Field(
+        proto.INT32,
+        number=13,
+    )
+    available_core_count: int = proto.Field(
+        proto.INT32,
+        number=14,
+    )
+    core_count_increment: int = proto.Field(
+        proto.INT32,
+        number=15,
     )
 
 

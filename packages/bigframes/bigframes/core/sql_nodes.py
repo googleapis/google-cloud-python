@@ -46,6 +46,12 @@ class SqlDataSource(nodes.LeafNode):
         )
 
     @property
+    def is_star_selection(self) -> bool:
+        return tuple(self.source.schema.names) == tuple(
+            field.name for field in self.source.table.physical_schema
+        )
+
+    @property
     def variables_introduced(self) -> int:
         # This operation only renames variables, doesn't actually create new ones
         return 0
@@ -270,7 +276,14 @@ class SqlSelectNode(nodes.UnaryNode):
 
     @property
     def is_star_selection(self) -> bool:
-        return tuple(self.ids) == tuple(self.child.ids)
+        if tuple(self.ids) != tuple(self.child.ids):
+            return False
+        for cdef in self.selections:
+            if not isinstance(cdef.expression, ex.DerefOp):
+                return False
+            if cdef.expression.id != cdef.id:
+                return False
+        return True
 
     @functools.cache
     def get_id_mapping(self) -> dict[identifiers.ColumnId, ex.Expression]:

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data.execute_query._async.execute_query_iterator import (
     ExecuteQueryIteratorAsync,
 )
@@ -27,7 +28,6 @@ from google.cloud.bigtable.data.execute_query.values import (
     QueryResultRow,
     Struct,
 )
-from google.cloud.bigtable.data._cross_sync import CrossSync
 
 CrossSync.add_mapping("ExecuteQueryIterator", ExecuteQueryIteratorAsync)
 CrossSync._Sync_Impl.add_mapping("ExecuteQueryIterator", ExecuteQueryIterator)

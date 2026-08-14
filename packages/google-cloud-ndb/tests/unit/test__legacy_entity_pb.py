@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import array
+
 import pytest
 
 from google.cloud.ndb import _legacy_entity_pb as entity_module
@@ -106,7 +107,7 @@ class TestEntityProto:
     def test_TryMerge_mutable_key_path_with_skip_data():
         entity = entity_module.EntityProto()
         d = _get_decoder(
-            b"\x6a\x0f\x72\x0d\x02\x01\x01\x0b\x12\x01\x44\x18\x01\x22\x01" b"\x45\x0c"
+            b"\x6a\x0f\x72\x0d\x02\x01\x01\x0b\x12\x01\x44\x18\x01\x22\x01\x45\x0c"
         )
         entity.TryMerge(d)
         assert entity.key().has_path()
@@ -122,7 +123,7 @@ class TestEntityProto:
     def test_TryMerge_mutable_key_path_element_with_skip_data():
         entity = entity_module.EntityProto()
         d = _get_decoder(
-            b"\x6a\x0f\x72\x0d\x0b\x02\x01\x01\x12\x01\x44\x18\x01\x22\x01" b"\x45\x0c"
+            b"\x6a\x0f\x72\x0d\x0b\x02\x01\x01\x12\x01\x44\x18\x01\x22\x01\x45\x0c"
         )
         entity.TryMerge(d)
         assert entity.key().has_path()
@@ -329,7 +330,7 @@ class TestEntityProto:
     @staticmethod
     def test_TryMerge_property_reference_name_space():
         entity = entity_module.EntityProto()
-        d = _get_decoder(b"\x72\x0b\x1a\x01\x46\x2a\x06\x63\xa2\x01\x01\x41" b"\x64")
+        d = _get_decoder(b"\x72\x0b\x1a\x01\x46\x2a\x06\x63\xa2\x01\x01\x41\x64")
         entity.TryMerge(d)
         assert entity.entity_props()["F"].has_name_space()
         assert entity.entity_props()["F"].name_space().decode() == "A"
@@ -337,7 +338,7 @@ class TestEntityProto:
     @staticmethod
     def test_TryMerge_property_reference_database_id():
         entity = entity_module.EntityProto()
-        d = _get_decoder(b"\x72\x0b\x1a\x01\x46\x2a\x06\x63\xba\x01\x01\x41" b"\x64")
+        d = _get_decoder(b"\x72\x0b\x1a\x01\x46\x2a\x06\x63\xba\x01\x01\x41\x64")
         entity.TryMerge(d)
         assert entity.entity_props()["F"].has_database_id()
         assert entity.entity_props()["F"].database_id().decode() == "A"
@@ -346,7 +347,7 @@ class TestEntityProto:
     def test_TryMerge_property_reference_skip_data():
         entity = entity_module.EntityProto()
         d = _get_decoder(
-            b"\x72\x0d\x1a\x01\x46\x2a\x08\x63\x02\x01\x01\x6a" b"\x01\x41\x64"
+            b"\x72\x0d\x1a\x01\x46\x2a\x08\x63\x02\x01\x01\x6a\x01\x41\x64"
         )
         entity.TryMerge(d)
         assert entity.entity_props()["F"].has_app()
@@ -383,7 +384,7 @@ class TestEntityProto:
     @staticmethod
     def test_TryMerge_with_skip_data():
         entity = entity_module.EntityProto()
-        d = _get_decoder(b"\x02\x01\x01\x7a\x08\x1a\x01\x46\x2a\x03\x1a\x01" b"\x47")
+        d = _get_decoder(b"\x02\x01\x01\x7a\x08\x1a\x01\x46\x2a\x03\x1a\x01\x47")
         entity.TryMerge(d)
         assert entity.entity_props()["F"].decode() == "G"
 

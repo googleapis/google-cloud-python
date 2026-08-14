@@ -12,22 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import base64
+from concurrent import futures
+
+import google.cloud.spanner_v1.types.commit_response as commit
+import google.cloud.spanner_v1.types.result_set as result_set
+import google.cloud.spanner_v1.types.spanner as spanner
+import google.cloud.spanner_v1.types.transaction as transaction
+import grpc
 from google.cloud.spanner_v1 import (
-    TransactionOptions,
-    ResultSetMetadata,
     ExecuteSqlRequest,
+    ResultSetMetadata,
+    TransactionOptions,
 )
 from google.protobuf import empty_pb2
-import tests.mockserver_tests.spanner_pb2_grpc as spanner_grpc
+
 import tests.mockserver_tests.spanner_database_admin_pb2_grpc as database_admin_grpc
+import tests.mockserver_tests.spanner_pb2_grpc as spanner_grpc
 from tests.mockserver_tests.mock_database_admin import DatabaseAdminServicer
-import google.cloud.spanner_v1.types.result_set as result_set
-import google.cloud.spanner_v1.types.transaction as transaction
-import google.cloud.spanner_v1.types.commit_response as commit
-import google.cloud.spanner_v1.types.spanner as spanner
-from concurrent import futures
-import grpc
-import base64
 
 
 class MockSpanner:

@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Google Cloud Storage API
+# Cloud Storage API
 
-Overview of the APIs available for Google Cloud Storage API.
+Overview of the APIs available for Cloud Storage API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Google Cloud Storage API.
+Cloud Storage API.
 
 [classes](https://cloud.google.com/python/docs/reference/storage/latest/summary_class.html)
 

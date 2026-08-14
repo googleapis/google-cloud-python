@@ -15,22 +15,22 @@
 import uuid
 from unittest import mock
 
+import google.cloud.spanner_v1.types.result_set as result_set
+import google.cloud.spanner_v1.types.type as spanner_type
 import sqlalchemy
-from sqlalchemy.orm import Session
-from sqlalchemy.testing import eq_, is_instance_of
 from google.cloud.spanner_v1 import (
-    ExecuteSqlRequest,
     CommitRequest,
-    RollbackRequest,
-    BeginTransactionRequest,
     CreateSessionRequest,
+    ExecuteSqlRequest,
+    RollbackRequest,
 )
+from sqlalchemy.orm import Session
+from sqlalchemy.testing import eq_, is_instance_of, is_not_none
+
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_result,
 )
-import google.cloud.spanner_v1.types.type as spanner_type
-import google.cloud.spanner_v1.types.result_set as result_set
 
 
 class TestInsertmany(MockServerTestBase):
@@ -53,11 +53,12 @@ class TestInsertmany(MockServerTestBase):
 
         # Verify the requests that we got.
         requests = self.spanner_service.requests
-        eq_(4, len(requests))
+        # Dialect now inlines BeginTransaction into the first statement.
+        eq_(3, len(requests))
         is_instance_of(requests[0], CreateSessionRequest)
-        is_instance_of(requests[1], BeginTransactionRequest)
-        is_instance_of(requests[2], ExecuteSqlRequest)
-        is_instance_of(requests[3], CommitRequest)
+        is_instance_of(requests[1], ExecuteSqlRequest)
+        is_instance_of(requests[2], CommitRequest)
+        is_not_none(requests[1].transaction.begin)  # First request inlines begin
 
     def test_no_insertmany_with_bit_reversed_id(self):
         """Ensures we don't try to bulk insert rows with bit-reversed PKs.
@@ -71,9 +72,7 @@ class TestInsertmany(MockServerTestBase):
         from tests.mockserver_tests.insertmany_model import SingerIntID
 
         self.add_int_id_insert_result(
-            "INSERT INTO singers_int_id (name) "
-            "VALUES (@a0) "
-            "THEN RETURN id, inserted_at"
+            "INSERT INTO singers_int_id (name) VALUES (@a0) THEN RETURN id, inserted_at"
         )
         engine = self.create_engine()
 
@@ -93,12 +92,13 @@ class TestInsertmany(MockServerTestBase):
 
         # Verify the requests that we got.
         requests = self.spanner_service.requests
-        eq_(5, len(requests))
+        # Dialect now inlines BeginTransaction into the first statement.
+        eq_(4, len(requests))
         is_instance_of(requests[0], CreateSessionRequest)
-        is_instance_of(requests[1], BeginTransactionRequest)
+        is_instance_of(requests[1], ExecuteSqlRequest)
         is_instance_of(requests[2], ExecuteSqlRequest)
-        is_instance_of(requests[3], ExecuteSqlRequest)
-        is_instance_of(requests[4], RollbackRequest)
+        is_instance_of(requests[3], RollbackRequest)
+        is_not_none(requests[1].transaction.begin)  # First request inlines begin
 
     def add_uuid_insert_result(self, sql):
         result = result_set.ResultSet(

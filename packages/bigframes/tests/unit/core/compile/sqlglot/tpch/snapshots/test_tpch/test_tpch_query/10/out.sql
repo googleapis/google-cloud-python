@@ -2,20 +2,20 @@ WITH `bfcte_0` AS (
   SELECT
     `N_NATIONKEY` AS `bfcol_0`,
     `N_NAME` AS `bfcol_1`
-  FROM `bigframes-dev`.`tpch`.`NATION` AS `bft_3` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`NATION` AS `bft_3`
 ), `bfcte_1` AS (
   SELECT
     `L_ORDERKEY` AS `bfcol_2`,
     `L_EXTENDEDPRICE` AS `bfcol_3`,
     `L_DISCOUNT` AS `bfcol_4`,
     `L_RETURNFLAG` AS `bfcol_5`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_2`
 ), `bfcte_2` AS (
   SELECT
     `O_ORDERKEY` AS `bfcol_6`,
     `O_CUSTKEY` AS `bfcol_7`,
     `O_ORDERDATE` AS `bfcol_8`
-  FROM `bigframes-dev`.`tpch`.`ORDERS` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`ORDERS` AS `bft_1`
 ), `bfcte_3` AS (
   SELECT
     `C_CUSTKEY` AS `bfcol_9`,
@@ -25,7 +25,7 @@ WITH `bfcte_0` AS (
     `C_PHONE` AS `bfcol_13`,
     `C_ACCTBAL` AS `bfcol_14`,
     `C_COMMENT` AS `bfcol_15`
-  FROM `bigframes-dev`.`tpch`.`CUSTOMER` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`CUSTOMER` AS `bft_0`
 ), `bfcte_4` AS (
   SELECT
     `bfcol_9` AS `bfcol_16`,
@@ -39,8 +39,7 @@ WITH `bfcte_0` AS (
     `bfcol_8` AS `bfcol_24`
   FROM `bfcte_3`
   INNER JOIN `bfcte_2`
-    ON COALESCE(`bfcol_9`, 0) = COALESCE(`bfcol_7`, 0)
-    AND COALESCE(`bfcol_9`, 1) = COALESCE(`bfcol_7`, 1)
+    ON `bfcol_9` = `bfcol_7`
 ), `bfcte_5` AS (
   SELECT
     `bfcol_16` AS `bfcol_25`,
@@ -56,8 +55,7 @@ WITH `bfcte_0` AS (
     `bfcol_5` AS `bfcol_35`
   FROM `bfcte_4`
   INNER JOIN `bfcte_1`
-    ON COALESCE(`bfcol_23`, 0) = COALESCE(`bfcol_2`, 0)
-    AND COALESCE(`bfcol_23`, 1) = COALESCE(`bfcol_2`, 1)
+    ON `bfcol_23` = `bfcol_2`
 ), `bfcte_6` AS (
   SELECT
     `bfcol_25`,
@@ -107,8 +105,7 @@ WITH `bfcte_0` AS (
     ), 2) AS `bfcol_83`
   FROM `bfcte_5`
   INNER JOIN `bfcte_0`
-    ON COALESCE(`bfcol_28`, 0) = COALESCE(`bfcol_0`, 0)
-    AND COALESCE(`bfcol_28`, 1) = COALESCE(`bfcol_0`, 1)
+    ON `bfcol_28` = `bfcol_0`
   WHERE
     (
       (
@@ -133,13 +130,7 @@ WITH `bfcte_0` AS (
     COALESCE(SUM(`bfcol_83`), 0) AS `bfcol_92`
   FROM `bfcte_6`
   WHERE
-    NOT `bfcol_76` IS NULL
-    AND NOT `bfcol_77` IS NULL
-    AND NOT `bfcol_80` IS NULL
-    AND NOT `bfcol_79` IS NULL
-    AND NOT `bfcol_82` IS NULL
-    AND NOT `bfcol_78` IS NULL
-    AND NOT `bfcol_81` IS NULL
+    NOT `bfcol_81` IS NULL
   GROUP BY
     `bfcol_76`,
     `bfcol_77`,

@@ -4,6 +4,34 @@
 
 [1]: https://pypi.org/project/google-cloud-securesourcemanager/#history
 
+## [0.6.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securesourcemanager-v0.6.0...google-cloud-securesourcemanager-v0.6.1) (2026-07-07)
+
+
+### Features
+
+* update googleapis and regenerate ([#17635](https://github.com/googleapis/google-cloud-python/issues/17635)) ([9638879](https://github.com/googleapis/google-cloud-python/commit/96388796440b226440f885c04ce565782b1d9190))
+
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securesourcemanager-v0.5.0...google-cloud-securesourcemanager-v0.6.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-s packages (#17086) ([40b522a8473dec7ade45113ddd44ccd960803c45](https://github.com/googleapis/google-cloud-python/commit/40b522a8473dec7ade45113ddd44ccd960803c45))
+
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securesourcemanager-v0.4.0...google-cloud-securesourcemanager-v0.5.0) (2026-04-02)
+
+
+### Documentation
+
+* Improve documentation for labels, pagination, and ListLocations ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+
+
+### Features
+
+* Add force option to DeleteInstance request ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+* Add CustomHostConfig to configure custom hostnames for private instances ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+* Add option to require code owner approval in branch rules ([c36aa6169035fdb14bf84b0e56e4f81291600b5a](https://github.com/googleapis/google-cloud-python/commit/c36aa6169035fdb14bf84b0e56e4f81291600b5a))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securesourcemanager-v0.3.0...google-cloud-securesourcemanager-v0.4.0) (2026-03-26)
 
 

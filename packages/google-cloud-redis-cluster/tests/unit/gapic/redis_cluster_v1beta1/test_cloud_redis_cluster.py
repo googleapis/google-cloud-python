@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,19 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-import re
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -125,6 +119,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -993,7 +1002,14 @@ def test_cloud_redis_cluster_client_get_mtls_endpoint_and_cert_source(client_cla
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1040,7 +1056,14 @@ def test_cloud_redis_cluster_client_get_mtls_endpoint_and_cert_source(client_cla
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1368,8 +1391,8 @@ def test_cloud_redis_cluster_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_redis_cluster.ListClustersRequest,
-        dict,
+        cloud_redis_cluster.ListClustersRequest(),
+        {},
     ],
 )
 def test_list_clusters(request_type, transport: str = "grpc"):
@@ -1380,7 +1403,7 @@ def test_list_clusters(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
@@ -1427,10 +1450,11 @@ def test_list_clusters_non_empty_request_with_auto_populated_field():
         client.list_clusters(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis_cluster.ListClustersRequest(
+        request_msg = cloud_redis_cluster.ListClustersRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_clusters_use_cached_wrapped_rpc():
@@ -1511,10 +1535,14 @@ async def test_list_clusters_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_clusters_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_redis_cluster.ListClustersRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.ListClustersRequest(),
+        {},
+    ],
+)
+async def test_list_clusters_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudRedisClusterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1522,7 +1550,7 @@ async def test_list_clusters_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
@@ -1545,11 +1573,6 @@ async def test_list_clusters_async(
     assert isinstance(response, pagers.ListClustersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_clusters_async_from_dict():
-    await test_list_clusters_async(request_type=dict)
 
 
 def test_list_clusters_field_headers():
@@ -1744,6 +1767,9 @@ def test_list_clusters_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloud_redis_cluster.Cluster) for i in results)
@@ -1832,6 +1858,8 @@ async def test_list_clusters_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1879,11 +1907,7 @@ async def test_list_clusters_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_clusters(request={})
-        ).pages:
+        async for page_ in (await client.list_clusters(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1892,8 +1916,8 @@ async def test_list_clusters_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_redis_cluster.GetClusterRequest,
-        dict,
+        cloud_redis_cluster.GetClusterRequest(),
+        {},
     ],
 )
 def test_get_cluster(request_type, transport: str = "grpc"):
@@ -1904,7 +1928,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
@@ -1923,6 +1947,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
             deletion_protection_enabled=True,
             backup_collection="backup_collection_value",
             kms_key="kms_key_value",
+            async_cluster_endpoints_deletion_enabled=True,
             server_ca_mode=cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA,
             server_ca_pool="server_ca_pool_value",
             rotate_server_certificate=True,
@@ -1956,6 +1981,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
     assert response.deletion_protection_enabled is True
     assert response.backup_collection == "backup_collection_value"
     assert response.kms_key == "kms_key_value"
+    assert response.async_cluster_endpoints_deletion_enabled is True
     assert (
         response.server_ca_mode
         == cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA
@@ -1987,9 +2013,10 @@ def test_get_cluster_non_empty_request_with_auto_populated_field():
         client.get_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis_cluster.GetClusterRequest(
+        request_msg = cloud_redis_cluster.GetClusterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_cluster_use_cached_wrapped_rpc():
@@ -2070,9 +2097,14 @@ async def test_get_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_cluster_async(
-    transport: str = "grpc_asyncio", request_type=cloud_redis_cluster.GetClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.GetClusterRequest(),
+        {},
+    ],
+)
+async def test_get_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudRedisClusterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2080,7 +2112,7 @@ async def test_get_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
@@ -2100,6 +2132,7 @@ async def test_get_cluster_async(
                 deletion_protection_enabled=True,
                 backup_collection="backup_collection_value",
                 kms_key="kms_key_value",
+                async_cluster_endpoints_deletion_enabled=True,
                 server_ca_mode=cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA,
                 server_ca_pool="server_ca_pool_value",
                 rotate_server_certificate=True,
@@ -2134,17 +2167,13 @@ async def test_get_cluster_async(
     assert response.deletion_protection_enabled is True
     assert response.backup_collection == "backup_collection_value"
     assert response.kms_key == "kms_key_value"
+    assert response.async_cluster_endpoints_deletion_enabled is True
     assert (
         response.server_ca_mode
         == cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA
     )
     assert response.server_ca_pool == "server_ca_pool_value"
     assert response.rotate_server_certificate is True
-
-
-@pytest.mark.asyncio
-async def test_get_cluster_async_from_dict():
-    await test_get_cluster_async(request_type=dict)
 
 
 def test_get_cluster_field_headers():
@@ -2293,8 +2322,8 @@ async def test_get_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_redis_cluster.UpdateClusterRequest,
-        dict,
+        cloud_redis_cluster.UpdateClusterRequest(),
+        {},
     ],
 )
 def test_update_cluster(request_type, transport: str = "grpc"):
@@ -2305,7 +2334,7 @@ def test_update_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_cluster), "__call__") as call:
@@ -2346,9 +2375,10 @@ def test_update_cluster_non_empty_request_with_auto_populated_field():
         client.update_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis_cluster.UpdateClusterRequest(
+        request_msg = cloud_redis_cluster.UpdateClusterRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_cluster_use_cached_wrapped_rpc():
@@ -2439,10 +2469,14 @@ async def test_update_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_redis_cluster.UpdateClusterRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.UpdateClusterRequest(),
+        {},
+    ],
+)
+async def test_update_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudRedisClusterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2450,7 +2484,7 @@ async def test_update_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_cluster), "__call__") as call:
@@ -2468,11 +2502,6 @@ async def test_update_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_cluster_async_from_dict():
-    await test_update_cluster_async(request_type=dict)
 
 
 def test_update_cluster_field_headers():
@@ -2651,8 +2680,8 @@ async def test_update_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_redis_cluster.DeleteClusterRequest,
-        dict,
+        cloud_redis_cluster.DeleteClusterRequest(),
+        {},
     ],
 )
 def test_delete_cluster(request_type, transport: str = "grpc"):
@@ -2663,7 +2692,7 @@ def test_delete_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_cluster), "__call__") as call:
@@ -2705,10 +2734,11 @@ def test_delete_cluster_non_empty_request_with_auto_populated_field():
         client.delete_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis_cluster.DeleteClusterRequest(
+        request_msg = cloud_redis_cluster.DeleteClusterRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_cluster_use_cached_wrapped_rpc():
@@ -2799,10 +2829,14 @@ async def test_delete_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_redis_cluster.DeleteClusterRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.DeleteClusterRequest(),
+        {},
+    ],
+)
+async def test_delete_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudRedisClusterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2810,7 +2844,7 @@ async def test_delete_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_cluster), "__call__") as call:
@@ -2828,11 +2862,6 @@ async def test_delete_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_cluster_async_from_dict():
-    await test_delete_cluster_async(request_type=dict)
 
 
 def test_delete_cluster_field_headers():
@@ -2981,8 +3010,8 @@ async def test_delete_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_redis_cluster.CreateClusterRequest,
-        dict,
+        cloud_redis_cluster.CreateClusterRequest(),
+        {},
     ],
 )
 def test_create_cluster(request_type, transport: str = "grpc"):
@@ -2993,7 +3022,7 @@ def test_create_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_cluster), "__call__") as call:
@@ -3036,11 +3065,12 @@ def test_create_cluster_non_empty_request_with_auto_populated_field():
         client.create_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis_cluster.CreateClusterRequest(
+        request_msg = cloud_redis_cluster.CreateClusterRequest(
             parent="parent_value",
             cluster_id="cluster_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_cluster_use_cached_wrapped_rpc():
@@ -3131,10 +3161,14 @@ async def test_create_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_redis_cluster.CreateClusterRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.CreateClusterRequest(),
+        {},
+    ],
+)
+async def test_create_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudRedisClusterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3142,7 +3176,7 @@ async def test_create_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_cluster), "__call__") as call:
@@ -3160,11 +3194,6 @@ async def test_create_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_cluster_async_from_dict():
-    await test_create_cluster_async(request_type=dict)
 
 
 def test_create_cluster_field_headers():
@@ -3353,8 +3382,8 @@ async def test_create_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_redis_cluster.GetClusterCertificateAuthorityRequest,
-        dict,
+        cloud_redis_cluster.GetClusterCertificateAuthorityRequest(),
+        {},
     ],
 )
 def test_get_cluster_certificate_authority(request_type, transport: str = "grpc"):
@@ -3365,7 +3394,7 @@ def test_get_cluster_certificate_authority(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3413,9 +3442,10 @@ def test_get_cluster_certificate_authority_non_empty_request_with_auto_populated
         client.get_cluster_certificate_authority(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis_cluster.GetClusterCertificateAuthorityRequest(
+        request_msg = cloud_redis_cluster.GetClusterCertificateAuthorityRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_cluster_certificate_authority_use_cached_wrapped_rpc():
@@ -3501,9 +3531,15 @@ async def test_get_cluster_certificate_authority_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.GetClusterCertificateAuthorityRequest(),
+        {},
+    ],
+)
 async def test_get_cluster_certificate_authority_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_redis_cluster.GetClusterCertificateAuthorityRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudRedisClusterAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3512,7 +3548,7 @@ async def test_get_cluster_certificate_authority_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3535,11 +3571,6 @@ async def test_get_cluster_certificate_authority_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_redis_cluster.CertificateAuthority)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_cluster_certificate_authority_async_from_dict():
-    await test_get_cluster_certificate_authority_async(request_type=dict)
 
 
 def test_get_cluster_certificate_authority_field_headers():
@@ -3696,8 +3727,8 @@ async def test_get_cluster_certificate_authority_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest,
-        dict,
+        cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest(),
+        {},
     ],
 )
 def test_get_shared_regional_certificate_authority(
@@ -3710,7 +3741,7 @@ def test_get_shared_regional_certificate_authority(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3758,11 +3789,10 @@ def test_get_shared_regional_certificate_authority_non_empty_request_with_auto_p
         client.get_shared_regional_certificate_authority(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest(
+        request_msg = cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_shared_regional_certificate_authority_use_cached_wrapped_rpc():
@@ -3848,9 +3878,15 @@ async def test_get_shared_regional_certificate_authority_async_use_cached_wrappe
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest(),
+        {},
+    ],
+)
 async def test_get_shared_regional_certificate_authority_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudRedisClusterAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3859,7 +3895,7 @@ async def test_get_shared_regional_certificate_authority_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3882,11 +3918,6 @@ async def test_get_shared_regional_certificate_authority_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_redis_cluster.SharedRegionalCertificateAuthority)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_shared_regional_certificate_authority_async_from_dict():
-    await test_get_shared_regional_certificate_authority_async(request_type=dict)
 
 
 def test_get_shared_regional_certificate_authority_field_headers():
@@ -4043,8 +4074,8 @@ async def test_get_shared_regional_certificate_authority_flattened_error_async()
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_redis_cluster.RescheduleClusterMaintenanceRequest,
-        dict,
+        cloud_redis_cluster.RescheduleClusterMaintenanceRequest(),
+        {},
     ],
 )
 def test_reschedule_cluster_maintenance(request_type, transport: str = "grpc"):
@@ -4055,7 +4086,7 @@ def test_reschedule_cluster_maintenance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4100,9 +4131,10 @@ def test_reschedule_cluster_maintenance_non_empty_request_with_auto_populated_fi
         client.reschedule_cluster_maintenance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis_cluster.RescheduleClusterMaintenanceRequest(
+        request_msg = cloud_redis_cluster.RescheduleClusterMaintenanceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_reschedule_cluster_maintenance_use_cached_wrapped_rpc():
@@ -4198,9 +4230,15 @@ async def test_reschedule_cluster_maintenance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.RescheduleClusterMaintenanceRequest(),
+        {},
+    ],
+)
 async def test_reschedule_cluster_maintenance_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_redis_cluster.RescheduleClusterMaintenanceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudRedisClusterAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4209,7 +4247,7 @@ async def test_reschedule_cluster_maintenance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4229,11 +4267,6 @@ async def test_reschedule_cluster_maintenance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_reschedule_cluster_maintenance_async_from_dict():
-    await test_reschedule_cluster_maintenance_async(request_type=dict)
 
 
 def test_reschedule_cluster_maintenance_field_headers():
@@ -4410,8 +4443,8 @@ async def test_reschedule_cluster_maintenance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_redis_cluster.ListBackupCollectionsRequest,
-        dict,
+        cloud_redis_cluster.ListBackupCollectionsRequest(),
+        {},
     ],
 )
 def test_list_backup_collections(request_type, transport: str = "grpc"):
@@ -4422,7 +4455,7 @@ def test_list_backup_collections(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4473,10 +4506,11 @@ def test_list_backup_collections_non_empty_request_with_auto_populated_field():
         client.list_backup_collections(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis_cluster.ListBackupCollectionsRequest(
+        request_msg = cloud_redis_cluster.ListBackupCollectionsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_backup_collections_use_cached_wrapped_rpc():
@@ -4562,9 +4596,15 @@ async def test_list_backup_collections_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.ListBackupCollectionsRequest(),
+        {},
+    ],
+)
 async def test_list_backup_collections_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_redis_cluster.ListBackupCollectionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudRedisClusterAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4573,7 +4613,7 @@ async def test_list_backup_collections_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4598,11 +4638,6 @@ async def test_list_backup_collections_async(
     assert isinstance(response, pagers.ListBackupCollectionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_backup_collections_async_from_dict():
-    await test_list_backup_collections_async(request_type=dict)
 
 
 def test_list_backup_collections_field_headers():
@@ -4807,6 +4842,9 @@ def test_list_backup_collections_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloud_redis_cluster.BackupCollection) for i in results)
@@ -4899,6 +4937,8 @@ async def test_list_backup_collections_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4950,11 +4990,7 @@ async def test_list_backup_collections_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_backup_collections(request={})
-        ).pages:
+        async for page_ in (await client.list_backup_collections(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4963,8 +4999,8 @@ async def test_list_backup_collections_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_redis_cluster.GetBackupCollectionRequest,
-        dict,
+        cloud_redis_cluster.GetBackupCollectionRequest(),
+        {},
     ],
 )
 def test_get_backup_collection(request_type, transport: str = "grpc"):
@@ -4975,7 +5011,7 @@ def test_get_backup_collection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5031,9 +5067,10 @@ def test_get_backup_collection_non_empty_request_with_auto_populated_field():
         client.get_backup_collection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis_cluster.GetBackupCollectionRequest(
+        request_msg = cloud_redis_cluster.GetBackupCollectionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_backup_collection_use_cached_wrapped_rpc():
@@ -5119,9 +5156,15 @@ async def test_get_backup_collection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.GetBackupCollectionRequest(),
+        {},
+    ],
+)
 async def test_get_backup_collection_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_redis_cluster.GetBackupCollectionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudRedisClusterAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5130,7 +5173,7 @@ async def test_get_backup_collection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5161,11 +5204,6 @@ async def test_get_backup_collection_async(
     assert response.cluster == "cluster_value"
     assert response.kms_key == "kms_key_value"
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_backup_collection_async_from_dict():
-    await test_get_backup_collection_async(request_type=dict)
 
 
 def test_get_backup_collection_field_headers():
@@ -5322,8 +5360,8 @@ async def test_get_backup_collection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_redis_cluster.ListBackupsRequest,
-        dict,
+        cloud_redis_cluster.ListBackupsRequest(),
+        {},
     ],
 )
 def test_list_backups(request_type, transport: str = "grpc"):
@@ -5334,7 +5372,7 @@ def test_list_backups(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
@@ -5381,10 +5419,11 @@ def test_list_backups_non_empty_request_with_auto_populated_field():
         client.list_backups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis_cluster.ListBackupsRequest(
+        request_msg = cloud_redis_cluster.ListBackupsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_backups_use_cached_wrapped_rpc():
@@ -5465,9 +5504,14 @@ async def test_list_backups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_backups_async(
-    transport: str = "grpc_asyncio", request_type=cloud_redis_cluster.ListBackupsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.ListBackupsRequest(),
+        {},
+    ],
+)
+async def test_list_backups_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudRedisClusterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5475,7 +5519,7 @@ async def test_list_backups_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
@@ -5498,11 +5542,6 @@ async def test_list_backups_async(
     assert isinstance(response, pagers.ListBackupsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_backups_async_from_dict():
-    await test_list_backups_async(request_type=dict)
 
 
 def test_list_backups_field_headers():
@@ -5697,6 +5736,9 @@ def test_list_backups_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloud_redis_cluster.Backup) for i in results)
@@ -5785,6 +5827,8 @@ async def test_list_backups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5832,11 +5876,7 @@ async def test_list_backups_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_backups(request={})
-        ).pages:
+        async for page_ in (await client.list_backups(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5845,8 +5885,8 @@ async def test_list_backups_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_redis_cluster.GetBackupRequest,
-        dict,
+        cloud_redis_cluster.GetBackupRequest(),
+        {},
     ],
 )
 def test_get_backup(request_type, transport: str = "grpc"):
@@ -5857,7 +5897,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
@@ -5921,9 +5961,10 @@ def test_get_backup_non_empty_request_with_auto_populated_field():
         client.get_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis_cluster.GetBackupRequest(
+        request_msg = cloud_redis_cluster.GetBackupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_backup_use_cached_wrapped_rpc():
@@ -6002,9 +6043,14 @@ async def test_get_backup_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_backup_async(
-    transport: str = "grpc_asyncio", request_type=cloud_redis_cluster.GetBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.GetBackupRequest(),
+        {},
+    ],
+)
+async def test_get_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudRedisClusterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6012,7 +6058,7 @@ async def test_get_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
@@ -6053,11 +6099,6 @@ async def test_get_backup_async(
     assert response.backup_type == cloud_redis_cluster.Backup.BackupType.ON_DEMAND
     assert response.state == cloud_redis_cluster.Backup.State.CREATING
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_backup_async_from_dict():
-    await test_get_backup_async(request_type=dict)
 
 
 def test_get_backup_field_headers():
@@ -6206,8 +6247,8 @@ async def test_get_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_redis_cluster.DeleteBackupRequest,
-        dict,
+        cloud_redis_cluster.DeleteBackupRequest(),
+        {},
     ],
 )
 def test_delete_backup(request_type, transport: str = "grpc"):
@@ -6218,7 +6259,7 @@ def test_delete_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
@@ -6259,9 +6300,10 @@ def test_delete_backup_non_empty_request_with_auto_populated_field():
         client.delete_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis_cluster.DeleteBackupRequest(
+        request_msg = cloud_redis_cluster.DeleteBackupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_backup_use_cached_wrapped_rpc():
@@ -6352,10 +6394,14 @@ async def test_delete_backup_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_backup_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_redis_cluster.DeleteBackupRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.DeleteBackupRequest(),
+        {},
+    ],
+)
+async def test_delete_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudRedisClusterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6363,7 +6409,7 @@ async def test_delete_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
@@ -6381,11 +6427,6 @@ async def test_delete_backup_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_backup_async_from_dict():
-    await test_delete_backup_async(request_type=dict)
 
 
 def test_delete_backup_field_headers():
@@ -6534,8 +6575,8 @@ async def test_delete_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_redis_cluster.ExportBackupRequest,
-        dict,
+        cloud_redis_cluster.ExportBackupRequest(),
+        {},
     ],
 )
 def test_export_backup(request_type, transport: str = "grpc"):
@@ -6546,7 +6587,7 @@ def test_export_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_backup), "__call__") as call:
@@ -6588,10 +6629,11 @@ def test_export_backup_non_empty_request_with_auto_populated_field():
         client.export_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis_cluster.ExportBackupRequest(
+        request_msg = cloud_redis_cluster.ExportBackupRequest(
             gcs_bucket="gcs_bucket_value",
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_export_backup_use_cached_wrapped_rpc():
@@ -6682,10 +6724,14 @@ async def test_export_backup_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_export_backup_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_redis_cluster.ExportBackupRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.ExportBackupRequest(),
+        {},
+    ],
+)
+async def test_export_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudRedisClusterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6693,7 +6739,7 @@ async def test_export_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_backup), "__call__") as call:
@@ -6711,11 +6757,6 @@ async def test_export_backup_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_export_backup_async_from_dict():
-    await test_export_backup_async(request_type=dict)
 
 
 def test_export_backup_field_headers():
@@ -6782,8 +6823,8 @@ async def test_export_backup_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        cloud_redis_cluster.BackupClusterRequest,
-        dict,
+        cloud_redis_cluster.BackupClusterRequest(),
+        {},
     ],
 )
 def test_backup_cluster(request_type, transport: str = "grpc"):
@@ -6794,7 +6835,7 @@ def test_backup_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.backup_cluster), "__call__") as call:
@@ -6836,10 +6877,11 @@ def test_backup_cluster_non_empty_request_with_auto_populated_field():
         client.backup_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_redis_cluster.BackupClusterRequest(
+        request_msg = cloud_redis_cluster.BackupClusterRequest(
             name="name_value",
             backup_id="backup_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_backup_cluster_use_cached_wrapped_rpc():
@@ -6930,10 +6972,14 @@ async def test_backup_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_backup_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=cloud_redis_cluster.BackupClusterRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_redis_cluster.BackupClusterRequest(),
+        {},
+    ],
+)
+async def test_backup_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudRedisClusterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6941,7 +6987,7 @@ async def test_backup_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.backup_cluster), "__call__") as call:
@@ -6959,11 +7005,6 @@ async def test_backup_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_backup_cluster_async_from_dict():
-    await test_backup_cluster_async(request_type=dict)
 
 
 def test_backup_cluster_field_headers():
@@ -7224,7 +7265,7 @@ def test_list_clusters_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_clusters_rest_unset_required_fields():
@@ -7356,6 +7397,9 @@ def test_list_clusters_rest_pager(transport: str = "rest"):
 
         pager = client.list_clusters(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloud_redis_cluster.Cluster) for i in results)
@@ -7473,7 +7517,7 @@ def test_get_cluster_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_cluster_rest_unset_required_fields():
@@ -7655,7 +7699,7 @@ def test_update_cluster_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_cluster_rest_unset_required_fields():
@@ -7859,7 +7903,7 @@ def test_delete_cluster_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_cluster_rest_unset_required_fields():
@@ -8057,7 +8101,7 @@ def test_create_cluster_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_cluster_rest_unset_required_fields():
@@ -8264,7 +8308,7 @@ def test_get_cluster_certificate_authority_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_cluster_certificate_authority_rest_unset_required_fields():
@@ -8459,7 +8503,7 @@ def test_get_shared_regional_certificate_authority_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_shared_regional_certificate_authority_rest_unset_required_fields():
@@ -8654,7 +8698,7 @@ def test_reschedule_cluster_maintenance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_reschedule_cluster_maintenance_rest_unset_required_fields():
@@ -8858,7 +8902,7 @@ def test_list_backup_collections_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_backup_collections_rest_unset_required_fields():
@@ -8993,6 +9037,9 @@ def test_list_backup_collections_rest_pager(transport: str = "rest"):
 
         pager = client.list_backup_collections(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloud_redis_cluster.BackupCollection) for i in results)
@@ -9115,7 +9162,7 @@ def test_get_backup_collection_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_backup_collection_rest_unset_required_fields():
@@ -9302,7 +9349,7 @@ def test_list_backups_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_backups_rest_unset_required_fields():
@@ -9438,6 +9485,9 @@ def test_list_backups_rest_pager(transport: str = "rest"):
 
         pager = client.list_backups(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloud_redis_cluster.Backup) for i in results)
@@ -9555,7 +9605,7 @@ def test_get_backup_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_backup_rest_unset_required_fields():
@@ -9738,7 +9788,7 @@ def test_delete_backup_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_backup_rest_unset_required_fields():
@@ -9918,7 +9968,7 @@ def test_export_backup_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_export_backup_rest_unset_required_fields():
@@ -10040,7 +10090,7 @@ def test_backup_cluster_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_backup_cluster_rest_unset_required_fields():
@@ -10231,7 +10281,6 @@ def test_list_clusters_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.ListClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -10252,7 +10301,6 @@ def test_get_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.GetClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10273,7 +10321,6 @@ def test_update_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.UpdateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10294,7 +10341,6 @@ def test_delete_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.DeleteClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10315,7 +10361,6 @@ def test_create_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.CreateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10338,7 +10383,6 @@ def test_get_cluster_certificate_authority_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.GetClusterCertificateAuthorityRequest()
-
         assert args[0] == request_msg
 
 
@@ -10361,7 +10405,6 @@ def test_get_shared_regional_certificate_authority_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest()
-
         assert args[0] == request_msg
 
 
@@ -10384,7 +10427,6 @@ def test_reschedule_cluster_maintenance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.RescheduleClusterMaintenanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10407,7 +10449,6 @@ def test_list_backup_collections_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.ListBackupCollectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10430,7 +10471,6 @@ def test_get_backup_collection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.GetBackupCollectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -10451,7 +10491,6 @@ def test_list_backups_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.ListBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10472,7 +10511,6 @@ def test_get_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.GetBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10493,7 +10531,6 @@ def test_delete_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.DeleteBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10514,7 +10551,6 @@ def test_export_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.ExportBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10535,7 +10571,6 @@ def test_backup_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.BackupClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10577,7 +10612,6 @@ async def test_list_clusters_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.ListClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -10608,6 +10642,7 @@ async def test_get_cluster_empty_call_grpc_asyncio():
                 deletion_protection_enabled=True,
                 backup_collection="backup_collection_value",
                 kms_key="kms_key_value",
+                async_cluster_endpoints_deletion_enabled=True,
                 server_ca_mode=cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA,
                 server_ca_pool="server_ca_pool_value",
                 rotate_server_certificate=True,
@@ -10619,7 +10654,6 @@ async def test_get_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.GetClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10644,7 +10678,6 @@ async def test_update_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.UpdateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10669,7 +10702,6 @@ async def test_delete_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.DeleteClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10694,7 +10726,6 @@ async def test_create_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.CreateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -10723,7 +10754,6 @@ async def test_get_cluster_certificate_authority_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.GetClusterCertificateAuthorityRequest()
-
         assert args[0] == request_msg
 
 
@@ -10752,7 +10782,6 @@ async def test_get_shared_regional_certificate_authority_empty_call_grpc_asyncio
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest()
-
         assert args[0] == request_msg
 
 
@@ -10779,7 +10808,6 @@ async def test_reschedule_cluster_maintenance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.RescheduleClusterMaintenanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -10809,7 +10837,6 @@ async def test_list_backup_collections_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.ListBackupCollectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10842,7 +10869,6 @@ async def test_get_backup_collection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.GetBackupCollectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -10870,7 +10896,6 @@ async def test_list_backups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.ListBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10907,7 +10932,6 @@ async def test_get_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.GetBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10932,7 +10956,6 @@ async def test_delete_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.DeleteBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10957,7 +10980,6 @@ async def test_export_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.ExportBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -10982,7 +11004,6 @@ async def test_backup_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.BackupClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -11190,6 +11211,7 @@ def test_get_cluster_rest_call_success(request_type):
             deletion_protection_enabled=True,
             backup_collection="backup_collection_value",
             kms_key="kms_key_value",
+            async_cluster_endpoints_deletion_enabled=True,
             server_ca_mode=cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA,
             server_ca_pool="server_ca_pool_value",
             rotate_server_certificate=True,
@@ -11228,6 +11250,7 @@ def test_get_cluster_rest_call_success(request_type):
     assert response.deletion_protection_enabled is True
     assert response.backup_collection == "backup_collection_value"
     assert response.kms_key == "kms_key_value"
+    assert response.async_cluster_endpoints_deletion_enabled is True
     assert (
         response.server_ca_mode
         == cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA
@@ -11446,6 +11469,7 @@ def test_update_cluster_rest_call_success(request_type):
             "kms_key_primary_state": 1,
             "last_update_time": {},
         },
+        "async_cluster_endpoints_deletion_enabled": True,
         "server_ca_mode": 1,
         "server_ca_pool": "server_ca_pool_value",
         "rotate_server_certificate": True,
@@ -11868,6 +11892,7 @@ def test_create_cluster_rest_call_success(request_type):
             "kms_key_primary_state": 1,
             "last_update_time": {},
         },
+        "async_cluster_endpoints_deletion_enabled": True,
         "server_ca_mode": 1,
         "server_ca_pool": "server_ca_pool_value",
         "rotate_server_certificate": True,
@@ -13806,7 +13831,6 @@ def test_list_clusters_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.ListClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -13826,7 +13850,6 @@ def test_get_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.GetClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13846,7 +13869,6 @@ def test_update_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.UpdateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13866,7 +13888,6 @@ def test_delete_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.DeleteClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13886,7 +13907,6 @@ def test_create_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.CreateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13908,7 +13928,6 @@ def test_get_cluster_certificate_authority_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.GetClusterCertificateAuthorityRequest()
-
         assert args[0] == request_msg
 
 
@@ -13930,7 +13949,6 @@ def test_get_shared_regional_certificate_authority_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest()
-
         assert args[0] == request_msg
 
 
@@ -13952,7 +13970,6 @@ def test_reschedule_cluster_maintenance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.RescheduleClusterMaintenanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -13974,7 +13991,6 @@ def test_list_backup_collections_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.ListBackupCollectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13996,7 +14012,6 @@ def test_get_backup_collection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.GetBackupCollectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14016,7 +14031,6 @@ def test_list_backups_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.ListBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14036,7 +14050,6 @@ def test_get_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.GetBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14056,7 +14069,6 @@ def test_delete_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.DeleteBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14076,7 +14088,6 @@ def test_export_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.ExportBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -14096,7 +14107,6 @@ def test_backup_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = cloud_redis_cluster.BackupClusterRequest()
-
         assert args[0] == request_msg
 
 

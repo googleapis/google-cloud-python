@@ -556,8 +556,17 @@ def test_download_many_to_path_raises_invalid_path_error():
                 skip_if_exists=True,
             )
 
-    assert len(w) == 1
-    assert "will **NOT** be downloaded" in str(w[0].message)
+    invalid_path_warnings = [
+        warning
+        for warning in w
+        if str(warning.message).startswith("The blob ")
+        and "will **NOT** be downloaded" in str(warning.message)
+    ]
+
+    assert len(invalid_path_warnings) == 1, (
+        f"Expected 1 invalid path warning, found {len(invalid_path_warnings)}. All warnings: {[str(warning.message) for warning in w]}"
+    )
+
     assert len(results) == 1
     assert isinstance(results[0], UserWarning)
 
@@ -1209,7 +1218,7 @@ def test_upload_chunks_concurrently_with_metadata_and_encryption():
             "Accept": "application/json",
             "Accept-Encoding": "gzip, deflate",
             "User-Agent": "agent",
-            "X-Goog-API-Client": f"agent gccl-invocation-id/{invocation_id} gccl-gcs-cmd/tm.upload_sharded",
+            "x-goog-api-client": f"agent gccl-invocation-id/{invocation_id} gccl-gcs-cmd/tm.upload_sharded",
             "content-type": FAKE_CONTENT_TYPE,
             "x-upload-content-type": FAKE_CONTENT_TYPE,
             "X-Goog-Encryption-Algorithm": "AES256",

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -65,6 +65,7 @@ from google.cloud.netapp_v1.types.common import (
     LocationMetadata,
     OsType,
     QosType,
+    ScaleType,
     ServiceLevel,
     StoragePoolType,
     UserCommands,
@@ -162,6 +163,7 @@ from google.cloud.netapp_v1.types.volume import (
     GetVolumeRequest,
     HourlySchedule,
     HybridReplicationParameters,
+    LargeCapacityConfig,
     ListVolumesRequest,
     ListVolumesResponse,
     MonthlySchedule,
@@ -222,6 +224,7 @@ __all__ = (
     "HybridReplicationSchedule",
     "OsType",
     "QosType",
+    "ScaleType",
     "ServiceLevel",
     "StoragePoolType",
     "CreateHostGroupRequest",
@@ -301,6 +304,7 @@ __all__ = (
     "GetVolumeRequest",
     "HourlySchedule",
     "HybridReplicationParameters",
+    "LargeCapacityConfig",
     "ListVolumesRequest",
     "ListVolumesResponse",
     "MonthlySchedule",

@@ -18,7 +18,6 @@ from google.cloud.ndb import stats
 
 from . import utils
 
-
 DEFAULTS = {
     "bytes": 4,
     "count": 2,
@@ -215,7 +214,7 @@ class TestKindPropertyNamePropertyTypeStat:
             kind_name="test_stat",
             property_name="test_name",
             property_type="test_type",
-            **DEFAULTS
+            **DEFAULTS,
         )
         assert stat.bytes == 4
         assert stat.count == 2
@@ -306,7 +305,7 @@ class TestNamespaceKindPropertyNamePropertyTypeStat:
             kind_name="test_stat",
             property_name="test_name",
             property_type="test_type",
-            **DEFAULTS
+            **DEFAULTS,
         )
         assert stat.bytes == 4
         assert stat.count == 2

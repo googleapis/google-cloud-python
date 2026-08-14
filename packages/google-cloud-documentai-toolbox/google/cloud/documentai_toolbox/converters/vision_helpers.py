@@ -243,17 +243,17 @@ def _generate_entity_annotations(
     """
     entity_annotations: List[EntityAnnotation] = []
     for token in page_info.page.tokens:
-        v: vision.Vertex = []
+        v: list[vision.Vertex] = []
         if token.layout.bounding_poly.vertices:
             for vertex in token.layout.bounding_poly.vertices:
-                v.append({"x": int(vertex.x), "y": int(vertex.y)})
+                v.append(vision.Vertex(x=int(vertex.x), y=int(vertex.y)))
         else:
             for normalized_vertex in token.layout.bounding_poly.normalized_vertices:
                 v.append(
-                    {
-                        "x": int(normalized_vertex.x * page_info.page.dimension.width),
-                        "y": int(normalized_vertex.y * page_info.page.dimension.height),
-                    }
+                    vision.Vertex(
+                        x=int(normalized_vertex.x * page_info.page.dimension.width),
+                        y=int(normalized_vertex.y * page_info.page.dimension.height),
+                    )
                 )
 
         text_start_index = token.layout.text_anchor.text_segments[0].start_index

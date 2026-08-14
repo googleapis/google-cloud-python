@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -184,8 +184,8 @@ class SessionTemplate(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the session
-            template.
+            Required. Identifier. The resource name of
+            the session template.
         description (str):
             Optional. Brief description of the template.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -196,7 +196,7 @@ class SessionTemplate(proto.Message):
 
             This field is a member of `oneof`_ ``session_config``.
         spark_connect_session (google.cloud.dataproc_v1.types.SparkConnectConfig):
-            Optional. Spark Connect session config.
+            Optional. Spark connect session config.
 
             This field is a member of `oneof`_ ``session_config``.
         creator (str):

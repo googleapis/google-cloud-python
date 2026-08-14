@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -447,14 +447,13 @@ class Site(proto.Message):
             Optional. Any additional notes for this Site.
             Please include information about:
 
-            - security or access restrictions
-            - any regulations affecting the technicians
+             - security or access restrictions
+             - any regulations affecting the technicians
               visiting the site
-            - any special process or approval required to
+             - any special process or approval required to
               move the equipment
-            - whether a representative will be available
+             - whether a representative will be available
               during site visits
-
         customer_site_id (str):
             Optional. Customer defined identifier for
             this Site. This can be used to identify the site

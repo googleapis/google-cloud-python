@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -581,6 +581,35 @@ class DataScanServiceGrpcAsyncIOTransport(DataScanServiceTransport):
         return self._stubs["list_data_scan_jobs"]
 
     @property
+    def cancel_data_scan_job(
+        self,
+    ) -> Callable[
+        [datascans.CancelDataScanJobRequest],
+        Awaitable[datascans.CancelDataScanJobResponse],
+    ]:
+        r"""Return a callable for the cancel data scan job method over gRPC.
+
+        Cancels a running/pending DataScan job.
+
+        Returns:
+            Callable[[~.CancelDataScanJobRequest],
+                    Awaitable[~.CancelDataScanJobResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "cancel_data_scan_job" not in self._stubs:
+            self._stubs["cancel_data_scan_job"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataplex.v1.DataScanService/CancelDataScanJob",
+                request_serializer=datascans.CancelDataScanJobRequest.serialize,
+                response_deserializer=datascans.CancelDataScanJobResponse.deserialize,
+            )
+        return self._stubs["cancel_data_scan_job"]
+
+    @property
     def generate_data_quality_rules(
         self,
     ) -> Callable[
@@ -655,6 +684,11 @@ class DataScanServiceGrpcAsyncIOTransport(DataScanServiceTransport):
             ),
             self.list_data_scan_jobs: self._wrap_method(
                 self.list_data_scan_jobs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_data_scan_job: self._wrap_method(
+                self.cancel_data_scan_job,
                 default_timeout=None,
                 client_info=client_info,
             ),

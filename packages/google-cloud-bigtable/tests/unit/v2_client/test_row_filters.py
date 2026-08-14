@@ -242,7 +242,9 @@ def test_timestamp_range___ne__same_value():
 
 def _timestamp_range_to_pb_helper(pb_kwargs, start=None, end=None):
     import datetime
+
     from google.cloud._helpers import _EPOCH
+
     from google.cloud.bigtable.row_filters import TimestampRange
 
     if start is not None:
@@ -327,8 +329,7 @@ def test_timestamp_range_filter___ne__():
 
 
 def test_timestamp_range_filter_to_pb():
-    from google.cloud.bigtable.row_filters import TimestampRangeFilter
-    from google.cloud.bigtable.row_filters import TimestampRange
+    from google.cloud.bigtable.row_filters import TimestampRange, TimestampRangeFilter
 
     range_ = TimestampRange()
     row_filter = TimestampRangeFilter(range_)
@@ -534,6 +535,27 @@ def test_value_regex_filter_to_pb_w_str():
     assert pb_val == expected_pb
 
 
+def test_value_bitmask_filter_to_pb_w_bytes():
+    from google.cloud.bigtable.row_filters import ValueBitmaskFilter
+
+    mask = b"value-mask"
+    row_filter = ValueBitmaskFilter(mask)
+    pb_val = row_filter.to_pb()
+    expected_pb = _RowFilterPB(value_bitmask_filter=_ValueBitmaskPB(mask=mask))
+    assert pb_val == expected_pb
+
+
+def test_value_bitmask_filter_to_pb_w_str():
+    from google.cloud.bigtable.row_filters import ValueBitmaskFilter
+
+    mask = "value-mask"
+    mask_bytes = mask.encode("ascii")
+    row_filter = ValueBitmaskFilter(mask)
+    pb_val = row_filter.to_pb()
+    expected_pb = _RowFilterPB(value_bitmask_filter=_ValueBitmaskPB(mask=mask_bytes))
+    assert pb_val == expected_pb
+
+
 def test_exact_value_filter_to_pb_w_bytes():
     from google.cloud.bigtable.row_filters import ExactValueFilter
 
@@ -557,6 +579,7 @@ def test_exact_value_filter_to_pb_w_str():
 
 def test_exact_value_filter_to_pb_w_int():
     import struct
+
     from google.cloud.bigtable.row_filters import ExactValueFilter
 
     value = 1
@@ -600,8 +623,9 @@ def test_value_range_filter_constructor_explicit():
 
 
 def test_value_range_filter_constructor_w_int_values():
-    from google.cloud.bigtable.row_filters import ValueRangeFilter
     import struct
+
+    from google.cloud.bigtable.row_filters import ValueRangeFilter
 
     start_value = 1
     end_value = 10
@@ -897,9 +921,11 @@ def test_filter_combination___ne__():
 
 
 def test_row_filter_chain_to_pb():
-    from google.cloud.bigtable.row_filters import RowFilterChain
-    from google.cloud.bigtable.row_filters import RowSampleFilter
-    from google.cloud.bigtable.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.row_filters import (
+        RowFilterChain,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter1_pb = row_filter1.to_pb()
@@ -917,10 +943,12 @@ def test_row_filter_chain_to_pb():
 
 
 def test_row_filter_chain_to_pb_nested():
-    from google.cloud.bigtable.row_filters import CellsRowLimitFilter
-    from google.cloud.bigtable.row_filters import RowFilterChain
-    from google.cloud.bigtable.row_filters import RowSampleFilter
-    from google.cloud.bigtable.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.row_filters import (
+        CellsRowLimitFilter,
+        RowFilterChain,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter2 = RowSampleFilter(0.25)
@@ -941,9 +969,11 @@ def test_row_filter_chain_to_pb_nested():
 
 
 def test_row_filter_union_to_pb():
-    from google.cloud.bigtable.row_filters import RowFilterUnion
-    from google.cloud.bigtable.row_filters import RowSampleFilter
-    from google.cloud.bigtable.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.row_filters import (
+        RowFilterUnion,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter1_pb = row_filter1.to_pb()
@@ -961,10 +991,12 @@ def test_row_filter_union_to_pb():
 
 
 def test_row_filter_union_to_pb_nested():
-    from google.cloud.bigtable.row_filters import CellsRowLimitFilter
-    from google.cloud.bigtable.row_filters import RowFilterUnion
-    from google.cloud.bigtable.row_filters import RowSampleFilter
-    from google.cloud.bigtable.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.row_filters import (
+        CellsRowLimitFilter,
+        RowFilterUnion,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter2 = RowSampleFilter(0.25)
@@ -1043,10 +1075,12 @@ def test_conditional_row_filter___ne__():
 
 
 def test_conditional_row_filter_to_pb():
-    from google.cloud.bigtable.row_filters import ConditionalRowFilter
-    from google.cloud.bigtable.row_filters import CellsRowOffsetFilter
-    from google.cloud.bigtable.row_filters import RowSampleFilter
-    from google.cloud.bigtable.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.row_filters import (
+        CellsRowOffsetFilter,
+        ConditionalRowFilter,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter1_pb = row_filter1.to_pb()
@@ -1073,9 +1107,11 @@ def test_conditional_row_filter_to_pb():
 
 
 def test_conditional_row_filter_to_pb_true_only():
-    from google.cloud.bigtable.row_filters import ConditionalRowFilter
-    from google.cloud.bigtable.row_filters import RowSampleFilter
-    from google.cloud.bigtable.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.row_filters import (
+        ConditionalRowFilter,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter1_pb = row_filter1.to_pb()
@@ -1095,9 +1131,11 @@ def test_conditional_row_filter_to_pb_true_only():
 
 
 def test_conditional_row_filter_to_pb_false_only():
-    from google.cloud.bigtable.row_filters import ConditionalRowFilter
-    from google.cloud.bigtable.row_filters import RowSampleFilter
-    from google.cloud.bigtable.row_filters import StripValueTransformerFilter
+    from google.cloud.bigtable.row_filters import (
+        ConditionalRowFilter,
+        RowSampleFilter,
+        StripValueTransformerFilter,
+    )
 
     row_filter1 = StripValueTransformerFilter(True)
     row_filter1_pb = row_filter1.to_pb()
@@ -1156,3 +1194,9 @@ def _ValueRangePB(*args, **kw):
     from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
     return data_v2_pb2.ValueRange(*args, **kw)
+
+
+def _ValueBitmaskPB(*args, **kw):
+    from google.cloud.bigtable_v2.types import data as data_v2_pb2
+
+    return data_v2_pb2.ValueBitmask(*args, **kw)

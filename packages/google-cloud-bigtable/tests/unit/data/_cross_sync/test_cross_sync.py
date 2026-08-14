@@ -11,26 +11,21 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import typing
 import asyncio
+import concurrent.futures
+import functools
+import queue
+import threading
+import time
+import typing
+from unittest import mock
+from unittest.mock import AsyncMock  # type: ignore
+
 import pytest
 import pytest_asyncio
-import threading
-import concurrent.futures
-import time
-import queue
-import functools
-import sys
+
 from google import api_core
 from google.cloud.bigtable.data._cross_sync.cross_sync import CrossSync, T
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # type: ignore
-except ImportError:  # pragma: NO COVER
-    import mock  # type: ignore
-    from mock import AsyncMock  # type: ignore
 
 
 class TestCrossSync:
@@ -83,9 +78,9 @@ class TestCrossSync:
         Test basic alias attributes, to ensure they point to the right place
         in both sync and async versions.
         """
-        assert (
-            getattr(cs_async, attr) == async_version
-        ), f"Failed async version for {attr}"
+        assert getattr(cs_async, attr) == async_version, (
+            f"Failed async version for {attr}"
+        )
         assert getattr(cs_sync, attr) == sync_version, f"Failed sync version for {attr}"
 
     @pytest.mark.asyncio
@@ -483,9 +478,6 @@ class TestCrossSync:
             create_task.assert_called_once_with(coro_fn.return_value)
             coro_fn.assert_called_once_with(*args, **kwargs)
 
-    @pytest.mark.skipif(
-        sys.version_info < (3, 8), reason="Task names require python 3.8"
-    )
     @pytest.mark.asyncio
     async def test_create_task_async_with_name(self, cs_async):
         """

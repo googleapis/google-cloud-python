@@ -14,21 +14,23 @@
 """
 Helper functions used in various places in the library.
 """
+
 from __future__ import annotations
 
-from typing import Sequence, List, Tuple, TYPE_CHECKING, Union
-import time
 import enum
+import time
 from collections import namedtuple
-from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+from typing import TYPE_CHECKING, List, Sequence, Tuple, Union
 
 from google.api_core import exceptions as core_exceptions
-from google.api_core.retry import exponential_sleep_generator
-from google.api_core.retry import RetryFailureReason
+from google.api_core.retry import RetryFailureReason, exponential_sleep_generator
+
 from google.cloud.bigtable.data.exceptions import RetryExceptionGroup
+from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
 
 if TYPE_CHECKING:
     import grpc
+
     from google.cloud.bigtable.data._async.client import _DataApiTargetAsync
     from google.cloud.bigtable.data._sync_autogen.client import _DataApiTarget
 
@@ -103,6 +105,7 @@ def _retry_exception_factory(
         tuple[Exception, Exception|None]:
             tuple of the exception to raise, and a cause exception if applicable
     """
+    exc_list = exc_list.copy()
     if reason == RetryFailureReason.TIMEOUT:
         timeout_val_str = f"of {timeout_val:0.1f}s " if timeout_val is not None else ""
         # if failed due to timeout, raise deadline exceeded as primary exception
@@ -211,7 +214,7 @@ def _validate_timeouts(
 
 
 def _get_error_type(
-    call_code: Union["grpc.StatusCode", int, type[Exception]]
+    call_code: Union["grpc.StatusCode", int, type[Exception]],
 ) -> type[Exception]:
     """Helper function for ensuring the object is an exception type.
     If it is not, the proper GoogleAPICallError type is infered from the status

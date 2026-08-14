@@ -15,8 +15,8 @@
 from __future__ import annotations
 
 from collections import OrderedDict
-from typing import Generator, overload, Any
 from functools import total_ordering
+from typing import Any, Generator, overload
 
 from google.cloud.bigtable_v2.types import Row as RowPB
 
@@ -56,9 +56,9 @@ class Row:
         self.row_key = key
         self.cells: list[Cell] = cells
         # index is lazily created when needed
-        self._index_data: OrderedDict[
-            _family_type, OrderedDict[_qualifier_type, list[Cell]]
-        ] | None = None
+        self._index_data: (
+            OrderedDict[_family_type, OrderedDict[_qualifier_type, list[Cell]]] | None
+        ) = None
 
     @property
     def _index(

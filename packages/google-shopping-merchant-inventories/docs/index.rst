@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Merchant Inventories API.
+This package includes clients for multiple versions of Shopping Merchant Inventories.
 By default, you will get version ``merchant_inventories_v1``.
 
 

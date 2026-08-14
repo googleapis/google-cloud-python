@@ -21,11 +21,13 @@ import typing
 from typing import TYPE_CHECKING
 
 import bigframes_vendored.ibis
+import bigframes_vendored.ibis.expr.operations.generic as ibis_generic
 import bigframes_vendored.ibis.expr.types as ibis_types
 
 import bigframes.core.compile.ibis_types
 import bigframes.core.expression as ex
 from bigframes.core import agg_expressions, ordering
+from bigframes.operations import googlesql as gsql_ops
 from bigframes.operations import numeric_ops
 
 if TYPE_CHECKING:
@@ -92,7 +94,19 @@ class ExpressionCompiler:
             self.compile_expression(sub_expr, bindings)
             for sub_expr in expression.inputs
         ]
+        if isinstance(expression.op, gsql_ops.GoogleSqlScalarOp):
+            return googlesql_scalar_op_impl(
+                *inputs, op=expression.op, output_type=expression.output_type
+            )
         return self.compile_row_op(expression.op, inputs)
+
+    @compile_expression.register
+    def _(
+        self,
+        expression: ex.OmittedArg,
+        bindings: typing.Dict[str, ibis_types.Value],
+    ) -> ibis_types.Value:
+        return bigframes_vendored.ibis.omitted()
 
     def compile_row_op(
         self, op: ops.RowOp, inputs: typing.Sequence[ibis_types.Value]
@@ -278,3 +292,39 @@ def isnanornull(arg):
 @scalar_op_compiler.register_unary_op(numeric_ops.isfinite_op)
 def isfinite(arg):
     return arg.isinf().negate() & arg.isnan().negate()
+
+
+def googlesql_scalar_op_impl(
+    *operands: ibis_types.Value, op: ops.GoogleSqlScalarOp, output_type
+):
+    final_operands: list[ibis_types.Value] = []
+    arg_templates = []
+    for i, operand in enumerate(operands):
+        if i < len(op.args):
+            arg_spec = op.args[i]
+        else:
+            assert op.args[-1].is_vararg, (
+                f"Too many arguments, for {op.sql_name}, expected {len(op.args)}"
+            )
+            arg_spec = op.args[-1]
+        if isinstance(operand.op(), ibis_generic.OmittedArg):
+            assert arg_spec.optional, "Argument omitted, but not optional"
+            continue
+
+        target_idx = len(final_operands)
+        final_operands.append(operand)
+        if arg_spec.arg_name:
+            arg_templates.append(f"{arg_spec.arg_name} => {{{target_idx}}}")
+        else:
+            arg_templates.append(f"{{{target_idx}}}")
+    args_template = ", ".join(arg_templates)
+    sql_template = f"{op.sql_name}({args_template})"
+    return ibis_generic.SqlScalar(
+        sql_template,
+        values=tuple(
+            typing.cast(ibis_generic.Value, expr.op()) for expr in final_operands
+        ),
+        output_type=bigframes.core.compile.ibis_types.bigframes_dtype_to_ibis_dtype(
+            output_type
+        ),
+    ).to_expr()

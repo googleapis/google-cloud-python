@@ -5906,7 +5906,7 @@ class FarmFingerprint(Func):
 
 
 class Flatten(Func):
-    pass
+    arg_types = {"this": True, "depth": False}
 
 
 class Float64(Func):

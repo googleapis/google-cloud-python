@@ -8,7 +8,7 @@ Create a virtual environment for the library:
 
 .. code-block:: shell
 
-  $ virtualenv ~/.local/client-lib --python=`which python3.7`
+  $ virtualenv ~/.local/client-lib --python=`which python3.10`
   $ source ~/.local/client-lib/bin/activate
 
 Next, install the library:

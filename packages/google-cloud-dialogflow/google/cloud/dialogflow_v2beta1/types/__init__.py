@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -58,6 +58,12 @@ from .audio_config import (
     TelephonyDtmfEvents,
     VoiceSelectionParams,
 )
+from .ces_app import (
+    CesAppSpec,
+)
+from .ces_tool import (
+    CesToolSpec,
+)
 from .context import (
     Context,
     CreateContextRequest,
@@ -89,6 +95,7 @@ from .conversation import (
     ListMessagesRequest,
     ListMessagesResponse,
     SearchKnowledgeAnswer,
+    SearchKnowledgeDebugInfo,
     SearchKnowledgeRequest,
     SearchKnowledgeResponse,
     SuggestConversationSummaryRequest,
@@ -113,6 +120,7 @@ from .conversation_profile import (
     NotificationConfig,
     SetSuggestionFeatureConfigOperationMetadata,
     SetSuggestionFeatureConfigRequest,
+    SipConfig,
     UpdateConversationProfileRequest,
 )
 from .document import (
@@ -253,15 +261,18 @@ from .participant import (
     CompileSuggestionRequest,
     CompileSuggestionResponse,
     CreateParticipantRequest,
+    DatastoreResponseReason,
     DialogflowAssistAnswer,
     DtmfParameters,
     FaqAnswer,
     GenerateSuggestionsResponse,
     GetParticipantRequest,
+    IngestedContextReferenceDebugInfo,
     InputTextConfig,
     IntentInput,
     IntentSuggestion,
     KnowledgeAssistAnswer,
+    KnowledgeAssistDebugInfo,
     ListParticipantsRequest,
     ListParticipantsResponse,
     ListSuggestionsRequest,
@@ -271,6 +282,7 @@ from .participant import (
     OutputAudio,
     Participant,
     ResponseMessage,
+    ServiceLatency,
     SmartReplyAnswer,
     StreamingAnalyzeContentRequest,
     StreamingAnalyzeContentResponse,
@@ -330,6 +342,8 @@ from .sip_trunk import (
     GetSipTrunkRequest,
     ListSipTrunksRequest,
     ListSipTrunksResponse,
+    ProbeDetails,
+    SipHostname,
     SipTrunk,
     UpdateSipTrunkRequest,
 )
@@ -345,6 +359,9 @@ from .tool import (
 from .tool_call import (
     ToolCall,
     ToolCallResult,
+)
+from .toolset import (
+    ToolsetTool,
 )
 from .validation_result import (
     ValidationError,
@@ -403,6 +420,8 @@ __all__ = (
     "SpeechModelVariant",
     "SsmlVoiceGender",
     "TelephonyDtmf",
+    "CesAppSpec",
+    "CesToolSpec",
     "Context",
     "CreateContextRequest",
     "DeleteAllContextsRequest",
@@ -431,6 +450,7 @@ __all__ = (
     "ListMessagesRequest",
     "ListMessagesResponse",
     "SearchKnowledgeAnswer",
+    "SearchKnowledgeDebugInfo",
     "SearchKnowledgeRequest",
     "SearchKnowledgeResponse",
     "SuggestConversationSummaryRequest",
@@ -451,6 +471,7 @@ __all__ = (
     "NotificationConfig",
     "SetSuggestionFeatureConfigOperationMetadata",
     "SetSuggestionFeatureConfigRequest",
+    "SipConfig",
     "UpdateConversationProfileRequest",
     "CreateDocumentRequest",
     "DeleteDocumentRequest",
@@ -570,10 +591,12 @@ __all__ = (
     "FaqAnswer",
     "GenerateSuggestionsResponse",
     "GetParticipantRequest",
+    "IngestedContextReferenceDebugInfo",
     "InputTextConfig",
     "IntentInput",
     "IntentSuggestion",
     "KnowledgeAssistAnswer",
+    "KnowledgeAssistDebugInfo",
     "ListParticipantsRequest",
     "ListParticipantsResponse",
     "ListSuggestionsRequest",
@@ -583,6 +606,7 @@ __all__ = (
     "OutputAudio",
     "Participant",
     "ResponseMessage",
+    "ServiceLatency",
     "SmartReplyAnswer",
     "StreamingAnalyzeContentRequest",
     "StreamingAnalyzeContentResponse",
@@ -600,6 +624,7 @@ __all__ = (
     "SuggestSmartRepliesRequest",
     "SuggestSmartRepliesResponse",
     "UpdateParticipantRequest",
+    "DatastoreResponseReason",
     "DeletePhoneNumberRequest",
     "ListPhoneNumbersRequest",
     "ListPhoneNumbersResponse",
@@ -634,6 +659,8 @@ __all__ = (
     "GetSipTrunkRequest",
     "ListSipTrunksRequest",
     "ListSipTrunksResponse",
+    "ProbeDetails",
+    "SipHostname",
     "SipTrunk",
     "UpdateSipTrunkRequest",
     "CreateToolRequest",
@@ -645,6 +672,7 @@ __all__ = (
     "UpdateToolRequest",
     "ToolCall",
     "ToolCallResult",
+    "ToolsetTool",
     "ValidationError",
     "ValidationResult",
     "CreateVersionRequest",

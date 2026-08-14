@@ -14,10 +14,13 @@
 
 from __future__ import annotations
 
+from typing import Sequence
+
 import bigframes.core.col
 import bigframes.core.expression
 from bigframes import dtypes
 from bigframes import operations as ops
+from bigframes.operations import googlesql
 
 
 def rand() -> bigframes.core.col.Expression:
@@ -45,9 +48,74 @@ def rand() -> bigframes.core.col.Expression:
             :func:`~bigframes.pandas.DataFrame.assign` and other methods.  See
             :func:`bigframes.pandas.col`.
     """
+    return bigframes.core.col.Expression(
+        bigframes.core.expression.OpExpression(googlesql.RAND, ())
+    )
+
+
+def hparam_range(min: float, max: float) -> bigframes.core.col.Expression:
+    """
+    Defines the minimum and maximum bounds of the search space of continuous
+    values for a hyperparameter.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> # Specify a range of values for a hyperparameter.
+        >>> learn_rate = bbq.hparam_range(0.0001, 1.0)
+
+    Args:
+        min (float or int):
+            The minimum bound of the search space.
+        max (float or int):
+            The maximum bound of the search space.
+
+    Returns:
+        bigframes.pandas.api.typing.Expression:
+            An expression that can be used in model options.
+    """
+    min_expr = bigframes.core.expression.const(min)
+    max_expr = bigframes.core.expression.const(max)
+
     op = ops.SqlScalarOp(
         _output_type=dtypes.FLOAT_DTYPE,
-        sql_template="RAND()",
-        is_deterministic=False,
+        sql_template="HPARAM_RANGE({0}, {1})",
+        is_deterministic=True,
     )
-    return bigframes.core.col.Expression(bigframes.core.expression.OpExpression(op, ()))
+    return bigframes.core.col.Expression(
+        bigframes.core.expression.OpExpression(op, (min_expr, max_expr))
+    )
+
+
+def hparam_candidates(
+    candidates: Sequence[float | str],
+) -> bigframes.core.col.Expression:
+    """
+    Specifies the set of discrete values for the hyperparameter.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> # Specify a set of values for a hyperparameter.
+        >>> optimizer = bbq.hparam_candidates(['ADAGRAD', 'SGD', 'FTRL'])
+
+    Args:
+        candidates (Sequence[float | str]):
+            The set of discrete values for the hyperparameter.
+
+    Returns:
+        bigframes.pandas.api.typing.Expression:
+            An expression that can be used in model options.
+    """
+    candidates_expr = bigframes.core.expression.const(tuple(candidates))
+
+    op = ops.SqlScalarOp(
+        _output_type=dtypes.STRING_DTYPE,
+        sql_template="HPARAM_CANDIDATES({0})",
+        is_deterministic=True,
+    )
+    return bigframes.core.col.Expression(
+        bigframes.core.expression.OpExpression(op, (candidates_expr,))
+    )

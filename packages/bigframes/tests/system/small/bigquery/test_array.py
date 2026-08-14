@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import cast
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -66,14 +68,15 @@ import bigframes.pandas as bpd
     ],
 )
 def test_array_length(input_data, expected):
-    series = bpd.Series(input_data)
+    series = pd.Series(input_data)
     expected = pd.Series(
         expected,
         index=pd.Index(range(len(input_data)), dtype="Int64"),
         dtype=bigframes.dtypes.INT_DTYPE,
     )
+    result = cast(bpd.Series, bbq.array_length(series))
     pd.testing.assert_series_equal(
-        bbq.array_length(series).to_pandas(),
+        result.to_pandas(),
         expected,
         check_index_type=False,
     )

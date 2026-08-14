@@ -12,29 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import concurrent.futures
 import gc
+from unittest import mock
+
+import pytest
+
 from google.cloud.bigtable.data import exceptions
+from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data.execute_query.metadata import (
     _pb_metadata_to_metadata_types,
 )
-import pytest
-import concurrent.futures
+
 from ..sql_helpers import (
     chunked_responses,
-    int_val,
     column,
-    metadata,
     int64_type,
+    int_val,
+    metadata,
 )
-
-from google.cloud.bigtable.data._cross_sync import CrossSync
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-except ImportError:  # pragma: NO COVER
-    import mock  # type: ignore
-
 
 __CROSS_SYNC_OUTPUT__ = (
     "tests.unit.data.execute_query._sync_autogen.test_query_iterator"

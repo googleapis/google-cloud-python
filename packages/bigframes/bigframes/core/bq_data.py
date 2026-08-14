@@ -253,6 +253,9 @@ class BigqueryDataSource:
     # Optimization field, must be correct if set, don't put maybe-stale number here
     n_rows: Optional[int] = None
 
+    def with_ordering(self, ordering: orderings.RowOrdering) -> BigqueryDataSource:
+        return dataclasses.replace(self, ordering=ordering)
+
 
 _WORKER_TIME_INCREMENT = 0.05
 

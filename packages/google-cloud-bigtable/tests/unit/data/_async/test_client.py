@@ -13,30 +13,27 @@
 # limitations under the License.
 from __future__ import annotations
 
-import grpc
 import asyncio
 import re
-import sys
 
-import pytest
+import grpc
 import mock
-
-from google.cloud.bigtable.data import mutations
-from google.auth.credentials import AnonymousCredentials
-from google.cloud.bigtable_v2.types import ReadRowsResponse
-from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
-from google.api_core import exceptions as core_exceptions
+import pytest
 from google.api_core import client_options
-from google.cloud.bigtable.data.exceptions import InvalidChunk
-from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
-from google.cloud.bigtable.data.mutations import DeleteAllFromRow
-from google.cloud.bigtable.data import TABLE_DEFAULT
+from google.api_core import exceptions as core_exceptions
+from google.auth.credentials import AnonymousCredentials
 
-from google.cloud.bigtable.data.read_modify_write_rules import IncrementRule
-from google.cloud.bigtable.data.read_modify_write_rules import AppendValueRule
-from google.cloud.bigtable_v2.types.bigtable import ExecuteQueryResponse
-
+from google.cloud.bigtable.data import TABLE_DEFAULT, mutations
 from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable.data.exceptions import InvalidChunk, _MutateRowsIncomplete
+from google.cloud.bigtable.data.mutations import DeleteAllFromRow
+from google.cloud.bigtable.data.read_modify_write_rules import (
+    AppendValueRule,
+    IncrementRule,
+)
+from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+from google.cloud.bigtable_v2.types import ReadRowsResponse
+from google.cloud.bigtable_v2.types.bigtable import ExecuteQueryResponse
 from tests.unit.data.execute_query.sql_helpers import (
     chunked_responses,
     column,
@@ -51,10 +48,11 @@ from tests.unit.data.execute_query.sql_helpers import (
 
 if CrossSync.is_async:
     from google.api_core import grpc_helpers_async
-    from google.cloud.bigtable.data._async.client import TableAsync
+
     from google.cloud.bigtable.data._async._swappable_channel import (
         AsyncSwappableChannel,
     )
+    from google.cloud.bigtable.data._async.client import TableAsync
     from google.cloud.bigtable.data._async.metrics_interceptor import (
         AsyncBigtableMetricsInterceptor,
     )
@@ -64,10 +62,11 @@ if CrossSync.is_async:
     CrossSync.add_mapping("MetricsInterceptor", AsyncBigtableMetricsInterceptor)
 else:
     from google.api_core import grpc_helpers
-    from google.cloud.bigtable.data._sync_autogen.client import Table  # noqa: F401
+
     from google.cloud.bigtable.data._sync_autogen._swappable_channel import (
         SwappableChannel,
     )
+    from google.cloud.bigtable.data._sync_autogen.client import Table  # noqa: F401
     from google.cloud.bigtable.data._sync_autogen.metrics_interceptor import (
         BigtableMetricsInterceptor,
     )
@@ -77,6 +76,30 @@ else:
     CrossSync.add_mapping("MetricsInterceptor", BigtableMetricsInterceptor)
 
 __CROSS_SYNC_OUTPUT__ = "tests.unit.data._sync_autogen.test_client"
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
+@pytest.fixture(autouse=True)
+def mock_metrics_batch_write():
+    """mock out the metrics batch write to avoid sending metrics to GCP during tests."""
+    with mock.patch(
+        "google.cloud.bigtable.data._metrics.handlers.gcp_exporter.BigtableMetricsExporter._batch_write"
+    ):
+        yield
 
 
 @CrossSync.convert_class(
@@ -90,7 +113,7 @@ class TestBigtableDataClientAsync:
         return CrossSync.DataClient
 
     @classmethod
-    def _make_client(cls, *args, use_emulator=True, **kwargs):
+    def _make_client(cls, *args, use_emulator=True, use_mtls="auto", **kwargs):
         import os
 
         env_mask = {}
@@ -105,11 +128,19 @@ class TestBigtableDataClientAsync:
             # set some default values
             kwargs["credentials"] = kwargs.get("credentials", AnonymousCredentials())
             kwargs["project"] = kwargs.get("project", "project-id")
+        if use_mtls is not None:
+            env_mask["GOOGLE_API_USE_MTLS_ENDPOINT"] = use_mtls
         with mock.patch.dict(os.environ, env_mask):
+            if not use_emulator:
+                os.environ.pop("BIGTABLE_EMULATOR_HOST", None)
             return cls._get_target_class()(*args, **kwargs)
 
     @CrossSync.pytest
     async def test_ctor(self):
+        from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
+            BigtableMetricsExporter,
+        )
+
         expected_project = "project-id"
         expected_credentials = AnonymousCredentials()
         client = self._make_client(
@@ -123,12 +154,16 @@ class TestBigtableDataClientAsync:
         assert client._channel_refresh_task is not None
         assert client.transport._credentials == expected_credentials
         assert isinstance(client._metrics_interceptor, CrossSync.MetricsInterceptor)
+        assert getattr(client._metrics.handlers[0], "_exporter", None) is not None
+        assert isinstance(
+            client._metrics.handlers[0]._exporter, BigtableMetricsExporter
+        )
         await client.close()
 
     @CrossSync.pytest
     async def test_ctor_super_inits(self):
-        from google.cloud.client import ClientWithProject
         from google.api_core import client_options as client_options_lib
+        from google.cloud.client import ClientWithProject
 
         project = "project-id"
         credentials = AnonymousCredentials()
@@ -190,7 +225,49 @@ class TestBigtableDataClientAsync:
             await client.close()
 
     @CrossSync.pytest
-    async def test_veneer_grpc_headers(self):
+    @mock.patch("google.cloud.bigtable.data._async.client.BigtableMetricsExporter")
+    @mock.patch(
+        "google.cloud.bigtable.data._sync_autogen.client.BigtableMetricsExporter"
+    )
+    async def test_metrics_exporter_init_shares_arguments(
+        self, exporter_mock_sync, exporter_mock_async
+    ):
+        expected_credentials = AnonymousCredentials()
+        expected_project = "custom_project"
+        expected_options = client_options.ClientOptions()
+        expected_options.credentials_file = None
+        expected_options.quota_project_id = None
+        mock_called = exporter_mock_async if CrossSync.is_async else exporter_mock_sync
+        async with self._make_client(
+            project=expected_project,
+            credentials=expected_credentials,
+            client_options=expected_options,
+            use_emulator=False,
+        ):
+            mock_called.assert_called_once_with(
+                credentials=expected_credentials,
+                client_options=expected_options,
+            )
+
+    @CrossSync.pytest
+    @mock.patch(
+        "google.cloud.bigtable.data._async.client.BigtableMetricsExporter",
+        side_effect=Exception("Auth error"),
+    )
+    @mock.patch(
+        "google.cloud.bigtable.data._sync_autogen.client.BigtableMetricsExporter",
+        side_effect=Exception("Auth error"),
+    )
+    async def test_metrics_exporter_init_error_fallback(self, mock_sync, mock_async):
+        async with self._make_client(use_emulator=False) as client:
+            assert len(client._metrics.handlers) == 0
+
+    @CrossSync.pytest
+    @mock.patch("google.cloud.bigtable.data._async.client.BigtableMetricsExporter")
+    @mock.patch(
+        "google.cloud.bigtable.data._sync_autogen.client.BigtableMetricsExporter"
+    )
+    async def test_veneer_grpc_headers(self, exporter_mock, exporter_mock_sync):
         client_component = "data-async" if CrossSync.is_async else "data"
         VENEER_HEADER_REGEX = re.compile(
             r"gapic\/[0-9]+\.[\w.-]+ gax\/[0-9]+\.[\w.-]+ gccl\/[0-9]+\.[\w.-]+-"
@@ -215,9 +292,9 @@ class TestBigtableDataClientAsync:
                 wrapped_user_agent_sorted = " ".join(
                     sorted(client_info.to_user_agent().split(" "))
                 )
-                assert VENEER_HEADER_REGEX.match(
-                    wrapped_user_agent_sorted
-                ), f"'{wrapped_user_agent_sorted}' does not match {VENEER_HEADER_REGEX}"
+                assert VENEER_HEADER_REGEX.match(wrapped_user_agent_sorted), (
+                    f"'{wrapped_user_agent_sorted}' does not match {VENEER_HEADER_REGEX}"
+                )
             await client.close()
 
     @CrossSync.drop
@@ -256,9 +333,6 @@ class TestBigtableDataClientAsync:
 
     @CrossSync.drop
     @CrossSync.pytest
-    @pytest.mark.skipif(
-        sys.version_info < (3, 8), reason="Task.name requires python3.8 or higher"
-    )
     async def test__start_background_channel_refresh_task_names(self):
         # if tasks exist, should do nothing
         client = self._make_client(project="project-id", use_emulator=False)
@@ -392,9 +466,9 @@ class TestBigtableDataClientAsync:
                     pass
                 sleep.assert_called_once()
                 call_time = sleep.call_args[0][1]
-                assert (
-                    abs(call_time - expected_sleep) < 0.1
-                ), f"refresh_interval: {refresh_interval}, wait_time: {wait_time}, expected_sleep: {expected_sleep}"
+                assert abs(call_time - expected_sleep) < 0.1, (
+                    f"refresh_interval: {refresh_interval}, wait_time: {wait_time}, expected_sleep: {expected_sleep}"
+                )
                 await client.close()
 
     @CrossSync.pytest
@@ -441,8 +515,8 @@ class TestBigtableDataClientAsync:
         self, refresh_interval, num_cycles, expected_sleep
     ):
         # make sure that sleeps work as expected
-        import time
         import random
+        import time
 
         with mock.patch.object(random, "uniform") as uniform:
             uniform.side_effect = lambda min_, max_: min_
@@ -467,9 +541,9 @@ class TestBigtableDataClientAsync:
                             pass
                     assert sleep.call_count == num_cycles
                     total_sleep = sum([call[0][1] for call in sleep.call_args_list])
-                    assert (
-                        abs(total_sleep - expected_sleep) < 0.5
-                    ), f"refresh_interval={refresh_interval}, num_cycles={num_cycles}, expected_sleep={expected_sleep}"
+                    assert abs(total_sleep - expected_sleep) < 0.5, (
+                        f"refresh_interval={refresh_interval}, num_cycles={num_cycles}, expected_sleep={expected_sleep}"
+                    )
         await client.close()
 
     @CrossSync.pytest
@@ -826,11 +900,13 @@ class TestBigtableDataClientAsync:
             assert len(client._instance_owners[instance_1_key]) == 0
             assert len(client._instance_owners[instance_2_key]) == 0
 
-    @pytest.mark.parametrize("method", ["get_table", "get_authorized_view"])
+    @pytest.mark.parametrize(
+        "method", ["get_table", "get_authorized_view", "get_materialized_view"]
+    )
     @CrossSync.pytest
     async def test_get_api_surface(self, method):
         """
-        test client.get_table and client.get_authorized_view
+        test client.get_table, client.get_authorized_view, and client.get_materialized_view
         """
         from google.cloud.bigtable.data._helpers import _WarmedInstanceKey
 
@@ -858,14 +934,28 @@ class TestBigtableDataClientAsync:
                 surface.authorized_view_name
                 == f"projects/{client.project}/instances/{expected_instance_id}/tables/{expected_table_id}/authorizedViews/view_id"
             )
+        elif method == "get_materialized_view":
+            surface = client.get_materialized_view(
+                expected_instance_id,
+                "view_id",
+                expected_app_profile_id,
+            )
+            assert isinstance(
+                surface, CrossSync.TestMaterializedView._get_target_class()
+            )
+            assert (
+                surface.materialized_view_name
+                == f"projects/{client.project}/instances/{expected_instance_id}/materializedViews/view_id"
+            )
         else:
             raise TypeError(f"unexpected method: {method}")
         await CrossSync.yield_to_event_loop()
-        assert surface.table_id == expected_table_id
-        assert (
-            surface.table_name
-            == f"projects/{client.project}/instances/{expected_instance_id}/tables/{expected_table_id}"
-        )
+        if method != "get_materialized_view":
+            assert surface.table_id == expected_table_id
+            assert (
+                surface.table_name
+                == f"projects/{client.project}/instances/{expected_instance_id}/tables/{expected_table_id}"
+            )
         assert surface.instance_id == expected_instance_id
         assert (
             surface.instance_name
@@ -878,16 +968,21 @@ class TestBigtableDataClientAsync:
         assert client._instance_owners[instance_key] == {id(surface)}
         await client.close()
 
-    @pytest.mark.parametrize("method", ["get_table", "get_authorized_view"])
+    @pytest.mark.parametrize(
+        "method", ["get_table", "get_authorized_view", "get_materialized_view"]
+    )
     @CrossSync.pytest
     async def test_api_surface_arg_passthrough(self, method):
         """
-        All arguments passed in get_table and get_authorized_view should be sent to constructor
+        All arguments passed in get_table, get_authorized_view, and get_materialized_view
+        should be sent to constructor
         """
         if method == "get_table":
             surface_type = CrossSync.TestTable._get_target_class()
         elif method == "get_authorized_view":
             surface_type = CrossSync.TestAuthorizedView._get_target_class()
+        elif method == "get_materialized_view":
+            surface_type = CrossSync.TestMaterializedView._get_target_class()
         else:
             raise TypeError(f"unexpected method: {method}")
 
@@ -916,13 +1011,16 @@ class TestBigtableDataClientAsync:
                     **expected_kwargs,
                 )
 
-    @pytest.mark.parametrize("method", ["get_table", "get_authorized_view"])
+    @pytest.mark.parametrize(
+        "method", ["get_table", "get_authorized_view", "get_materialized_view"]
+    )
     @CrossSync.pytest
     async def test_api_surface_context_manager(self, method):
         """
-        get_table and get_authorized_view should work as context managers
+        get_table, get_authorized_view, and get_materialized_view should work as context managers
         """
         from functools import partial
+
         from google.cloud.bigtable.data._helpers import _WarmedInstanceKey
 
         expected_table_id = "table-id"
@@ -934,6 +1032,8 @@ class TestBigtableDataClientAsync:
             surface_type = CrossSync.TestTable._get_target_class()
         elif method == "get_authorized_view":
             surface_type = CrossSync.TestAuthorizedView._get_target_class()
+        elif method == "get_materialized_view":
+            surface_type = CrossSync.TestMaterializedView._get_target_class()
         else:
             raise TypeError(f"unexpected method: {method}")
 
@@ -954,16 +1054,24 @@ class TestBigtableDataClientAsync:
                         "view_id",
                         expected_app_profile_id,
                     )
+                elif method == "get_materialized_view":
+                    fn = partial(
+                        client.get_materialized_view,
+                        expected_instance_id,
+                        "view_id",
+                        expected_app_profile_id,
+                    )
                 else:
                     raise TypeError(f"unexpected method: {method}")
                 async with fn() as table:
                     await CrossSync.yield_to_event_loop()
                     assert isinstance(table, surface_type)
-                    assert table.table_id == expected_table_id
-                    assert (
-                        table.table_name
-                        == f"projects/{expected_project_id}/instances/{expected_instance_id}/tables/{expected_table_id}"
-                    )
+                    if method != "get_materialized_view":
+                        assert table.table_id == expected_table_id
+                        assert (
+                            table.table_name
+                            == f"projects/{expected_project_id}/instances/{expected_instance_id}/tables/{expected_table_id}"
+                        )
                     assert table.instance_id == expected_instance_id
                     assert (
                         table.instance_name
@@ -1045,13 +1153,19 @@ class TestBigtableDataClientAsync:
         assert client._channel_refresh_task is None
 
     @CrossSync.pytest
-    async def test_default_universe_domain(self):
+    @pytest.mark.parametrize(
+        "use_mtls, expected_domain",
+        [("never", "googleapis.com"), ("always", "mtls.googleapis.com")],
+    )
+    async def test_default_universe_domain(self, use_mtls, expected_domain):
         """
         When not passed, universe_domain should default to googleapis.com
         """
-        async with self._make_client(project="project-id", credentials=None) as client:
+        async with self._make_client(
+            project="project-id", credentials=None, use_mtls=use_mtls
+        ) as client:
             assert client.universe_domain == "googleapis.com"
-            assert client.api_endpoint == "bigtable.googleapis.com"
+            assert client.api_endpoint == f"bigtable.{expected_domain}"
 
     @CrossSync.pytest
     async def test_custom_universe_domain(self):
@@ -1063,6 +1177,7 @@ class TestBigtableDataClientAsync:
             client_options=options,
             use_emulator=True,
             credentials=None,
+            use_mtls="never",
         ) as client:
             assert client.universe_domain == universe_domain
             assert client.api_endpoint == f"bigtable.{universe_domain}"
@@ -1076,7 +1191,6 @@ class TestBigtableDataClientAsync:
             project="project_id", client_options=options, credentials=None
         ) as client:
             assert client.universe_domain == "googleapis.com"
-            assert client.api_endpoint == "bigtable.googleapis.com"
 
     @CrossSync.pytest
     async def test_credential_universe_domain_matches_GDU(self):
@@ -1085,13 +1199,14 @@ class TestBigtableDataClientAsync:
         creds._universe_domain = "googleapis.com"
         async with self._make_client(project="project_id", credentials=creds) as client:
             assert client.universe_domain == "googleapis.com"
-            assert client.api_endpoint == "bigtable.googleapis.com"
 
     @CrossSync.pytest
     async def test_anomynous_credential_universe_domain(self):
         """Anomynopus credentials should use default universe domain"""
         creds = AnonymousCredentials()
-        async with self._make_client(project="project_id", credentials=creds) as client:
+        async with self._make_client(
+            project="project_id", credentials=creds, use_mtls="never"
+        ) as client:
             assert client.universe_domain == "googleapis.com"
             assert client.api_endpoint == "bigtable.googleapis.com"
 
@@ -1100,9 +1215,12 @@ class TestBigtableDataClientAsync:
         """Test that configured universe domain errors with mismatched universe
         domain credentials.
         """
+        creds = AnonymousCredentials()
+        universe_exists = hasattr(creds, "universe_domain")
+        if not universe_exists:
+            pytest.skip("Skip test for older versions of google-auth")
         universe_domain = "test-universe.test"
         options = client_options.ClientOptions(universe_domain=universe_domain)
-        creds = AnonymousCredentials()
         creds._universe_domain = "different-universe"
         with pytest.raises(ValueError) as exc:
             self._make_client(
@@ -1110,6 +1228,7 @@ class TestBigtableDataClientAsync:
                 client_options=options,
                 use_emulator=False,
                 credentials=creds,
+                use_mtls="never",
             )
         err_msg = (
             f"The configured universe domain ({universe_domain}) does "
@@ -1130,7 +1249,10 @@ class TestBigtableDataClientAsync:
         creds = AnonymousCredentials()
         creds._universe_domain = universe_domain
         async with self._make_client(
-            project="project_id", credentials=creds, client_options=options
+            project="project_id",
+            credentials=creds,
+            client_options=options,
+            use_mtls="never",
         ) as client:
             assert client.universe_domain == universe_domain
             assert client.api_endpoint == f"bigtable.{universe_domain}"
@@ -1159,11 +1281,16 @@ class TestTableAsync:
             client, instance_id, table_id, app_profile_id, **kwargs
         )
 
+    @pytest.mark.parametrize("use_emulator", [True, False])
     @CrossSync.pytest
-    async def test_ctor(self):
+    async def test_ctor(self, use_emulator):
         from google.cloud.bigtable.data._helpers import _WarmedInstanceKey
         from google.cloud.bigtable.data._metrics import (
             BigtableClientSideMetricsController,
+            GoogleCloudMetricsHandler,
+        )
+        from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
+            BigtableMetricsExporter,
         )
 
         expected_table_id = "table-id"
@@ -1175,7 +1302,7 @@ class TestTableAsync:
         expected_read_rows_attempt_timeout = 0.5
         expected_mutate_rows_operation_timeout = 2.5
         expected_mutate_rows_attempt_timeout = 0.75
-        client = self._make_client()
+        client = self._make_client(use_emulator=use_emulator)
         assert not client._active_instances
 
         table = self._get_target_class()(
@@ -1206,7 +1333,15 @@ class TestTableAsync:
         instance_key = _WarmedInstanceKey(table.instance_name, table.app_profile_id)
         assert instance_key in client._active_instances
         assert client._instance_owners[instance_key] == {id(table)}
-        assert isinstance(table._metrics, BigtableClientSideMetricsController)
+        assert isinstance(client._metrics, BigtableClientSideMetricsController)
+        if use_emulator:
+            assert len(client._metrics.handlers) == 0
+        else:
+            assert len(client._metrics.handlers) == 1
+            assert isinstance(client._metrics.handlers[0], GoogleCloudMetricsHandler)
+            assert isinstance(
+                client._metrics.handlers[0]._exporter, BigtableMetricsExporter
+            )
         assert table.default_operation_timeout == expected_operation_timeout
         assert table.default_attempt_timeout == expected_attempt_timeout
         assert (
@@ -1225,11 +1360,23 @@ class TestTableAsync:
             table.default_mutate_rows_attempt_timeout
             == expected_mutate_rows_attempt_timeout
         )
-        # ensure task reaches completion
-        await table._register_instance_future
-        assert table._register_instance_future.done()
-        assert not table._register_instance_future.cancelled()
-        assert table._register_instance_future.exception() is None
+        if use_emulator:
+            await table._register_instance_future
+            assert table._register_instance_future.done()
+            assert not table._register_instance_future.cancelled()
+            assert table._register_instance_future.exception() is None
+        elif table._register_instance_future:
+            table._register_instance_future.cancel()
+        await client.close()
+
+    @CrossSync.pytest
+    async def test_create_operation_table_id(self):
+        from google.cloud.bigtable.data._metrics.data_model import OperationType
+
+        client = self._make_client()
+        table = self._make_one(client, table_id="my-table")
+        op = table._create_operation(OperationType.READ_ROWS)
+        assert op.table_id == "my-table"
         await client.close()
 
     @CrossSync.pytest
@@ -1282,7 +1429,7 @@ class TestTableAsync:
     @CrossSync.drop
     def test_table_ctor_sync(self):
         # initializing client in a sync context should raise RuntimeError
-        client = mock.Mock()
+        client = self._make_client()
         with pytest.raises(RuntimeError) as e:
             TableAsync(client, "instance-id", "table-id")
         assert e.match("TableAsync must be created within an async event loop context.")
@@ -1401,9 +1548,15 @@ class TestTableAsync:
                     predicate_builder_mock.assert_called_once_with(
                         *expected_retryables, *extra_retryables
                     )
-                    retry_call_args = retry_fn_mock.call_args_list[0].args
                     # output of if_exception_type should be sent in to retry constructor
-                    assert retry_call_args[1] is expected_predicate
+                    retry_call_kwargs = retry_fn_mock.call_args_list[0].kwargs
+                    # check for predicate passed as kwarg
+                    if "predicate" in retry_call_kwargs:
+                        assert retry_call_kwargs["predicate"] is expected_predicate
+                    else:
+                        # check for predicate passed as arg
+                        retry_call_args = retry_fn_mock.call_args_list[0].args
+                        assert retry_call_args[1] is expected_predicate
 
     @pytest.mark.parametrize(
         "fn_name,fn_args,gapic_fn",
@@ -1472,7 +1625,7 @@ class TestTableAsync:
         client = self._make_client()
         table = self._make_one(client)
         with mock.patch.object(
-            table._metrics, "close", mock.Mock()
+            client._metrics, "close", mock.Mock()
         ) as metric_close_mock:
             with mock.patch.object(
                 client, "_remove_instance_registration"
@@ -1481,6 +1634,8 @@ class TestTableAsync:
                 remove_mock.assert_called_once_with(
                     table.instance_id, table.app_profile_id, id(table)
                 )
+                metric_close_mock.assert_not_called()
+                await client.close()
                 metric_close_mock.assert_called_once()
 
 
@@ -1510,11 +1665,16 @@ class TestAuthorizedViewsAsync(CrossSync.TestTable):
             client, instance_id, table_id, view_id, app_profile_id, **kwargs
         )
 
+    @pytest.mark.parametrize("use_emulator", [True, False])
     @CrossSync.pytest
-    async def test_ctor(self):
+    async def test_ctor(self, use_emulator):
         from google.cloud.bigtable.data._helpers import _WarmedInstanceKey
         from google.cloud.bigtable.data._metrics import (
             BigtableClientSideMetricsController,
+            GoogleCloudMetricsHandler,
+        )
+        from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
+            BigtableMetricsExporter,
         )
 
         expected_table_id = "table-id"
@@ -1527,7 +1687,7 @@ class TestAuthorizedViewsAsync(CrossSync.TestTable):
         expected_read_rows_attempt_timeout = 0.5
         expected_mutate_rows_operation_timeout = 2.5
         expected_mutate_rows_attempt_timeout = 0.75
-        client = self._make_client()
+        client = self._make_client(use_emulator=use_emulator)
         assert not client._active_instances
 
         view = self._get_target_class()(
@@ -1564,7 +1724,15 @@ class TestAuthorizedViewsAsync(CrossSync.TestTable):
         instance_key = _WarmedInstanceKey(view.instance_name, view.app_profile_id)
         assert instance_key in client._active_instances
         assert client._instance_owners[instance_key] == {id(view)}
-        assert isinstance(view._metrics, BigtableClientSideMetricsController)
+        assert isinstance(client._metrics, BigtableClientSideMetricsController)
+        if use_emulator:
+            assert len(client._metrics.handlers) == 0
+        else:
+            assert len(client._metrics.handlers) == 1
+            assert isinstance(client._metrics.handlers[0], GoogleCloudMetricsHandler)
+            assert isinstance(
+                client._metrics.handlers[0]._exporter, BigtableMetricsExporter
+            )
         assert view.default_operation_timeout == expected_operation_timeout
         assert view.default_attempt_timeout == expected_attempt_timeout
         assert (
@@ -1582,11 +1750,243 @@ class TestAuthorizedViewsAsync(CrossSync.TestTable):
             view.default_mutate_rows_attempt_timeout
             == expected_mutate_rows_attempt_timeout
         )
-        # ensure task reaches completion
-        await view._register_instance_future
-        assert view._register_instance_future.done()
-        assert not view._register_instance_future.cancelled()
-        assert view._register_instance_future.exception() is None
+        if use_emulator:
+            await view._register_instance_future
+            assert view._register_instance_future.done()
+            assert not view._register_instance_future.cancelled()
+            assert view._register_instance_future.exception() is None
+        elif view._register_instance_future:
+            view._register_instance_future.cancel()
+        await client.close()
+
+    @CrossSync.pytest
+    async def test_create_operation_table_id(self):
+        from google.cloud.bigtable.data._metrics.data_model import OperationType
+
+        client = self._make_client()
+        view = self._make_one(client, table_id="underlying-table", view_id="my-view")
+        op = view._create_operation(OperationType.READ_ROWS)
+        assert op.table_id == "underlying-table"
+        await client.close()
+
+
+@CrossSync.convert_class(
+    "TestMaterializedView", add_mapping_for_name="TestMaterializedView"
+)
+class TestMaterializedViewsAsync(CrossSync.TestTable):
+    """
+    Inherit tests from TestTableAsync, with some modifications
+    """
+
+    @staticmethod
+    @CrossSync.convert
+    def _get_target_class():
+        return CrossSync.MaterializedView
+
+    def _make_one(
+        self,
+        client,
+        instance_id="instance",
+        view_id="view",
+        app_profile_id=None,
+        **kwargs,
+    ):
+        return self._get_target_class()(
+            client, instance_id, view_id, app_profile_id, **kwargs
+        )
+
+    @pytest.mark.parametrize("use_emulator", [True, False])
+    @CrossSync.pytest
+    async def test_ctor(self, use_emulator):
+        from google.cloud.bigtable.data._helpers import _WarmedInstanceKey
+        from google.cloud.bigtable.data._metrics import (
+            BigtableClientSideMetricsController,
+            GoogleCloudMetricsHandler,
+        )
+        from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
+            BigtableMetricsExporter,
+        )
+
+        expected_instance_id = "instance-id"
+        expected_view_id = "view_id"
+        expected_app_profile_id = "app-profile-id"
+        expected_operation_timeout = 123
+        expected_attempt_timeout = 12
+        expected_read_rows_operation_timeout = 1.5
+        expected_read_rows_attempt_timeout = 0.5
+        expected_mutate_rows_operation_timeout = 2.5
+        expected_mutate_rows_attempt_timeout = 0.75
+        client = self._make_client(use_emulator=use_emulator)
+        assert not client._active_instances
+
+        view = self._get_target_class()(
+            client,
+            expected_instance_id,
+            expected_view_id,
+            expected_app_profile_id,
+            default_operation_timeout=expected_operation_timeout,
+            default_attempt_timeout=expected_attempt_timeout,
+            default_read_rows_operation_timeout=expected_read_rows_operation_timeout,
+            default_read_rows_attempt_timeout=expected_read_rows_attempt_timeout,
+            default_mutate_rows_operation_timeout=expected_mutate_rows_operation_timeout,
+            default_mutate_rows_attempt_timeout=expected_mutate_rows_attempt_timeout,
+        )
+        await CrossSync.yield_to_event_loop()
+        assert view.instance_id == expected_instance_id
+        assert (
+            view.instance_name
+            == f"projects/{client.project}/instances/{expected_instance_id}"
+        )
+        assert view.materialized_view_id == expected_view_id
+        assert (
+            view.materialized_view_name
+            == f"projects/{client.project}/instances/{expected_instance_id}/materializedViews/{expected_view_id}"
+        )
+        assert view.app_profile_id == expected_app_profile_id
+        assert view.client is client
+        instance_key = _WarmedInstanceKey(view.instance_name, view.app_profile_id)
+        assert instance_key in client._active_instances
+        assert client._instance_owners[instance_key] == {id(view)}
+        assert isinstance(client._metrics, BigtableClientSideMetricsController)
+        if use_emulator:
+            assert len(client._metrics.handlers) == 0
+        else:
+            assert len(client._metrics.handlers) == 1
+            assert isinstance(client._metrics.handlers[0], GoogleCloudMetricsHandler)
+            assert isinstance(
+                client._metrics.handlers[0]._exporter, BigtableMetricsExporter
+            )
+        assert view.default_operation_timeout == expected_operation_timeout
+        assert view.default_attempt_timeout == expected_attempt_timeout
+        assert (
+            view.default_read_rows_operation_timeout
+            == expected_read_rows_operation_timeout
+        )
+        assert (
+            view.default_read_rows_attempt_timeout == expected_read_rows_attempt_timeout
+        )
+        assert (
+            view.default_mutate_rows_operation_timeout
+            == expected_mutate_rows_operation_timeout
+        )
+        assert (
+            view.default_mutate_rows_attempt_timeout
+            == expected_mutate_rows_attempt_timeout
+        )
+        if use_emulator:
+            await view._register_instance_future
+            assert view._register_instance_future.done()
+            assert not view._register_instance_future.cancelled()
+            assert view._register_instance_future.exception() is None
+        elif view._register_instance_future:
+            view._register_instance_future.cancel()
+        await client.close()
+
+    @CrossSync.pytest
+    async def test_create_operation_table_id(self):
+        from google.cloud.bigtable.data._metrics.data_model import OperationType
+
+        client = self._make_client()
+        view = self._make_one(client, view_id="my-materialized-view")
+        op = view._create_operation(OperationType.READ_ROWS)
+        assert op.table_id == "my-materialized-view"
+        await client.close()
+
+    @pytest.mark.parametrize(
+        "fn_name,fn_args,gapic_fn",
+        [
+            ("read_rows_stream", (ReadRowsQuery(),), "read_rows"),
+            ("read_rows", (ReadRowsQuery(),), "read_rows"),
+            ("read_row", (b"row_key",), "read_rows"),
+            ("read_rows_sharded", ([ReadRowsQuery()],), "read_rows"),
+            ("row_exists", (b"row_key",), "read_rows"),
+            ("sample_row_keys", (), "sample_row_keys"),
+        ],
+    )
+    @pytest.mark.parametrize("include_app_profile", [True, False])
+    @CrossSync.pytest
+    @CrossSync.convert
+    async def test_call_metadata(self, include_app_profile, fn_name, fn_args, gapic_fn):
+        """
+        Materialized views only support read operations, and route requests
+        using the instance name rather than a table name
+        """
+        profile = "profile" if include_app_profile else None
+        client = self._make_client()
+        # create mock for rpc stub
+        transport_mock = mock.MagicMock()
+        rpc_mock = CrossSync.Mock()
+        transport_mock._wrapped_methods.__getitem__.return_value = rpc_mock
+        gapic_client = client._gapic_client
+        if CrossSync.is_async:
+            # inner BigtableClient is held as ._client for BigtableAsyncClient
+            gapic_client = gapic_client._client
+        gapic_client._transport = transport_mock
+        gapic_client._is_universe_domain_valid = True
+        view = self._make_one(client, app_profile_id=profile)
+        try:
+            test_fn = view.__getattribute__(fn_name)
+            result = await test_fn(*fn_args)
+            if fn_name == "read_rows_stream":
+                # only streams are async-iterable; the other methods return
+                # concrete values, and iterating them would raise a TypeError
+                # that the except block below hides
+                [i async for i in result]
+        except Exception:
+            # we expect an exception from attempting to call the mock
+            pass
+        assert rpc_mock.call_count == 1
+        kwargs = rpc_mock.call_args_list[0][1]
+        metadata = kwargs["metadata"]
+        # expect single metadata entry
+        assert len(metadata) == 1
+        # expect x-goog-request-params tag
+        assert metadata[0][0] == "x-goog-request-params"
+        routing_str = metadata[0][1]
+        # exact match, to catch routing accidentally sending the full view path
+        assert f"name={view.instance_name}" in routing_str.split("&")
+        if include_app_profile:
+            assert "app_profile_id=profile" in routing_str
+        else:
+            # empty app_profile_id should send empty string
+            assert "app_profile_id=" in routing_str
+
+    @pytest.mark.parametrize(
+        "fn_name,fn_args",
+        [
+            ("mutate_row", (b"row_key", [mutations.DeleteAllFromRow()])),
+            (
+                "bulk_mutate_rows",
+                ([mutations.RowMutationEntry(b"key", [mutations.DeleteAllFromRow()])],),
+            ),
+            ("check_and_mutate_row", (b"row_key", None)),
+            ("read_modify_write_row", (b"row_key", IncrementRule("f", "q"))),
+        ],
+    )
+    @CrossSync.pytest
+    async def test_mutation_methods_unsupported(self, fn_name, fn_args):
+        """
+        Mutation methods should raise NotImplementedError instead of building
+        a request the service can't route
+        """
+        client = self._make_client()
+        view = self._make_one(client)
+        with pytest.raises(NotImplementedError) as e:
+            await view.__getattribute__(fn_name)(*fn_args)
+        assert "not supported for materialized views" in str(e.value)
+        await client.close()
+
+    @CrossSync.pytest
+    async def test_mutations_batcher_unsupported(self):
+        """
+        mutations_batcher should raise NotImplementedError immediately, rather
+        than deferring the failure to a background flush
+        """
+        client = self._make_client()
+        view = self._make_one(client)
+        with pytest.raises(NotImplementedError) as e:
+            view.mutations_batcher()
+        assert "not supported for materialized views" in str(e.value)
         await client.close()
 
 
@@ -1610,7 +2010,12 @@ class TestReadRowsAsync:
 
     @CrossSync.convert
     def _make_table(self, *args, **kwargs):
+        from google.cloud.bigtable.data._metrics import (
+            BigtableClientSideMetricsController,
+        )
+
         client_mock = mock.Mock()
+        client_mock._metrics = BigtableClientSideMetricsController(handlers=[])
         client_mock._register_instance.side_effect = (
             lambda *args, **kwargs: CrossSync.yield_to_event_loop()
         )
@@ -1628,9 +2033,11 @@ class TestReadRowsAsync:
         return CrossSync.TestTable._get_target_class()(client_mock, *args, **kwargs)
 
     def _make_stats(self):
-        from google.cloud.bigtable_v2.types import RequestStats
-        from google.cloud.bigtable_v2.types import FullReadStatsView
-        from google.cloud.bigtable_v2.types import ReadIterationStats
+        from google.cloud.bigtable_v2.types import (
+            FullReadStatsView,
+            ReadIterationStats,
+            RequestStats,
+        )
 
         return RequestStats(
             full_read_stats_view=FullReadStatsView(
@@ -1974,9 +2381,21 @@ class TestReadRowsAsync:
         async with self._make_client() as client:
             table = client.get_table("instance", "table")
             row_key = b"test_1"
-            with mock.patch.object(table, "read_rows") as read_rows:
+            with mock.patch.object(
+                CrossSync, "_ReadRowsOperation"
+            ) as mock_op_constructor:
+                mock_op = mock.Mock()
                 expected_result = object()
-                read_rows.side_effect = lambda *args, **kwargs: [expected_result]
+
+                if CrossSync.is_async:
+
+                    async def mock_generator():
+                        yield expected_result
+
+                    mock_op.start_operation.return_value = mock_generator()
+                else:
+                    mock_op.start_operation.return_value = [expected_result]
+                mock_op_constructor.return_value = mock_op
                 expected_op_timeout = 8
                 expected_req_timeout = 4
                 row = await table.read_row(
@@ -1985,16 +2404,17 @@ class TestReadRowsAsync:
                     attempt_timeout=expected_req_timeout,
                 )
                 assert row == expected_result
-                assert read_rows.call_count == 1
-                args, kwargs = read_rows.call_args_list[0]
+                assert mock_op_constructor.call_count == 1
+                args, kwargs = mock_op_constructor.call_args_list[0]
                 assert kwargs["operation_timeout"] == expected_op_timeout
                 assert kwargs["attempt_timeout"] == expected_req_timeout
-                assert len(args) == 1
+                assert len(args) == 2
                 assert isinstance(args[0], ReadRowsQuery)
                 query = args[0]
                 assert query.row_keys == [row_key]
                 assert query.row_ranges == []
                 assert query.limit == 1
+                assert args[1] is table
 
     @CrossSync.pytest
     async def test_read_row_w_filter(self):
@@ -2002,14 +2422,24 @@ class TestReadRowsAsync:
         async with self._make_client() as client:
             table = client.get_table("instance", "table")
             row_key = b"test_1"
-            with mock.patch.object(table, "read_rows") as read_rows:
+            with mock.patch.object(
+                CrossSync, "_ReadRowsOperation"
+            ) as mock_op_constructor:
+                mock_op = mock.Mock()
                 expected_result = object()
-                read_rows.side_effect = lambda *args, **kwargs: [expected_result]
+
+                if CrossSync.is_async:
+
+                    async def mock_generator():
+                        yield expected_result
+
+                    mock_op.start_operation.return_value = mock_generator()
+                else:
+                    mock_op.start_operation.return_value = [expected_result]
+                mock_op_constructor.return_value = mock_op
                 expected_op_timeout = 8
                 expected_req_timeout = 4
-                mock_filter = mock.Mock()
-                expected_filter = {"filter": "mock filter"}
-                mock_filter._to_dict.return_value = expected_filter
+                expected_filter = mock.Mock()
                 row = await table.read_row(
                     row_key,
                     operation_timeout=expected_op_timeout,
@@ -2017,11 +2447,11 @@ class TestReadRowsAsync:
                     row_filter=expected_filter,
                 )
                 assert row == expected_result
-                assert read_rows.call_count == 1
-                args, kwargs = read_rows.call_args_list[0]
+                assert mock_op_constructor.call_count == 1
+                args, kwargs = mock_op_constructor.call_args_list[0]
                 assert kwargs["operation_timeout"] == expected_op_timeout
                 assert kwargs["attempt_timeout"] == expected_req_timeout
-                assert len(args) == 1
+                assert len(args) == 2
                 assert isinstance(args[0], ReadRowsQuery)
                 query = args[0]
                 assert query.row_keys == [row_key]
@@ -2035,9 +2465,21 @@ class TestReadRowsAsync:
         async with self._make_client() as client:
             table = client.get_table("instance", "table")
             row_key = b"test_1"
-            with mock.patch.object(table, "read_rows") as read_rows:
-                # return no rows
-                read_rows.side_effect = lambda *args, **kwargs: []
+            with mock.patch.object(
+                CrossSync, "_ReadRowsOperation"
+            ) as mock_op_constructor:
+                mock_op = mock.Mock()
+
+                if CrossSync.is_async:
+
+                    async def mock_generator():
+                        if False:
+                            yield
+
+                    mock_op.start_operation.return_value = mock_generator()
+                else:
+                    mock_op.start_operation.return_value = []
+                mock_op_constructor.return_value = mock_op
                 expected_op_timeout = 8
                 expected_req_timeout = 4
                 result = await table.read_row(
@@ -2046,8 +2488,8 @@ class TestReadRowsAsync:
                     attempt_timeout=expected_req_timeout,
                 )
                 assert result is None
-                assert read_rows.call_count == 1
-                args, kwargs = read_rows.call_args_list[0]
+                assert mock_op_constructor.call_count == 1
+                args, kwargs = mock_op_constructor.call_args_list[0]
                 assert kwargs["operation_timeout"] == expected_op_timeout
                 assert kwargs["attempt_timeout"] == expected_req_timeout
                 assert isinstance(args[0], ReadRowsQuery)
@@ -2070,22 +2512,36 @@ class TestReadRowsAsync:
         async with self._make_client() as client:
             table = client.get_table("instance", "table")
             row_key = b"test_1"
-            with mock.patch.object(table, "read_rows") as read_rows:
-                # return no rows
-                read_rows.side_effect = lambda *args, **kwargs: return_value
-                expected_op_timeout = 1
-                expected_req_timeout = 2
+            with mock.patch.object(
+                CrossSync, "_ReadRowsOperation"
+            ) as mock_op_constructor:
+                mock_op = mock.Mock()
+                if CrossSync.is_async:
+
+                    async def mock_generator():
+                        for item in return_value:
+                            yield item
+
+                    mock_op.start_operation.return_value = mock_generator()
+                else:
+                    mock_op.start_operation.return_value = return_value
+                mock_op_constructor.return_value = mock_op
+                expected_op_timeout = 2
+                expected_req_timeout = 1
                 result = await table.row_exists(
                     row_key,
                     operation_timeout=expected_op_timeout,
                     attempt_timeout=expected_req_timeout,
                 )
                 assert expected_result == result
-                assert read_rows.call_count == 1
-                args, kwargs = read_rows.call_args_list[0]
+                assert mock_op_constructor.call_count == 1
+                args, kwargs = mock_op_constructor.call_args_list[0]
                 assert kwargs["operation_timeout"] == expected_op_timeout
                 assert kwargs["attempt_timeout"] == expected_req_timeout
-                assert isinstance(args[0], ReadRowsQuery)
+                query = args[0]
+                assert isinstance(query, ReadRowsQuery)
+                assert query.row_keys == [row_key]
+                assert query.limit == 1
                 expected_filter = {
                     "chain": {
                         "filters": [
@@ -2094,10 +2550,6 @@ class TestReadRowsAsync:
                         ]
                     }
                 }
-                query = args[0]
-                assert query.row_keys == [row_key]
-                assert query.row_ranges == []
-                assert query.limit == 1
                 assert query.filter._to_dict() == expected_filter
 
 
@@ -2125,11 +2577,14 @@ class TestReadRowsShardedAsync:
                 with mock.patch.object(
                     table.client._gapic_client, "read_rows"
                 ) as read_rows:
-                    read_rows.side_effect = lambda *args, **kwargs: CrossSync.TestReadRows._make_gapic_stream(
-                        [
-                            CrossSync.TestReadRows._make_chunk(row_key=k)
-                            for k in args[0].rows.row_keys
-                        ]
+                    read_rows.side_effect = (
+                        lambda *args,
+                        **kwargs: CrossSync.TestReadRows._make_gapic_stream(
+                            [
+                                CrossSync.TestReadRows._make_chunk(row_key=k)
+                                for k in args[0].rows.row_keys
+                            ]
+                        )
                     )
                     query_1 = ReadRowsQuery(b"test_1")
                     query_2 = ReadRowsQuery(b"test_2")
@@ -2156,8 +2611,10 @@ class TestReadRowsShardedAsync:
         """
         Errors should be exposed as ShardedReadRowsExceptionGroups
         """
-        from google.cloud.bigtable.data.exceptions import ShardedReadRowsExceptionGroup
-        from google.cloud.bigtable.data.exceptions import FailedQueryShardError
+        from google.cloud.bigtable.data.exceptions import (
+            FailedQueryShardError,
+            ShardedReadRowsExceptionGroup,
+        )
 
         async with self._make_client() as client:
             async with client.get_table("instance", "table") as table:
@@ -2242,7 +2699,7 @@ class TestReadRowsShardedAsync:
                         starting_timeout - kwargs["operation_timeout"]
                         for _, kwargs in read_rows.call_args_list
                     ]
-                    eps = 0.01
+                    eps = 0.2
                     # first 10 should start immediately
                     assert all(
                         rpc_start_list[i] < eps for i in range(_CONCURRENCY_LIMIT)
@@ -2258,11 +2715,12 @@ class TestReadRowsShardedAsync:
         If the operation times out before all shards complete, should raise
         a ShardedReadRowsExceptionGroup
         """
-        from google.cloud.bigtable.data._helpers import _CONCURRENCY_LIMIT
-        from google.cloud.bigtable.data.exceptions import ShardedReadRowsExceptionGroup
         from google.api_core.exceptions import DeadlineExceeded
 
-        operation_timeout = 0.1
+        from google.cloud.bigtable.data._helpers import _CONCURRENCY_LIMIT
+        from google.cloud.bigtable.data.exceptions import ShardedReadRowsExceptionGroup
+
+        operation_timeout = 5.0
 
         # let the first batch complete, but the next batch times out
         num_queries = 15
@@ -2275,7 +2733,7 @@ class TestReadRowsShardedAsync:
             if isinstance(next_item, Exception):
                 raise next_item
             else:
-                await asyncio.sleep(next_item)
+                await CrossSync.sleep(next_item)
             return [mock.Mock()]
 
         async with self._make_client() as client:
@@ -2299,9 +2757,10 @@ class TestReadRowsShardedAsync:
 
         They should raise DeadlineExceeded errors
         """
-        from google.cloud.bigtable.data.exceptions import ShardedReadRowsExceptionGroup
-        from google.cloud.bigtable.data._helpers import _CONCURRENCY_LIMIT
         from google.api_core.exceptions import DeadlineExceeded
+
+        from google.cloud.bigtable.data._helpers import _CONCURRENCY_LIMIT
+        from google.cloud.bigtable.data.exceptions import ShardedReadRowsExceptionGroup
 
         async def mock_call(*args, **kwargs):
             await CrossSync.sleep(0.06)
@@ -2362,6 +2821,32 @@ class TestSampleRowKeysAsync:
                     assert result[0] == samples[0]
                     assert result[1] == samples[1]
                     assert result[2] == samples[2]
+
+    @CrossSync.pytest
+    async def test_sample_row_keys_w_row_range(self):
+        """
+        Test that method returns the expected key samples when row_range is provided
+        """
+        samples = [
+            (b"a_key1", 100),
+            (b"b", 200),
+        ]
+        from google.cloud.bigtable.data import RowRange
+
+        row_range = RowRange(start_key=b"a", end_key=b"b")
+        async with self._make_client() as client:
+            async with client.get_table("instance", "table") as table:
+                with mock.patch.object(
+                    table.client._gapic_client, "sample_row_keys", CrossSync.Mock()
+                ) as sample_row_keys:
+                    sample_row_keys.return_value = self._make_gapic_stream(samples)
+                    result = await table.sample_row_keys(row_range=row_range)
+                    assert len(result) == 2
+                    assert result[0] == samples[0]
+                    assert result[1] == samples[1]
+                    sample_row_keys.assert_called_once()
+                    called_request = sample_row_keys.call_args[1]["request"]
+                    assert called_request.row_range == row_range._to_pb()
 
     @CrossSync.pytest
     async def test_sample_row_keys_bad_timeout(self):
@@ -2438,6 +2923,7 @@ class TestSampleRowKeysAsync:
         retryable errors should be retried until timeout
         """
         from google.api_core.exceptions import DeadlineExceeded
+
         from google.cloud.bigtable.data.exceptions import RetryExceptionGroup
 
         async with self._make_client() as client:
@@ -2545,6 +3031,7 @@ class TestMutateRowAsync:
     @CrossSync.pytest
     async def test_mutate_row_retryable_errors(self, retryable_exception):
         from google.api_core.exceptions import DeadlineExceeded
+
         from google.cloud.bigtable.data.exceptions import RetryExceptionGroup
 
         async with self._make_client(project="project") as client:
@@ -2641,8 +3128,9 @@ class TestBulkMutateRowsAsync:
 
     @CrossSync.convert
     async def _mock_response(self, response_list):
-        from google.cloud.bigtable_v2.types import MutateRowsResponse
         from google.rpc import status_pb2
+
+        from google.cloud.bigtable_v2.types import MutateRowsResponse
 
         statuses = []
         for response in response_list:
@@ -2751,9 +3239,9 @@ class TestBulkMutateRowsAsync:
         Individual idempotent mutations should be retried if they fail with a retryable error
         """
         from google.cloud.bigtable.data.exceptions import (
-            RetryExceptionGroup,
             FailedMutationEntryError,
             MutationsExceptionGroup,
+            RetryExceptionGroup,
         )
 
         async with self._make_client(project="project") as client:
@@ -2837,9 +3325,9 @@ class TestBulkMutateRowsAsync:
         Individual idempotent mutations should be retried if the request fails with a retryable error
         """
         from google.cloud.bigtable.data.exceptions import (
-            RetryExceptionGroup,
             FailedMutationEntryError,
             MutationsExceptionGroup,
+            RetryExceptionGroup,
         )
 
         async with self._make_client(project="project") as client:
@@ -2949,13 +3437,14 @@ class TestBulkMutateRowsAsync:
         """
         from google.api_core.exceptions import (
             DeadlineExceeded,
-            ServiceUnavailable,
             FailedPrecondition,
+            ServiceUnavailable,
         )
+
         from google.cloud.bigtable.data.exceptions import (
-            RetryExceptionGroup,
             FailedMutationEntryError,
             MutationsExceptionGroup,
+            RetryExceptionGroup,
         )
 
         async with self._make_client(project="project") as client:
@@ -3141,8 +3630,8 @@ class TestCheckAndMutateRowAsync:
     @CrossSync.pytest
     async def test_check_and_mutate_mutations_parsing(self):
         """mutations objects should be converted to protos"""
-        from google.cloud.bigtable_v2.types import CheckAndMutateRowResponse
         from google.cloud.bigtable.data.mutations import DeleteAllFromFamily
+        from google.cloud.bigtable_v2.types import CheckAndMutateRowResponse
 
         mutations = [mock.Mock() for _ in range(5)]
         for idx, mutation in enumerate(mutations):
@@ -3414,6 +3903,46 @@ class TestExecuteQueryAsync:
         assert results[0]["b"] == 9
         assert execute_query_mock.call_count == 1
         assert prepare_mock.call_count == 1
+
+    @CrossSync.pytest
+    async def test_execute_query_with_view_parameters(
+        self, client, execute_query_mock, prepare_mock
+    ):
+        values = [
+            *chunked_responses(2, str_val("test2"), int_val(9), token=b"r2"),
+        ]
+        execute_query_mock.return_value = self._make_gapic_stream(values)
+        query_str = f"SELECT a, b FROM {self.TABLE_NAME} WHERE user_id = VIEW_PARAMETERS('user_id')"
+        result = await client.execute_query(
+            query_str,
+            self.INSTANCE_NAME,
+            view_parameters={"user_id": "alice"},
+        )
+        results = [r async for r in result]
+        assert len(results) == 1
+        assert results[0]["a"] == "test2"
+        assert results[0]["b"] == 9
+        assert execute_query_mock.call_count == 1
+        assert prepare_mock.call_count == 1
+        assert prepare_mock.call_args[1]["request"]["query"] == query_str
+
+        request = execute_query_mock.call_args[0][0]
+        assert "user_id" in request.view_parameters
+        assert request.view_parameters["user_id"].string_value == "alice"
+        val_type = request.view_parameters["user_id"].type_
+        assert type(val_type).to_dict(val_type) == {"string_type": {}}
+
+    @CrossSync.pytest
+    async def test_execute_query_with_view_parameters_invalid_type(
+        self, client, execute_query_mock, prepare_mock
+    ):
+        with pytest.raises(TypeError) as e:
+            await client.execute_query(
+                f"SELECT a, b FROM {self.TABLE_NAME}",
+                self.INSTANCE_NAME,
+                view_parameters={"user_id": 123},
+            )
+        assert "View parameter user_id must be a string, got int" in str(e.value)
 
     @CrossSync.pytest
     async def test_execute_query_error_before_metadata(

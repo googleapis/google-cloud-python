@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ from google.cloud.asset_v1 import gapic_version as package_version
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
+from google.cloud.asset_v1._compat import get_universe_domain, get_api_endpoint, get_default_mtls_endpoint, should_use_client_cert, read_environment_variables
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials             # type: ignore
 from google.auth.transport import mtls                            # type: ignore
@@ -100,74 +101,12 @@ class AssetServiceClientMeta(type):
 class AssetServiceClient(metaclass=AssetServiceClientMeta):
     """Asset service definition."""
 
-    @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint) -> Optional[str]:
-        """Converts api endpoint to mTLS endpoint.
-
-        Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
-        "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
-        Args:
-            api_endpoint (Optional[str]): the api endpoint to convert.
-        Returns:
-            Optional[str]: converted mTLS api endpoint.
-        """
-        if not api_endpoint:
-            return api_endpoint
-
-        mtls_endpoint_re = re.compile(
-            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
-        )
-
-        m = mtls_endpoint_re.match(api_endpoint)
-        if m is None:
-            # Could not parse api_endpoint; return as-is.
-            return api_endpoint
-
-        name, mtls, sandbox, googledomain = m.groups()
-        if mtls or not googledomain:
-            return api_endpoint
-
-        if sandbox:
-            return api_endpoint.replace(
-                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
-            )
-
-        return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
-
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "cloudasset.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
-        DEFAULT_ENDPOINT
-    )
+    DEFAULT_MTLS_ENDPOINT = get_default_mtls_endpoint(DEFAULT_ENDPOINT)
 
     _DEFAULT_ENDPOINT_TEMPLATE = "cloudasset.{UNIVERSE_DOMAIN}"
     _DEFAULT_UNIVERSE = "googleapis.com"
-
-    @staticmethod
-    def _use_client_cert_effective():
-        """Returns whether client certificate should be used for mTLS if the
-        google-auth version supports should_use_client_cert automatic mTLS enablement.
-
-        Alternatively, read from the GOOGLE_API_USE_CLIENT_CERTIFICATE env var.
-
-        Returns:
-            bool: whether client certificate should be used for mTLS
-        Raises:
-            ValueError: (If using a version of google-auth without should_use_client_cert and
-	    GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
-        """
-        # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
-        if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER
-            return mtls.should_use_client_cert()
-        else: # pragma: NO COVER
-            # if unsupported, fallback to reading from env var
-            use_client_cert_str = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
-            if use_client_cert_str not in ("true", "false"):
-                raise ValueError(
-                    "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be"
-                    " either `true` or `false`"
-                )
-            return use_client_cert_str == "true"
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -386,7 +325,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             DeprecationWarning)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
-        use_client_cert = AssetServiceClient._use_client_cert_effective()
+        use_client_cert = should_use_client_cert()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
         if use_mtls_endpoint not in ("auto", "never", "always"):
             raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
@@ -403,32 +342,11 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         if client_options.api_endpoint is not None:
             api_endpoint = client_options.api_endpoint
         elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
-            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
+            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT # type: ignore
         else:
             api_endpoint = cls.DEFAULT_ENDPOINT
 
         return api_endpoint, client_cert_source
-
-    @staticmethod
-    def _read_environment_variables():
-        """Returns the environment variables used by the client.
-
-        Returns:
-            Tuple[bool, str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE,
-            GOOGLE_API_USE_MTLS_ENDPOINT, and GOOGLE_CLOUD_UNIVERSE_DOMAIN environment variables.
-
-        Raises:
-            ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
-                any of ["true", "false"].
-            google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
-                is not any of ["auto", "never", "always"].
-        """
-        use_client_cert = AssetServiceClient._use_client_cert_effective()
-        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
-        universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
-        if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
-        return use_client_cert, use_mtls_endpoint, universe_domain_env
 
     @staticmethod
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
@@ -448,55 +366,6 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             elif mtls.has_default_client_cert_source():
                 client_cert_source = mtls.default_client_cert_source()
         return client_cert_source
-
-    @staticmethod
-    def _get_api_endpoint(api_override, client_cert_source, universe_domain, use_mtls_endpoint) -> str:
-        """Return the API endpoint used by the client.
-
-        Args:
-            api_override (str): The API endpoint override. If specified, this is always
-                the return value of this function and the other arguments are not used.
-            client_cert_source (bytes): The client certificate source used by the client.
-            universe_domain (str): The universe domain used by the client.
-            use_mtls_endpoint (str): How to use the mTLS endpoint, which depends also on the other parameters.
-                Possible values are "always", "auto", or "never".
-
-        Returns:
-            str: The API endpoint to be used by the client.
-        """
-        if api_override is not None:
-            api_endpoint = api_override
-        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
-            _default_universe = AssetServiceClient._DEFAULT_UNIVERSE
-            if universe_domain != _default_universe:
-                raise MutualTLSChannelError(f"mTLS is not supported in any universe other than {_default_universe}.")
-            api_endpoint = AssetServiceClient.DEFAULT_MTLS_ENDPOINT
-        else:
-            api_endpoint = AssetServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
-        return api_endpoint
-
-    @staticmethod
-    def _get_universe_domain(client_universe_domain: Optional[str], universe_domain_env: Optional[str]) -> str:
-        """Return the universe domain used by the client.
-
-        Args:
-            client_universe_domain (Optional[str]): The universe domain configured via the client options.
-            universe_domain_env (Optional[str]): The universe domain configured via the "GOOGLE_CLOUD_UNIVERSE_DOMAIN" environment variable.
-
-        Returns:
-            str: The universe domain to be used by the client.
-
-        Raises:
-            ValueError: If the universe domain is an empty string.
-        """
-        universe_domain = AssetServiceClient._DEFAULT_UNIVERSE
-        if client_universe_domain is not None:
-            universe_domain = client_universe_domain
-        elif universe_domain_env is not None:
-            universe_domain = universe_domain_env
-        if len(universe_domain.strip()) == 0:
-            raise ValueError("Universe Domain cannot be an empty string.")
-        return universe_domain
 
     def _validate_universe_domain(self):
         """Validates client's and credentials' universe domains are consistent.
@@ -620,9 +489,9 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, 'universe_domain', None)
 
-        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = AssetServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = read_environment_variables()
         self._client_cert_source = AssetServiceClient._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
-        self._universe_domain = AssetServiceClient._get_universe_domain(universe_domain_opt, self._universe_domain_env)
+        self._universe_domain = get_universe_domain(universe_domain_opt, self._universe_domain_env, default_universe=AssetServiceClient._DEFAULT_UNIVERSE)
         self._api_endpoint: str = ""  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
@@ -654,11 +523,16 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             self._api_endpoint = self._transport.host
 
         self._api_endpoint = (self._api_endpoint or
-            AssetServiceClient._get_api_endpoint(
-                self._client_options.api_endpoint,
-                self._client_cert_source,
-                self._universe_domain,
-                self._use_mtls_endpoint))
+            get_api_endpoint(
+                api_override=self._client_options.api_endpoint,
+                universe_domain=self._universe_domain,
+                default_universe=AssetServiceClient._DEFAULT_UNIVERSE,
+                default_mtls_endpoint=AssetServiceClient.DEFAULT_MTLS_ENDPOINT,
+                default_endpoint_template=AssetServiceClient._DEFAULT_ENDPOINT_TEMPLATE,
+                use_mtls=self._use_mtls_endpoint == "always" or (
+                    self._use_mtls_endpoint == "auto" and self._client_cert_source
+                ),
+            ))
 
         if not transport_provided:
             import google.auth._default  # type: ignore
@@ -1654,62 +1528,97 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 Examples:
 
                 - ``name:Important`` to find Google Cloud resources
-                  whose name contains "Important" as a word.
+                  whose name contains ``Important`` as a word.
                 - ``name=Important`` to find the Google Cloud resource
-                  whose name is exactly "Important".
+                  whose name is exactly ``Important``.
                 - ``displayName:Impor*`` to find Google Cloud resources
-                  whose display name contains "Impor" as a prefix of any
-                  word in the field.
+                  whose display name contains ``Impor`` as a prefix of
+                  any word in the field.
                 - ``location:us-west*`` to find Google Cloud resources
-                  whose location contains both "us" and "west" as
+                  whose location contains both ``us`` and ``west`` as
                   prefixes.
                 - ``labels:prod`` to find Google Cloud resources whose
-                  labels contain "prod" as a key or value.
+                  labels contain ``prod`` as a key or value.
                 - ``labels.env:prod`` to find Google Cloud resources
-                  that have a label "env" and its value is "prod".
+                  that have a label ``env`` and its value is ``prod``.
                 - ``labels.env:*`` to find Google Cloud resources that
-                  have a label "env".
+                  have a label ``env``.
+                - ``tagKeys:env`` to find Google Cloud resources that
+                  have directly attached tags where the
+                  ```TagKey.namespacedName`` <https://cloud.google.com/resource-manager/reference/rest/v3/tagKeys#resource:-tagkey>`__
+                  contains ``env``.
+                - ``tagValues:prod*`` to find Google Cloud resources
+                  that have directly attached tags where the
+                  ```TagValue.namespacedName`` <https://cloud.google.com/resource-manager/reference/rest/v3/tagValues#resource:-tagvalue>`__
+                  contains a word prefixed by ``prod``.
+                - ``tagValueIds=tagValues/123`` to find Google Cloud
+                  resources that have directly attached tags where the
+                  ```TagValue.name`` <https://cloud.google.com/resource-manager/reference/rest/v3/tagValues#resource:-tagvalue>`__
+                  is exactly ``tagValues/123``.
+                - ``effectiveTagKeys:env`` to find Google Cloud
+                  resources that have directly attached or inherited
+                  tags where the
+                  ```TagKey.namespacedName`` <https://cloud.google.com/resource-manager/reference/rest/v3/tagKeys#resource:-tagkey>`__
+                  contains ``env``.
+                - ``effectiveTagValues:prod*`` to find Google Cloud
+                  resources that have directly attached or inherited
+                  tags where the
+                  ```TagValue.namespacedName`` <https://cloud.google.com/resource-manager/reference/rest/v3/tagValues#resource:-tagvalue>`__
+                  contains a word prefixed by ``prod``.
+                - ``effectiveTagValueIds=tagValues/123`` to find Google
+                  Cloud resources that have directly attached or
+                  inherited tags where the
+                  ```TagValue.name`` <https://cloud.google.com/resource-manager/reference/rest/v3/tagValues#resource:-tagvalue>`__
+                  is exactly ``tagValues/123``.
                 - ``kmsKey:key`` to find Google Cloud resources
                   encrypted with a customer-managed encryption key whose
-                  name contains "key" as a word. This field is
-                  deprecated. Please use the ``kmsKeys`` field to
-                  retrieve Cloud KMS key information.
+                  name contains ``key`` as a word. This field is
+                  deprecated. Use the ``kmsKeys`` field to retrieve
+                  Cloud KMS key information.
                 - ``kmsKeys:key`` to find Google Cloud resources
                   encrypted with customer-managed encryption keys whose
-                  name contains the word "key".
+                  name contains the word ``key``.
                 - ``relationships:instance-group-1`` to find Google
                   Cloud resources that have relationships with
-                  "instance-group-1" in the related resource name.
+                  ``instance-group-1`` in the related resource name.
                 - ``relationships:INSTANCE_TO_INSTANCEGROUP`` to find
                   Compute Engine instances that have relationships of
-                  type "INSTANCE_TO_INSTANCEGROUP".
+                  type ``INSTANCE_TO_INSTANCEGROUP``.
                 - ``relationships.INSTANCE_TO_INSTANCEGROUP:instance-group-1``
                   to find Compute Engine instances that have
-                  relationships with "instance-group-1" in the Compute
+                  relationships with ``instance-group-1`` in the Compute
                   Engine instance group resource name, for relationship
-                  type "INSTANCE_TO_INSTANCEGROUP".
+                  type ``INSTANCE_TO_INSTANCEGROUP``.
+                - ``sccSecurityMarks.key=value`` to find Cloud resources
+                  that are attached with security marks whose key is
+                  ``key`` and value is ``value``.
+                - ``sccSecurityMarks.key:*`` to find Cloud resources
+                  that are attached with security marks whose key is
+                  ``key``.
                 - ``state:ACTIVE`` to find Google Cloud resources whose
-                  state contains "ACTIVE" as a word.
+                  state contains ``ACTIVE`` as a word.
                 - ``NOT state:ACTIVE`` to find Google Cloud resources
-                  whose state doesn't contain "ACTIVE" as a word.
+                  whose state doesn't contain ``ACTIVE`` as a word.
                 - ``createTime<1609459200`` to find Google Cloud
-                  resources that were created before "2021-01-01
-                  00:00:00 UTC". 1609459200 is the epoch timestamp of
-                  "2021-01-01 00:00:00 UTC" in seconds.
+                  resources that were created before
+                  ``2021-01-01 00:00:00 UTC``. ``1609459200`` is the
+                  epoch timestamp of ``2021-01-01 00:00:00 UTC`` in
+                  seconds.
                 - ``updateTime>1609459200`` to find Google Cloud
-                  resources that were updated after "2021-01-01 00:00:00
-                  UTC". 1609459200 is the epoch timestamp of "2021-01-01
-                  00:00:00 UTC" in seconds.
+                  resources that were updated after
+                  ``2021-01-01 00:00:00 UTC``. ``1609459200`` is the
+                  epoch timestamp of ``2021-01-01 00:00:00 UTC`` in
+                  seconds.
                 - ``Important`` to find Google Cloud resources that
-                  contain "Important" as a word in any of the searchable
-                  fields.
+                  contain ``Important`` as a word in any of the
+                  searchable fields.
                 - ``Impor*`` to find Google Cloud resources that contain
-                  "Impor" as a prefix of any word in any of the
+                  ``Impor`` as a prefix of any word in any of the
                   searchable fields.
                 - ``Important location:(us-west1 OR global)`` to find
-                  Google Cloud resources that contain "Important" as a
+                  Google Cloud resources that contain ``Important`` as a
                   word in any of the searchable fields and are also
-                  located in the "us-west1" region or the "global"
+                  located in the ``us-west1`` region or the ``global``
                   location.
 
                 This corresponds to the ``query`` field
@@ -1717,9 +1626,9 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 should not be set.
             asset_types (MutableSequence[str]):
                 Optional. A list of asset types that this request
-                searches for. If empty, it will search all the
-                `searchable asset
-                types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__.
+                searches for. If empty, it will search all the asset
+                types `supported by search
+                APIs <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__.
 
                 Regular expressions are also supported. For example:
 
@@ -2311,8 +2220,8 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
             ) -> asset_service.QueryAssetsResponse:
         r"""Issue a job that queries assets using a SQL statement compatible
-        with `BigQuery Standard
-        SQL <http://cloud/bigquery/docs/reference/standard-sql/enabling-standard-sql>`__.
+        with `BigQuery
+        SQL <https://cloud.google.com/bigquery/docs/introduction-sql>`__.
 
         If the query execution finishes within timeout and there's no
         pagination, the full query results will be returned in the
@@ -2323,9 +2232,9 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         ``QueryAssets`` call.
 
         Note, the query result has approximately 10 GB limitation
-        enforced by BigQuery
-        https://cloud.google.com/bigquery/docs/best-practices-performance-output,
-        queries return larger results will result in errors.
+        enforced by
+        `BigQuery <https://cloud.google.com/bigquery/docs/best-practices-performance-output>`__.
+        Queries return larger results will result in errors.
 
         .. code-block:: python
 
@@ -3141,13 +3050,17 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             filter (str):
                 The expression to filter
                 [AnalyzeOrgPoliciesResponse.org_policy_results][google.cloud.asset.v1.AnalyzeOrgPoliciesResponse.org_policy_results].
-                The only supported field is
-                ``consolidated_policy.attached_resource``, and the only
-                supported operator is ``=``.
+                Filtering is currently available for bare literal values
+                and the following fields:
 
-                Example:
+                - consolidated_policy.attached_resource
+                - consolidated_policy.rules.enforce
+
+                When filtering by a specific field, the only supported
+                operator is ``=``. For example, filtering by
                 consolidated_policy.attached_resource="//cloudresourcemanager.googleapis.com/folders/001"
-                will return the org policy results of"folders/001".
+                will return all the Organization Policy results attached
+                to "folders/001".
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3295,13 +3208,18 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             filter (str):
-                The expression to filter the governed containers in
-                result. The only supported field is ``parent``, and the
-                only supported operator is ``=``.
+                The expression to filter
+                [AnalyzeOrgPolicyGovernedContainersResponse.governed_containers][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedContainersResponse.governed_containers].
+                Filtering is currently available for bare literal values
+                and the following fields:
 
-                Example:
+                - parent
+                - consolidated_policy.rules.enforce
+
+                When filtering by a specific field, the only supported
+                operator is ``=``. For example, filtering by
                 parent="//cloudresourcemanager.googleapis.com/folders/001"
-                will return all containers under "folders/001".
+                will return all the containers under "folders/001".
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3394,22 +3312,53 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             ) -> pagers.AnalyzeOrgPolicyGovernedAssetsPager:
         r"""Analyzes organization policies governed assets (Google Cloud
         resources or policies) under a scope. This RPC supports custom
-        constraints and the following 10 canned constraints:
+        constraints and the following canned constraints:
 
-        - storage.uniformBucketLevelAccess
-        - iam.disableServiceAccountKeyCreation
-        - iam.allowedPolicyMemberDomains
-        - compute.vmExternalIpAccess
-        - appengine.enforceServiceAccountActAsCheck
-        - gcp.resourceLocations
-        - compute.trustedImageProjects
-        - compute.skipDefaultNetworkCreation
-        - compute.requireOsLogin
-        - compute.disableNestedVirtualization
+        - constraints/ainotebooks.accessMode
+        - constraints/ainotebooks.disableFileDownloads
+        - constraints/ainotebooks.disableRootAccess
+        - constraints/ainotebooks.disableTerminal
+        - constraints/ainotebooks.environmentOptions
+        - constraints/ainotebooks.requireAutoUpgradeSchedule
+        - constraints/ainotebooks.restrictVpcNetworks
+        - constraints/compute.disableGuestAttributesAccess
+        - constraints/compute.disableInstanceDataAccessApis
+        - constraints/compute.disableNestedVirtualization
+        - constraints/compute.disableSerialPortAccess
+        - constraints/compute.disableSerialPortLogging
+        - constraints/compute.disableVpcExternalIpv6
+        - constraints/compute.requireOsLogin
+        - constraints/compute.requireShieldedVm
+        - constraints/compute.restrictLoadBalancerCreationForTypes
+        - constraints/compute.restrictProtocolForwardingCreationForTypes
+        - constraints/compute.restrictXpnProjectLienRemoval
+        - constraints/compute.setNewProjectDefaultToZonalDNSOnly
+        - constraints/compute.skipDefaultNetworkCreation
+        - constraints/compute.trustedImageProjects
+        - constraints/compute.vmCanIpForward
+        - constraints/compute.vmExternalIpAccess
+        - constraints/gcp.detailedAuditLoggingMode
+        - constraints/gcp.resourceLocations
+        - constraints/iam.allowedPolicyMemberDomains
+        - constraints/iam.automaticIamGrantsForDefaultServiceAccounts
+        - constraints/iam.disableServiceAccountCreation
+        - constraints/iam.disableServiceAccountKeyCreation
+        - constraints/iam.disableServiceAccountKeyUpload
+        - constraints/iam.restrictCrossProjectServiceAccountLienRemoval
+        - constraints/iam.serviceAccountKeyExpiryHours
+        - constraints/resourcemanager.accessBoundaries
+        - constraints/resourcemanager.allowedExportDestinations
+        - constraints/sql.restrictAuthorizedNetworks
+        - constraints/sql.restrictNoncompliantDiagnosticDataAccess
+        - constraints/sql.restrictNoncompliantResourceCreation
+        - constraints/sql.restrictPublicIp
+        - constraints/storage.publicAccessPrevention
+        - constraints/storage.restrictAuthTypes
+        - constraints/storage.uniformBucketLevelAccess
 
-        This RPC only returns either resources of types supported by
-        `searchable asset
-        types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__,
+        This RPC only returns either resources of types `supported by
+        search
+        APIs <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
         or IAM policies.
 
         .. code-block:: python
@@ -3467,24 +3416,40 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             filter (str):
-                The expression to filter the governed assets in result.
-                The only supported fields for governed resources are
-                ``governed_resource.project`` and
-                ``governed_resource.folders``. The only supported fields
-                for governed iam policies are
-                ``governed_iam_policy.project`` and
-                ``governed_iam_policy.folders``. The only supported
-                operator is ``=``.
+                The expression to filter
+                [AnalyzeOrgPolicyGovernedAssetsResponse.governed_assets][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.governed_assets].
 
-                Example 1: governed_resource.project="projects/12345678"
-                filter will return all governed resources under
-                projects/12345678 including the project ifself, if
-                applicable.
+                For governed resources, filtering is currently available
+                for bare literal values and the following fields:
 
-                Example 2:
-                governed_iam_policy.folders="folders/12345678" filter
-                will return all governed iam policies under
-                folders/12345678, if applicable.
+                - governed_resource.project
+                - governed_resource.folders
+                - consolidated_policy.rules.enforce When filtering by
+                  ``governed_resource.project`` or
+                  ``consolidated_policy.rules.enforce``, the only
+                  supported operator is ``=``. When filtering by
+                  ``governed_resource.folders``, the supported operators
+                  are ``=`` and ``:``. For example, filtering by
+                  ``governed_resource.project="projects/12345678"`` will
+                  return all the governed resources under
+                  "projects/12345678", including the project itself if
+                  applicable.
+
+                For governed IAM policies, filtering is currently
+                available for bare literal values and the following
+                fields:
+
+                - governed_iam_policy.project
+                - governed_iam_policy.folders
+                - consolidated_policy.rules.enforce When filtering by
+                  ``governed_iam_policy.project`` or
+                  ``consolidated_policy.rules.enforce``, the only
+                  supported operator is ``=``. When filtering by
+                  ``governed_iam_policy.folders``, the supported
+                  operators are ``=`` and ``:``. For example, filtering
+                  by ``governed_iam_policy.folders:"folders/12345678"``
+                  will return all the governed IAM policies under
+                  "folders/001".
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3647,9 +3612,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = (
     "AssetServiceClient",

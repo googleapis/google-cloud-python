@@ -5,7 +5,7 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     `P_PARTKEY` AS `bfcol_15`
-  FROM `bigframes-dev`.`tpch`.`PART` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PART` AS `bft_1`
   WHERE
     (
       `P_BRAND` = 'Brand#23'
@@ -17,12 +17,12 @@ WITH `bfcte_0` AS (
     `L_PARTKEY` AS `bfcol_3`,
     `L_QUANTITY` AS `bfcol_4`,
     `L_EXTENDEDPRICE` AS `bfcol_5`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_0`
 ), `bfcte_3` AS (
   SELECT
     `L_PARTKEY` AS `bfcol_6`,
     `L_QUANTITY` AS `bfcol_7`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_0`
 ), `bfcte_4` AS (
   SELECT
     `bfcol_4` AS `bfcol_16`,
@@ -30,18 +30,14 @@ WITH `bfcte_0` AS (
     `bfcol_15` AS `bfcol_18`
   FROM `bfcte_2`
   RIGHT JOIN `bfcte_1`
-    ON COALESCE(`bfcol_3`, 0) = COALESCE(`bfcol_15`, 0)
-    AND COALESCE(`bfcol_3`, 1) = COALESCE(`bfcol_15`, 1)
+    ON `bfcol_3` = `bfcol_15`
 ), `bfcte_5` AS (
   SELECT
     `bfcol_15`,
     AVG(`bfcol_7`) AS `bfcol_21`
   FROM `bfcte_3`
   RIGHT JOIN `bfcte_1`
-    ON COALESCE(`bfcol_6`, 0) = COALESCE(`bfcol_15`, 0)
-    AND COALESCE(`bfcol_6`, 1) = COALESCE(`bfcol_15`, 1)
-  WHERE
-    NOT `bfcol_15` IS NULL
+    ON `bfcol_6` = `bfcol_15`
   GROUP BY
     `bfcol_15`
 ), `bfcte_6` AS (
@@ -89,8 +85,6 @@ WITH `bfcte_0` AS (
     `bfcol_9`,
     ANY_VALUE(`bfcol_41`) AS `bfcol_45`
   FROM `bfcte_10`
-  WHERE
-    NOT `bfcol_8` IS NULL AND NOT `bfcol_9` IS NULL
   GROUP BY
     `bfcol_8`,
     `bfcol_9`

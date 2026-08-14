@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Cloud Controls Partner API API
+# Cloud Controls Partner API
 
-Overview of the APIs available for Cloud Controls Partner API API.
+Overview of the APIs available for Cloud Controls Partner API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Cloud Controls Partner API API.
+Cloud Controls Partner API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-cloudcontrolspartner/latest/summary_class.html)
 

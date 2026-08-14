@@ -16,6 +16,7 @@ import operator
 import pathlib
 from typing import Generator
 
+import numpy as np
 import pandas as pd
 import pytest
 
@@ -87,10 +88,10 @@ def scalars_dfs(
 def test_pd_col_unary_operators(scalars_dfs, op):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_kwargs = {
-        "result": op(bpd.col("float64_col")),
+        "result": op(bpd.col("bool_col")),
     }
     pd_kwargs = {
-        "result": op(pd.col("float64_col")),  # type: ignore
+        "result": op(pd.col("bool_col")),  # type: ignore
     }
     df = scalars_df.assign(**bf_kwargs)
 
@@ -243,6 +244,26 @@ def test_col_dt_accessor(scalars_dfs):
 
     bf_result = scalars_df.assign(result=bpd.col("date_col").dt.year).to_pandas()
     pd_result = scalars_pandas_df.assign(result=pd.col("date_col").dt.year)  # type: ignore
+
+    # int64[pyarrow] vs Int64
+    assert_frame_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_col_numpy_ufunc(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_result = scalars_df.assign(
+        sqrt=np.sqrt(bpd.col("float64_col")),  # type: ignore
+        add_const=np.add(bpd.col("float64_col"), 2.4),  # type: ignore
+        radd_const=np.add(2.4, bpd.col("float64_col")),  # type: ignore
+        add_cols=np.add(bpd.col("float64_col"), bpd.col("int64_col")),  # type: ignore
+    ).to_pandas()
+    pd_result = scalars_pandas_df.assign(
+        sqrt=np.sqrt(pd.col("float64_col")),  # type: ignore
+        add_const=np.add(pd.col("float64_col"), 2.4),  # type: ignore
+        radd_const=np.add(2.4, pd.col("float64_col")),  # type: ignore
+        add_cols=np.add(pd.col("float64_col"), pd.col("int64_col")),  # type: ignore
+    )
 
     # int64[pyarrow] vs Int64
     assert_frame_equal(bf_result, pd_result, check_dtype=False)

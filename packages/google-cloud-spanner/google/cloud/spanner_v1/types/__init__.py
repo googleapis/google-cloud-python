@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,9 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .change_stream import ChangeStreamRecord
-from .commit_response import CommitResponse
-from .keys import KeyRange, KeySet
+from .change_stream import (
+    ChangeStreamRecord,
+)
+from .commit_response import (
+    CommitResponse,
+)
+from .keys import (
+    KeyRange,
+    KeySet,
+)
 from .location import (
     CacheUpdate,
     Group,
@@ -25,9 +32,20 @@ from .location import (
     RoutingHint,
     Tablet,
 )
-from .mutation import Mutation
-from .query_plan import PlanNode, QueryAdvisorResult, QueryPlan
-from .result_set import PartialResultSet, ResultSet, ResultSetMetadata, ResultSetStats
+from .mutation import (
+    Mutation,
+)
+from .query_plan import (
+    PlanNode,
+    QueryAdvisorResult,
+    QueryPlan,
+)
+from .result_set import (
+    PartialResultSet,
+    ResultSet,
+    ResultSetMetadata,
+    ResultSetStats,
+)
 from .spanner import (
     BatchCreateSessionsRequest,
     BatchCreateSessionsResponse,
@@ -41,6 +59,7 @@ from .spanner import (
     ExecuteBatchDmlRequest,
     ExecuteBatchDmlResponse,
     ExecuteSqlRequest,
+    FetchCacheUpdateRequest,
     GetSessionRequest,
     ListSessionsRequest,
     ListSessionsResponse,
@@ -60,7 +79,12 @@ from .transaction import (
     TransactionOptions,
     TransactionSelector,
 )
-from .type import StructType, Type, TypeAnnotationCode, TypeCode
+from .type import (
+    StructType,
+    Type,
+    TypeAnnotationCode,
+    TypeCode,
+)
 
 __all__ = (
     "ChangeStreamRecord",
@@ -94,6 +118,7 @@ __all__ = (
     "ExecuteBatchDmlRequest",
     "ExecuteBatchDmlResponse",
     "ExecuteSqlRequest",
+    "FetchCacheUpdateRequest",
     "GetSessionRequest",
     "ListSessionsRequest",
     "ListSessionsResponse",

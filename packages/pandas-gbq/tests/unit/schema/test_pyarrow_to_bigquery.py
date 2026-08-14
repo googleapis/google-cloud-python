@@ -2,9 +2,9 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
-from google.cloud import bigquery
 import pyarrow
 import pytest
+from google.cloud import bigquery
 
 from pandas_gbq.schema import pyarrow_to_bigquery
 

@@ -395,9 +395,10 @@ class Block:
     def order_by(
         self,
         by: typing.Sequence[ordering.OrderingExpression],
+        stable: bool = True,
     ) -> Block:
         return Block(
-            self._expr.order_by(by),
+            self._expr.order_by(by, stable=stable),
             index_columns=self.index_columns,
             column_labels=self.column_labels,
             index_labels=self.index.names,
@@ -695,6 +696,7 @@ class Block:
         page_size: Optional[int] = None,
         max_results: Optional[int] = None,
         allow_large_results: Optional[bool] = None,
+        cell_execution_count: Optional[int] = None,
     ) -> PandasBatches:
         """Download results one message at a time.
 
@@ -712,6 +714,7 @@ class Block:
             execution_spec.ExecutionSpec(
                 promise_under_10gb=under_10gb,
                 ordered=True,
+                cell_execution_count=cell_execution_count,
             ),
         )
         result_batches = execution_result.batches()
@@ -847,7 +850,7 @@ class Block:
         else:
             raw_df = result_batches.to_pandas()
         df = self._copy_index_to_pandas(raw_df)
-        df.set_axis(self.column_labels, axis=1, copy=False)
+        df.columns = self.column_labels
         return df, execute_result.query_job
 
     def split(
@@ -1090,14 +1093,14 @@ class Block:
 
     def multi_apply_unary_op(
         self,
-        op: Union[ops.UnaryOp, ex.Expression],
+        op: Union[ops.UnaryOp, ops.NaryOp, ex.Expression],
     ) -> Block:
-        if isinstance(op, ops.UnaryOp):
+        if isinstance(op, (ops.UnaryOp, ops.NaryOp)):
             input_varname = guid.generate_guid()
             expr = op.as_expr(ex.free_var(input_varname))
         else:
             input_varnames = op.free_variables
-            assert len(input_varnames) == 1
+            assert len(set(input_varnames)) == 1
             expr = op
             input_varname = input_varnames[0]
 
@@ -1988,6 +1991,10 @@ class Block:
                 )
             level = level or 0
             col_id = self.index.resolve_level(level)[0]
+            if isinstance(level, int):
+                resample_label = self.index.names[level]
+            else:
+                resample_label = level
             # Reset index to make the resampling level a column, then drop all other index columns.
             # This simplifies processing by focusing solely on the column required for resampling.
             block = self.reset_index(drop=False)
@@ -2006,6 +2013,7 @@ class Block:
                 raise KeyError(f"The grouper name {on} is not found")
 
             col_id = matches[0]
+            resample_label = on
             block = self
         if level is None:
             dtype = self._column_type(col_id)
@@ -2098,6 +2106,7 @@ class Block:
             block.value_columns[0],
             block.value_columns[1],
             op=ops.IntegerLabelToDatetimeOp(freq=freq, label=label, origin=origin),
+            result_label=resample_label,
         )
 
         # After multiple merges, the columns:
@@ -2412,13 +2421,13 @@ class Block:
             rcol_indexer if (rcol_indexer is not None) else range(len(columns))
         )
 
-        left_input_lookup = (
-            lambda index: ex.deref(get_column_left[self.value_columns[index]])
+        left_input_lookup = lambda index: (
+            ex.deref(get_column_left[self.value_columns[index]])
             if index != -1
             else ex.const(None)
         )
-        righ_input_lookup = (
-            lambda index: ex.deref(get_column_right[other.value_columns[index]])
+        righ_input_lookup = lambda index: (
+            ex.deref(get_column_right[other.value_columns[index]])
             if index != -1
             else ex.const(None)
         )
@@ -2471,15 +2480,13 @@ class Block:
             rcol_indexer if (rcol_indexer is not None) else range(len(columns))
         )
 
-        left_input_lookup = (
-            lambda index: ex.deref(get_column_left[self.value_columns[index]])
+        left_input_lookup = lambda index: (
+            ex.deref(get_column_left[self.value_columns[index]])
             if index != -1
             else ex.const(None)
         )
-        righ_input_lookup = (
-            lambda index: ex.deref(
-                get_column_right[other.transpose().value_columns[index]]
-            )
+        righ_input_lookup = lambda index: (
+            ex.deref(get_column_right[other.transpose().value_columns[index]])
             if index != -1
             else ex.const(None)
         )
@@ -2506,13 +2513,11 @@ class Block:
             rcol_indexer if (rcol_indexer is not None) else range(len(columns))
         )
 
-        left_input_lookup = (
-            lambda index: ex.deref(self.value_columns[index])
-            if index != -1
-            else ex.const(None)
+        left_input_lookup = lambda index: (
+            ex.deref(self.value_columns[index]) if index != -1 else ex.const(None)
         )
-        righ_input_lookup = (
-            lambda index: ex.const(other.iloc[index]) if index != -1 else ex.const(None)
+        righ_input_lookup = lambda index: (
+            ex.const(other.iloc[index]) if index != -1 else ex.const(None)
         )
 
         left_inputs = [left_input_lookup(i) for i in lcol_indexer]
@@ -2796,6 +2801,7 @@ class Block:
                 )
                 block = block.drop_columns([equal_monotonic_id, strict_monotonic_id])
 
+        assert last_result_id is not None
         block, monotonic_result_id = block.apply_binary_op(
             last_result_id,
             last_notna_id,

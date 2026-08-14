@@ -263,16 +263,16 @@ def test_engines_astype_time(scalars_array_value: array_value.ArrayValue, engine
 @pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_astype_from_json(scalars_array_value: array_value.ArrayValue, engine):
     exprs = [
-        ops.AsTypeOp(to_type=bigframes.dtypes.INT_DTYPE).as_expr(
+        ops.JSONDecode(to_type=bigframes.dtypes.INT_DTYPE).as_expr(
             expression.const("5", bigframes.dtypes.JSON_DTYPE)
         ),
-        ops.AsTypeOp(to_type=bigframes.dtypes.FLOAT_DTYPE).as_expr(
+        ops.JSONDecode(to_type=bigframes.dtypes.FLOAT_DTYPE).as_expr(
             expression.const("5", bigframes.dtypes.JSON_DTYPE)
         ),
-        ops.AsTypeOp(to_type=bigframes.dtypes.BOOL_DTYPE).as_expr(
+        ops.JSONDecode(to_type=bigframes.dtypes.BOOL_DTYPE).as_expr(
             expression.const("true", bigframes.dtypes.JSON_DTYPE)
         ),
-        ops.AsTypeOp(to_type=bigframes.dtypes.STRING_DTYPE).as_expr(
+        ops.JSONDecode(to_type=bigframes.dtypes.STRING_DTYPE).as_expr(
             expression.const('"hello world"', bigframes.dtypes.JSON_DTYPE)
         ),
     ]
@@ -284,17 +284,32 @@ def test_engines_astype_from_json(scalars_array_value: array_value.ArrayValue, e
 @pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_astype_to_json(scalars_array_value: array_value.ArrayValue, engine):
     exprs = [
-        ops.AsTypeOp(to_type=bigframes.dtypes.JSON_DTYPE).as_expr(
-            expression.deref("int64_col")
-        ),
-        ops.AsTypeOp(to_type=bigframes.dtypes.JSON_DTYPE).as_expr(
+        ops.ToJSON().as_expr(expression.deref("int64_col")),
+        ops.ToJSON().as_expr(
             # Use a const since float to json has precision issues
             expression.const(5.2, bigframes.dtypes.FLOAT_DTYPE)
         ),
-        ops.AsTypeOp(to_type=bigframes.dtypes.JSON_DTYPE).as_expr(
-            expression.deref("bool_col")
+        ops.ToJSON().as_expr(expression.deref("bool_col")),
+        ops.ToJSON().as_expr(
+            # Use a const since "str_col" has special chars.
+            expression.const('"hello world"', bigframes.dtypes.STRING_DTYPE)
         ),
-        ops.AsTypeOp(to_type=bigframes.dtypes.JSON_DTYPE).as_expr(
+    ]
+    arr, _ = scalars_array_value.compute_values(exprs)
+
+    assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
+
+
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+def test_engines_to_json_string(scalars_array_value: array_value.ArrayValue, engine):
+    exprs = [
+        ops.ToJSONString().as_expr(expression.deref("int64_col")),
+        ops.ToJSONString().as_expr(
+            # Use a const since float to json has precision issues
+            expression.const(5.2, bigframes.dtypes.FLOAT_DTYPE)
+        ),
+        ops.ToJSONString().as_expr(expression.deref("bool_col")),
+        ops.ToJSONString().as_expr(
             # Use a const since "str_col" has special chars.
             expression.const('"hello world"', bigframes.dtypes.STRING_DTYPE)
         ),
@@ -410,6 +425,39 @@ def test_engines_notnull_op(scalars_array_value: array_value.ArrayValue, engine)
 
 
 @pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+def test_engines_coerce_to_bool_op_scalars(
+    scalars_array_value: array_value.ArrayValue, engine
+):
+    arr, _ = scalars_array_value.compute_values(
+        [
+            ops.coerce_to_bool_op.as_expr(expression.deref("bool_col")),
+            ops.coerce_to_bool_op.as_expr(expression.deref("int64_col")),
+            ops.coerce_to_bool_op.as_expr(expression.deref("float64_col")),
+            ops.coerce_to_bool_op.as_expr(expression.deref("string_col")),
+            ops.coerce_to_bool_op.as_expr(expression.deref("bytes_col")),
+        ]
+    )
+
+    assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
+
+
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+def test_engines_coerce_to_bool_op_arrays(
+    arrays_array_value: array_value.ArrayValue, engine
+):
+    arr, _ = arrays_array_value.compute_values(
+        [
+            ops.coerce_to_bool_op.as_expr(expression.deref("int_list_col")),
+            ops.coerce_to_bool_op.as_expr(expression.deref("bool_list_col")),
+            ops.coerce_to_bool_op.as_expr(expression.deref("float_list_col")),
+            ops.coerce_to_bool_op.as_expr(expression.deref("string_list_col")),
+        ]
+    )
+
+    assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
+
+
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
 def test_engines_invert_op(scalars_array_value: array_value.ArrayValue, engine):
     arr, _ = scalars_array_value.compute_values(
         [
@@ -465,5 +513,23 @@ def test_engines_isin_op_nested_filter(
         )
     )
     arr = scalars_array_value.filter(filter_clause)
+
+    assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)
+
+
+@pytest.mark.parametrize("engine", ["polars", "bq", "bq-sqlglot"], indirect=True)
+def test_engines_getitem_ops(arrays_array_value: array_value.ArrayValue, engine):
+    arr, _ = arrays_array_value.compute_values(
+        [
+            ops.GetItemOp(0).as_expr(expression.deref("float_list_col")),
+            ops.DynamicGetItemOp().as_expr(
+                expression.deref("float_list_col"), expression.const(0)
+            ),
+            ops.GetItemOp(0).as_expr(expression.deref("string_list_col")),
+            ops.DynamicGetItemOp().as_expr(
+                expression.deref("string_list_col"), expression.const(0)
+            ),
+        ]
+    )
 
     assert_equivalence_execution(arr.node, REFERENCE_ENGINE, engine)

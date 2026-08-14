@@ -470,6 +470,11 @@
                 "get_subproperty_sync_config"
               ]
             },
+            "GetUserProvidedDataSettings": {
+              "methods": [
+                "get_user_provided_data_settings"
+              ]
+            },
             "ListAccessBindings": {
               "methods": [
                 "list_access_bindings"
@@ -758,6 +763,11 @@
             "UpdateReportingDataAnnotation": {
               "methods": [
                 "update_reporting_data_annotation"
+              ]
+            },
+            "UpdateReportingIdentitySettings": {
+              "methods": [
+                "update_reporting_identity_settings"
               ]
             },
             "UpdateSKAdNetworkConversionValueSchema": {
@@ -1245,6 +1255,11 @@
                 "get_subproperty_sync_config"
               ]
             },
+            "GetUserProvidedDataSettings": {
+              "methods": [
+                "get_user_provided_data_settings"
+              ]
+            },
             "ListAccessBindings": {
               "methods": [
                 "list_access_bindings"
@@ -1533,6 +1548,11 @@
             "UpdateReportingDataAnnotation": {
               "methods": [
                 "update_reporting_data_annotation"
+              ]
+            },
+            "UpdateReportingIdentitySettings": {
+              "methods": [
+                "update_reporting_identity_settings"
               ]
             },
             "UpdateSKAdNetworkConversionValueSchema": {
@@ -2020,6 +2040,11 @@
                 "get_subproperty_sync_config"
               ]
             },
+            "GetUserProvidedDataSettings": {
+              "methods": [
+                "get_user_provided_data_settings"
+              ]
+            },
             "ListAccessBindings": {
               "methods": [
                 "list_access_bindings"
@@ -2308,6 +2333,11 @@
             "UpdateReportingDataAnnotation": {
               "methods": [
                 "update_reporting_data_annotation"
+              ]
+            },
+            "UpdateReportingIdentitySettings": {
+              "methods": [
+                "update_reporting_identity_settings"
               ]
             },
             "UpdateSKAdNetworkConversionValueSchema": {

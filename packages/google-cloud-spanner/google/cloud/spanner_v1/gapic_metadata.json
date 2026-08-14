@@ -55,6 +55,11 @@
                 "execute_streaming_sql"
               ]
             },
+            "FetchCacheUpdate": {
+              "methods": [
+                "fetch_cache_update"
+              ]
+            },
             "GetSession": {
               "methods": [
                 "get_session"
@@ -140,6 +145,11 @@
                 "execute_streaming_sql"
               ]
             },
+            "FetchCacheUpdate": {
+              "methods": [
+                "fetch_cache_update"
+              ]
+            },
             "GetSession": {
               "methods": [
                 "get_session"
@@ -223,6 +233,11 @@
             "ExecuteStreamingSql": {
               "methods": [
                 "execute_streaming_sql"
+              ]
+            },
+            "FetchCacheUpdate": {
+              "methods": [
+                "fetch_cache_update"
               ]
             },
             "GetSession": {

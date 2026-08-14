@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ class HttpRequest(proto.Message):
         referer (str):
             The referer URL of the request, as defined in `HTTP/1.1
             Header Field
-            Definitions <http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html>`__.
+            Definitions <https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html>`__.
         latency (google.protobuf.duration_pb2.Duration):
             The request processing latency on the server,
             from the time the request was received until the

@@ -3,14 +3,14 @@ WITH `bfcte_0` AS (
     `N_NATIONKEY` AS `bfcol_22`,
     `N_NAME` AS `bfcol_23`,
     COALESCE(COALESCE(`N_NAME` IN ('FRANCE', 'GERMANY'), FALSE), FALSE) AS `bfcol_24`
-  FROM `bigframes-dev`.`tpch`.`NATION` AS `bft_4` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`NATION` AS `bft_4`
   WHERE
     COALESCE(COALESCE(`N_NAME` IN ('FRANCE', 'GERMANY'), FALSE), FALSE)
 ), `bfcte_1` AS (
   SELECT
     `S_SUPPKEY` AS `bfcol_2`,
     `S_NATIONKEY` AS `bfcol_3`
-  FROM `bigframes-dev`.`tpch`.`SUPPLIER` AS `bft_3` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`SUPPLIER` AS `bft_3`
 ), `bfcte_2` AS (
   SELECT
     `L_ORDERKEY` AS `bfcol_31`,
@@ -18,7 +18,7 @@ WITH `bfcte_0` AS (
     `L_EXTENDEDPRICE` AS `bfcol_33`,
     `L_DISCOUNT` AS `bfcol_34`,
     `L_SHIPDATE` AS `bfcol_35`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_2` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_2`
   WHERE
     (
       `L_SHIPDATE` >= CAST('1995-01-01' AS DATE)
@@ -30,12 +30,12 @@ WITH `bfcte_0` AS (
   SELECT
     `O_ORDERKEY` AS `bfcol_9`,
     `O_CUSTKEY` AS `bfcol_10`
-  FROM `bigframes-dev`.`tpch`.`ORDERS` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`ORDERS` AS `bft_1`
 ), `bfcte_4` AS (
   SELECT
     `C_CUSTKEY` AS `bfcol_11`,
     `C_NATIONKEY` AS `bfcol_12`
-  FROM `bigframes-dev`.`tpch`.`CUSTOMER` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`CUSTOMER` AS `bft_0`
 ), `bfcte_5` AS (
   SELECT
     `bfcol_22` AS `bfcol_36`,
@@ -52,16 +52,14 @@ WITH `bfcte_0` AS (
     `bfcol_39` AS `bfcol_41`
   FROM `bfcte_4`
   INNER JOIN `bfcte_6`
-    ON COALESCE(`bfcol_12`, 0) = COALESCE(`bfcol_38`, 0)
-    AND COALESCE(`bfcol_12`, 1) = COALESCE(`bfcol_38`, 1)
+    ON `bfcol_12` = `bfcol_38`
 ), `bfcte_8` AS (
   SELECT
     `bfcol_41` AS `bfcol_42`,
     `bfcol_9` AS `bfcol_43`
   FROM `bfcte_7`
   INNER JOIN `bfcte_3`
-    ON COALESCE(`bfcol_40`, 0) = COALESCE(`bfcol_10`, 0)
-    AND COALESCE(`bfcol_40`, 1) = COALESCE(`bfcol_10`, 1)
+    ON `bfcol_40` = `bfcol_10`
 ), `bfcte_9` AS (
   SELECT
     `bfcol_42` AS `bfcol_44`,
@@ -71,8 +69,7 @@ WITH `bfcte_0` AS (
     `bfcol_35` AS `bfcol_48`
   FROM `bfcte_8`
   INNER JOIN `bfcte_2`
-    ON COALESCE(`bfcol_43`, 0) = COALESCE(`bfcol_31`, 0)
-    AND COALESCE(`bfcol_43`, 1) = COALESCE(`bfcol_31`, 1)
+    ON `bfcol_43` = `bfcol_31`
 ), `bfcte_10` AS (
   SELECT
     `bfcol_44` AS `bfcol_49`,
@@ -82,8 +79,7 @@ WITH `bfcte_0` AS (
     `bfcol_3` AS `bfcol_53`
   FROM `bfcte_9`
   INNER JOIN `bfcte_1`
-    ON COALESCE(`bfcol_45`, 0) = COALESCE(`bfcol_2`, 0)
-    AND COALESCE(`bfcol_45`, 1) = COALESCE(`bfcol_2`, 1)
+    ON `bfcol_45` = `bfcol_2`
 ), `bfcte_11` AS (
   SELECT
     `bfcol_49`,
@@ -113,8 +109,7 @@ WITH `bfcte_0` AS (
     EXTRACT(YEAR FROM `bfcol_52`) AS `bfcol_87`
   FROM `bfcte_10`
   INNER JOIN `bfcte_5`
-    ON COALESCE(`bfcol_53`, 0) = COALESCE(`bfcol_36`, 0)
-    AND COALESCE(`bfcol_53`, 1) = COALESCE(`bfcol_36`, 1)
+    ON `bfcol_53` = `bfcol_36`
   WHERE
     `bfcol_49` <> `bfcol_37`
 ), `bfcte_12` AS (
@@ -125,7 +120,7 @@ WITH `bfcte_0` AS (
     COALESCE(SUM(`bfcol_86`), 0) AS `bfcol_92`
   FROM `bfcte_11`
   WHERE
-    NOT `bfcol_85` IS NULL AND NOT `bfcol_84` IS NULL AND NOT `bfcol_87` IS NULL
+    NOT `bfcol_87` IS NULL
   GROUP BY
     `bfcol_85`,
     `bfcol_84`,

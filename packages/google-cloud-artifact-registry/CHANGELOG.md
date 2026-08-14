@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-artifact-registry/#history
 
+## [1.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.21.0...google-cloud-artifact-registry-v1.22.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-a packages (#17089) ([39c988267529419b03f808d7662ec521258571b4](https://github.com/googleapis/google-cloud-python/commit/39c988267529419b03f808d7662ec521258571b4))
+
 ## [1.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.20.0...google-cloud-artifact-registry-v1.21.0) (2026-03-26)
 
 

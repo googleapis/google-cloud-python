@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-runtimeconfig/#history
 
+## [0.37.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-runtimeconfig-v0.36.1...google-cloud-runtimeconfig-v0.37.0) (2026-05-06)
+
+
+### Bug Fixes
+
+* Drop support for Python 3.9 (#16947) ([e7efd90d816eb5a6f7db653f1b60e1e14e918dfe](https://github.com/googleapis/google-cloud-python/commit/e7efd90d816eb5a6f7db653f1b60e1e14e918dfe))
+
 ## [0.36.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-runtimeconfig-v0.36.0...google-cloud-runtimeconfig-v0.36.1) (2026-03-26)
 
 

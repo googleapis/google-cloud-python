@@ -15,10 +15,10 @@
 from __future__ import annotations
 
 import sys
-
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from google.api_core import exceptions as core_exceptions
+
 from google.cloud.bigtable.data.row import Row
 
 is_311_plus = sys.version_info >= (3, 11)

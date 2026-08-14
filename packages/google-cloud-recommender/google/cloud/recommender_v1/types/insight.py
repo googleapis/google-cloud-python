@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ class Insight(proto.Message):
 
     Attributes:
         name (str):
-            Name of the insight.
+            Identifier. Name of the insight.
         description (str):
             Free-form human readable summary in English.
             The maximum length is 500 characters.

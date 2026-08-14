@@ -38,30 +38,30 @@ Usage Example:
 
 from __future__ import annotations
 
-from typing import (
-    TypeVar,
-    Any,
-    Callable,
-    Coroutine,
-    Sequence,
-    Union,
-    AsyncIterable,
-    AsyncIterator,
-    AsyncGenerator,
-    TYPE_CHECKING,
-)
-import typing
-
 import asyncio
-import sys
 import concurrent.futures
-import google.api_core.retry as retries
 import queue
 import threading
 import time
+import typing
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    AsyncGenerator,
+    AsyncIterable,
+    AsyncIterator,
+    Callable,
+    Coroutine,
+    Sequence,
+    TypeVar,
+    Union,
+)
+
+import google.api_core.retry as retries
+
 from ._decorators import (
-    ConvertClass,
     Convert,
+    ConvertClass,
     Drop,
     Pytest,
     PytestFixture,
@@ -201,7 +201,7 @@ class CrossSync(metaclass=MappingMeta):
         sync_executor: ThreadPoolExecutor to use for sync operations. Ignored in async version
         """
         task: CrossSync.Task[T] = asyncio.create_task(fn(*fn_args, **fn_kwargs))
-        if task_name and sys.version_info >= (3, 8):
+        if task_name:
             task.set_name(task_name)
         return task
 

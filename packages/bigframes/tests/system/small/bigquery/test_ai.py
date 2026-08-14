@@ -12,8 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import annotations
+
+import uuid
 from unittest import mock
 
+import google.cloud.bigquery
 import pandas as pd
 import pyarrow as pa
 import pytest
@@ -24,7 +28,46 @@ from bigframes import dataframe, dtypes, series
 from bigframes.testing import utils as test_utils
 
 
-def test_ai_function_pandas_input(session):
+@pytest.fixture
+def use_ibis_compiler():
+    original_setting = bpd.options.experiments.sql_compiler
+    bpd.options.experiments.sql_compiler = "legacy"
+    try:
+        yield
+    finally:
+        bpd.options.experiments.sql_compiler = original_setting
+
+
+def _create_mock_obj_ref_df(session, uris, name="image", connection=None):
+    df = bpd.DataFrame({name: uris}, session=session)
+    # Convert string URIs to ObjectRef structs
+    if connection is None:
+        connection = "us.bigframes-rf-conn"
+    df[name] = bbq.obj.make_ref(df[name], authorizer=connection)
+
+    table_id = f"bigframes-dev.bigframes_tests_sys.tmp_obj_ref_{uuid.uuid4().hex}"
+    df.to_gbq(table_id, if_exists="replace")
+
+    client = session.bqclient
+    table = client.get_table(table_id)
+    schema = list(table.schema)
+    for i, field in enumerate(schema):
+        if field.name == name:
+            schema[i] = google.cloud.bigquery.SchemaField(
+                name=field.name,
+                field_type=field.field_type,
+                mode=field.mode,
+                description="bigframes_dtype: OBJ_REF_DTYPE",
+                fields=field.fields,
+            )
+            break
+    table.schema = schema
+    client.update_table(table, ["schema"])
+
+    return session.read_gbq(table_id)
+
+
+def test_ai_function_pandas_tuple_input(session):
     s1 = pd.Series(["apple", "bear"])
     s2 = bpd.Series(["fruit", "tree"], session=session)
     prompt = (s1, " is a ", s2)
@@ -41,6 +84,17 @@ def test_ai_function_pandas_input(session):
             )
         )
     )
+
+
+def test_ai_function_pandas_series_input(session):
+    s = pd.Series(["cat", "lavender"])
+
+    result = bbq.ai.classify(
+        s, categories=["animal", "plant"], endpoint="gemini-2.5-flash"
+    )
+
+    assert len(result) == len(s)
+    assert result.dtype == dtypes.STRING_DTYPE
 
 
 def test_ai_function_string_input(session):
@@ -104,6 +158,19 @@ def test_ai_generate(session):
     )
 
 
+def test_ai_generate_access_full_response_with_ibis(session, use_ibis_compiler):
+    country = bpd.Series(["Japan", "Canada"], session=session)
+    prompt = ("What's the capital city of ", country, "? one word only")
+
+    result = (
+        bbq.ai.generate(prompt, endpoint="gemini-2.5-flash")
+        .struct.field("full_response")
+        .to_pandas()
+    )
+
+    assert _contains_no_nulls(result)
+
+
 def test_ai_generate_with_output_schema(session):
     country = bpd.Series(["Japan", "Canada"], session=session)
     prompt = ("Describe ", country)
@@ -158,12 +225,30 @@ def test_ai_generate_bool(session):
     )
 
 
-def test_ai_generate_bool_multi_model(session):
-    df = session.from_glob_path(
-        "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+def test_ai_generate_bool_access_full_response_with_ibis(session, use_ibis_compiler):
+    s1 = bpd.Series(["apple", "bear"], session=session)
+    s2 = bpd.Series(["fruit", "tree"], session=session)
+    prompt = (s1, " is a ", s2)
+
+    result = (
+        bbq.ai.generate_bool(prompt, endpoint="gemini-2.5-flash")
+        .struct.field("full_response")
+        .to_pandas()
     )
 
-    result = bbq.ai.generate_bool((df["image"], " contains an animal"))
+    assert _contains_no_nulls(result)
+
+
+def test_ai_generate_bool_multi_model(session, bq_connection):
+    df = _create_mock_obj_ref_df(
+        session,
+        ["gs://cloud-samples-data/vision/ocr/sign.jpg"],
+        name="image",
+        connection=bq_connection,
+    )
+
+    image_runtime = bbq.obj.get_access_url(df["image"], mode="R")
+    result = bbq.ai.generate_bool((image_runtime, " contains an animal"))
 
     assert _contains_no_nulls(result)
     assert result.dtype == pd.ArrowDtype(
@@ -195,13 +280,30 @@ def test_ai_generate_int(session):
     )
 
 
-def test_ai_generate_int_multi_model(session):
-    df = session.from_glob_path(
-        "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+def test_ai_generate_int_access_full_response_with_ibis(session, use_ibis_compiler):
+    s = bpd.Series(["Cat"], session=session)
+    prompt = ("How many legs does a ", s, " have?")
+
+    result = (
+        bbq.ai.generate_int(prompt, endpoint="gemini-2.5-flash")
+        .struct.field("full_response")
+        .to_pandas()
     )
 
+    assert _contains_no_nulls(result)
+
+
+def test_ai_generate_int_multi_model(session, bq_connection):
+    df = _create_mock_obj_ref_df(
+        session,
+        ["gs://cloud-samples-data/vision/ocr/sign.jpg"],
+        name="image",
+        connection=bq_connection,
+    )
+
+    image_runtime = bbq.obj.get_access_url(df["image"], mode="R")
     result = bbq.ai.generate_int(
-        ("How many animals are there in the picture ", df["image"])
+        ("How many animals are there in the picture ", image_runtime)
     )
 
     assert _contains_no_nulls(result)
@@ -234,13 +336,30 @@ def test_ai_generate_double(session):
     )
 
 
-def test_ai_generate_double_multi_model(session):
-    df = session.from_glob_path(
-        "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+def test_ai_generate_double_access_full_response_with_ibis(session, use_ibis_compiler):
+    s = bpd.Series(["Cat"], session=session)
+    prompt = ("How many legs does a ", s, " have?")
+
+    result = (
+        bbq.ai.generate_double(prompt, endpoint="gemini-2.5-flash")
+        .struct.field("full_response")
+        .to_pandas()
     )
 
+    assert _contains_no_nulls(result)
+
+
+def test_ai_generate_double_multi_model(session, bq_connection):
+    df = _create_mock_obj_ref_df(
+        session,
+        ["gs://cloud-samples-data/vision/ocr/sign.jpg"],
+        name="image",
+        connection=bq_connection,
+    )
+
+    image_runtime = bbq.obj.get_access_url(df["image"], mode="R")
     result = bbq.ai.generate_double(
-        ("How many animals are there in the picture ", df["image"])
+        ("How many animals are there in the picture ", image_runtime)
     )
 
     assert _contains_no_nulls(result)
@@ -255,27 +374,68 @@ def test_ai_generate_double_multi_model(session):
     )
 
 
+def test_ai_embed_series_content(session):
+    content = bpd.Series(["dog"], session=session)
+
+    result = bbq.ai.embed(content, endpoint="text-embedding-005")
+
+    assert _contains_no_nulls(result)
+    assert result.dtype == pd.ArrowDtype(
+        pa.struct(
+            (
+                pa.field("result", pa.list_(pa.float64())),
+                pa.field("status", pa.string()),
+            )
+        )
+    )
+
+
+def test_ai_embed_string_content(session):
+    with mock.patch(
+        "bigframes.core.global_session.get_global_session"
+    ) as mock_get_session:
+        mock_get_session.return_value = session
+
+        result = bbq.ai.embed("dog", endpoint="text-embedding-005")
+
+        assert _contains_no_nulls(result)
+        assert result.dtype == pd.ArrowDtype(
+            pa.struct(
+                (
+                    pa.field("result", pa.list_(pa.float64())),
+                    pa.field("status", pa.string()),
+                )
+            )
+        )
+
+
 def test_ai_if(session):
     s1 = bpd.Series(["apple", "bear"], session=session)
     s2 = bpd.Series(["fruit", "tree"], session=session)
     prompt = (s1, " is a ", s2)
 
-    result = bbq.ai.if_(prompt)
+    result = bbq.ai.if_(
+        prompt,
+        optimization_mode="maximize_quality",
+        max_error_ratio=0.5,
+    )
 
-    assert _contains_no_nulls(result)
+    assert len(result) == len(s1)
     assert result.dtype == dtypes.BOOL_DTYPE
 
 
 def test_ai_if_multi_model(session, bq_connection):
-    df = session.from_glob_path(
-        "gs://bigframes-dev-testing/a_multimodel/images/*",
+    df = _create_mock_obj_ref_df(
+        session,
+        ["gs://cloud-samples-data/vision/ocr/sign.jpg"],
         name="image",
         connection=bq_connection,
     )
 
-    result = bbq.ai.if_((df["image"], " contains an animal"))
+    image_runtime = bbq.obj.get_access_url(df["image"], mode="R")
+    result = bbq.ai.if_((image_runtime, " contains an animal"))
 
-    assert _contains_no_nulls(result)
+    assert len(result) == len(df)
     assert result.dtype == dtypes.BOOL_DTYPE
 
 
@@ -284,20 +444,42 @@ def test_ai_classify(session):
 
     result = bbq.ai.classify(s, ["animal", "plant"])
 
-    assert _contains_no_nulls(result)
+    assert len(result) == len(s)
     assert result.dtype == dtypes.STRING_DTYPE
 
 
+def test_ai_classify_with_examples(session):
+    s = bpd.Series(["cat", "orchid"], session=session)
+
+    result = bbq.ai.classify(s, ["animal", "plant"], examples=[("dog", "animal")])
+
+    assert len(result) == len(s)
+    assert result.dtype == dtypes.STRING_DTYPE
+
+
+def test_ai_classify_output_mode(session, bq_connection):
+    s = bpd.Series(["cat", "orchid"], session=session)
+
+    result = bbq.ai.classify(
+        s, ["animal", "plant"], output_mode="multi", examples=[("dog", ["animal"])]
+    )
+
+    assert len(result) == len(s)
+    assert result.dtype == dtypes.list_type(dtypes.STRING_DTYPE)
+
+
 def test_ai_classify_multi_model(session, bq_connection):
-    df = session.from_glob_path(
-        "gs://bigframes-dev-testing/a_multimodel/images/*",
+    df = _create_mock_obj_ref_df(
+        session,
+        ["gs://cloud-samples-data/vision/ocr/sign.jpg"],
         name="image",
         connection=bq_connection,
     )
 
-    result = bbq.ai.classify(df["image"], ["photo", "cartoon"])
+    image_runtime = bbq.obj.get_access_url(df["image"], mode="R")
+    result = bbq.ai.classify(image_runtime, ["photo", "cartoon"])
 
-    assert _contains_no_nulls(result)
+    assert len(result) == len(df)
     assert result.dtype == dtypes.STRING_DTYPE
 
 
@@ -307,19 +489,23 @@ def test_ai_score(session):
 
     result = bbq.ai.score(prompt)
 
-    assert _contains_no_nulls(result)
+    assert len(result) == len(s)
     assert result.dtype == dtypes.FLOAT_DTYPE
 
 
-def test_ai_score_multi_model(session):
-    df = session.from_glob_path(
-        "gs://bigframes-dev-testing/a_multimodel/images/*", name="image"
+def test_ai_score_multi_model(session, bq_connection):
+    df = _create_mock_obj_ref_df(
+        session,
+        ["gs://cloud-samples-data/vision/ocr/sign.jpg"],
+        name="image",
+        connection=bq_connection,
     )
-    prompt = ("Rank the liveliness of ", df["image"], "on the scale from 1 to 3")
+    image_runtime = bbq.obj.get_access_url(df["image"], mode="R")
+    prompt = ("Rank the liveliness of ", image_runtime, "on the scale from 1 to 3")
 
     result = bbq.ai.score(prompt)
 
-    assert _contains_no_nulls(result)
+    assert len(result) == len(df)
     assert result.dtype == dtypes.FLOAT_DTYPE
 
 
@@ -370,5 +556,35 @@ def test_forecast_w_params(time_series_df_default_index: dataframe.DataFrame):
     )
 
 
-def _contains_no_nulls(s: series.Series) -> bool:
+def test_ai_similarity(session):
+    s1 = bpd.Series(["happy", "sad"], session=session)
+    s2 = pd.Series(["glad", "angry"])
+
+    result = bbq.ai.similarity(s1, s2, endpoint="text-embedding-005")
+
+    assert _contains_no_nulls(result)
+    assert result.dtype == dtypes.FLOAT_DTYPE
+
+
+def test_ai_similarity_one_content_is_string_literal(session):
+    s1 = "happy"
+    s2 = bpd.Series(["glad", "angry"], session=session)
+
+    result = bbq.ai.similarity(s1, s2, model="embeddinggemma-300m")
+
+    assert _contains_no_nulls(result)
+    assert result.dtype == dtypes.FLOAT_DTYPE
+
+
+def test_ai_similarity_both_contents_are_string_literals(session):
+    s1 = "happy"
+    s2 = "glad"
+
+    result = bbq.ai.similarity(s1, s2, endpoint="text-embedding-005")
+
+    assert _contains_no_nulls(result)
+    assert result.dtype == dtypes.FLOAT_DTYPE
+
+
+def _contains_no_nulls(s: series.Series | pd.Series) -> bool:
     return len(s) == s.count()

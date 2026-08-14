@@ -622,6 +622,9 @@ class BigQueryTypeCompiler(GenericTypeCompiler):
 
     visit_VARBINARY = visit_BLOB = visit_BINARY
 
+    def visit_JSON(self, type_, **kw):
+        return "JSON"
+
     def visit_NUMERIC(self, type_, **kw):
         if (type_.precision is not None) and isinstance(
             kw.get("type_expression"), Column

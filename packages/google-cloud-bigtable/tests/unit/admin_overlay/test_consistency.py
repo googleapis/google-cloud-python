@@ -13,17 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-except ImportError:  # pragma: NO COVER
-    import mock
-
-from google.cloud.bigtable_admin_v2.overlay.types import consistency
-from google.cloud.bigtable_admin_v2.types import bigtable_table_admin
+from unittest import mock
 
 import pytest
 
+from google.cloud.bigtable_admin_v2.overlay.types import consistency
+from google.cloud.bigtable_admin_v2.types import bigtable_table_admin
 
 TRUE_CONSISTENCY_RESPONSE = bigtable_table_admin.CheckConsistencyResponse(
     consistent=True

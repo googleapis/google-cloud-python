@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -142,6 +142,12 @@ class ListUserListGlobalLicensesRequest(proto.Message):
             - ``<``
             - ``<=``
 
+            **Supported Functions:**
+
+            - ``IN(field, value1, value2, ...)``: returns true if the
+              field matches any of the values. Example:
+              ``IN(user_list_id, 123, 456)``
+
             **Unsupported Fields:**
 
             - ``name`` (use get method instead)
@@ -246,6 +252,12 @@ class ListUserListGlobalLicenseCustomerInfosRequest(proto.Message):
             - ``>=``
             - ``<``
             - ``<=``
+
+            **Supported Functions:**
+
+            - ``IN(field, value1, value2, ...)``: returns true if the
+              field matches any of the values. Example:
+              ``IN(user_list_id, 123, 456)``
 
             **Unsupported Fields:**
 

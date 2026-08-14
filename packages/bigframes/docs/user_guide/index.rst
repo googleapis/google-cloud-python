@@ -28,6 +28,7 @@ User Guide
    Dataframe <../notebooks/dataframes/dataframe.ipynb>
    Index Col Null <../notebooks/dataframes/index_col_null.ipynb>
    Integrations <../notebooks/dataframes/integrations.ipynb>
+   Magics for Python and SQL Interoperability <../notebooks/dataframes/magics_with_local_data.ipynb>
    Pypi <../notebooks/dataframes/pypi.ipynb>
 
 .. toctree::

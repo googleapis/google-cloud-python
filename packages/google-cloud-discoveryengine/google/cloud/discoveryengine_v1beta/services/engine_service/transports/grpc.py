@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@ import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 import google.auth  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
@@ -352,7 +354,7 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
     ) -> Callable[[engine_service.CreateEngineRequest], operations_pb2.Operation]:
         r"""Return a callable for the create engine method over gRPC.
 
-        Creates a [Engine][google.cloud.discoveryengine.v1beta.Engine].
+        Creates an [Engine][google.cloud.discoveryengine.v1beta.Engine].
 
         Returns:
             Callable[[~.CreateEngineRequest],
@@ -378,7 +380,7 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
     ) -> Callable[[engine_service.DeleteEngineRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete engine method over gRPC.
 
-        Deletes a [Engine][google.cloud.discoveryengine.v1beta.Engine].
+        Deletes an [Engine][google.cloud.discoveryengine.v1beta.Engine].
 
         Returns:
             Callable[[~.DeleteEngineRequest],
@@ -428,7 +430,7 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
     def get_engine(self) -> Callable[[engine_service.GetEngineRequest], engine.Engine]:
         r"""Return a callable for the get engine method over gRPC.
 
-        Gets a [Engine][google.cloud.discoveryengine.v1beta.Engine].
+        Gets an [Engine][google.cloud.discoveryengine.v1beta.Engine].
 
         Returns:
             Callable[[~.GetEngineRequest],
@@ -484,7 +486,9 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
     ) -> Callable[[engine_service.PauseEngineRequest], engine.Engine]:
         r"""Return a callable for the pause engine method over gRPC.
 
-        Pauses the training of an existing engine. Only applicable if
+        Pauses the training of an existing
+        [Engine][google.cloud.discoveryengine.v1beta.Engine]. Only
+        applicable if
         [SolutionType][google.cloud.discoveryengine.v1beta.SolutionType]
         is
         [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
@@ -513,7 +517,9 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
     ) -> Callable[[engine_service.ResumeEngineRequest], engine.Engine]:
         r"""Return a callable for the resume engine method over gRPC.
 
-        Resumes the training of an existing engine. Only applicable if
+        Resumes the training of an existing
+        [Engine][google.cloud.discoveryengine.v1beta.Engine]. Only
+        applicable if
         [SolutionType][google.cloud.discoveryengine.v1beta.SolutionType]
         is
         [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
@@ -542,7 +548,9 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
     ) -> Callable[[engine_service.TuneEngineRequest], operations_pb2.Operation]:
         r"""Return a callable for the tune engine method over gRPC.
 
-        Tunes an existing engine. Only applicable if
+        Tunes an existing
+        [Engine][google.cloud.discoveryengine.v1beta.Engine]. Only
+        applicable if
         [SolutionType][google.cloud.discoveryengine.v1beta.SolutionType]
         is
         [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
@@ -564,6 +572,74 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["tune_engine"]
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+        r"""Return a callable for the get iam policy method over gRPC.
+
+        Gets the IAM access control policy for an
+        [Engine][google.cloud.discoveryengine.v1beta.Engine]. A
+        ``NOT_FOUND`` error is returned if the resource does not exist.
+        An empty policy is returned if the resource exists but does not
+        have a policy set on it.
+
+        Returns:
+            Callable[[~.GetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_iam_policy" not in self._stubs:
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.EngineService/GetIamPolicy",
+                request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["get_iam_policy"]
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+        r"""Return a callable for the set iam policy method over gRPC.
+
+        Sets the IAM access control policy for an
+        [Engine][google.cloud.discoveryengine.v1beta.Engine]. A
+        ``NOT_FOUND`` error is returned if the resource does not exist.
+
+        **Important:** When setting a policy directly on an Engine
+        resource, the only recommended roles in the bindings are:
+        ``roles/discoveryengine.admin``,
+        ``roles/discoveryengine.agentspaceAdmin``,
+        ``roles/discoveryengine.user``,
+        ``roles/discoveryengine.agentspaceUser``,
+        ``roles/discoveryengine.viewer``,
+        ``roles/discoveryengine.agentspaceViewer``. Attempting to grant
+        any other role will result in a warning in logging.
+
+        Returns:
+            Callable[[~.SetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "set_iam_policy" not in self._stubs:
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.EngineService/SetIamPolicy",
+                request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["set_iam_policy"]
 
     def close(self):
         self._logged_channel.close()

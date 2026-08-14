@@ -40,7 +40,6 @@ from bigframes.core.field import Field
 from bigframes.core.ordering import OrderingExpression, RowOrdering
 
 if typing.TYPE_CHECKING:
-    import bigframes.core.ordering as orderings
     import bigframes.session
 
 
@@ -204,6 +203,8 @@ class InNode(BigFrameNode, AdditiveNode):
     right_child: BigFrameNode
     left_col: ex.DerefOp
     indicator_col: identifiers.ColumnId
+    # For matching left_col to right_child[0], if true, nulls match nulls, if false, nulls don't match nulls
+    nulls_equal: bool = True
 
     def _validate(self):
         assert len(self.right_child.fields) == 1
@@ -271,10 +272,7 @@ class InNode(BigFrameNode, AdditiveNode):
 
     @property
     def joins_nulls(self) -> bool:
-        left_nullable = self.left_child.field_by_id[self.left_col.id].nullable
-        # assumption: right side has one column
-        right_nullable = self.right_child.fields[0].nullable
-        return left_nullable or right_nullable
+        return self.nulls_equal
 
     @property
     def _node_expressions(self):
@@ -316,6 +314,9 @@ class JoinNode(BigFrameNode):
     right_child: BigFrameNode
     conditions: typing.Tuple[typing.Tuple[ex.DerefOp, ex.DerefOp], ...]
     type: typing.Literal["inner", "outer", "left", "right", "cross"]
+    # choose to treat nulls as equal or not for purposes of the join
+    # pandas treats nulls as equal, sql does not
+    nulls_equal: bool
     propogate_order: bool
 
     def _validate(self):
@@ -355,13 +356,7 @@ class JoinNode(BigFrameNode):
 
     @property
     def joins_nulls(self) -> bool:
-        for left_ref, right_ref in self.conditions:
-            if (
-                self.left_child.field_by_id[left_ref.id].nullable
-                and self.right_child.field_by_id[right_ref.id].nullable
-            ):
-                return True
-        return False
+        return self.nulls_equal
 
     @functools.cached_property
     def variables_introduced(self) -> int:
@@ -675,7 +670,13 @@ class ReadLocalNode(LeafNode):
     @property
     def fields(self) -> Sequence[Field]:
         fields = tuple(
-            Field(col_id, self.local_data_source.schema.get_type(source_id))
+            Field(
+                col_id,
+                self.local_data_source.schema.get_type(source_id),
+                nullable=self.local_data_source.is_nullable(
+                    identifiers.ColumnId(source_id)
+                ),
+            )
             for col_id, source_id in self.scan_list.items
         )
 
@@ -844,10 +845,10 @@ class ReadTableNode(LeafNode):
     ) -> ReadTableNode:
         return self
 
-    def with_order_cols(self):
+    def pull_out_order(self):
         # Maybe the ordering should be required to always be in the scan list, and then we won't need this?
         if self.source.ordering is None:
-            return self, orderings.RowOrdering()
+            return self, RowOrdering()
 
         order_cols = {col.sql for col in self.source.ordering.referenced_columns}
         scan_cols = {col.source_id for col in self.scan_list.items}
@@ -861,10 +862,18 @@ class ReadTableNode(LeafNode):
         ]
         new_scan_list = ScanList(items=(*self.scan_list.items, *new_scan_cols))
         new_order = self.source.ordering.remap_column_refs(
-            {identifiers.ColumnId(item.source_id): item.id for item in new_scan_cols},
+            {
+                identifiers.ColumnId(item.source_id): item.id
+                for item in new_scan_list.items
+            },
             allow_partial_bindings=True,
         )
-        return dataclasses.replace(self, scan_list=new_scan_list), new_order
+        new_node = dataclasses.replace(
+            self,
+            scan_list=new_scan_list,
+            source=self.source.with_ordering(RowOrdering()),
+        )
+        return new_node, new_order
 
 
 @dataclasses.dataclass(frozen=True, eq=False)
@@ -989,7 +998,8 @@ class FilterNode(UnaryNode):
 @dataclasses.dataclass(frozen=True, eq=False)
 class OrderByNode(UnaryNode):
     by: Tuple[OrderingExpression, ...]
-    # This is an optimization, if true, can discard previous orderings.
+    stable: bool = True
+    # This is an optimization, if true, can discard previous orderings, even if doing a stable sort
     # might be a total ordering even if false
     is_total_order: bool = False
 

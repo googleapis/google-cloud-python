@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ def sample_export_data_objects():
     # Initialize request argument(s)
     gcs_destination = vectorsearch_v1beta.GcsExportDestination()
     gcs_destination.export_uri = "export_uri_value"
-    gcs_destination.format_ = "JSON"
+    gcs_destination.format_ = "JSONL"
 
     request = vectorsearch_v1beta.ExportDataObjectsRequest(
         gcs_destination=gcs_destination,

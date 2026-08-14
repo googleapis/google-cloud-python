@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -110,7 +110,8 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
 class QuotaControllerGrpcTransport(QuotaControllerTransport):
     """gRPC backend transport for QuotaController.
 
-    `Google Quota Control API </service-control/overview>`__
+    `Google Quota Control
+    API <https://cloud.google.com/service-control/overview>`__
 
     Allows clients to allocate and release quota against a `managed
     service <https://cloud.google.com/service-management/reference/rpc/google.api/servicemanagement.v1#google.api.servicemanagement.v1.ManagedService>`__.

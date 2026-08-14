@@ -1,4 +1,5 @@
-# Contains code from https://github.com/pandas-dev/pandas/blob/main/pandas/core/config_init.py
+# Contains code from
+# https://github.com/pandas-dev/pandas/blob/main/pandas/core/config_init.py
 """
 This module is imported from the pandas package __init__.py file
 in order to ensure that the core.config options registered here will
@@ -33,7 +34,9 @@ class DisplayOptions:
         >>> df.head(20) # will no longer run the job  # doctest: +SKIP
         Computation deferred. Computation will process 28.9 kB
 
-    Users can also get a dry run of the job by accessing the query_job property before they've run the job. This will return a dry run instance of the job they can inspect.
+    Users can also get a dry run of the job by accessing the query_job
+    property before they've run the job. This will return a dry run
+    instance of the job they can inspect.
 
         >>> df.query_job.total_bytes_processed  # doctest: +SKIP
         28947
@@ -56,7 +59,8 @@ class DisplayOptions:
 
     or just remove it.
 
-    Setting to default value "auto" will detect and show progress bar automatically.
+    Setting to default value "auto" will detect and show progress bar
+    automatically.
 
         >>> bpd.options.display.progress_bar = "auto"  # doctest: +SKIP
     """
@@ -99,7 +103,7 @@ class DisplayOptions:
     """
 
     # Options unique to BigQuery DataFrames.
-    progress_bar: Optional[str] = "auto"
+    progress_bar: Optional[Literal["auto", "notebook", "terminal"]] = "auto"
     """
     Determines if progress bars are shown during job runs. Default "auto".
 
@@ -121,7 +125,8 @@ class DisplayOptions:
         Dataframe and Series objects during repr.
 
     `deferred`
-        Prevent executions from repr statements in DataFrame and Series objects.
+        Prevent executions from repr statements in DataFrame and
+        Series objects.
         Instead, estimated bytes processed will be shown. DataFrame and Series
         objects can still be computed with methods that explicitly execute and
         download results.
@@ -175,7 +180,8 @@ class DisplayOptions:
 
     max_info_rows: Optional[int] = 200_000
     """
-    Limit null check in ``df.info()`` only to frames with smaller dimensions than
+    Limit null check in ``df.info()`` only to frames with smaller
+    dimensions than
     max_info_rows. Default 200,000.
 
     df.info() will usually show null-counts for each column.

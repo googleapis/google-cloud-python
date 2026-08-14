@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -78,6 +78,12 @@ class Channel(proto.Message):
 
             It must match the pattern
             ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
+        satisfies_pzs (bool):
+            Output only. Whether or not this Channel
+            satisfies the requirements of physical zone
+            separation
+        labels (MutableMapping[str, str]):
+            Optional. Resource labels.
     """
     class State(proto.Enum):
         r"""State lists all the possible states of a Channel
@@ -154,6 +160,15 @@ class Channel(proto.Message):
     crypto_key_name: str = proto.Field(
         proto.STRING,
         number=11,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=12,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=13,
     )
 
 

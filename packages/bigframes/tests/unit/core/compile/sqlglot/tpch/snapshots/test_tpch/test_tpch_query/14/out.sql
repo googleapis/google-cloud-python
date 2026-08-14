@@ -12,16 +12,16 @@ WITH `bfcte_0` AS (
     `L_EXTENDEDPRICE` AS `bfcol_1`,
     `L_DISCOUNT` AS `bfcol_2`,
     `L_SHIPDATE` AS `bfcol_3`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_1`
 ), `bfcte_3` AS (
   SELECT
     `P_PARTKEY` AS `bfcol_4`
-  FROM `bigframes-dev`.`tpch`.`PART` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PART` AS `bft_0`
 ), `bfcte_4` AS (
   SELECT
     `P_PARTKEY` AS `bfcol_8`,
     `P_TYPE` AS `bfcol_9`
-  FROM `bigframes-dev`.`tpch`.`PART` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`PART` AS `bft_0`
 ), `bfcte_5` AS (
   SELECT
     `bfcol_4`,
@@ -46,8 +46,7 @@ WITH `bfcte_0` AS (
     ) AS `bfcol_51`
   FROM `bfcte_3`
   INNER JOIN `bfcte_2`
-    ON COALESCE(`bfcol_4`, 0) = COALESCE(`bfcol_0`, 0)
-    AND COALESCE(`bfcol_4`, 1) = COALESCE(`bfcol_0`, 1)
+    ON `bfcol_4` = `bfcol_0`
   WHERE
     (
       `bfcol_3` >= CAST('1995-09-01' AS DATE)
@@ -79,8 +78,7 @@ WITH `bfcte_0` AS (
     ) * CAST(REGEXP_CONTAINS(`bfcol_9`, 'PROMO') AS INT64) AS `bfcol_41`
   FROM `bfcte_4`
   INNER JOIN `bfcte_2`
-    ON COALESCE(`bfcol_8`, 0) = COALESCE(`bfcol_0`, 0)
-    AND COALESCE(`bfcol_8`, 1) = COALESCE(`bfcol_0`, 1)
+    ON `bfcol_8` = `bfcol_0`
   WHERE
     (
       `bfcol_3` >= CAST('1995-09-01' AS DATE)
@@ -134,8 +132,6 @@ WITH `bfcte_0` AS (
     `bfcol_6`,
     ANY_VALUE(`bfcol_72`) AS `bfcol_79`
   FROM `bfcte_11`
-  WHERE
-    NOT `bfcol_5` IS NULL AND NOT `bfcol_6` IS NULL
   GROUP BY
     `bfcol_5`,
     `bfcol_6`
@@ -145,8 +141,6 @@ WITH `bfcte_0` AS (
     `bfcol_11`,
     ANY_VALUE(`bfcol_60`) AS `bfcol_65`
   FROM `bfcte_12`
-  WHERE
-    NOT `bfcol_10` IS NULL AND NOT `bfcol_11` IS NULL
   GROUP BY
     `bfcol_10`,
     `bfcol_11`

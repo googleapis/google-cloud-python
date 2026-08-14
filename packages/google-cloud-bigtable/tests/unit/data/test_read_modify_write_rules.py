@@ -13,13 +13,9 @@
 # limitations under the License.
 
 
-import pytest
+from unittest import mock
 
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-except ImportError:  # pragma: NO COVER
-    import mock  # type: ignore
+import pytest
 
 
 class TestBaseReadModifyWriteRule:
@@ -72,9 +68,7 @@ class TestIncrementRule:
             self._target_class()("fam", b"qual", input_amount)
         assert "increment_amount must be an integer" in str(e.value)
 
-    @pytest.mark.parametrize(
-        "large_value", [2**64, 2**64 + 1, -(2**64), -(2**64) - 1]
-    )
+    @pytest.mark.parametrize("large_value", [2**64, 2**64 + 1, -(2**64), -(2**64) - 1])
     def test_ctor_large_values(self, large_value):
         with pytest.raises(ValueError) as e:
             self._target_class()("fam", b"qual", large_value)

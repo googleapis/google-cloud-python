@@ -13,18 +13,17 @@
 # limitations under the License.
 
 import contextlib
-import pytest
-
 from unittest import mock
 
-from google.auth import credentials
+import pytest
 from google.api_core.client_options import ClientOptions
-from google.cloud import environment_vars
+from google.auth import credentials
 from google.cloud.datastore import _http
 
+from google.cloud import environment_vars
+from google.cloud.ndb import _eventloop
 from google.cloud.ndb import client as client_module
 from google.cloud.ndb import context as context_module
-from google.cloud.ndb import _eventloop
 
 
 @contextlib.contextmanager
@@ -56,6 +55,7 @@ class TestClient:
         patch_environ = mock.patch.dict(
             "google.cloud.ndb.client.os.environ",
             {"DATASTORE_EMULATOR_HOST": "foo"},
+            clear=True,
         )
         with patch_environ:
             with patch_credentials("testing"):
@@ -69,9 +69,14 @@ class TestClient:
 
     @staticmethod
     def test_constructor_get_project_from_environ(environ):
-        environ[environment_vars.GCD_DATASET] = "gcd-project"
-        with patch_credentials(None):
-            client = client_module.Client()
+        patch_environ = mock.patch.dict(
+            "google.cloud.ndb.client.os.environ",
+            {environment_vars.GCD_DATASET: "gcd-project"},
+            clear=True,
+        )
+        with patch_environ:
+            with patch_credentials(None):
+                client = client_module.Client()
         assert client.project == "gcd-project"
 
     @staticmethod

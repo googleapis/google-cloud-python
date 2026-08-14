@@ -15,14 +15,59 @@
 import contextlib
 import os
 
-import pytest
-from google.api_core import exceptions
+# MUST set env var before any google-cloud-storage imports occur
+os.environ["ENABLE_GCS_PYTHON_CLIENT_OTEL_TRACES"] = "true"
 
-from google.cloud import kms
-from google.cloud.storage._helpers import _base64_md5hash
-from google.cloud.storage.retry import DEFAULT_RETRY
+# Import OpenTelemetry modules safely at top
+try:
+    from opentelemetry import trace as trace_api
+    from opentelemetry.sdk.trace import TracerProvider, export
+    from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
+        InMemorySpanExporter,
+    )
+except ImportError:
+    trace_api = None
 
-from . import _helpers
+import pytest  # noqa: E402
+from google.api_core import exceptions  # noqa: E402
+
+from google.cloud import kms  # noqa: E402
+from google.cloud.storage._helpers import _base64_md5hash  # noqa: E402
+from google.cloud.storage.retry import DEFAULT_RETRY  # noqa: E402
+
+from . import _helpers  # noqa: E402
+
+if trace_api is not None:
+    _global_exporter = InMemorySpanExporter()
+    _provider = TracerProvider()
+    _provider.add_span_processor(export.SimpleSpanProcessor(_global_exporter))
+
+    # Option to also export telemetry to Google Cloud Trace Console
+    # (for testing in GCE VM)
+    if os.environ.get("ENABLE_GCP_TRACE_EXPORTER", "").lower() in (
+        "1",
+        "true",
+        "yes",
+        "on",
+    ):
+        try:
+            from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
+
+            _provider.add_span_processor(
+                export.BatchSpanProcessor(CloudTraceSpanExporter())
+            )
+        except ImportError:
+            import warnings
+
+            warnings.warn(
+                "ENABLE_GCP_TRACE_EXPORTER is enabled, but "
+                "opentelemetry-exporter-cloud-trace is not installed.",
+                UserWarning,
+            )
+
+    trace_api.set_tracer_provider(_provider)
+else:
+    _global_exporter = None
 
 dirname = os.path.realpath(os.path.dirname(__file__))
 data_dirname = os.path.abspath(os.path.join(dirname, "..", "data"))
@@ -415,3 +460,11 @@ def universe_domain_iam_client(
     )
 
     return iam_client
+
+
+@pytest.fixture(scope="function")
+def exporter():
+    if _global_exporter is None:
+        pytest.fail("OpenTelemetry is not installed or failed to initialize.")
+    _global_exporter.clear()
+    return _global_exporter

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -761,7 +761,7 @@ class AdBreakServiceClient(metaclass=AdBreakServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> ad_break_messages.AdBreak:
-        r"""API to retrieve an ``AdBreak`` object.
+        r"""Retrieves an ``AdBreak`` object.
 
         Query an ad break by its resource name or custom asset key.
         Check the resource's ``breakState`` field to determine its
@@ -874,7 +874,7 @@ class AdBreakServiceClient(metaclass=AdBreakServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListAdBreaksPager:
-        r"""API to retrieve a list of ``AdBreak`` objects.
+        r"""Lists ``AdBreak`` objects.
 
         By default, when no ``orderBy`` query parameter is specified, ad
         breaks are ordered reverse chronologically. However, ad breaks
@@ -1006,7 +1006,7 @@ class AdBreakServiceClient(metaclass=AdBreakServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> ad_break_messages.AdBreak:
-        r"""API to create an ``AdBreak`` object.
+        r"""Creates an ``AdBreak`` object.
 
         Informs DAI of an upcoming ad break for a live stream event,
         with an optional expected start time. DAI will begin decisioning
@@ -1149,7 +1149,7 @@ class AdBreakServiceClient(metaclass=AdBreakServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> ad_break_messages.AdBreak:
-        r"""API to update an ``AdBreak`` object.
+        r"""Updates an ``AdBreak`` object.
 
         Modify an ad break when its state is
         [``SCHEDULED``][google.ads.admanager.v1.AdBreakStateEnum.AdBreakState.SCHEDULED].
@@ -1192,7 +1192,7 @@ class AdBreakServiceClient(metaclass=AdBreakServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. The list of fields to
+                Optional. The list of fields to
                 update.
 
                 This corresponds to the ``update_mask`` field
@@ -1269,7 +1269,7 @@ class AdBreakServiceClient(metaclass=AdBreakServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""API to delete an ``AdBreak`` object.
+        r"""Deletes an ``AdBreak`` object.
 
         Deletes and cancels an incomplete ad break, mitigating the need
         to wait for the current break to serve before recreating an ad
@@ -1441,12 +1441,69 @@ class AdBreakServiceClient(metaclass=AdBreakServiceClientMeta):
             self._add_cred_info_for_auth_errors(e)
             raise e
 
+    def cancel_operation(
+        self,
+        request: Optional[Union[operations_pb2.CancelOperationRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
+        r"""Starts asynchronous cancellation on a long-running operation.
+
+        The server makes a best effort to cancel the operation, but success
+        is not guaranteed.  If the server doesn't support this method, it returns
+        `google.rpc.Code.UNIMPLEMENTED`.
+
+        Args:
+            request (:class:`~.operations_pb2.CancelOperationRequest`):
+                The request object. Request message for
+                `CancelOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        Returns:
+            None
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if request is None:
+            request_pb = operations_pb2.CancelOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.CancelOperationRequest(**request)
+        else:
+            request_pb = request
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.cancel_operation]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        rpc(
+            request_pb,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("AdBreakServiceClient",)

@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-""" Shared pytest fixtures."""
+"""Shared pytest fixtures."""
 
 import time
 import uuid
@@ -19,26 +19,19 @@ import uuid
 from google.api_core import exceptions
 from google.cloud import spanner_admin_database_v1
 from google.cloud.spanner_admin_database_v1.types.common import DatabaseDialect
+from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
 from google.cloud.spanner_v1 import backup, client, database, instance
 import pytest
 from test_utils import retry
-from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
 
 INSTANCE_CREATION_TIMEOUT = 560  # seconds
 
 OPERATION_TIMEOUT_SECONDS = 120  # seconds
 
 retry_429 = retry.RetryErrors(exceptions.ResourceExhausted, delay=15)
-
-
-@pytest.fixture(scope="module")
-def sample_name():
-    """Sample testcase modules must define this fixture.
-
-    The name is used to label the instance created by the sample, to
-    aid in debugging leaked instances.
-    """
-    raise NotImplementedError("Define 'sample_name' fixture in sample test driver")
+retry_cleanup = retry.RetryErrors(
+    (exceptions.ResourceExhausted, exceptions.FailedPrecondition), max_tries=6, delay=15
+)
 
 
 @pytest.fixture(scope="module")
@@ -60,20 +53,30 @@ def spanner_client():
 
 
 def scrub_instance_ignore_not_found(to_scrub):
-    """Helper for func:`cleanup_old_instances`"""
+    """Robustly delete an instance, its databases, and backups."""
     try:
-        for backup_pb in to_scrub.list_backups():
-            backup.Backup.from_pb(backup_pb, to_scrub).delete()
+        for database_pb in to_scrub.list_databases():
+            try:
+                database.Database.from_pb(database_pb, to_scrub).drop()
+            except exceptions.GoogleAPICallError:
+                pass
 
-        retry_429(to_scrub.delete)()
-    except exceptions.NotFound:
+        for backup_pb in to_scrub.list_backups():
+            try:
+                b = backup.Backup.from_pb(backup_pb, to_scrub)
+                retry_cleanup(b.delete)()
+            except exceptions.GoogleAPICallError:
+                pass
+
+        retry_cleanup(to_scrub.delete)()
+    except exceptions.GoogleAPICallError:
         pass
 
 
 @pytest.fixture(scope="session")
 def cleanup_old_instances(spanner_client):
-    """Delete instances, created by samples, that are older than an hour."""
-    cutoff = int(time.time()) - 1 * 60 * 60
+    """Delete instances, created by samples, that are older than 4 hours."""
+    cutoff = int(time.time()) - 4 * 60 * 60
     instance_filter = "labels.cloud_spanner_samples:true"
 
     for instance_pb in spanner_client.list_instances(filter_=instance_filter):
@@ -86,31 +89,31 @@ def cleanup_old_instances(spanner_client):
                 scrub_instance_ignore_not_found(inst)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def instance_id():
     """Unique id for the instance used in samples."""
     return f"test-instance-{uuid.uuid4().hex[:10]}"
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def multi_region_instance_id():
     """Unique id for the multi-region instance used in samples."""
     return f"multi-instance-{uuid.uuid4().hex[:10]}"
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def instance_config(spanner_client):
     return "{}/instanceConfigs/{}".format(
         spanner_client.project_name, "regional-us-central1"
     )
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def multi_region_instance_config(spanner_client):
     return "{}/instanceConfigs/{}".format(spanner_client.project_name, "nam3")
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def proto_descriptor_file():
     import os
 
@@ -121,13 +124,12 @@ def proto_descriptor_file():
     file.close()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def sample_instance(
     spanner_client,
     cleanup_old_instances,
     instance_id,
     instance_config,
-    sample_name,
 ):
     operation = spanner_client.instance_admin_api.create_instance(
         parent=spanner_client.project_name,
@@ -138,7 +140,7 @@ def sample_instance(
             node_count=1,
             labels={
                 "cloud_spanner_samples": "true",
-                "sample_name": sample_name,
+                "sample_name": "shared-samples",
                 "created": str(int(time.time())),
             },
             edition=spanner_instance_admin.Instance.Edition.ENTERPRISE_PLUS,  # Optional
@@ -154,29 +156,22 @@ def sample_instance(
 
     yield sample_instance
 
-    for database_pb in sample_instance.list_databases():
-        database.Database.from_pb(database_pb, sample_instance).drop()
-
-    for backup_pb in sample_instance.list_backups():
-        backup.Backup.from_pb(backup_pb, sample_instance).delete()
-
-    sample_instance.delete()
+    scrub_instance_ignore_not_found(sample_instance)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def multi_region_instance(
     spanner_client,
     cleanup_old_instances,
     multi_region_instance_id,
     multi_region_instance_config,
-    sample_name,
 ):
     multi_region_instance = spanner_client.instance(
         multi_region_instance_id,
         multi_region_instance_config,
         labels={
             "cloud_spanner_samples": "true",
-            "sample_name": sample_name,
+            "sample_name": "shared-samples",
             "created": str(int(time.time())),
         },
     )
@@ -189,13 +184,7 @@ def multi_region_instance(
 
     yield multi_region_instance
 
-    for database_pb in multi_region_instance.list_databases():
-        database.Database.from_pb(database_pb, multi_region_instance).drop()
-
-    for backup_pb in multi_region_instance.list_backups():
-        backup.Backup.from_pb(backup_pb, multi_region_instance).delete()
-
-    multi_region_instance.delete()
+    scrub_instance_ignore_not_found(multi_region_instance)
 
 
 @pytest.fixture(scope="module")
@@ -204,7 +193,7 @@ def database_id():
 
     Sample testcase modules can override as needed.
     """
-    return "my-database-id"
+    return f"my-db-{uuid.uuid4().hex[:10]}"
 
 
 @pytest.fixture(scope="module")

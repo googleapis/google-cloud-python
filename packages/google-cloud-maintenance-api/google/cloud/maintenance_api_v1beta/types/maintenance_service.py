@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -352,7 +352,7 @@ class ResourceMaintenance(proto.Message):
         user_controllable (bool):
             Output only. Indicates whether the user has
             some control over that maintenance, either
-            proactively before maintenance was scheduled
+             proactively before maintenance was scheduled
             with maintenance policy or  with reactive
             controls after it was scheduled (see controls
             field)

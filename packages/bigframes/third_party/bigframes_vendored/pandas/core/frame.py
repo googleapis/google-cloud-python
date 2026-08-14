@@ -66,7 +66,7 @@ class DataFrame(generic.NDFrame):
 
             >>> df = bpd.DataFrame({'col1': [1, 2], 'col2': [3, 4]})
             >>> df.axes[1:]
-            [Index(['col1', 'col2'], dtype='object')]
+            [Index(['col1', 'col2'], dtype='str')]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -550,6 +550,49 @@ class DataFrame(generic.NDFrame):
             ValueError:
                 If an invalid value provided for `compression` that is not one of
                 ``None``, ``snappy``, or ``gzip``.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def to_csv(
+        self,
+        path_or_buf=None,
+        sep=",",
+        *,
+        header: bool = True,
+        index: bool = True,
+        allow_large_results: Optional[bool] = None,
+    ) -> Optional[str]:
+        """
+        Write object to a comma-separated values (csv) file.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+
+            >>> df = bpd.DataFrame({'col1': [1, 2], 'col2': [3, 4]})
+            >>> df.to_csv()
+            \',col1,col2\\n0,1,3\\n1,2,4\\n\'
+
+        Args:
+            path_or_buf (str, path object, file-like object, or None, default None):
+                String, path object (implementing os.PathLike[str]), or file-like object
+                implementing a write() function. If None, the result is returned as a string.
+                If a non-binary file object is passed, it should be opened with newline='',
+                disabling universal newlines. If a binary file object is passed,
+                mode might need to contain a 'b'.
+                Must contain a wildcard character '*' if this is a GCS path.
+            sep (str, default ','):
+                String of length 1. Field delimiter for the output file.
+            header (bool, default True):
+                Write out the column names.
+            index (bool, default True):
+                Write row names (index).
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow large
+                query results over the default size limit of 10 GB.
+
+        Returns:
+            If path_or_buf is None, returns the resulting csv format as a string. Otherwise returns None.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -1920,7 +1963,7 @@ class DataFrame(generic.NDFrame):
             ...     'B': [4, 5, 6],
             ...     })
             >>> df.keys()
-            Index(['A', 'B'], dtype='object')
+            Index(['A', 'B'], dtype='str')
 
         Returns:
             pandas.Index: Info axis.
@@ -2210,7 +2253,7 @@ class DataFrame(generic.NDFrame):
         *,
         inplace: bool = False,
         ascending: bool | Sequence[bool] = True,
-        kind: str = "quicksort",
+        kind: str | None = None,
         na_position: Literal["first", "last"] = "last",
     ):
         """Sort by the values along row axis.
@@ -2296,7 +2339,7 @@ class DataFrame(generic.NDFrame):
                 the by.
             inplace (bool, default False):
                 If True, perform operation in-place.
-            kind (str, default 'quicksort'):
+            kind (str, default None):
                 Choice of sorting algorithm. Accepts 'quicksort', 'mergesort',
                 'heapsort', 'stable'. Ignored except when determining whether to
                 sort stably. 'mergesort' or 'stable' will result in stable reorder.
@@ -2320,6 +2363,7 @@ class DataFrame(generic.NDFrame):
         axis: str | int = 0,
         ascending: bool = True,
         inplace: bool = False,
+        kind: str | None = None,
         na_position: Literal["first", "last"] = "last",
     ):
         """Sort object by labels (along an axis).
@@ -2332,6 +2376,10 @@ class DataFrame(generic.NDFrame):
                 Sort ascending vs. descending.
             inplace (bool, default False):
                 Whether to modify the DataFrame rather than creating a new one.
+            kind (str, default None):
+                Choice of sorting algorithm. Accepts 'quicksort', 'mergesort',
+                'heapsort', 'stable'. Ignored except when determining whether to
+                sort stably. 'mergesort' or 'stable' will result in stable reorder.
             na_position ({'first', 'last'}, default 'last'):
                 Puts NaNs at the beginning if `first`; `last` puts NaNs at the end.
                 Not implemented for MultiIndex.
@@ -4422,6 +4470,22 @@ class DataFrame(generic.NDFrame):
             <BLANKLINE>
             [7 rows x 2 columns]
 
+        With experimental Python Transpiler enabled, you can use some lambda functions without
+        deploying them as remote functions.
+
+            >>> bpd.options.experiments.enable_python_transpiler = True
+            >>> df_minutes.map(lambda hours: hours / 60)
+            system_minutes  user_minutes
+            0             0.0           0.0
+            1             0.5          0.25
+            2             1.0          1.25
+            3            <NA>           1.5
+            4             1.5           0.1
+            5             2.0          <NA>
+            6            <NA>          <NA>
+            <BLANKLINE>
+            [7 rows x 2 columns]
+
         Args:
             func (function):
                 Python function wrapped by ``remote_function`` decorator,
@@ -4771,7 +4835,8 @@ class DataFrame(generic.NDFrame):
 
             >>> df = bpd.DataFrame(data).set_index("timestamp_col")
             >>> df.resample(rule="7s").min()
-                                int64_col  int64_too
+                                 int64_col  int64_too
+            timestamp_col
             2021-01-01 12:59:55          0         10
             2021-01-01 13:00:02          2         12
             2021-01-01 13:00:09          9         19
@@ -4784,7 +4849,8 @@ class DataFrame(generic.NDFrame):
 
             >>> df = bpd.DataFrame(data)
             >>> df.resample(rule="7s", on = "timestamp_col", origin="start").min()
-                                int64_col  int64_too
+                                 int64_col  int64_too
+            timestamp_col
             2021-01-01 13:00:00          0         10
             2021-01-01 13:00:07          7         17
             2021-01-01 13:00:14         14         24
@@ -4999,6 +5065,15 @@ class DataFrame(generic.NDFrame):
             ...     return result
 
             >>> df.apply(foo, axis=1)  # doctest: +SKIP
+            0    2.6
+            1    3.8
+            dtype: Float64
+
+        With experimental Python Transpiler enabled, you can use some lambda functions without
+        deploying them as remote functions:
+
+            >>> bpd.options.experiments.enable_python_transpiler = True
+            >>> df.apply(lambda row: 1 + row.col1 + row.col2/row.col3, axis=1)
             0    2.6
             1    3.8
             dtype: Float64
@@ -6585,7 +6660,7 @@ class DataFrame(generic.NDFrame):
             <BLANKLINE>
             [3 rows x 3 columns]
             >>> df.columns
-            Index(['Name', 'Age', 'Location'], dtype='object')
+            Index(['Name', 'Age', 'Location'], dtype='str')
 
         You can also set new labels for columns.
 
@@ -6598,7 +6673,7 @@ class DataFrame(generic.NDFrame):
             <BLANKLINE>
             [3 rows x 3 columns]
             >>> df.columns
-            Index(['NewName', 'NewAge', 'NewLocation'], dtype='object')
+            Index(['NewName', 'NewAge', 'NewLocation'], dtype='str')
 
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
@@ -7285,7 +7360,7 @@ class DataFrame(generic.NDFrame):
         Make plots of Dataframes.
 
         Returns:
-            bigframes.operations.plotting.PlotAccessor:
+            bigframes.pandas.api.typing.PlotAccessor:
                 An accessor making plots.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

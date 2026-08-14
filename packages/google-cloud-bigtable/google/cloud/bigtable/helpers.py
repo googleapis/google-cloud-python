@@ -12,9 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import TypeVar, Iterable, Generator, Tuple
-
 from itertools import islice
+from typing import Generator, Iterable, Tuple, TypeVar
 
 T = TypeVar("T")
 

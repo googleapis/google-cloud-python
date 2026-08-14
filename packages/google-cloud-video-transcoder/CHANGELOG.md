@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-video-transcoder/#history
 
+## [1.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-transcoder-v1.20.0...google-cloud-video-transcoder-v1.21.0) (2026-06-22)
+
+
+### Features
+
+* regenerate google-cloud-[t-w] packages ([#17076](https://github.com/googleapis/google-cloud-python/issues/17076)) ([928a03c](https://github.com/googleapis/google-cloud-python/commit/928a03ce41fbcb82398636e89f840c00c7749cf8))
+
 ## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-transcoder-v1.19.0...google-cloud-video-transcoder-v1.20.0) (2026-03-26)
 
 

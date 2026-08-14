@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
+
 import pytest
 
 import bigframes.operations as bf_ops
 from bigframes.core import array_value, nodes, ordering
-from bigframes.session import polars_executor
+from bigframes.session import execution_spec, polars_executor
 from bigframes.testing.engine_utils import assert_equivalence_execution
 
 pytest.importorskip("polars")
@@ -96,7 +98,10 @@ def test_polars_engines_skips_unrecognized_order_expr(
         ),
     )
     node = nodes.OrderByNode(node, ORDER_EXPRESSIONS)
-    assert engine.execute(node, ordered=True) is None
+    result = asyncio.run(
+        engine.execute(node, execution_spec.ExecutionSpec(ordered=True))
+    )
+    assert result is None
 
 
 def apply_reverse(node: nodes.BigFrameNode) -> nodes.BigFrameNode:

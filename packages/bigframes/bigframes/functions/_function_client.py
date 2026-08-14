@@ -17,36 +17,24 @@ from __future__ import annotations
 
 import logging
 import os
-import random
 import re
 import shutil
-import string
 import tempfile
 import textwrap
 import types
 import warnings
-from typing import TYPE_CHECKING, Any, Optional, cast
+from typing import Any, cast
 
+import google.api_core.exceptions
+import google.api_core.retry
 import requests
+from google.cloud import bigquery, functions_v2
 
 import bigframes.exceptions as bfe
 import bigframes.formatting_helpers as bf_formatting
 import bigframes.functions.function_template as bff_template
 import bigframes.functions.udf_def as udf_def
-
-if TYPE_CHECKING:
-    from bigframes.session import Session
-
-import google.api_core.exceptions
-import google.api_core.retry
-from google.cloud import bigquery, functions_v2
-
 from bigframes.functions import _utils
-from bigframes.functions._utils import (
-    _BIGFRAMES_FUNCTION_PREFIX,
-    _BQ_FUNCTION_NAME_SEPERATOR,
-    _GCF_FUNCTION_NAME_SEPERATOR,
-)
 
 logger = logging.getLogger(__name__)
 
@@ -71,94 +59,85 @@ _VPC_EGRESS_SETTINGS_MAP = types.MappingProxyType(
 # BQ managed functions (@udf) currently only support Python 3.11.
 _MANAGED_FUNC_PYTHON_VERSION = "python-3.11"
 
-_DEFAULT_FUNCTION_MEMORY_MIB = 1024
-
 
 class FunctionClient:
-    # Wait time (in seconds) for an IAM binding to take effect after creation.
-    _iam_wait_seconds = 120
-
     # TODO(b/392707725): Convert all necessary parameters for cloud function
     # deployment into method parameters.
     def __init__(
         self,
-        gcp_project_id,
-        bq_location,
-        bq_dataset,
-        bq_client,
+        gcp_project_id: str,
+        bq_location: str,
+        bq_client: bigquery.Client,
         bq_connection_manager,
-        cloud_function_region=None,
-        cloud_functions_client=None,
-        cloud_function_service_account=None,
-        cloud_function_kms_key_name=None,
-        cloud_function_docker_repository=None,
-        cloud_build_service_account=None,
-        *,
-        session: Session,
+        cloud_functions_client: functions_v2.FunctionServiceClient,
+        publisher,
     ):
         self._gcp_project_id = gcp_project_id
         self._bq_location = bq_location
-        self._bq_dataset = bq_dataset
         self._bq_client = bq_client
         self._bq_connection_manager = bq_connection_manager
-        self._session = session
-
-        # Optional attributes only for remote functions.
-        self._cloud_function_region = cloud_function_region
+        self._publisher = publisher
         self._cloud_functions_client = cloud_functions_client
-        self._cloud_function_service_account = cloud_function_service_account
-        self._cloud_function_kms_key_name = cloud_function_kms_key_name
-        self._cloud_function_docker_repository = cloud_function_docker_repository
-        self._cloud_build_service_account = cloud_build_service_account
 
-    def _create_bq_connection(self, connection_id: str) -> None:
-        if self._bq_connection_manager:
-            self._bq_connection_manager.create_bq_connection(
-                self._gcp_project_id,
-                self._bq_location,
-                connection_id,
-                "run.invoker",
-            )
+        self._cf_location = _utils.gcf_location_from_bq_location(bq_location)
 
-    def _ensure_dataset_exists(self) -> None:
+    @property
+    def cloudfunctions_region(self) -> str:
+        return self._cf_location
+
+    def _create_bq_connection(
+        self,
+        connection_id: str,
+        bq_project_id: str,
+    ) -> None:
+        self._bq_connection_manager.create_bq_connection(
+            bq_project_id,
+            self._bq_location,
+            connection_id,
+            "run.invoker",
+        )
+
+    def _ensure_dataset_exists(self, dataset_ref: bigquery.DatasetReference) -> None:
         # Make sure the dataset exists, i.e. if it doesn't exist, go ahead and
         # create it.
-        dataset = bigquery.Dataset(
-            bigquery.DatasetReference.from_string(
-                self._bq_dataset, default_project=self._gcp_project_id
-            )
-        )
-        dataset.location = self._bq_location
         try:
             # This check does not require bigquery.datasets.create IAM
             # permission. So, if the data set already exists, then user can work
             # without having that permission.
-            self._bq_client.get_dataset(dataset)
+            self._bq_client.get_dataset(dataset_ref)
         except google.api_core.exceptions.NotFound:
             # This requires bigquery.datasets.create IAM permission.
+            dataset = bigquery.Dataset(dataset_ref)
+            dataset.location = self._bq_location
             self._bq_client.create_dataset(dataset, exists_ok=True)
 
     def _create_bq_function(self, create_function_ddl: str) -> None:
         # TODO(swast): plumb through the original, user-facing api_name.
         import bigframes.session._io.bigquery
 
-        _, query_job = bigframes.session._io.bigquery.start_query_with_client(
-            cast(bigquery.Client, self._session.bqclient),
+        _, query_job = bigframes.session._io.bigquery.start_query_with_job(
+            self._bq_client,
             create_function_ddl,
             job_config=bigquery.QueryJobConfig(),
-            location=None,
+            location=self._bq_location,
             project=None,
             timeout=None,
             metrics=None,
-            query_with_job=True,
-            publisher=self._session._publisher,
+            publisher=self._publisher,
         )
         logger.info(f"Created bigframes function {query_job.ddl_target_routine}")
 
     def _format_function_options(self, function_options: dict) -> str:
+        def format_val(val):
+            if isinstance(val, str):
+                return f"'{val}'"
+            if isinstance(val, (list, tuple)):
+                return str(list(val))
+            return str(val)
+
         return ", ".join(
             [
-                f"{key}='{val}'" if isinstance(val, str) else f"{key}={val}"
+                f"{key}={format_val(val)}"
                 for key, val in function_options.items()
                 if val is not None
             ]
@@ -166,12 +145,22 @@ class FunctionClient:
 
     def create_bq_remote_function(
         self,
-        name: str,
+        routine_ref: bigquery.RoutineReference,
         udf_def: udf_def.RemoteFunctionConfig,
+        maybe_reuse: bool,
+        try_create_connection: bool,
     ):
         """Create a BigQuery remote function given the artifacts of a user defined
         function and the http endpoint of a corresponding cloud function."""
-        self._create_bq_connection(udf_def.connection_id)
+
+        if maybe_reuse:
+            existing_rf_spec = self.get_remote_function_specs(routine_ref)
+            if existing_rf_spec and existing_rf_spec == udf_def:
+                logger.info(f"Remote function {str(routine_ref)} already exists.")
+                return
+
+        if try_create_connection:
+            self._create_bq_connection(udf_def.connection_id, routine_ref.project)
 
         # Create BQ function
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#create_a_remote_function_2
@@ -194,22 +183,24 @@ class FunctionClient:
         import bigframes.core.utils
 
         # removes anything that isn't letter, number or underscore
-        _validate_routine_name(name)
-        bq_function_name_escaped = bigframes.core.sql.identifier(name)
+        _validate_routine_name(routine_ref.routine_id)
+        bq_function_name_escaped = bigframes.core.sql.identifier(routine_ref.routine_id)
         create_function_ddl = f"""
-            CREATE OR REPLACE FUNCTION `{self._gcp_project_id}.{self._bq_dataset}`.{bq_function_name_escaped}({udf_def.signature.to_sql_input_signature()})
+            CREATE OR REPLACE FUNCTION `{routine_ref.project}.{routine_ref.dataset_id}`.{bq_function_name_escaped}({udf_def.signature.to_sql_input_signature()})
             RETURNS {udf_def.signature.with_devirtualize().output.sql_type}
-            REMOTE WITH CONNECTION `{self._gcp_project_id}.{self._bq_location}.{udf_def.connection_id}`
+            REMOTE WITH CONNECTION `{routine_ref.project}.{self._bq_location}.{udf_def.connection_id}`
             OPTIONS ({remote_function_options_str})"""
 
         logger.info(f"Creating BQ remote function: {create_function_ddl}")
 
-        self._ensure_dataset_exists()
+        self._ensure_dataset_exists(
+            bigquery.DatasetReference(routine_ref.project, routine_ref.dataset_id)
+        )
         self._create_bq_function(create_function_ddl)
 
     def provision_bq_managed_function(
         self,
-        name: Optional[str],
+        routine_ref: bigquery.RoutineReference,
         config: udf_def.ManagedFunctionConfig,
     ):
         """Create a BigQuery managed function."""
@@ -255,20 +246,13 @@ class FunctionClient:
             managed_function_options
         )
 
-        bq_function_name = name
-        if not bq_function_name:
-            # Compute a unique hash representing the artifact definition.
-            bq_function_name = get_managed_function_name(
-                config, self._session.session_id
-            )
-
         persistent_func_id = (
-            f"`{self._gcp_project_id}.{self._bq_dataset}`.{bq_function_name}"
+            f"`{routine_ref.project}.{routine_ref.dataset_id}.{routine_ref.routine_id}`"
         )
 
         with_connection_clause = (
             (
-                f"WITH CONNECTION `{self._gcp_project_id}.{self._bq_location}.{config.bq_connection_id}`"
+                f"WITH CONNECTION `{routine_ref.project}.{self._bq_location}.{config.bq_connection_id}`"
             )
             if config.bq_connection_id
             else ""
@@ -298,26 +282,22 @@ class FunctionClient:
             .replace("__UDF_PLACE_HOLDER__", python_code_block)
         )
 
-        self._ensure_dataset_exists()
+        self._ensure_dataset_exists(
+            bigquery.DatasetReference(routine_ref.project, routine_ref.dataset_id)
+        )
         self._create_bq_function(create_function_ddl)
-
-        return bq_function_name
 
     def get_cloud_function_fully_qualified_parent(self):
         "Get the fully qualilfied parent for a cloud function."
         return self._cloud_functions_client.common_location_path(
-            self._gcp_project_id, self._cloud_function_region
+            self._gcp_project_id, self._cf_location
         )
 
     def get_cloud_function_fully_qualified_name(self, name):
         "Get the fully qualilfied name for a cloud function."
         return self._cloud_functions_client.function_path(
-            self._gcp_project_id, self._cloud_function_region, name
+            self._gcp_project_id, self._cf_location, name
         )
-
-    def get_remote_function_fully_qualilfied_name(self, name):
-        "Get the fully qualilfied name for a BQ remote function."
-        return f"{self._gcp_project_id}.{self._bq_dataset}.{name}"
 
     def get_cloud_function_endpoint(self, name) -> str | None:
         """Get the http endpoint of a cloud function if it exists."""
@@ -331,7 +311,7 @@ class FunctionClient:
             pass
         return None
 
-    def generate_cloud_function_code(
+    def _generate_cloud_function_code(
         self,
         code_def: udf_def.CodeDef,
         directory,
@@ -378,13 +358,22 @@ class FunctionClient:
         config = func_def
 
         # Build and deploy folder structure containing cloud function
-        with tempfile.TemporaryDirectory() as directory:
-            entry_point = self.generate_cloud_function_code(
+        with tempfile.TemporaryDirectory() as scratch_dir:
+            # Keep the generated sources in a subdirectory so the archive can be
+            # written inside the 0700 TemporaryDirectory. shutil.make_archive
+            # appends ".zip" to base_name, so archiving `directory` into itself
+            # would leave a world-readable copy of the (pickled) user code as a
+            # sibling of the temp dir that also survives the cleanup.
+            directory = os.path.join(scratch_dir, "src")
+            os.mkdir(directory)
+            entry_point = self._generate_cloud_function_code(
                 config.code,
                 directory,
                 udf_signature=config.signature,
             )
-            archive_path = shutil.make_archive(directory, "zip", directory)
+            archive_path = shutil.make_archive(
+                os.path.join(scratch_dir, "source"), "zip", directory
+            )
 
             # We are creating cloud function source code from the currently running
             # python version. Use the same version to deploy. This is necessary
@@ -397,7 +386,7 @@ class FunctionClient:
 
             # Determine an upload URL for user code
             upload_url_request = functions_v2.GenerateUploadUrlRequest(
-                kms_key_name=self._cloud_function_kms_key_name
+                kms_key_name=config.kms_key_name
             )
             upload_url_request.parent = self.get_cloud_function_fully_qualified_parent()
             upload_url_response = self._cloud_functions_client.generate_upload_url(
@@ -436,15 +425,14 @@ class FunctionClient:
             function.build_config.source.storage_source.object_ = (
                 upload_url_response.storage_source.object_
             )
-            function.build_config.docker_repository = (
-                self._cloud_function_docker_repository
-            )
+            if config.docker_repository is not None:
+                function.build_config.docker_repository = config.docker_repository
 
-            if self._cloud_build_service_account:
+            if config.cloud_build_service_account is not None:
                 canonical_cloud_build_service_account = (
-                    self._cloud_build_service_account
-                    if "/" in self._cloud_build_service_account
-                    else f"projects/{self._gcp_project_id}/serviceAccounts/{self._cloud_build_service_account}"
+                    config.cloud_build_service_account
+                    if "/" in config.cloud_build_service_account
+                    else f"projects/{self._gcp_project_id}/serviceAccounts/{config.cloud_build_service_account}"
                 )
                 function.build_config.service_account = (
                     canonical_cloud_build_service_account
@@ -484,9 +472,10 @@ class FunctionClient:
                     functions_v2.ServiceConfig.VpcConnectorEgressSettings,
                     _VPC_EGRESS_SETTINGS_MAP[vpc_connector_egress_settings],
                 )
-            function.service_config.service_account_email = (
-                self._cloud_function_service_account
-            )
+            if config.cloud_run_service_account:
+                function.service_config.service_account_email = (
+                    config.cloud_run_service_account
+                )
             if config.concurrency:
                 function.service_config.max_instance_request_concurrency = (
                     config.concurrency
@@ -512,7 +501,8 @@ class FunctionClient:
                 functions_v2.ServiceConfig.IngressSettings,
                 _INGRESS_SETTINGS_MAP[config.ingress_settings],
             )
-            function.kms_key_name = self._cloud_function_kms_key_name
+            if config.kms_key_name:
+                function.kms_key_name = config.kms_key_name
             create_function_request.function = function
 
             # Create the cloud function and wait for it to be ready to use
@@ -550,127 +540,13 @@ class FunctionClient:
         logger.info(f"Successfully created cloud function {name} with uri ({endpoint})")
         return endpoint
 
-    def provision_bq_remote_function(
-        self,
-        def_,
-        func_signature: udf_def.UdfSignature,
-        reuse: bool,
-        name: str | None,
-        package_requirements: tuple[str, ...],
-        max_batching_rows: int | None,
-        cloud_function_timeout: int | None,
-        cloud_function_max_instance_count: int | None,
-        cloud_function_vpc_connector: str | None,
-        cloud_function_vpc_connector_egress_settings: str | None,
-        cloud_function_memory_mib: int | None,
-        cloud_function_cpus: float | None,
-        cloud_function_ingress_settings: str,
-        bq_connection_id: str,
-    ):
-        """Provision a BigQuery remote function."""
-        # Augment user package requirements with any internal package
-        # requirements
-        full_package_requirements = _utils.get_updated_package_requirements(
-            package_requirements, func_signature.is_row_processor
-        )
-
-        if cloud_function_memory_mib is None:
-            cloud_function_memory_mib = _DEFAULT_FUNCTION_MEMORY_MIB
-
-        # assumption is most bigframes functions are cpu bound, single-threaded and many won't release GIL
-        # therefore, want to allocate a worker for each cpu, and allow a concurrent request per worker
-        expected_milli_cpus = (
-            int(cloud_function_cpus * 1000)
-            if (cloud_function_cpus is not None)
-            else _infer_milli_cpus_from_memory(cloud_function_memory_mib)
-        )
-        workers = -(expected_milli_cpus // -1000)  # ceil(cpus) without invoking floats
-        threads = 4  # (per worker)
-        # max concurrency==1 for vcpus < 1 hard limit from cloud run
-        concurrency = (workers * threads) if (expected_milli_cpus >= 1000) else 1
-
-        cloud_func_spec = udf_def.CloudRunFunctionConfig(
-            code=udf_def.CodeDef.from_func(def_, full_package_requirements),
-            signature=func_signature,
-            timeout_seconds=cloud_function_timeout,
-            max_instance_count=cloud_function_max_instance_count,
-            vpc_connector=cloud_function_vpc_connector,
-            vpc_connector_egress_settings=cloud_function_vpc_connector_egress_settings
-            or "private-ranges-only",
-            memory_mib=cloud_function_memory_mib,
-            cpus=cloud_function_cpus,
-            ingress_settings=cloud_function_ingress_settings,
-            workers=workers,
-            threads=threads,
-            concurrency=concurrency,
-        )
-
-        # If reuse of any existing function with the same name (indicated by the
-        # same hash of its source code and config) is not intended, then attach a unique
-        # suffix to the intended function name to make it unique.
-        random_suffix = "".join(
-            random.choices(string.ascii_lowercase + string.digits, k=4)
-        )
-        # Derive the name of the cloud function underlying the intended BQ
-        # remote function. Use the session id to identify the GCF for unnamed
-        # functions. The named remote functions are treated as a persistant
-        # artifacts, so let's keep them independent of session id, which also
-        # makes their naming more stable for the same udf code
-        cloud_function_name = get_cloud_function_name(
-            cloud_func_spec,
-            session_id=self._session.session_id if (name is None) else None,
-            uniq_suffix=random_suffix if (not reuse) else None,
-        )
-
-        cf_endpoint = self.get_cloud_function_endpoint(cloud_function_name)
-        # Create the cloud function if it does not exist
-        if not cf_endpoint:
-            cf_endpoint = self.create_cloud_function(
-                cloud_function_name, cloud_func_spec
-            )
-        else:
-            logger.info(f"Cloud function {cloud_function_name} already exists.")
-
-        intended_rf_spec = udf_def.RemoteFunctionConfig(
-            endpoint=cf_endpoint,
-            connection_id=bq_connection_id,
-            max_batching_rows=max_batching_rows or 1000,
-            signature=func_signature,
-            bq_metadata=func_signature.protocol_metadata,
-        )
-        remote_function_name = name or get_bigframes_function_name(
-            intended_rf_spec,
-            self._session.session_id,
-            random_suffix if (not reuse) else None,
-        )
-
-        if reuse:
-            existing_rf_spec = self.get_remote_function_specs(remote_function_name)
-            # Create the BQ remote function in following circumstances:
-            # 1. It does not exist
-            # 2. It exists but the existing remote function has different
-            #    configuration than intended
-            created_new = False
-            if not existing_rf_spec or (existing_rf_spec != intended_rf_spec):
-                self.create_bq_remote_function(remote_function_name, intended_rf_spec)
-                created_new = True
-            else:
-                logger.info(f"Remote function {remote_function_name} already exists.")
-
-            return remote_function_name, cloud_function_name, created_new
-        else:
-            self.create_bq_remote_function(remote_function_name, intended_rf_spec)
-            return remote_function_name, cloud_function_name, True
-
     def get_remote_function_specs(
-        self, remote_function_name: str
+        self, remote_function_name: bigquery.RoutineReference
     ) -> udf_def.RemoteFunctionConfig | None:
         """Check whether a remote function already exists for the udf."""
         try:
-            routine = self._bq_client.get_routine(
-                f"{self._gcp_project_id}.{self._bq_dataset}.{remote_function_name}"
-            )
-            if routine.reference.routine_id == remote_function_name:
+            routine = self._bq_client.get_routine(str(remote_function_name))
+            if routine.reference == remote_function_name:
                 try:
                     return udf_def.RemoteFunctionConfig.from_bq_routine(routine)
                 except udf_def.ReturnTypeMissingError:
@@ -683,40 +559,17 @@ class FunctionClient:
             pass
         return None
 
+    def delete_routine(self, routine_name: bigquery.RoutineReference) -> None:
+        self._bq_client.delete_routine(str(routine_name), not_found_ok=True)
 
-def get_cloud_function_name(
-    function_def: udf_def.CloudRunFunctionConfig, session_id=None, uniq_suffix=None
-):
-    "Get a name for the cloud function for the given user defined function."
-    parts = [_BIGFRAMES_FUNCTION_PREFIX]
-    if session_id:
-        parts.append(session_id)
-    parts.append(function_def.stable_hash().hex())
-    if uniq_suffix:
-        parts.append(uniq_suffix)
-    return _GCF_FUNCTION_NAME_SEPERATOR.join(parts)
-
-
-def get_bigframes_function_name(
-    function: udf_def.RemoteFunctionConfig, session_id, uniq_suffix=None
-):
-    "Get a name for the bigframes function for the given user defined function."
-    parts = [_BIGFRAMES_FUNCTION_PREFIX, session_id, function.stable_hash().hex()]
-    if uniq_suffix:
-        parts.append(uniq_suffix)
-    return _BQ_FUNCTION_NAME_SEPERATOR.join(parts)
-
-
-def get_managed_function_name(
-    function_def: udf_def.ManagedFunctionConfig,
-    session_id: str | None = None,
-):
-    """Get a name for the bigframes managed function for the given user defined function."""
-    parts = [_BIGFRAMES_FUNCTION_PREFIX]
-    if session_id:
-        parts.append(session_id)
-    parts.append(function_def.stable_hash().hex())
-    return _BQ_FUNCTION_NAME_SEPERATOR.join(parts)
+    def delete_cloud_function(self, cloud_function_name: str) -> None:
+        try:
+            self._cloud_functions_client.delete_function(
+                name=self.get_cloud_function_fully_qualified_name(cloud_function_name)
+            )
+        except google.api_core.exceptions.NotFound:
+            # The dataset might not exist, in which case the remote function doesn't, either.
+            pass
 
 
 def _validate_routine_name(name: str) -> None:
@@ -727,27 +580,3 @@ def _validate_routine_name(name: str) -> None:
         raise ValueError(
             "Routine ID can contain only letters (a-z, A-Z), numbers (0-9), or underscores (_)"
         )
-
-
-def _infer_milli_cpus_from_memory(memory_mib: int) -> int:
-    # observed values, not formally documented by cloud run functions
-    if memory_mib < 128:
-        raise ValueError("Cloud run supports at minimum 128MiB per instance")
-    elif memory_mib == 128:
-        return 83
-    elif memory_mib <= 256:
-        return 167
-    elif memory_mib <= 512:
-        return 333
-    elif memory_mib <= 1024:
-        return 583
-    elif memory_mib <= 2048:
-        return 1000
-    elif memory_mib <= 8192:
-        return 2000
-    elif memory_mib <= 16384:
-        return 4000
-    elif memory_mib <= 32768:
-        return 8000
-    else:
-        raise ValueError("Cloud run supports at most 32768MiB per instance")

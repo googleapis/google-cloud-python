@@ -29,15 +29,14 @@
 # currently implemented as either types under overlay/types or in methods in an overwritten
 # client class under overlay/services.
 
+from .services.bigtable_table_admin import (
+    BigtableTableAdminAsyncClient,
+    BigtableTableAdminClient,
+)
 from .types import (
     AsyncRestoreTableOperation,
     RestoreTableOperation,
     WaitForConsistencyRequest,
-)
-
-from .services.bigtable_table_admin import (
-    BigtableTableAdminAsyncClient,
-    BigtableTableAdminClient,
 )
 
 __all__ = (

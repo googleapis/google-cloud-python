@@ -134,6 +134,7 @@ def test_remap_variables_nested_join_stability(leaf, fake_session, table):
         ),
         type="inner",
         propogate_order=False,
+        nulls_equal=True,
     )
     outer_join = nodes.JoinNode(
         left_child=inner_join,
@@ -146,6 +147,7 @@ def test_remap_variables_nested_join_stability(leaf, fake_session, table):
         ),
         type="inner",
         propogate_order=False,
+        nulls_equal=True,
     )
 
     # Run remap_variables twice and assert stability

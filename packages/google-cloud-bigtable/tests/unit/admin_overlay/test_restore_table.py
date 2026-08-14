@@ -12,22 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-except ImportError:  # pragma: NO COVER
-    import mock
-
-from google.longrunning import operations_pb2
-from google.rpc import status_pb2, code_pb2
-
-from google.api_core import operation, exceptions
-from google.api_core.operations_v1 import operations_client
-from google.cloud.bigtable_admin_v2.types import bigtable_table_admin, table
-from google.cloud.bigtable_admin_v2.overlay.types import restore_table
+from unittest import mock
 
 import pytest
+from google.api_core import exceptions, operation
+from google.api_core.operations_v1 import operations_client
+from google.longrunning import operations_pb2
+from google.rpc import code_pb2, status_pb2
 
+from google.cloud.bigtable_admin_v2.overlay.types import restore_table
+from google.cloud.bigtable_admin_v2.types import bigtable_table_admin, table
 
 # Set up the mock operations
 DEFAULT_MAX_POLL = 3

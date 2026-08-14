@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -2132,6 +2132,11 @@ class GenerateAppResourceRequest(proto.Message):
             toolset.
 
             This field is a member of `oneof`_ ``resource``.
+        app_version_context (google.cloud.ces_v1beta.types.GenerateAppResourceRequest.AppVersionContext):
+            The app version context specifying the base
+            snapshot and target agent.
+
+            This field is a member of `oneof`_ ``resource``.
         parent (str):
             Required. The resource name of the app to
             generate the resource for.
@@ -2157,6 +2162,30 @@ class GenerateAppResourceRequest(proto.Message):
             Optional. The configuration to be used for
             hill climbing fixes.
     """
+
+    class AppVersionContext(proto.Message):
+        r"""The app version context specifying the base snapshot and
+        target agent.
+
+        Attributes:
+            app_version (str):
+                The resource name of the app version to be used by the LLM
+                assistant. Format:
+                ``projects/{project}/locations/{location}/apps/{app}/versions/{version}``
+            agent_resource_name (str):
+                The resource name of the target agent to be used by the LLM
+                assistant. Format:
+                ``projects/{project}/locations/{location}/apps/{app}/agents/{agent}``
+        """
+
+        app_version: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        agent_resource_name: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
     class RefineInstructions(proto.Message):
         r"""The instructions to be used to refine a part of the resource.
@@ -2370,11 +2399,37 @@ class GenerateAppResourceRequest(proto.Message):
             evaluation_run (str):
                 Required. The evaluation run used to inform
                 quality report analysis.
+            algorithm (google.cloud.ces_v1beta.types.GenerateAppResourceRequest.QualityReportGenerationConfig.LossAttributionAlgorithm):
+                Optional. The loss attribution algorithm to
+                use.
         """
+
+        class LossAttributionAlgorithm(proto.Enum):
+            r"""The algorithm to use for loss attribution.
+
+            Values:
+                LOSS_ATTRIBUTION_ALGORITHM_UNSPECIFIED (0):
+                    Unspecified.
+                APP_CENTRIC (1):
+                    App-centric loss attribution. Treats the app
+                    as a single unit.
+                AGENT_CENTRIC (2):
+                    Agent-centric loss attribution. Attributes
+                    loss to individual agents.
+            """
+
+            LOSS_ATTRIBUTION_ALGORITHM_UNSPECIFIED = 0
+            APP_CENTRIC = 1
+            AGENT_CENTRIC = 2
 
         evaluation_run: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        algorithm: "GenerateAppResourceRequest.QualityReportGenerationConfig.LossAttributionAlgorithm" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="GenerateAppResourceRequest.QualityReportGenerationConfig.LossAttributionAlgorithm",
         )
 
     class HillClimbingFixConfig(proto.Message):
@@ -2409,6 +2464,12 @@ class GenerateAppResourceRequest(proto.Message):
         number=6,
         oneof="resource",
         message=gcc_toolset.Toolset,
+    )
+    app_version_context: AppVersionContext = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="resource",
+        message=AppVersionContext,
     )
     parent: str = proto.Field(
         proto.STRING,

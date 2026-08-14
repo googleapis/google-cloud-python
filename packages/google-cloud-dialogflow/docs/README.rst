@@ -3,7 +3,8 @@ Python Client for Dialogflow
 
 |stable| |pypi| |versions|
 
-`Dialogflow`_: is an end-to-end, build-once deploy-everywhere development suite for creating conversational interfaces for websites, mobile applications, popular messaging platforms, and IoT devices. You can use it to build interfaces (such as chatbots and conversational IVR) that enable natural and rich interactions between your users and your business. Dialogflow Enterprise Edition users have access to Google Cloud Support and a service level agreement (SLA) for production deployments.
+`Dialogflow`_: Builds conversational interfaces (for example, chatbots, and voice-powered
+apps and devices).
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +15,9 @@ Python Client for Dialogflow
    :target: https://pypi.org/project/google-cloud-dialogflow/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dialogflow.svg
    :target: https://pypi.org/project/google-cloud-dialogflow/
-.. _Dialogflow: https://www.dialogflow.com/
+.. _Dialogflow: https://docs.cloud.google.com/dialogflow/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dialogflow/latest/summary_overview
-.. _Product Documentation:  https://www.dialogflow.com/
+.. _Product Documentation:  https://docs.cloud.google.com/dialogflow/docs
 
 Quick Start
 -----------
@@ -30,7 +31,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Dialogflow.:  https://www.dialogflow.com/
+.. _Enable the Dialogflow.:  https://docs.cloud.google.com/dialogflow/docs
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +62,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.9, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.8
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -104,7 +106,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Dialogflow Product documentation:  https://www.dialogflow.com/
+.. _Dialogflow Product documentation:  https://docs.cloud.google.com/dialogflow/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

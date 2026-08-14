@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,9 +31,7 @@ from google.cloud.databasecenter_v1beta.types import service
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class DatabaseCenterTransport(abc.ABC):
@@ -162,6 +160,11 @@ class DatabaseCenterTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.aggregate_query_stats: gapic_v1.method.wrap_method(
+                self.aggregate_query_stats,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.query_issues: gapic_v1.method.wrap_method(
                 self.query_issues,
                 default_timeout=None,
@@ -218,6 +221,18 @@ class DatabaseCenterTransport(abc.ABC):
         Union[
             service.AggregateIssueStatsResponse,
             Awaitable[service.AggregateIssueStatsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def aggregate_query_stats(
+        self,
+    ) -> Callable[
+        [service.AggregateQueryStatsRequest],
+        Union[
+            service.AggregateQueryStatsResponse,
+            Awaitable[service.AggregateQueryStatsResponse],
         ],
     ]:
         raise NotImplementedError()

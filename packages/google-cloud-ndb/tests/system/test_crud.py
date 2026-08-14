@@ -15,25 +15,24 @@
 """
 System tests for Create, Update, Delete. (CRUD)
 """
+
 import datetime
 import os
 import pickle
-import pytz
 import random
 import threading
 import zlib
-
 from unittest import mock
 
 import pytest
-
+import pytz
 import test_utils.system
 
 from google.cloud import ndb
 from google.cloud.ndb import _cache
 from google.cloud.ndb import global_cache as global_cache_module
 
-from . import KIND, eventually, equals
+from . import KIND, equals, eventually
 
 USE_REDIS_CACHE = bool(os.environ.get("REDIS_CACHE_URL"))
 USE_MEMCACHE = bool(os.environ.get("MEMCACHED_HOSTS"))
@@ -1174,7 +1173,7 @@ def test_retrieve_entity_with_legacy_repeated_structured_property(ds_entity):
     ds_entity(
         KIND,
         entity_id,
-        **{"foo": 42, "bar.one": ["hi", "hello"], "bar.two": ["mom", "dad"]}
+        **{"foo": 42, "bar.one": ["hi", "hello"], "bar.two": ["mom", "dad"]},
     )
 
     key = ndb.Key(KIND, entity_id)

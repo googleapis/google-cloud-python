@@ -60,7 +60,6 @@ from google.cloud.storage._media.requests import (
 )
 from google.cloud.storage._opentelemetry_tracing import (
     _get_opentelemetry_attributes_from_url,
-    create_trace_span,
 )
 from google.cloud.storage._signing import generate_signed_url_v2, generate_signed_url_v4
 from google.cloud.storage.acl import ACL, ObjectACL
@@ -105,6 +104,7 @@ _WRITABLE_FIELDS = (
     "name",
     "retention",
     "storageClass",
+    "contexts",
 )
 _READ_LESS_THAN_SIZE = (
     "Size {:d} was specified but the file-like object only had {:d} bytes remaining."
@@ -743,7 +743,7 @@ class Blob(_PropertyMixin):
         :rtype: bool
         :returns: True if the blob exists in Cloud Storage.
         """
-        with create_trace_span(name="Storage.Blob.exists"):
+        with self._create_trace_span(name="Storage.Blob.exists"):
             client = self._require_client(client)
             # We only need the status code (200 or not) so we seek to
             # minimize the returned payload.
@@ -847,7 +847,7 @@ class Blob(_PropertyMixin):
                  (propagated from
                  :meth:`google.cloud.storage.bucket.Bucket.delete_blob`).
         """
-        with create_trace_span(name="Storage.Blob.delete"):
+        with self._create_trace_span(name="Storage.Blob.delete"):
             self.bucket.delete_blob(
                 self.name,
                 client=client,
@@ -1086,7 +1086,7 @@ class Blob(_PropertyMixin):
                 # not supported for chunked downloads.
                 single_shot_download=single_shot_download,
             )
-            with create_trace_span(
+            with self._create_trace_span(
                 name=f"Storage.{download_class}/consume",
                 attributes=extra_attributes,
                 api_request=args,
@@ -1115,13 +1115,35 @@ class Blob(_PropertyMixin):
                 retry=retry,
             )
 
-            with create_trace_span(
+            with self._create_trace_span(
                 name=f"Storage.{download_class}/consumeNextChunk",
                 attributes=extra_attributes,
                 api_request=args,
             ):
+                response = None
                 while not download.finished:
-                    download.consume_next_chunk(transport, timeout=timeout)
+                    response = download.consume_next_chunk(transport, timeout=timeout)
+
+        if end is not None:
+            actual_start = start if start is not None else 0
+            requested_length = end - actual_start + 1
+
+            received_bytes = getattr(download, "_bytes_downloaded", 0)
+            if isinstance(received_bytes, int) and received_bytes > requested_length:
+                from google.cloud.storage._media import _helpers as media_helpers
+
+                if (
+                    response is not None
+                    and not media_helpers._is_decompressive_transcoding(
+                        response, download._get_headers
+                    )
+                ):
+                    _logger.warning(
+                        "storage: received %d more bytes than requested from GCS for bucket %r, object %r",
+                        received_bytes - requested_length,
+                        self.bucket.name,
+                        self.name,
+                    )
 
     def download_to_file(
         self,
@@ -1243,7 +1265,7 @@ class Blob(_PropertyMixin):
 
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
-        with create_trace_span(name="Storage.Blob.downloadToFile"):
+        with self._create_trace_span(name="Storage.Blob.downloadToFile"):
             self._prep_and_do_download(
                 file_obj,
                 client=client,
@@ -1399,7 +1421,7 @@ class Blob(_PropertyMixin):
 
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
-        with create_trace_span(name="Storage.Blob.downloadToFilename"):
+        with self._create_trace_span(name="Storage.Blob.downloadToFilename"):
             self._handle_filename_and_download(
                 filename,
                 client=client,
@@ -1524,7 +1546,7 @@ class Blob(_PropertyMixin):
 
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
-        with create_trace_span(name="Storage.Blob.downloadAsBytes"):
+        with self._create_trace_span(name="Storage.Blob.downloadAsBytes"):
             string_buffer = BytesIO()
 
             self._prep_and_do_download(
@@ -1647,7 +1669,7 @@ class Blob(_PropertyMixin):
             PendingDeprecationWarning,
             stacklevel=2,
         )
-        with create_trace_span(name="Storage.Blob.downloadAsString"):
+        with self._create_trace_span(name="Storage.Blob.downloadAsString"):
             return self.download_as_bytes(
                 client=client,
                 start=start,
@@ -1761,7 +1783,7 @@ class Blob(_PropertyMixin):
         :rtype: text
         :returns: The data stored in this blob, decoded to text.
         """
-        with create_trace_span(name="Storage.Blob.downloadAsText"):
+        with self._create_trace_span(name="Storage.Blob.downloadAsText"):
             data = self.download_as_bytes(
                 client=client,
                 start=start,
@@ -1884,7 +1906,7 @@ class Blob(_PropertyMixin):
                 client._connection.user_agent, content_type, command=command
             ),
             **_get_encryption_headers(self._encryption_key),
-            **client._extra_headers,
+            **getattr(client, "_extra_headers", {}),
         }
         object_metadata = self._get_writable_metadata()
         return headers, object_metadata, content_type
@@ -2052,7 +2074,7 @@ class Blob(_PropertyMixin):
         extra_attributes = _get_opentelemetry_attributes_from_url(upload_url)
         extra_attributes["upload.checksum"] = f"{checksum}"
         args = {"timeout": timeout}
-        with create_trace_span(
+        with self._create_trace_span(
             name="Storage.MultipartUpload/transmit",
             attributes=extra_attributes,
             client=client,
@@ -2452,7 +2474,7 @@ class Blob(_PropertyMixin):
         extra_attributes["upload.checksum"] = f"{checksum}"
 
         args = {"timeout": timeout}
-        with create_trace_span(
+        with self._create_trace_span(
             name="Storage.ResumableUpload/transmitNextChunk",
             attributes=extra_attributes,
             client=client,
@@ -3011,7 +3033,7 @@ class Blob(_PropertyMixin):
         :raises: :class:`~google.cloud.exceptions.GoogleCloudError`
                  if the upload response returns an error status.
         """
-        with create_trace_span(name="Storage.Blob.uploadFromFile"):
+        with self._create_trace_span(name="Storage.Blob.uploadFromFile"):
             self._prep_and_do_upload(
                 file_obj,
                 rewind=rewind,
@@ -3194,7 +3216,7 @@ class Blob(_PropertyMixin):
             https://datatracker.ietf.org/doc/html/rfc4960#appendix-B and
             base64: https://datatracker.ietf.org/doc/html/rfc4648#section-4
         """
-        with create_trace_span(name="Storage.Blob.uploadFromFilename"):
+        with self._create_trace_span(name="Storage.Blob.uploadFromFilename"):
             self._handle_filename_and_upload(
                 filename,
                 content_type=content_type,
@@ -3343,7 +3365,7 @@ class Blob(_PropertyMixin):
             https://datatracker.ietf.org/doc/html/rfc4960#appendix-B and
             base64: https://datatracker.ietf.org/doc/html/rfc4648#section-4
         """
-        with create_trace_span(name="Storage.Blob.uploadFromString"):
+        with self._create_trace_span(name="Storage.Blob.uploadFromString"):
             data = _to_bytes(data, encoding="utf-8")
             string_buffer = BytesIO(data)
             self.upload_from_file(
@@ -3495,7 +3517,7 @@ class Blob(_PropertyMixin):
         :raises: :class:`google.cloud.exceptions.GoogleCloudError`
                  if the session creation response returns an error status.
         """
-        with create_trace_span(name="Storage.Blob.createResumableUploadSession"):
+        with self._create_trace_span(name="Storage.Blob.createResumableUploadSession"):
             # Handle ConditionalRetryPolicy.
             if isinstance(retry, ConditionalRetryPolicy):
                 # Conditional retries are designed for non-media calls, which change
@@ -3591,7 +3613,7 @@ class Blob(_PropertyMixin):
         :returns: the policy instance, based on the resource returned from
                   the ``getIamPolicy`` API request.
         """
-        with create_trace_span(name="Storage.Blob.getIamPolicy"):
+        with self._create_trace_span(name="Storage.Blob.getIamPolicy"):
             client = self._require_client(client)
 
             query_params = {}
@@ -3652,7 +3674,7 @@ class Blob(_PropertyMixin):
         :returns: the policy instance, based on the resource returned from
                   the ``setIamPolicy`` API request.
         """
-        with create_trace_span(name="Storage.Blob.setIamPolicy"):
+        with self._create_trace_span(name="Storage.Blob.setIamPolicy"):
             client = self._require_client(client)
 
             query_params = {}
@@ -3714,7 +3736,7 @@ class Blob(_PropertyMixin):
         :returns: the permissions returned by the ``testIamPermissions`` API
                   request.
         """
-        with create_trace_span(name="Storage.Blob.testIamPermissions"):
+        with self._create_trace_span(name="Storage.Blob.testIamPermissions"):
             client = self._require_client(client)
             query_params = {"permissions": permissions}
 
@@ -3774,7 +3796,7 @@ class Blob(_PropertyMixin):
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
         """
-        with create_trace_span(name="Storage.Blob.makePublic"):
+        with self._create_trace_span(name="Storage.Blob.makePublic"):
             self.acl.all().grant_read()
             self.acl.save(
                 client=client,
@@ -3828,7 +3850,7 @@ class Blob(_PropertyMixin):
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
         """
-        with create_trace_span(name="Storage.Blob.makePrivate"):
+        with self._create_trace_span(name="Storage.Blob.makePrivate"):
             self.acl.all().revoke_read()
             self.acl.save(
                 client=client,
@@ -3849,6 +3871,8 @@ class Blob(_PropertyMixin):
         if_metageneration_match=None,
         if_source_generation_match=None,
         retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+        destination_contexts=None,
+        delete_source_objects=None,
     ):
         """Concatenate source blobs into this one.
 
@@ -3908,8 +3932,18 @@ class Blob(_PropertyMixin):
             Change the value to ``DEFAULT_RETRY`` or another `google.api_core.retry.Retry` object
             to enable retries regardless of generation precondition setting.
             See [Configuring Retries](https://cloud.google.com/python/docs/reference/storage/latest/retry_timeout).
+
+        :type destination_contexts: :class:`~google.cloud.storage.blob.ObjectContexts`
+        :param destination_contexts:
+            (Optional) New contexts to set for the destination object.
+            See: https://docs.cloud.google.com/storage/docs/use-object-contexts#manage_object_contexts_during_object_operations
+
+        :type delete_source_objects: bool
+        :param delete_source_objects:
+            (Optional) If True, the source objects will be deleted after a
+            successful composition.
         """
-        with create_trace_span(name="Storage.Blob.compose"):
+        with self._create_trace_span(name="Storage.Blob.compose"):
             sources_len = len(sources)
             client = self._require_client(client)
             query_params = {}
@@ -3959,10 +3993,21 @@ class Blob(_PropertyMixin):
 
                 source_objects.append(source_object)
 
+            if destination_contexts is not None:
+                if isinstance(destination_contexts, ObjectContexts):
+                    self.contexts = destination_contexts
+                else:
+                    raise ValueError(
+                        "destination_contexts must be an ObjectContexts object"
+                    )
+
             request = {
                 "sourceObjects": source_objects,
                 "destination": self._properties.copy(),
             }
+
+            if delete_source_objects is not None:
+                request["deleteSourceObjects"] = delete_source_objects
 
             if self.user_project is not None:
                 query_params["userProject"] = self.user_project
@@ -3998,6 +4043,7 @@ class Blob(_PropertyMixin):
         if_source_metageneration_not_match=None,
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+        destination_contexts=None,
     ):
         """Rewrite source blob into this one.
 
@@ -4081,6 +4127,11 @@ class Blob(_PropertyMixin):
             to enable retries regardless of generation precondition setting.
             See [Configuring Retries](https://cloud.google.com/python/docs/reference/storage/latest/retry_timeout).
 
+        :type destination_contexts: :class:`~google.cloud.storage.blob.ObjectContexts` or dict
+        :param destination_contexts:
+            (Optional) New contexts to set for the destination object.
+            See: https://docs.cloud.google.com/storage/docs/use-object-contexts#manage_object_contexts_during_object_operations
+
         :rtype: tuple
         :returns: ``(token, bytes_rewritten, total_bytes)``, where ``token``
                   is a rewrite token (``None`` if the rewrite is complete),
@@ -4088,7 +4139,7 @@ class Blob(_PropertyMixin):
                   and ``total_bytes`` is the total number of bytes to be
                   rewritten.
         """
-        with create_trace_span(name="Storage.Blob.rewrite"):
+        with self._create_trace_span(name="Storage.Blob.rewrite"):
             client = self._require_client(client)
             headers = _get_encryption_headers(self._encryption_key)
             headers.update(_get_encryption_headers(source._encryption_key, source=True))
@@ -4125,6 +4176,14 @@ class Blob(_PropertyMixin):
                 if_source_metageneration_match=if_source_metageneration_match,
                 if_source_metageneration_not_match=if_source_metageneration_not_match,
             )
+
+            if destination_contexts is not None:
+                if isinstance(destination_contexts, ObjectContexts):
+                    self.contexts = destination_contexts
+                else:
+                    raise ValueError(
+                        "destination_contexts must be an ObjectContexts object"
+                    )
 
             path = f"{source.path}/rewriteTo{self.path}"
             api_response = client._post_resource(
@@ -4248,7 +4307,7 @@ class Blob(_PropertyMixin):
             to enable retries regardless of generation precondition setting.
             See [Configuring Retries](https://cloud.google.com/python/docs/reference/storage/latest/retry_timeout).
         """
-        with create_trace_span(name="Storage.Blob.updateStorageClass"):
+        with self._create_trace_span(name="Storage.Blob.updateStorageClass"):
             # Update current blob's storage class prior to rewrite
             self._patch_property("storageClass", new_class)
 
@@ -4392,7 +4451,7 @@ class Blob(_PropertyMixin):
             'google.cloud.storage.fileio', or an 'io.TextIOWrapper' around one
             of those classes, depending on the 'mode' argument.
         """
-        with create_trace_span(name="Storage.Blob.open"):
+        with self._create_trace_span(name="Storage.Blob.open"):
             if mode == "rb":
                 if encoding or errors or newline:
                     raise ValueError(
@@ -4650,7 +4709,7 @@ class Blob(_PropertyMixin):
         headers = {
             **_get_default_headers(client._connection.user_agent, command=command),
             **headers,
-            **client._extra_headers,
+            **getattr(client, "_extra_headers", {}),
         }
 
         transport = client._http
@@ -5009,6 +5068,29 @@ class Blob(_PropertyMixin):
         return Retention.from_api_repr(info, self)
 
     @property
+    def contexts(self):
+        """Retrieve the contexts for this object.
+
+        :rtype: :class:`ObjectContexts`
+        :returns: an instance for managing the object's contexts.
+        """
+        info = self._properties.get("contexts", {})
+        return ObjectContexts.from_api_repr(info, self)
+
+    @contexts.setter
+    def contexts(self, value):
+        """Update the contexts for this object.
+
+        :type value: :class:`ObjectContexts` or dict or None
+        :param value: the new contexts for the object.
+        """
+        if value is None:
+            self._properties["contexts"] = None
+        else:
+            self._properties["contexts"] = value
+        self._patch_property("contexts", value)
+
+    @property
     def soft_delete_time(self):
         """If this object has been soft-deleted, returns the time at which it became soft-deleted.
 
@@ -5300,3 +5382,140 @@ class Retention(dict):
         retention_expiration_time = self.get("retentionExpirationTime")
         if retention_expiration_time is not None:
             return _rfc3339_nanos_to_datetime(retention_expiration_time)
+
+
+class ObjectCustomContextPayload(dict):
+    """Payload for a custom context.
+
+    :type value: str or ``NoneType``
+    :param value: (Optional) The value of the custom context.
+    """
+
+    def __init__(self, value=None):
+        data = {"value": value}
+        super(ObjectCustomContextPayload, self).__init__(data)
+        self._contexts = None
+
+    @property
+    def value(self):
+        """The value of the custom context.
+
+        :rtype: str or ``NoneType``
+        :returns: The value of the custom context.
+        """
+        return self.get("value")
+
+    @value.setter
+    def value(self, value):
+        self["value"] = value
+        if hasattr(self, "_contexts") and self._contexts and self._contexts.blob:
+            self._contexts.blob._patch_property("contexts", self._contexts)
+
+    @property
+    def create_time(self):
+        """Creation time of the custom context.
+
+        :rtype: :class:`datetime.datetime` or ``NoneType``
+        :returns: Datetime object parsed from RFC3339 valid timestamp.
+        """
+        create_time = self.get("createTime")
+        if create_time is not None:
+            return _rfc3339_nanos_to_datetime(create_time)
+
+    @property
+    def update_time(self):
+        """Last update time of the custom context.
+
+        :rtype: :class:`datetime.datetime` or ``NoneType``
+        :returns: Datetime object parsed from RFC3339 valid timestamp.
+        """
+        update_time = self.get("updateTime")
+        if update_time is not None:
+            return _rfc3339_nanos_to_datetime(update_time)
+
+
+class ObjectContexts(dict):
+    """Container for an object's contexts.
+
+    See: https://docs.cloud.google.com/storage/docs/object-contexts
+
+    :type blob: :class:`Blob`
+    :param blob: blob for which these contexts apply to.
+
+    :type custom: dict or ``NoneType``
+    :param custom: (Optional) Custom contexts mapping.
+    """
+
+    def __init__(self, blob, custom=None):
+        data = {}
+        if custom is not None:
+            if not isinstance(custom, dict):
+                raise ValueError(
+                    "custom must be a dictionary mapping keys to ObjectCustomContextPayload instances"
+                )
+            for payload in custom.values():
+                if not isinstance(payload, ObjectCustomContextPayload):
+                    raise ValueError(
+                        "All values in custom must be ObjectCustomContextPayload instances"
+                    )
+                payload._contexts = self
+            data["custom"] = custom
+        super(ObjectContexts, self).__init__(data)
+        self._blob = blob
+
+    @classmethod
+    def from_api_repr(cls, resource, blob):
+        """Factory: construct instance from resource.
+
+        :type resource: dict
+        :param resource: mapping as returned from API call.
+
+        :type blob: :class:`Blob`
+        :param blob: Blob for which these contexts apply to.
+
+        :rtype: :class:`ObjectContexts`
+        :returns: ObjectContexts instance created from resource.
+        """
+        instance = cls(blob)
+        custom = {}
+        for key, payload_resource in resource.get("custom", {}).items():
+            payload = ObjectCustomContextPayload()
+            payload.update(payload_resource)
+            payload._contexts = instance
+            custom[key] = payload
+        instance["custom"] = custom
+        return instance
+
+    @property
+    def blob(self):
+        """Blob for which these contexts apply to.
+
+        :rtype: :class:`Blob`
+        :returns: the instance's blob.
+        """
+        return self._blob
+
+    @property
+    def custom(self):
+        """Custom contexts mapping.
+
+        :rtype: dict
+        :returns: Mapping of keys to :class:`ObjectCustomContextPayload` instances.
+        """
+        if "custom" not in self:
+            self["custom"] = {}
+        return self["custom"]
+
+    @custom.setter
+    def custom(self, value):
+        if value is None:
+            value = {}
+        if not isinstance(value, dict):
+            raise ValueError(
+                "custom must be a dictionary mapping keys to ObjectCustomContextPayload instances"
+            )
+        for payload in value.values():
+            if isinstance(payload, ObjectCustomContextPayload):
+                payload._contexts = self
+        self["custom"] = value
+        self.blob._patch_property("contexts", self)

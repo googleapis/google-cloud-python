@@ -300,6 +300,7 @@ class HierarchicalKey:
 class CacheConfig(abc.ABC):
     optimize_for: Union[Literal["auto", "head"], HierarchicalKey] = "auto"
     if_cached: Literal["reuse-strict", "reuse-any", "replace"] = "reuse-any"
+    enable_multi_query_execution: Optional[bool] = None
 
 
 class Executor(abc.ABC):

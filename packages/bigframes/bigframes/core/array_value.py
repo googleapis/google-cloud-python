@@ -212,11 +212,17 @@ class ArrayValue:
             return arr.drop_columns(filter_ids)
 
     def order_by(
-        self, by: Sequence[OrderingExpression], is_total_order: bool = False
+        self,
+        by: Sequence[OrderingExpression],
+        is_total_order: bool = False,
+        stable: bool = True,
     ) -> ArrayValue:
         return ArrayValue(
             nodes.OrderByNode(
-                child=self.node, by=tuple(by), is_total_order=is_total_order
+                child=self.node,
+                by=tuple(by),
+                is_total_order=is_total_order,
+                stable=stable,
             )
         )
 
@@ -541,6 +547,7 @@ class ArrayValue:
                 for l_col, r_col in conditions
             ),
             type=type,
+            nulls_equal=True,  # pandas semantics
             propogate_order=propogate_order or self.session._strictly_ordered,
         )
         return ArrayValue(join_node), (l_mapping, r_mapping)

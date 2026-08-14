@@ -189,6 +189,11 @@ class Impure(Value):
 
 
 @public
+class OmittedArg(Value):
+    pass
+
+
+@public
 class TimestampNow(Constant):
     """Return the current timestamp."""
 

@@ -21,7 +21,7 @@ WITH `bfcte_0` AS (
     `L_EXTENDEDPRICE` * (
       1 - `L_DISCOUNT`
     ) AS `bfcol_24`
-  FROM `bigframes-dev`.`tpch`.`LINEITEM` AS `bft_1` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`LINEITEM` AS `bft_1`
   WHERE
     (
       `L_SHIPDATE` >= CAST('1996-01-01' AS DATE)
@@ -32,21 +32,19 @@ WITH `bfcte_0` AS (
 ), `bfcte_2` AS (
   SELECT
     `S_SUPPKEY` AS `bfcol_4`
-  FROM `bigframes-dev`.`tpch`.`SUPPLIER` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`SUPPLIER` AS `bft_0`
 ), `bfcte_3` AS (
   SELECT
     `S_SUPPKEY` AS `bfcol_8`,
     `S_NAME` AS `bfcol_9`,
     `S_ADDRESS` AS `bfcol_10`,
     `S_PHONE` AS `bfcol_11`
-  FROM `bigframes-dev`.`tpch`.`SUPPLIER` AS `bft_0` FOR SYSTEM_TIME AS OF '2026-03-10T18:00:00'
+  FROM `bigframes-dev-perf`.`tpch_0001t`.`SUPPLIER` AS `bft_0`
 ), `bfcte_4` AS (
   SELECT
     `bfcol_23`,
     COALESCE(SUM(`bfcol_24`), 0) AS `bfcol_27`
   FROM `bfcte_1`
-  WHERE
-    NOT `bfcol_23` IS NULL
   GROUP BY
     `bfcol_23`
 ), `bfcte_5` AS (
@@ -92,8 +90,6 @@ WITH `bfcte_0` AS (
     `bfcol_6`,
     ANY_VALUE(`bfcol_45`) AS `bfcol_49`
   FROM `bfcte_9`
-  WHERE
-    NOT `bfcol_5` IS NULL AND NOT `bfcol_6` IS NULL
   GROUP BY
     `bfcol_5`,
     `bfcol_6`

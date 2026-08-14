@@ -17,7 +17,6 @@ from __future__ import absolute_import
 import copy
 import logging
 import os
-import sys
 import threading
 import time
 import typing
@@ -165,18 +164,6 @@ class Client(publisher_client.PublisherClient):
         self._open_telemetry_enabled = (
             self.publisher_options.enable_open_telemetry_tracing
         )
-        # OpenTelemetry features used by the library are not supported in Python versions <= 3.7.
-        # Refer https://github.com/open-telemetry/opentelemetry-python/issues/3993#issuecomment-2211976389
-        if (
-            self.publisher_options.enable_open_telemetry_tracing
-            and sys.version_info.major == 3
-            and sys.version_info.minor < 8
-        ):
-            warnings.warn(
-                message="Open Telemetry for Python version 3.7 or lower is not supported. Disabling Open Telemetry tracing.",
-                category=RuntimeWarning,
-            )
-            self._open_telemetry_enabled = False
 
     @classmethod
     def from_service_account_file(  # type: ignore[override]

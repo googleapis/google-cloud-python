@@ -112,6 +112,9 @@ class Instance(object):
 
     :type labels: dict (str -> str) or None
     :param labels: (Optional) User-assigned labels for this instance.
+
+    :type experimental_host: str
+    :param experimental_host: (Deprecated) The instance type and host are now managed by the Client.
     """
 
     def __init__(
@@ -145,7 +148,14 @@ class Instance(object):
             self._node_count = processing_units // PROCESSING_UNITS_PER_NODE
         self.display_name = display_name or instance_id
         self.emulator_host = emulator_host
-        self.experimental_host = experimental_host
+        import warnings
+
+        if experimental_host is not None:
+            warnings.warn(
+                "experimental_host is deprecated. The instance type and host are now managed by the Client.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
         if labels is None:
             labels = {}
         self.labels = labels

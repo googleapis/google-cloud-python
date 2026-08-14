@@ -360,6 +360,37 @@ def test_bucket_copy_blob(
     assert copied_contents == payload
 
 
+def test_bucket_copy_blob_w_destination_contexts(
+    storage_client,
+    buckets_to_delete,
+    blobs_to_delete,
+):
+    from google.cloud.storage.blob import ObjectContexts, ObjectCustomContextPayload
+
+    payload = b"DEADBEEF"
+    bucket_name = _helpers.unique_name("copy-blob-contexts")
+    created = _helpers.retry_429_503(storage_client.create_bucket)(bucket_name)
+    buckets_to_delete.append(created)
+    assert created.name == bucket_name
+
+    blob = created.blob("CloudLogo")
+    blob.upload_from_string(payload)
+    blobs_to_delete.append(blob)
+
+    context_payload = ObjectCustomContextPayload(value="bar")
+    contexts = ObjectContexts(None, custom={"foo": context_payload})
+
+    new_blob = _helpers.retry_bad_copy(created.copy_blob)(
+        blob, created, "CloudLogoCopy", destination_contexts=contexts
+    )
+    blobs_to_delete.append(new_blob)
+
+    copied_contents = new_blob.download_as_bytes()
+    assert copied_contents == payload
+    new_blob.reload()
+    assert new_blob.contexts.custom["foo"].value == "bar"
+
+
 def test_bucket_copy_blob_w_user_project(
     storage_client,
     buckets_to_delete,
@@ -729,6 +760,54 @@ def test_bucket_list_blobs_w_match_glob(
         blob_iter = bucket.list_blobs(match_glob=match_glob)
         blobs = list(blob_iter)
         assert [blob.name for blob in blobs] == expected_names
+
+
+@_helpers.retry_failures
+def test_bucket_list_blobs_w_filter(
+    storage_client,
+    buckets_to_delete,
+    blobs_to_delete,
+):
+    from google.cloud.storage.blob import ObjectContexts, ObjectCustomContextPayload
+
+    bucket_name = _helpers.unique_name("w-filter")
+    bucket = _helpers.retry_429_503(storage_client.create_bucket)(bucket_name)
+    buckets_to_delete.append(bucket)
+
+    payload = b"helloworld"
+    blob_names = ["foo", "bar", "baz", "qux"]
+    for name in blob_names:
+        blob = bucket.blob(name)
+        blob.upload_from_string(payload)
+        if name == "bar":
+            custom = {"target": ObjectCustomContextPayload(value="match")}
+            blob.contexts = ObjectContexts(blob, custom=custom)
+            blob.patch()
+        if name == "qux":
+            custom = {"target": ObjectCustomContextPayload(value="nomatch")}
+            blob.contexts = ObjectContexts(blob, custom=custom)
+            blob.patch()
+        blobs_to_delete.append(blob)
+
+    # List with filter matching only 'bar'
+    blob_iter = bucket.list_blobs(filter_='contexts."target"="match"')
+    blobs = list(blob_iter)
+    assert [blob.name for blob in blobs] == ["bar"]
+
+    # List with filter matching bar and qux
+    blob_iter = bucket.list_blobs(filter_='contexts."target":*')
+    blobs = list(blob_iter)
+    assert sorted([blob.name for blob in blobs]) == ["bar", "qux"]
+
+    # List with filter matching all except 'bar'
+    blob_iter = bucket.list_blobs(filter_='-contexts."target"="match"')
+    blobs = list(blob_iter)
+    assert sorted([blob.name for blob in blobs]) == ["baz", "foo", "qux"]
+
+    # List with filter matching 'foo' and 'baz' (those without target context)
+    blob_iter = bucket.list_blobs(filter_='-contexts."target":*')
+    blobs = list(blob_iter)
+    assert sorted([blob.name for blob in blobs]) == ["baz", "foo"]
 
 
 def test_bucket_list_blobs_include_managed_folders(

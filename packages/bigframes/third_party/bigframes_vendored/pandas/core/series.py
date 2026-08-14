@@ -549,6 +549,49 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def to_csv(
+        self,
+        path_or_buf=None,
+        sep=",",
+        *,
+        header: bool = True,
+        index: bool = True,
+        allow_large_results: Optional[bool] = None,
+    ) -> Optional[str]:
+        """
+        Write object to a comma-separated values (csv) file.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+
+            >>> s = bpd.Series([1,2,3], name='my_series')
+            >>> s.to_csv()
+            \',my_series\\n0,1\\n1,2\\n2,3\\n\'
+
+        Args:
+            path_or_buf (str, path object, file-like object, or None, default None):
+                String, path object (implementing os.PathLike[str]), or file-like object
+                implementing a write() function. If None, the result is returned as a string.
+                If a non-binary file object is passed, it should be opened with newline='',
+                disabling universal newlines. If a binary file object is passed,
+                mode might need to contain a 'b'.
+                Must contain a wildcard character '*' if this is a GCS path.
+            sep (str, default ','):
+                String of length 1. Field delimiter for the output file.
+            header (bool, default True):
+                Write out the column names.
+            index (bool, default True):
+                Write row names (index).
+            allow_large_results (bool, default None):
+                If not None, overrides the global setting to allow or disallow large
+                query results over the default size limit of 10 GB.
+
+        Returns:
+            If path_or_buf is None, returns the resulting csv format as a string. Otherwise returns None.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def to_dict(
         self,
         into: type[dict] = dict,
@@ -1459,7 +1502,7 @@ class Series(NDFrame):  # type: ignore[misc]
         axis: Axis = 0,
         inplace: bool = False,
         ascending: bool | int | Sequence[bool] | Sequence[int] = True,
-        kind: str = "quicksort",
+        kind: str | None = None,
         na_position: str = "last",
     ):
         """
@@ -1536,7 +1579,7 @@ class Series(NDFrame):  # type: ignore[misc]
                 Whether to modify the Series rather than creating a new one.
             ascending (bool or list of bools, default True):
                 If True, sort values in ascending order, otherwise descending.
-            kind (str, default to 'quicksort'):
+            kind (str, default to None):
                 Choice of sorting algorithm. Accepts quicksort', 'mergesort',
                 'heapsort', 'stable'. Ignored except when determining whether to
                 sort stably. 'mergesort' or 'stable' will result in stable reorder
@@ -1556,6 +1599,7 @@ class Series(NDFrame):  # type: ignore[misc]
         axis: Axis = 0,
         inplace: bool = False,
         ascending: bool | Sequence[bool] = True,
+        kind: str | None = None,
         na_position: NaPosition = "last",
     ):
         """
@@ -1603,6 +1647,10 @@ class Series(NDFrame):  # type: ignore[misc]
             ascending (bool or list-like of bools, default True):
                 Sort ascending vs. descending. When the index is a MultiIndex the
                 sort direction can be controlled for each level individually.
+            kind (str, default None):
+                Choice of sorting algorithm. Accepts 'quicksort', 'mergesort',
+                'heapsort', 'stable'. Ignored except when determining whether to
+                sort stably. 'mergesort' or 'stable' will result in stable reorder.
             na_position ({'first', 'last'}, default 'last'):
                 If 'first' puts NaNs at the beginning, 'last' puts NaNs at the end.
                 Not implemented for MultiIndex.
@@ -2534,7 +2582,8 @@ class Series(NDFrame):  # type: ignore[misc]
             ... }
             >>> s = bpd.DataFrame(data).set_index("timestamp_col")
             >>> s.resample(rule="7s", origin="epoch").min()
-                                int64_col
+                                 int64_col
+            timestamp_col
             2021-01-01 12:59:56          0
             2021-01-01 13:00:03          3
             2021-01-01 13:00:10         10
@@ -5401,7 +5450,7 @@ class Series(NDFrame):  # type: ignore[misc]
             <Axes: title={'center': 'My plot'}, ylabel='Frequency'>
 
         Returns:
-            bigframes.operations.plotting.PlotAccessor:
+            bigframes.pandas.api.typing.PlotAccessor:
                 An accessor making plots.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
@@ -5582,6 +5631,17 @@ class Series(NDFrame):  # type: ignore[misc]
             3    rAbbIt
             dtype: string
 
+        With experimental Python Transpiler enabled, you can use some lambda functions without
+        deploying them as remote functions:
+
+            >>> bpd.options.experiments.enable_python_transpiler = True
+            >>> s.map(lambda val: val + "fish")
+            0       catfish
+            1       dogfish
+            2          <NA>
+            3    rabbitfish
+            dtype: string
+
         Args:
             arg (function, Mapping, Series):
                 remote function, collections.abc.Mapping subclass or Series
@@ -5626,8 +5686,8 @@ class Series(NDFrame):  # type: ignore[misc]
 
         With a scalar integer.
 
-            >>> type(df.iloc[0])
-            <class 'pandas.core.series.Series'>
+            >>> type(df.iloc[0]) # doctest: +ELLIPSIS
+            <class 'pandas...Series'>
 
             >>> df.iloc[0]
             a    1

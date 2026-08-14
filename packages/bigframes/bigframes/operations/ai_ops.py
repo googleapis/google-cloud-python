@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import ClassVar, Literal, Tuple
+from typing import ClassVar, Tuple
 
 import pandas as pd
 import pyarrow as pa
@@ -29,11 +29,11 @@ class AIGenerate(base_ops.NaryOp):
     name: ClassVar[str] = "ai_generate"
 
     prompt_context: Tuple[str | None, ...]
-    connection_id: str | None
-    endpoint: str | None
-    request_type: Literal["dedicated", "shared", "unspecified"]
-    model_params: str | None
-    output_schema: str | None
+    connection_id: str | None = None
+    endpoint: str | None = None
+    request_type: str | None = None
+    model_params: str | None = None
+    output_schema: str | None = None
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         if self.output_schema is None:
@@ -57,10 +57,10 @@ class AIGenerateBool(base_ops.NaryOp):
     name: ClassVar[str] = "ai_generate_bool"
 
     prompt_context: Tuple[str | None, ...]
-    connection_id: str | None
-    endpoint: str | None
-    request_type: Literal["dedicated", "shared", "unspecified"]
-    model_params: str | None
+    connection_id: str | None = None
+    endpoint: str | None = None
+    request_type: str | None = None
+    model_params: str | None = None
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return pd.ArrowDtype(
@@ -79,10 +79,10 @@ class AIGenerateInt(base_ops.NaryOp):
     name: ClassVar[str] = "ai_generate_int"
 
     prompt_context: Tuple[str | None, ...]
-    connection_id: str | None
-    endpoint: str | None
-    request_type: Literal["dedicated", "shared", "unspecified"]
-    model_params: str | None
+    connection_id: str | None = None
+    endpoint: str | None = None
+    request_type: str | None = None
+    model_params: str | None = None
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return pd.ArrowDtype(
@@ -101,10 +101,10 @@ class AIGenerateDouble(base_ops.NaryOp):
     name: ClassVar[str] = "ai_generate_double"
 
     prompt_context: Tuple[str | None, ...]
-    connection_id: str | None
-    endpoint: str | None
-    request_type: Literal["dedicated", "shared", "unspecified"]
-    model_params: str | None
+    connection_id: str | None = None
+    endpoint: str | None = None
+    request_type: str | None = None
+    model_params: str | None = None
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return pd.ArrowDtype(
@@ -119,11 +119,36 @@ class AIGenerateDouble(base_ops.NaryOp):
 
 
 @dataclasses.dataclass(frozen=True)
+class AIEmbed(base_ops.UnaryOp):
+    name: ClassVar[str] = "ai_embed"
+
+    endpoint: str | None = None
+    model: str | None = None
+    task_type: str | None = None
+    title: str | None = None
+    model_params: str | None = None
+    connection_id: str | None = None
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        return pd.ArrowDtype(
+            pa.struct(
+                (
+                    pa.field("result", pa.list_(pa.float64())),
+                    pa.field("status", pa.string()),
+                )
+            )
+        )
+
+
+@dataclasses.dataclass(frozen=True)
 class AIIf(base_ops.NaryOp):
     name: ClassVar[str] = "ai_if"
 
     prompt_context: Tuple[str | None, ...]
-    connection_id: str | None
+    connection_id: str | None = None
+    endpoint: str | None = None
+    optimization_mode: str | None = None
+    max_error_ratio: float | None = None
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return dtypes.BOOL_DTYPE
@@ -135,9 +160,18 @@ class AIClassify(base_ops.NaryOp):
 
     prompt_context: Tuple[str | None, ...]
     categories: tuple[str, ...]
-    connection_id: str | None
+    examples: (
+        tuple[tuple[str, str], ...] | tuple[tuple[str, tuple[str, ...]], ...] | None
+    ) = None
+    connection_id: str | None = None
+    endpoint: str | None = None
+    output_mode: str | None = None
+    optimization_mode: str | None = None
+    max_error_ratio: float | None = None
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        if self.output_mode is not None:
+            return dtypes.list_type(dtypes.STRING_DTYPE)
         return dtypes.STRING_DTYPE
 
 
@@ -146,7 +180,22 @@ class AIScore(base_ops.NaryOp):
     name: ClassVar[str] = "ai_score"
 
     prompt_context: Tuple[str | None, ...]
-    connection_id: str | None
+    connection_id: str | None = None
+    endpoint: str | None = None
+    max_error_ratio: float | None = None
+
+    def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
+        return dtypes.FLOAT_DTYPE
+
+
+@dataclasses.dataclass(frozen=True)
+class AISimilarity(base_ops.BinaryOp):
+    name: ClassVar[str] = "ai_similarity"
+
+    endpoint: str | None = None
+    model: str | None = None
+    model_params: str | None = None
+    connection_id: str | None = None
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
         return dtypes.FLOAT_DTYPE

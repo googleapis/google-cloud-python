@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,10 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
-
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.bigtable.admin.v2",
@@ -42,6 +40,7 @@ class StorageType(proto.Enum):
         HDD (2):
             Magnetic drive (HDD) storage should be used.
     """
+
     STORAGE_TYPE_UNSPECIFIED = 0
     SSD = 1
     HDD = 2

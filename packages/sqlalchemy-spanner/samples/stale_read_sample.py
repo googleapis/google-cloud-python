@@ -13,10 +13,11 @@
 # limitations under the License.
 
 import uuid
-from sqlalchemy import create_engine, Engine, select, text
-from sqlalchemy.orm import Session
-from sample_helper import run_sample
+
 from model import Singer
+from sample_helper import run_sample
+from sqlalchemy import Engine, create_engine, select, text
+from sqlalchemy.orm import Session
 
 
 # Shows how to execute stale reads on Spanner using SQLAlchemy.

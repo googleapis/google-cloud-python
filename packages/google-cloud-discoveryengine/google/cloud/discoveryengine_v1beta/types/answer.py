@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@ import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.discoveryengine_v1beta.types import safety
+
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1beta",
     manifest={
@@ -32,6 +34,8 @@ __protobuf__ = proto.module(
 class Answer(proto.Message):
     r"""Defines an answer.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Immutable. Fully qualified name
@@ -40,10 +44,20 @@ class Answer(proto.Message):
             The state of the answer generation.
         answer_text (str):
             The textual answer.
+        grounding_score (float):
+            A score in the range of [0, 1] describing how grounded the
+            answer is by the reference chunks.
+
+            This field is a member of `oneof`_ ``_grounding_score``.
         citations (MutableSequence[google.cloud.discoveryengine_v1beta.types.Answer.Citation]):
             Citations.
+        grounding_supports (MutableSequence[google.cloud.discoveryengine_v1beta.types.Answer.GroundingSupport]):
+            Optional. Grounding supports.
         references (MutableSequence[google.cloud.discoveryengine_v1beta.types.Answer.Reference]):
             References.
+        blob_attachments (MutableSequence[google.cloud.discoveryengine_v1beta.types.Answer.BlobAttachment]):
+            Output only. List of blob attachments in the
+            answer.
         related_questions (MutableSequence[str]):
             Suggested related questions.
         steps (MutableSequence[google.cloud.discoveryengine_v1beta.types.Answer.Step]):
@@ -58,6 +72,8 @@ class Answer(proto.Message):
             Output only. Answer creation timestamp.
         complete_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Answer completed timestamp.
+        safety_ratings (MutableSequence[google.cloud.discoveryengine_v1beta.types.SafetyRating]):
+            Optional. Safety ratings.
     """
 
     class State(proto.Enum):
@@ -72,12 +88,15 @@ class Answer(proto.Message):
                 Answer generation currently failed.
             SUCCEEDED (3):
                 Answer generation has succeeded.
+            STREAMING (4):
+                Answer generation is currently in progress.
         """
 
         STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
         FAILED = 2
         SUCCEEDED = 3
+        STREAMING = 4
 
     class AnswerSkippedReason(proto.Enum):
         r"""An enum for answer skipped reasons.
@@ -131,6 +150,20 @@ class Answer(proto.Message):
 
                 Google skips the answer if a well grounded
                 answer was unable to be generated.
+            USER_DEFINED_CLASSIFICATION_QUERY_IGNORED (10):
+                The user defined query classification ignored
+                case.
+                Google skips the answer if the query is
+                classified as a user defined query
+                classification.
+            UNHELPFUL_ANSWER (11):
+                The unhelpful answer case.
+
+                Google skips the answer if the answer is not
+                helpful. This can be due to a variety of
+                factors, including but not limited to: the query
+                is not answerable, the answer is not relevant to
+                the query, or the answer is not well-formatted.
         """
 
         ANSWER_SKIPPED_REASON_UNSPECIFIED = 0
@@ -143,6 +176,8 @@ class Answer(proto.Message):
         CUSTOMER_POLICY_VIOLATION = 7
         NON_ANSWER_SEEKING_QUERY_IGNORED_V2 = 8
         LOW_GROUNDED_ANSWER = 9
+        USER_DEFINED_CLASSIFICATION_QUERY_IGNORED = 10
+        UNHELPFUL_ANSWER = 11
 
     class Citation(proto.Message):
         r"""Citation info for a segment.
@@ -150,9 +185,16 @@ class Answer(proto.Message):
         Attributes:
             start_index (int):
                 Index indicates the start of the segment,
-                measured in bytes (UTF-8 unicode).
+                measured in bytes (UTF-8 unicode). If there are
+                multi-byte characters,such as non-ASCII
+                characters, the index measurement is longer than
+                the string length.
             end_index (int):
                 End of the attributed segment, exclusive.
+                Measured in bytes (UTF-8 unicode). If there are
+                multi-byte characters,such as non-ASCII
+                characters, the index measurement is longer than
+                the string length.
             sources (MutableSequence[google.cloud.discoveryengine_v1beta.types.Answer.CitationSource]):
                 Citation sources for the attributed segment.
         """
@@ -182,6 +224,59 @@ class Answer(proto.Message):
         reference_id: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+
+    class GroundingSupport(proto.Message):
+        r"""Grounding support for a claim in ``answer_text``.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            start_index (int):
+                Required. Index indicates the start of the
+                claim, measured in bytes (UTF-8 unicode).
+            end_index (int):
+                Required. End of the claim, exclusive.
+            grounding_score (float):
+                A score in the range of [0, 1] describing how grounded is a
+                specific claim by the references. Higher value means that
+                the claim is better supported by the reference chunks.
+
+                This field is a member of `oneof`_ ``_grounding_score``.
+            grounding_check_required (bool):
+                Indicates that this claim required grounding check. When the
+                system decided this claim didn't require
+                attribution/grounding check, this field is set to false. In
+                that case, no grounding check was done for the claim and
+                therefore ``grounding_score``, ``sources`` is not returned.
+
+                This field is a member of `oneof`_ ``_grounding_check_required``.
+            sources (MutableSequence[google.cloud.discoveryengine_v1beta.types.Answer.CitationSource]):
+                Optional. Citation sources for the claim.
+        """
+
+        start_index: int = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        end_index: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+        grounding_score: float = proto.Field(
+            proto.DOUBLE,
+            number=3,
+            optional=True,
+        )
+        grounding_check_required: bool = proto.Field(
+            proto.BOOL,
+            number=4,
+            optional=True,
+        )
+        sources: MutableSequence["Answer.CitationSource"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message="Answer.CitationSource",
         )
 
     class Reference(proto.Message):
@@ -247,6 +342,9 @@ class Answer(proto.Message):
                         model retraining or change in implementation.
 
                         This field is a member of `oneof`_ ``_relevance_score``.
+                    blob_attachment_indexes (MutableSequence[int]):
+                        Output only. Stores indexes of
+                        blobattachments linked to this chunk.
                 """
 
                 content: str = proto.Field(
@@ -261,6 +359,10 @@ class Answer(proto.Message):
                     proto.FLOAT,
                     number=3,
                     optional=True,
+                )
+                blob_attachment_indexes: MutableSequence[int] = proto.RepeatedField(
+                    proto.INT64,
+                    number=4,
                 )
 
             document: str = proto.Field(
@@ -309,6 +411,9 @@ class Answer(proto.Message):
                     This field is a member of `oneof`_ ``_relevance_score``.
                 document_metadata (google.cloud.discoveryengine_v1beta.types.Answer.Reference.ChunkInfo.DocumentMetadata):
                     Document metadata.
+                blob_attachment_indexes (MutableSequence[int]):
+                    Output only. Stores indexes of
+                    blobattachments linked to this chunk.
             """
 
             class DocumentMetadata(proto.Message):
@@ -371,6 +476,10 @@ class Answer(proto.Message):
                     message="Answer.Reference.ChunkInfo.DocumentMetadata",
                 )
             )
+            blob_attachment_indexes: MutableSequence[int] = proto.RepeatedField(
+                proto.INT64,
+                number=5,
+            )
 
         class StructuredDocumentInfo(proto.Message):
             r"""Structured search information.
@@ -380,6 +489,10 @@ class Answer(proto.Message):
                     Document resource name.
                 struct_data (google.protobuf.struct_pb2.Struct):
                     Structured search data.
+                title (str):
+                    Output only. The title of the document.
+                uri (str):
+                    Output only. The URI of the document.
             """
 
             document: str = proto.Field(
@@ -390,6 +503,14 @@ class Answer(proto.Message):
                 proto.MESSAGE,
                 number=2,
                 message=struct_pb2.Struct,
+            )
+            title: str = proto.Field(
+                proto.STRING,
+                number=3,
+            )
+            uri: str = proto.Field(
+                proto.STRING,
+                number=4,
             )
 
         unstructured_document_info: "Answer.Reference.UnstructuredDocumentInfo" = (
@@ -413,6 +534,67 @@ class Answer(proto.Message):
                 oneof="content",
                 message="Answer.Reference.StructuredDocumentInfo",
             )
+        )
+
+    class BlobAttachment(proto.Message):
+        r"""Stores binarydata attached to text answer, e.g. image, video,
+        audio, etc.
+
+        Attributes:
+            data (google.cloud.discoveryengine_v1beta.types.Answer.BlobAttachment.Blob):
+                Output only. The mime type and data of the
+                blob.
+            attribution_type (google.cloud.discoveryengine_v1beta.types.Answer.BlobAttachment.AttributionType):
+                Output only. The attribution type of the
+                blob.
+        """
+
+        class AttributionType(proto.Enum):
+            r"""The source of the blob.
+
+            Values:
+                ATTRIBUTION_TYPE_UNSPECIFIED (0):
+                    Unspecified attribution type.
+                CORPUS (1):
+                    The attachment data is from the corpus.
+                GENERATED (2):
+                    The attachment data is generated by the model
+                    through code generation.
+            """
+
+            ATTRIBUTION_TYPE_UNSPECIFIED = 0
+            CORPUS = 1
+            GENERATED = 2
+
+        class Blob(proto.Message):
+            r"""The media type and data of the blob.
+
+            Attributes:
+                mime_type (str):
+                    Output only. The media type (MIME type) of
+                    the generated or retrieved data.
+                data (bytes):
+                    Output only. Raw bytes.
+            """
+
+            mime_type: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            data: bytes = proto.Field(
+                proto.BYTES,
+                number=2,
+            )
+
+        data: "Answer.BlobAttachment.Blob" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="Answer.BlobAttachment.Blob",
+        )
+        attribution_type: "Answer.BlobAttachment.AttributionType" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="Answer.BlobAttachment.AttributionType",
         )
 
     class Step(proto.Message):
@@ -668,6 +850,8 @@ class Answer(proto.Message):
                     NON_ANSWER_SEEKING_QUERY_V2 (4):
                         Non-answer-seeking query classification type,
                         for no clear intent.
+                    USER_DEFINED_CLASSIFICATION_QUERY (5):
+                        User defined query classification type.
                 """
 
                 TYPE_UNSPECIFIED = 0
@@ -675,6 +859,7 @@ class Answer(proto.Message):
                 NON_ANSWER_SEEKING_QUERY = 2
                 JAIL_BREAKING_QUERY = 3
                 NON_ANSWER_SEEKING_QUERY_V2 = 4
+                USER_DEFINED_CLASSIFICATION_QUERY = 5
 
             type_: "Answer.QueryUnderstandingInfo.QueryClassificationInfo.Type" = (
                 proto.Field(
@@ -709,15 +894,30 @@ class Answer(proto.Message):
         proto.STRING,
         number=3,
     )
+    grounding_score: float = proto.Field(
+        proto.DOUBLE,
+        number=12,
+        optional=True,
+    )
     citations: MutableSequence[Citation] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=Citation,
     )
+    grounding_supports: MutableSequence[GroundingSupport] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=13,
+        message=GroundingSupport,
+    )
     references: MutableSequence[Reference] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=Reference,
+    )
+    blob_attachments: MutableSequence[BlobAttachment] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=15,
+        message=BlobAttachment,
     )
     related_questions: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -747,6 +947,11 @@ class Answer(proto.Message):
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
+    )
+    safety_ratings: MutableSequence[safety.SafetyRating] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=14,
+        message=safety.SafetyRating,
     )
 
 

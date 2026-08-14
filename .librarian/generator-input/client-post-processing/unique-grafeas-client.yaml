@@ -110,7 +110,20 @@ replacements:
       [\s\S]*?\("grpc\.max_receive_message_length", -1\),
       \s+\],
       \s+\)\n\n
-    after: ""
+    after: |
+      @pytest.fixture(autouse=True)
+      def set_event_loop():
+          try:
+              asyncio.get_running_loop()
+              yield
+          except RuntimeError:
+              loop = asyncio.new_event_loop()
+              asyncio.set_event_loop(loop)
+              try:
+                  yield
+              finally:
+                  loop.close()
+                  asyncio.set_event_loop(None)
     count: 1      
   - paths: [
       packages/grafeas/grafeas/grafeas_v1/services/grafeas/transports/base.py,

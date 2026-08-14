@@ -25,3 +25,6 @@ class TypedExpr:
 
     expr: sge.Expression
     dtype: dtypes.ExpressionType
+
+    # kludge to support optional args in argument lists
+    is_omitted: bool = False

@@ -26,8 +26,8 @@ def test_rand_returns_expression():
     node = expr._value
     assert isinstance(node, ex.OpExpression)
     op = node.op
-    assert isinstance(op, ops.SqlScalarOp)
-    assert op.sql_template == "RAND()"
-    assert op._output_type == dtypes.FLOAT_DTYPE
+    assert isinstance(op, ops.GoogleSqlScalarOp)
+    assert op.sql_name == "RAND"
+    assert op.output_type() == dtypes.FLOAT_DTYPE
     assert not op.is_deterministic
     assert len(node.inputs) == 0

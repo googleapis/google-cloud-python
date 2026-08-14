@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,6 +38,10 @@ class McpTool(proto.Message):
     Attributes:
         name (str):
             Required. The name of the MCP tool.
+        name_override (str):
+            Optional. The name override of the MCP tool.
+            This is populated if the name was overridden by
+            a Toolset override.
         description (str):
             Optional. The description of the MCP tool.
         input_schema (google.cloud.ces_v1beta.types.Schema):
@@ -76,11 +80,40 @@ class McpTool(proto.Message):
             the session variables. See
             https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/tool/open-api#openapi-injection
             for more details.
+        state (google.cloud.ces_v1beta.types.McpTool.State):
+            Output only. The dynamic availability state
+            of the tool on the external server.
     """
+
+    class State(proto.Enum):
+        r"""Represents the dynamic availability state of the tool.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default state.
+            ACTIVE (1):
+                The tool is available and actively offered by
+                the server.
+            INACTIVE (2):
+                The tool is configured or pinned, but
+                currently not offered by the server.
+            STALE (3):
+                The tool exists on the server, but does not
+                match the version on the server.
+        """
+
+        STATE_UNSPECIFIED = 0
+        ACTIVE = 1
+        INACTIVE = 2
+        STALE = 3
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    name_override: str = proto.Field(
+        proto.STRING,
+        number=13,
     )
     description: str = proto.Field(
         proto.STRING,
@@ -119,6 +152,11 @@ class McpTool(proto.Message):
         proto.STRING,
         proto.STRING,
         number=9,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum=State,
     )
 
 

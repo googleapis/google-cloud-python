@@ -12,16 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from unittest import mock
+
 import pytest
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-except ImportError:  # pragma: NO COVER
-    import mock  # type: ignore
-
+from google.cloud.bigtable.data._metrics import ActiveOperationMetric
 
 __CROSS_SYNC_OUTPUT__ = "tests.unit.data._sync_autogen.test__read_rows"
 
@@ -59,6 +55,7 @@ class TestReadRowsOperationAsync:
         expected_operation_timeout = 42
         expected_request_timeout = 44
         time_gen_mock = mock.Mock()
+        expected_metric = mock.Mock()
         subpath = "_async" if CrossSync.is_async else "_sync_autogen"
         with mock.patch(
             f"google.cloud.bigtable.data.{subpath}._read_rows._attempt_timeout_generator",
@@ -69,6 +66,7 @@ class TestReadRowsOperationAsync:
                 table,
                 operation_timeout=expected_operation_timeout,
                 attempt_timeout=expected_request_timeout,
+                metric=expected_metric,
             )
         assert time_gen_mock.call_count == 1
         time_gen_mock.assert_called_once_with(
@@ -81,6 +79,7 @@ class TestReadRowsOperationAsync:
         assert instance.request.table_name == "test_table"
         assert instance.request.app_profile_id == table.app_profile_id
         assert instance.request.rows_limit == row_limit
+        assert instance._operation_metric == expected_metric
 
     @pytest.mark.parametrize(
         "in_keys,last_key,expected",
@@ -96,9 +95,9 @@ class TestReadRowsOperationAsync:
     def test_revise_request_rowset_keys_with_range(
         self, in_keys, last_key, expected, with_range
     ):
-        from google.cloud.bigtable_v2.types import RowSet as RowSetPB
-        from google.cloud.bigtable_v2.types import RowRange as RowRangePB
         from google.cloud.bigtable.data.exceptions import _RowSetComplete
+        from google.cloud.bigtable_v2.types import RowRange as RowRangePB
+        from google.cloud.bigtable_v2.types import RowSet as RowSetPB
 
         in_keys = [key.encode("utf-8") for key in in_keys]
         expected = [key.encode("utf-8") for key in expected]
@@ -167,9 +166,9 @@ class TestReadRowsOperationAsync:
     def test_revise_request_rowset_ranges(
         self, in_ranges, last_key, expected, with_key
     ):
-        from google.cloud.bigtable_v2.types import RowSet as RowSetPB
-        from google.cloud.bigtable_v2.types import RowRange as RowRangePB
         from google.cloud.bigtable.data.exceptions import _RowSetComplete
+        from google.cloud.bigtable_v2.types import RowRange as RowRangePB
+        from google.cloud.bigtable_v2.types import RowSet as RowSetPB
 
         # convert to protobuf
         next_key = (last_key + "a").encode("utf-8")
@@ -199,8 +198,8 @@ class TestReadRowsOperationAsync:
 
     @pytest.mark.parametrize("last_key", ["a", "b", "c"])
     def test_revise_request_full_table(self, last_key):
-        from google.cloud.bigtable_v2.types import RowSet as RowSetPB
         from google.cloud.bigtable_v2.types import RowRange as RowRangePB
+        from google.cloud.bigtable_v2.types import RowSet as RowSetPB
 
         # convert to protobuf
         last_key = last_key.encode("utf-8")
@@ -216,8 +215,8 @@ class TestReadRowsOperationAsync:
     def test_revise_to_empty_rowset(self):
         """revising to an empty rowset should raise error"""
         from google.cloud.bigtable.data.exceptions import _RowSetComplete
-        from google.cloud.bigtable_v2.types import RowSet as RowSetPB
         from google.cloud.bigtable_v2.types import RowRange as RowRangePB
+        from google.cloud.bigtable_v2.types import RowSet as RowSetPB
 
         row_keys = [b"a", b"b", b"c"]
         row_range = RowRangePB(end_key_open=b"c")
@@ -269,7 +268,9 @@ class TestReadRowsOperationAsync:
         table = mock.Mock()
         table._request_path = {"table_name": "table_name"}
         table.app_profile_id = "app_profile_id"
-        instance = self._make_one(query, table, 10, 10)
+        instance = self._make_one(
+            query, table, 10, 10, ActiveOperationMetric("READ_ROWS")
+        )
         assert instance._remaining_count == start_limit
         # read emit_num rows
         async for val in instance.chunk_stream(awaitable_stream()):
@@ -284,8 +285,8 @@ class TestReadRowsOperationAsync:
         (unless start_num == 0, which represents unlimited)
         """
         from google.cloud.bigtable.data import ReadRowsQuery
-        from google.cloud.bigtable_v2.types import ReadRowsResponse
         from google.cloud.bigtable.data.exceptions import InvalidChunk
+        from google.cloud.bigtable_v2.types import ReadRowsResponse
 
         async def awaitable_stream():
             async def mock_stream():
@@ -308,7 +309,9 @@ class TestReadRowsOperationAsync:
         table = mock.Mock()
         table._request_path = {"table_name": "table_name"}
         table.app_profile_id = "app_profile_id"
-        instance = self._make_one(query, table, 10, 10)
+        instance = self._make_one(
+            query, table, 10, 10, ActiveOperationMetric("READ_ROWS")
+        )
         assert instance._remaining_count == start_limit
         with pytest.raises(InvalidChunk) as e:
             # read emit_num rows
@@ -334,7 +337,9 @@ class TestReadRowsOperationAsync:
         with mock.patch.object(
             self._get_target_class(), "_read_rows_attempt"
         ) as mock_attempt:
-            instance = self._make_one(mock.Mock(), mock.Mock(), 1, 1)
+            instance = self._make_one(
+                mock.Mock(), mock.Mock(), 1, 1, ActiveOperationMetric("READ_ROWS")
+            )
             wrapped_gen = mock_stream()
             mock_attempt.return_value = wrapped_gen
             gen = instance.start_operation()

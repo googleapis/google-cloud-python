@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,12 +24,16 @@ from google.cloud.databasecenter_v1beta.services.database_center.async_client im
 from google.cloud.databasecenter_v1beta.services.database_center.client import (
     DatabaseCenterClient,
 )
+from google.cloud.databasecenter_v1beta.types.affiliation import Affiliation
 from google.cloud.databasecenter_v1beta.types.machine_config import MachineConfig
 from google.cloud.databasecenter_v1beta.types.maintenance import (
     MaintenanceInfo,
+    MaintenanceState,
     Phase,
+    PossibleFailureReason,
     ResourceMaintenanceDenySchedule,
     ResourceMaintenanceSchedule,
+    UpcomingMaintenance,
 )
 from google.cloud.databasecenter_v1beta.types.metric_data import (
     MetricData,
@@ -50,6 +54,8 @@ from google.cloud.databasecenter_v1beta.types.service import (
     AggregateFleetRow,
     AggregateIssueStatsRequest,
     AggregateIssueStatsResponse,
+    AggregateQueryStatsRequest,
+    AggregateQueryStatsResponse,
     BackupDRConfig,
     DatabaseResource,
     DatabaseResourceGroup,
@@ -65,10 +71,14 @@ from google.cloud.databasecenter_v1beta.types.service import (
     QueryDatabaseResourceGroupsResponse,
     QueryIssuesRequest,
     QueryIssuesResponse,
+    QueryMetrics,
     QueryProductsRequest,
     QueryProductsResponse,
+    QueryStats,
+    QueryStatsInfo,
     ResourceCategory,
     ResourceDetails,
+    ResourceId,
     SignalProductsFilters,
     SubResourceType,
     Tag,
@@ -102,11 +112,15 @@ from google.cloud.databasecenter_v1beta.types.suspension_reason import Suspensio
 __all__ = (
     "DatabaseCenterClient",
     "DatabaseCenterAsyncClient",
+    "Affiliation",
     "MachineConfig",
     "MaintenanceInfo",
     "ResourceMaintenanceDenySchedule",
     "ResourceMaintenanceSchedule",
+    "UpcomingMaintenance",
+    "MaintenanceState",
     "Phase",
+    "PossibleFailureReason",
     "MetricData",
     "Metrics",
     "TypedValue",
@@ -119,6 +133,8 @@ __all__ = (
     "AggregateFleetRow",
     "AggregateIssueStatsRequest",
     "AggregateIssueStatsResponse",
+    "AggregateQueryStatsRequest",
+    "AggregateQueryStatsResponse",
     "BackupDRConfig",
     "DatabaseResource",
     "DatabaseResourceGroup",
@@ -132,9 +148,13 @@ __all__ = (
     "QueryDatabaseResourceGroupsResponse",
     "QueryIssuesRequest",
     "QueryIssuesResponse",
+    "QueryMetrics",
     "QueryProductsRequest",
     "QueryProductsResponse",
+    "QueryStats",
+    "QueryStatsInfo",
     "ResourceDetails",
+    "ResourceId",
     "SignalProductsFilters",
     "Tag",
     "Edition",

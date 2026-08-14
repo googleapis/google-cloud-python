@@ -105,9 +105,13 @@ AWS_SESSION_TOKEN = "AWS_SESSION_TOKEN"
 AWS_REGION = "AWS_REGION"
 AWS_DEFAULT_REGION = "AWS_DEFAULT_REGION"
 
+
 GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED = "GOOGLE_AUTH_TRUST_BOUNDARY_ENABLED"
 """Environment variable controlling whether to enable trust boundary feature.
-The default value is false. Users have to explicitly set this value to true."""
+
+.. deprecated::
+    This environment variable is deprecated and no longer has any effect.
+"""
 
 GOOGLE_API_CERTIFICATE_CONFIG = "GOOGLE_API_CERTIFICATE_CONFIG"
 """Environment variable defining the location of Google API certificate config
@@ -129,3 +133,6 @@ GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES = (
     "GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES"
 )
 """Environment variable to prevent agent token sharing for GCP services."""
+
+GOOGLE_API_USE_MTLS_ENDPOINT = "GOOGLE_API_USE_MTLS_ENDPOINT"
+"""Environment variable controlling whether to use mTLS endpoint or not."""

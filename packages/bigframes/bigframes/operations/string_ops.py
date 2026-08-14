@@ -127,15 +127,6 @@ class StrContainsRegexOp(base_ops.UnaryOp):
 
 
 @dataclasses.dataclass(frozen=True)
-class StrGetOp(base_ops.UnaryOp):
-    name: typing.ClassVar[str] = "str_get"
-    i: int
-
-    def output_type(self, *input_types):
-        return op_typing.STRING_TRANSFORM.output_type(input_types[0])
-
-
-@dataclasses.dataclass(frozen=True)
 class StrPadOp(base_ops.UnaryOp):
     name: typing.ClassVar[str] = "str_pad"
     length: int

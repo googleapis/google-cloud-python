@@ -28,6 +28,7 @@ except ImportError as e:  # pragma: NO COVER
     ) from e
 
 import google.protobuf.message
+
 from google.api_core._rest_streaming_base import BaseResponseIterator
 
 

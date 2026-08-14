@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -425,6 +425,12 @@ class Repository(proto.Message):
         initial_config (google.cloud.securesourcemanager_v1.types.Repository.InitialConfig):
             Input only. Initial configurations for the
             repository.
+        service_account (str):
+            Optional. Repository level service account
+            (BYOSA).
+        scan_config (google.cloud.securesourcemanager_v1.types.Repository.ScanConfig):
+            Optional. Provides configuration for
+            scanning.
     """
 
     class URIs(proto.Message):
@@ -684,6 +690,41 @@ class Repository(proto.Message):
             number=4,
         )
 
+    class ScanConfig(proto.Message):
+        r"""Configuration for scanning.
+
+        Attributes:
+            secret_scan_config (google.cloud.securesourcemanager_v1.types.Repository.ScanConfig.SecretScanConfig):
+                Optional. Configuration for secret scanning.
+        """
+
+        class SecretScanConfig(proto.Message):
+            r"""Configuration for secret scanning.
+
+            Attributes:
+                enabled (bool):
+                    Optional. Enables secret scanning for the
+                    repository.
+                inspect_template (str):
+                    Optional. The DLP inspect template to use for
+                    secret scanning.
+            """
+
+            enabled: bool = proto.Field(
+                proto.BOOL,
+                number=1,
+            )
+            inspect_template: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+
+        secret_scan_config: "Repository.ScanConfig.SecretScanConfig" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="Repository.ScanConfig.SecretScanConfig",
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -723,6 +764,15 @@ class Repository(proto.Message):
         proto.MESSAGE,
         number=10,
         message=InitialConfig,
+    )
+    service_account: str = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    scan_config: ScanConfig = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=ScanConfig,
     )
 
 

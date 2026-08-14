@@ -1,18 +1,16 @@
 {% extends "_base.py.j2" %}
-
 {% block content %}
+{% set has_auto_populated_fields = api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
+
+
 {% import "%namespace/%name/%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
 import os
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
+{% if has_auto_populated_fields %}
 import re
 {% endif %}
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 from grpc.experimental import aio
@@ -74,8 +72,10 @@ from google.iam.v1 import policy_pb2  # type: ignore
 {% endfilter %}
 {{ shared_macros.add_google_api_core_version_header_import(service.version) }}
 
+{% if has_auto_populated_fields %}
+_UUID4_RE = re.compile(r"{{ uuid4_re }}")
+{% endif %}
 
-{% with uuid4_re = "[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}" %}
 
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
@@ -668,7 +668,10 @@ def test_{{ method_name }}_api_version_header(transport_name):
 
         # Establish that the api version header was sent.
         _, _, kw = call.mock_calls[0]
-        assert kw['metadata'][0] == (version_header.API_VERSION_METADATA_KEY, "{{ service.version }}")
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "{{ service.version }}",
+        ) in kw['metadata']
     else:
         pytest.skip("google-api-core>=2.19.0 is required for `google.api_core.version_header`")
 {% endif %}{# service.version #}
@@ -696,7 +699,7 @@ def test_{{ method_name }}_empty_call():
 {% if method_settings is not none %}
 {% for auto_populated_field in method_settings.auto_populated_fields %}
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"{{ uuid4_re }}", args[0].{{ auto_populated_field }})
+        assert _UUID4_RE.match(args[0].{{ auto_populated_field }})
         # clear UUID field so that the check below succeeds
         args[0].{{ auto_populated_field }} = None
 {% endfor %}
@@ -734,7 +737,7 @@ def test_{{ method_name }}_non_empty_request_with_auto_populated_field():
 {% if method_settings is not none %}
 {% for auto_populated_field in method_settings.auto_populated_fields %}
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(r"{{ uuid4_re }}", args[0].{{ auto_populated_field }})
+        assert _UUID4_RE.match(args[0].{{ auto_populated_field }})
         # clear UUID field so that the check below succeeds
         args[0].{{ auto_populated_field }} = None
 {% endfor %}
@@ -966,6 +969,9 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
         assert pager._timeout == timeout
+
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
 
         results = list(pager)
         assert len(results) == 6
@@ -1336,7 +1342,12 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     assert "{{ field_name }}" not in jsonified_request
     {% endfor %}
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.transport_safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._Base{{ method.name }},
+        "_Base{{ method.name }}__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -1352,12 +1363,10 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     jsonified_request["{{ field_name }}"] = {{ mock_value }}
     {% endfor %}
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.transport_safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
     {% if method.query_params %}
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(({% for param in method.query_params|sort %}"{{param}}", {% endfor %}))
+    assert not set(unset_fields) - set(({% for param in method.query_params|sort %}"{{param | camel_case}}", {% endfor %}))
     {% endif %}
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     {% for req_field in method.input.required_fields if req_field.is_primitive %}
@@ -1455,13 +1464,6 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             ]
             actual_params = req.call_args.kwargs['params']
             assert expected_params == actual_params
-
-
-def test_{{ method_name }}_rest_unset_required_fields():
-    transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.{{ method.transport_safe_name|snake_case }}._get_unset_required_fields({})
-    assert set(unset_fields) == (set(({% for param in method.query_params|sort %}"{{ param|camel_case }}", {% endfor %})) & set(({% for param in method.input.required_fields %}"{{param.name|camel_case}}", {% endfor %})))
 
 
     {% endif %}{# required_fields #}
@@ -1739,6 +1741,9 @@ def test_{{ method_name }}_rest_pager(transport: str = 'rest'):
 
 
         pager = client.{{ method_name }}(request=sample_request)
+
+        assert pager.next_page_token == 'abc'
+        assert str(pager).startswith(f'{pager.__class__.__name__}<')
 
         {% if method.paged_result_field.map %}
         assert isinstance(pager.get('a'), {{ method.paged_result_field.type.fields.get('value').ident }})
@@ -2492,5 +2497,4 @@ def test_client_ctx():
                 pass
             close.assert_called()
 
-{% endwith %}{# uuid4_re #}
 {% endblock %}

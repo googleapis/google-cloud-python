@@ -281,7 +281,7 @@ class DatetimeProperties:
         **Examples:**
 
             >>> s = bpd.Series(
-            ...     pd.date_range("2000-01-01", periods=3, freq="M")
+            ...     pd.date_range("2000-01-01", periods=3, freq="ME")
             ... )
             >>> s
             0    2000-01-31 00:00:00
@@ -404,7 +404,7 @@ class DatetimeProperties:
         **Examples:**
 
             >>> s = bpd.Series(
-            ...     pd.date_range("2000-01-01", periods=3, freq="Y")
+            ...     pd.date_range("2000-01-01", periods=3, freq="YE")
             ... )
             >>> s
             0    2000-12-31 00:00:00

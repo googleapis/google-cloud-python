@@ -29,7 +29,7 @@ class MatrixFactorization(BaseEstimator, metaclass=ABCMeta):
         ... "value": [1, 1, 2, 1, 3, 1.2, 4, 1, 5, 0.8, 6, 1, 2, 3],
         ... })
         >>> model = MatrixFactorization(feedback_type='explicit', num_factors=6, user_col='row', item_col='column', rating_col='value', l2_reg=2.06)
-        >>> W = model.fit(X)
+        >>> W = model.fit(X) # doctest: +SKIP
 
     Args:
         feedback_type ('explicit' | 'implicit'):

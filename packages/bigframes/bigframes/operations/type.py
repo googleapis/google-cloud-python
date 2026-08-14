@@ -34,6 +34,9 @@ class TypeSignature(abc.ABC):
         """Convert the signature into an object method. Convenience function for constructing ops that use the signature."""
         ...
 
+    def __call__(self, *args, **kwargs):
+        return self.as_method(*args, **kwargs)
+
 
 class UnaryTypeSignature(TypeSignature):
     @abc.abstractmethod

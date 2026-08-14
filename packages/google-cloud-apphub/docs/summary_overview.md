@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# App Hub API API
+# App Hub API
 
-Overview of the APIs available for App Hub API API.
+Overview of the APIs available for App Hub API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-App Hub API API.
+App Hub API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-apphub/latest/summary_class.html)
 

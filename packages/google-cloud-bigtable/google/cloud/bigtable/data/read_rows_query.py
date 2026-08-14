@@ -13,19 +13,18 @@
 # limitations under the License.
 #
 from __future__ import annotations
-from typing import TYPE_CHECKING, Any
-from bisect import bisect_left
-from bisect import bisect_right
-from collections import defaultdict
-from google.cloud.bigtable.data.row_filters import RowFilter
 
+from bisect import bisect_left, bisect_right
+from collections import defaultdict
+from typing import TYPE_CHECKING, Any
+
+from google.cloud.bigtable.data.row_filters import RowFilter
+from google.cloud.bigtable_v2.types import ReadRowsRequest as ReadRowsRequestPB
 from google.cloud.bigtable_v2.types import RowRange as RowRangePB
 from google.cloud.bigtable_v2.types import RowSet as RowSetPB
-from google.cloud.bigtable_v2.types import ReadRowsRequest as ReadRowsRequestPB
 
 if TYPE_CHECKING:
-    from google.cloud.bigtable.data import RowKeySamples
-    from google.cloud.bigtable.data import ShardedQuery
+    from google.cloud.bigtable.data import RowKeySamples, ShardedQuery
 
 
 class RowRange:

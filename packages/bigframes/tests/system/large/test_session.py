@@ -52,7 +52,8 @@ def large_pd_df():
     [
         ("bigquery_load"),
         ("bigquery_streaming"),
-        ("bigquery_write"),
+        # TODO(b/502298527): Reenable bigquery_write test
+        # ("bigquery_write"),
     ],
 )
 def test_read_pandas_large_df(session, large_pd_df, write_engine: str):

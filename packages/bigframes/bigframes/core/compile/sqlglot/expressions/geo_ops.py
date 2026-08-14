@@ -24,11 +24,6 @@ register_unary_op = expression_compiler.expression_compiler.register_unary_op
 register_binary_op = expression_compiler.expression_compiler.register_binary_op
 
 
-@register_unary_op(ops.geo_area_op)
-def _(expr: TypedExpr) -> sge.Expression:
-    return sge.func("ST_AREA", expr.expr)
-
-
 @register_unary_op(ops.geo_st_astext_op)
 def _(expr: TypedExpr) -> sge.Expression:
     return sge.func("ST_ASTEXT", expr.expr)
@@ -48,11 +43,6 @@ def _(expr: TypedExpr, op: ops.GeoStBufferOp) -> sge.Expression:
         sge.convert(op.num_seg_quarter_circle),
         sge.convert(op.use_spheroid),
     )
-
-
-@register_unary_op(ops.geo_st_centroid_op)
-def _(expr: TypedExpr) -> sge.Expression:
-    return sge.func("ST_CENTROID", expr.expr)
 
 
 @register_unary_op(ops.geo_st_convexhull_op)
@@ -95,15 +85,6 @@ def _(
             sge.Kwarg(this="options", expression=sge.JSON(this=sge.convert(op.options)))
         )
     return sge.func("ST_REGIONSTATS", *args)
-
-
-@register_unary_op(ops.GeoStSimplifyOp, pass_op=True)
-def _(expr: TypedExpr, op: ops.GeoStSimplifyOp) -> sge.Expression:
-    return sge.func(
-        "ST_SIMPLIFY",
-        expr.expr,
-        sge.convert(op.tolerance_meters),
-    )
 
 
 @register_unary_op(ops.geo_x_op)

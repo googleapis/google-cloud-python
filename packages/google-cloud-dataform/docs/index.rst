@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Cloud Dataform.
+This package includes clients for multiple versions of Dataform.
 By default, you will get version ``dataform_v1beta1``.
 
 

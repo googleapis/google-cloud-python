@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -126,6 +121,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -942,7 +952,14 @@ def test_vmware_engine_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -989,7 +1006,14 @@ def test_vmware_engine_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1308,8 +1332,8 @@ def test_vmware_engine_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.ListPrivateCloudsRequest,
-        dict,
+        vmwareengine.ListPrivateCloudsRequest(),
+        {},
     ],
 )
 def test_list_private_clouds(request_type, transport: str = "grpc"):
@@ -1320,7 +1344,7 @@ def test_list_private_clouds(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1373,12 +1397,13 @@ def test_list_private_clouds_non_empty_request_with_auto_populated_field():
         client.list_private_clouds(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListPrivateCloudsRequest(
+        request_msg = vmwareengine.ListPrivateCloudsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_private_clouds_use_cached_wrapped_rpc():
@@ -1463,9 +1488,14 @@ async def test_list_private_clouds_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_private_clouds_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.ListPrivateCloudsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListPrivateCloudsRequest(),
+        {},
+    ],
+)
+async def test_list_private_clouds_async(request_type, transport: str = "grpc_asyncio"):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1473,7 +1503,7 @@ async def test_list_private_clouds_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1498,11 +1528,6 @@ async def test_list_private_clouds_async(
     assert isinstance(response, pagers.ListPrivateCloudsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_private_clouds_async_from_dict():
-    await test_list_private_clouds_async(request_type=dict)
 
 
 def test_list_private_clouds_field_headers():
@@ -1707,6 +1732,9 @@ def test_list_private_clouds_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmwareengine_resources.PrivateCloud) for i in results)
@@ -1799,6 +1827,8 @@ async def test_list_private_clouds_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1850,11 +1880,7 @@ async def test_list_private_clouds_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_private_clouds(request={})
-        ).pages:
+        async for page_ in (await client.list_private_clouds(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1863,8 +1889,8 @@ async def test_list_private_clouds_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.GetPrivateCloudRequest,
-        dict,
+        vmwareengine.GetPrivateCloudRequest(),
+        {},
     ],
 )
 def test_get_private_cloud(request_type, transport: str = "grpc"):
@@ -1875,7 +1901,7 @@ def test_get_private_cloud(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1931,9 +1957,10 @@ def test_get_private_cloud_non_empty_request_with_auto_populated_field():
         client.get_private_cloud(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetPrivateCloudRequest(
+        request_msg = vmwareengine.GetPrivateCloudRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_private_cloud_use_cached_wrapped_rpc():
@@ -2016,9 +2043,14 @@ async def test_get_private_cloud_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_private_cloud_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.GetPrivateCloudRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetPrivateCloudRequest(),
+        {},
+    ],
+)
+async def test_get_private_cloud_async(request_type, transport: str = "grpc_asyncio"):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2026,7 +2058,7 @@ async def test_get_private_cloud_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2057,11 +2089,6 @@ async def test_get_private_cloud_async(
     assert response.description == "description_value"
     assert response.uid == "uid_value"
     assert response.type_ == vmwareengine_resources.PrivateCloud.Type.TIME_LIMITED
-
-
-@pytest.mark.asyncio
-async def test_get_private_cloud_async_from_dict():
-    await test_get_private_cloud_async(request_type=dict)
 
 
 def test_get_private_cloud_field_headers():
@@ -2218,8 +2245,8 @@ async def test_get_private_cloud_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.CreatePrivateCloudRequest,
-        dict,
+        vmwareengine.CreatePrivateCloudRequest(),
+        {},
     ],
 )
 def test_create_private_cloud(request_type, transport: str = "grpc"):
@@ -2230,7 +2257,7 @@ def test_create_private_cloud(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2277,11 +2304,12 @@ def test_create_private_cloud_non_empty_request_with_auto_populated_field():
         client.create_private_cloud(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreatePrivateCloudRequest(
+        request_msg = vmwareengine.CreatePrivateCloudRequest(
             parent="parent_value",
             private_cloud_id="private_cloud_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_private_cloud_use_cached_wrapped_rpc():
@@ -2376,8 +2404,15 @@ async def test_create_private_cloud_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.CreatePrivateCloudRequest(),
+        {},
+    ],
+)
 async def test_create_private_cloud_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.CreatePrivateCloudRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2386,7 +2421,7 @@ async def test_create_private_cloud_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2406,11 +2441,6 @@ async def test_create_private_cloud_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_private_cloud_async_from_dict():
-    await test_create_private_cloud_async(request_type=dict)
 
 
 def test_create_private_cloud_field_headers():
@@ -2587,8 +2617,8 @@ async def test_create_private_cloud_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.UpdatePrivateCloudRequest,
-        dict,
+        vmwareengine.UpdatePrivateCloudRequest(),
+        {},
     ],
 )
 def test_update_private_cloud(request_type, transport: str = "grpc"):
@@ -2599,7 +2629,7 @@ def test_update_private_cloud(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2644,9 +2674,10 @@ def test_update_private_cloud_non_empty_request_with_auto_populated_field():
         client.update_private_cloud(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdatePrivateCloudRequest(
+        request_msg = vmwareengine.UpdatePrivateCloudRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_private_cloud_use_cached_wrapped_rpc():
@@ -2741,8 +2772,15 @@ async def test_update_private_cloud_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdatePrivateCloudRequest(),
+        {},
+    ],
+)
 async def test_update_private_cloud_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.UpdatePrivateCloudRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2751,7 +2789,7 @@ async def test_update_private_cloud_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2771,11 +2809,6 @@ async def test_update_private_cloud_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_private_cloud_async_from_dict():
-    await test_update_private_cloud_async(request_type=dict)
 
 
 def test_update_private_cloud_field_headers():
@@ -2942,8 +2975,8 @@ async def test_update_private_cloud_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.DeletePrivateCloudRequest,
-        dict,
+        vmwareengine.DeletePrivateCloudRequest(),
+        {},
     ],
 )
 def test_delete_private_cloud(request_type, transport: str = "grpc"):
@@ -2954,7 +2987,7 @@ def test_delete_private_cloud(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3000,10 +3033,11 @@ def test_delete_private_cloud_non_empty_request_with_auto_populated_field():
         client.delete_private_cloud(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeletePrivateCloudRequest(
+        request_msg = vmwareengine.DeletePrivateCloudRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_private_cloud_use_cached_wrapped_rpc():
@@ -3098,8 +3132,15 @@ async def test_delete_private_cloud_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.DeletePrivateCloudRequest(),
+        {},
+    ],
+)
 async def test_delete_private_cloud_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.DeletePrivateCloudRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3108,7 +3149,7 @@ async def test_delete_private_cloud_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3128,11 +3169,6 @@ async def test_delete_private_cloud_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_private_cloud_async_from_dict():
-    await test_delete_private_cloud_async(request_type=dict)
 
 
 def test_delete_private_cloud_field_headers():
@@ -3289,8 +3325,8 @@ async def test_delete_private_cloud_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.UndeletePrivateCloudRequest,
-        dict,
+        vmwareengine.UndeletePrivateCloudRequest(),
+        {},
     ],
 )
 def test_undelete_private_cloud(request_type, transport: str = "grpc"):
@@ -3301,7 +3337,7 @@ def test_undelete_private_cloud(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3347,10 +3383,11 @@ def test_undelete_private_cloud_non_empty_request_with_auto_populated_field():
         client.undelete_private_cloud(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UndeletePrivateCloudRequest(
+        request_msg = vmwareengine.UndeletePrivateCloudRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_undelete_private_cloud_use_cached_wrapped_rpc():
@@ -3446,9 +3483,15 @@ async def test_undelete_private_cloud_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UndeletePrivateCloudRequest(),
+        {},
+    ],
+)
 async def test_undelete_private_cloud_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.UndeletePrivateCloudRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3457,7 +3500,7 @@ async def test_undelete_private_cloud_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3477,11 +3520,6 @@ async def test_undelete_private_cloud_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_undelete_private_cloud_async_from_dict():
-    await test_undelete_private_cloud_async(request_type=dict)
 
 
 def test_undelete_private_cloud_field_headers():
@@ -3638,8 +3676,8 @@ async def test_undelete_private_cloud_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.ListClustersRequest,
-        dict,
+        vmwareengine.ListClustersRequest(),
+        {},
     ],
 )
 def test_list_clusters(request_type, transport: str = "grpc"):
@@ -3650,7 +3688,7 @@ def test_list_clusters(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
@@ -3699,12 +3737,13 @@ def test_list_clusters_non_empty_request_with_auto_populated_field():
         client.list_clusters(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListClustersRequest(
+        request_msg = vmwareengine.ListClustersRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_clusters_use_cached_wrapped_rpc():
@@ -3785,9 +3824,14 @@ async def test_list_clusters_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_clusters_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.ListClustersRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListClustersRequest(),
+        {},
+    ],
+)
+async def test_list_clusters_async(request_type, transport: str = "grpc_asyncio"):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3795,7 +3839,7 @@ async def test_list_clusters_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
@@ -3818,11 +3862,6 @@ async def test_list_clusters_async(
     assert isinstance(response, pagers.ListClustersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_clusters_async_from_dict():
-    await test_list_clusters_async(request_type=dict)
 
 
 def test_list_clusters_field_headers():
@@ -4017,6 +4056,9 @@ def test_list_clusters_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmwareengine_resources.Cluster) for i in results)
@@ -4105,6 +4147,8 @@ async def test_list_clusters_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4152,11 +4196,7 @@ async def test_list_clusters_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_clusters(request={})
-        ).pages:
+        async for page_ in (await client.list_clusters(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4165,8 +4205,8 @@ async def test_list_clusters_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.GetClusterRequest,
-        dict,
+        vmwareengine.GetClusterRequest(),
+        {},
     ],
 )
 def test_get_cluster(request_type, transport: str = "grpc"):
@@ -4177,7 +4217,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
@@ -4227,9 +4267,10 @@ def test_get_cluster_non_empty_request_with_auto_populated_field():
         client.get_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetClusterRequest(
+        request_msg = vmwareengine.GetClusterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_cluster_use_cached_wrapped_rpc():
@@ -4310,9 +4351,14 @@ async def test_get_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_cluster_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.GetClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetClusterRequest(),
+        {},
+    ],
+)
+async def test_get_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4320,7 +4366,7 @@ async def test_get_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
@@ -4347,11 +4393,6 @@ async def test_get_cluster_async(
     assert response.state == vmwareengine_resources.Cluster.State.ACTIVE
     assert response.management is True
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_cluster_async_from_dict():
-    await test_get_cluster_async(request_type=dict)
 
 
 def test_get_cluster_field_headers():
@@ -4500,8 +4541,8 @@ async def test_get_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.CreateClusterRequest,
-        dict,
+        vmwareengine.CreateClusterRequest(),
+        {},
     ],
 )
 def test_create_cluster(request_type, transport: str = "grpc"):
@@ -4512,7 +4553,7 @@ def test_create_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_cluster), "__call__") as call:
@@ -4555,11 +4596,12 @@ def test_create_cluster_non_empty_request_with_auto_populated_field():
         client.create_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateClusterRequest(
+        request_msg = vmwareengine.CreateClusterRequest(
             parent="parent_value",
             cluster_id="cluster_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_cluster_use_cached_wrapped_rpc():
@@ -4650,9 +4692,14 @@ async def test_create_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_cluster_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.CreateClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.CreateClusterRequest(),
+        {},
+    ],
+)
+async def test_create_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4660,7 +4707,7 @@ async def test_create_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_cluster), "__call__") as call:
@@ -4678,11 +4725,6 @@ async def test_create_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_cluster_async_from_dict():
-    await test_create_cluster_async(request_type=dict)
 
 
 def test_create_cluster_field_headers():
@@ -4851,8 +4893,8 @@ async def test_create_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.UpdateClusterRequest,
-        dict,
+        vmwareengine.UpdateClusterRequest(),
+        {},
     ],
 )
 def test_update_cluster(request_type, transport: str = "grpc"):
@@ -4863,7 +4905,7 @@ def test_update_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_cluster), "__call__") as call:
@@ -4904,9 +4946,10 @@ def test_update_cluster_non_empty_request_with_auto_populated_field():
         client.update_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateClusterRequest(
+        request_msg = vmwareengine.UpdateClusterRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_cluster_use_cached_wrapped_rpc():
@@ -4997,9 +5040,14 @@ async def test_update_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_cluster_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.UpdateClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateClusterRequest(),
+        {},
+    ],
+)
+async def test_update_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5007,7 +5055,7 @@ async def test_update_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_cluster), "__call__") as call:
@@ -5025,11 +5073,6 @@ async def test_update_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_cluster_async_from_dict():
-    await test_update_cluster_async(request_type=dict)
 
 
 def test_update_cluster_field_headers():
@@ -5188,8 +5231,8 @@ async def test_update_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.DeleteClusterRequest,
-        dict,
+        vmwareengine.DeleteClusterRequest(),
+        {},
     ],
 )
 def test_delete_cluster(request_type, transport: str = "grpc"):
@@ -5200,7 +5243,7 @@ def test_delete_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_cluster), "__call__") as call:
@@ -5242,10 +5285,11 @@ def test_delete_cluster_non_empty_request_with_auto_populated_field():
         client.delete_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteClusterRequest(
+        request_msg = vmwareengine.DeleteClusterRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_cluster_use_cached_wrapped_rpc():
@@ -5336,9 +5380,14 @@ async def test_delete_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_cluster_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.DeleteClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.DeleteClusterRequest(),
+        {},
+    ],
+)
+async def test_delete_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5346,7 +5395,7 @@ async def test_delete_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_cluster), "__call__") as call:
@@ -5364,11 +5413,6 @@ async def test_delete_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_cluster_async_from_dict():
-    await test_delete_cluster_async(request_type=dict)
 
 
 def test_delete_cluster_field_headers():
@@ -5517,8 +5561,8 @@ async def test_delete_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.ListNodesRequest,
-        dict,
+        vmwareengine.ListNodesRequest(),
+        {},
     ],
 )
 def test_list_nodes(request_type, transport: str = "grpc"):
@@ -5529,7 +5573,7 @@ def test_list_nodes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
@@ -5574,10 +5618,11 @@ def test_list_nodes_non_empty_request_with_auto_populated_field():
         client.list_nodes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListNodesRequest(
+        request_msg = vmwareengine.ListNodesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_nodes_use_cached_wrapped_rpc():
@@ -5656,9 +5701,14 @@ async def test_list_nodes_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_nodes_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.ListNodesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListNodesRequest(),
+        {},
+    ],
+)
+async def test_list_nodes_async(request_type, transport: str = "grpc_asyncio"):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5666,7 +5716,7 @@ async def test_list_nodes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
@@ -5687,11 +5737,6 @@ async def test_list_nodes_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNodesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_nodes_async_from_dict():
-    await test_list_nodes_async(request_type=dict)
 
 
 def test_list_nodes_field_headers():
@@ -5886,6 +5931,9 @@ def test_list_nodes_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmwareengine_resources.Node) for i in results)
@@ -5974,6 +6022,8 @@ async def test_list_nodes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6021,11 +6071,7 @@ async def test_list_nodes_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_nodes(request={})
-        ).pages:
+        async for page_ in (await client.list_nodes(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6034,8 +6080,8 @@ async def test_list_nodes_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.GetNodeRequest,
-        dict,
+        vmwareengine.GetNodeRequest(),
+        {},
     ],
 )
 def test_get_node(request_type, transport: str = "grpc"):
@@ -6046,7 +6092,7 @@ def test_get_node(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node), "__call__") as call:
@@ -6102,9 +6148,10 @@ def test_get_node_non_empty_request_with_auto_populated_field():
         client.get_node(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetNodeRequest(
+        request_msg = vmwareengine.GetNodeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_node_use_cached_wrapped_rpc():
@@ -6183,9 +6230,14 @@ async def test_get_node_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_node_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.GetNodeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetNodeRequest(),
+        {},
+    ],
+)
+async def test_get_node_async(request_type, transport: str = "grpc_asyncio"):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6193,7 +6245,7 @@ async def test_get_node_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node), "__call__") as call:
@@ -6226,11 +6278,6 @@ async def test_get_node_async(
     assert response.version == "version_value"
     assert response.custom_core_count == 1835
     assert response.state == vmwareengine_resources.Node.State.ACTIVE
-
-
-@pytest.mark.asyncio
-async def test_get_node_async_from_dict():
-    await test_get_node_async(request_type=dict)
 
 
 def test_get_node_field_headers():
@@ -6379,8 +6426,8 @@ async def test_get_node_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.ListExternalAddressesRequest,
-        dict,
+        vmwareengine.ListExternalAddressesRequest(),
+        {},
     ],
 )
 def test_list_external_addresses(request_type, transport: str = "grpc"):
@@ -6391,7 +6438,7 @@ def test_list_external_addresses(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6444,12 +6491,13 @@ def test_list_external_addresses_non_empty_request_with_auto_populated_field():
         client.list_external_addresses(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListExternalAddressesRequest(
+        request_msg = vmwareengine.ListExternalAddressesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_external_addresses_use_cached_wrapped_rpc():
@@ -6535,9 +6583,15 @@ async def test_list_external_addresses_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListExternalAddressesRequest(),
+        {},
+    ],
+)
 async def test_list_external_addresses_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.ListExternalAddressesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6546,7 +6600,7 @@ async def test_list_external_addresses_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6571,11 +6625,6 @@ async def test_list_external_addresses_async(
     assert isinstance(response, pagers.ListExternalAddressesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_external_addresses_async_from_dict():
-    await test_list_external_addresses_async(request_type=dict)
 
 
 def test_list_external_addresses_field_headers():
@@ -6780,6 +6829,9 @@ def test_list_external_addresses_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -6874,6 +6926,8 @@ async def test_list_external_addresses_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6925,11 +6979,7 @@ async def test_list_external_addresses_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_external_addresses(request={})
-        ).pages:
+        async for page_ in (await client.list_external_addresses(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6938,8 +6988,8 @@ async def test_list_external_addresses_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.FetchNetworkPolicyExternalAddressesRequest,
-        dict,
+        vmwareengine.FetchNetworkPolicyExternalAddressesRequest(),
+        {},
     ],
 )
 def test_fetch_network_policy_external_addresses(request_type, transport: str = "grpc"):
@@ -6950,7 +7000,7 @@ def test_fetch_network_policy_external_addresses(request_type, transport: str = 
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6999,10 +7049,11 @@ def test_fetch_network_policy_external_addresses_non_empty_request_with_auto_pop
         client.fetch_network_policy_external_addresses(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.FetchNetworkPolicyExternalAddressesRequest(
+        request_msg = vmwareengine.FetchNetworkPolicyExternalAddressesRequest(
             network_policy="network_policy_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_network_policy_external_addresses_use_cached_wrapped_rpc():
@@ -7088,9 +7139,15 @@ async def test_fetch_network_policy_external_addresses_async_use_cached_wrapped_
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.FetchNetworkPolicyExternalAddressesRequest(),
+        {},
+    ],
+)
 async def test_fetch_network_policy_external_addresses_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.FetchNetworkPolicyExternalAddressesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7099,7 +7156,7 @@ async def test_fetch_network_policy_external_addresses_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7122,11 +7179,6 @@ async def test_fetch_network_policy_external_addresses_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.FetchNetworkPolicyExternalAddressesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_fetch_network_policy_external_addresses_async_from_dict():
-    await test_fetch_network_policy_external_addresses_async(request_type=dict)
 
 
 def test_fetch_network_policy_external_addresses_field_headers():
@@ -7333,6 +7385,9 @@ def test_fetch_network_policy_external_addresses_pager(transport_name: str = "gr
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -7427,6 +7482,8 @@ async def test_fetch_network_policy_external_addresses_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7478,9 +7535,7 @@ async def test_fetch_network_policy_external_addresses_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.fetch_network_policy_external_addresses(request={})
         ).pages:
             pages.append(page_)
@@ -7491,8 +7546,8 @@ async def test_fetch_network_policy_external_addresses_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.GetExternalAddressRequest,
-        dict,
+        vmwareengine.GetExternalAddressRequest(),
+        {},
     ],
 )
 def test_get_external_address(request_type, transport: str = "grpc"):
@@ -7503,7 +7558,7 @@ def test_get_external_address(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7561,9 +7616,10 @@ def test_get_external_address_non_empty_request_with_auto_populated_field():
         client.get_external_address(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetExternalAddressRequest(
+        request_msg = vmwareengine.GetExternalAddressRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_external_address_use_cached_wrapped_rpc():
@@ -7648,8 +7704,15 @@ async def test_get_external_address_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetExternalAddressRequest(),
+        {},
+    ],
+)
 async def test_get_external_address_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.GetExternalAddressRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7658,7 +7721,7 @@ async def test_get_external_address_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7691,11 +7754,6 @@ async def test_get_external_address_async(
     assert response.state == vmwareengine_resources.ExternalAddress.State.ACTIVE
     assert response.uid == "uid_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_external_address_async_from_dict():
-    await test_get_external_address_async(request_type=dict)
 
 
 def test_get_external_address_field_headers():
@@ -7852,8 +7910,8 @@ async def test_get_external_address_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.CreateExternalAddressRequest,
-        dict,
+        vmwareengine.CreateExternalAddressRequest(),
+        {},
     ],
 )
 def test_create_external_address(request_type, transport: str = "grpc"):
@@ -7864,7 +7922,7 @@ def test_create_external_address(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7911,11 +7969,12 @@ def test_create_external_address_non_empty_request_with_auto_populated_field():
         client.create_external_address(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateExternalAddressRequest(
+        request_msg = vmwareengine.CreateExternalAddressRequest(
             parent="parent_value",
             external_address_id="external_address_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_external_address_use_cached_wrapped_rpc():
@@ -8011,9 +8070,15 @@ async def test_create_external_address_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.CreateExternalAddressRequest(),
+        {},
+    ],
+)
 async def test_create_external_address_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.CreateExternalAddressRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8022,7 +8087,7 @@ async def test_create_external_address_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8042,11 +8107,6 @@ async def test_create_external_address_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_external_address_async_from_dict():
-    await test_create_external_address_async(request_type=dict)
 
 
 def test_create_external_address_field_headers():
@@ -8223,8 +8283,8 @@ async def test_create_external_address_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.UpdateExternalAddressRequest,
-        dict,
+        vmwareengine.UpdateExternalAddressRequest(),
+        {},
     ],
 )
 def test_update_external_address(request_type, transport: str = "grpc"):
@@ -8235,7 +8295,7 @@ def test_update_external_address(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8280,9 +8340,10 @@ def test_update_external_address_non_empty_request_with_auto_populated_field():
         client.update_external_address(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateExternalAddressRequest(
+        request_msg = vmwareengine.UpdateExternalAddressRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_external_address_use_cached_wrapped_rpc():
@@ -8378,9 +8439,15 @@ async def test_update_external_address_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateExternalAddressRequest(),
+        {},
+    ],
+)
 async def test_update_external_address_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.UpdateExternalAddressRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8389,7 +8456,7 @@ async def test_update_external_address_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8409,11 +8476,6 @@ async def test_update_external_address_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_external_address_async_from_dict():
-    await test_update_external_address_async(request_type=dict)
 
 
 def test_update_external_address_field_headers():
@@ -8580,8 +8642,8 @@ async def test_update_external_address_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.DeleteExternalAddressRequest,
-        dict,
+        vmwareengine.DeleteExternalAddressRequest(),
+        {},
     ],
 )
 def test_delete_external_address(request_type, transport: str = "grpc"):
@@ -8592,7 +8654,7 @@ def test_delete_external_address(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8638,10 +8700,11 @@ def test_delete_external_address_non_empty_request_with_auto_populated_field():
         client.delete_external_address(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteExternalAddressRequest(
+        request_msg = vmwareengine.DeleteExternalAddressRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_external_address_use_cached_wrapped_rpc():
@@ -8737,9 +8800,15 @@ async def test_delete_external_address_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.DeleteExternalAddressRequest(),
+        {},
+    ],
+)
 async def test_delete_external_address_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.DeleteExternalAddressRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8748,7 +8817,7 @@ async def test_delete_external_address_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8768,11 +8837,6 @@ async def test_delete_external_address_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_external_address_async_from_dict():
-    await test_delete_external_address_async(request_type=dict)
 
 
 def test_delete_external_address_field_headers():
@@ -8929,8 +8993,8 @@ async def test_delete_external_address_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.ListSubnetsRequest,
-        dict,
+        vmwareengine.ListSubnetsRequest(),
+        {},
     ],
 )
 def test_list_subnets(request_type, transport: str = "grpc"):
@@ -8941,7 +9005,7 @@ def test_list_subnets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_subnets), "__call__") as call:
@@ -8988,10 +9052,11 @@ def test_list_subnets_non_empty_request_with_auto_populated_field():
         client.list_subnets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListSubnetsRequest(
+        request_msg = vmwareengine.ListSubnetsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_subnets_use_cached_wrapped_rpc():
@@ -9072,9 +9137,14 @@ async def test_list_subnets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_subnets_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.ListSubnetsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListSubnetsRequest(),
+        {},
+    ],
+)
+async def test_list_subnets_async(request_type, transport: str = "grpc_asyncio"):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9082,7 +9152,7 @@ async def test_list_subnets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_subnets), "__call__") as call:
@@ -9105,11 +9175,6 @@ async def test_list_subnets_async(
     assert isinstance(response, pagers.ListSubnetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_subnets_async_from_dict():
-    await test_list_subnets_async(request_type=dict)
 
 
 def test_list_subnets_field_headers():
@@ -9304,6 +9369,9 @@ def test_list_subnets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmwareengine_resources.Subnet) for i in results)
@@ -9392,6 +9460,8 @@ async def test_list_subnets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -9439,11 +9509,7 @@ async def test_list_subnets_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_subnets(request={})
-        ).pages:
+        async for page_ in (await client.list_subnets(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -9452,8 +9518,8 @@ async def test_list_subnets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.GetSubnetRequest,
-        dict,
+        vmwareengine.GetSubnetRequest(),
+        {},
     ],
 )
 def test_get_subnet(request_type, transport: str = "grpc"):
@@ -9464,7 +9530,7 @@ def test_get_subnet(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_subnet), "__call__") as call:
@@ -9518,9 +9584,10 @@ def test_get_subnet_non_empty_request_with_auto_populated_field():
         client.get_subnet(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetSubnetRequest(
+        request_msg = vmwareengine.GetSubnetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_subnet_use_cached_wrapped_rpc():
@@ -9599,9 +9666,14 @@ async def test_get_subnet_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_subnet_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.GetSubnetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetSubnetRequest(),
+        {},
+    ],
+)
+async def test_get_subnet_async(request_type, transport: str = "grpc_asyncio"):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9609,7 +9681,7 @@ async def test_get_subnet_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_subnet), "__call__") as call:
@@ -9640,11 +9712,6 @@ async def test_get_subnet_async(
     assert response.type_ == "type__value"
     assert response.state == vmwareengine_resources.Subnet.State.ACTIVE
     assert response.vlan_id == 733
-
-
-@pytest.mark.asyncio
-async def test_get_subnet_async_from_dict():
-    await test_get_subnet_async(request_type=dict)
 
 
 def test_get_subnet_field_headers():
@@ -9793,8 +9860,8 @@ async def test_get_subnet_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.UpdateSubnetRequest,
-        dict,
+        vmwareengine.UpdateSubnetRequest(),
+        {},
     ],
 )
 def test_update_subnet(request_type, transport: str = "grpc"):
@@ -9805,7 +9872,7 @@ def test_update_subnet(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_subnet), "__call__") as call:
@@ -9844,7 +9911,8 @@ def test_update_subnet_non_empty_request_with_auto_populated_field():
         client.update_subnet(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateSubnetRequest()
+        request_msg = vmwareengine.UpdateSubnetRequest()
+        assert args[0] == request_msg
 
 
 def test_update_subnet_use_cached_wrapped_rpc():
@@ -9935,9 +10003,14 @@ async def test_update_subnet_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_subnet_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.UpdateSubnetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateSubnetRequest(),
+        {},
+    ],
+)
+async def test_update_subnet_async(request_type, transport: str = "grpc_asyncio"):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9945,7 +10018,7 @@ async def test_update_subnet_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_subnet), "__call__") as call:
@@ -9963,11 +10036,6 @@ async def test_update_subnet_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_subnet_async_from_dict():
-    await test_update_subnet_async(request_type=dict)
 
 
 def test_update_subnet_field_headers():
@@ -10126,8 +10194,8 @@ async def test_update_subnet_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.ListExternalAccessRulesRequest,
-        dict,
+        vmwareengine.ListExternalAccessRulesRequest(),
+        {},
     ],
 )
 def test_list_external_access_rules(request_type, transport: str = "grpc"):
@@ -10138,7 +10206,7 @@ def test_list_external_access_rules(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10191,12 +10259,13 @@ def test_list_external_access_rules_non_empty_request_with_auto_populated_field(
         client.list_external_access_rules(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListExternalAccessRulesRequest(
+        request_msg = vmwareengine.ListExternalAccessRulesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_external_access_rules_use_cached_wrapped_rpc():
@@ -10282,9 +10351,15 @@ async def test_list_external_access_rules_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListExternalAccessRulesRequest(),
+        {},
+    ],
+)
 async def test_list_external_access_rules_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.ListExternalAccessRulesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10293,7 +10368,7 @@ async def test_list_external_access_rules_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10318,11 +10393,6 @@ async def test_list_external_access_rules_async(
     assert isinstance(response, pagers.ListExternalAccessRulesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_external_access_rules_async_from_dict():
-    await test_list_external_access_rules_async(request_type=dict)
 
 
 def test_list_external_access_rules_field_headers():
@@ -10529,6 +10599,9 @@ def test_list_external_access_rules_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -10623,6 +10696,8 @@ async def test_list_external_access_rules_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -10674,11 +10749,7 @@ async def test_list_external_access_rules_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_external_access_rules(request={})
-        ).pages:
+        async for page_ in (await client.list_external_access_rules(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -10687,8 +10758,8 @@ async def test_list_external_access_rules_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.GetExternalAccessRuleRequest,
-        dict,
+        vmwareengine.GetExternalAccessRuleRequest(),
+        {},
     ],
 )
 def test_get_external_access_rule(request_type, transport: str = "grpc"):
@@ -10699,7 +10770,7 @@ def test_get_external_access_rule(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10763,9 +10834,10 @@ def test_get_external_access_rule_non_empty_request_with_auto_populated_field():
         client.get_external_access_rule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetExternalAccessRuleRequest(
+        request_msg = vmwareengine.GetExternalAccessRuleRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_external_access_rule_use_cached_wrapped_rpc():
@@ -10851,9 +10923,15 @@ async def test_get_external_access_rule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetExternalAccessRuleRequest(),
+        {},
+    ],
+)
 async def test_get_external_access_rule_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.GetExternalAccessRuleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10862,7 +10940,7 @@ async def test_get_external_access_rule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10901,11 +10979,6 @@ async def test_get_external_access_rule_async(
     assert response.destination_ports == ["destination_ports_value"]
     assert response.state == vmwareengine_resources.ExternalAccessRule.State.ACTIVE
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_external_access_rule_async_from_dict():
-    await test_get_external_access_rule_async(request_type=dict)
 
 
 def test_get_external_access_rule_field_headers():
@@ -11062,8 +11135,8 @@ async def test_get_external_access_rule_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.CreateExternalAccessRuleRequest,
-        dict,
+        vmwareengine.CreateExternalAccessRuleRequest(),
+        {},
     ],
 )
 def test_create_external_access_rule(request_type, transport: str = "grpc"):
@@ -11074,7 +11147,7 @@ def test_create_external_access_rule(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11121,11 +11194,12 @@ def test_create_external_access_rule_non_empty_request_with_auto_populated_field
         client.create_external_access_rule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateExternalAccessRuleRequest(
+        request_msg = vmwareengine.CreateExternalAccessRuleRequest(
             parent="parent_value",
             external_access_rule_id="external_access_rule_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_external_access_rule_use_cached_wrapped_rpc():
@@ -11221,9 +11295,15 @@ async def test_create_external_access_rule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.CreateExternalAccessRuleRequest(),
+        {},
+    ],
+)
 async def test_create_external_access_rule_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.CreateExternalAccessRuleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11232,7 +11312,7 @@ async def test_create_external_access_rule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11252,11 +11332,6 @@ async def test_create_external_access_rule_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_external_access_rule_async_from_dict():
-    await test_create_external_access_rule_async(request_type=dict)
 
 
 def test_create_external_access_rule_field_headers():
@@ -11441,8 +11516,8 @@ async def test_create_external_access_rule_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.UpdateExternalAccessRuleRequest,
-        dict,
+        vmwareengine.UpdateExternalAccessRuleRequest(),
+        {},
     ],
 )
 def test_update_external_access_rule(request_type, transport: str = "grpc"):
@@ -11453,7 +11528,7 @@ def test_update_external_access_rule(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11498,9 +11573,10 @@ def test_update_external_access_rule_non_empty_request_with_auto_populated_field
         client.update_external_access_rule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateExternalAccessRuleRequest(
+        request_msg = vmwareengine.UpdateExternalAccessRuleRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_external_access_rule_use_cached_wrapped_rpc():
@@ -11596,9 +11672,15 @@ async def test_update_external_access_rule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateExternalAccessRuleRequest(),
+        {},
+    ],
+)
 async def test_update_external_access_rule_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.UpdateExternalAccessRuleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11607,7 +11689,7 @@ async def test_update_external_access_rule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11627,11 +11709,6 @@ async def test_update_external_access_rule_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_external_access_rule_async_from_dict():
-    await test_update_external_access_rule_async(request_type=dict)
 
 
 def test_update_external_access_rule_field_headers():
@@ -11806,8 +11883,8 @@ async def test_update_external_access_rule_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.DeleteExternalAccessRuleRequest,
-        dict,
+        vmwareengine.DeleteExternalAccessRuleRequest(),
+        {},
     ],
 )
 def test_delete_external_access_rule(request_type, transport: str = "grpc"):
@@ -11818,7 +11895,7 @@ def test_delete_external_access_rule(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11864,10 +11941,11 @@ def test_delete_external_access_rule_non_empty_request_with_auto_populated_field
         client.delete_external_access_rule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteExternalAccessRuleRequest(
+        request_msg = vmwareengine.DeleteExternalAccessRuleRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_external_access_rule_use_cached_wrapped_rpc():
@@ -11963,9 +12041,15 @@ async def test_delete_external_access_rule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.DeleteExternalAccessRuleRequest(),
+        {},
+    ],
+)
 async def test_delete_external_access_rule_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.DeleteExternalAccessRuleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11974,7 +12058,7 @@ async def test_delete_external_access_rule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11994,11 +12078,6 @@ async def test_delete_external_access_rule_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_external_access_rule_async_from_dict():
-    await test_delete_external_access_rule_async(request_type=dict)
 
 
 def test_delete_external_access_rule_field_headers():
@@ -12155,8 +12234,8 @@ async def test_delete_external_access_rule_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.ListLoggingServersRequest,
-        dict,
+        vmwareengine.ListLoggingServersRequest(),
+        {},
     ],
 )
 def test_list_logging_servers(request_type, transport: str = "grpc"):
@@ -12167,7 +12246,7 @@ def test_list_logging_servers(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12220,12 +12299,13 @@ def test_list_logging_servers_non_empty_request_with_auto_populated_field():
         client.list_logging_servers(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListLoggingServersRequest(
+        request_msg = vmwareengine.ListLoggingServersRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_logging_servers_use_cached_wrapped_rpc():
@@ -12310,8 +12390,15 @@ async def test_list_logging_servers_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListLoggingServersRequest(),
+        {},
+    ],
+)
 async def test_list_logging_servers_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.ListLoggingServersRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12320,7 +12407,7 @@ async def test_list_logging_servers_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12345,11 +12432,6 @@ async def test_list_logging_servers_async(
     assert isinstance(response, pagers.ListLoggingServersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_logging_servers_async_from_dict():
-    await test_list_logging_servers_async(request_type=dict)
 
 
 def test_list_logging_servers_field_headers():
@@ -12554,6 +12636,9 @@ def test_list_logging_servers_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmwareengine_resources.LoggingServer) for i in results)
@@ -12646,6 +12731,8 @@ async def test_list_logging_servers_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -12697,11 +12784,7 @@ async def test_list_logging_servers_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_logging_servers(request={})
-        ).pages:
+        async for page_ in (await client.list_logging_servers(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -12710,8 +12793,8 @@ async def test_list_logging_servers_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.GetLoggingServerRequest,
-        dict,
+        vmwareengine.GetLoggingServerRequest(),
+        {},
     ],
 )
 def test_get_logging_server(request_type, transport: str = "grpc"):
@@ -12722,7 +12805,7 @@ def test_get_logging_server(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12780,9 +12863,10 @@ def test_get_logging_server_non_empty_request_with_auto_populated_field():
         client.get_logging_server(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetLoggingServerRequest(
+        request_msg = vmwareengine.GetLoggingServerRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_logging_server_use_cached_wrapped_rpc():
@@ -12867,9 +12951,14 @@ async def test_get_logging_server_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_logging_server_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.GetLoggingServerRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetLoggingServerRequest(),
+        {},
+    ],
+)
+async def test_get_logging_server_async(request_type, transport: str = "grpc_asyncio"):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12877,7 +12966,7 @@ async def test_get_logging_server_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12910,11 +12999,6 @@ async def test_get_logging_server_async(
     assert response.protocol == vmwareengine_resources.LoggingServer.Protocol.UDP
     assert response.source_type == vmwareengine_resources.LoggingServer.SourceType.ESXI
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_logging_server_async_from_dict():
-    await test_get_logging_server_async(request_type=dict)
 
 
 def test_get_logging_server_field_headers():
@@ -13071,8 +13155,8 @@ async def test_get_logging_server_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.CreateLoggingServerRequest,
-        dict,
+        vmwareengine.CreateLoggingServerRequest(),
+        {},
     ],
 )
 def test_create_logging_server(request_type, transport: str = "grpc"):
@@ -13083,7 +13167,7 @@ def test_create_logging_server(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13130,11 +13214,12 @@ def test_create_logging_server_non_empty_request_with_auto_populated_field():
         client.create_logging_server(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateLoggingServerRequest(
+        request_msg = vmwareengine.CreateLoggingServerRequest(
             parent="parent_value",
             logging_server_id="logging_server_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_logging_server_use_cached_wrapped_rpc():
@@ -13230,9 +13315,15 @@ async def test_create_logging_server_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.CreateLoggingServerRequest(),
+        {},
+    ],
+)
 async def test_create_logging_server_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.CreateLoggingServerRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13241,7 +13332,7 @@ async def test_create_logging_server_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13261,11 +13352,6 @@ async def test_create_logging_server_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_logging_server_async_from_dict():
-    await test_create_logging_server_async(request_type=dict)
 
 
 def test_create_logging_server_field_headers():
@@ -13442,8 +13528,8 @@ async def test_create_logging_server_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.UpdateLoggingServerRequest,
-        dict,
+        vmwareengine.UpdateLoggingServerRequest(),
+        {},
     ],
 )
 def test_update_logging_server(request_type, transport: str = "grpc"):
@@ -13454,7 +13540,7 @@ def test_update_logging_server(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13499,9 +13585,10 @@ def test_update_logging_server_non_empty_request_with_auto_populated_field():
         client.update_logging_server(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateLoggingServerRequest(
+        request_msg = vmwareengine.UpdateLoggingServerRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_logging_server_use_cached_wrapped_rpc():
@@ -13597,9 +13684,15 @@ async def test_update_logging_server_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateLoggingServerRequest(),
+        {},
+    ],
+)
 async def test_update_logging_server_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.UpdateLoggingServerRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13608,7 +13701,7 @@ async def test_update_logging_server_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13628,11 +13721,6 @@ async def test_update_logging_server_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_logging_server_async_from_dict():
-    await test_update_logging_server_async(request_type=dict)
 
 
 def test_update_logging_server_field_headers():
@@ -13799,8 +13887,8 @@ async def test_update_logging_server_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.DeleteLoggingServerRequest,
-        dict,
+        vmwareengine.DeleteLoggingServerRequest(),
+        {},
     ],
 )
 def test_delete_logging_server(request_type, transport: str = "grpc"):
@@ -13811,7 +13899,7 @@ def test_delete_logging_server(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13857,10 +13945,11 @@ def test_delete_logging_server_non_empty_request_with_auto_populated_field():
         client.delete_logging_server(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteLoggingServerRequest(
+        request_msg = vmwareengine.DeleteLoggingServerRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_logging_server_use_cached_wrapped_rpc():
@@ -13956,9 +14045,15 @@ async def test_delete_logging_server_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.DeleteLoggingServerRequest(),
+        {},
+    ],
+)
 async def test_delete_logging_server_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.DeleteLoggingServerRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13967,7 +14062,7 @@ async def test_delete_logging_server_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13987,11 +14082,6 @@ async def test_delete_logging_server_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_logging_server_async_from_dict():
-    await test_delete_logging_server_async(request_type=dict)
 
 
 def test_delete_logging_server_field_headers():
@@ -14148,8 +14238,8 @@ async def test_delete_logging_server_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.ListNodeTypesRequest,
-        dict,
+        vmwareengine.ListNodeTypesRequest(),
+        {},
     ],
 )
 def test_list_node_types(request_type, transport: str = "grpc"):
@@ -14160,7 +14250,7 @@ def test_list_node_types(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_node_types), "__call__") as call:
@@ -14208,11 +14298,12 @@ def test_list_node_types_non_empty_request_with_auto_populated_field():
         client.list_node_types(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListNodeTypesRequest(
+        request_msg = vmwareengine.ListNodeTypesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_node_types_use_cached_wrapped_rpc():
@@ -14293,9 +14384,14 @@ async def test_list_node_types_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_node_types_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.ListNodeTypesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListNodeTypesRequest(),
+        {},
+    ],
+)
+async def test_list_node_types_async(request_type, transport: str = "grpc_asyncio"):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14303,7 +14399,7 @@ async def test_list_node_types_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_node_types), "__call__") as call:
@@ -14326,11 +14422,6 @@ async def test_list_node_types_async(
     assert isinstance(response, pagers.ListNodeTypesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_node_types_async_from_dict():
-    await test_list_node_types_async(request_type=dict)
 
 
 def test_list_node_types_field_headers():
@@ -14525,6 +14616,9 @@ def test_list_node_types_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmwareengine_resources.NodeType) for i in results)
@@ -14613,6 +14707,8 @@ async def test_list_node_types_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -14660,11 +14756,7 @@ async def test_list_node_types_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_node_types(request={})
-        ).pages:
+        async for page_ in (await client.list_node_types(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -14673,8 +14765,8 @@ async def test_list_node_types_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.GetNodeTypeRequest,
-        dict,
+        vmwareengine.GetNodeTypeRequest(),
+        {},
     ],
 )
 def test_get_node_type(request_type, transport: str = "grpc"):
@@ -14685,7 +14777,7 @@ def test_get_node_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node_type), "__call__") as call:
@@ -14753,9 +14845,10 @@ def test_get_node_type_non_empty_request_with_auto_populated_field():
         client.get_node_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetNodeTypeRequest(
+        request_msg = vmwareengine.GetNodeTypeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_node_type_use_cached_wrapped_rpc():
@@ -14836,9 +14929,14 @@ async def test_get_node_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_node_type_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.GetNodeTypeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetNodeTypeRequest(),
+        {},
+    ],
+)
+async def test_get_node_type_async(request_type, transport: str = "grpc_asyncio"):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14846,7 +14944,7 @@ async def test_get_node_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node_type), "__call__") as call:
@@ -14891,11 +14989,6 @@ async def test_get_node_type_async(
     assert response.capabilities == [
         vmwareengine_resources.NodeType.Capability.STRETCHED_CLUSTERS
     ]
-
-
-@pytest.mark.asyncio
-async def test_get_node_type_async_from_dict():
-    await test_get_node_type_async(request_type=dict)
 
 
 def test_get_node_type_field_headers():
@@ -15044,8 +15137,8 @@ async def test_get_node_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.ShowNsxCredentialsRequest,
-        dict,
+        vmwareengine.ShowNsxCredentialsRequest(),
+        {},
     ],
 )
 def test_show_nsx_credentials(request_type, transport: str = "grpc"):
@@ -15056,7 +15149,7 @@ def test_show_nsx_credentials(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15106,9 +15199,10 @@ def test_show_nsx_credentials_non_empty_request_with_auto_populated_field():
         client.show_nsx_credentials(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ShowNsxCredentialsRequest(
+        request_msg = vmwareengine.ShowNsxCredentialsRequest(
             private_cloud="private_cloud_value",
         )
+        assert args[0] == request_msg
 
 
 def test_show_nsx_credentials_use_cached_wrapped_rpc():
@@ -15193,8 +15287,15 @@ async def test_show_nsx_credentials_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ShowNsxCredentialsRequest(),
+        {},
+    ],
+)
 async def test_show_nsx_credentials_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.ShowNsxCredentialsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -15203,7 +15304,7 @@ async def test_show_nsx_credentials_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15228,11 +15329,6 @@ async def test_show_nsx_credentials_async(
     assert isinstance(response, vmwareengine_resources.Credentials)
     assert response.username == "username_value"
     assert response.password == "password_value"
-
-
-@pytest.mark.asyncio
-async def test_show_nsx_credentials_async_from_dict():
-    await test_show_nsx_credentials_async(request_type=dict)
 
 
 def test_show_nsx_credentials_field_headers():
@@ -15389,8 +15485,8 @@ async def test_show_nsx_credentials_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.ShowVcenterCredentialsRequest,
-        dict,
+        vmwareengine.ShowVcenterCredentialsRequest(),
+        {},
     ],
 )
 def test_show_vcenter_credentials(request_type, transport: str = "grpc"):
@@ -15401,7 +15497,7 @@ def test_show_vcenter_credentials(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15452,10 +15548,11 @@ def test_show_vcenter_credentials_non_empty_request_with_auto_populated_field():
         client.show_vcenter_credentials(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ShowVcenterCredentialsRequest(
+        request_msg = vmwareengine.ShowVcenterCredentialsRequest(
             private_cloud="private_cloud_value",
             username="username_value",
         )
+        assert args[0] == request_msg
 
 
 def test_show_vcenter_credentials_use_cached_wrapped_rpc():
@@ -15541,9 +15638,15 @@ async def test_show_vcenter_credentials_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ShowVcenterCredentialsRequest(),
+        {},
+    ],
+)
 async def test_show_vcenter_credentials_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.ShowVcenterCredentialsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -15552,7 +15655,7 @@ async def test_show_vcenter_credentials_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15577,11 +15680,6 @@ async def test_show_vcenter_credentials_async(
     assert isinstance(response, vmwareengine_resources.Credentials)
     assert response.username == "username_value"
     assert response.password == "password_value"
-
-
-@pytest.mark.asyncio
-async def test_show_vcenter_credentials_async_from_dict():
-    await test_show_vcenter_credentials_async(request_type=dict)
 
 
 def test_show_vcenter_credentials_field_headers():
@@ -15738,8 +15836,8 @@ async def test_show_vcenter_credentials_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.ResetNsxCredentialsRequest,
-        dict,
+        vmwareengine.ResetNsxCredentialsRequest(),
+        {},
     ],
 )
 def test_reset_nsx_credentials(request_type, transport: str = "grpc"):
@@ -15750,7 +15848,7 @@ def test_reset_nsx_credentials(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15796,10 +15894,11 @@ def test_reset_nsx_credentials_non_empty_request_with_auto_populated_field():
         client.reset_nsx_credentials(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ResetNsxCredentialsRequest(
+        request_msg = vmwareengine.ResetNsxCredentialsRequest(
             private_cloud="private_cloud_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_reset_nsx_credentials_use_cached_wrapped_rpc():
@@ -15895,9 +15994,15 @@ async def test_reset_nsx_credentials_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ResetNsxCredentialsRequest(),
+        {},
+    ],
+)
 async def test_reset_nsx_credentials_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.ResetNsxCredentialsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -15906,7 +16011,7 @@ async def test_reset_nsx_credentials_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15926,11 +16031,6 @@ async def test_reset_nsx_credentials_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_reset_nsx_credentials_async_from_dict():
-    await test_reset_nsx_credentials_async(request_type=dict)
 
 
 def test_reset_nsx_credentials_field_headers():
@@ -16087,8 +16187,8 @@ async def test_reset_nsx_credentials_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.ResetVcenterCredentialsRequest,
-        dict,
+        vmwareengine.ResetVcenterCredentialsRequest(),
+        {},
     ],
 )
 def test_reset_vcenter_credentials(request_type, transport: str = "grpc"):
@@ -16099,7 +16199,7 @@ def test_reset_vcenter_credentials(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16146,11 +16246,12 @@ def test_reset_vcenter_credentials_non_empty_request_with_auto_populated_field()
         client.reset_vcenter_credentials(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ResetVcenterCredentialsRequest(
+        request_msg = vmwareengine.ResetVcenterCredentialsRequest(
             private_cloud="private_cloud_value",
             request_id="request_id_value",
             username="username_value",
         )
+        assert args[0] == request_msg
 
 
 def test_reset_vcenter_credentials_use_cached_wrapped_rpc():
@@ -16246,9 +16347,15 @@ async def test_reset_vcenter_credentials_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ResetVcenterCredentialsRequest(),
+        {},
+    ],
+)
 async def test_reset_vcenter_credentials_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.ResetVcenterCredentialsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -16257,7 +16364,7 @@ async def test_reset_vcenter_credentials_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16277,11 +16384,6 @@ async def test_reset_vcenter_credentials_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_reset_vcenter_credentials_async_from_dict():
-    await test_reset_vcenter_credentials_async(request_type=dict)
 
 
 def test_reset_vcenter_credentials_field_headers():
@@ -16438,8 +16540,8 @@ async def test_reset_vcenter_credentials_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.GetDnsForwardingRequest,
-        dict,
+        vmwareengine.GetDnsForwardingRequest(),
+        {},
     ],
 )
 def test_get_dns_forwarding(request_type, transport: str = "grpc"):
@@ -16450,7 +16552,7 @@ def test_get_dns_forwarding(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16498,9 +16600,10 @@ def test_get_dns_forwarding_non_empty_request_with_auto_populated_field():
         client.get_dns_forwarding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetDnsForwardingRequest(
+        request_msg = vmwareengine.GetDnsForwardingRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_dns_forwarding_use_cached_wrapped_rpc():
@@ -16585,9 +16688,14 @@ async def test_get_dns_forwarding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_dns_forwarding_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.GetDnsForwardingRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetDnsForwardingRequest(),
+        {},
+    ],
+)
+async def test_get_dns_forwarding_async(request_type, transport: str = "grpc_asyncio"):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -16595,7 +16703,7 @@ async def test_get_dns_forwarding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16618,11 +16726,6 @@ async def test_get_dns_forwarding_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.DnsForwarding)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_dns_forwarding_async_from_dict():
-    await test_get_dns_forwarding_async(request_type=dict)
 
 
 def test_get_dns_forwarding_field_headers():
@@ -16779,8 +16882,8 @@ async def test_get_dns_forwarding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.UpdateDnsForwardingRequest,
-        dict,
+        vmwareengine.UpdateDnsForwardingRequest(),
+        {},
     ],
 )
 def test_update_dns_forwarding(request_type, transport: str = "grpc"):
@@ -16791,7 +16894,7 @@ def test_update_dns_forwarding(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16836,9 +16939,10 @@ def test_update_dns_forwarding_non_empty_request_with_auto_populated_field():
         client.update_dns_forwarding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateDnsForwardingRequest(
+        request_msg = vmwareengine.UpdateDnsForwardingRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_dns_forwarding_use_cached_wrapped_rpc():
@@ -16934,9 +17038,15 @@ async def test_update_dns_forwarding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateDnsForwardingRequest(),
+        {},
+    ],
+)
 async def test_update_dns_forwarding_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.UpdateDnsForwardingRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -16945,7 +17055,7 @@ async def test_update_dns_forwarding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16965,11 +17075,6 @@ async def test_update_dns_forwarding_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_dns_forwarding_async_from_dict():
-    await test_update_dns_forwarding_async(request_type=dict)
 
 
 def test_update_dns_forwarding_field_headers():
@@ -17136,8 +17241,8 @@ async def test_update_dns_forwarding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.GetNetworkPeeringRequest,
-        dict,
+        vmwareengine.GetNetworkPeeringRequest(),
+        {},
     ],
 )
 def test_get_network_peering(request_type, transport: str = "grpc"):
@@ -17148,7 +17253,7 @@ def test_get_network_peering(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17225,9 +17330,10 @@ def test_get_network_peering_non_empty_request_with_auto_populated_field():
         client.get_network_peering(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetNetworkPeeringRequest(
+        request_msg = vmwareengine.GetNetworkPeeringRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_network_peering_use_cached_wrapped_rpc():
@@ -17312,9 +17418,14 @@ async def test_get_network_peering_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_network_peering_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.GetNetworkPeeringRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetNetworkPeeringRequest(),
+        {},
+    ],
+)
+async def test_get_network_peering_async(request_type, transport: str = "grpc_asyncio"):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -17322,7 +17433,7 @@ async def test_get_network_peering_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17374,11 +17485,6 @@ async def test_get_network_peering_async(
     assert response.uid == "uid_value"
     assert response.vmware_engine_network == "vmware_engine_network_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_network_peering_async_from_dict():
-    await test_get_network_peering_async(request_type=dict)
 
 
 def test_get_network_peering_field_headers():
@@ -17535,8 +17641,8 @@ async def test_get_network_peering_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.ListNetworkPeeringsRequest,
-        dict,
+        vmwareengine.ListNetworkPeeringsRequest(),
+        {},
     ],
 )
 def test_list_network_peerings(request_type, transport: str = "grpc"):
@@ -17547,7 +17653,7 @@ def test_list_network_peerings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17600,12 +17706,13 @@ def test_list_network_peerings_non_empty_request_with_auto_populated_field():
         client.list_network_peerings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListNetworkPeeringsRequest(
+        request_msg = vmwareengine.ListNetworkPeeringsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_network_peerings_use_cached_wrapped_rpc():
@@ -17691,9 +17798,15 @@ async def test_list_network_peerings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListNetworkPeeringsRequest(),
+        {},
+    ],
+)
 async def test_list_network_peerings_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.ListNetworkPeeringsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -17702,7 +17815,7 @@ async def test_list_network_peerings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17727,11 +17840,6 @@ async def test_list_network_peerings_async(
     assert isinstance(response, pagers.ListNetworkPeeringsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_network_peerings_async_from_dict():
-    await test_list_network_peerings_async(request_type=dict)
 
 
 def test_list_network_peerings_field_headers():
@@ -17936,6 +18044,9 @@ def test_list_network_peerings_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -18030,6 +18141,8 @@ async def test_list_network_peerings_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -18081,11 +18194,7 @@ async def test_list_network_peerings_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_network_peerings(request={})
-        ).pages:
+        async for page_ in (await client.list_network_peerings(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -18094,8 +18203,8 @@ async def test_list_network_peerings_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.CreateNetworkPeeringRequest,
-        dict,
+        vmwareengine.CreateNetworkPeeringRequest(),
+        {},
     ],
 )
 def test_create_network_peering(request_type, transport: str = "grpc"):
@@ -18106,7 +18215,7 @@ def test_create_network_peering(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18153,11 +18262,12 @@ def test_create_network_peering_non_empty_request_with_auto_populated_field():
         client.create_network_peering(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateNetworkPeeringRequest(
+        request_msg = vmwareengine.CreateNetworkPeeringRequest(
             parent="parent_value",
             network_peering_id="network_peering_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_network_peering_use_cached_wrapped_rpc():
@@ -18253,9 +18363,15 @@ async def test_create_network_peering_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.CreateNetworkPeeringRequest(),
+        {},
+    ],
+)
 async def test_create_network_peering_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.CreateNetworkPeeringRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -18264,7 +18380,7 @@ async def test_create_network_peering_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18284,11 +18400,6 @@ async def test_create_network_peering_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_network_peering_async_from_dict():
-    await test_create_network_peering_async(request_type=dict)
 
 
 def test_create_network_peering_field_headers():
@@ -18465,8 +18576,8 @@ async def test_create_network_peering_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.DeleteNetworkPeeringRequest,
-        dict,
+        vmwareengine.DeleteNetworkPeeringRequest(),
+        {},
     ],
 )
 def test_delete_network_peering(request_type, transport: str = "grpc"):
@@ -18477,7 +18588,7 @@ def test_delete_network_peering(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18523,10 +18634,11 @@ def test_delete_network_peering_non_empty_request_with_auto_populated_field():
         client.delete_network_peering(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteNetworkPeeringRequest(
+        request_msg = vmwareengine.DeleteNetworkPeeringRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_network_peering_use_cached_wrapped_rpc():
@@ -18622,9 +18734,15 @@ async def test_delete_network_peering_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.DeleteNetworkPeeringRequest(),
+        {},
+    ],
+)
 async def test_delete_network_peering_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.DeleteNetworkPeeringRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -18633,7 +18751,7 @@ async def test_delete_network_peering_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18653,11 +18771,6 @@ async def test_delete_network_peering_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_network_peering_async_from_dict():
-    await test_delete_network_peering_async(request_type=dict)
 
 
 def test_delete_network_peering_field_headers():
@@ -18814,8 +18927,8 @@ async def test_delete_network_peering_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.UpdateNetworkPeeringRequest,
-        dict,
+        vmwareengine.UpdateNetworkPeeringRequest(),
+        {},
     ],
 )
 def test_update_network_peering(request_type, transport: str = "grpc"):
@@ -18826,7 +18939,7 @@ def test_update_network_peering(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18871,9 +18984,10 @@ def test_update_network_peering_non_empty_request_with_auto_populated_field():
         client.update_network_peering(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateNetworkPeeringRequest(
+        request_msg = vmwareengine.UpdateNetworkPeeringRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_network_peering_use_cached_wrapped_rpc():
@@ -18969,9 +19083,15 @@ async def test_update_network_peering_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateNetworkPeeringRequest(),
+        {},
+    ],
+)
 async def test_update_network_peering_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.UpdateNetworkPeeringRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -18980,7 +19100,7 @@ async def test_update_network_peering_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19000,11 +19120,6 @@ async def test_update_network_peering_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_network_peering_async_from_dict():
-    await test_update_network_peering_async(request_type=dict)
 
 
 def test_update_network_peering_field_headers():
@@ -19171,8 +19286,8 @@ async def test_update_network_peering_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.ListPeeringRoutesRequest,
-        dict,
+        vmwareengine.ListPeeringRoutesRequest(),
+        {},
     ],
 )
 def test_list_peering_routes(request_type, transport: str = "grpc"):
@@ -19183,7 +19298,7 @@ def test_list_peering_routes(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19233,11 +19348,12 @@ def test_list_peering_routes_non_empty_request_with_auto_populated_field():
         client.list_peering_routes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListPeeringRoutesRequest(
+        request_msg = vmwareengine.ListPeeringRoutesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_peering_routes_use_cached_wrapped_rpc():
@@ -19322,9 +19438,14 @@ async def test_list_peering_routes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_peering_routes_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.ListPeeringRoutesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListPeeringRoutesRequest(),
+        {},
+    ],
+)
+async def test_list_peering_routes_async(request_type, transport: str = "grpc_asyncio"):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -19332,7 +19453,7 @@ async def test_list_peering_routes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19355,11 +19476,6 @@ async def test_list_peering_routes_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPeeringRoutesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_peering_routes_async_from_dict():
-    await test_list_peering_routes_async(request_type=dict)
 
 
 def test_list_peering_routes_field_headers():
@@ -19564,6 +19680,9 @@ def test_list_peering_routes_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmwareengine_resources.PeeringRoute) for i in results)
@@ -19656,6 +19775,8 @@ async def test_list_peering_routes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -19707,11 +19828,7 @@ async def test_list_peering_routes_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_peering_routes(request={})
-        ).pages:
+        async for page_ in (await client.list_peering_routes(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -19720,8 +19837,8 @@ async def test_list_peering_routes_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.CreateHcxActivationKeyRequest,
-        dict,
+        vmwareengine.CreateHcxActivationKeyRequest(),
+        {},
     ],
 )
 def test_create_hcx_activation_key(request_type, transport: str = "grpc"):
@@ -19732,7 +19849,7 @@ def test_create_hcx_activation_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19779,11 +19896,12 @@ def test_create_hcx_activation_key_non_empty_request_with_auto_populated_field()
         client.create_hcx_activation_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateHcxActivationKeyRequest(
+        request_msg = vmwareengine.CreateHcxActivationKeyRequest(
             parent="parent_value",
             hcx_activation_key_id="hcx_activation_key_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_hcx_activation_key_use_cached_wrapped_rpc():
@@ -19879,9 +19997,15 @@ async def test_create_hcx_activation_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.CreateHcxActivationKeyRequest(),
+        {},
+    ],
+)
 async def test_create_hcx_activation_key_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.CreateHcxActivationKeyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -19890,7 +20014,7 @@ async def test_create_hcx_activation_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19910,11 +20034,6 @@ async def test_create_hcx_activation_key_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_hcx_activation_key_async_from_dict():
-    await test_create_hcx_activation_key_async(request_type=dict)
 
 
 def test_create_hcx_activation_key_field_headers():
@@ -20099,8 +20218,8 @@ async def test_create_hcx_activation_key_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.ListHcxActivationKeysRequest,
-        dict,
+        vmwareengine.ListHcxActivationKeysRequest(),
+        {},
     ],
 )
 def test_list_hcx_activation_keys(request_type, transport: str = "grpc"):
@@ -20111,7 +20230,7 @@ def test_list_hcx_activation_keys(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20162,10 +20281,11 @@ def test_list_hcx_activation_keys_non_empty_request_with_auto_populated_field():
         client.list_hcx_activation_keys(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListHcxActivationKeysRequest(
+        request_msg = vmwareengine.ListHcxActivationKeysRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_hcx_activation_keys_use_cached_wrapped_rpc():
@@ -20251,9 +20371,15 @@ async def test_list_hcx_activation_keys_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListHcxActivationKeysRequest(),
+        {},
+    ],
+)
 async def test_list_hcx_activation_keys_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.ListHcxActivationKeysRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -20262,7 +20388,7 @@ async def test_list_hcx_activation_keys_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20287,11 +20413,6 @@ async def test_list_hcx_activation_keys_async(
     assert isinstance(response, pagers.ListHcxActivationKeysAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_hcx_activation_keys_async_from_dict():
-    await test_list_hcx_activation_keys_async(request_type=dict)
 
 
 def test_list_hcx_activation_keys_field_headers():
@@ -20498,6 +20619,9 @@ def test_list_hcx_activation_keys_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -20592,6 +20716,8 @@ async def test_list_hcx_activation_keys_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -20643,11 +20769,7 @@ async def test_list_hcx_activation_keys_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_hcx_activation_keys(request={})
-        ).pages:
+        async for page_ in (await client.list_hcx_activation_keys(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -20656,8 +20778,8 @@ async def test_list_hcx_activation_keys_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.GetHcxActivationKeyRequest,
-        dict,
+        vmwareengine.GetHcxActivationKeyRequest(),
+        {},
     ],
 )
 def test_get_hcx_activation_key(request_type, transport: str = "grpc"):
@@ -20668,7 +20790,7 @@ def test_get_hcx_activation_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20722,9 +20844,10 @@ def test_get_hcx_activation_key_non_empty_request_with_auto_populated_field():
         client.get_hcx_activation_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetHcxActivationKeyRequest(
+        request_msg = vmwareengine.GetHcxActivationKeyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_hcx_activation_key_use_cached_wrapped_rpc():
@@ -20810,9 +20933,15 @@ async def test_get_hcx_activation_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetHcxActivationKeyRequest(),
+        {},
+    ],
+)
 async def test_get_hcx_activation_key_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.GetHcxActivationKeyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -20821,7 +20950,7 @@ async def test_get_hcx_activation_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20850,11 +20979,6 @@ async def test_get_hcx_activation_key_async(
     assert response.state == vmwareengine_resources.HcxActivationKey.State.AVAILABLE
     assert response.activation_key == "activation_key_value"
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_hcx_activation_key_async_from_dict():
-    await test_get_hcx_activation_key_async(request_type=dict)
 
 
 def test_get_hcx_activation_key_field_headers():
@@ -21011,8 +21135,8 @@ async def test_get_hcx_activation_key_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.GetNetworkPolicyRequest,
-        dict,
+        vmwareengine.GetNetworkPolicyRequest(),
+        {},
     ],
 )
 def test_get_network_policy(request_type, transport: str = "grpc"):
@@ -21023,7 +21147,7 @@ def test_get_network_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21084,9 +21208,10 @@ def test_get_network_policy_non_empty_request_with_auto_populated_field():
         client.get_network_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetNetworkPolicyRequest(
+        request_msg = vmwareengine.GetNetworkPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_network_policy_use_cached_wrapped_rpc():
@@ -21171,9 +21296,14 @@ async def test_get_network_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_network_policy_async(
-    transport: str = "grpc_asyncio", request_type=vmwareengine.GetNetworkPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetNetworkPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_network_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -21181,7 +21311,7 @@ async def test_get_network_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21217,11 +21347,6 @@ async def test_get_network_policy_async(
         response.vmware_engine_network_canonical
         == "vmware_engine_network_canonical_value"
     )
-
-
-@pytest.mark.asyncio
-async def test_get_network_policy_async_from_dict():
-    await test_get_network_policy_async(request_type=dict)
 
 
 def test_get_network_policy_field_headers():
@@ -21378,8 +21503,8 @@ async def test_get_network_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.ListNetworkPoliciesRequest,
-        dict,
+        vmwareengine.ListNetworkPoliciesRequest(),
+        {},
     ],
 )
 def test_list_network_policies(request_type, transport: str = "grpc"):
@@ -21390,7 +21515,7 @@ def test_list_network_policies(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21443,12 +21568,13 @@ def test_list_network_policies_non_empty_request_with_auto_populated_field():
         client.list_network_policies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListNetworkPoliciesRequest(
+        request_msg = vmwareengine.ListNetworkPoliciesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_network_policies_use_cached_wrapped_rpc():
@@ -21534,9 +21660,15 @@ async def test_list_network_policies_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListNetworkPoliciesRequest(),
+        {},
+    ],
+)
 async def test_list_network_policies_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.ListNetworkPoliciesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -21545,7 +21677,7 @@ async def test_list_network_policies_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21570,11 +21702,6 @@ async def test_list_network_policies_async(
     assert isinstance(response, pagers.ListNetworkPoliciesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_network_policies_async_from_dict():
-    await test_list_network_policies_async(request_type=dict)
 
 
 def test_list_network_policies_field_headers():
@@ -21779,6 +21906,9 @@ def test_list_network_policies_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmwareengine_resources.NetworkPolicy) for i in results)
@@ -21871,6 +22001,8 @@ async def test_list_network_policies_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -21922,11 +22054,7 @@ async def test_list_network_policies_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_network_policies(request={})
-        ).pages:
+        async for page_ in (await client.list_network_policies(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -21935,8 +22063,8 @@ async def test_list_network_policies_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.CreateNetworkPolicyRequest,
-        dict,
+        vmwareengine.CreateNetworkPolicyRequest(),
+        {},
     ],
 )
 def test_create_network_policy(request_type, transport: str = "grpc"):
@@ -21947,7 +22075,7 @@ def test_create_network_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -21994,11 +22122,12 @@ def test_create_network_policy_non_empty_request_with_auto_populated_field():
         client.create_network_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateNetworkPolicyRequest(
+        request_msg = vmwareengine.CreateNetworkPolicyRequest(
             parent="parent_value",
             network_policy_id="network_policy_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_network_policy_use_cached_wrapped_rpc():
@@ -22094,9 +22223,15 @@ async def test_create_network_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.CreateNetworkPolicyRequest(),
+        {},
+    ],
+)
 async def test_create_network_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.CreateNetworkPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -22105,7 +22240,7 @@ async def test_create_network_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -22125,11 +22260,6 @@ async def test_create_network_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_network_policy_async_from_dict():
-    await test_create_network_policy_async(request_type=dict)
 
 
 def test_create_network_policy_field_headers():
@@ -22306,8 +22436,8 @@ async def test_create_network_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.UpdateNetworkPolicyRequest,
-        dict,
+        vmwareengine.UpdateNetworkPolicyRequest(),
+        {},
     ],
 )
 def test_update_network_policy(request_type, transport: str = "grpc"):
@@ -22318,7 +22448,7 @@ def test_update_network_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -22363,9 +22493,10 @@ def test_update_network_policy_non_empty_request_with_auto_populated_field():
         client.update_network_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateNetworkPolicyRequest(
+        request_msg = vmwareengine.UpdateNetworkPolicyRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_network_policy_use_cached_wrapped_rpc():
@@ -22461,9 +22592,15 @@ async def test_update_network_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateNetworkPolicyRequest(),
+        {},
+    ],
+)
 async def test_update_network_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.UpdateNetworkPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -22472,7 +22609,7 @@ async def test_update_network_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -22492,11 +22629,6 @@ async def test_update_network_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_network_policy_async_from_dict():
-    await test_update_network_policy_async(request_type=dict)
 
 
 def test_update_network_policy_field_headers():
@@ -22663,8 +22795,8 @@ async def test_update_network_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.DeleteNetworkPolicyRequest,
-        dict,
+        vmwareengine.DeleteNetworkPolicyRequest(),
+        {},
     ],
 )
 def test_delete_network_policy(request_type, transport: str = "grpc"):
@@ -22675,7 +22807,7 @@ def test_delete_network_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -22721,10 +22853,11 @@ def test_delete_network_policy_non_empty_request_with_auto_populated_field():
         client.delete_network_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteNetworkPolicyRequest(
+        request_msg = vmwareengine.DeleteNetworkPolicyRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_network_policy_use_cached_wrapped_rpc():
@@ -22820,9 +22953,15 @@ async def test_delete_network_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.DeleteNetworkPolicyRequest(),
+        {},
+    ],
+)
 async def test_delete_network_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.DeleteNetworkPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -22831,7 +22970,7 @@ async def test_delete_network_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -22851,11 +22990,6 @@ async def test_delete_network_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_network_policy_async_from_dict():
-    await test_delete_network_policy_async(request_type=dict)
 
 
 def test_delete_network_policy_field_headers():
@@ -23012,8 +23146,8 @@ async def test_delete_network_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.ListManagementDnsZoneBindingsRequest,
-        dict,
+        vmwareengine.ListManagementDnsZoneBindingsRequest(),
+        {},
     ],
 )
 def test_list_management_dns_zone_bindings(request_type, transport: str = "grpc"):
@@ -23024,7 +23158,7 @@ def test_list_management_dns_zone_bindings(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -23077,12 +23211,13 @@ def test_list_management_dns_zone_bindings_non_empty_request_with_auto_populated
         client.list_management_dns_zone_bindings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListManagementDnsZoneBindingsRequest(
+        request_msg = vmwareengine.ListManagementDnsZoneBindingsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_management_dns_zone_bindings_use_cached_wrapped_rpc():
@@ -23168,9 +23303,15 @@ async def test_list_management_dns_zone_bindings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListManagementDnsZoneBindingsRequest(),
+        {},
+    ],
+)
 async def test_list_management_dns_zone_bindings_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.ListManagementDnsZoneBindingsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -23179,7 +23320,7 @@ async def test_list_management_dns_zone_bindings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -23204,11 +23345,6 @@ async def test_list_management_dns_zone_bindings_async(
     assert isinstance(response, pagers.ListManagementDnsZoneBindingsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_management_dns_zone_bindings_async_from_dict():
-    await test_list_management_dns_zone_bindings_async(request_type=dict)
 
 
 def test_list_management_dns_zone_bindings_field_headers():
@@ -23415,6 +23551,9 @@ def test_list_management_dns_zone_bindings_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -23510,6 +23649,8 @@ async def test_list_management_dns_zone_bindings_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -23562,9 +23703,7 @@ async def test_list_management_dns_zone_bindings_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_management_dns_zone_bindings(request={})
         ).pages:
             pages.append(page_)
@@ -23575,8 +23714,8 @@ async def test_list_management_dns_zone_bindings_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.GetManagementDnsZoneBindingRequest,
-        dict,
+        vmwareengine.GetManagementDnsZoneBindingRequest(),
+        {},
     ],
 )
 def test_get_management_dns_zone_binding(request_type, transport: str = "grpc"):
@@ -23587,7 +23726,7 @@ def test_get_management_dns_zone_binding(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -23644,9 +23783,10 @@ def test_get_management_dns_zone_binding_non_empty_request_with_auto_populated_f
         client.get_management_dns_zone_binding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetManagementDnsZoneBindingRequest(
+        request_msg = vmwareengine.GetManagementDnsZoneBindingRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_management_dns_zone_binding_use_cached_wrapped_rpc():
@@ -23732,9 +23872,15 @@ async def test_get_management_dns_zone_binding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetManagementDnsZoneBindingRequest(),
+        {},
+    ],
+)
 async def test_get_management_dns_zone_binding_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.GetManagementDnsZoneBindingRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -23743,7 +23889,7 @@ async def test_get_management_dns_zone_binding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -23774,11 +23920,6 @@ async def test_get_management_dns_zone_binding_async(
     )
     assert response.description == "description_value"
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_management_dns_zone_binding_async_from_dict():
-    await test_get_management_dns_zone_binding_async(request_type=dict)
 
 
 def test_get_management_dns_zone_binding_field_headers():
@@ -23935,8 +24076,8 @@ async def test_get_management_dns_zone_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.CreateManagementDnsZoneBindingRequest,
-        dict,
+        vmwareengine.CreateManagementDnsZoneBindingRequest(),
+        {},
     ],
 )
 def test_create_management_dns_zone_binding(request_type, transport: str = "grpc"):
@@ -23947,7 +24088,7 @@ def test_create_management_dns_zone_binding(request_type, transport: str = "grpc
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -23994,11 +24135,12 @@ def test_create_management_dns_zone_binding_non_empty_request_with_auto_populate
         client.create_management_dns_zone_binding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateManagementDnsZoneBindingRequest(
+        request_msg = vmwareengine.CreateManagementDnsZoneBindingRequest(
             parent="parent_value",
             management_dns_zone_binding_id="management_dns_zone_binding_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_management_dns_zone_binding_use_cached_wrapped_rpc():
@@ -24094,9 +24236,15 @@ async def test_create_management_dns_zone_binding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.CreateManagementDnsZoneBindingRequest(),
+        {},
+    ],
+)
 async def test_create_management_dns_zone_binding_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.CreateManagementDnsZoneBindingRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -24105,7 +24253,7 @@ async def test_create_management_dns_zone_binding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -24125,11 +24273,6 @@ async def test_create_management_dns_zone_binding_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_management_dns_zone_binding_async_from_dict():
-    await test_create_management_dns_zone_binding_async(request_type=dict)
 
 
 def test_create_management_dns_zone_binding_field_headers():
@@ -24314,8 +24457,8 @@ async def test_create_management_dns_zone_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.UpdateManagementDnsZoneBindingRequest,
-        dict,
+        vmwareengine.UpdateManagementDnsZoneBindingRequest(),
+        {},
     ],
 )
 def test_update_management_dns_zone_binding(request_type, transport: str = "grpc"):
@@ -24326,7 +24469,7 @@ def test_update_management_dns_zone_binding(request_type, transport: str = "grpc
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -24371,9 +24514,10 @@ def test_update_management_dns_zone_binding_non_empty_request_with_auto_populate
         client.update_management_dns_zone_binding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateManagementDnsZoneBindingRequest(
+        request_msg = vmwareengine.UpdateManagementDnsZoneBindingRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_management_dns_zone_binding_use_cached_wrapped_rpc():
@@ -24469,9 +24613,15 @@ async def test_update_management_dns_zone_binding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateManagementDnsZoneBindingRequest(),
+        {},
+    ],
+)
 async def test_update_management_dns_zone_binding_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.UpdateManagementDnsZoneBindingRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -24480,7 +24630,7 @@ async def test_update_management_dns_zone_binding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -24500,11 +24650,6 @@ async def test_update_management_dns_zone_binding_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_management_dns_zone_binding_async_from_dict():
-    await test_update_management_dns_zone_binding_async(request_type=dict)
 
 
 def test_update_management_dns_zone_binding_field_headers():
@@ -24679,8 +24824,8 @@ async def test_update_management_dns_zone_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.DeleteManagementDnsZoneBindingRequest,
-        dict,
+        vmwareengine.DeleteManagementDnsZoneBindingRequest(),
+        {},
     ],
 )
 def test_delete_management_dns_zone_binding(request_type, transport: str = "grpc"):
@@ -24691,7 +24836,7 @@ def test_delete_management_dns_zone_binding(request_type, transport: str = "grpc
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -24737,10 +24882,11 @@ def test_delete_management_dns_zone_binding_non_empty_request_with_auto_populate
         client.delete_management_dns_zone_binding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteManagementDnsZoneBindingRequest(
+        request_msg = vmwareengine.DeleteManagementDnsZoneBindingRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_management_dns_zone_binding_use_cached_wrapped_rpc():
@@ -24836,9 +24982,15 @@ async def test_delete_management_dns_zone_binding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.DeleteManagementDnsZoneBindingRequest(),
+        {},
+    ],
+)
 async def test_delete_management_dns_zone_binding_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.DeleteManagementDnsZoneBindingRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -24847,7 +24999,7 @@ async def test_delete_management_dns_zone_binding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -24867,11 +25019,6 @@ async def test_delete_management_dns_zone_binding_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_management_dns_zone_binding_async_from_dict():
-    await test_delete_management_dns_zone_binding_async(request_type=dict)
 
 
 def test_delete_management_dns_zone_binding_field_headers():
@@ -25028,8 +25175,8 @@ async def test_delete_management_dns_zone_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.RepairManagementDnsZoneBindingRequest,
-        dict,
+        vmwareengine.RepairManagementDnsZoneBindingRequest(),
+        {},
     ],
 )
 def test_repair_management_dns_zone_binding(request_type, transport: str = "grpc"):
@@ -25040,7 +25187,7 @@ def test_repair_management_dns_zone_binding(request_type, transport: str = "grpc
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -25086,10 +25233,11 @@ def test_repair_management_dns_zone_binding_non_empty_request_with_auto_populate
         client.repair_management_dns_zone_binding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.RepairManagementDnsZoneBindingRequest(
+        request_msg = vmwareengine.RepairManagementDnsZoneBindingRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_repair_management_dns_zone_binding_use_cached_wrapped_rpc():
@@ -25185,9 +25333,15 @@ async def test_repair_management_dns_zone_binding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.RepairManagementDnsZoneBindingRequest(),
+        {},
+    ],
+)
 async def test_repair_management_dns_zone_binding_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.RepairManagementDnsZoneBindingRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -25196,7 +25350,7 @@ async def test_repair_management_dns_zone_binding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -25216,11 +25370,6 @@ async def test_repair_management_dns_zone_binding_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_repair_management_dns_zone_binding_async_from_dict():
-    await test_repair_management_dns_zone_binding_async(request_type=dict)
 
 
 def test_repair_management_dns_zone_binding_field_headers():
@@ -25377,8 +25526,8 @@ async def test_repair_management_dns_zone_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.CreateVmwareEngineNetworkRequest,
-        dict,
+        vmwareengine.CreateVmwareEngineNetworkRequest(),
+        {},
     ],
 )
 def test_create_vmware_engine_network(request_type, transport: str = "grpc"):
@@ -25389,7 +25538,7 @@ def test_create_vmware_engine_network(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -25436,11 +25585,12 @@ def test_create_vmware_engine_network_non_empty_request_with_auto_populated_fiel
         client.create_vmware_engine_network(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateVmwareEngineNetworkRequest(
+        request_msg = vmwareengine.CreateVmwareEngineNetworkRequest(
             parent="parent_value",
             vmware_engine_network_id="vmware_engine_network_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_vmware_engine_network_use_cached_wrapped_rpc():
@@ -25536,9 +25686,15 @@ async def test_create_vmware_engine_network_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.CreateVmwareEngineNetworkRequest(),
+        {},
+    ],
+)
 async def test_create_vmware_engine_network_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.CreateVmwareEngineNetworkRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -25547,7 +25703,7 @@ async def test_create_vmware_engine_network_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -25567,11 +25723,6 @@ async def test_create_vmware_engine_network_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_vmware_engine_network_async_from_dict():
-    await test_create_vmware_engine_network_async(request_type=dict)
 
 
 def test_create_vmware_engine_network_field_headers():
@@ -25756,8 +25907,8 @@ async def test_create_vmware_engine_network_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.UpdateVmwareEngineNetworkRequest,
-        dict,
+        vmwareengine.UpdateVmwareEngineNetworkRequest(),
+        {},
     ],
 )
 def test_update_vmware_engine_network(request_type, transport: str = "grpc"):
@@ -25768,7 +25919,7 @@ def test_update_vmware_engine_network(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -25813,9 +25964,10 @@ def test_update_vmware_engine_network_non_empty_request_with_auto_populated_fiel
         client.update_vmware_engine_network(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateVmwareEngineNetworkRequest(
+        request_msg = vmwareengine.UpdateVmwareEngineNetworkRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_vmware_engine_network_use_cached_wrapped_rpc():
@@ -25911,9 +26063,15 @@ async def test_update_vmware_engine_network_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateVmwareEngineNetworkRequest(),
+        {},
+    ],
+)
 async def test_update_vmware_engine_network_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.UpdateVmwareEngineNetworkRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -25922,7 +26080,7 @@ async def test_update_vmware_engine_network_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -25942,11 +26100,6 @@ async def test_update_vmware_engine_network_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_vmware_engine_network_async_from_dict():
-    await test_update_vmware_engine_network_async(request_type=dict)
 
 
 def test_update_vmware_engine_network_field_headers():
@@ -26121,8 +26274,8 @@ async def test_update_vmware_engine_network_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.DeleteVmwareEngineNetworkRequest,
-        dict,
+        vmwareengine.DeleteVmwareEngineNetworkRequest(),
+        {},
     ],
 )
 def test_delete_vmware_engine_network(request_type, transport: str = "grpc"):
@@ -26133,7 +26286,7 @@ def test_delete_vmware_engine_network(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -26180,11 +26333,12 @@ def test_delete_vmware_engine_network_non_empty_request_with_auto_populated_fiel
         client.delete_vmware_engine_network(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteVmwareEngineNetworkRequest(
+        request_msg = vmwareengine.DeleteVmwareEngineNetworkRequest(
             name="name_value",
             request_id="request_id_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_vmware_engine_network_use_cached_wrapped_rpc():
@@ -26280,9 +26434,15 @@ async def test_delete_vmware_engine_network_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.DeleteVmwareEngineNetworkRequest(),
+        {},
+    ],
+)
 async def test_delete_vmware_engine_network_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.DeleteVmwareEngineNetworkRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -26291,7 +26451,7 @@ async def test_delete_vmware_engine_network_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -26311,11 +26471,6 @@ async def test_delete_vmware_engine_network_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_vmware_engine_network_async_from_dict():
-    await test_delete_vmware_engine_network_async(request_type=dict)
 
 
 def test_delete_vmware_engine_network_field_headers():
@@ -26472,8 +26627,8 @@ async def test_delete_vmware_engine_network_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.GetVmwareEngineNetworkRequest,
-        dict,
+        vmwareengine.GetVmwareEngineNetworkRequest(),
+        {},
     ],
 )
 def test_get_vmware_engine_network(request_type, transport: str = "grpc"):
@@ -26484,7 +26639,7 @@ def test_get_vmware_engine_network(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -26542,9 +26697,10 @@ def test_get_vmware_engine_network_non_empty_request_with_auto_populated_field()
         client.get_vmware_engine_network(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetVmwareEngineNetworkRequest(
+        request_msg = vmwareengine.GetVmwareEngineNetworkRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_vmware_engine_network_use_cached_wrapped_rpc():
@@ -26630,9 +26786,15 @@ async def test_get_vmware_engine_network_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetVmwareEngineNetworkRequest(),
+        {},
+    ],
+)
 async def test_get_vmware_engine_network_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.GetVmwareEngineNetworkRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -26641,7 +26803,7 @@ async def test_get_vmware_engine_network_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -26674,11 +26836,6 @@ async def test_get_vmware_engine_network_async(
     assert response.type_ == vmwareengine_resources.VmwareEngineNetwork.Type.LEGACY
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_vmware_engine_network_async_from_dict():
-    await test_get_vmware_engine_network_async(request_type=dict)
 
 
 def test_get_vmware_engine_network_field_headers():
@@ -26835,8 +26992,8 @@ async def test_get_vmware_engine_network_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.ListVmwareEngineNetworksRequest,
-        dict,
+        vmwareengine.ListVmwareEngineNetworksRequest(),
+        {},
     ],
 )
 def test_list_vmware_engine_networks(request_type, transport: str = "grpc"):
@@ -26847,7 +27004,7 @@ def test_list_vmware_engine_networks(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -26900,12 +27057,13 @@ def test_list_vmware_engine_networks_non_empty_request_with_auto_populated_field
         client.list_vmware_engine_networks(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListVmwareEngineNetworksRequest(
+        request_msg = vmwareengine.ListVmwareEngineNetworksRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_vmware_engine_networks_use_cached_wrapped_rpc():
@@ -26991,9 +27149,15 @@ async def test_list_vmware_engine_networks_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListVmwareEngineNetworksRequest(),
+        {},
+    ],
+)
 async def test_list_vmware_engine_networks_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.ListVmwareEngineNetworksRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -27002,7 +27166,7 @@ async def test_list_vmware_engine_networks_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -27027,11 +27191,6 @@ async def test_list_vmware_engine_networks_async(
     assert isinstance(response, pagers.ListVmwareEngineNetworksAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_vmware_engine_networks_async_from_dict():
-    await test_list_vmware_engine_networks_async(request_type=dict)
 
 
 def test_list_vmware_engine_networks_field_headers():
@@ -27238,6 +27397,9 @@ def test_list_vmware_engine_networks_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -27332,6 +27494,8 @@ async def test_list_vmware_engine_networks_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -27383,11 +27547,7 @@ async def test_list_vmware_engine_networks_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_vmware_engine_networks(request={})
-        ).pages:
+        async for page_ in (await client.list_vmware_engine_networks(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -27396,8 +27556,8 @@ async def test_list_vmware_engine_networks_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.CreatePrivateConnectionRequest,
-        dict,
+        vmwareengine.CreatePrivateConnectionRequest(),
+        {},
     ],
 )
 def test_create_private_connection(request_type, transport: str = "grpc"):
@@ -27408,7 +27568,7 @@ def test_create_private_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -27455,11 +27615,12 @@ def test_create_private_connection_non_empty_request_with_auto_populated_field()
         client.create_private_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreatePrivateConnectionRequest(
+        request_msg = vmwareengine.CreatePrivateConnectionRequest(
             parent="parent_value",
             private_connection_id="private_connection_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_private_connection_use_cached_wrapped_rpc():
@@ -27555,9 +27716,15 @@ async def test_create_private_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.CreatePrivateConnectionRequest(),
+        {},
+    ],
+)
 async def test_create_private_connection_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.CreatePrivateConnectionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -27566,7 +27733,7 @@ async def test_create_private_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -27586,11 +27753,6 @@ async def test_create_private_connection_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_private_connection_async_from_dict():
-    await test_create_private_connection_async(request_type=dict)
 
 
 def test_create_private_connection_field_headers():
@@ -27775,8 +27937,8 @@ async def test_create_private_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.GetPrivateConnectionRequest,
-        dict,
+        vmwareengine.GetPrivateConnectionRequest(),
+        {},
     ],
 )
 def test_get_private_connection(request_type, transport: str = "grpc"):
@@ -27787,7 +27949,7 @@ def test_get_private_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -27867,9 +28029,10 @@ def test_get_private_connection_non_empty_request_with_auto_populated_field():
         client.get_private_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetPrivateConnectionRequest(
+        request_msg = vmwareengine.GetPrivateConnectionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_private_connection_use_cached_wrapped_rpc():
@@ -27955,9 +28118,15 @@ async def test_get_private_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetPrivateConnectionRequest(),
+        {},
+    ],
+)
 async def test_get_private_connection_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.GetPrivateConnectionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -27966,7 +28135,7 @@ async def test_get_private_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -28021,11 +28190,6 @@ async def test_get_private_connection_async(
         response.peering_state
         == vmwareengine_resources.PrivateConnection.PeeringState.PEERING_ACTIVE
     )
-
-
-@pytest.mark.asyncio
-async def test_get_private_connection_async_from_dict():
-    await test_get_private_connection_async(request_type=dict)
 
 
 def test_get_private_connection_field_headers():
@@ -28182,8 +28346,8 @@ async def test_get_private_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.ListPrivateConnectionsRequest,
-        dict,
+        vmwareengine.ListPrivateConnectionsRequest(),
+        {},
     ],
 )
 def test_list_private_connections(request_type, transport: str = "grpc"):
@@ -28194,7 +28358,7 @@ def test_list_private_connections(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -28247,12 +28411,13 @@ def test_list_private_connections_non_empty_request_with_auto_populated_field():
         client.list_private_connections(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListPrivateConnectionsRequest(
+        request_msg = vmwareengine.ListPrivateConnectionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_private_connections_use_cached_wrapped_rpc():
@@ -28338,9 +28503,15 @@ async def test_list_private_connections_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListPrivateConnectionsRequest(),
+        {},
+    ],
+)
 async def test_list_private_connections_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.ListPrivateConnectionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -28349,7 +28520,7 @@ async def test_list_private_connections_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -28374,11 +28545,6 @@ async def test_list_private_connections_async(
     assert isinstance(response, pagers.ListPrivateConnectionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_private_connections_async_from_dict():
-    await test_list_private_connections_async(request_type=dict)
 
 
 def test_list_private_connections_field_headers():
@@ -28585,6 +28751,9 @@ def test_list_private_connections_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -28679,6 +28848,8 @@ async def test_list_private_connections_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -28730,11 +28901,7 @@ async def test_list_private_connections_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_private_connections(request={})
-        ).pages:
+        async for page_ in (await client.list_private_connections(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -28743,8 +28910,8 @@ async def test_list_private_connections_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.UpdatePrivateConnectionRequest,
-        dict,
+        vmwareengine.UpdatePrivateConnectionRequest(),
+        {},
     ],
 )
 def test_update_private_connection(request_type, transport: str = "grpc"):
@@ -28755,7 +28922,7 @@ def test_update_private_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -28800,9 +28967,10 @@ def test_update_private_connection_non_empty_request_with_auto_populated_field()
         client.update_private_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdatePrivateConnectionRequest(
+        request_msg = vmwareengine.UpdatePrivateConnectionRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_private_connection_use_cached_wrapped_rpc():
@@ -28898,9 +29066,15 @@ async def test_update_private_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdatePrivateConnectionRequest(),
+        {},
+    ],
+)
 async def test_update_private_connection_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.UpdatePrivateConnectionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -28909,7 +29083,7 @@ async def test_update_private_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -28929,11 +29103,6 @@ async def test_update_private_connection_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_private_connection_async_from_dict():
-    await test_update_private_connection_async(request_type=dict)
 
 
 def test_update_private_connection_field_headers():
@@ -29108,8 +29277,8 @@ async def test_update_private_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.DeletePrivateConnectionRequest,
-        dict,
+        vmwareengine.DeletePrivateConnectionRequest(),
+        {},
     ],
 )
 def test_delete_private_connection(request_type, transport: str = "grpc"):
@@ -29120,7 +29289,7 @@ def test_delete_private_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -29166,10 +29335,11 @@ def test_delete_private_connection_non_empty_request_with_auto_populated_field()
         client.delete_private_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeletePrivateConnectionRequest(
+        request_msg = vmwareengine.DeletePrivateConnectionRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_private_connection_use_cached_wrapped_rpc():
@@ -29265,9 +29435,15 @@ async def test_delete_private_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.DeletePrivateConnectionRequest(),
+        {},
+    ],
+)
 async def test_delete_private_connection_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.DeletePrivateConnectionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -29276,7 +29452,7 @@ async def test_delete_private_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -29296,11 +29472,6 @@ async def test_delete_private_connection_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_private_connection_async_from_dict():
-    await test_delete_private_connection_async(request_type=dict)
 
 
 def test_delete_private_connection_field_headers():
@@ -29457,8 +29628,8 @@ async def test_delete_private_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.ListPrivateConnectionPeeringRoutesRequest,
-        dict,
+        vmwareengine.ListPrivateConnectionPeeringRoutesRequest(),
+        {},
     ],
 )
 def test_list_private_connection_peering_routes(request_type, transport: str = "grpc"):
@@ -29469,7 +29640,7 @@ def test_list_private_connection_peering_routes(request_type, transport: str = "
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -29518,10 +29689,11 @@ def test_list_private_connection_peering_routes_non_empty_request_with_auto_popu
         client.list_private_connection_peering_routes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListPrivateConnectionPeeringRoutesRequest(
+        request_msg = vmwareengine.ListPrivateConnectionPeeringRoutesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_private_connection_peering_routes_use_cached_wrapped_rpc():
@@ -29607,9 +29779,15 @@ async def test_list_private_connection_peering_routes_async_use_cached_wrapped_r
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListPrivateConnectionPeeringRoutesRequest(),
+        {},
+    ],
+)
 async def test_list_private_connection_peering_routes_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.ListPrivateConnectionPeeringRoutesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -29618,7 +29796,7 @@ async def test_list_private_connection_peering_routes_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -29641,11 +29819,6 @@ async def test_list_private_connection_peering_routes_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPrivateConnectionPeeringRoutesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_private_connection_peering_routes_async_from_dict():
-    await test_list_private_connection_peering_routes_async(request_type=dict)
 
 
 def test_list_private_connection_peering_routes_field_headers():
@@ -29852,6 +30025,9 @@ def test_list_private_connection_peering_routes_pager(transport_name: str = "grp
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmwareengine_resources.PeeringRoute) for i in results)
@@ -29944,6 +30120,8 @@ async def test_list_private_connection_peering_routes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -29995,9 +30173,7 @@ async def test_list_private_connection_peering_routes_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_private_connection_peering_routes(request={})
         ).pages:
             pages.append(page_)
@@ -30008,8 +30184,8 @@ async def test_list_private_connection_peering_routes_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.GrantDnsBindPermissionRequest,
-        dict,
+        vmwareengine.GrantDnsBindPermissionRequest(),
+        {},
     ],
 )
 def test_grant_dns_bind_permission(request_type, transport: str = "grpc"):
@@ -30020,7 +30196,7 @@ def test_grant_dns_bind_permission(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -30066,10 +30242,11 @@ def test_grant_dns_bind_permission_non_empty_request_with_auto_populated_field()
         client.grant_dns_bind_permission(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GrantDnsBindPermissionRequest(
+        request_msg = vmwareengine.GrantDnsBindPermissionRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_grant_dns_bind_permission_use_cached_wrapped_rpc():
@@ -30165,9 +30342,15 @@ async def test_grant_dns_bind_permission_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GrantDnsBindPermissionRequest(),
+        {},
+    ],
+)
 async def test_grant_dns_bind_permission_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.GrantDnsBindPermissionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -30176,7 +30359,7 @@ async def test_grant_dns_bind_permission_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -30196,11 +30379,6 @@ async def test_grant_dns_bind_permission_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_grant_dns_bind_permission_async_from_dict():
-    await test_grant_dns_bind_permission_async(request_type=dict)
 
 
 def test_grant_dns_bind_permission_field_headers():
@@ -30367,8 +30545,8 @@ async def test_grant_dns_bind_permission_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.GetDnsBindPermissionRequest,
-        dict,
+        vmwareengine.GetDnsBindPermissionRequest(),
+        {},
     ],
 )
 def test_get_dns_bind_permission(request_type, transport: str = "grpc"):
@@ -30379,7 +30557,7 @@ def test_get_dns_bind_permission(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -30427,9 +30605,10 @@ def test_get_dns_bind_permission_non_empty_request_with_auto_populated_field():
         client.get_dns_bind_permission(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetDnsBindPermissionRequest(
+        request_msg = vmwareengine.GetDnsBindPermissionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_dns_bind_permission_use_cached_wrapped_rpc():
@@ -30515,9 +30694,15 @@ async def test_get_dns_bind_permission_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetDnsBindPermissionRequest(),
+        {},
+    ],
+)
 async def test_get_dns_bind_permission_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.GetDnsBindPermissionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -30526,7 +30711,7 @@ async def test_get_dns_bind_permission_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -30549,11 +30734,6 @@ async def test_get_dns_bind_permission_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.DnsBindPermission)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_dns_bind_permission_async_from_dict():
-    await test_get_dns_bind_permission_async(request_type=dict)
 
 
 def test_get_dns_bind_permission_field_headers():
@@ -30710,8 +30890,8 @@ async def test_get_dns_bind_permission_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        vmwareengine.RevokeDnsBindPermissionRequest,
-        dict,
+        vmwareengine.RevokeDnsBindPermissionRequest(),
+        {},
     ],
 )
 def test_revoke_dns_bind_permission(request_type, transport: str = "grpc"):
@@ -30722,7 +30902,7 @@ def test_revoke_dns_bind_permission(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -30768,10 +30948,11 @@ def test_revoke_dns_bind_permission_non_empty_request_with_auto_populated_field(
         client.revoke_dns_bind_permission(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.RevokeDnsBindPermissionRequest(
+        request_msg = vmwareengine.RevokeDnsBindPermissionRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_revoke_dns_bind_permission_use_cached_wrapped_rpc():
@@ -30867,9 +31048,15 @@ async def test_revoke_dns_bind_permission_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.RevokeDnsBindPermissionRequest(),
+        {},
+    ],
+)
 async def test_revoke_dns_bind_permission_async(
-    transport: str = "grpc_asyncio",
-    request_type=vmwareengine.RevokeDnsBindPermissionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VmwareEngineAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -30878,7 +31065,7 @@ async def test_revoke_dns_bind_permission_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -30898,11 +31085,6 @@ async def test_revoke_dns_bind_permission_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_revoke_dns_bind_permission_async_from_dict():
-    await test_revoke_dns_bind_permission_async(request_type=dict)
 
 
 def test_revoke_dns_bind_permission_field_headers():
@@ -31187,7 +31369,7 @@ def test_list_private_clouds_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_private_clouds_rest_unset_required_fields():
@@ -31321,6 +31503,9 @@ def test_list_private_clouds_rest_pager(transport: str = "rest"):
 
         pager = client.list_private_clouds(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmwareengine_resources.PrivateCloud) for i in results)
@@ -31440,7 +31625,7 @@ def test_get_private_cloud_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_private_cloud_rest_unset_required_fields():
@@ -31647,7 +31832,7 @@ def test_create_private_cloud_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_private_cloud_rest_unset_required_fields():
@@ -31850,7 +32035,7 @@ def test_update_private_cloud_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_private_cloud_rest_unset_required_fields():
@@ -32058,7 +32243,7 @@ def test_delete_private_cloud_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_private_cloud_rest_unset_required_fields():
@@ -32252,7 +32437,7 @@ def test_undelete_private_cloud_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_undelete_private_cloud_rest_unset_required_fields():
@@ -32439,7 +32624,7 @@ def test_list_clusters_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_clusters_rest_unset_required_fields():
@@ -32575,6 +32760,9 @@ def test_list_clusters_rest_pager(transport: str = "rest"):
 
         pager = client.list_clusters(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmwareengine_resources.Cluster) for i in results)
@@ -32690,7 +32878,7 @@ def test_get_cluster_rest_required_fields(request_type=vmwareengine.GetClusterRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_cluster_rest_unset_required_fields():
@@ -32893,7 +33081,7 @@ def test_create_cluster_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_cluster_rest_unset_required_fields():
@@ -33095,7 +33283,7 @@ def test_update_cluster_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_cluster_rest_unset_required_fields():
@@ -33294,7 +33482,7 @@ def test_delete_cluster_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_cluster_rest_unset_required_fields():
@@ -33477,7 +33665,7 @@ def test_list_nodes_rest_required_fields(request_type=vmwareengine.ListNodesRequ
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_nodes_rest_unset_required_fields():
@@ -33611,6 +33799,9 @@ def test_list_nodes_rest_pager(transport: str = "rest"):
 
         pager = client.list_nodes(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmwareengine_resources.Node) for i in results)
@@ -33726,7 +33917,7 @@ def test_get_node_rest_required_fields(request_type=vmwareengine.GetNodeRequest)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_node_rest_unset_required_fields():
@@ -33920,7 +34111,7 @@ def test_list_external_addresses_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_external_addresses_rest_unset_required_fields():
@@ -34057,6 +34248,9 @@ def test_list_external_addresses_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_external_addresses(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -34195,7 +34389,7 @@ def test_fetch_network_policy_external_addresses_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_fetch_network_policy_external_addresses_rest_unset_required_fields():
@@ -34338,6 +34532,9 @@ def test_fetch_network_policy_external_addresses_rest_pager(transport: str = "re
 
         pager = client.fetch_network_policy_external_addresses(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -34463,7 +34660,7 @@ def test_get_external_address_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_external_address_rest_unset_required_fields():
@@ -34670,7 +34867,7 @@ def test_create_external_address_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_external_address_rest_unset_required_fields():
@@ -34875,7 +35072,7 @@ def test_update_external_address_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_external_address_rest_unset_required_fields():
@@ -35078,7 +35275,7 @@ def test_delete_external_address_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_external_address_rest_unset_required_fields():
@@ -35263,7 +35460,7 @@ def test_list_subnets_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_subnets_rest_unset_required_fields():
@@ -35397,6 +35594,9 @@ def test_list_subnets_rest_pager(transport: str = "rest"):
 
         pager = client.list_subnets(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmwareengine_resources.Subnet) for i in results)
@@ -35512,7 +35712,7 @@ def test_get_subnet_rest_required_fields(request_type=vmwareengine.GetSubnetRequ
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_subnet_rest_unset_required_fields():
@@ -35691,7 +35891,7 @@ def test_update_subnet_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_subnet_rest_unset_required_fields():
@@ -35895,7 +36095,7 @@ def test_list_external_access_rules_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_external_access_rules_rest_unset_required_fields():
@@ -36033,6 +36233,9 @@ def test_list_external_access_rules_rest_pager(transport: str = "rest"):
 
         pager = client.list_external_access_rules(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -36157,7 +36360,7 @@ def test_get_external_access_rule_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_external_access_rule_rest_unset_required_fields():
@@ -36367,7 +36570,7 @@ def test_create_external_access_rule_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_external_access_rule_rest_unset_required_fields():
@@ -36576,7 +36779,7 @@ def test_update_external_access_rule_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_external_access_rule_rest_unset_required_fields():
@@ -36783,7 +36986,7 @@ def test_delete_external_access_rule_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_external_access_rule_rest_unset_required_fields():
@@ -36974,7 +37177,7 @@ def test_list_logging_servers_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_logging_servers_rest_unset_required_fields():
@@ -37112,6 +37315,9 @@ def test_list_logging_servers_rest_pager(transport: str = "rest"):
 
         pager = client.list_logging_servers(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmwareengine_resources.LoggingServer) for i in results)
@@ -37233,7 +37439,7 @@ def test_get_logging_server_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_logging_server_rest_unset_required_fields():
@@ -37440,7 +37646,7 @@ def test_create_logging_server_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_logging_server_rest_unset_required_fields():
@@ -37645,7 +37851,7 @@ def test_update_logging_server_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_logging_server_rest_unset_required_fields():
@@ -37848,7 +38054,7 @@ def test_delete_logging_server_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_logging_server_rest_unset_required_fields():
@@ -38034,7 +38240,7 @@ def test_list_node_types_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_node_types_rest_unset_required_fields():
@@ -38166,6 +38372,9 @@ def test_list_node_types_rest_pager(transport: str = "rest"):
 
         pager = client.list_node_types(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmwareengine_resources.NodeType) for i in results)
@@ -38283,7 +38492,7 @@ def test_get_node_type_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_node_type_rest_unset_required_fields():
@@ -38466,7 +38675,7 @@ def test_show_nsx_credentials_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_show_nsx_credentials_rest_unset_required_fields():
@@ -38653,7 +38862,7 @@ def test_show_vcenter_credentials_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_show_vcenter_credentials_rest_unset_required_fields():
@@ -38840,7 +39049,7 @@ def test_reset_nsx_credentials_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_reset_nsx_credentials_rest_unset_required_fields():
@@ -39025,7 +39234,7 @@ def test_reset_vcenter_credentials_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_reset_vcenter_credentials_rest_unset_required_fields():
@@ -39207,7 +39416,7 @@ def test_get_dns_forwarding_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_dns_forwarding_rest_unset_required_fields():
@@ -39396,7 +39605,7 @@ def test_update_dns_forwarding_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_dns_forwarding_rest_unset_required_fields():
@@ -39595,7 +39804,7 @@ def test_get_network_peering_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_network_peering_rest_unset_required_fields():
@@ -39789,7 +39998,7 @@ def test_list_network_peerings_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_network_peerings_rest_unset_required_fields():
@@ -39922,6 +40131,9 @@ def test_list_network_peerings_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_network_peerings(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -40069,7 +40281,7 @@ def test_create_network_peering_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_network_peering_rest_unset_required_fields():
@@ -40271,7 +40483,7 @@ def test_delete_network_peering_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_network_peering_rest_unset_required_fields():
@@ -40458,7 +40670,7 @@ def test_update_network_peering_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_network_peering_rest_unset_required_fields():
@@ -40665,7 +40877,7 @@ def test_list_peering_routes_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_peering_routes_rest_unset_required_fields():
@@ -40801,6 +41013,9 @@ def test_list_peering_routes_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_peering_routes(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -40948,7 +41163,7 @@ def test_create_hcx_activation_key_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_hcx_activation_key_rest_unset_required_fields():
@@ -41160,7 +41375,7 @@ def test_list_hcx_activation_keys_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_hcx_activation_keys_rest_unset_required_fields():
@@ -41296,6 +41511,9 @@ def test_list_hcx_activation_keys_rest_pager(transport: str = "rest"):
 
         pager = client.list_hcx_activation_keys(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -41420,7 +41638,7 @@ def test_get_hcx_activation_key_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_hcx_activation_key_rest_unset_required_fields():
@@ -41604,7 +41822,7 @@ def test_get_network_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_network_policy_rest_unset_required_fields():
@@ -41798,7 +42016,7 @@ def test_list_network_policies_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_network_policies_rest_unset_required_fields():
@@ -41931,6 +42149,9 @@ def test_list_network_policies_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_network_policies(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -42076,7 +42297,7 @@ def test_create_network_policy_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_network_policy_rest_unset_required_fields():
@@ -42279,7 +42500,7 @@ def test_update_network_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_network_policy_rest_unset_required_fields():
@@ -42482,7 +42703,7 @@ def test_delete_network_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_network_policy_rest_unset_required_fields():
@@ -42676,7 +42897,7 @@ def test_list_management_dns_zone_bindings_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_management_dns_zone_bindings_rest_unset_required_fields():
@@ -42821,6 +43042,9 @@ def test_list_management_dns_zone_bindings_rest_pager(transport: str = "rest"):
 
         pager = client.list_management_dns_zone_bindings(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -42950,7 +43174,7 @@ def test_get_management_dns_zone_binding_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_management_dns_zone_binding_rest_unset_required_fields():
@@ -43167,7 +43391,7 @@ def test_create_management_dns_zone_binding_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_management_dns_zone_binding_rest_unset_required_fields():
@@ -43380,7 +43604,7 @@ def test_update_management_dns_zone_binding_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_management_dns_zone_binding_rest_unset_required_fields():
@@ -43591,7 +43815,7 @@ def test_delete_management_dns_zone_binding_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_management_dns_zone_binding_rest_unset_required_fields():
@@ -43780,7 +44004,7 @@ def test_repair_management_dns_zone_binding_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_repair_management_dns_zone_binding_rest_unset_required_fields():
@@ -43994,7 +44218,7 @@ def test_create_vmware_engine_network_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_vmware_engine_network_rest_unset_required_fields():
@@ -44201,7 +44425,7 @@ def test_update_vmware_engine_network_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_vmware_engine_network_rest_unset_required_fields():
@@ -44413,7 +44637,7 @@ def test_delete_vmware_engine_network_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_vmware_engine_network_rest_unset_required_fields():
@@ -44604,7 +44828,7 @@ def test_get_vmware_engine_network_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_vmware_engine_network_rest_unset_required_fields():
@@ -44800,7 +45024,7 @@ def test_list_vmware_engine_networks_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_vmware_engine_networks_rest_unset_required_fields():
@@ -44933,6 +45157,9 @@ def test_list_vmware_engine_networks_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_vmware_engine_networks(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -45083,7 +45310,7 @@ def test_create_private_connection_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_private_connection_rest_unset_required_fields():
@@ -45286,7 +45513,7 @@ def test_get_private_connection_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_private_connection_rest_unset_required_fields():
@@ -45480,7 +45707,7 @@ def test_list_private_connections_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_private_connections_rest_unset_required_fields():
@@ -45614,6 +45841,9 @@ def test_list_private_connections_rest_pager(transport: str = "rest"):
 
         pager = client.list_private_connections(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -45742,7 +45972,7 @@ def test_update_private_connection_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_private_connection_rest_unset_required_fields():
@@ -45949,7 +46179,7 @@ def test_delete_private_connection_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_private_connection_rest_unset_required_fields():
@@ -46145,7 +46375,7 @@ def test_list_private_connection_peering_routes_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_private_connection_peering_routes_rest_unset_required_fields():
@@ -46288,6 +46518,9 @@ def test_list_private_connection_peering_routes_rest_pager(transport: str = "res
 
         pager = client.list_private_connection_peering_routes(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vmwareengine_resources.PeeringRoute) for i in results)
@@ -46414,7 +46647,7 @@ def test_grant_dns_bind_permission_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_grant_dns_bind_permission_rest_unset_required_fields():
@@ -46607,7 +46840,7 @@ def test_get_dns_bind_permission_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_dns_bind_permission_rest_unset_required_fields():
@@ -46794,7 +47027,7 @@ def test_revoke_dns_bind_permission_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_revoke_dns_bind_permission_rest_unset_required_fields():
@@ -46999,7 +47232,6 @@ def test_list_private_clouds_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListPrivateCloudsRequest()
-
         assert args[0] == request_msg
 
 
@@ -47022,7 +47254,6 @@ def test_get_private_cloud_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetPrivateCloudRequest()
-
         assert args[0] == request_msg
 
 
@@ -47045,7 +47276,6 @@ def test_create_private_cloud_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreatePrivateCloudRequest()
-
         assert args[0] == request_msg
 
 
@@ -47068,7 +47298,6 @@ def test_update_private_cloud_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdatePrivateCloudRequest()
-
         assert args[0] == request_msg
 
 
@@ -47091,7 +47320,6 @@ def test_delete_private_cloud_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeletePrivateCloudRequest()
-
         assert args[0] == request_msg
 
 
@@ -47114,7 +47342,6 @@ def test_undelete_private_cloud_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UndeletePrivateCloudRequest()
-
         assert args[0] == request_msg
 
 
@@ -47135,7 +47362,6 @@ def test_list_clusters_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -47156,7 +47382,6 @@ def test_get_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -47177,7 +47402,6 @@ def test_create_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -47198,7 +47422,6 @@ def test_update_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -47219,7 +47442,6 @@ def test_delete_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -47240,7 +47462,6 @@ def test_list_nodes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListNodesRequest()
-
         assert args[0] == request_msg
 
 
@@ -47261,7 +47482,6 @@ def test_get_node_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetNodeRequest()
-
         assert args[0] == request_msg
 
 
@@ -47284,7 +47504,6 @@ def test_list_external_addresses_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListExternalAddressesRequest()
-
         assert args[0] == request_msg
 
 
@@ -47307,7 +47526,6 @@ def test_fetch_network_policy_external_addresses_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.FetchNetworkPolicyExternalAddressesRequest()
-
         assert args[0] == request_msg
 
 
@@ -47330,7 +47548,6 @@ def test_get_external_address_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetExternalAddressRequest()
-
         assert args[0] == request_msg
 
 
@@ -47353,7 +47570,6 @@ def test_create_external_address_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateExternalAddressRequest()
-
         assert args[0] == request_msg
 
 
@@ -47376,7 +47592,6 @@ def test_update_external_address_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateExternalAddressRequest()
-
         assert args[0] == request_msg
 
 
@@ -47399,7 +47614,6 @@ def test_delete_external_address_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteExternalAddressRequest()
-
         assert args[0] == request_msg
 
 
@@ -47420,7 +47634,6 @@ def test_list_subnets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListSubnetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -47441,7 +47654,6 @@ def test_get_subnet_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -47462,7 +47674,6 @@ def test_update_subnet_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -47485,7 +47696,6 @@ def test_list_external_access_rules_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListExternalAccessRulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -47508,7 +47718,6 @@ def test_get_external_access_rule_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetExternalAccessRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -47531,7 +47740,6 @@ def test_create_external_access_rule_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateExternalAccessRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -47554,7 +47762,6 @@ def test_update_external_access_rule_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateExternalAccessRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -47577,7 +47784,6 @@ def test_delete_external_access_rule_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteExternalAccessRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -47600,7 +47806,6 @@ def test_list_logging_servers_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListLoggingServersRequest()
-
         assert args[0] == request_msg
 
 
@@ -47623,7 +47828,6 @@ def test_get_logging_server_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetLoggingServerRequest()
-
         assert args[0] == request_msg
 
 
@@ -47646,7 +47850,6 @@ def test_create_logging_server_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateLoggingServerRequest()
-
         assert args[0] == request_msg
 
 
@@ -47669,7 +47872,6 @@ def test_update_logging_server_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateLoggingServerRequest()
-
         assert args[0] == request_msg
 
 
@@ -47692,7 +47894,6 @@ def test_delete_logging_server_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteLoggingServerRequest()
-
         assert args[0] == request_msg
 
 
@@ -47713,7 +47914,6 @@ def test_list_node_types_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListNodeTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -47734,7 +47934,6 @@ def test_get_node_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetNodeTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -47757,7 +47956,6 @@ def test_show_nsx_credentials_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ShowNsxCredentialsRequest()
-
         assert args[0] == request_msg
 
 
@@ -47780,7 +47978,6 @@ def test_show_vcenter_credentials_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ShowVcenterCredentialsRequest()
-
         assert args[0] == request_msg
 
 
@@ -47803,7 +48000,6 @@ def test_reset_nsx_credentials_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ResetNsxCredentialsRequest()
-
         assert args[0] == request_msg
 
 
@@ -47826,7 +48022,6 @@ def test_reset_vcenter_credentials_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ResetVcenterCredentialsRequest()
-
         assert args[0] == request_msg
 
 
@@ -47849,7 +48044,6 @@ def test_get_dns_forwarding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetDnsForwardingRequest()
-
         assert args[0] == request_msg
 
 
@@ -47872,7 +48066,6 @@ def test_update_dns_forwarding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateDnsForwardingRequest()
-
         assert args[0] == request_msg
 
 
@@ -47895,7 +48088,6 @@ def test_get_network_peering_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetNetworkPeeringRequest()
-
         assert args[0] == request_msg
 
 
@@ -47918,7 +48110,6 @@ def test_list_network_peerings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListNetworkPeeringsRequest()
-
         assert args[0] == request_msg
 
 
@@ -47941,7 +48132,6 @@ def test_create_network_peering_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateNetworkPeeringRequest()
-
         assert args[0] == request_msg
 
 
@@ -47964,7 +48154,6 @@ def test_delete_network_peering_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteNetworkPeeringRequest()
-
         assert args[0] == request_msg
 
 
@@ -47987,7 +48176,6 @@ def test_update_network_peering_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateNetworkPeeringRequest()
-
         assert args[0] == request_msg
 
 
@@ -48010,7 +48198,6 @@ def test_list_peering_routes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListPeeringRoutesRequest()
-
         assert args[0] == request_msg
 
 
@@ -48033,7 +48220,6 @@ def test_create_hcx_activation_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateHcxActivationKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -48056,7 +48242,6 @@ def test_list_hcx_activation_keys_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListHcxActivationKeysRequest()
-
         assert args[0] == request_msg
 
 
@@ -48079,7 +48264,6 @@ def test_get_hcx_activation_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetHcxActivationKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -48102,7 +48286,6 @@ def test_get_network_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -48125,7 +48308,6 @@ def test_list_network_policies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListNetworkPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -48148,7 +48330,6 @@ def test_create_network_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -48171,7 +48352,6 @@ def test_update_network_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -48194,7 +48374,6 @@ def test_delete_network_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -48217,7 +48396,6 @@ def test_list_management_dns_zone_bindings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListManagementDnsZoneBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -48240,7 +48418,6 @@ def test_get_management_dns_zone_binding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetManagementDnsZoneBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -48263,7 +48440,6 @@ def test_create_management_dns_zone_binding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateManagementDnsZoneBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -48286,7 +48462,6 @@ def test_update_management_dns_zone_binding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateManagementDnsZoneBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -48309,7 +48484,6 @@ def test_delete_management_dns_zone_binding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteManagementDnsZoneBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -48332,7 +48506,6 @@ def test_repair_management_dns_zone_binding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.RepairManagementDnsZoneBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -48355,7 +48528,6 @@ def test_create_vmware_engine_network_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateVmwareEngineNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -48378,7 +48550,6 @@ def test_update_vmware_engine_network_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateVmwareEngineNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -48401,7 +48572,6 @@ def test_delete_vmware_engine_network_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteVmwareEngineNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -48424,7 +48594,6 @@ def test_get_vmware_engine_network_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetVmwareEngineNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -48447,7 +48616,6 @@ def test_list_vmware_engine_networks_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListVmwareEngineNetworksRequest()
-
         assert args[0] == request_msg
 
 
@@ -48470,7 +48638,6 @@ def test_create_private_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreatePrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -48493,7 +48660,6 @@ def test_get_private_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetPrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -48516,7 +48682,6 @@ def test_list_private_connections_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListPrivateConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -48539,7 +48704,6 @@ def test_update_private_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdatePrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -48562,7 +48726,6 @@ def test_delete_private_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeletePrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -48585,7 +48748,6 @@ def test_list_private_connection_peering_routes_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListPrivateConnectionPeeringRoutesRequest()
-
         assert args[0] == request_msg
 
 
@@ -48608,7 +48770,6 @@ def test_grant_dns_bind_permission_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GrantDnsBindPermissionRequest()
-
         assert args[0] == request_msg
 
 
@@ -48631,7 +48792,6 @@ def test_get_dns_bind_permission_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetDnsBindPermissionRequest()
-
         assert args[0] == request_msg
 
 
@@ -48654,7 +48814,6 @@ def test_revoke_dns_bind_permission_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.RevokeDnsBindPermissionRequest()
-
         assert args[0] == request_msg
 
 
@@ -48698,7 +48857,6 @@ async def test_list_private_clouds_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListPrivateCloudsRequest()
-
         assert args[0] == request_msg
 
 
@@ -48731,7 +48889,6 @@ async def test_get_private_cloud_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetPrivateCloudRequest()
-
         assert args[0] == request_msg
 
 
@@ -48758,7 +48915,6 @@ async def test_create_private_cloud_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreatePrivateCloudRequest()
-
         assert args[0] == request_msg
 
 
@@ -48785,7 +48941,6 @@ async def test_update_private_cloud_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdatePrivateCloudRequest()
-
         assert args[0] == request_msg
 
 
@@ -48812,7 +48967,6 @@ async def test_delete_private_cloud_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeletePrivateCloudRequest()
-
         assert args[0] == request_msg
 
 
@@ -48839,7 +48993,6 @@ async def test_undelete_private_cloud_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UndeletePrivateCloudRequest()
-
         assert args[0] == request_msg
 
 
@@ -48867,7 +49020,6 @@ async def test_list_clusters_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -48897,7 +49049,6 @@ async def test_get_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -48922,7 +49073,6 @@ async def test_create_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -48947,7 +49097,6 @@ async def test_update_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -48972,7 +49121,6 @@ async def test_delete_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -48999,7 +49147,6 @@ async def test_list_nodes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListNodesRequest()
-
         assert args[0] == request_msg
 
 
@@ -49032,7 +49179,6 @@ async def test_get_node_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetNodeRequest()
-
         assert args[0] == request_msg
 
 
@@ -49062,7 +49208,6 @@ async def test_list_external_addresses_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListExternalAddressesRequest()
-
         assert args[0] == request_msg
 
 
@@ -49091,7 +49236,6 @@ async def test_fetch_network_policy_external_addresses_empty_call_grpc_asyncio()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.FetchNetworkPolicyExternalAddressesRequest()
-
         assert args[0] == request_msg
 
 
@@ -49125,7 +49269,6 @@ async def test_get_external_address_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetExternalAddressRequest()
-
         assert args[0] == request_msg
 
 
@@ -49152,7 +49295,6 @@ async def test_create_external_address_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateExternalAddressRequest()
-
         assert args[0] == request_msg
 
 
@@ -49179,7 +49321,6 @@ async def test_update_external_address_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateExternalAddressRequest()
-
         assert args[0] == request_msg
 
 
@@ -49206,7 +49347,6 @@ async def test_delete_external_address_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteExternalAddressRequest()
-
         assert args[0] == request_msg
 
 
@@ -49234,7 +49374,6 @@ async def test_list_subnets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListSubnetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -49266,7 +49405,6 @@ async def test_get_subnet_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -49291,7 +49429,6 @@ async def test_update_subnet_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -49321,7 +49458,6 @@ async def test_list_external_access_rules_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListExternalAccessRulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -49358,7 +49494,6 @@ async def test_get_external_access_rule_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetExternalAccessRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -49385,7 +49520,6 @@ async def test_create_external_access_rule_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateExternalAccessRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -49412,7 +49546,6 @@ async def test_update_external_access_rule_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateExternalAccessRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -49439,7 +49572,6 @@ async def test_delete_external_access_rule_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteExternalAccessRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -49469,7 +49601,6 @@ async def test_list_logging_servers_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListLoggingServersRequest()
-
         assert args[0] == request_msg
 
 
@@ -49503,7 +49634,6 @@ async def test_get_logging_server_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetLoggingServerRequest()
-
         assert args[0] == request_msg
 
 
@@ -49530,7 +49660,6 @@ async def test_create_logging_server_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateLoggingServerRequest()
-
         assert args[0] == request_msg
 
 
@@ -49557,7 +49686,6 @@ async def test_update_logging_server_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateLoggingServerRequest()
-
         assert args[0] == request_msg
 
 
@@ -49584,7 +49712,6 @@ async def test_delete_logging_server_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteLoggingServerRequest()
-
         assert args[0] == request_msg
 
 
@@ -49612,7 +49739,6 @@ async def test_list_node_types_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListNodeTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -49651,7 +49777,6 @@ async def test_get_node_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetNodeTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -49681,7 +49806,6 @@ async def test_show_nsx_credentials_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ShowNsxCredentialsRequest()
-
         assert args[0] == request_msg
 
 
@@ -49711,7 +49835,6 @@ async def test_show_vcenter_credentials_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ShowVcenterCredentialsRequest()
-
         assert args[0] == request_msg
 
 
@@ -49738,7 +49861,6 @@ async def test_reset_nsx_credentials_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ResetNsxCredentialsRequest()
-
         assert args[0] == request_msg
 
 
@@ -49765,7 +49887,6 @@ async def test_reset_vcenter_credentials_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ResetVcenterCredentialsRequest()
-
         assert args[0] == request_msg
 
 
@@ -49794,7 +49915,6 @@ async def test_get_dns_forwarding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetDnsForwardingRequest()
-
         assert args[0] == request_msg
 
 
@@ -49821,7 +49941,6 @@ async def test_update_dns_forwarding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateDnsForwardingRequest()
-
         assert args[0] == request_msg
 
 
@@ -49863,7 +49982,6 @@ async def test_get_network_peering_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetNetworkPeeringRequest()
-
         assert args[0] == request_msg
 
 
@@ -49893,7 +50011,6 @@ async def test_list_network_peerings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListNetworkPeeringsRequest()
-
         assert args[0] == request_msg
 
 
@@ -49920,7 +50037,6 @@ async def test_create_network_peering_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateNetworkPeeringRequest()
-
         assert args[0] == request_msg
 
 
@@ -49947,7 +50063,6 @@ async def test_delete_network_peering_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteNetworkPeeringRequest()
-
         assert args[0] == request_msg
 
 
@@ -49974,7 +50089,6 @@ async def test_update_network_peering_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateNetworkPeeringRequest()
-
         assert args[0] == request_msg
 
 
@@ -50003,7 +50117,6 @@ async def test_list_peering_routes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListPeeringRoutesRequest()
-
         assert args[0] == request_msg
 
 
@@ -50030,7 +50143,6 @@ async def test_create_hcx_activation_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateHcxActivationKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -50060,7 +50172,6 @@ async def test_list_hcx_activation_keys_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListHcxActivationKeysRequest()
-
         assert args[0] == request_msg
 
 
@@ -50092,7 +50203,6 @@ async def test_get_hcx_activation_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetHcxActivationKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -50126,7 +50236,6 @@ async def test_get_network_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -50156,7 +50265,6 @@ async def test_list_network_policies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListNetworkPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -50183,7 +50291,6 @@ async def test_create_network_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -50210,7 +50317,6 @@ async def test_update_network_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -50237,7 +50343,6 @@ async def test_delete_network_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -50267,7 +50372,6 @@ async def test_list_management_dns_zone_bindings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListManagementDnsZoneBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -50299,7 +50403,6 @@ async def test_get_management_dns_zone_binding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetManagementDnsZoneBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -50326,7 +50429,6 @@ async def test_create_management_dns_zone_binding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateManagementDnsZoneBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -50353,7 +50455,6 @@ async def test_update_management_dns_zone_binding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateManagementDnsZoneBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -50380,7 +50481,6 @@ async def test_delete_management_dns_zone_binding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteManagementDnsZoneBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -50407,7 +50507,6 @@ async def test_repair_management_dns_zone_binding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.RepairManagementDnsZoneBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -50434,7 +50533,6 @@ async def test_create_vmware_engine_network_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateVmwareEngineNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -50461,7 +50559,6 @@ async def test_update_vmware_engine_network_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateVmwareEngineNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -50488,7 +50585,6 @@ async def test_delete_vmware_engine_network_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteVmwareEngineNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -50522,7 +50618,6 @@ async def test_get_vmware_engine_network_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetVmwareEngineNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -50552,7 +50647,6 @@ async def test_list_vmware_engine_networks_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListVmwareEngineNetworksRequest()
-
         assert args[0] == request_msg
 
 
@@ -50579,7 +50673,6 @@ async def test_create_private_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreatePrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -50618,7 +50711,6 @@ async def test_get_private_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetPrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -50648,7 +50740,6 @@ async def test_list_private_connections_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListPrivateConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -50675,7 +50766,6 @@ async def test_update_private_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdatePrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -50702,7 +50792,6 @@ async def test_delete_private_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeletePrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -50731,7 +50820,6 @@ async def test_list_private_connection_peering_routes_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListPrivateConnectionPeeringRoutesRequest()
-
         assert args[0] == request_msg
 
 
@@ -50758,7 +50846,6 @@ async def test_grant_dns_bind_permission_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GrantDnsBindPermissionRequest()
-
         assert args[0] == request_msg
 
 
@@ -50787,7 +50874,6 @@ async def test_get_dns_bind_permission_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetDnsBindPermissionRequest()
-
         assert args[0] == request_msg
 
 
@@ -50814,7 +50900,6 @@ async def test_revoke_dns_bind_permission_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.RevokeDnsBindPermissionRequest()
-
         assert args[0] == request_msg
 
 
@@ -63431,7 +63516,6 @@ def test_list_private_clouds_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListPrivateCloudsRequest()
-
         assert args[0] == request_msg
 
 
@@ -63453,7 +63537,6 @@ def test_get_private_cloud_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetPrivateCloudRequest()
-
         assert args[0] == request_msg
 
 
@@ -63475,7 +63558,6 @@ def test_create_private_cloud_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreatePrivateCloudRequest()
-
         assert args[0] == request_msg
 
 
@@ -63497,7 +63579,6 @@ def test_update_private_cloud_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdatePrivateCloudRequest()
-
         assert args[0] == request_msg
 
 
@@ -63519,7 +63600,6 @@ def test_delete_private_cloud_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeletePrivateCloudRequest()
-
         assert args[0] == request_msg
 
 
@@ -63541,7 +63621,6 @@ def test_undelete_private_cloud_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UndeletePrivateCloudRequest()
-
         assert args[0] == request_msg
 
 
@@ -63561,7 +63640,6 @@ def test_list_clusters_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -63581,7 +63659,6 @@ def test_get_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -63601,7 +63678,6 @@ def test_create_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -63621,7 +63697,6 @@ def test_update_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -63641,7 +63716,6 @@ def test_delete_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -63661,7 +63735,6 @@ def test_list_nodes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListNodesRequest()
-
         assert args[0] == request_msg
 
 
@@ -63681,7 +63754,6 @@ def test_get_node_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetNodeRequest()
-
         assert args[0] == request_msg
 
 
@@ -63703,7 +63775,6 @@ def test_list_external_addresses_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListExternalAddressesRequest()
-
         assert args[0] == request_msg
 
 
@@ -63725,7 +63796,6 @@ def test_fetch_network_policy_external_addresses_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.FetchNetworkPolicyExternalAddressesRequest()
-
         assert args[0] == request_msg
 
 
@@ -63747,7 +63817,6 @@ def test_get_external_address_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetExternalAddressRequest()
-
         assert args[0] == request_msg
 
 
@@ -63769,7 +63838,6 @@ def test_create_external_address_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateExternalAddressRequest()
-
         assert args[0] == request_msg
 
 
@@ -63791,7 +63859,6 @@ def test_update_external_address_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateExternalAddressRequest()
-
         assert args[0] == request_msg
 
 
@@ -63813,7 +63880,6 @@ def test_delete_external_address_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteExternalAddressRequest()
-
         assert args[0] == request_msg
 
 
@@ -63833,7 +63899,6 @@ def test_list_subnets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListSubnetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -63853,7 +63918,6 @@ def test_get_subnet_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -63873,7 +63937,6 @@ def test_update_subnet_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateSubnetRequest()
-
         assert args[0] == request_msg
 
 
@@ -63895,7 +63958,6 @@ def test_list_external_access_rules_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListExternalAccessRulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -63917,7 +63979,6 @@ def test_get_external_access_rule_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetExternalAccessRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -63939,7 +64000,6 @@ def test_create_external_access_rule_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateExternalAccessRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -63961,7 +64021,6 @@ def test_update_external_access_rule_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateExternalAccessRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -63983,7 +64042,6 @@ def test_delete_external_access_rule_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteExternalAccessRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -64005,7 +64063,6 @@ def test_list_logging_servers_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListLoggingServersRequest()
-
         assert args[0] == request_msg
 
 
@@ -64027,7 +64084,6 @@ def test_get_logging_server_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetLoggingServerRequest()
-
         assert args[0] == request_msg
 
 
@@ -64049,7 +64105,6 @@ def test_create_logging_server_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateLoggingServerRequest()
-
         assert args[0] == request_msg
 
 
@@ -64071,7 +64126,6 @@ def test_update_logging_server_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateLoggingServerRequest()
-
         assert args[0] == request_msg
 
 
@@ -64093,7 +64147,6 @@ def test_delete_logging_server_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteLoggingServerRequest()
-
         assert args[0] == request_msg
 
 
@@ -64113,7 +64166,6 @@ def test_list_node_types_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListNodeTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -64133,7 +64185,6 @@ def test_get_node_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetNodeTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -64155,7 +64206,6 @@ def test_show_nsx_credentials_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ShowNsxCredentialsRequest()
-
         assert args[0] == request_msg
 
 
@@ -64177,7 +64227,6 @@ def test_show_vcenter_credentials_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ShowVcenterCredentialsRequest()
-
         assert args[0] == request_msg
 
 
@@ -64199,7 +64248,6 @@ def test_reset_nsx_credentials_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ResetNsxCredentialsRequest()
-
         assert args[0] == request_msg
 
 
@@ -64221,7 +64269,6 @@ def test_reset_vcenter_credentials_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ResetVcenterCredentialsRequest()
-
         assert args[0] == request_msg
 
 
@@ -64243,7 +64290,6 @@ def test_get_dns_forwarding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetDnsForwardingRequest()
-
         assert args[0] == request_msg
 
 
@@ -64265,7 +64311,6 @@ def test_update_dns_forwarding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateDnsForwardingRequest()
-
         assert args[0] == request_msg
 
 
@@ -64287,7 +64332,6 @@ def test_get_network_peering_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetNetworkPeeringRequest()
-
         assert args[0] == request_msg
 
 
@@ -64309,7 +64353,6 @@ def test_list_network_peerings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListNetworkPeeringsRequest()
-
         assert args[0] == request_msg
 
 
@@ -64331,7 +64374,6 @@ def test_create_network_peering_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateNetworkPeeringRequest()
-
         assert args[0] == request_msg
 
 
@@ -64353,7 +64395,6 @@ def test_delete_network_peering_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteNetworkPeeringRequest()
-
         assert args[0] == request_msg
 
 
@@ -64375,7 +64416,6 @@ def test_update_network_peering_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateNetworkPeeringRequest()
-
         assert args[0] == request_msg
 
 
@@ -64397,7 +64437,6 @@ def test_list_peering_routes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListPeeringRoutesRequest()
-
         assert args[0] == request_msg
 
 
@@ -64419,7 +64458,6 @@ def test_create_hcx_activation_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateHcxActivationKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -64441,7 +64479,6 @@ def test_list_hcx_activation_keys_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListHcxActivationKeysRequest()
-
         assert args[0] == request_msg
 
 
@@ -64463,7 +64500,6 @@ def test_get_hcx_activation_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetHcxActivationKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -64485,7 +64521,6 @@ def test_get_network_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -64507,7 +64542,6 @@ def test_list_network_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListNetworkPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -64529,7 +64563,6 @@ def test_create_network_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -64551,7 +64584,6 @@ def test_update_network_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -64573,7 +64605,6 @@ def test_delete_network_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteNetworkPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -64595,7 +64626,6 @@ def test_list_management_dns_zone_bindings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListManagementDnsZoneBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -64617,7 +64647,6 @@ def test_get_management_dns_zone_binding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetManagementDnsZoneBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -64639,7 +64668,6 @@ def test_create_management_dns_zone_binding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateManagementDnsZoneBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -64661,7 +64689,6 @@ def test_update_management_dns_zone_binding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateManagementDnsZoneBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -64683,7 +64710,6 @@ def test_delete_management_dns_zone_binding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteManagementDnsZoneBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -64705,7 +64731,6 @@ def test_repair_management_dns_zone_binding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.RepairManagementDnsZoneBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -64727,7 +64752,6 @@ def test_create_vmware_engine_network_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreateVmwareEngineNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -64749,7 +64773,6 @@ def test_update_vmware_engine_network_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdateVmwareEngineNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -64771,7 +64794,6 @@ def test_delete_vmware_engine_network_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeleteVmwareEngineNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -64793,7 +64815,6 @@ def test_get_vmware_engine_network_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetVmwareEngineNetworkRequest()
-
         assert args[0] == request_msg
 
 
@@ -64815,7 +64836,6 @@ def test_list_vmware_engine_networks_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListVmwareEngineNetworksRequest()
-
         assert args[0] == request_msg
 
 
@@ -64837,7 +64857,6 @@ def test_create_private_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.CreatePrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -64859,7 +64878,6 @@ def test_get_private_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetPrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -64881,7 +64899,6 @@ def test_list_private_connections_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListPrivateConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -64903,7 +64920,6 @@ def test_update_private_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.UpdatePrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -64925,7 +64941,6 @@ def test_delete_private_connection_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.DeletePrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -64947,7 +64962,6 @@ def test_list_private_connection_peering_routes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.ListPrivateConnectionPeeringRoutesRequest()
-
         assert args[0] == request_msg
 
 
@@ -64969,7 +64983,6 @@ def test_grant_dns_bind_permission_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GrantDnsBindPermissionRequest()
-
         assert args[0] == request_msg
 
 
@@ -64991,7 +65004,6 @@ def test_get_dns_bind_permission_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.GetDnsBindPermissionRequest()
-
         assert args[0] == request_msg
 
 
@@ -65013,7 +65025,6 @@ def test_revoke_dns_bind_permission_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = vmwareengine.RevokeDnsBindPermissionRequest()
-
         assert args[0] == request_msg
 
 

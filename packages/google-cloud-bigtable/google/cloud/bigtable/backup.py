@@ -17,12 +17,13 @@
 import re
 
 from google.cloud._helpers import _datetime_to_pb_timestamp  # type: ignore
-from google.cloud.bigtable_admin_v2 import BaseBigtableTableAdminClient
-from google.cloud.bigtable_admin_v2.types import table
-from google.cloud.bigtable.encryption_info import EncryptionInfo
-from google.cloud.bigtable.policy import Policy
 from google.cloud.exceptions import NotFound  # type: ignore
 from google.protobuf import field_mask_pb2
+
+from google.cloud.bigtable.encryption_info import EncryptionInfo
+from google.cloud.bigtable.policy import Policy
+from google.cloud.bigtable_admin_v2 import BaseBigtableTableAdminClient
+from google.cloud.bigtable_admin_v2.types import table
 
 _BACKUP_NAME_RE = re.compile(
     r"^projects/(?P<project>[^/]+)/"

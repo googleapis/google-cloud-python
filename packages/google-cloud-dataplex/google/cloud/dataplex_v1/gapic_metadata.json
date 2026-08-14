@@ -404,6 +404,11 @@
                 "lookup_entry_links"
               ]
             },
+            "ModifyEntry": {
+              "methods": [
+                "modify_entry"
+              ]
+            },
             "SearchEntries": {
               "methods": [
                 "search_entries"
@@ -594,6 +599,11 @@
                 "lookup_entry_links"
               ]
             },
+            "ModifyEntry": {
+              "methods": [
+                "modify_entry"
+              ]
+            },
             "SearchEntries": {
               "methods": [
                 "search_entries"
@@ -782,6 +792,11 @@
             "LookupEntryLinks": {
               "methods": [
                 "lookup_entry_links"
+              ]
+            },
+            "ModifyEntry": {
+              "methods": [
+                "modify_entry"
               ]
             },
             "SearchEntries": {
@@ -975,6 +990,11 @@
                 "list_data_products"
               ]
             },
+            "RequestDataProductAccess": {
+              "methods": [
+                "request_data_product_access"
+              ]
+            },
             "UpdateDataAsset": {
               "methods": [
                 "update_data_asset"
@@ -1028,6 +1048,11 @@
             "ListDataProducts": {
               "methods": [
                 "list_data_products"
+              ]
+            },
+            "RequestDataProductAccess": {
+              "methods": [
+                "request_data_product_access"
               ]
             },
             "UpdateDataAsset": {
@@ -1085,6 +1110,11 @@
                 "list_data_products"
               ]
             },
+            "RequestDataProductAccess": {
+              "methods": [
+                "request_data_product_access"
+              ]
+            },
             "UpdateDataAsset": {
               "methods": [
                 "update_data_asset"
@@ -1104,6 +1134,11 @@
         "grpc": {
           "libraryClient": "DataScanServiceClient",
           "rpcs": {
+            "CancelDataScanJob": {
+              "methods": [
+                "cancel_data_scan_job"
+              ]
+            },
             "CreateDataScan": {
               "methods": [
                 "create_data_scan"
@@ -1154,6 +1189,11 @@
         "grpc-async": {
           "libraryClient": "DataScanServiceAsyncClient",
           "rpcs": {
+            "CancelDataScanJob": {
+              "methods": [
+                "cancel_data_scan_job"
+              ]
+            },
             "CreateDataScan": {
               "methods": [
                 "create_data_scan"
@@ -1204,6 +1244,11 @@
         "rest": {
           "libraryClient": "DataScanServiceClient",
           "rpcs": {
+            "CancelDataScanJob": {
+              "methods": [
+                "cancel_data_scan_job"
+              ]
+            },
             "CreateDataScan": {
               "methods": [
                 "create_data_scan"

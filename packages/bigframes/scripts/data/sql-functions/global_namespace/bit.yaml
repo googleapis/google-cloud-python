@@ -1,0 +1,27 @@
+urn: extension:google:bq_scalar_functions
+scalar_functions:
+  - name: "bit_count"
+    description: "The input, `expression`, must be an integer or `BYTES`. Returns the number of bits that are set in the input expression. For signed integers, this is the number of bits in two's complement form."
+    series_accessor_arg: expression
+    impls:
+      # Signature: bit_count:i32
+      - args:
+          - name: "expression"
+            value: i32
+            optional: false
+            keyword_only: false
+        return: i64
+      # Signature: bit_count:i64
+      - args:
+          - name: "expression"
+            value: i64
+            optional: false
+            keyword_only: false
+        return: i64
+      # Signature: bit_count:vbin
+      - args:
+          - name: "expression"
+            value: binary
+            optional: false
+            keyword_only: false
+        return: i64
