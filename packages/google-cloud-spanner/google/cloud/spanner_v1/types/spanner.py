@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -55,6 +55,7 @@ __protobuf__ = proto.module(
         "RollbackRequest",
         "BatchWriteRequest",
         "BatchWriteResponse",
+        "FetchCacheUpdateRequest",
     },
 )
 
@@ -1880,6 +1881,38 @@ class BatchWriteResponse(proto.Message):
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class FetchCacheUpdateRequest(proto.Message):
+    r"""The request for
+    [FetchCacheUpdate][google.spanner.v1.Spanner.FetchCacheUpdate].
+
+    Attributes:
+        database (str):
+            Required. The database for which to retrieve
+            the cache update.
+        max_recipe_count (int):
+            Optional. The maximum number of key recipes
+            to return in the response. If not set, a default
+            limit of 100 will be used.
+        max_range_count (int):
+            Optional. The maximum number of ranges to
+            return in the response. If not set, a default
+            limit of 10000 will be used.
+    """
+
+    database: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    max_recipe_count: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    max_range_count: int = proto.Field(
+        proto.INT32,
+        number=3,
     )
 
 

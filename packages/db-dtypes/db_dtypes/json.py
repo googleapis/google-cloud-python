@@ -32,12 +32,12 @@ class JSONDtype(pd.api.extensions.ExtensionDtype):
     name = "dbjson"
 
     @property
-    def na_value(self) -> pd.NA:
+    def na_value(self) -> pd.NAType:  # type: ignore[name-defined]
         """Default NA value to use for this type."""
         return pd.NA
 
     @property
-    def type(self) -> type[str]:
+    def type(self) -> type[str]:  # type: ignore[override]
         """
         Return the scalar type for the array elements.
         The standard JSON data types can be one of `dict`, `list`, `str`, `int`, `float`,
@@ -181,9 +181,9 @@ class JSONArray(arrays.ArrowExtensionArray):
 
     def _cmp_method(self, other, op):
         if op.__name__ == "eq":
-            result = pyarrow.compute.equal(self.pa_data, self._box_pa(other))
+            result = pyarrow.compute.equal(self.pa_data, self._box_pa(other))  # type: ignore[attr-defined]
         elif op.__name__ == "ne":
-            result = pyarrow.compute.not_equal(self.pa_data, self._box_pa(other))
+            result = pyarrow.compute.not_equal(self.pa_data, self._box_pa(other))  # type: ignore[attr-defined]
         else:
             # Comparison is not a meaningful one. We don't want to support sorting by JSON columns.
             raise TypeError(f"{op.__name__} not supported for JSONArray")
@@ -203,7 +203,7 @@ class JSONArray(arrays.ArrowExtensionArray):
                 assert item.dtype.kind == "b"
                 return type(self)(self.pa_data.filter(item))
         elif isinstance(item, tuple):
-            item = indexers.unpack_tuple_and_ellipses(item)
+            item = indexers.unpack_tuple_and_ellipses(item)  # type: ignore[attr-defined]
 
         if common.is_scalar(item) and not common.is_integer(item):
             # e.g. "foo" or 2.5

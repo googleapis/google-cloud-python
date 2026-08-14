@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,17 @@ from .access import (
     Access,
     Geolocation,
     ServiceAccountDelegationInfo,
+)
+from .agent import (
+    Agent,
+)
+from .agent_anomaly import (
+    AgentAnomaly,
+    DetectorReference,
+    InvocationReference,
+)
+from .agent_session import (
+    AgentSession,
 )
 from .application import (
     Application,
@@ -290,6 +301,11 @@ __all__ = (
     "Access",
     "Geolocation",
     "ServiceAccountDelegationInfo",
+    "Agent",
+    "AgentAnomaly",
+    "DetectorReference",
+    "InvocationReference",
+    "AgentSession",
     "Application",
     "Asset",
     "AttackExposure",

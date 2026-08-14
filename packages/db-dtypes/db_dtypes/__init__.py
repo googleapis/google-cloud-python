@@ -30,12 +30,11 @@ import pyarrow.compute
 from db_dtypes import core
 from db_dtypes.json import JSONArray, JSONArrowType, JSONDtype  # noqa: F401
 
-from . import _versions_helpers
 
 date_dtype_name = "dbdate"
 time_dtype_name = "dbtime"
 _EPOCH = datetime.datetime(1970, 1, 1)
-_NPEPOCH = numpy.datetime64(_EPOCH)
+_NPEPOCH = numpy.datetime64(_EPOCH, "ns")
 _NP_DTYPE = "datetime64[ns]"
 
 # Numpy converts datetime64 scalars to datetime.datetime only if microsecond or
@@ -55,7 +54,8 @@ class TimeDtype(core.BaseDatetimeDtype):
     name = time_dtype_name
     type = datetime.time
 
-    def construct_array_type(self):
+    @classmethod
+    def construct_array_type(cls):
         return TimeArray
 
     @staticmethod
@@ -119,7 +119,7 @@ class TimeArray(core.BaseDatetimeArray):
             )
 
         if pandas.isna(scalar):
-            return numpy.datetime64("NaT")
+            return numpy.datetime64("NaT", "ns")
         if isinstance(scalar, datetime.time):
             return pandas.Timestamp(
                 year=1970,
@@ -213,7 +213,8 @@ class DateDtype(core.BaseDatetimeDtype):
     name = date_dtype_name
     type = datetime.date
 
-    def construct_array_type(self):
+    @classmethod
+    def construct_array_type(cls):
         return DateArray
 
     @staticmethod
@@ -249,7 +250,7 @@ class DateArray(core.BaseDatetimeArray):
             scalar = scalar.as_py()
 
         if pandas.isna(scalar):
-            return numpy.datetime64("NaT")
+            return numpy.datetime64("NaT", "D")
         elif isinstance(scalar, numpy.datetime64):
             dateObj = pandas.Timestamp(scalar)
         elif isinstance(scalar, datetime.date):
@@ -322,7 +323,7 @@ class DateArray(core.BaseDatetimeArray):
         if isinstance(other, TimeArray):
             return (other._ndarray - _NPEPOCH) + self._ndarray
 
-        return super().__add__(other)
+        return super().__add__(other)  # type: ignore[misc]
 
     def __radd__(self, other):
         return self.__add__(other)
@@ -334,17 +335,18 @@ class DateArray(core.BaseDatetimeArray):
         if isinstance(other, self.__class__):
             return self._ndarray - other._ndarray
 
-        return super().__sub__(other)
+        return super().__sub__(other)  # type: ignore[misc]
 
 
 def _check_python_version():
     """Checks the runtime Python version and issues a warning if needed."""
-    sys_major, sys_minor, sys_micro = _versions_helpers.extract_runtime_version()
-    if sys_major == 3 and sys_minor in (7, 8):
+    import sys
+
+    if sys.version_info < (3, 10):
         warnings.warn(
             "The python-bigquery library as well as the python-db-dtypes-pandas library no "
-            "longer supports Python 3.7 and Python 3.8. "
-            f"Your Python version is {sys_major}.{sys_minor}.{sys_micro}. We "
+            "longer supports Python 3.7, 3.8, and 3.9. "
+            f"Your Python version is {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}. We "
             "recommend that you update soon to ensure ongoing support. For "
             "more details, see: [Google Cloud Client Libraries Supported Python Versions policy](https://cloud.google.com/python/docs/supported-python-versions)",
             FutureWarning,

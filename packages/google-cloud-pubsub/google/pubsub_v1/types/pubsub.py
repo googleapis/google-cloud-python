@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1377,7 +1377,7 @@ class AIInference(proto.Message):
             that specifies this field must have
             ``iam.serviceAccounts.actAs`` permission on the service
             account. If not specified, the Pub/Sub `service
-            agent <{$universe.dns_names.final_documentation_domain}/iam/docs/service-agents>`__,
+            agent <https://cloud.google.com/iam/docs/service-agents>`__,
             service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com,
             is used.
     """

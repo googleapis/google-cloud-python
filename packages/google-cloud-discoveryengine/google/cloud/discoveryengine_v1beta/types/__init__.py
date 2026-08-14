@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,22 +13,68 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .acl_config import (
+    AclConfig,
+)
+from .acl_config_service import (
+    GetAclConfigRequest,
+    UpdateAclConfigRequest,
+)
+from .agent_gateway_setting import (
+    AgentGatewaySetting,
+)
 from .answer import (
     Answer,
 )
+from .assist_answer import (
+    AssistAnswer,
+    AssistantContent,
+    AssistantGroundedContent,
+)
+from .assistant import (
+    Assistant,
+)
+from .assistant_service import (
+    AssistUserMetadata,
+    CreateAssistantRequest,
+    DeleteAssistantRequest,
+    GetAssistantRequest,
+    ListAssistantsRequest,
+    ListAssistantsResponse,
+    StreamAssistRequest,
+    StreamAssistResponse,
+    UpdateAssistantRequest,
+)
 from .chunk import (
     Chunk,
+)
+from .cmek_config_service import (
+    CmekConfig,
+    DeleteCmekConfigMetadata,
+    DeleteCmekConfigRequest,
+    GetCmekConfigRequest,
+    ListCmekConfigsRequest,
+    ListCmekConfigsResponse,
+    SingleRegionKey,
+    UpdateCmekConfigMetadata,
+    UpdateCmekConfigRequest,
 )
 from .common import (
     CustomAttribute,
     DoubleList,
     EmbeddingConfig,
+    HealthcareFhirConfig,
+    IdpConfig,
     IndustryVertical,
     Interval,
+    Principal,
     SearchAddOn,
+    SearchLinkPromotion,
     SearchTier,
     SearchUseCase,
     SolutionType,
+    SubscriptionTerm,
+    SubscriptionTier,
     UserInfo,
 )
 from .completion import (
@@ -40,6 +86,8 @@ from .completion_service import (
     AdvancedCompleteQueryResponse,
     CompleteQueryRequest,
     CompleteQueryResponse,
+    RemoveSuggestionRequest,
+    RemoveSuggestionResponse,
 )
 from .control import (
     Condition,
@@ -83,6 +131,7 @@ from .custom_tuning_model import (
     CustomTuningModel,
 )
 from .data_store import (
+    AdvancedSiteSearchConfig,
     DataStore,
     LanguageInfo,
     NaturalLanguageQueryUnderstandingConfig,
@@ -145,10 +194,15 @@ from .evaluation_service import (
     ListEvaluationsRequest,
     ListEvaluationsResponse,
 )
+from .feedback import (
+    Feedback,
+)
 from .grounded_generation_service import (
     CheckGroundingRequest,
     CheckGroundingResponse,
     CheckGroundingSpec,
+    Citation,
+    CitationMetadata,
     GenerateGroundedContentRequest,
     GenerateGroundedContentResponse,
     GroundedGenerationContent,
@@ -157,6 +211,24 @@ from .grounding import (
     FactChunk,
     GroundingConfig,
     GroundingFact,
+)
+from .identity_mapping_store import (
+    IdentityMappingEntry,
+    IdentityMappingStore,
+)
+from .identity_mapping_store_service import (
+    CreateIdentityMappingStoreRequest,
+    DeleteIdentityMappingStoreMetadata,
+    DeleteIdentityMappingStoreRequest,
+    GetIdentityMappingStoreRequest,
+    IdentityMappingEntryOperationMetadata,
+    ImportIdentityMappingsRequest,
+    ImportIdentityMappingsResponse,
+    ListIdentityMappingsRequest,
+    ListIdentityMappingsResponse,
+    ListIdentityMappingStoresRequest,
+    ListIdentityMappingStoresResponse,
+    PurgeIdentityMappingsRequest,
 )
 from .import_config import (
     AlloyDbSource,
@@ -184,6 +256,23 @@ from .import_config import (
     ImportUserEventsRequest,
     ImportUserEventsResponse,
     SpannerSource,
+)
+from .license_config import (
+    LicenseConfig,
+)
+from .license_config_service import (
+    CreateLicenseConfigRequest,
+    DistributeLicenseConfigRequest,
+    DistributeLicenseConfigResponse,
+    GetLicenseConfigRequest,
+    ListLicenseConfigsRequest,
+    ListLicenseConfigsResponse,
+    RetractLicenseConfigRequest,
+    RetractLicenseConfigResponse,
+    UpdateLicenseConfigRequest,
+)
+from .logging import (
+    ObservabilityConfig,
 )
 from .project import (
     Project,
@@ -215,6 +304,10 @@ from .rank_service import (
 from .recommendation_service import (
     RecommendRequest,
     RecommendResponse,
+)
+from .safety import (
+    HarmCategory,
+    SafetyRating,
 )
 from .sample_query import (
     SampleQuery,
@@ -264,9 +357,12 @@ from .search_tuning_service import (
     TrainCustomModelResponse,
 )
 from .serving_config import (
+    AnswerGenerationSpec,
     ServingConfig,
 )
 from .serving_config_service import (
+    CreateServingConfigRequest,
+    DeleteServingConfigRequest,
     GetServingConfigRequest,
     ListServingConfigsRequest,
     ListServingConfigsResponse,
@@ -331,26 +427,80 @@ from .user_event_service import (
     CollectUserEventRequest,
     WriteUserEventRequest,
 )
+from .user_license import (
+    LicenseConfigUsageStats,
+    UserLicense,
+)
+from .user_license_service import (
+    BatchUpdateUserLicensesMetadata,
+    BatchUpdateUserLicensesRequest,
+    BatchUpdateUserLicensesResponse,
+    ListLicenseConfigsUsageStatsRequest,
+    ListLicenseConfigsUsageStatsResponse,
+    ListUserLicensesRequest,
+    ListUserLicensesResponse,
+)
+from .user_store import (
+    UserStore,
+)
+from .user_store_service import (
+    GetUserStoreRequest,
+    UpdateUserStoreRequest,
+)
 
 __all__ = (
+    "AclConfig",
+    "GetAclConfigRequest",
+    "UpdateAclConfigRequest",
+    "AgentGatewaySetting",
     "Answer",
+    "AssistAnswer",
+    "AssistantContent",
+    "AssistantGroundedContent",
+    "Assistant",
+    "AssistUserMetadata",
+    "CreateAssistantRequest",
+    "DeleteAssistantRequest",
+    "GetAssistantRequest",
+    "ListAssistantsRequest",
+    "ListAssistantsResponse",
+    "StreamAssistRequest",
+    "StreamAssistResponse",
+    "UpdateAssistantRequest",
     "Chunk",
+    "CmekConfig",
+    "DeleteCmekConfigMetadata",
+    "DeleteCmekConfigRequest",
+    "GetCmekConfigRequest",
+    "ListCmekConfigsRequest",
+    "ListCmekConfigsResponse",
+    "SingleRegionKey",
+    "UpdateCmekConfigMetadata",
+    "UpdateCmekConfigRequest",
     "CustomAttribute",
     "DoubleList",
     "EmbeddingConfig",
+    "HealthcareFhirConfig",
+    "IdpConfig",
     "Interval",
+    "Principal",
+    "SearchLinkPromotion",
     "UserInfo",
     "IndustryVertical",
     "SearchAddOn",
     "SearchTier",
     "SearchUseCase",
     "SolutionType",
+    "SubscriptionTerm",
+    "SubscriptionTier",
     "CompletionSuggestion",
     "SuggestionDenyListEntry",
     "AdvancedCompleteQueryRequest",
     "AdvancedCompleteQueryResponse",
     "CompleteQueryRequest",
     "CompleteQueryResponse",
+    "RemoveSuggestionRequest",
+    "RemoveSuggestionResponse",
     "Condition",
     "Control",
     "CreateControlRequest",
@@ -382,6 +532,7 @@ __all__ = (
     "UpdateConversationRequest",
     "UpdateSessionRequest",
     "CustomTuningModel",
+    "AdvancedSiteSearchConfig",
     "DataStore",
     "LanguageInfo",
     "NaturalLanguageQueryUnderstandingConfig",
@@ -427,15 +578,32 @@ __all__ = (
     "ListEvaluationResultsResponse",
     "ListEvaluationsRequest",
     "ListEvaluationsResponse",
+    "Feedback",
     "CheckGroundingRequest",
     "CheckGroundingResponse",
     "CheckGroundingSpec",
+    "Citation",
+    "CitationMetadata",
     "GenerateGroundedContentRequest",
     "GenerateGroundedContentResponse",
     "GroundedGenerationContent",
     "FactChunk",
     "GroundingConfig",
     "GroundingFact",
+    "IdentityMappingEntry",
+    "IdentityMappingStore",
+    "CreateIdentityMappingStoreRequest",
+    "DeleteIdentityMappingStoreMetadata",
+    "DeleteIdentityMappingStoreRequest",
+    "GetIdentityMappingStoreRequest",
+    "IdentityMappingEntryOperationMetadata",
+    "ImportIdentityMappingsRequest",
+    "ImportIdentityMappingsResponse",
+    "ListIdentityMappingsRequest",
+    "ListIdentityMappingsResponse",
+    "ListIdentityMappingStoresRequest",
+    "ListIdentityMappingStoresResponse",
+    "PurgeIdentityMappingsRequest",
     "AlloyDbSource",
     "BigQuerySource",
     "BigtableOptions",
@@ -461,6 +629,17 @@ __all__ = (
     "ImportUserEventsRequest",
     "ImportUserEventsResponse",
     "SpannerSource",
+    "LicenseConfig",
+    "CreateLicenseConfigRequest",
+    "DistributeLicenseConfigRequest",
+    "DistributeLicenseConfigResponse",
+    "GetLicenseConfigRequest",
+    "ListLicenseConfigsRequest",
+    "ListLicenseConfigsResponse",
+    "RetractLicenseConfigRequest",
+    "RetractLicenseConfigResponse",
+    "UpdateLicenseConfigRequest",
+    "ObservabilityConfig",
     "Project",
     "ProvisionProjectMetadata",
     "ProvisionProjectRequest",
@@ -482,6 +661,8 @@ __all__ = (
     "RankResponse",
     "RecommendRequest",
     "RecommendResponse",
+    "SafetyRating",
+    "HarmCategory",
     "SampleQuery",
     "CreateSampleQueryRequest",
     "DeleteSampleQueryRequest",
@@ -513,7 +694,10 @@ __all__ = (
     "TrainCustomModelMetadata",
     "TrainCustomModelRequest",
     "TrainCustomModelResponse",
+    "AnswerGenerationSpec",
     "ServingConfig",
+    "CreateServingConfigRequest",
+    "DeleteServingConfigRequest",
     "GetServingConfigRequest",
     "ListServingConfigsRequest",
     "ListServingConfigsResponse",
@@ -567,4 +751,16 @@ __all__ = (
     "UserEvent",
     "CollectUserEventRequest",
     "WriteUserEventRequest",
+    "LicenseConfigUsageStats",
+    "UserLicense",
+    "BatchUpdateUserLicensesMetadata",
+    "BatchUpdateUserLicensesRequest",
+    "BatchUpdateUserLicensesResponse",
+    "ListLicenseConfigsUsageStatsRequest",
+    "ListLicenseConfigsUsageStatsResponse",
+    "ListUserLicensesRequest",
+    "ListUserLicensesResponse",
+    "UserStore",
+    "GetUserStoreRequest",
+    "UpdateUserStoreRequest",
 )

@@ -25,20 +25,21 @@ from .converters import converter
 from .utilities import docai_utilities, gcs_utilities
 from .wrappers import document, entity, page
 
-__all__ = (document, page, entity, converter, docai_utilities, gcs_utilities)
+__all__ = (
+    "document",
+    "page",
+    "entity",
+    "converter",
+    "docai_utilities",
+    "gcs_utilities",
+)
 
 
-class Python37DeprecationWarning(DeprecationWarning):  # pragma: NO COVER
-    """
-    Deprecation warning raised when Python 3.7 runtime is detected.
-    Python 3.7 support will be dropped after January 1, 2024.
-    """
-
-
-# Checks if the current runtime is Python 3.7.
-if sys.version_info.major == 3 and sys.version_info.minor == 7:  # pragma: NO COVER
+# Checks if the current runtime is Python < 3.10.
+if sys.version_info < (3, 10):  # pragma: NO COVER
     message = (
-        "After January 1, 2024, new releases of this library will drop support "
-        "for Python 3.7."
+        "The google-cloud-documentai-toolbox library no longer supports Python 3.7, 3.8, and 3.9. "
+        "We recommend that you update soon to ensure ongoing support. For "
+        "more details, see: [Google Cloud Client Libraries Supported Python Versions policy](https://cloud.google.com/python/docs/supported-python-versions)"
     )
-    warnings.warn(message, Python37DeprecationWarning)
+    warnings.warn(message, FutureWarning)

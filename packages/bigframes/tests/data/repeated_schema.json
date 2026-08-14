@@ -1,0 +1,42 @@
+[
+    {
+        "name": "rowindex",
+        "type": "INTEGER",
+        "mode": "REQUIRED"
+    },
+    {
+        "name": "int_list_col",
+        "type": "INTEGER",
+        "mode": "REPEATED"
+    },
+    {
+        "name": "bool_list_col",
+        "type": "BOOLEAN",
+        "mode": "REPEATED"
+    },
+    {
+        "name": "float_list_col",
+        "type": "FLOAT",
+        "mode": "REPEATED"
+    },
+    {
+        "name": "date_list_col",
+        "type": "DATE",
+        "mode": "REPEATED"
+    },
+    {
+        "name": "date_time_list_col",
+        "type": "DATETIME",
+        "mode": "REPEATED"
+    },
+    {
+        "name": "numeric_list_col",
+        "type": "NUMERIC",
+        "mode": "REPEATED"
+    },
+    {
+        "name": "string_list_col",
+        "type": "STRING",
+        "mode": "REPEATED"
+    }
+]

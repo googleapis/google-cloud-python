@@ -17,12 +17,12 @@
 import dataclasses
 import json
 from types import SimpleNamespace
-from typing import List, Optional, Type
+from typing import Any, List, Optional, Type, Union
 
 from google.cloud import documentai
 
 
-def _get_target_object(json_data: any, target_object: str) -> Optional[SimpleNamespace]:
+def _get_target_object(json_data: Any, target_object: str) -> Any:
     r"""Returns SimpleNamespace of target_object.
 
     Args:
@@ -72,45 +72,39 @@ class Block:
         page_number:
             Optional.
     """
-    type_: SimpleNamespace = dataclasses.field(init=True, repr=False)
-    text: SimpleNamespace = dataclasses.field(init=True, repr=False)
-    bounding_box: Optional[SimpleNamespace] = dataclasses.field(
+    type_: Any = dataclasses.field(init=True, repr=False)
+    text: str = dataclasses.field(init=True, repr=False)
+    bounding_box: Optional[Union[SimpleNamespace, List[Any]]] = dataclasses.field(
         init=True, repr=False, default=None
     )
-    block_references: Optional[SimpleNamespace] = dataclasses.field(
-        init=True, repr=False, default=None
-    )
-    block_id: Optional[SimpleNamespace] = dataclasses.field(
+    block_references: Any = dataclasses.field(init=True, repr=False, default=None)
+    block_id: Optional[str] = dataclasses.field(init=False, repr=False, default=None)
+    confidence: Optional[float] = dataclasses.field(
         init=False, repr=False, default=None
     )
-    confidence: Optional[SimpleNamespace] = dataclasses.field(
+    page_number: Optional[int] = dataclasses.field(init=False, repr=False, default=None)
+    page_width: Optional[float] = dataclasses.field(
         init=False, repr=False, default=None
     )
-    page_number: Optional[SimpleNamespace] = dataclasses.field(
+    page_height: Optional[float] = dataclasses.field(
         init=False, repr=False, default=None
     )
-    page_width: Optional[SimpleNamespace] = dataclasses.field(
+    bounding_width: Optional[float] = dataclasses.field(
         init=False, repr=False, default=None
     )
-    page_height: Optional[SimpleNamespace] = dataclasses.field(
+    bounding_height: Optional[float] = dataclasses.field(
         init=False, repr=False, default=None
     )
-    bounding_width: Optional[SimpleNamespace] = dataclasses.field(
+    bounding_type: Optional[str] = dataclasses.field(
         init=False, repr=False, default=None
     )
-    bounding_height: Optional[SimpleNamespace] = dataclasses.field(
+    bounding_unit: Optional[str] = dataclasses.field(
         init=False, repr=False, default=None
     )
-    bounding_type: Optional[SimpleNamespace] = dataclasses.field(
+    bounding_x: Optional[float] = dataclasses.field(
         init=False, repr=False, default=None
     )
-    bounding_unit: Optional[SimpleNamespace] = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    bounding_x: Optional[SimpleNamespace] = dataclasses.field(
-        init=False, repr=False, default=None
-    )
-    bounding_y: Optional[SimpleNamespace] = dataclasses.field(
+    bounding_y: Optional[float] = dataclasses.field(
         init=False, repr=False, default=None
     )
     docproto_width: Optional[float] = dataclasses.field(
@@ -180,6 +174,8 @@ class Block:
 
         blocks: List[Block] = []
         ens = _get_target_object(objects, entities)
+        if not isinstance(ens, (list, dict)):
+            raise TypeError("Expected list or dict for entities")
         for i in ens:
             entity = i
 
@@ -203,11 +199,13 @@ class Block:
             b = Block(
                 type_=block_type,
                 text=block_text,
-                bounding_box=_get_target_object(entity, normalized_vertices),
+                bounding_box=_get_target_object(entity, normalized_vertices)
+                if normalized_vertices is not None
+                else None,
             )
 
             if id_:
-                b.id_ = _get_target_object(entity, id_)
+                b.block_id = _get_target_object(entity, id_)
             if confidence:
                 b.confidence = _get_target_object(entity, confidence)
             if page_number and page_number in entity:

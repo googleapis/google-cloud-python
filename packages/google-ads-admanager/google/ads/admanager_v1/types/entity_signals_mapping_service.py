@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -151,7 +151,7 @@ class UpdateEntitySignalsMappingRequest(proto.Message):
             EntitySignalsMapping to update. Format:
             ``networks/{network_code}/entitySignalsMappings/{entity_signals_mapping}``
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to update.
+            Optional. The list of fields to update.
     """
 
     entity_signals_mapping: entity_signals_mapping_messages.EntitySignalsMapping = (

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@ except AttributeError:  # pragma: NO COVER
 
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
@@ -56,6 +57,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.cloud.ces_v1beta.services.agent_service import pagers
 from google.cloud.ces_v1beta.types import (
     agent,
+    agent_card,
     agent_service,
     agent_tool,
     agent_transfers,
@@ -133,6 +135,8 @@ class AgentServiceAsyncClient:
     parse_changelog_path = staticmethod(AgentServiceClient.parse_changelog_path)
     conversation_path = staticmethod(AgentServiceClient.conversation_path)
     parse_conversation_path = staticmethod(AgentServiceClient.parse_conversation_path)
+    dataset_path = staticmethod(AgentServiceClient.dataset_path)
+    parse_dataset_path = staticmethod(AgentServiceClient.parse_dataset_path)
     deidentify_template_path = staticmethod(AgentServiceClient.deidentify_template_path)
     parse_deidentify_template_path = staticmethod(
         AgentServiceClient.parse_deidentify_template_path
@@ -145,6 +149,26 @@ class AgentServiceAsyncClient:
     )
     engine_path = staticmethod(AgentServiceClient.engine_path)
     parse_engine_path = staticmethod(AgentServiceClient.parse_engine_path)
+    evaluation_path = staticmethod(AgentServiceClient.evaluation_path)
+    parse_evaluation_path = staticmethod(AgentServiceClient.parse_evaluation_path)
+    evaluation_dataset_path = staticmethod(AgentServiceClient.evaluation_dataset_path)
+    parse_evaluation_dataset_path = staticmethod(
+        AgentServiceClient.parse_evaluation_dataset_path
+    )
+    evaluation_expectation_path = staticmethod(
+        AgentServiceClient.evaluation_expectation_path
+    )
+    parse_evaluation_expectation_path = staticmethod(
+        AgentServiceClient.parse_evaluation_expectation_path
+    )
+    evaluation_result_path = staticmethod(AgentServiceClient.evaluation_result_path)
+    parse_evaluation_result_path = staticmethod(
+        AgentServiceClient.parse_evaluation_result_path
+    )
+    evaluation_run_path = staticmethod(AgentServiceClient.evaluation_run_path)
+    parse_evaluation_run_path = staticmethod(
+        AgentServiceClient.parse_evaluation_run_path
+    )
     example_path = staticmethod(AgentServiceClient.example_path)
     parse_example_path = staticmethod(AgentServiceClient.parse_example_path)
     guardrail_path = staticmethod(AgentServiceClient.guardrail_path)
@@ -659,11 +683,11 @@ class AgentServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_app(request=request)
+                operation = await client.create_app(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -934,11 +958,11 @@ class AgentServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_app(request=request)
+                operation = await client.delete_app(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1068,11 +1092,11 @@ class AgentServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.export_app(request=request)
+                operation = await client.export_app(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1196,11 +1220,11 @@ class AgentServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.import_app(request=request)
+                operation = await client.import_app(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3376,11 +3400,11 @@ class AgentServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_delete_conversations(request=request)
+                operation = await client.batch_delete_conversations(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6152,11 +6176,11 @@ class AgentServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.restore_app_version(request=request)
+                operation = await client.restore_app_version(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6240,6 +6264,136 @@ class AgentServiceAsyncClient:
             self._client._transport.operations_client,
             agent_service.RestoreAppVersionResponse,
             metadata_type=agent_service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def generate_app_resource(
+        self,
+        request: Optional[Union[agent_service.GenerateAppResourceRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Generates specific resources (e.g. agent) in the app
+        using LLM assistant.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import ces_v1beta
+
+            async def sample_generate_app_resource():
+                # Create a client
+                client = ces_v1beta.AgentServiceAsyncClient()
+
+                # Initialize request argument(s)
+                agent = ces_v1beta.Agent()
+                agent.display_name = "display_name_value"
+
+                request = ces_v1beta.GenerateAppResourceRequest(
+                    agent=agent,
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = await client.generate_app_resource(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = await operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.ces_v1beta.types.GenerateAppResourceRequest, dict]]):
+                The request object. Request message for
+                [AgentService.GenerateAppResource][google.cloud.ces.v1beta.AgentService.GenerateAppResource].
+            parent (:class:`str`):
+                Required. The resource name of the
+                app to generate the resource for.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.ces_v1beta.types.GenerateAppResourceResponse` Response message for
+                   [AgentService.GenerateAppResource][google.cloud.ces.v1beta.AgentService.GenerateAppResource].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, agent_service.GenerateAppResourceRequest):
+            request = agent_service.GenerateAppResourceRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.generate_app_resource
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            agent_service.GenerateAppResourceResponse,
+            metadata_type=agent_service.GenerateAppResourceOperationMetadata,
         )
 
         # Done; return the response.
@@ -6848,9 +7002,7 @@ class AgentServiceAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("AgentServiceAsyncClient",)

@@ -8,7 +8,6 @@ import dataclasses
 import re
 from typing import Union
 
-
 _TABLE_REFEREENCE_PATTERN = re.compile(
     # In the past, organizations could prefix their project IDs with a domain
     # name. Such projects still exist, especially at Google.

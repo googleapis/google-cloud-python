@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/gcp-sphinx-docfx-yaml/#history
 
+## [3.3.1](https://github.com/googleapis/google-cloud-python/compare/gcp-sphinx-docfx-yaml-v3.3.0...gcp-sphinx-docfx-yaml-v3.3.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
+## [3.3.0](https://github.com/googleapis/google-cloud-python/compare/gcp-sphinx-docfx-yaml-v3.2.5...gcp-sphinx-docfx-yaml-v3.3.0) (2026-05-06)
+
+
+### Bug Fixes
+
+* correctly parse type assertions in `extends` clause ([@&#8203;nicolo-ribaudo](https://redirect.github.com/nicolo-ribaudo)) - [#&#8203;17723](https://redirect.github.com/babel/babel/pull/17723) \[7.x backport] fix(parser): improve super type argument parsing ([@&#8203;JLHwung](https://redirect.github.com/JLHwung)) - `babel-traverse` - [#&#8203;17708](https://redirect.github.com/babel/babel/pull/17708) ([5098df262245fb333ae73fc7eb568f905bc0190a](https://github.com/googleapis/google-cloud-python/commit/5098df262245fb333ae73fc7eb568f905bc0190a))
+* provide a hub when traversing a File or Program and no parentPath is given ([@&#8203;simbahax](https://redirect.github.com/simbahax)) - `babel-plugin-transform-block-scoping`, `babel-traverse` - [#&#8203;17737](https://redirect.github.com/babel/babel/pull/17737) \[7.x backport] fix: Rename switch discriminant references when body creates shadowing variable ([@&#8203;magic-akari](https://redirect.github.com/magic-akari)) ([5098df262245fb333ae73fc7eb568f905bc0190a](https://github.com/googleapis/google-cloud-python/commit/5098df262245fb333ae73fc7eb568f905bc0190a))
+
+## [3.2.5](https://github.com/googleapis/google-cloud-python/compare/gcp-sphinx-docfx-yaml-v3.2.4...gcp-sphinx-docfx-yaml-v3.2.5) (2026-04-02)
+
+
+### Bug Fixes
+
+* do not store reference to algorithms dict on PyJWK (<a href="https://redirect.github.com/jpadilla/pyjwt/issues/1143">#1143</a>)</li> <li><a href="https://github.com/jpadilla/pyjwt/commit/f3ba74c106df9ce10e272dfaad96acb4ab3ef5a5"><code>f3ba74c</code></a> [pre-commit.ci] pre-commit autoupdate (<a href="https://redirect.github.com/jpadilla/pyjwt/issues/1145">#1145</a>)</li> <li><a href="https://github.com/jpadilla/pyjwt/commit/0318ffa7b156b01600376e38952bf961382e0724"><code>0318ffa</code></a> [pre-commit.ci] pre-commit autoupdate (<a href="https://redirect.github.com/jpadilla/pyjwt/issues/1141">#1141</a>)</li> <li><a href="https://github.com/jpadilla/pyjwt/commit/a52753db3c1075ac01337fa8b7cc92b13a19ac09"><code>a52753d</code></a> Bump actions/download-artifact from 7 to 8 (<a href="https://redirect.github.com/jpadilla/pyjwt/issues/1142">#1142</a>)</li> <li><a href="https://github.com/jpadilla/pyjwt/commit/b85050f1d444c6828bb4618ee764443b0a3f5d18"><code>b85050f</code></a> ([b2950d55e4f9d904de9b232551f65354044eccbb](https://github.com/googleapis/google-cloud-python/commit/b2950d55e4f9d904de9b232551f65354044eccbb))
+* close HTTPError to prevent ResourceWarning on Python 3.14 (<a href="https://redirect.github.com/jpadilla/pyjwt/issues/1133">#1133</a>)</li> <li>Additional commits viewable in <a href="https://github.com/jpadilla/pyjwt/compare/2.4.0...2.12.0">compare view</a></li> </ul> </details> <br /> ([b2950d55e4f9d904de9b232551f65354044eccbb](https://github.com/googleapis/google-cloud-python/commit/b2950d55e4f9d904de9b232551f65354044eccbb))
+
 ## [3.2.4](https://github.com/googleapis/sphinx-docfx-yaml/compare/v3.2.3...v3.2.4) (2025-10-22)
 
 

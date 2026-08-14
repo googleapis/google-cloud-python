@@ -105,6 +105,11 @@
                 "export_app"
               ]
             },
+            "GenerateAppResource": {
+              "methods": [
+                "generate_app_resource"
+              ]
+            },
             "GetAgent": {
               "methods": [
                 "get_agent"
@@ -358,6 +363,11 @@
             "ExportApp": {
               "methods": [
                 "export_app"
+              ]
+            },
+            "GenerateAppResource": {
+              "methods": [
+                "generate_app_resource"
               ]
             },
             "GetAgent": {
@@ -615,6 +625,11 @@
                 "export_app"
               ]
             },
+            "GenerateAppResource": {
+              "methods": [
+                "generate_app_resource"
+              ]
+            },
             "GetAgent": {
               "methods": [
                 "get_agent"
@@ -829,6 +844,21 @@
                 "delete_scheduled_evaluation_run"
               ]
             },
+            "ExportEvaluationResults": {
+              "methods": [
+                "export_evaluation_results"
+              ]
+            },
+            "ExportEvaluationRuns": {
+              "methods": [
+                "export_evaluation_runs"
+              ]
+            },
+            "ExportEvaluations": {
+              "methods": [
+                "export_evaluations"
+              ]
+            },
             "GenerateEvaluation": {
               "methods": [
                 "generate_evaluation"
@@ -902,6 +932,11 @@
             "RunEvaluation": {
               "methods": [
                 "run_evaluation"
+              ]
+            },
+            "RunEvaluationResultMetrics": {
+              "methods": [
+                "run_evaluation_result_metrics"
               ]
             },
             "TestPersonaVoice": {
@@ -989,6 +1024,21 @@
                 "delete_scheduled_evaluation_run"
               ]
             },
+            "ExportEvaluationResults": {
+              "methods": [
+                "export_evaluation_results"
+              ]
+            },
+            "ExportEvaluationRuns": {
+              "methods": [
+                "export_evaluation_runs"
+              ]
+            },
+            "ExportEvaluations": {
+              "methods": [
+                "export_evaluations"
+              ]
+            },
             "GenerateEvaluation": {
               "methods": [
                 "generate_evaluation"
@@ -1062,6 +1112,11 @@
             "RunEvaluation": {
               "methods": [
                 "run_evaluation"
+              ]
+            },
+            "RunEvaluationResultMetrics": {
+              "methods": [
+                "run_evaluation_result_metrics"
               ]
             },
             "TestPersonaVoice": {
@@ -1149,6 +1204,21 @@
                 "delete_scheduled_evaluation_run"
               ]
             },
+            "ExportEvaluationResults": {
+              "methods": [
+                "export_evaluation_results"
+              ]
+            },
+            "ExportEvaluationRuns": {
+              "methods": [
+                "export_evaluation_runs"
+              ]
+            },
+            "ExportEvaluations": {
+              "methods": [
+                "export_evaluations"
+              ]
+            },
             "GenerateEvaluation": {
               "methods": [
                 "generate_evaluation"
@@ -1222,6 +1292,11 @@
             "RunEvaluation": {
               "methods": [
                 "run_evaluation"
+              ]
+            },
+            "RunEvaluationResultMetrics": {
+              "methods": [
+                "run_evaluation_result_metrics"
               ]
             },
             "TestPersonaVoice": {

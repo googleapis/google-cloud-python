@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -74,9 +69,11 @@ from google.ads.admanager_v1.services.report_service import (
 )
 from google.ads.admanager_v1.types import (
     report_definition,
+    report_delivery,
     report_messages,
     report_service,
     report_value,
+    report_visibility_enum,
 )
 
 CRED_INFO_JSON = {
@@ -125,6 +122,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -907,7 +919,14 @@ def test_report_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -954,7 +973,14 @@ def test_report_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1265,7 +1291,7 @@ def test_get_report_rest_required_fields(request_type=report_service.GetReportRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_report_rest_unset_required_fields():
@@ -1451,7 +1477,7 @@ def test_list_reports_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_reports_rest_unset_required_fields():
@@ -1584,6 +1610,9 @@ def test_list_reports_rest_pager(transport: str = "rest"):
 
         pager = client.list_reports(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, report_messages.Report) for i in results)
@@ -1702,7 +1731,7 @@ def test_create_report_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_report_rest_unset_required_fields():
@@ -1886,7 +1915,7 @@ def test_update_report_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_report_rest_unset_required_fields():
@@ -1895,15 +1924,7 @@ def test_update_report_rest_unset_required_fields():
     )
 
     unset_fields = transport.update_report._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("updateMask",))
-        & set(
-            (
-                "report",
-                "updateMask",
-            )
-        )
-    )
+    assert set(unset_fields) == (set(("updateMask",)) & set(("report",)))
 
 
 def test_update_report_rest_flattened():
@@ -2072,7 +2093,7 @@ def test_run_report_rest_required_fields(request_type=report_service.RunReportRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_run_report_rest_unset_required_fields():
@@ -2291,6 +2312,9 @@ def test_fetch_report_result_rows_rest_pager(transport: str = "rest"):
 
         pager = client.fetch_report_result_rows(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, report_messages.ReportDataTable.Row) for i in results)
@@ -2428,7 +2452,7 @@ def test_get_report_rest_call_success(request_type):
         return_value = report_messages.Report(
             name="name_value",
             report_id=968,
-            visibility=report_messages.Report.Visibility.DRAFT,
+            visibility=report_visibility_enum.ReportVisibilityEnum.ReportVisibility.VISIBLE,
             display_name="display_name_value",
             locale="locale_value",
         )
@@ -2449,7 +2473,10 @@ def test_get_report_rest_call_success(request_type):
     assert isinstance(response, report_messages.Report)
     assert response.name == "name_value"
     assert response.report_id == 968
-    assert response.visibility == report_messages.Report.Visibility.DRAFT
+    assert (
+        response.visibility
+        == report_visibility_enum.ReportVisibilityEnum.ReportVisibility.VISIBLE
+    )
     assert response.display_name == "display_name_value"
     assert response.locale == "locale_value"
 
@@ -2693,7 +2720,7 @@ def test_create_report_rest_call_success(request_type):
     request_init["report"] = {
         "name": "name_value",
         "report_id": 968,
-        "visibility": 1,
+        "visibility": 2,
         "report_definition": {
             "dimensions": [575],
             "metrics": [223],
@@ -2736,7 +2763,9 @@ def test_create_report_rest_call_success(request_type):
                 "relative": 1,
             },
             "comparison_date_range": {},
+            "cms_metadata_dimension_key_ids": [3152, 3153],
             "custom_dimension_key_ids": [2568, 2569],
+            "ekv_dimension_key_ids": [2227, 2228],
             "line_item_custom_field_ids": [2739, 2740],
             "order_custom_field_ids": [2329, 2330],
             "creative_custom_field_ids": [2640, 2641],
@@ -2752,6 +2781,7 @@ def test_create_report_rest_call_success(request_type):
                     "metric_value_type": 1,
                 }
             ],
+            "expanded_compatibility": True,
         },
         "display_name": "display_name_value",
         "update_time": {"seconds": 751, "nanos": 543},
@@ -2850,7 +2880,7 @@ def test_create_report_rest_call_success(request_type):
         return_value = report_messages.Report(
             name="name_value",
             report_id=968,
-            visibility=report_messages.Report.Visibility.DRAFT,
+            visibility=report_visibility_enum.ReportVisibilityEnum.ReportVisibility.VISIBLE,
             display_name="display_name_value",
             locale="locale_value",
         )
@@ -2871,7 +2901,10 @@ def test_create_report_rest_call_success(request_type):
     assert isinstance(response, report_messages.Report)
     assert response.name == "name_value"
     assert response.report_id == 968
-    assert response.visibility == report_messages.Report.Visibility.DRAFT
+    assert (
+        response.visibility
+        == report_visibility_enum.ReportVisibilityEnum.ReportVisibility.VISIBLE
+    )
     assert response.display_name == "display_name_value"
     assert response.locale == "locale_value"
 
@@ -2983,7 +3016,7 @@ def test_update_report_rest_call_success(request_type):
     request_init["report"] = {
         "name": "networks/sample1/reports/sample2",
         "report_id": 968,
-        "visibility": 1,
+        "visibility": 2,
         "report_definition": {
             "dimensions": [575],
             "metrics": [223],
@@ -3026,7 +3059,9 @@ def test_update_report_rest_call_success(request_type):
                 "relative": 1,
             },
             "comparison_date_range": {},
+            "cms_metadata_dimension_key_ids": [3152, 3153],
             "custom_dimension_key_ids": [2568, 2569],
+            "ekv_dimension_key_ids": [2227, 2228],
             "line_item_custom_field_ids": [2739, 2740],
             "order_custom_field_ids": [2329, 2330],
             "creative_custom_field_ids": [2640, 2641],
@@ -3042,6 +3077,7 @@ def test_update_report_rest_call_success(request_type):
                     "metric_value_type": 1,
                 }
             ],
+            "expanded_compatibility": True,
         },
         "display_name": "display_name_value",
         "update_time": {"seconds": 751, "nanos": 543},
@@ -3140,7 +3176,7 @@ def test_update_report_rest_call_success(request_type):
         return_value = report_messages.Report(
             name="name_value",
             report_id=968,
-            visibility=report_messages.Report.Visibility.DRAFT,
+            visibility=report_visibility_enum.ReportVisibilityEnum.ReportVisibility.VISIBLE,
             display_name="display_name_value",
             locale="locale_value",
         )
@@ -3161,7 +3197,10 @@ def test_update_report_rest_call_success(request_type):
     assert isinstance(response, report_messages.Report)
     assert response.name == "name_value"
     assert response.report_id == 968
-    assert response.visibility == report_messages.Report.Visibility.DRAFT
+    assert (
+        response.visibility
+        == report_visibility_enum.ReportVisibilityEnum.ReportVisibility.VISIBLE
+    )
     assert response.display_name == "display_name_value"
     assert response.locale == "locale_value"
 
@@ -3491,6 +3530,69 @@ def test_fetch_report_result_rows_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_cancel_operation_rest_bad_request(
+    request_type=operations_pb2.CancelOperationRequest,
+):
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "networks/sample1/operations/reports/runs/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = ReportServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "networks/sample1/operations/reports/runs/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
 def test_get_operation_rest_bad_request(
     request_type=operations_pb2.GetOperationRequest,
 ):
@@ -3577,7 +3679,6 @@ def test_get_report_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = report_service.GetReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -3597,7 +3698,6 @@ def test_list_reports_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = report_service.ListReportsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3617,7 +3717,6 @@ def test_create_report_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = report_service.CreateReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -3637,7 +3736,6 @@ def test_update_report_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = report_service.UpdateReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -3657,7 +3755,6 @@ def test_run_report_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = report_service.RunReportRequest()
-
         assert args[0] == request_msg
 
 
@@ -3679,7 +3776,6 @@ def test_fetch_report_result_rows_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = report_service.FetchReportResultRowsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3729,6 +3825,7 @@ def test_report_service_base_transport():
         "run_report",
         "fetch_report_result_rows",
         "get_operation",
+        "cancel_operation",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -3770,7 +3867,10 @@ def test_report_service_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/admanager",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/admanager",
+                "https://www.googleapis.com/auth/admanager.readonly",
+            ),
             quota_project_id="octopus",
         )
 
@@ -3796,7 +3896,10 @@ def test_report_service_auth_adc():
         ReportServiceClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/admanager",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/admanager",
+                "https://www.googleapis.com/auth/admanager.readonly",
+            ),
             quota_project_id=None,
         )
 

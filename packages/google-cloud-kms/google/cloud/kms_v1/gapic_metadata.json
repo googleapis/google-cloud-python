@@ -476,6 +476,11 @@
                 "encrypt"
               ]
             },
+            "ExportTrustedKeyWrappedCryptoKeyVersion": {
+              "methods": [
+                "export_trusted_key_wrapped_crypto_key_version"
+              ]
+            },
             "GenerateRandomBytes": {
               "methods": [
                 "generate_random_bytes"
@@ -514,6 +519,11 @@
             "ImportCryptoKeyVersion": {
               "methods": [
                 "import_crypto_key_version"
+              ]
+            },
+            "ImportTrustedKeyWrappedCryptoKeyVersion": {
+              "methods": [
+                "import_trusted_key_wrapped_crypto_key_version"
               ]
             },
             "ListCryptoKeyVersions": {
@@ -646,6 +656,11 @@
                 "encrypt"
               ]
             },
+            "ExportTrustedKeyWrappedCryptoKeyVersion": {
+              "methods": [
+                "export_trusted_key_wrapped_crypto_key_version"
+              ]
+            },
             "GenerateRandomBytes": {
               "methods": [
                 "generate_random_bytes"
@@ -684,6 +699,11 @@
             "ImportCryptoKeyVersion": {
               "methods": [
                 "import_crypto_key_version"
+              ]
+            },
+            "ImportTrustedKeyWrappedCryptoKeyVersion": {
+              "methods": [
+                "import_trusted_key_wrapped_crypto_key_version"
               ]
             },
             "ListCryptoKeyVersions": {
@@ -816,6 +836,11 @@
                 "encrypt"
               ]
             },
+            "ExportTrustedKeyWrappedCryptoKeyVersion": {
+              "methods": [
+                "export_trusted_key_wrapped_crypto_key_version"
+              ]
+            },
             "GenerateRandomBytes": {
               "methods": [
                 "generate_random_bytes"
@@ -854,6 +879,11 @@
             "ImportCryptoKeyVersion": {
               "methods": [
                 "import_crypto_key_version"
+              ]
+            },
+            "ImportTrustedKeyWrappedCryptoKeyVersion": {
+              "methods": [
+                "import_trusted_key_wrapped_crypto_key_version"
               ]
             },
             "ListCryptoKeyVersions": {

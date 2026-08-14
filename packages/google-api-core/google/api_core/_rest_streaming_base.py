@@ -14,13 +14,13 @@
 
 """Helpers for server-side streaming in REST."""
 
-from collections import deque
 import string
-from typing import Deque, Union
 import types
+from collections import deque
+from typing import Deque, Union
 
-import proto
 import google.protobuf.message
+import proto
 from google.protobuf.json_format import Parse
 
 

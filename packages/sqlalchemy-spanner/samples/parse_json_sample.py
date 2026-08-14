@@ -12,11 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from model import Venue
+from sample_helper import run_sample
 from sqlalchemy import create_engine, func, text
 from sqlalchemy.orm import Session
-
-from sample_helper import run_sample
-from model import Venue
 
 
 # Shows how to use the PARSE_JSON function in Spanner using SQLAlchemy.

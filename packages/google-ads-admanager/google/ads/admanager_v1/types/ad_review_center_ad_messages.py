@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -53,6 +53,14 @@ class AdReviewCenterAd(proto.Message):
             AdReviewCenterAd.
         status (google.ads.admanager_v1.types.AdReviewCenterAdStatusEnum.AdReviewCenterAdStatus):
             The status of the AdReviewCenterAd.
+        manual_review_statuses (MutableSequence[google.ads.admanager_v1.types.ManualAdReviewCenterAdStatusEnum.ManualAdReviewCenterAdStatus]):
+            Output only. The manual review status of the
+            AdReviewCenterAd (for web properties in MCR
+            mode). For MCR mode, a single ad could have
+            multiple statuses (for example, pending and
+            serving at the same time, if the ad is affected
+            by a protection in certain inventory only). This
+            field is not set for the standard mode.
         preview_url (str):
             Output only. The preview URL that can be
             embedded or accessed directly which will present
@@ -79,6 +87,13 @@ class AdReviewCenterAd(proto.Message):
         proto.ENUM,
         number=4,
         enum=ad_review_center_ad_enums.AdReviewCenterAdStatusEnum.AdReviewCenterAdStatus,
+    )
+    manual_review_statuses: MutableSequence[
+        ad_review_center_ad_enums.ManualAdReviewCenterAdStatusEnum.ManualAdReviewCenterAdStatus
+    ] = proto.RepeatedField(
+        proto.ENUM,
+        number=6,
+        enum=ad_review_center_ad_enums.ManualAdReviewCenterAdStatusEnum.ManualAdReviewCenterAdStatus,
     )
     preview_url: str = proto.Field(
         proto.STRING,

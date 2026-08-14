@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ class EndpointPolicy(proto.Message):
         name (str):
             Identifier. Name of the EndpointPolicy resource. It matches
             pattern
-            ``projects/{project}/locations/global/endpointPolicies/{endpoint_policy}``.
+            ``projects/{project}/locations/*/endpointPolicies/{endpoint_policy}``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the resource
             was created.
@@ -86,7 +86,8 @@ class EndpointPolicy(proto.Message):
             authentication is disabled(open) for this
             endpoint.
         client_tls_policy (str):
-            Optional. A URL referring to a ClientTlsPolicy resource.
+            Optional. Deprecated: This field is not used and is a no-op.
+            A URL referring to a ClientTlsPolicy resource.
             ClientTlsPolicy can be set to specify the authentication for
             traffic from the proxy to the actual endpoints. More
             specifically, it is applied to the outgoing traffic from the
@@ -173,7 +174,7 @@ class ListEndpointPoliciesRequest(proto.Message):
         parent (str):
             Required. The project and location from which the
             EndpointPolicies should be listed, specified in the format
-            ``projects/*/locations/global``.
+            ``projects/*/locations/*``.
         page_size (int):
             Maximum number of EndpointPolicies to return
             per call.
@@ -251,8 +252,7 @@ class GetEndpointPolicyRequest(proto.Message):
     Attributes:
         name (str):
             Required. A name of the EndpointPolicy to get. Must be in
-            the format
-            ``projects/*/locations/global/endpointPolicies/*``.
+            the format ``projects/*/locations/*/endpointPolicies/*``.
     """
 
     name: str = proto.Field(
@@ -267,7 +267,7 @@ class CreateEndpointPolicyRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent resource of the EndpointPolicy. Must be
-            in the format ``projects/*/locations/global``.
+            in the format ``projects/*/locations/*``.
         endpoint_policy_id (str):
             Required. Short name of the EndpointPolicy
             resource to be created. E.g. "CustomECS".
@@ -324,8 +324,7 @@ class DeleteEndpointPolicyRequest(proto.Message):
     Attributes:
         name (str):
             Required. A name of the EndpointPolicy to delete. Must be in
-            the format
-            ``projects/*/locations/global/endpointPolicies/*``.
+            the format ``projects/*/locations/*/endpointPolicies/*``.
     """
 
     name: str = proto.Field(

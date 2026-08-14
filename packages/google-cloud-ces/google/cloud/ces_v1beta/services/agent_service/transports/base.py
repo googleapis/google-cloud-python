@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,9 +56,7 @@ from google.cloud.ces_v1beta.types import toolset as gcc_toolset
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class AgentServiceTransport(abc.ABC):
@@ -407,6 +405,11 @@ class AgentServiceTransport(abc.ABC):
             ),
             self.restore_app_version: gapic_v1.method.wrap_method(
                 self.restore_app_version,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.generate_app_resource: gapic_v1.method.wrap_method(
+                self.generate_app_resource,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -919,6 +922,15 @@ class AgentServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [agent_service.RestoreAppVersionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def generate_app_resource(
+        self,
+    ) -> Callable[
+        [agent_service.GenerateAppResourceRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

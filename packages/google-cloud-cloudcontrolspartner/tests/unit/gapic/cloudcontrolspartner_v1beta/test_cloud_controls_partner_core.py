@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -121,6 +116,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1014,7 +1024,14 @@ def test_cloud_controls_partner_core_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1061,7 +1078,14 @@ def test_cloud_controls_partner_core_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1398,8 +1422,8 @@ def test_cloud_controls_partner_core_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        customer_workloads.GetWorkloadRequest,
-        dict,
+        customer_workloads.GetWorkloadRequest(),
+        {},
     ],
 )
 def test_get_workload(request_type, transport: str = "grpc"):
@@ -1410,7 +1434,7 @@ def test_get_workload(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
@@ -1469,9 +1493,10 @@ def test_get_workload_non_empty_request_with_auto_populated_field():
         client.get_workload(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == customer_workloads.GetWorkloadRequest(
+        request_msg = customer_workloads.GetWorkloadRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_workload_use_cached_wrapped_rpc():
@@ -1552,9 +1577,14 @@ async def test_get_workload_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_workload_async(
-    transport: str = "grpc_asyncio", request_type=customer_workloads.GetWorkloadRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        customer_workloads.GetWorkloadRequest(),
+        {},
+    ],
+)
+async def test_get_workload_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudControlsPartnerCoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1562,7 +1592,7 @@ async def test_get_workload_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
@@ -1598,11 +1628,6 @@ async def test_get_workload_async(
         response.partner
         == customer_workloads.Workload.Partner.PARTNER_LOCAL_CONTROLS_BY_S3NS
     )
-
-
-@pytest.mark.asyncio
-async def test_get_workload_async_from_dict():
-    await test_get_workload_async(request_type=dict)
 
 
 def test_get_workload_field_headers():
@@ -1751,8 +1776,8 @@ async def test_get_workload_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        customer_workloads.ListWorkloadsRequest,
-        dict,
+        customer_workloads.ListWorkloadsRequest(),
+        {},
     ],
 )
 def test_list_workloads(request_type, transport: str = "grpc"):
@@ -1763,7 +1788,7 @@ def test_list_workloads(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
@@ -1812,12 +1837,13 @@ def test_list_workloads_non_empty_request_with_auto_populated_field():
         client.list_workloads(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == customer_workloads.ListWorkloadsRequest(
+        request_msg = customer_workloads.ListWorkloadsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_workloads_use_cached_wrapped_rpc():
@@ -1898,10 +1924,14 @@ async def test_list_workloads_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_workloads_async(
-    transport: str = "grpc_asyncio",
-    request_type=customer_workloads.ListWorkloadsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        customer_workloads.ListWorkloadsRequest(),
+        {},
+    ],
+)
+async def test_list_workloads_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudControlsPartnerCoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1909,7 +1939,7 @@ async def test_list_workloads_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
@@ -1932,11 +1962,6 @@ async def test_list_workloads_async(
     assert isinstance(response, pagers.ListWorkloadsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_workloads_async_from_dict():
-    await test_list_workloads_async(request_type=dict)
 
 
 def test_list_workloads_field_headers():
@@ -2131,6 +2156,9 @@ def test_list_workloads_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, customer_workloads.Workload) for i in results)
@@ -2219,6 +2247,8 @@ async def test_list_workloads_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2266,11 +2296,7 @@ async def test_list_workloads_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_workloads(request={})
-        ).pages:
+        async for page_ in (await client.list_workloads(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2279,8 +2305,8 @@ async def test_list_workloads_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        customers.GetCustomerRequest,
-        dict,
+        customers.GetCustomerRequest(),
+        {},
     ],
 )
 def test_get_customer(request_type, transport: str = "grpc"):
@@ -2291,7 +2317,7 @@ def test_get_customer(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_customer), "__call__") as call:
@@ -2341,9 +2367,10 @@ def test_get_customer_non_empty_request_with_auto_populated_field():
         client.get_customer(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == customers.GetCustomerRequest(
+        request_msg = customers.GetCustomerRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_customer_use_cached_wrapped_rpc():
@@ -2424,9 +2451,14 @@ async def test_get_customer_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_customer_async(
-    transport: str = "grpc_asyncio", request_type=customers.GetCustomerRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        customers.GetCustomerRequest(),
+        {},
+    ],
+)
+async def test_get_customer_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudControlsPartnerCoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2434,7 +2466,7 @@ async def test_get_customer_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_customer), "__call__") as call:
@@ -2461,11 +2493,6 @@ async def test_get_customer_async(
     assert response.display_name == "display_name_value"
     assert response.is_onboarded is True
     assert response.organization_domain == "organization_domain_value"
-
-
-@pytest.mark.asyncio
-async def test_get_customer_async_from_dict():
-    await test_get_customer_async(request_type=dict)
 
 
 def test_get_customer_field_headers():
@@ -2610,8 +2637,8 @@ async def test_get_customer_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        customers.ListCustomersRequest,
-        dict,
+        customers.ListCustomersRequest(),
+        {},
     ],
 )
 def test_list_customers(request_type, transport: str = "grpc"):
@@ -2622,7 +2649,7 @@ def test_list_customers(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_customers), "__call__") as call:
@@ -2671,12 +2698,13 @@ def test_list_customers_non_empty_request_with_auto_populated_field():
         client.list_customers(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == customers.ListCustomersRequest(
+        request_msg = customers.ListCustomersRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_customers_use_cached_wrapped_rpc():
@@ -2757,9 +2785,14 @@ async def test_list_customers_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_customers_async(
-    transport: str = "grpc_asyncio", request_type=customers.ListCustomersRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        customers.ListCustomersRequest(),
+        {},
+    ],
+)
+async def test_list_customers_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudControlsPartnerCoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2767,7 +2800,7 @@ async def test_list_customers_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_customers), "__call__") as call:
@@ -2790,11 +2823,6 @@ async def test_list_customers_async(
     assert isinstance(response, pagers.ListCustomersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_customers_async_from_dict():
-    await test_list_customers_async(request_type=dict)
 
 
 def test_list_customers_field_headers():
@@ -2989,6 +3017,9 @@ def test_list_customers_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, customers.Customer) for i in results)
@@ -3077,6 +3108,8 @@ async def test_list_customers_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3124,11 +3157,7 @@ async def test_list_customers_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_customers(request={})
-        ).pages:
+        async for page_ in (await client.list_customers(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3137,8 +3166,8 @@ async def test_list_customers_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        ekm_connections.GetEkmConnectionsRequest,
-        dict,
+        ekm_connections.GetEkmConnectionsRequest(),
+        {},
     ],
 )
 def test_get_ekm_connections(request_type, transport: str = "grpc"):
@@ -3149,7 +3178,7 @@ def test_get_ekm_connections(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3197,9 +3226,10 @@ def test_get_ekm_connections_non_empty_request_with_auto_populated_field():
         client.get_ekm_connections(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == ekm_connections.GetEkmConnectionsRequest(
+        request_msg = ekm_connections.GetEkmConnectionsRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_ekm_connections_use_cached_wrapped_rpc():
@@ -3284,10 +3314,14 @@ async def test_get_ekm_connections_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_ekm_connections_async(
-    transport: str = "grpc_asyncio",
-    request_type=ekm_connections.GetEkmConnectionsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ekm_connections.GetEkmConnectionsRequest(),
+        {},
+    ],
+)
+async def test_get_ekm_connections_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudControlsPartnerCoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3295,7 +3329,7 @@ async def test_get_ekm_connections_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3318,11 +3352,6 @@ async def test_get_ekm_connections_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, ekm_connections.EkmConnections)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_ekm_connections_async_from_dict():
-    await test_get_ekm_connections_async(request_type=dict)
 
 
 def test_get_ekm_connections_field_headers():
@@ -3479,8 +3508,8 @@ async def test_get_ekm_connections_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        partner_permissions.GetPartnerPermissionsRequest,
-        dict,
+        partner_permissions.GetPartnerPermissionsRequest(),
+        {},
     ],
 )
 def test_get_partner_permissions(request_type, transport: str = "grpc"):
@@ -3491,7 +3520,7 @@ def test_get_partner_permissions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3545,9 +3574,10 @@ def test_get_partner_permissions_non_empty_request_with_auto_populated_field():
         client.get_partner_permissions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == partner_permissions.GetPartnerPermissionsRequest(
+        request_msg = partner_permissions.GetPartnerPermissionsRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_partner_permissions_use_cached_wrapped_rpc():
@@ -3633,9 +3663,15 @@ async def test_get_partner_permissions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        partner_permissions.GetPartnerPermissionsRequest(),
+        {},
+    ],
+)
 async def test_get_partner_permissions_async(
-    transport: str = "grpc_asyncio",
-    request_type=partner_permissions.GetPartnerPermissionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudControlsPartnerCoreAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3644,7 +3680,7 @@ async def test_get_partner_permissions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3673,11 +3709,6 @@ async def test_get_partner_permissions_async(
     assert response.partner_permissions == [
         partner_permissions.PartnerPermissions.Permission.ACCESS_TRANSPARENCY_AND_EMERGENCY_ACCESS_LOGS
     ]
-
-
-@pytest.mark.asyncio
-async def test_get_partner_permissions_async_from_dict():
-    await test_get_partner_permissions_async(request_type=dict)
 
 
 def test_get_partner_permissions_field_headers():
@@ -3834,8 +3865,8 @@ async def test_get_partner_permissions_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        access_approval_requests.ListAccessApprovalRequestsRequest,
-        dict,
+        access_approval_requests.ListAccessApprovalRequestsRequest(),
+        {},
     ],
 )
 def test_list_access_approval_requests(request_type, transport: str = "grpc"):
@@ -3846,7 +3877,7 @@ def test_list_access_approval_requests(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3899,12 +3930,13 @@ def test_list_access_approval_requests_non_empty_request_with_auto_populated_fie
         client.list_access_approval_requests(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == access_approval_requests.ListAccessApprovalRequestsRequest(
+        request_msg = access_approval_requests.ListAccessApprovalRequestsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_access_approval_requests_use_cached_wrapped_rpc():
@@ -3990,9 +4022,15 @@ async def test_list_access_approval_requests_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        access_approval_requests.ListAccessApprovalRequestsRequest(),
+        {},
+    ],
+)
 async def test_list_access_approval_requests_async(
-    transport: str = "grpc_asyncio",
-    request_type=access_approval_requests.ListAccessApprovalRequestsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = CloudControlsPartnerCoreAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4001,7 +4039,7 @@ async def test_list_access_approval_requests_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4026,11 +4064,6 @@ async def test_list_access_approval_requests_async(
     assert isinstance(response, pagers.ListAccessApprovalRequestsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_access_approval_requests_async_from_dict():
-    await test_list_access_approval_requests_async(request_type=dict)
 
 
 def test_list_access_approval_requests_field_headers():
@@ -4243,6 +4276,9 @@ def test_list_access_approval_requests_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -4338,6 +4374,8 @@ async def test_list_access_approval_requests_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4390,9 +4428,7 @@ async def test_list_access_approval_requests_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_access_approval_requests(request={})
         ).pages:
             pages.append(page_)
@@ -4403,8 +4439,8 @@ async def test_list_access_approval_requests_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        partners.GetPartnerRequest,
-        dict,
+        partners.GetPartnerRequest(),
+        {},
     ],
 )
 def test_get_partner(request_type, transport: str = "grpc"):
@@ -4415,7 +4451,7 @@ def test_get_partner(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_partner), "__call__") as call:
@@ -4463,9 +4499,10 @@ def test_get_partner_non_empty_request_with_auto_populated_field():
         client.get_partner(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == partners.GetPartnerRequest(
+        request_msg = partners.GetPartnerRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_partner_use_cached_wrapped_rpc():
@@ -4546,9 +4583,14 @@ async def test_get_partner_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_partner_async(
-    transport: str = "grpc_asyncio", request_type=partners.GetPartnerRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        partners.GetPartnerRequest(),
+        {},
+    ],
+)
+async def test_get_partner_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudControlsPartnerCoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4556,7 +4598,7 @@ async def test_get_partner_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_partner), "__call__") as call:
@@ -4581,11 +4623,6 @@ async def test_get_partner_async(
     assert response.name == "name_value"
     assert response.operated_cloud_regions == ["operated_cloud_regions_value"]
     assert response.partner_project_id == "partner_project_id_value"
-
-
-@pytest.mark.asyncio
-async def test_get_partner_async_from_dict():
-    await test_get_partner_async(request_type=dict)
 
 
 def test_get_partner_field_headers():
@@ -4730,8 +4767,8 @@ async def test_get_partner_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        customers.CreateCustomerRequest,
-        dict,
+        customers.CreateCustomerRequest(),
+        {},
     ],
 )
 def test_create_customer(request_type, transport: str = "grpc"):
@@ -4742,7 +4779,7 @@ def test_create_customer(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_customer), "__call__") as call:
@@ -4793,10 +4830,11 @@ def test_create_customer_non_empty_request_with_auto_populated_field():
         client.create_customer(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == customers.CreateCustomerRequest(
+        request_msg = customers.CreateCustomerRequest(
             parent="parent_value",
             customer_id="customer_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_customer_use_cached_wrapped_rpc():
@@ -4877,9 +4915,14 @@ async def test_create_customer_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_customer_async(
-    transport: str = "grpc_asyncio", request_type=customers.CreateCustomerRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        customers.CreateCustomerRequest(),
+        {},
+    ],
+)
+async def test_create_customer_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudControlsPartnerCoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4887,7 +4930,7 @@ async def test_create_customer_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_customer), "__call__") as call:
@@ -4914,11 +4957,6 @@ async def test_create_customer_async(
     assert response.display_name == "display_name_value"
     assert response.is_onboarded is True
     assert response.organization_domain == "organization_domain_value"
-
-
-@pytest.mark.asyncio
-async def test_create_customer_async_from_dict():
-    await test_create_customer_async(request_type=dict)
 
 
 def test_create_customer_field_headers():
@@ -5083,8 +5121,8 @@ async def test_create_customer_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        customers.UpdateCustomerRequest,
-        dict,
+        customers.UpdateCustomerRequest(),
+        {},
     ],
 )
 def test_update_customer(request_type, transport: str = "grpc"):
@@ -5095,7 +5133,7 @@ def test_update_customer(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_customer), "__call__") as call:
@@ -5143,7 +5181,8 @@ def test_update_customer_non_empty_request_with_auto_populated_field():
         client.update_customer(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == customers.UpdateCustomerRequest()
+        request_msg = customers.UpdateCustomerRequest()
+        assert args[0] == request_msg
 
 
 def test_update_customer_use_cached_wrapped_rpc():
@@ -5224,9 +5263,14 @@ async def test_update_customer_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_customer_async(
-    transport: str = "grpc_asyncio", request_type=customers.UpdateCustomerRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        customers.UpdateCustomerRequest(),
+        {},
+    ],
+)
+async def test_update_customer_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudControlsPartnerCoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5234,7 +5278,7 @@ async def test_update_customer_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_customer), "__call__") as call:
@@ -5261,11 +5305,6 @@ async def test_update_customer_async(
     assert response.display_name == "display_name_value"
     assert response.is_onboarded is True
     assert response.organization_domain == "organization_domain_value"
-
-
-@pytest.mark.asyncio
-async def test_update_customer_async_from_dict():
-    await test_update_customer_async(request_type=dict)
 
 
 def test_update_customer_field_headers():
@@ -5420,8 +5459,8 @@ async def test_update_customer_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        customers.DeleteCustomerRequest,
-        dict,
+        customers.DeleteCustomerRequest(),
+        {},
     ],
 )
 def test_delete_customer(request_type, transport: str = "grpc"):
@@ -5432,7 +5471,7 @@ def test_delete_customer(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_customer), "__call__") as call:
@@ -5473,9 +5512,10 @@ def test_delete_customer_non_empty_request_with_auto_populated_field():
         client.delete_customer(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == customers.DeleteCustomerRequest(
+        request_msg = customers.DeleteCustomerRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_customer_use_cached_wrapped_rpc():
@@ -5556,9 +5596,14 @@ async def test_delete_customer_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_customer_async(
-    transport: str = "grpc_asyncio", request_type=customers.DeleteCustomerRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        customers.DeleteCustomerRequest(),
+        {},
+    ],
+)
+async def test_delete_customer_async(request_type, transport: str = "grpc_asyncio"):
     client = CloudControlsPartnerCoreAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5566,7 +5611,7 @@ async def test_delete_customer_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_customer), "__call__") as call:
@@ -5582,11 +5627,6 @@ async def test_delete_customer_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_customer_async_from_dict():
-    await test_delete_customer_async(request_type=dict)
 
 
 def test_delete_customer_field_headers():
@@ -5836,7 +5876,7 @@ def test_get_workload_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_workload_rest_unset_required_fields():
@@ -6025,7 +6065,7 @@ def test_list_workloads_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_workloads_rest_unset_required_fields():
@@ -6163,6 +6203,9 @@ def test_list_workloads_rest_pager(transport: str = "rest"):
 
         pager = client.list_workloads(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, customer_workloads.Workload) for i in results)
@@ -6278,7 +6321,7 @@ def test_get_customer_rest_required_fields(request_type=customers.GetCustomerReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_customer_rest_unset_required_fields():
@@ -6467,7 +6510,7 @@ def test_list_customers_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_customers_rest_unset_required_fields():
@@ -6599,6 +6642,9 @@ def test_list_customers_rest_pager(transport: str = "rest"):
 
         pager = client.list_customers(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, customers.Customer) for i in results)
@@ -6720,7 +6766,7 @@ def test_get_ekm_connections_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_ekm_connections_rest_unset_required_fields():
@@ -6905,7 +6951,7 @@ def test_get_partner_permissions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_partner_permissions_rest_unset_required_fields():
@@ -7103,7 +7149,7 @@ def test_list_access_approval_requests_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_access_approval_requests_rest_unset_required_fields():
@@ -7246,6 +7292,9 @@ def test_list_access_approval_requests_rest_pager(transport: str = "rest"):
 
         pager = client.list_access_approval_requests(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -7364,7 +7413,7 @@ def test_get_partner_rest_required_fields(request_type=partners.GetPartnerReques
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_partner_rest_unset_required_fields():
@@ -7558,7 +7607,7 @@ def test_create_customer_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_customer_rest_unset_required_fields():
@@ -7747,7 +7796,7 @@ def test_update_customer_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_customer_rest_unset_required_fields():
@@ -7928,7 +7977,7 @@ def test_delete_customer_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_customer_rest_unset_required_fields():
@@ -8121,7 +8170,6 @@ def test_get_workload_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = customer_workloads.GetWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -8142,7 +8190,6 @@ def test_list_workloads_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = customer_workloads.ListWorkloadsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8163,7 +8210,6 @@ def test_get_customer_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = customers.GetCustomerRequest()
-
         assert args[0] == request_msg
 
 
@@ -8184,7 +8230,6 @@ def test_list_customers_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = customers.ListCustomersRequest()
-
         assert args[0] == request_msg
 
 
@@ -8207,7 +8252,6 @@ def test_get_ekm_connections_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_connections.GetEkmConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8230,7 +8274,6 @@ def test_get_partner_permissions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = partner_permissions.GetPartnerPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8255,7 +8298,6 @@ def test_list_access_approval_requests_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = access_approval_requests.ListAccessApprovalRequestsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8276,7 +8318,6 @@ def test_get_partner_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = partners.GetPartnerRequest()
-
         assert args[0] == request_msg
 
 
@@ -8297,7 +8338,6 @@ def test_create_customer_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = customers.CreateCustomerRequest()
-
         assert args[0] == request_msg
 
 
@@ -8318,7 +8358,6 @@ def test_update_customer_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = customers.UpdateCustomerRequest()
-
         assert args[0] == request_msg
 
 
@@ -8339,7 +8378,6 @@ def test_delete_customer_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = customers.DeleteCustomerRequest()
-
         assert args[0] == request_msg
 
 
@@ -8386,7 +8424,6 @@ async def test_get_workload_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = customer_workloads.GetWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -8414,7 +8451,6 @@ async def test_list_workloads_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = customer_workloads.ListWorkloadsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8444,7 +8480,6 @@ async def test_get_customer_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = customers.GetCustomerRequest()
-
         assert args[0] == request_msg
 
 
@@ -8472,7 +8507,6 @@ async def test_list_customers_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = customers.ListCustomersRequest()
-
         assert args[0] == request_msg
 
 
@@ -8501,7 +8535,6 @@ async def test_get_ekm_connections_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_connections.GetEkmConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8533,7 +8566,6 @@ async def test_get_partner_permissions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = partner_permissions.GetPartnerPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8563,7 +8595,6 @@ async def test_list_access_approval_requests_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = access_approval_requests.ListAccessApprovalRequestsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8592,7 +8623,6 @@ async def test_get_partner_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = partners.GetPartnerRequest()
-
         assert args[0] == request_msg
 
 
@@ -8622,7 +8652,6 @@ async def test_create_customer_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = customers.CreateCustomerRequest()
-
         assert args[0] == request_msg
 
 
@@ -8652,7 +8681,6 @@ async def test_update_customer_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = customers.UpdateCustomerRequest()
-
         assert args[0] == request_msg
 
 
@@ -8675,7 +8703,6 @@ async def test_delete_customer_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = customers.DeleteCustomerRequest()
-
         assert args[0] == request_msg
 
 
@@ -10387,7 +10414,6 @@ def test_get_workload_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = customer_workloads.GetWorkloadRequest()
-
         assert args[0] == request_msg
 
 
@@ -10407,7 +10433,6 @@ def test_list_workloads_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = customer_workloads.ListWorkloadsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10427,7 +10452,6 @@ def test_get_customer_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = customers.GetCustomerRequest()
-
         assert args[0] == request_msg
 
 
@@ -10447,7 +10471,6 @@ def test_list_customers_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = customers.ListCustomersRequest()
-
         assert args[0] == request_msg
 
 
@@ -10469,7 +10492,6 @@ def test_get_ekm_connections_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = ekm_connections.GetEkmConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10491,7 +10513,6 @@ def test_get_partner_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = partner_permissions.GetPartnerPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10513,7 +10534,6 @@ def test_list_access_approval_requests_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = access_approval_requests.ListAccessApprovalRequestsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10533,7 +10553,6 @@ def test_get_partner_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = partners.GetPartnerRequest()
-
         assert args[0] == request_msg
 
 
@@ -10553,7 +10572,6 @@ def test_create_customer_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = customers.CreateCustomerRequest()
-
         assert args[0] == request_msg
 
 
@@ -10573,7 +10591,6 @@ def test_update_customer_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = customers.UpdateCustomerRequest()
-
         assert args[0] == request_msg
 
 
@@ -10593,7 +10610,6 @@ def test_delete_customer_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = customers.DeleteCustomerRequest()
-
         assert args[0] == request_msg
 
 

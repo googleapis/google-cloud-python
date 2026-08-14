@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,14 +17,20 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.interval_pb2 as interval_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.storage.control.v2",
     manifest={
+        "FindingType",
+        "FindingCategory",
+        "FindingSeverity",
         "PendingRenameInfo",
         "Folder",
         "GetFolderRequest",
@@ -45,8 +51,11 @@ __protobuf__ = proto.module(
         "DeleteManagedFolderRequest",
         "ListManagedFoldersRequest",
         "ListManagedFoldersResponse",
+        "UpdateManagedFolderRequest",
         "CreateAnywhereCacheMetadata",
+        "CreateRapidCacheMetadata",
         "UpdateAnywhereCacheMetadata",
+        "UpdateRapidCacheMetadata",
         "AnywhereCache",
         "CreateAnywhereCacheRequest",
         "UpdateAnywhereCacheRequest",
@@ -56,6 +65,12 @@ __protobuf__ = proto.module(
         "GetAnywhereCacheRequest",
         "ListAnywhereCachesRequest",
         "ListAnywhereCachesResponse",
+        "RapidCache",
+        "CreateRapidCacheRequest",
+        "UpdateRapidCacheRequest",
+        "GetRapidCacheRequest",
+        "ListRapidCachesRequest",
+        "ListRapidCachesResponse",
         "IntelligenceConfig",
         "UpdateOrganizationIntelligenceConfigRequest",
         "UpdateFolderIntelligenceConfigRequest",
@@ -63,8 +78,80 @@ __protobuf__ = proto.module(
         "GetOrganizationIntelligenceConfigRequest",
         "GetFolderIntelligenceConfigRequest",
         "GetProjectIntelligenceConfigRequest",
+        "IntelligenceFinding",
+        "IntelligenceFindingRevision",
+        "GetIntelligenceFindingRequest",
+        "ListIntelligenceFindingsRequest",
+        "ListIntelligenceFindingsResponse",
+        "SummarizeIntelligenceFindingsRequest",
+        "SummarizeIntelligenceFindingsResponse",
+        "GetIntelligenceFindingRevisionRequest",
+        "ListIntelligenceFindingRevisionsRequest",
+        "ListIntelligenceFindingRevisionsResponse",
+        "FindingSummary",
+        "ObjectFullContext",
+        "ViewObjectFullContextRequest",
     },
 )
+
+
+class FindingType(proto.Enum):
+    r"""List the finding types.
+
+    Values:
+        FINDING_TYPE_UNSPECIFIED (0):
+            Finding type is unspecified.
+        FINDING_TYPE_COLDLINE_AND_ARCHIVAL_STORAGE_OPERATIONS_SPIKE (1):
+            Finding is about a spike in Class A/B
+            operations on Coldline or Archive Cloud Storage
+            objects.
+        FINDING_TYPE_THROTTLED_REQUEST_SPIKE (2):
+            Finding is about a spike in throttled
+            requests (429 errors) within a project.
+        FINDING_TYPE_CROSS_REGION_EGRESS_SPIKE (3):
+            Finding is about a spike in cross region
+            egress in Cloud Storage.
+        FINDING_TYPE_STORAGE_GROWTH_ABOVE_TREND (4):
+            Finding is about growth in storage above the
+            expected trend.
+    """
+
+    FINDING_TYPE_UNSPECIFIED = 0
+    FINDING_TYPE_COLDLINE_AND_ARCHIVAL_STORAGE_OPERATIONS_SPIKE = 1
+    FINDING_TYPE_THROTTLED_REQUEST_SPIKE = 2
+    FINDING_TYPE_CROSS_REGION_EGRESS_SPIKE = 3
+    FINDING_TYPE_STORAGE_GROWTH_ABOVE_TREND = 4
+
+
+class FindingCategory(proto.Enum):
+    r"""List of categories a finding falls under.
+
+    Values:
+        FINDING_CATEGORY_UNSPECIFIED (0):
+            Category is unspecified.
+        FINDING_CATEGORY_DATA_MANAGEMENT (1):
+            Category is 'Data Management'.
+        FINDING_CATEGORY_PERFORMANCE (2):
+            Category is 'Performance'.
+    """
+
+    FINDING_CATEGORY_UNSPECIFIED = 0
+    FINDING_CATEGORY_DATA_MANAGEMENT = 1
+    FINDING_CATEGORY_PERFORMANCE = 2
+
+
+class FindingSeverity(proto.Enum):
+    r"""Severity of the ``IntelligenceFinding`` resource.
+
+    Values:
+        FINDING_SEVERITY_UNSPECIFIED (0):
+            Severity is unspecified.
+        FINDING_SEVERITY_CRITICAL (1):
+            Severity is critical.
+    """
+
+    FINDING_SEVERITY_UNSPECIFIED = 0
+    FINDING_SEVERITY_CRITICAL = 1
 
 
 class PendingRenameInfo(proto.Message):
@@ -627,6 +714,9 @@ class StorageLayout(proto.Message):
             namespace configuration. If there is no
             configuration, the hierarchical namespace is
             disabled.
+        rapid_cache_info (google.cloud.storage_control_v2.types.StorageLayout.RapidCacheInfo):
+            Output only. The Rapid Cache configuration
+            for the bucket.
     """
 
     class CustomPlacementConfig(proto.Message):
@@ -658,6 +748,21 @@ class StorageLayout(proto.Message):
             number=1,
         )
 
+    class RapidCacheInfo(proto.Message):
+        r"""The Rapid Cache configuration for the bucket.
+
+        Attributes:
+            cache_type (str):
+                Output only. The type of cache in the bucket. Set to
+                ``rapid-cache`` or ``rapid-cache-ultra``, only if there is a
+                cache present.
+        """
+
+        cache_type: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -679,6 +784,11 @@ class StorageLayout(proto.Message):
         proto.MESSAGE,
         number=5,
         message=HierarchicalNamespace,
+    )
+    rapid_cache_info: RapidCacheInfo = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=RapidCacheInfo,
     )
 
 
@@ -716,6 +826,8 @@ class GetStorageLayoutRequest(proto.Message):
 class ManagedFolder(proto.Message):
     r"""A managed folder.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Identifier. The name of this managed folder. Format:
@@ -732,7 +844,75 @@ class ManagedFolder(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The modification time of the
             managed folder.
+        rapid_cache_config (google.cloud.storage_control_v2.types.ManagedFolder.RapidCacheConfig):
+            Rapid Cache configuration for a managed
+            prefix.
+
+            This field is a member of `oneof`_ ``_rapid_cache_config``.
     """
+
+    class RapidCacheConfig(proto.Message):
+        r"""Rapid Cache configuration for a managed prefix. This
+        configuration is used to determine how the rapid cache behaves
+        for objects under the managed folder.
+
+        Attributes:
+            policies (MutableMapping[str, google.cloud.storage_control_v2.types.ManagedFolder.RapidCacheConfig.RapidCachePolicy]):
+                Optional. A map of rapid_cache_id to RapidCachePolicy for
+                this prefix. Currently, the key rapid_cache_id is the zone.
+                However, the field is generalized as rapid_cache_id to align
+                the policy lifetime with the cache instance lifetime. This
+                allows for a future transition from zone to a cache id if
+                required.
+        """
+
+        class RapidCachePolicy(proto.Message):
+            r"""Rapid Cache policy for a managed folder.
+
+            Attributes:
+                rapid_cache_id (str):
+                    Required. The identifier for the rapid cache.
+                ingest_on_write (google.cloud.storage_control_v2.types.ManagedFolder.RapidCacheConfig.RapidCachePolicy.IngestOnWrite):
+                    Required. If enabled, objects in the Managed
+                    Folder will be ingested into the cache when they
+                    are written.
+            """
+
+            class IngestOnWrite(proto.Enum):
+                r"""The behavior of the rapid cache when an object is written.
+
+                Values:
+                    INGEST_ON_WRITE_UNSPECIFIED (0):
+                        The behavior is not specified at this
+                        resource level. It should be inherited from the
+                        parent resource's configuration. This is the
+                        default value.
+                    INGEST_ON_WRITE_ENABLED (1):
+                        Ingestion on write is explicitly enabled for
+                        this resource.
+                """
+
+                INGEST_ON_WRITE_UNSPECIFIED = 0
+                INGEST_ON_WRITE_ENABLED = 1
+
+            rapid_cache_id: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            ingest_on_write: "ManagedFolder.RapidCacheConfig.RapidCachePolicy.IngestOnWrite" = proto.Field(
+                proto.ENUM,
+                number=2,
+                enum="ManagedFolder.RapidCacheConfig.RapidCachePolicy.IngestOnWrite",
+            )
+
+        policies: MutableMapping[
+            str, "ManagedFolder.RapidCacheConfig.RapidCachePolicy"
+        ] = proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=1,
+            message="ManagedFolder.RapidCacheConfig.RapidCachePolicy",
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -751,6 +931,12 @@ class ManagedFolder(proto.Message):
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
+    )
+    rapid_cache_config: RapidCacheConfig = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        optional=True,
+        message=RapidCacheConfig,
     )
 
 
@@ -974,6 +1160,71 @@ class ListManagedFoldersResponse(proto.Message):
     )
 
 
+class UpdateManagedFolderRequest(proto.Message):
+    r"""Request message for UpdateManagedFolder.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        managed_folder (google.cloud.storage_control_v2.types.ManagedFolder):
+            Required. Properties of the managed folder being updated.
+            Currently, this RPC only supports updating the
+            ``rapid_cache_config`` field in ``managed_folder``.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Update mask for managed_folder. Currently, this
+            RPC only supports updating the ``rapid_cache_config`` field
+            in ``managed_folder``. This field also supports update mask
+            for the subfields in the map of ``rapid_cache_config``. The
+            user can specify the update mask for
+            ``rapid_cache_config.policies`` and
+            ``rapid_cache_config.policies.<key>``, but patching is not
+            supported for a field within
+            ``RapidCachePolicy.policies.<key>``, like
+            rapid_cache_config.policies.[key].ingest_on_write.
+        if_metageneration_match (int):
+            Optional. The operation succeeds conditional
+            on the managed folder's current metageneration
+            matching the value here specified.
+
+            This field is a member of `oneof`_ ``_if_metageneration_match``.
+        if_metageneration_not_match (int):
+            Optional. The operation succeeds conditional
+            on the managed folder's current metageneration
+            NOT matching the value here specified.
+
+            This field is a member of `oneof`_ ``_if_metageneration_not_match``.
+        request_id (str):
+            Optional. A unique identifier for this
+            request. UUID is the recommended format, but
+            other formats are still accepted.
+    """
+
+    managed_folder: "ManagedFolder" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="ManagedFolder",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    if_metageneration_match: int = proto.Field(
+        proto.INT64,
+        number=3,
+        optional=True,
+    )
+    if_metageneration_not_match: int = proto.Field(
+        proto.INT64,
+        number=4,
+        optional=True,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
 class CreateAnywhereCacheMetadata(proto.Message):
     r"""Message returned in the metadata field of the Operation
     resource for CreateAnywhereCache operations.
@@ -1009,6 +1260,12 @@ class CreateAnywhereCacheMetadata(proto.Message):
             request.
 
             This field is a member of `oneof`_ ``_admission_policy``.
+        ingest_on_write (bool):
+            Optional. Specifies whether objects are
+            ingested into the cache upon write. Defaults to
+            false.
+
+            This field is a member of `oneof`_ ``_ingest_on_write``.
     """
 
     common_metadata: "CommonLongRunningOperationMetadata" = proto.Field(
@@ -1035,6 +1292,97 @@ class CreateAnywhereCacheMetadata(proto.Message):
     admission_policy: str = proto.Field(
         proto.STRING,
         number=5,
+        optional=True,
+    )
+    ingest_on_write: bool = proto.Field(
+        proto.BOOL,
+        number=7,
+        optional=True,
+    )
+
+
+class CreateRapidCacheMetadata(proto.Message):
+    r"""Message returned in the metadata field of the Operation
+    resource for CreateRapidCache operations.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        common_metadata (google.cloud.storage_control_v2.types.CommonLongRunningOperationMetadata):
+            Generic metadata for the long running
+            operation.
+        rapid_cache_id (str):
+            Rapid Cache ID.
+
+            This field is a member of `oneof`_ ``_rapid_cache_id``.
+        zone (str):
+            The zone in which the cache instance is
+            running. For example, us-central1-a.
+
+            This field is a member of `oneof`_ ``_zone``.
+        ttl (google.protobuf.duration_pb2.Duration):
+            Rapid Cache entry's TTL. A cache-level config
+            that is applied to all new cache entries on
+            admission. Default ttl value (24hrs) is applied
+            if not specified in the create request.
+
+            This field is a member of `oneof`_ ``_ttl``.
+        admission_policy (str):
+            Anywhere Cache entry Admission Policy in
+            kebab-case (e.g., "admit-on-first-miss").
+            Default admission policy (admit-on-first-miss)
+            is applied if not specified in the create
+            request.
+
+            This field is a member of `oneof`_ ``_admission_policy``.
+        ingest_on_write (bool):
+            Optional. Specifies whether objects are
+            ingested into the cache upon write. Defaults to
+            false.
+
+            This field is a member of `oneof`_ ``_ingest_on_write``.
+        cache_type (str):
+            Optional. The type of cache. Either rapid
+            cache or rapid cache ultra.
+
+            This field is a member of `oneof`_ ``_cache_type``.
+    """
+
+    common_metadata: "CommonLongRunningOperationMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="CommonLongRunningOperationMetadata",
+    )
+    rapid_cache_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3,
+        optional=True,
+    )
+    ttl: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        optional=True,
+        message=duration_pb2.Duration,
+    )
+    admission_policy: str = proto.Field(
+        proto.STRING,
+        number=5,
+        optional=True,
+    )
+    ingest_on_write: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+        optional=True,
+    )
+    cache_type: str = proto.Field(
+        proto.STRING,
+        number=7,
         optional=True,
     )
 
@@ -1067,12 +1415,18 @@ class UpdateAnywhereCacheMetadata(proto.Message):
 
             This field is a member of `oneof`_ ``_ttl``.
         admission_policy (str):
-            L4 Cache entry Admission Policy in kebab-case (e.g.,
-            "admit-on-first-miss"). If ``admission_policy`` is pending
-            update, this field equals to the new value specified in the
-            Update request.
+            Optional. Anywhere Cache entry Admission Policy in
+            kebab-case (e.g., "admit-on-first-miss"). If
+            ``admission_policy`` is pending update, this field equals to
+            the new value specified in the Update request.
 
             This field is a member of `oneof`_ ``_admission_policy``.
+        ingest_on_write (bool):
+            Specifies whether objects are ingested into
+            the cache upon write. If not set, it defaults to
+            false.
+
+            This field is a member of `oneof`_ ``_ingest_on_write``.
     """
 
     common_metadata: "CommonLongRunningOperationMetadata" = proto.Field(
@@ -1101,10 +1455,102 @@ class UpdateAnywhereCacheMetadata(proto.Message):
         number=4,
         optional=True,
     )
+    ingest_on_write: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+        optional=True,
+    )
+
+
+class UpdateRapidCacheMetadata(proto.Message):
+    r"""Message returned in the metadata field of the Operation
+    resource for UpdateRapidCache operation.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        common_metadata (google.cloud.storage_control_v2.types.CommonLongRunningOperationMetadata):
+            Generic metadata for the long running
+            operation.
+        rapid_cache_id (str):
+            Rapid Cache ID.
+
+            This field is a member of `oneof`_ ``_rapid_cache_id``.
+        zone (str):
+            The zone in which the cache instance is
+            running. For example, us-central1-a.
+
+            This field is a member of `oneof`_ ``_zone``.
+        ttl (google.protobuf.duration_pb2.Duration):
+            Rapid Cache entry's TTL between 1h and 7days. A cache-level
+            config that is applied to all new cache entries on
+            admission. If ``ttl`` is pending update, this field equals
+            to the new value specified in the Update request.
+
+            This field is a member of `oneof`_ ``_ttl``.
+        admission_policy (str):
+            Optional. Rapid Cache entry Admission Policy in kebab-case
+            (e.g., "admit-on-first-miss"). If ``admission_policy`` is
+            pending update, this field equals to the new value specified
+            in the Update request.
+
+            This field is a member of `oneof`_ ``_admission_policy``.
+        ingest_on_write (bool):
+            Specifies whether objects are ingested into
+            the cache upon write. If not set, it defaults to
+            false.
+
+            This field is a member of `oneof`_ ``_ingest_on_write``.
+        cache_type (str):
+            Optional. The type of cache. Either rapid
+            cache or rapid cache ultra.
+
+            This field is a member of `oneof`_ ``_cache_type``.
+    """
+
+    common_metadata: "CommonLongRunningOperationMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="CommonLongRunningOperationMetadata",
+    )
+    rapid_cache_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3,
+        optional=True,
+    )
+    ttl: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        optional=True,
+        message=duration_pb2.Duration,
+    )
+    admission_policy: str = proto.Field(
+        proto.STRING,
+        number=5,
+        optional=True,
+    )
+    ingest_on_write: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+        optional=True,
+    )
+    cache_type: str = proto.Field(
+        proto.STRING,
+        number=7,
+        optional=True,
+    )
 
 
 class AnywhereCache(proto.Message):
     r"""An Anywhere Cache Instance.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         name (str):
@@ -1125,8 +1571,8 @@ class AnywhereCache(proto.Message):
             Defaults to ``admit-on-first-miss``. Default value is
             applied if not specified in the create request.
         state (str):
-            Output only. Cache state including RUNNING,
-            CREATING, DISABLED and PAUSED.
+            Output only. Cache state including ``running``,
+            ``creating``, ``disabled`` and ``paused``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when Anywhere cache
             instance is allocated.
@@ -1138,6 +1584,12 @@ class AnywhereCache(proto.Message):
             update operation against this cache instance.
             Subsequential update requests will be rejected
             if this field is true. Output only.
+        ingest_on_write (bool):
+            Optional. Specifies whether objects are
+            ingested into the cache upon write. Defaults to
+            false.
+
+            This field is a member of `oneof`_ ``_ingest_on_write``.
     """
 
     name: str = proto.Field(
@@ -1174,6 +1626,11 @@ class AnywhereCache(proto.Message):
     pending_update: bool = proto.Field(
         proto.BOOL,
         number=8,
+    )
+    ingest_on_write: bool = proto.Field(
+        proto.BOOL,
+        number=11,
+        optional=True,
     )
 
 
@@ -1411,6 +1868,250 @@ class ListAnywhereCachesResponse(proto.Message):
     )
 
 
+class RapidCache(proto.Message):
+    r"""A Rapid Cache Instance.
+
+    Attributes:
+        name (str):
+            Immutable. The resource name of this RapidCache. Format:
+            projects/{project}/buckets/{bucket}/rapidCaches/{rapid_cache}
+        zone (str):
+            Immutable. The zone in which the cache
+            instance is running. For example, us-central1-a.
+        cache_type (str):
+            Immutable. The type of Rapid Cache this
+            represents. Valid values include: 'rapid-cache'
+            and 'rapid-cache-ultra'.
+        ttl (google.protobuf.duration_pb2.Duration):
+            Cache entry TTL (ranges between 1h to 7d).
+            This is a cache-level config that defines how
+            long a cache entry can live. Default ttl value
+            (24hrs) is applied if not specified in the
+            create request. TTL must be in whole seconds.
+        admission_policy (str):
+            Cache admission policy. Valid policies includes:
+            no_read_admission, admit-on-first-miss and
+            admit-on-second-miss. Defaults to admit-on-first-miss for
+            both AC and RCU. Default value is applied if not specified
+            in the create request.
+        state (str):
+            Output only. Cache state including running,
+            creating, and disabled.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Time when Rapid cache instance
+            is allocated.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Time when Rapid cache instance
+            is last updated, including creation.
+        pending_update (bool):
+            Output only. True if there is an active
+            update operation against this cache instance.
+            Subsequential update requests will be rejected
+            if this field is true. Output only.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    cache_type: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    ttl: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=duration_pb2.Duration,
+    )
+    admission_policy: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    state: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
+    pending_update: bool = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
+
+
+class CreateRapidCacheRequest(proto.Message):
+    r"""Request message for CreateRapidCache.
+
+    Attributes:
+        parent (str):
+            Required. The bucket to which this cache belongs. Format:
+            ``projects/{project}/buckets/{bucket}``
+        rapid_cache (google.cloud.storage_control_v2.types.RapidCache):
+            Required. The RapidCache to create. Default values for
+            ingest_on_write, ttl and admission_policy will be applied if
+            not specified in the request.
+        request_id (str):
+            Optional. A unique identifier for this request. UUID is the
+            recommended format, but other formats are still accepted.
+            This request is only idempotent if a ``request_id`` is
+            provided.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    rapid_cache: "RapidCache" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="RapidCache",
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class UpdateRapidCacheRequest(proto.Message):
+    r"""Request message for UpdateRapidCache.
+
+    Attributes:
+        rapid_cache (google.cloud.storage_control_v2.types.RapidCache):
+            Required. The RapidCache to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. List of fields to be updated. Mutable fields of
+            RapidCache include ``ttl``, ``admission_policy`` and
+            ``ingest_on_write``.
+
+            To specify ALL fields, specify a single field with the value
+            ``*``. Note: We recommend against doing this. If a new field
+            is introduced at a later time, an older client updating with
+            the ``*`` may accidentally reset the new field's value.
+
+            Not specifying any fields is an error.
+        request_id (str):
+            Optional. A unique identifier for this request. UUID is the
+            recommended format, but other formats are still accepted.
+            This request is only idempotent if a ``request_id`` is
+            provided.
+    """
+
+    rapid_cache: "RapidCache" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="RapidCache",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetRapidCacheRequest(proto.Message):
+    r"""Request message for GetRapidCache.
+
+    Attributes:
+        name (str):
+            Required. The name field in the request should be:
+            ``projects/{project}/buckets/{bucket}/rapidCaches/{rapid_cache}``
+        request_id (str):
+            Optional. A unique identifier for this
+            request. UUID is the recommended format, but
+            other formats are still accepted.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ListRapidCachesRequest(proto.Message):
+    r"""Request message for ListRapidCaches.
+
+    Attributes:
+        parent (str):
+            Required. The bucket to which this cache
+            belongs.
+        page_size (int):
+            Maximum number of caches to return in a
+            single response. The service will use this
+            parameter or 1,000 items, whichever is smaller.
+        page_token (str):
+            A previously-returned page token representing
+            part of the larger set of results to view.
+        request_id (str):
+            Optional. A unique identifier for this
+            request. UUID is the recommended format, but
+            other formats are still accepted.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListRapidCachesResponse(proto.Message):
+    r"""Response message for ListRapidCaches.
+
+    Attributes:
+        rapid_caches (MutableSequence[google.cloud.storage_control_v2.types.RapidCache]):
+            The list of rapid caches.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    rapid_caches: MutableSequence["RapidCache"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="RapidCache",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class IntelligenceConfig(proto.Message):
     r"""The ``IntelligenceConfig`` resource associated with your
     organization, folder, or project.
@@ -1450,7 +2151,7 @@ class IntelligenceConfig(proto.Message):
         This signifies the edition used for configuring the
         ``IntelligenceConfig`` resource and can only take the following
         values: ``EDITION_CONFIG_UNSPECIFIED``, ``INHERIT``, ``DISABLED``,
-        ``STANDARD`` and ``TRIAL``.
+        ``STANDARD`` and ``EVALUATE``.
 
         Values:
             EDITION_CONFIG_UNSPECIFIED (0):
@@ -1473,6 +2174,9 @@ class IntelligenceConfig(proto.Message):
                 filters. At the end of the trial period, the
                 ``IntelligenceConfig`` resource is upgraded to ``STANDARD``
                 edition.
+            ESSENTIALS (6):
+                The ``IntelligenceConfig`` resource is of ESSENTIALS
+                edition.
         """
 
         EDITION_CONFIG_UNSPECIFIED = 0
@@ -1480,6 +2184,7 @@ class IntelligenceConfig(proto.Message):
         DISABLED = 2
         STANDARD = 3
         TRIAL = 5
+        ESSENTIALS = 6
 
     class Filter(proto.Message):
         r"""Filter over location and bucket using include or exclude
@@ -1662,12 +2367,6 @@ class UpdateOrganizationIntelligenceConfigRequest(proto.Message):
     r"""Request message to update the ``IntelligenceConfig`` resource
     associated with your organization.
 
-    **IAM Permissions**:
-
-    Requires ``storage.intelligenceConfigs.update``
-    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-    permission on the organization.
-
     Attributes:
         intelligence_config (google.cloud.storage_control_v2.types.IntelligenceConfig):
             Required. The ``IntelligenceConfig`` resource to be updated.
@@ -1699,12 +2398,6 @@ class UpdateOrganizationIntelligenceConfigRequest(proto.Message):
 class UpdateFolderIntelligenceConfigRequest(proto.Message):
     r"""Request message to update the ``IntelligenceConfig`` resource
     associated with your folder.
-
-    **IAM Permissions**:
-
-    Requires ``storage.intelligenceConfigs.update``
-    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-    permission on the folder.
 
     Attributes:
         intelligence_config (google.cloud.storage_control_v2.types.IntelligenceConfig):
@@ -1738,12 +2431,6 @@ class UpdateProjectIntelligenceConfigRequest(proto.Message):
     r"""Request message to update the ``IntelligenceConfig`` resource
     associated with your project.
 
-    **IAM Permissions**:
-
-    Requires ``storage.intelligenceConfigs.update``
-    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-    permission on the folder.
-
     Attributes:
         intelligence_config (google.cloud.storage_control_v2.types.IntelligenceConfig):
             Required. The ``IntelligenceConfig`` resource to be updated.
@@ -1776,12 +2463,6 @@ class GetOrganizationIntelligenceConfigRequest(proto.Message):
     r"""Request message to get the ``IntelligenceConfig`` resource
     associated with your organization.
 
-    **IAM Permissions**
-
-    Requires ``storage.intelligenceConfigs.get``
-    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-    permission on the organization.
-
     Attributes:
         name (str):
             Required. The name of the ``IntelligenceConfig`` resource
@@ -1801,12 +2482,6 @@ class GetFolderIntelligenceConfigRequest(proto.Message):
     r"""Request message to get the ``IntelligenceConfig`` resource
     associated with your folder.
 
-    **IAM Permissions**
-
-    Requires ``storage.intelligenceConfigs.get``
-    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-    permission on the folder.
-
     Attributes:
         name (str):
             Required. The name of the ``IntelligenceConfig`` resource
@@ -1825,12 +2500,6 @@ class GetProjectIntelligenceConfigRequest(proto.Message):
     r"""Request message to get the ``IntelligenceConfig`` resource
     associated with your project.
 
-    **IAM Permissions**:
-
-    Requires ``storage.intelligenceConfigs.get``
-    `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-    permission on the project.
-
     Attributes:
         name (str):
             Required. The name of the ``IntelligenceConfig`` resource
@@ -1843,6 +2512,1185 @@ class GetProjectIntelligenceConfigRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class IntelligenceFinding(proto.Message):
+    r"""The ``IntelligenceFinding`` resource that represents a security,
+    performance, or cost-related finding about a project or bucket.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Identifier. The resource name of ``IntelligenceFinding``.
+            Format:
+            ``projects/{project}/locations/{location}/intelligenceFindings/{intelligence_finding}``
+        description (str):
+            Output only. A short description about the
+            finding.
+        type_ (google.cloud.storage_control_v2.types.FindingType):
+            Output only. Type of this finding.
+        category (google.cloud.storage_control_v2.types.FindingCategory):
+            Output only. Category of this finding.
+        severity (google.cloud.storage_control_v2.types.FindingSeverity):
+            Output only. Severity of the finding.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which the finding
+            was created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time at which the finding
+            was last updated.
+        target_resource (str):
+            Output only. The fully qualified resource name of the
+            resource that this ``IntelligenceFinding`` applies to. eg:
+
+            - ``storage.googleapis.com/projects/_/buckets/b1``
+            - ``cloudresourecemanager.googleapis.com/projects/p1``
+        associated_resources (MutableSequence[str]):
+            Output only. Contains GCP resource names that are relevant
+            to this ``IntelligenceFinding``. The ``target_resource`` is
+            also added as part of ``associated_resources``. eg:
+
+            - ``storage.googleapis.com/projects/_/buckets/b1``
+            - ``cloudresourecemanager.googleapis.com/projects/p1``
+        observation_period (google.type.interval_pb2.Interval):
+            Output only. The time interval during which the underlying
+            data was used to generate this ``IntelligenceFinding``.
+        coldline_and_archival_storage_operations_spike (google.cloud.storage_control_v2.types.IntelligenceFinding.ColdlineAndArchivalStorageOperationsSpike):
+            Output only. ``IntelligenceFinding`` about a spike in Class
+            A/B operations on Coldline or Archive Cloud Storage objects.
+
+            This field is a member of `oneof`_ ``intelligence_finding_details``.
+        throttled_requests_spike (google.cloud.storage_control_v2.types.IntelligenceFinding.ThrottledRequestSpike):
+            Output only. ``IntelligenceFinding`` about a spike in
+            throttled requests (429 errors) within a project.
+
+            This field is a member of `oneof`_ ``intelligence_finding_details``.
+        cross_region_egress_spike (google.cloud.storage_control_v2.types.IntelligenceFinding.CrossRegionEgressSpike):
+            Output only. ``IntelligenceFinding`` about a spike in
+            cross-region egress.
+
+            This field is a member of `oneof`_ ``intelligence_finding_details``.
+        storage_growth_above_trend (google.cloud.storage_control_v2.types.IntelligenceFinding.StorageGrowthAboveTrend):
+            Output only. ``IntelligenceFinding`` about growth in storage
+            above the expected trend.
+
+            This field is a member of `oneof`_ ``intelligence_finding_details``.
+    """
+
+    class ColdlineAndArchivalStorageOperationsSpike(proto.Message):
+        r"""Represents a finding about a spike in Class A/B operations on
+        Coldline or Archive Cloud Storage objects. This corresponds to the
+        ``COLD_AND_ARCHIVAL_STORAGE_OPERATIONS_SPIKE`` finding type.
+
+        Attributes:
+            percentage_increase (float):
+                Output only. The percentage increase in
+                operations across the project.
+            total_operations_count (int):
+                Output only. The total count of operations
+                across the project.
+            top_buckets (MutableSequence[google.cloud.storage_control_v2.types.IntelligenceFinding.ColdlineAndArchivalStorageOperationsSpike.BucketContribution]):
+                Output only. A list of the top buckets
+                driving the increase in operations.
+        """
+
+        class BucketContribution(proto.Message):
+            r"""Represents the operation spike details for a bucket.
+
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                bucket (str):
+                    Output only. The name of the bucket.
+                percentage_increase (float):
+                    Output only. The percentage increase in
+                    operations for the bucket.
+                total_operations_count (int):
+                    Output only. The total count of operations
+                    for the bucket.
+                contribution (google.cloud.storage_control_v2.types.IntelligenceFinding.ColdlineAndArchivalStorageOperationsSpike.BucketContribution.Contribution):
+                    Output only. The details about the
+                    contribution of the bucket.
+
+                    This field is a member of `oneof`_ ``details``.
+                error (google.rpc.status_pb2.Status):
+                    Output only. The error related to accessing
+                    the details about the contribution of the
+                    bucket.
+
+                    This field is a member of `oneof`_ ``details``.
+            """
+
+            class Contribution(proto.Message):
+                r"""Represents the contribution of the bucket towards the
+                ``IntelligenceFinding``.
+
+                Attributes:
+                    top_prefixes (MutableSequence[google.cloud.storage_control_v2.types.IntelligenceFinding.ColdlineAndArchivalStorageOperationsSpike.BucketContribution.Contribution.PrefixContribution]):
+                        Output only. A list of the top object
+                        prefixes driving the increase in operations.
+                """
+
+                class PrefixContribution(proto.Message):
+                    r"""Represents the operation spike details for an object prefix.
+
+                    Attributes:
+                        prefix (str):
+                            Output only. The object prefix. Format: ``a/b/c``, 'a/b/d',
+                            etc.
+                        percentage_increase (float):
+                            Output only. The percentage increase in
+                            operations for the object prefix.
+                        total_operations_count (int):
+                            Output only. The total count of operations
+                            for the object prefix.
+                    """
+
+                    prefix: str = proto.Field(
+                        proto.STRING,
+                        number=1,
+                    )
+                    percentage_increase: float = proto.Field(
+                        proto.DOUBLE,
+                        number=2,
+                    )
+                    total_operations_count: int = proto.Field(
+                        proto.INT64,
+                        number=3,
+                    )
+
+                top_prefixes: MutableSequence[
+                    "IntelligenceFinding.ColdlineAndArchivalStorageOperationsSpike.BucketContribution.Contribution.PrefixContribution"
+                ] = proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="IntelligenceFinding.ColdlineAndArchivalStorageOperationsSpike.BucketContribution.Contribution.PrefixContribution",
+                )
+
+            bucket: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            percentage_increase: float = proto.Field(
+                proto.DOUBLE,
+                number=2,
+            )
+            total_operations_count: int = proto.Field(
+                proto.INT64,
+                number=3,
+            )
+            contribution: "IntelligenceFinding.ColdlineAndArchivalStorageOperationsSpike.BucketContribution.Contribution" = proto.Field(
+                proto.MESSAGE,
+                number=4,
+                oneof="details",
+                message="IntelligenceFinding.ColdlineAndArchivalStorageOperationsSpike.BucketContribution.Contribution",
+            )
+            error: status_pb2.Status = proto.Field(
+                proto.MESSAGE,
+                number=5,
+                oneof="details",
+                message=status_pb2.Status,
+            )
+
+        percentage_increase: float = proto.Field(
+            proto.DOUBLE,
+            number=1,
+        )
+        total_operations_count: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+        top_buckets: MutableSequence[
+            "IntelligenceFinding.ColdlineAndArchivalStorageOperationsSpike.BucketContribution"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="IntelligenceFinding.ColdlineAndArchivalStorageOperationsSpike.BucketContribution",
+        )
+
+    class CrossRegionEgressSpike(proto.Message):
+        r"""Represents a finding about a spike in cross-region egress from Cloud
+        Storage. This corresponds to the ``CROSS_REGION_EGRESS_SPIKE``
+        finding type.
+
+        Attributes:
+            total_egress_bytes (int):
+                Output only. The total cross-region egress
+                volume in bytes across the project.
+            percentage_increase (float):
+                Output only. The percentage increase in
+                cross-region egress across the project.
+            top_buckets (MutableSequence[google.cloud.storage_control_v2.types.IntelligenceFinding.CrossRegionEgressSpike.BucketContribution]):
+                Output only. A list of top buckets driving
+                the increase in cross-region egress.
+        """
+
+        class BucketContribution(proto.Message):
+            r"""Represents the cross-region egress spike details for a
+            bucket.
+
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                bucket (str):
+                    Output only. The name of the bucket.
+                total_egress_bytes (int):
+                    Output only. The total cross-region egress
+                    volume in bytes for the bucket.
+                percentage_increase (float):
+                    Output only. The percentage increase in
+                    cross-region egress for the bucket.
+                contribution (google.cloud.storage_control_v2.types.IntelligenceFinding.CrossRegionEgressSpike.BucketContribution.Contribution):
+                    Output only. The details about the
+                    contribution of the bucket.
+
+                    This field is a member of `oneof`_ ``details``.
+                error (google.rpc.status_pb2.Status):
+                    Output only. The error related to accessing
+                    the details about the contribution of the
+                    bucket.
+
+                    This field is a member of `oneof`_ ``details``.
+            """
+
+            class Contribution(proto.Message):
+                r"""Represents the contribution of the bucket towards the
+                ``IntelligenceFinding``.
+
+                Attributes:
+                    top_prefixes (MutableSequence[google.cloud.storage_control_v2.types.IntelligenceFinding.CrossRegionEgressSpike.BucketContribution.Contribution.PrefixContribution]):
+                        Output only. A list of the top object
+                        prefixes driving the increase in cross-region
+                        egress.
+                """
+
+                class PrefixContribution(proto.Message):
+                    r"""Represents the cross-region egress spike details for an
+                    object prefix.
+
+                    Attributes:
+                        prefix (str):
+                            Output only. The object prefix. Format: ``a/b/c``, 'a/b/d',
+                            etc.
+                        total_egress_bytes (int):
+                            Output only. The total cross-region egress
+                            volume in bytes from the object prefix.
+                        percentage_increase (float):
+                            Output only. The percentage increase in
+                            cross-region egress for the object prefix.
+                    """
+
+                    prefix: str = proto.Field(
+                        proto.STRING,
+                        number=1,
+                    )
+                    total_egress_bytes: int = proto.Field(
+                        proto.INT64,
+                        number=2,
+                    )
+                    percentage_increase: float = proto.Field(
+                        proto.DOUBLE,
+                        number=3,
+                    )
+
+                top_prefixes: MutableSequence[
+                    "IntelligenceFinding.CrossRegionEgressSpike.BucketContribution.Contribution.PrefixContribution"
+                ] = proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="IntelligenceFinding.CrossRegionEgressSpike.BucketContribution.Contribution.PrefixContribution",
+                )
+
+            bucket: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            total_egress_bytes: int = proto.Field(
+                proto.INT64,
+                number=2,
+            )
+            percentage_increase: float = proto.Field(
+                proto.DOUBLE,
+                number=3,
+            )
+            contribution: "IntelligenceFinding.CrossRegionEgressSpike.BucketContribution.Contribution" = proto.Field(
+                proto.MESSAGE,
+                number=4,
+                oneof="details",
+                message="IntelligenceFinding.CrossRegionEgressSpike.BucketContribution.Contribution",
+            )
+            error: status_pb2.Status = proto.Field(
+                proto.MESSAGE,
+                number=5,
+                oneof="details",
+                message=status_pb2.Status,
+            )
+
+        total_egress_bytes: int = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        percentage_increase: float = proto.Field(
+            proto.DOUBLE,
+            number=2,
+        )
+        top_buckets: MutableSequence[
+            "IntelligenceFinding.CrossRegionEgressSpike.BucketContribution"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="IntelligenceFinding.CrossRegionEgressSpike.BucketContribution",
+        )
+
+    class ThrottledRequestSpike(proto.Message):
+        r"""Represents a finding about a spike in throttled requests (429
+        errors) within a project. This corresponds to the
+        ``THROTTLED_REQUEST_SPIKE`` finding type.
+
+        Attributes:
+            throttled_requests (int):
+                Output only. The count of throttled requests
+                across the project.
+            percentage_increase (float):
+                Output only. The percentage increase in
+                throttled requests across the project.
+            top_buckets (MutableSequence[google.cloud.storage_control_v2.types.IntelligenceFinding.ThrottledRequestSpike.BucketContribution]):
+                Output only. A list of top buckets driving
+                the increase in throttled requests.
+        """
+
+        class BucketContribution(proto.Message):
+            r"""Represents the throttled requests details for a bucket.
+
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                bucket (str):
+                    Output only. The name of the bucket.
+                throttled_requests (int):
+                    Output only. The count of throttled requests
+                    for the bucket.
+                percentage_increase (float):
+                    Output only. The percentage increase in
+                    throttled requests for the bucket.
+                contribution (google.cloud.storage_control_v2.types.IntelligenceFinding.ThrottledRequestSpike.BucketContribution.Contribution):
+                    Output only. The details about the
+                    contribution of the bucket.
+
+                    This field is a member of `oneof`_ ``details``.
+                error (google.rpc.status_pb2.Status):
+                    Output only. The error related to accessing
+                    the details about the contribution of the
+                    bucket.
+
+                    This field is a member of `oneof`_ ``details``.
+            """
+
+            class Contribution(proto.Message):
+                r"""Represents the contribution of the bucket towards the
+                ``IntelligenceFinding``.
+
+                Attributes:
+                    top_prefixes (MutableSequence[google.cloud.storage_control_v2.types.IntelligenceFinding.ThrottledRequestSpike.BucketContribution.Contribution.PrefixContribution]):
+                        Output only. A list of top object prefixes
+                        driving the increase in throttled requests.
+                """
+
+                class PrefixContribution(proto.Message):
+                    r"""Represents throttled requests details for an object prefix.
+
+                    Attributes:
+                        prefix (str):
+                            Output only. The object prefix. Format: ``a/b/c``, 'a/b/d',
+                            etc.
+                        throttled_requests (int):
+                            Output only. The count of throttled requests
+                            for the object prefix.
+                        percentage_increase (float):
+                            Output only. The percentage increase in
+                            throttled requests for the object prefix.
+                    """
+
+                    prefix: str = proto.Field(
+                        proto.STRING,
+                        number=1,
+                    )
+                    throttled_requests: int = proto.Field(
+                        proto.INT64,
+                        number=2,
+                    )
+                    percentage_increase: float = proto.Field(
+                        proto.DOUBLE,
+                        number=3,
+                    )
+
+                top_prefixes: MutableSequence[
+                    "IntelligenceFinding.ThrottledRequestSpike.BucketContribution.Contribution.PrefixContribution"
+                ] = proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="IntelligenceFinding.ThrottledRequestSpike.BucketContribution.Contribution.PrefixContribution",
+                )
+
+            bucket: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            throttled_requests: int = proto.Field(
+                proto.INT64,
+                number=2,
+            )
+            percentage_increase: float = proto.Field(
+                proto.DOUBLE,
+                number=3,
+            )
+            contribution: "IntelligenceFinding.ThrottledRequestSpike.BucketContribution.Contribution" = proto.Field(
+                proto.MESSAGE,
+                number=4,
+                oneof="details",
+                message="IntelligenceFinding.ThrottledRequestSpike.BucketContribution.Contribution",
+            )
+            error: status_pb2.Status = proto.Field(
+                proto.MESSAGE,
+                number=5,
+                oneof="details",
+                message=status_pb2.Status,
+            )
+
+        throttled_requests: int = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        percentage_increase: float = proto.Field(
+            proto.DOUBLE,
+            number=2,
+        )
+        top_buckets: MutableSequence[
+            "IntelligenceFinding.ThrottledRequestSpike.BucketContribution"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="IntelligenceFinding.ThrottledRequestSpike.BucketContribution",
+        )
+
+    class StorageGrowthAboveTrend(proto.Message):
+        r"""Represents a finding about a storage growth above the expected
+        trend. This corresponds to the ``STORAGE_GROWTH_ABOVE_TREND``
+        finding type.
+
+        Attributes:
+            total_storage_growth_bytes (int):
+                Output only. The total storage growth in
+                bytes.
+            percentage_increase (float):
+                Output only. The percentage increase in
+                storage growth.
+            top_buckets (MutableSequence[google.cloud.storage_control_v2.types.IntelligenceFinding.StorageGrowthAboveTrend.BucketContribution]):
+                Output only. A list of top buckets driving
+                the increase in storage growth.
+        """
+
+        class BucketContribution(proto.Message):
+            r"""Represents the storage growth details for a bucket.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                bucket (str):
+                    Output only. The name of the bucket.
+                total_storage_growth_bytes (int):
+                    Output only. The total storage growth in
+                    bytes for the bucket.
+                percentage_increase (float):
+                    Output only. The percentage increase in
+                    storage growth for the bucket.
+                error (google.rpc.status_pb2.Status):
+                    Output only. The error related to accessing
+                    the details about the contribution of the
+                    bucket.
+
+                    This field is a member of `oneof`_ ``details``.
+            """
+
+            bucket: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            total_storage_growth_bytes: int = proto.Field(
+                proto.INT64,
+                number=2,
+            )
+            percentage_increase: float = proto.Field(
+                proto.DOUBLE,
+                number=3,
+            )
+            error: status_pb2.Status = proto.Field(
+                proto.MESSAGE,
+                number=5,
+                oneof="details",
+                message=status_pb2.Status,
+            )
+
+        total_storage_growth_bytes: int = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        percentage_increase: float = proto.Field(
+            proto.DOUBLE,
+            number=2,
+        )
+        top_buckets: MutableSequence[
+            "IntelligenceFinding.StorageGrowthAboveTrend.BucketContribution"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="IntelligenceFinding.StorageGrowthAboveTrend.BucketContribution",
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    type_: "FindingType" = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="FindingType",
+    )
+    category: "FindingCategory" = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum="FindingCategory",
+    )
+    severity: "FindingSeverity" = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum="FindingSeverity",
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    target_resource: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    associated_resources: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=9,
+    )
+    observation_period: interval_pb2.Interval = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=interval_pb2.Interval,
+    )
+    coldline_and_archival_storage_operations_spike: ColdlineAndArchivalStorageOperationsSpike = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="intelligence_finding_details",
+        message=ColdlineAndArchivalStorageOperationsSpike,
+    )
+    throttled_requests_spike: ThrottledRequestSpike = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="intelligence_finding_details",
+        message=ThrottledRequestSpike,
+    )
+    cross_region_egress_spike: CrossRegionEgressSpike = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="intelligence_finding_details",
+        message=CrossRegionEgressSpike,
+    )
+    storage_growth_above_trend: StorageGrowthAboveTrend = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        oneof="intelligence_finding_details",
+        message=StorageGrowthAboveTrend,
+    )
+
+
+class IntelligenceFindingRevision(proto.Message):
+    r"""An ``IntelligenceFindingRevision`` represents a specific revision of
+    an ``IntelligenceFinding`` resource.
+
+    Attributes:
+        name (str):
+            Output only. The resource name of
+            ``IntelligenceFindingRevision``. Format:
+            ``projects/{project}/locations/{location}/intelligenceFindings/{intelligence_finding}/revisions/{revision}``
+        snapshot (google.cloud.storage_control_v2.types.IntelligenceFinding):
+            Output only. The snapshot of the ``IntelligenceFinding`` at
+            the time the revision was created. This field contains the
+            full finding details as they existed for the revision.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp when the revision
+            was created.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    snapshot: "IntelligenceFinding" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="IntelligenceFinding",
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class GetIntelligenceFindingRequest(proto.Message):
+    r"""Request message to get the ``IntelligenceFinding`` resource
+    associated with a project.
+
+    Attributes:
+        name (str):
+            Required. The name of the ``IntelligenceFinding`` resource.
+
+            Format:
+            ``projects/{project}/locations/{location}/intelligenceFindings/{intelligence_finding}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListIntelligenceFindingsRequest(proto.Message):
+    r"""Request message to list ``IntelligenceFinding`` resources associated
+    with a project.
+
+    Attributes:
+        parent (str):
+            Required. The parent of the ``IntelligenceFinding``
+            resource.
+
+            Format: ``projects/{project}/locations/{location}``
+        filter (str):
+            Optional. The filter expression to be applied. Supports
+            filtering by ``type`` and ``associated_resources``.
+        page_size (int):
+            Optional. The maximum number of ``IntelligenceFinding``
+            resources to return.
+
+            The maximum value is ``100``; values above ``100`` will be
+            coerced to ``100``. The default value is ``100``.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListIntelligenceFindings`` call. Provide this to retrieve
+            the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListIntelligenceFindings`` must match the call that
+            provided the page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListIntelligenceFindingsResponse(proto.Message):
+    r"""Response message to list the ``IntelligenceFinding`` resources
+    associated with a project.
+
+    Attributes:
+        intelligence_findings (MutableSequence[google.cloud.storage_control_v2.types.IntelligenceFinding]):
+            The ``IntelligenceFinding`` resources from the specified
+            project.
+        next_page_token (str):
+            A token to retrieve the next page of results. Pass this
+            value in the ``page_token`` field in the subsequent call.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    intelligence_findings: MutableSequence["IntelligenceFinding"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="IntelligenceFinding",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class SummarizeIntelligenceFindingsRequest(proto.Message):
+    r"""Request message to summarize the intelligence findings for
+    the specified scope (organization, folder or project).
+
+    Attributes:
+        parent (str):
+            Required. The scope to summarize the findings for. Format:
+
+            - ``organizations/{organization}/locations/{location}``
+            - ``folders/{folder}/locations/{location}``
+            - ``projects/{project}/locations/{location}``
+        resource_scope (google.cloud.storage_control_v2.types.SummarizeIntelligenceFindingsRequest.ResourceScope):
+            Optional. Determines the granularity of the findings when
+            the ``parent`` is an organization or folder.
+
+            - ``PARENT`` (or not set): A single summary is returned for
+              each insight type, aggregated across the entire ``parent``
+              scope.
+            - ``PROJECT``: A separate summary is returned for each
+              insight type for every project within the ``parent``
+              scope.
+
+            The only supported values are ``PARENT`` and ``PROJECT``. If
+            no value is specified, the API behaviour defaults to the
+            ``PARENT``.
+        filter (str):
+            Optional. The filter expression, following
+            AIP-160. Supports filtering by FindingType.
+        page_size (int):
+            Optional. The maximum number of findings to return.
+
+            The maximum value is ``100``; values above ``100`` will be
+            coerced to ``100``. The default value is ``100``.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``SummarizeIntelligenceFindings`` call. Provide this to
+            retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``SummarizeIntelligenceFindings`` must match the call that
+            provided the page token.
+    """
+
+    class ResourceScope(proto.Enum):
+        r"""The list of resource scopes.
+
+        Values:
+            RESOURCE_SCOPE_UNSPECIFIED (0):
+                The default behavior. Falls back to PARENT
+                behaviour
+            PARENT (1):
+                Summaries are aggregated at the level of the ``parent``
+                resource.
+            PROJECT (2):
+                Summaries are broken down by each project within the
+                ``parent`` scope.
+        """
+
+        RESOURCE_SCOPE_UNSPECIFIED = 0
+        PARENT = 1
+        PROJECT = 2
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    resource_scope: ResourceScope = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=ResourceScope,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class SummarizeIntelligenceFindingsResponse(proto.Message):
+    r"""Response message to summarize the intelligence findings for a
+    specified scope (organization, folder or project).
+
+    Attributes:
+        finding_summaries (MutableSequence[google.cloud.storage_control_v2.types.FindingSummary]):
+            The list of ``FindingSummary`` summaries.
+        next_page_token (str):
+            A token to retrieve the next page of results. Pass this
+            value in the ``page_token`` field in the subsequent call to
+            ``SummarizeIntelligenceFindings`` to retrieve the next page
+            of results.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    finding_summaries: MutableSequence["FindingSummary"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="FindingSummary",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class GetIntelligenceFindingRevisionRequest(proto.Message):
+    r"""Request message to get the ``IntelligenceFindingRevision`` resource
+    associated with a project.
+
+    Attributes:
+        name (str):
+            Required. The name of the ``IntelligenceFindingRevision``
+            resource.
+
+            Format:
+            -------
+
+            ``projects/{project}/locations/{location}/intelligenceFindings/{intelligence_finding}/revisions/{revision}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListIntelligenceFindingRevisionsRequest(proto.Message):
+    r"""Request message to list ``IntelligenceFindingRevision`` resources
+    associated with a project.
+
+    Attributes:
+        parent (str):
+            Required. The parent of the ``IntelligenceFindingRevision``
+            resource.
+
+            Format:
+            -------
+
+            ``projects/{project}/locations/{location}/intelligenceFindings/{intelligence_finding}``
+        page_size (int):
+            Optional. The maximum number of
+            ``IntelligenceFindingRevision`` resources to return.
+
+            The maximum value is ``100``; values above ``100`` will be
+            coerced to ``100``. The default value is ``100``.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListIntelligenceFindingRevisions`` call. Provide this to
+            retrieve the subsequent page.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListIntelligenceFindingRevisionsResponse(proto.Message):
+    r"""Response message to list ``IntelligenceFindingRevision`` resources
+    associated with a project.
+
+    Attributes:
+        intelligence_finding_revisions (MutableSequence[google.cloud.storage_control_v2.types.IntelligenceFindingRevision]):
+            The ``IntelligenceFindingRevision`` resources from the
+            specified project.
+        next_page_token (str):
+            A token that can be sent as ``page_token`` to retrieve the
+            next page.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    intelligence_finding_revisions: MutableSequence["IntelligenceFindingRevision"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="IntelligenceFindingRevision",
+        )
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class FindingSummary(proto.Message):
+    r"""A summary of findings generated for an organization, a
+    folder, or a project.
+
+    Attributes:
+        type_ (google.cloud.storage_control_v2.types.FindingType):
+            Output only. The type of the finding.
+        category (google.cloud.storage_control_v2.types.FindingCategory):
+            Output only. The category of finding.
+        target_resource (str):
+            Output only. The fully qualified Cloud resource name for
+            which this summary was generated. eg:
+            ``//cloudresourcemanager.googleapis.com/projects/p1``
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The creation time of the
+            earliest finding that this summary is based on.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time of the most recent
+            update among all the findings that this summary
+            is based on.
+        severity (google.cloud.storage_control_v2.types.FindingSeverity):
+            Severity of the finding.
+        summary_details (MutableSequence[google.cloud.storage_control_v2.types.FindingSummary.SummaryDetails]):
+            Output only. List of ``SummaryDetails``.
+    """
+
+    class SummaryDetails(proto.Message):
+        r"""Details about the ``FindingSummary`` resource.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            count (int):
+                The count of impacted resources.
+
+                This field is a member of `oneof`_ ``magnitude``.
+            percentage (float):
+                The percentage of impacted resources.
+
+                This field is a member of `oneof`_ ``magnitude``.
+            resource_type (google.cloud.storage_control_v2.types.FindingSummary.SummaryDetails.ResourceType):
+                Output only. The type of Cloud resource this
+                summary detail applies to.
+            description (str):
+                Output only. A short description about the
+                FindingSummary
+        """
+
+        class ResourceType(proto.Enum):
+            r"""The list of resource types.
+
+            Values:
+                RESOURCE_TYPE_UNSPECIFIED (0):
+                    Resource type is unspecified.
+                PROJECT (1):
+                    Resource type is project.
+                BUCKET (2):
+                    Resource type is bucket.
+            """
+
+            RESOURCE_TYPE_UNSPECIFIED = 0
+            PROJECT = 1
+            BUCKET = 2
+
+        count: int = proto.Field(
+            proto.INT64,
+            number=1,
+            oneof="magnitude",
+        )
+        percentage: float = proto.Field(
+            proto.FLOAT,
+            number=2,
+            oneof="magnitude",
+        )
+        resource_type: "FindingSummary.SummaryDetails.ResourceType" = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum="FindingSummary.SummaryDetails.ResourceType",
+        )
+        description: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+
+    type_: "FindingType" = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="FindingType",
+    )
+    category: "FindingCategory" = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="FindingCategory",
+    )
+    target_resource: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    severity: "FindingSeverity" = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum="FindingSeverity",
+    )
+    summary_details: MutableSequence[SummaryDetails] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message=SummaryDetails,
+    )
+
+
+class ObjectFullContext(proto.Message):
+    r"""A full representation of an object context.
+
+    Attributes:
+        type_ (google.cloud.storage_control_v2.types.ObjectFullContext.Type):
+            The type of the object context.
+        key (str):
+            The key of the object context, which is
+            unique among contexts of an object.
+        value (str):
+            The value of the object context.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which the object context was
+            created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which the object context was
+            updated.
+        extended_data (google.protobuf.any_pb2.Any):
+            The extended data of the object context.
+    """
+
+    class Type(proto.Enum):
+        r"""Types of object contexts.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                The type is not specified.
+            CUSTOM (1):
+                Custom context.
+            GOOGLE (2):
+                Google context.
+        """
+
+        TYPE_UNSPECIFIED = 0
+        CUSTOM = 1
+        GOOGLE = 2
+
+    type_: Type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Type,
+    )
+    key: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    value: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    extended_data: any_pb2.Any = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=any_pb2.Any,
+    )
+
+
+class ViewObjectFullContextRequest(proto.Message):
+    r"""Request message for ViewObjectFullContext.
+
+    Attributes:
+        generation (int):
+            Optional. If present, selects a specific
+            revision of this object (as opposed to the
+            latest version, the default).
+        context_key (str):
+            Required. The key of the object context to
+            retrieve.
+        name (str):
+            Required. The name of the object. Format:
+            ``projects/{project}/buckets/{bucket}/objects/{object}``
+    """
+
+    generation: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    context_key: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 

@@ -47,7 +47,7 @@ DIRECTED_READ_OPTIONS = {
 
 @pytest.fixture(scope="module")
 def multiregion_instance(
-    spanner_client, instance_operation_timeout, not_postgres, not_experimental_host
+    spanner_client, instance_operation_timeout, not_postgres, not_spanner_omni
 ):
     multi_region_instance_id = _helpers.unique_id("multi-region")
     multi_region_config = "nam3"
@@ -98,7 +98,7 @@ def test_database_binding_of_fixed_size_pool(
     databases_to_delete,
     not_postgres,
     proto_descriptor_file,
-    not_experimental_host,
+    not_spanner_omni,
 ):
     temp_db_id = _helpers.unique_id("fixed_size_db", separator="_")
     temp_db = shared_instance.database(temp_db_id)
@@ -132,7 +132,7 @@ def test_database_binding_of_pinging_pool(
     databases_to_delete,
     not_postgres,
     proto_descriptor_file,
-    not_experimental_host,
+    not_spanner_omni,
 ):
     temp_db_id = _helpers.unique_id("binding_db", separator="_")
     temp_db = shared_instance.database(temp_db_id)
@@ -220,7 +220,7 @@ def test_create_database_pitr_success(
 def test_create_database_with_default_leader_success(
     not_emulator,  # Default leader setting not supported by the emulator
     not_postgres,
-    not_experimental_host,
+    not_spanner_omni,
     multiregion_instance,
     databases_to_delete,
 ):
@@ -256,7 +256,7 @@ def test_create_database_with_default_leader_success(
 
 def test_iam_policy(
     not_emulator,
-    not_experimental_host,
+    not_spanner_omni,
     shared_instance,
     databases_to_delete,
 ):
@@ -418,7 +418,7 @@ def test_update_ddl_w_pitr_success(
 def test_update_ddl_w_default_leader_success(
     not_emulator,
     not_postgres,
-    not_experimental_host,
+    not_spanner_omni,
     multiregion_instance,
     databases_to_delete,
     proto_descriptor_file,
@@ -452,7 +452,7 @@ def test_update_ddl_w_default_leader_success(
 
 def test_create_role_grant_access_success(
     not_emulator,
-    not_experimental_host,
+    not_spanner_omni,
     shared_instance,
     databases_to_delete,
     database_dialect,
@@ -519,7 +519,7 @@ def test_create_role_grant_access_success(
 
 def test_list_database_role_success(
     not_emulator,
-    not_experimental_host,
+    not_spanner_omni,
     shared_instance,
     databases_to_delete,
     database_dialect,
@@ -764,7 +764,7 @@ def test_information_schema_referential_constraints_fkadc(
 
 def test_update_database_success(
     not_emulator,
-    not_experimental_host,
+    not_spanner_omni,
     shared_database,
     shared_instance,
     database_operation_timeout,

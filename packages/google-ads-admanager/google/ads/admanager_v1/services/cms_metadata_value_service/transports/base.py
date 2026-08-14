@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,15 +35,16 @@ from google.ads.admanager_v1.types import (
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class CmsMetadataValueServiceTransport(abc.ABC):
     """Abstract transport class for CmsMetadataValueService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/admanager",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/admanager",
+        "https://www.googleapis.com/auth/admanager.readonly",
+    )
 
     DEFAULT_HOST: str = "admanager.googleapis.com"
 
@@ -156,6 +157,21 @@ class CmsMetadataValueServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.batch_activate_cms_metadata_values: gapic_v1.method.wrap_method(
+                self.batch_activate_cms_metadata_values,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_deactivate_cms_metadata_values: gapic_v1.method.wrap_method(
+                self.batch_deactivate_cms_metadata_values,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: gapic_v1.method.wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_operation: gapic_v1.method.wrap_method(
                 self.get_operation,
                 default_timeout=None,
@@ -197,11 +213,48 @@ class CmsMetadataValueServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def batch_activate_cms_metadata_values(
+        self,
+    ) -> Callable[
+        [cms_metadata_value_service.BatchActivateCmsMetadataValuesRequest],
+        Union[
+            cms_metadata_value_service.BatchActivateCmsMetadataValuesResponse,
+            Awaitable[
+                cms_metadata_value_service.BatchActivateCmsMetadataValuesResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_deactivate_cms_metadata_values(
+        self,
+    ) -> Callable[
+        [cms_metadata_value_service.BatchDeactivateCmsMetadataValuesRequest],
+        Union[
+            cms_metadata_value_service.BatchDeactivateCmsMetadataValuesResponse,
+            Awaitable[
+                cms_metadata_value_service.BatchDeactivateCmsMetadataValuesResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_operation(
         self,
     ) -> Callable[
         [operations_pb2.GetOperationRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.CancelOperationRequest],
+        None,
     ]:
         raise NotImplementedError()
 

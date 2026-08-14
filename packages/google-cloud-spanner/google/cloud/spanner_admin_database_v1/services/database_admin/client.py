@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ import json
 import logging as std_logging
 import os
 import re
-import uuid
 import warnings
 from collections import OrderedDict
 from http import HTTPStatus
@@ -810,11 +809,9 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = DatabaseAdminClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            DatabaseAdminClient._read_environment_variables()
+        )
         self._client_cert_source = DatabaseAdminClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -4756,8 +4753,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("DatabaseAdminClient",)

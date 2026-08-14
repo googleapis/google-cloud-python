@@ -11,15 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-import pytest
-
 import quickstart
-
-
-@pytest.fixture(scope="module")
-def sample_name():
-    return "quickstart"
 
 
 def test_quickstart(capsys, instance_id, sample_database):

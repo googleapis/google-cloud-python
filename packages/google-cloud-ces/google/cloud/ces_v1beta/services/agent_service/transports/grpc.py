@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1630,6 +1630,33 @@ class AgentServiceGrpcTransport(AgentServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["restore_app_version"]
+
+    @property
+    def generate_app_resource(
+        self,
+    ) -> Callable[[agent_service.GenerateAppResourceRequest], operations_pb2.Operation]:
+        r"""Return a callable for the generate app resource method over gRPC.
+
+        Generates specific resources (e.g. agent) in the app
+        using LLM assistant.
+
+        Returns:
+            Callable[[~.GenerateAppResourceRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "generate_app_resource" not in self._stubs:
+            self._stubs["generate_app_resource"] = self._logged_channel.unary_unary(
+                "/google.cloud.ces.v1beta.AgentService/GenerateAppResource",
+                request_serializer=agent_service.GenerateAppResourceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["generate_app_resource"]
 
     @property
     def list_changelogs(

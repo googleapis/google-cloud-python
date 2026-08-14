@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+import os
 import time
 
 import pytest
@@ -24,6 +25,10 @@ from google.cloud.spanner_admin_database_v1.types.backup import (
 )
 
 from . import _helpers
+
+# Disable builtin metrics for system tests by default to avoid 401 errors
+# from the background thread exporting to Cloud Monitoring without permissions.
+os.environ["SPANNER_DISABLE_BUILTIN_METRICS"] = "true"
 
 
 @pytest.fixture(scope="function")
@@ -51,9 +56,9 @@ def not_emulator():
 
 
 @pytest.fixture(scope="module")
-def not_experimental_host():
-    if _helpers.USE_EXPERIMENTAL_HOST:
-        pytest.skip(f"{_helpers.USE_EXPERIMENTAL_HOST_ENVVAR} set in environment.")
+def not_spanner_omni():
+    if _helpers.USE_SPANNER_OMNI:
+        pytest.skip(f"{_helpers.USE_SPANNER_OMNI_ENVVAR} set in environment.")
 
 
 @pytest.fixture(scope="session")
@@ -111,17 +116,14 @@ def spanner_client():
             project=_helpers.EMULATOR_PROJECT,
             credentials=credentials,
         )
-    elif _helpers.USE_EXPERIMENTAL_HOST:
-        from google.auth.credentials import AnonymousCredentials
-
-        credentials = AnonymousCredentials()
+    elif _helpers.USE_SPANNER_OMNI:
         return spanner_v1.Client(
             use_plain_text=_helpers.USE_PLAIN_TEXT,
             ca_certificate=_helpers.CA_CERTIFICATE,
             client_certificate=_helpers.CLIENT_CERTIFICATE,
             client_key=_helpers.CLIENT_KEY,
-            credentials=credentials,
-            experimental_host=_helpers.EXPERIMENTAL_HOST,
+            client_options={"api_endpoint": _helpers.SPANNER_OMNI},
+            instance_type="omni",
         )
     else:
         client_options = {"api_endpoint": _helpers.API_ENDPOINT}
@@ -149,8 +151,8 @@ def backup_operation_timeout():
 def shared_instance_id():
     if _helpers.CREATE_INSTANCE:
         return f"{_helpers.unique_id('google-cloud')}"
-    if _helpers.USE_EXPERIMENTAL_HOST:
-        return _helpers.EXPERIMENTAL_HOST_INSTANCE
+    if _helpers.USE_SPANNER_OMNI:
+        return _helpers.SPANNER_OMNI_INSTANCE
     return _helpers.INSTANCE_ID
 
 
@@ -158,7 +160,7 @@ def shared_instance_id():
 def instance_configs(spanner_client):
     configs = list(_helpers.retry_503(spanner_client.list_instance_configs)())
 
-    if not _helpers.USE_EMULATOR and not _helpers.USE_EXPERIMENTAL_HOST:
+    if not _helpers.USE_EMULATOR and not _helpers.USE_SPANNER_OMNI:
         # Defend against back-end returning configs for regions we aren't
         # actually allowed to use.
         configs = [config for config in configs if "-us-" in config.name]
@@ -215,6 +217,8 @@ def shared_instance(
     else:  # reuse existing instance
         instance = spanner_client.instance(shared_instance_id)
         instance.reload()
+
+    _helpers.cleanup_stale_databases(instance)
 
     yield instance
 

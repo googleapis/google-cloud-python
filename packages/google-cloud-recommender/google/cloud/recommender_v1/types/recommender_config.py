@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ class RecommenderConfig(proto.Message):
 
     Attributes:
         name (str):
-            Name of recommender config. Eg,
+            Identifier. Name of recommender config. Eg,
             projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config
         recommender_generation_config (google.cloud.recommender_v1.types.RecommenderGenerationConfig):
             RecommenderGenerationConfig which configures

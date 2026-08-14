@@ -38,10 +38,8 @@ A simplified API is also offered:
     limit the query to a range of names, such that start <= name < end.
 """
 
-from google.cloud.ndb import exceptions
-from google.cloud.ndb import model
+from google.cloud.ndb import exceptions, model
 from google.cloud.ndb import query as query_module
-
 
 __all__ = [
     "get_entity_group_version",

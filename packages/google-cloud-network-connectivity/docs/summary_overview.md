@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Network Connectivity Center API
+# Network Connectivity API
 
-Overview of the APIs available for Network Connectivity Center API.
+Overview of the APIs available for Network Connectivity API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Network Connectivity Center API.
+Network Connectivity API.
 
 [classes](https://cloud.google.com/python/docs/reference/networkconnectivity/latest/summary_class.html)
 

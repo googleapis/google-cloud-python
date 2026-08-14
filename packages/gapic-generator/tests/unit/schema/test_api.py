@@ -1740,17 +1740,17 @@ def test_file_level_resources():
     expected = collections.OrderedDict(
         (
             (
-                "nomenclature.linnaen.com/Species",
-                wrappers.CommonResource(
-                    type_name="nomenclature.linnaen.com/Species",
-                    pattern="families/{family}/genera/{genus}/species/{species}",
-                ).message_type,
-            ),
-            (
                 "nomenclature.linnaen.com/Phylum",
                 wrappers.CommonResource(
                     type_name="nomenclature.linnaen.com/Phylum",
                     pattern="kingdoms/{kingdom}/phyla/{phylum}",
+                ).message_type,
+            ),
+            (
+                "nomenclature.linnaen.com/Species",
+                wrappers.CommonResource(
+                    type_name="nomenclature.linnaen.com/Species",
+                    pattern="families/{family}/genera/{genus}/species/{species}",
                 ).message_type,
             ),
         )
@@ -1767,7 +1767,7 @@ def test_file_level_resources():
     # The service doesn't own any method that owns a message that references
     # Phylum, so the service doesn't count it among its resource messages.
     expected.pop("nomenclature.linnaen.com/Phylum")
-    expected = frozenset(expected.values())
+    expected = tuple(expected.values())
     actual = service.resource_messages
 
     assert actual == expected
@@ -1822,7 +1822,7 @@ def test_resources_referenced_but_not_typed(reference_attr="type"):
         name_resource_opts.child_type = species_resource_opts.type
 
     api_schema = api.API.build([fdp], package="nomenclature.linneaen.v1")
-    expected = {api_schema.messages["nomenclature.linneaen.v1.Species"]}
+    expected = (api_schema.messages["nomenclature.linneaen.v1.Species"],)
     actual = api_schema.services[
         "nomenclature.linneaen.v1.SpeciesService"
     ].resource_messages
@@ -3346,6 +3346,8 @@ def test_selective_gapic_api_build():
     assert "google.example.v1.GetFooResponse" in api_schema.messages
     assert "google.example.v1.DeleteFooRequest" not in api_schema.messages
     assert "google.example.v1.DeleteFooResponse" not in api_schema.messages
+    # Baz is used by DeleteFooRequest, which is omitted, but Baz itself should be kept.
+    assert "google.example.v1.common.Baz" in api_schema.messages
     assert "google.example.v1.FooService" in api_schema.services
     assert len(api_schema.enums) == 0
     assert api_schema.protos["foo.proto"].python_modules == (
@@ -3365,8 +3367,9 @@ def test_selective_gapic_api_build():
     sub = api_schema.subpackages["common"]
     assert len(sub.protos) == 1
     assert "google.example.v1.common.Bar" in sub.messages
-    assert "google.example.v1.common.Baz" not in sub.messages
-
+    # Baz is reachable from DeleteFooRequest, which is omitted, but
+    # Baz itself should be part of the generation.
+    assert "google.example.v1.common.Baz" in sub.messages
     # Establish that methods have been truncated
     assert "google.example.v1.FooService.GetFoo" in api_schema.all_methods
     assert "google.example.v1.FooService.DeleteFoo" not in api_schema.all_methods
@@ -3476,10 +3479,16 @@ def test_selective_gapic_api_build_with_lro():
     assert "google.example.v1.AsyncCreateFooResponse" in api_schema.messages
     assert "google.example.v1.AsyncCreateFooMetadata" in api_schema.messages
 
-    assert "google.example.v1.Bar" not in api_schema.messages
+    # Top-level request/response messages for omitted RPCs are still omitted.
     assert "google.example.v1.AsyncCreateBarRequest" not in api_schema.messages
+    # AsyncCreateBarResponse and AsyncCreateBarMetadata are LRO response/metadata types
+    # for an omitted RPC, so they should be omitted.
     assert "google.example.v1.AsyncCreateBarResponse" not in api_schema.messages
     assert "google.example.v1.AsyncCreateBarMetadata" not in api_schema.messages
+
+    # Bar is reachable from AsyncCreateBarMetadata, and since Bar itself is NOT
+    # a top-level request/response message of an omitted RPC, it should be KEPT.
+    assert "google.example.v1.Bar" in api_schema.messages
 
 
 def test_selective_gapic_api_build_remove_unnecessary_services():
@@ -3547,7 +3556,8 @@ def test_selective_gapic_api_build_remove_unnecessary_services():
     assert "google.example.v1.GetFooRequest" in api_schema.messages
     assert "google.example.v1.GetFooResponse" in api_schema.messages
 
-    assert "google.example.v1.Bar" not in api_schema.messages
+    # Bar is used by GetBarRequest (omitted), so Bar itself should be kept.
+    assert "google.example.v1.Bar" in api_schema.messages
     assert "google.example.v1.GetBarRequest" not in api_schema.messages
     assert "google.example.v1.GetBarResponse" not in api_schema.messages
 
@@ -3606,8 +3616,13 @@ def test_selective_gapic_api_build_remove_unnecessary_proto_files():
                     name="GetBarRequest",
                     fields=(
                         make_field_pb2(
-                            name="bar",
+                            name="bar_local",
                             number=1,
+                            type_name=".google.example.v1.Bar",
+                        ),
+                        make_field_pb2(
+                            name="bar_common",
+                            number=2,
                             type_name=".google.example.v1.bar_common.Bar",
                         ),
                     ),
@@ -3641,7 +3656,9 @@ def test_selective_gapic_api_build_remove_unnecessary_proto_files():
     assert "google.example.v1.GetFooRequest" in api_schema.messages
     assert "google.example.v1.GetFooResponse" in api_schema.messages
 
-    assert "google.example.v1.bar_common.Bar" not in api_schema.messages
+    # Bar (in bar_common) is used by GetBarRequest (in bar.proto, omitted),
+    # so Bar itself should be kept.
+    assert "google.example.v1.bar_common.Bar" in api_schema.messages
     assert "google.example.v1.GetBarRequest" not in api_schema.messages
     assert "google.example.v1.GetBarResponse" not in api_schema.messages
 
@@ -3650,8 +3667,10 @@ def test_selective_gapic_api_build_remove_unnecessary_proto_files():
 
     assert "foo.proto" in api_schema.protos
     assert "foo_common.proto" in api_schema.protos
-    assert "bar.proto" not in api_schema.protos
-    assert "bar_common.proto" not in api_schema.protos
+    # bar.proto is NOT omitted because it contains the kept Bar message
+    # (even if the RPC that uses it is omitted).
+    assert "bar.proto" in api_schema.protos
+    assert "bar_common.proto" in api_schema.protos
 
     # Check that the sub-packages that have been completely pruned are excluded from generation,
     # but the ones that have only been partially pruned will still be appropriately included.
@@ -3659,7 +3678,79 @@ def test_selective_gapic_api_build_remove_unnecessary_proto_files():
     sub = api_schema.subpackages["foo_common"]
     assert len(sub.protos) == 1
     assert "google.example.v1.foo_common.Foo" in sub.messages
-    assert "bar_common" not in api_schema.subpackages
+    assert "bar_common" in api_schema.subpackages
+    sub = api_schema.subpackages["bar_common"]
+    assert len(sub.protos) == 1
+    assert "google.example.v1.bar_common.Bar" in sub.messages
+
+
+def test_selective_gapic_api_build_keep_messages_within_omitted_rpcs():
+    fd = (
+        make_file_pb2(
+            name="foobar.proto",
+            package="google.example.v1",
+            messages=(
+                make_message_pb2(
+                    name="IncludedRequest",
+                ),
+                make_message_pb2(
+                    name="IncludedResponse",
+                ),
+                make_message_pb2(
+                    name="OmittedRequest",
+                    fields=(
+                        make_field_pb2(
+                            name="nested",
+                            number=1,
+                            type_name=".google.example.v1.NestedMessage",
+                        ),
+                    ),
+                ),
+                make_message_pb2(
+                    name="OmittedResponse",
+                ),
+                make_message_pb2(
+                    name="NestedMessage",
+                ),
+            ),
+            services=(
+                descriptor_pb2.ServiceDescriptorProto(
+                    name="FooService",
+                    method=(
+                        descriptor_pb2.MethodDescriptorProto(
+                            name="IncludedMethod",
+                            input_type="google.example.v1.IncludedRequest",
+                            output_type="google.example.v1.IncludedResponse",
+                        ),
+                        descriptor_pb2.MethodDescriptorProto(
+                            name="OmittedMethod",
+                            input_type="google.example.v1.OmittedRequest",
+                            output_type="google.example.v1.OmittedResponse",
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    )
+
+    service_yaml_config = get_service_yaml_for_selective_gapic_tests(
+        apis=["google.example.v1.FooService"],
+        methods=["google.example.v1.FooService.IncludedMethod"],
+    )
+    opts = Options(service_yaml_config=service_yaml_config)
+
+    api_schema = api.API.build(fd, "google.example.v1", opts=opts)
+
+    # Included RPC and its messages should be present
+    assert "google.example.v1.IncludedRequest" in api_schema.messages
+    assert "google.example.v1.IncludedResponse" in api_schema.messages
+
+    # Omitted RPC top-level messages should be ABSENT
+    assert "google.example.v1.OmittedRequest" not in api_schema.messages
+    assert "google.example.v1.OmittedResponse" not in api_schema.messages
+
+    # Nested message ONLY reachable from omitted RPC should be PRESENT
+    assert "google.example.v1.NestedMessage" in api_schema.messages
 
 
 def test_selective_gapic_api_build_with_enums():
@@ -3742,8 +3833,11 @@ def test_selective_gapic_api_build_with_enums():
     api_schema = api.API.build(fd, "google.example.v1", opts=opts)
 
     assert "google.example.v1.FooStatus" in api_schema.enums
-    assert "google.example.v1.BarStatus" not in api_schema.enums
+    # BarStatus is reachable from Bar, which is used by GetBarRequest (omitted),
+    # but Bar and its enums should be kept.
+    assert "google.example.v1.BarStatus" in api_schema.enums
     assert "google.example.v1.FooStatus" in api_schema.top_level_enums
+    assert "google.example.v1.BarStatus" in api_schema.top_level_enums
 
 
 def test_selective_gapic_api_build_with_nested_fields():
@@ -3839,10 +3933,14 @@ def test_selective_gapic_api_build_with_nested_fields():
     assert "google.example.v1.Foo.FooStatus" in api_schema.enums
     assert "google.example.v1.Foo.Bar" in api_schema.messages
 
-    # Check that we can exclude nested types as well
-    assert "google.example.v1.Spam" not in api_schema.messages
-    assert "google.example.v1.Spam.SpamStatus" not in api_schema.enums
-    assert "google.example.v1.Spam.Ham" not in api_schema.messages
+    # Spam is used by GetBarRequest (omitted), so Spam and its nested types should be kept.
+    assert "google.example.v1.Spam" in api_schema.messages
+    assert "google.example.v1.Spam.SpamStatus" in api_schema.enums
+    assert "google.example.v1.Spam.Ham" in api_schema.messages
+
+    # Top-level request/response messages for omitted RPCs are still omitted.
+    assert "google.example.v1.GetBarRequest" not in api_schema.messages
+    assert "google.example.v1.GetBarResponse" not in api_schema.messages
 
 
 @pytest.mark.parametrize("reference_attr", ["type", "child_type"])
@@ -3936,15 +4034,18 @@ def test_selective_gapic_api_build_with_resources(reference_attr):
     assert "google.example.v1.GetFooRequest" in api_schema.messages
     assert "google.example.v1.GetFooResponse" in api_schema.messages
 
-    assert "google.example.v1.Bar" not in api_schema.messages
-    assert "google.example.v1.BarDep" not in api_schema.messages
+    # Bar and BarDep are reachable from GetBarRequest (omitted),
+    # but they should be kept.
+    assert "google.example.v1.Bar" in api_schema.messages
+    assert "google.example.v1.BarDep" in api_schema.messages
     assert "google.example.v1.GetBarRequest" not in api_schema.messages
     assert "google.example.v1.GetBarResponse" not in api_schema.messages
 
     # Ensure we're also pruning resource messages for the files
     resource_messages = api_schema.protos["foo.proto"].resource_messages
     assert "foo.bar/Foo" in resource_messages
-    assert "foo.bar/Bar" not in resource_messages
+    # Bar is reachable via GetBarRequest, so it should be kept in resource_messages.
+    assert "foo.bar/Bar" in resource_messages
 
 
 def test_selective_gapic_api_build_extended_lro():
@@ -4499,3 +4600,148 @@ def test_method_settings_invalid_multiple_issues():
     assert re.match(".*squid.*not.*uuid4.*", error_yaml[method_example1][1].lower())
     assert re.match(".*octopus.*not.*uuid4.*", error_yaml[method_example1][2].lower())
     assert re.match(".*method.*not found.*", error_yaml[method_example2][0].lower())
+
+
+def test_file_level_resources_with_aliases():
+    """Proves that CLI aliases are passed down to file-level CommonResources."""
+    fdp = make_file_pb2(
+        name="nomenclature.proto",
+        package="nomenclature.linneaen.v1",
+        messages=(
+            make_message_pb2(
+                name="CreateSpeciesRequest",
+                fields=(make_field_pb2(name="species", number=1, type=9),),
+            ),
+        ),
+    )
+    res_pb2 = fdp.options.Extensions[resource_pb2.resource_definition]
+    resource_definition = res_pb2.add()
+    resource_definition.type = "nomenclature.linnaen.com/Species"
+    resource_definition.pattern.append("families/{family}/genera/{genus}/species/{species}")
+
+    # Pass down the resource-name-alias cli option
+    opts = Options.build("resource-name-alias=nomenclature.linnaen.com/Species:CustomSpecies")
+    
+    api_schema = api.API.build([fdp], package="nomenclature.linneaen.v1", opts=opts)
+    
+    # Trigger the property that evaluates the CommonResource
+    resource_msgs = api_schema.protos["nomenclature.proto"].resource_messages
+
+    # Verify that the resource exists with the overriden type
+    assert "nomenclature.linnaen.com/Species" in resource_msgs
+    assert resource_msgs["nomenclature.linnaen.com/Species"].resource_type == "CustomSpecies"
+
+
+from test_utils.test_utils import (
+    make_file_pb2,
+    make_message_pb2,
+)
+
+def test_proto_with_selective_generation_returns_none():
+    # Proto A: will be omitted because its only method is not in the allow-list.
+    fd_a = make_file_pb2(
+        name="proto_a.proto",
+        package="google.example.v1",
+        services=(
+            descriptor_pb2.ServiceDescriptorProto(
+                name="ServiceA",
+                method=(
+                    descriptor_pb2.MethodDescriptorProto(
+                        name="MethodA",
+                        input_type="google.example.v1.ReqA",
+                        output_type="google.example.v1.RespA",
+                    ),
+                ),
+            ),
+        ),
+        messages=(
+            make_message_pb2("ReqA"),
+            make_message_pb2("RespA"),
+        ),
+    )
+
+    # Proto B: will be kept because its method IS in the allow-list.
+    fd_b = make_file_pb2(
+        name="proto_b.proto",
+        package="google.example.v1",
+        services=(
+            descriptor_pb2.ServiceDescriptorProto(
+                name="ServiceB",
+                method=(
+                    descriptor_pb2.MethodDescriptorProto(
+                        name="MethodB",
+                        input_type="google.example.v1.ReqB",
+                        output_type="google.example.v1.RespB",
+                    ),
+                ),
+            ),
+        ),
+        messages=(
+            make_message_pb2("ReqB"),
+            make_message_pb2("RespB"),
+        ),
+    )
+    
+    # Selective generation only including ServiceB.MethodB.
+    service_yaml_config = get_service_yaml_for_selective_gapic_tests(
+        methods=["google.example.v1.ServiceB.MethodB"]
+    )
+    opts = Options(service_yaml_config=service_yaml_config)
+    
+    # Building the API will call with_selective_generation for both protos.
+    api_schema = api.API.build([fd_a, fd_b], package="google.example.v1", opts=opts)
+    
+    # proto_a.proto should be excluded.
+    assert "proto_a.proto" not in api_schema.protos
+    assert "proto_b.proto" in api_schema.protos
+
+def test_api_build_selective_multiple_protos_kept():
+    fd1 = make_file_pb2(
+        name="proto1.proto",
+        package="google.example.v1",
+        services=(
+            descriptor_pb2.ServiceDescriptorProto(
+                name="Service1",
+                method=(
+                    descriptor_pb2.MethodDescriptorProto(
+                        name="Method1",
+                        input_type="google.example.v1.Req1",
+                        output_type="google.example.v1.Resp1",
+                    ),
+                ),
+            ),
+        ),
+        messages=(make_message_pb2("Req1"), make_message_pb2("Resp1")),
+    )
+    fd2 = make_file_pb2(
+        name="proto2.proto",
+        package="google.example.v1",
+        services=(
+            descriptor_pb2.ServiceDescriptorProto(
+                name="Service2",
+                method=(
+                    descriptor_pb2.MethodDescriptorProto(
+                        name="Method2",
+                        input_type="google.example.v1.Req2",
+                        output_type="google.example.v1.Resp2",
+                    ),
+                ),
+            ),
+        ),
+        messages=(make_message_pb2("Req2"), make_message_pb2("Resp2")),
+    )
+    
+    service_yaml_config = get_service_yaml_for_selective_gapic_tests(
+        methods=[
+            "google.example.v1.Service1.Method1",
+            "google.example.v1.Service2.Method2",
+        ]
+    )
+    opts = Options(service_yaml_config=service_yaml_config)
+    api_schema = api.API.build([fd1, fd2], package="google.example.v1", opts=opts)
+    
+    # Both protos should be kept. This covers the case where multiple protos
+    # are processed in the selective generation loop, taking the 534->528 branch.
+    assert len(api_schema.protos) == 2
+    assert "proto1.proto" in api_schema.protos
+    assert "proto2.proto" in api_schema.protos

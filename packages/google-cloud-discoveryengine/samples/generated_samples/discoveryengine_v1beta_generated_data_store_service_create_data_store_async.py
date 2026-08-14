@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,17 +43,18 @@ async def sample_create_data_store():
     data_store.display_name = "display_name_value"
 
     request = discoveryengine_v1beta.CreateDataStoreRequest(
+        cmek_config_name="cmek_config_name_value",
         parent="parent_value",
         data_store=data_store,
         data_store_id="data_store_id_value",
     )
 
     # Make the request
-    operation = client.create_data_store(request=request)
+    operation = await client.create_data_store(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

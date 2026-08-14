@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Network Connectivity Center.
+This package includes clients for multiple versions of Network Connectivity.
 By default, you will get version ``networkconnectivity_v1``.
 
 

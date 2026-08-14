@@ -20,8 +20,9 @@ workload:
 
   - name: "read_rand_multi_process"
     pattern: "rand"
-    coros: [1]
+    coros: [1, 16]
     processes: [1]
+
 
 defaults:
   DEFAULT_RAPID_ZONAL_BUCKET: "chandrasiri-benchmarks-zb"

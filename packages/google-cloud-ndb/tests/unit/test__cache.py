@@ -13,13 +13,11 @@
 # limitations under the License.
 
 import warnings
-
 from unittest import mock
 
 import pytest
 
-from google.cloud.ndb import _cache
-from google.cloud.ndb import tasklets
+from google.cloud.ndb import _cache, tasklets
 
 
 def future_result(result):

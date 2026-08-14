@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -841,11 +841,11 @@ class LiveVideoAnalyticsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_operator(request=request)
+                operation = await client.create_operator(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -980,11 +980,11 @@ class LiveVideoAnalyticsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_operator(request=request)
+                operation = await client.update_operator(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1118,11 +1118,11 @@ class LiveVideoAnalyticsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_operator(request=request)
+                operation = await client.delete_operator(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1486,11 +1486,11 @@ class LiveVideoAnalyticsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_analysis(request=request)
+                operation = await client.create_analysis(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1625,11 +1625,11 @@ class LiveVideoAnalyticsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_analysis(request=request)
+                operation = await client.update_analysis(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1763,11 +1763,11 @@ class LiveVideoAnalyticsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_analysis(request=request)
+                operation = await client.delete_analysis(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2135,11 +2135,11 @@ class LiveVideoAnalyticsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_process(request=request)
+                operation = await client.create_process(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2278,11 +2278,11 @@ class LiveVideoAnalyticsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_process(request=request)
+                operation = await client.update_process(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2416,11 +2416,11 @@ class LiveVideoAnalyticsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_process(request=request)
+                operation = await client.delete_process(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2554,11 +2554,11 @@ class LiveVideoAnalyticsAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_run_process(request=request)
+                operation = await client.batch_run_process(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3022,9 +3022,7 @@ class LiveVideoAnalyticsAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("LiveVideoAnalyticsAsyncClient",)

@@ -747,6 +747,7 @@ def connect(
     ca_certificate=None,
     client_certificate=None,
     client_key=None,
+    instance_type=None,
     **kwargs,
 ):
     """Creates a connection to a Google Cloud Spanner database.
@@ -802,26 +803,29 @@ def connect(
               resource.
 
     :type experimental_host: str
-    :param experimental_host: (Optional) The endpoint for a spanner experimental host deployment.
-        This is intended only for experimental host spanner endpoints.
+    :param experimental_host: (Deprecated) Use `client_options` with `api_endpoint` and `instance_type="omni"` instead.
+
+    :type instance_type: str
+    :param instance_type: (Optional) The type of Spanner instance to connect to.
+        Supported values are `"cloud"` or `"omni"`. Connecting to Spanner Omni requires setting instance_type=`"omni"`.
 
     :type use_plain_text: bool
     :param use_plain_text: (Optional) Whether to use plain text for the connection.
-        This is intended only for experimental host spanner endpoints.
+        This is intended only for Spanner Omni endpoints.
         If not set, the default behavior is to use TLS.
 
     :type ca_certificate: str
     :param ca_certificate: (Optional) The path to the CA certificate file used for TLS connection.
-        This is intended only for experimental host spanner endpoints.
-        This is mandatory if the experimental_host requires a TLS connection.
+        This is intended only for Spanner Omni endpoints.
+        This is mandatory if Spanner Omni requires a TLS connection.
     :type client_certificate: str
     :param client_certificate: (Optional) The path to the client certificate file used for mTLS connection.
-        This is intended only for experimental host spanner endpoints.
-        This is mandatory if the experimental_host requires an mTLS connection.
+        This is intended only for Spanner Omni endpoints.
+        This is mandatory if Spanner Omni requires an mTLS connection.
     :type client_key: str
     :param client_key: (Optional) The path to the client key file used for mTLS connection.
-        This is intended only for experimental host spanner endpoints.
-        This is mandatory if the experimental_host requires an mTLS connection.
+        This is intended only for Spanner Omni endpoints.
+        This is mandatory if Spanner Omni requires an mTLS connection.
     """
     if client is None:
         client_info = ClientInfo(
@@ -840,10 +844,48 @@ def connect(
             client_options = None
             if isinstance(credentials, AnonymousCredentials):
                 client_options = kwargs.get("client_options")
+
             if experimental_host is not None:
+                warnings.warn(
+                    "experimental_host is deprecated. Please use client_options with api_endpoint instead, along with instance_type='omni'.",
+                    DeprecationWarning,
+                    stacklevel=2,
+                )
+                instance_type = "omni"
+
+            if instance_type is not None:
+                instance_type = instance_type.lower()
+                if instance_type not in ("cloud", "omni"):
+                    raise ValueError("instance_type must be one of 'cloud' or 'omni'")
+
+            if instance_type == "omni":
+                host_endpoint = experimental_host
+                if not host_endpoint and "client_options" in kwargs:
+                    opts = kwargs["client_options"]
+                    if hasattr(opts, "api_endpoint"):
+                        host_endpoint = opts.api_endpoint
+                    elif isinstance(opts, dict):
+                        host_endpoint = opts.get("api_endpoint")
+
+                if not host_endpoint:
+                    raise ValueError(
+                        "Host must be set for connecting to Spanner Omni instances"
+                    )
+
                 project = "default"
                 credentials = AnonymousCredentials()
-                client_options = ClientOptions(api_endpoint=experimental_host)
+                client_options = kwargs.get("client_options")
+                if client_options is None:
+                    client_options = ClientOptions(api_endpoint=host_endpoint)
+                elif isinstance(client_options, dict):
+                    client_options = client_options.copy()
+                    client_options["api_endpoint"] = host_endpoint
+                else:
+                    import copy
+
+                    client_options = copy.copy(client_options)
+                    client_options.api_endpoint = host_endpoint
+
             client = spanner.Client(
                 project=project,
                 credentials=credentials,
@@ -854,6 +896,7 @@ def connect(
                 ca_certificate=ca_certificate,
                 client_certificate=client_certificate,
                 client_key=client_key,
+                instance_type=instance_type,
             )
     else:
         if project is not None and client.project != project:

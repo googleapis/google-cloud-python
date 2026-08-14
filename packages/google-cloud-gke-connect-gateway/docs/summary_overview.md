@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# GKE Connect Gateway API
+# Connect Gateway API
 
-Overview of the APIs available for GKE Connect Gateway API.
+Overview of the APIs available for Connect Gateway API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-GKE Connect Gateway API.
+Connect Gateway API.
 
 [classes](https://cloud.google.com/python/docs/reference/connectgateway/latest/summary_class.html)
 

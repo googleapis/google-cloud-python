@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,12 +18,12 @@ from google.cloud.speech import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from google.cloud.speech_v1 import SpeechClient
 from google.cloud.speech_v1.services.adaptation.async_client import (
     AdaptationAsyncClient,
 )
 from google.cloud.speech_v1.services.adaptation.client import AdaptationClient
 from google.cloud.speech_v1.services.speech.async_client import SpeechAsyncClient
-from google.cloud.speech_v1 import SpeechClient
 from google.cloud.speech_v1.types.cloud_speech import (
     LongRunningRecognizeMetadata,
     LongRunningRecognizeRequest,

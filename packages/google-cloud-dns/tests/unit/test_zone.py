@@ -32,6 +32,7 @@ class TestManagedZone(unittest.TestCase):
 
     def _setUpConstants(self):
         import datetime
+
         from google.cloud._helpers import UTC
 
         year = 2015

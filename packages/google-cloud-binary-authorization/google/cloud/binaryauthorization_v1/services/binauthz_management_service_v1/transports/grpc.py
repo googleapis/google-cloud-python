@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,6 +27,10 @@ import proto  # type: ignore
 from google.api_core import gapic_v1, grpc_helpers
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.protobuf.json_format import MessageToJson
 
 from google.cloud.binaryauthorization_v1.types import resources, service
@@ -378,8 +382,8 @@ class BinauthzManagementServiceV1GrpcTransport(BinauthzManagementServiceV1Transp
         [policy][google.cloud.binaryauthorization.v1.Policy]. A policy
         is always updated as a whole, to avoid race conditions with
         concurrent policy enforcement (or management!) requests. Returns
-        NOT_FOUND if the project does not exist, INVALID_ARGUMENT if the
-        request is malformed.
+        ``NOT_FOUND`` if the project does not exist,
+        ``INVALID_ARGUMENT`` if the request is malformed.
 
         Returns:
             Callable[[~.UpdatePolicyRequest],
@@ -409,10 +413,11 @@ class BinauthzManagementServiceV1GrpcTransport(BinauthzManagementServiceV1Transp
         [attestor][google.cloud.binaryauthorization.v1.Attestor], and
         returns a copy of the new
         [attestor][google.cloud.binaryauthorization.v1.Attestor].
-        Returns NOT_FOUND if the project does not exist,
-        INVALID_ARGUMENT if the request is malformed, ALREADY_EXISTS if
-        the [attestor][google.cloud.binaryauthorization.v1.Attestor]
-        already exists.
+        Returns ``NOT_FOUND`` if the project does not exist,
+        ``INVALID_ARGUMENT`` if the request is malformed,
+        ``ALREADY_EXISTS`` if the
+        [attestor][google.cloud.binaryauthorization.v1.Attestor] already
+        exists.
 
         Returns:
             Callable[[~.CreateAttestorRequest],
@@ -440,7 +445,7 @@ class BinauthzManagementServiceV1GrpcTransport(BinauthzManagementServiceV1Transp
 
         Gets an
         [attestor][google.cloud.binaryauthorization.v1.Attestor].
-        Returns NOT_FOUND if the
+        Returns ``NOT_FOUND`` if the
         [attestor][google.cloud.binaryauthorization.v1.Attestor] does
         not exist.
 
@@ -470,7 +475,7 @@ class BinauthzManagementServiceV1GrpcTransport(BinauthzManagementServiceV1Transp
 
         Updates an
         [attestor][google.cloud.binaryauthorization.v1.Attestor].
-        Returns NOT_FOUND if the
+        Returns ``NOT_FOUND`` if the
         [attestor][google.cloud.binaryauthorization.v1.Attestor] does
         not exist.
 
@@ -499,7 +504,7 @@ class BinauthzManagementServiceV1GrpcTransport(BinauthzManagementServiceV1Transp
         r"""Return a callable for the list attestors method over gRPC.
 
         Lists [attestors][google.cloud.binaryauthorization.v1.Attestor].
-        Returns INVALID_ARGUMENT if the project does not exist.
+        Returns ``INVALID_ARGUMENT`` if the project does not exist.
 
         Returns:
             Callable[[~.ListAttestorsRequest],
@@ -527,7 +532,7 @@ class BinauthzManagementServiceV1GrpcTransport(BinauthzManagementServiceV1Transp
 
         Deletes an
         [attestor][google.cloud.binaryauthorization.v1.Attestor].
-        Returns NOT_FOUND if the
+        Returns ``NOT_FOUND`` if the
         [attestor][google.cloud.binaryauthorization.v1.Attestor] does
         not exist.
 
@@ -551,6 +556,86 @@ class BinauthzManagementServiceV1GrpcTransport(BinauthzManagementServiceV1Transp
 
     def close(self):
         self._logged_channel.close()
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+        r"""Return a callable for the set iam policy method over gRPC.
+        Sets the IAM access control policy on the specified
+        function. Replaces any existing policy.
+        Returns:
+            Callable[[~.SetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "set_iam_policy" not in self._stubs:
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
+                "/google.iam.v1.IAMPolicy/SetIamPolicy",
+                request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["set_iam_policy"]
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+        r"""Return a callable for the get iam policy method over gRPC.
+        Gets the IAM access control policy for a function.
+        Returns an empty policy if the function exists and does
+        not have a policy set.
+        Returns:
+            Callable[[~.GetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_iam_policy" not in self._stubs:
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
+                "/google.iam.v1.IAMPolicy/GetIamPolicy",
+                request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["get_iam_policy"]
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        iam_policy_pb2.TestIamPermissionsResponse,
+    ]:
+        r"""Return a callable for the test iam permissions method over gRPC.
+        Tests the specified permissions against the IAM access control
+        policy for a function. If the function does not exist, this will
+        return an empty set of permissions, not a NOT_FOUND error.
+        Returns:
+            Callable[[~.TestIamPermissionsRequest],
+                    ~.TestIamPermissionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "test_iam_permissions" not in self._stubs:
+            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
+                "/google.iam.v1.IAMPolicy/TestIamPermissions",
+                request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
+                response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
+            )
+        return self._stubs["test_iam_permissions"]
 
     @property
     def kind(self) -> str:

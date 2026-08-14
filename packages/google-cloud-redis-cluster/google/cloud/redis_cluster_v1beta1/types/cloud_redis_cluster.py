@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
         "AuthorizationMode",
         "NodeType",
         "TransitEncryptionMode",
+        "ServerCaMode",
         "ConnectionType",
         "CreateClusterRequest",
         "ListClustersRequest",
@@ -64,6 +65,8 @@ __protobuf__ = proto.module(
         "ClusterEndpoint",
         "ConnectionDetail",
         "PscAutoConnection",
+        "SharedRegionalCertificateAuthority",
+        "GetSharedRegionalCertificateAuthorityRequest",
         "OperationMetadata",
         "CertificateAuthority",
         "ClusterPersistenceConfig",
@@ -122,6 +125,12 @@ class NodeType(proto.Enum):
             Redis highmem xlarge node_type.
         REDIS_STANDARD_SMALL (4):
             Redis standard small node_type.
+        REDIS_HIGHCPU_MEDIUM (7):
+            Redis highcpu medium node_type.
+        REDIS_STANDARD_LARGE (8):
+            Redis standard large node_type.
+        REDIS_HIGHMEM_2XLARGE (9):
+            Redis highmem 2xlarge node_type.
     """
 
     NODE_TYPE_UNSPECIFIED = 0
@@ -129,6 +138,9 @@ class NodeType(proto.Enum):
     REDIS_HIGHMEM_MEDIUM = 2
     REDIS_HIGHMEM_XLARGE = 3
     REDIS_STANDARD_SMALL = 4
+    REDIS_HIGHCPU_MEDIUM = 7
+    REDIS_STANDARD_LARGE = 8
+    REDIS_HIGHMEM_2XLARGE = 9
 
 
 class TransitEncryptionMode(proto.Enum):
@@ -147,6 +159,28 @@ class TransitEncryptionMode(proto.Enum):
     TRANSIT_ENCRYPTION_MODE_UNSPECIFIED = 0
     TRANSIT_ENCRYPTION_MODE_DISABLED = 1
     TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION = 2
+
+
+class ServerCaMode(proto.Enum):
+    r"""Server CA mode for the cluster.
+
+    Values:
+        SERVER_CA_MODE_UNSPECIFIED (0):
+            Server CA mode not specified.
+        SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA (1):
+            Each cluster has its own Google managed CA.
+        SERVER_CA_MODE_GOOGLE_MANAGED_SHARED_CA (2):
+            The cluster uses Google managed shared CA in
+            the region.
+        SERVER_CA_MODE_CUSTOMER_MANAGED_CAS_CA (3):
+            The cluster uses customer managed CA from
+            CAS.
+    """
+
+    SERVER_CA_MODE_UNSPECIFIED = 0
+    SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA = 1
+    SERVER_CA_MODE_GOOGLE_MANAGED_SHARED_CA = 2
+    SERVER_CA_MODE_CUSTOMER_MANAGED_CAS_CA = 3
 
 
 class ConnectionType(proto.Enum):
@@ -790,6 +824,31 @@ class Cluster(proto.Message):
         encryption_info (google.cloud.redis_cluster_v1beta1.types.EncryptionInfo):
             Output only. Encryption information of the
             data at rest of the cluster.
+        async_cluster_endpoints_deletion_enabled (bool):
+            Optional. If true, cluster endpoints that are
+            created and registered by customers can be
+            deleted asynchronously. That is, such a cluster
+            endpoint can be de-registered before the
+            forwarding rules in the cluster endpoint are
+            deleted.
+
+            This field is a member of `oneof`_ ``_async_cluster_endpoints_deletion_enabled``.
+        server_ca_mode (google.cloud.redis_cluster_v1beta1.types.ServerCaMode):
+            Optional. Server CA mode for the cluster.
+
+            This field is a member of `oneof`_ ``_server_ca_mode``.
+        server_ca_pool (str):
+            Optional. Customer-managed CA pool for the cluster. Only
+            applicable for BYOCA i.e. if server_ca_mode is
+            SERVER_CA_MODE_CUSTOMER_MANAGED_CAS_CA. Format:
+            "projects/{project}/locations/{region}/caPools/{ca_pool}".
+
+            This field is a member of `oneof`_ ``_server_ca_pool``.
+        rotate_server_certificate (bool):
+            Optional. Input only. Rotate the server
+            certificates.
+
+            This field is a member of `oneof`_ ``_rotate_server_certificate``.
     """
 
     class State(proto.Enum):
@@ -1053,6 +1112,27 @@ class Cluster(proto.Message):
         proto.MESSAGE,
         number=43,
         message="EncryptionInfo",
+    )
+    async_cluster_endpoints_deletion_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=44,
+        optional=True,
+    )
+    server_ca_mode: "ServerCaMode" = proto.Field(
+        proto.ENUM,
+        number=53,
+        optional=True,
+        enum="ServerCaMode",
+    )
+    server_ca_pool: str = proto.Field(
+        proto.STRING,
+        number=54,
+        optional=True,
+    )
+    rotate_server_certificate: bool = proto.Field(
+        proto.BOOL,
+        number=55,
+        optional=True,
     )
 
 
@@ -1873,6 +1953,86 @@ class PscAutoConnection(proto.Message):
         proto.ENUM,
         number=9,
         enum="ConnectionType",
+    )
+
+
+class SharedRegionalCertificateAuthority(proto.Message):
+    r"""Shared regional certificate authority
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        managed_server_ca (google.cloud.redis_cluster_v1beta1.types.SharedRegionalCertificateAuthority.RegionalManagedCertificateAuthority):
+            CA certificate chains for redis managed
+            server authentication.
+
+            This field is a member of `oneof`_ ``server_ca``.
+        name (str):
+            Identifier. Unique name of the resource in this scope
+            including project and location using the form:
+            ``projects/{project}/locations/{location}/sharedRegionalCertificateAuthority``
+    """
+
+    class RegionalManagedCertificateAuthority(proto.Message):
+        r"""CA certificate chains for redis managed server
+        authentication.
+
+        Attributes:
+            ca_certs (MutableSequence[google.cloud.redis_cluster_v1beta1.types.SharedRegionalCertificateAuthority.RegionalManagedCertificateAuthority.RegionalCertChain]):
+                The PEM encoded CA certificate chains for
+                redis managed server authentication
+        """
+
+        class RegionalCertChain(proto.Message):
+            r"""The certificates that form the CA chain, from leaf to root
+            order.
+
+            Attributes:
+                certificates (MutableSequence[str]):
+                    The certificates that form the CA chain, from
+                    leaf to root order.
+            """
+
+            certificates: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
+
+        ca_certs: MutableSequence[
+            "SharedRegionalCertificateAuthority.RegionalManagedCertificateAuthority.RegionalCertChain"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="SharedRegionalCertificateAuthority.RegionalManagedCertificateAuthority.RegionalCertChain",
+        )
+
+    managed_server_ca: RegionalManagedCertificateAuthority = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="server_ca",
+        message=RegionalManagedCertificateAuthority,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetSharedRegionalCertificateAuthorityRequest(proto.Message):
+    r"""Request for
+    [GetSharedRegionalCertificateAuthority][CloudRedis.GetSharedRegionalCertificateAuthority].
+
+    Attributes:
+        name (str):
+            Required. Regional certificate authority resource name using
+            the form:
+            ``projects/{project_id}/locations/{location_id}/sharedRegionalCertificateAuthority``
+            where ``location_id`` refers to a Google Cloud region.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

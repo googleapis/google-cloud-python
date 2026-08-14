@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,6 +51,7 @@ from google.cloud.redis_cluster_v1.types.cloud_redis_cluster import (
     GetBackupRequest,
     GetClusterCertificateAuthorityRequest,
     GetClusterRequest,
+    GetSharedRegionalCertificateAuthorityRequest,
     ListBackupCollectionsRequest,
     ListBackupCollectionsResponse,
     ListBackupsRequest,
@@ -65,6 +66,8 @@ from google.cloud.redis_cluster_v1.types.cloud_redis_cluster import (
     PscConnectionStatus,
     PscServiceAttachment,
     RescheduleClusterMaintenanceRequest,
+    ServerCaMode,
+    SharedRegionalCertificateAuthority,
     TransitEncryptionMode,
     UpdateClusterRequest,
     ZoneDistributionConfig,
@@ -97,6 +100,7 @@ __all__ = (
     "GetBackupRequest",
     "GetClusterCertificateAuthorityRequest",
     "GetClusterRequest",
+    "GetSharedRegionalCertificateAuthorityRequest",
     "ListBackupCollectionsRequest",
     "ListBackupCollectionsResponse",
     "ListBackupsRequest",
@@ -109,11 +113,13 @@ __all__ = (
     "PscConnection",
     "PscServiceAttachment",
     "RescheduleClusterMaintenanceRequest",
+    "SharedRegionalCertificateAuthority",
     "UpdateClusterRequest",
     "ZoneDistributionConfig",
     "AuthorizationMode",
     "ConnectionType",
     "NodeType",
     "PscConnectionStatus",
+    "ServerCaMode",
     "TransitEncryptionMode",
 )

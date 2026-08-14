@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Talent Solution API
+# Cloud Talent Solution API
 
-Overview of the APIs available for Talent Solution API.
+Overview of the APIs available for Cloud Talent Solution API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Talent Solution API.
+Cloud Talent Solution API.
 
 [classes](https://cloud.google.com/python/docs/reference/talent/latest/summary_class.html)
 

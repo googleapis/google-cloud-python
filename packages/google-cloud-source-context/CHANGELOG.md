@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-source-context/#history
 
+## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-source-context-v1.10.0...google-cloud-source-context-v1.11.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-s packages (#17086) ([40b522a8473dec7ade45113ddd44ccd960803c45](https://github.com/googleapis/google-cloud-python/commit/40b522a8473dec7ade45113ddd44ccd960803c45))
+
 ## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-source-context-v1.9.0...google-cloud-source-context-v1.10.0) (2026-03-26)
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ class Chunk(proto.Message):
             Output only. Represents the relevance score based on
             similarity. Higher score indicates higher chunk relevance.
             The score is in range [-1.0, 1.0]. Only populated on
-            [SearchService.SearchResponse][].
+            [SearchResponse][google.cloud.discoveryengine.v1beta.SearchResponse].
 
             This field is a member of `oneof`_ ``_relevance_score``.
         document_metadata (google.cloud.discoveryengine_v1beta.types.Chunk.DocumentMetadata):
@@ -64,7 +64,39 @@ class Chunk(proto.Message):
             Page span of the chunk.
         chunk_metadata (google.cloud.discoveryengine_v1beta.types.Chunk.ChunkMetadata):
             Output only. Metadata of the current chunk.
+        data_urls (MutableSequence[str]):
+            Output only. Image Data URLs if the current chunk contains
+            images. Data URLs are composed of four parts: a prefix
+            (data:), a MIME type indicating the type of data, an
+            optional base64 token if non-textual, and the data itself:
+            data:[][;base64],
+        annotation_contents (MutableSequence[str]):
+            Output only. Annotation contents if the
+            current chunk contains annotations.
+        annotation_metadata (MutableSequence[google.cloud.discoveryengine_v1beta.types.Chunk.AnnotationMetadata]):
+            Output only. The annotation metadata includes
+            structured content in the current chunk.
     """
+
+    class StructureType(proto.Enum):
+        r"""Defines the types of the structured content that can be
+        extracted.
+
+        Values:
+            STRUCTURE_TYPE_UNSPECIFIED (0):
+                Default value.
+            SHAREHOLDER_STRUCTURE (1):
+                Shareholder structure.
+            SIGNATURE_STRUCTURE (2):
+                Signature structure.
+            CHECKBOX_STRUCTURE (3):
+                Checkbox structure.
+        """
+
+        STRUCTURE_TYPE_UNSPECIFIED = 0
+        SHAREHOLDER_STRUCTURE = 1
+        SIGNATURE_STRUCTURE = 2
+        CHECKBOX_STRUCTURE = 3
 
     class DocumentMetadata(proto.Message):
         r"""Document metadata contains the information of the document of
@@ -75,6 +107,9 @@ class Chunk(proto.Message):
                 Uri of the document.
             title (str):
                 Title of the document.
+            mime_type (str):
+                The mime type of the document.
+                https://www.iana.org/assignments/media-types/media-types.xhtml.
             struct_data (google.protobuf.struct_pb2.Struct):
                 Data representation. The structured JSON data for the
                 document. It should conform to the registered
@@ -89,6 +124,10 @@ class Chunk(proto.Message):
         title: str = proto.Field(
             proto.STRING,
             number=2,
+        )
+        mime_type: str = proto.Field(
+            proto.STRING,
+            number=4,
         )
         struct_data: struct_pb2.Struct = proto.Field(
             proto.MESSAGE,
@@ -148,6 +187,51 @@ class Chunk(proto.Message):
             message="Chunk",
         )
 
+    class StructuredContent(proto.Message):
+        r"""The structured content information.
+
+        Attributes:
+            structure_type (google.cloud.discoveryengine_v1beta.types.Chunk.StructureType):
+                Output only. The structure type of the
+                structured content.
+            content (str):
+                Output only. The content of the structured
+                content.
+        """
+
+        structure_type: "Chunk.StructureType" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="Chunk.StructureType",
+        )
+        content: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class AnnotationMetadata(proto.Message):
+        r"""The annotation metadata includes structured content in the
+        current chunk.
+
+        Attributes:
+            structured_content (google.cloud.discoveryengine_v1beta.types.Chunk.StructuredContent):
+                Output only. The structured content
+                information.
+            image_id (str):
+                Output only. Image id is provided if the
+                structured content is based on an image.
+        """
+
+        structured_content: "Chunk.StructuredContent" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="Chunk.StructuredContent",
+        )
+        image_id: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -184,6 +268,19 @@ class Chunk(proto.Message):
         proto.MESSAGE,
         number=7,
         message=ChunkMetadata,
+    )
+    data_urls: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=9,
+    )
+    annotation_contents: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=11,
+    )
+    annotation_metadata: MutableSequence[AnnotationMetadata] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=12,
+        message=AnnotationMetadata,
     )
 
 

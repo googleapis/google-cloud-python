@@ -22,7 +22,7 @@ In order to add a feature:
   documentation.
 
 - The feature must work fully on the following CPython versions:
-  3.9, 3.10, 3.11, 3.12, 3.13 and 3.14 on both UNIX and Windows.
+  3.10, 3.11, 3.12, 3.13 and 3.14 on both UNIX and Windows.
 
 - The feature must not add unnecessary dependencies (where
   "unnecessary" is of course subjective, but new dependencies should
@@ -143,13 +143,12 @@ Running System Tests
    $ nox -s system
 
    # Run a single system test
-   $ nox -s system-3.9 -- -k <name of test>
+   $ nox -s system-3.12 -- -k <name of test>
 
 
   .. note::
 
-      System tests are only configured to run under Python 3.9.
-      For expediency, we do not run them in older versions of Python 3.
+      System tests are only configured to run under Python 3.12.
 
   This alone will not run the tests. You'll need to change some local
   auth settings and change some configuration in your project to
@@ -198,14 +197,12 @@ Supported Python Versions
 
 We support:
 
--  `Python 3.9`_
 -  `Python 3.10`_
 -  `Python 3.11`_
 -  `Python 3.12`_
 -  `Python 3.13`_
 -  `Python 3.14`_
 
-.. _Python 3.9: https://docs.python.org/3.9/
 .. _Python 3.10: https://docs.python.org/3.10/
 .. _Python 3.11: https://docs.python.org/3.11/
 .. _Python 3.12: https://docs.python.org/3.12/
@@ -218,17 +215,7 @@ Supported versions can be found in our ``noxfile.py`` `config`_.
 .. _config: https://github.com/googleapis/google-cloud-python/blob/main/packages/db-dtypes/noxfile.py
 
 
-We also explicitly decided to support Python 3 beginning with version 3.9.
-Reasons for this include:
 
--  Encouraging use of newest versions of Python 3
--  Taking the lead of `prominent`_ open-source `projects`_
--  `Unicode literal support`_ which allows for a cleaner codebase that
-   works in both Python 2 and Python 3
-
-.. _prominent: https://docs.djangoproject.com/en/1.9/faq/install/#what-python-version-can-i-use-with-django
-.. _projects: http://flask.pocoo.org/docs/0.10/python3/
-.. _Unicode literal support: https://www.python.org/dev/peps/pep-0414/
 
 **********
 Versioning

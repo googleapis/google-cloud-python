@@ -1,0 +1,6 @@
+*.bytesprocessed
+*.bq_exec_time_seconds
+*.error
+*.local_exec_time_seconds
+*.query_char_count
+*.slotmillis

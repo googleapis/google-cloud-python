@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -55,6 +55,12 @@ from .audio_config import (
     TelephonyDtmfEvents,
     VoiceSelectionParams,
 )
+from .ces_app import (
+    CesAppSpec,
+)
+from .ces_tool import (
+    CesToolSpec,
+)
 from .context import (
     Context,
     CreateContextRequest,
@@ -83,6 +89,7 @@ from .conversation import (
     ListMessagesRequest,
     ListMessagesResponse,
     SearchKnowledgeAnswer,
+    SearchKnowledgeDebugInfo,
     SearchKnowledgeRequest,
     SearchKnowledgeResponse,
     SuggestConversationSummaryRequest,
@@ -147,6 +154,7 @@ from .conversation_profile import (
     NotificationConfig,
     SetSuggestionFeatureConfigOperationMetadata,
     SetSuggestionFeatureConfigRequest,
+    SipConfig,
     SuggestionFeature,
     UpdateConversationProfileRequest,
 )
@@ -284,20 +292,24 @@ from .participant import (
     AudioInput,
     AutomatedAgentReply,
     CreateParticipantRequest,
+    DatastoreResponseReason,
     DialogflowAssistAnswer,
     DtmfParameters,
     FaqAnswer,
     GenerateSuggestionsResponse,
     GetParticipantRequest,
+    IngestedContextReferenceDebugInfo,
     InputTextConfig,
     IntentSuggestion,
     KnowledgeAssistAnswer,
+    KnowledgeAssistDebugInfo,
     ListParticipantsRequest,
     ListParticipantsResponse,
     Message,
     MessageAnnotation,
     OutputAudio,
     Participant,
+    ServiceLatency,
     SmartReplyAnswer,
     StreamingAnalyzeContentRequest,
     StreamingAnalyzeContentResponse,
@@ -361,6 +373,9 @@ from .tool_call import (
     ToolCall,
     ToolCallResult,
 )
+from .toolset import (
+    ToolsetTool,
+)
 from .validation_result import (
     ValidationError,
     ValidationResult,
@@ -415,6 +430,8 @@ __all__ = (
     "SpeechModelVariant",
     "SsmlVoiceGender",
     "TelephonyDtmf",
+    "CesAppSpec",
+    "CesToolSpec",
     "Context",
     "CreateContextRequest",
     "DeleteAllContextsRequest",
@@ -440,6 +457,7 @@ __all__ = (
     "ListMessagesRequest",
     "ListMessagesResponse",
     "SearchKnowledgeAnswer",
+    "SearchKnowledgeDebugInfo",
     "SearchKnowledgeRequest",
     "SearchKnowledgeResponse",
     "SuggestConversationSummaryRequest",
@@ -496,6 +514,7 @@ __all__ = (
     "NotificationConfig",
     "SetSuggestionFeatureConfigOperationMetadata",
     "SetSuggestionFeatureConfigRequest",
+    "SipConfig",
     "SuggestionFeature",
     "UpdateConversationProfileRequest",
     "CreateDocumentRequest",
@@ -612,15 +631,18 @@ __all__ = (
     "FaqAnswer",
     "GenerateSuggestionsResponse",
     "GetParticipantRequest",
+    "IngestedContextReferenceDebugInfo",
     "InputTextConfig",
     "IntentSuggestion",
     "KnowledgeAssistAnswer",
+    "KnowledgeAssistDebugInfo",
     "ListParticipantsRequest",
     "ListParticipantsResponse",
     "Message",
     "MessageAnnotation",
     "OutputAudio",
     "Participant",
+    "ServiceLatency",
     "SmartReplyAnswer",
     "StreamingAnalyzeContentRequest",
     "StreamingAnalyzeContentResponse",
@@ -635,6 +657,7 @@ __all__ = (
     "SuggestSmartRepliesRequest",
     "SuggestSmartRepliesResponse",
     "UpdateParticipantRequest",
+    "DatastoreResponseReason",
     "CloudConversationDebuggingInfo",
     "DetectIntentRequest",
     "DetectIntentResponse",
@@ -673,6 +696,7 @@ __all__ = (
     "UpdateToolRequest",
     "ToolCall",
     "ToolCallResult",
+    "ToolsetTool",
     "ValidationError",
     "ValidationResult",
     "CreateVersionRequest",

@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import collections
-
 from unittest import mock
 
 import pytest

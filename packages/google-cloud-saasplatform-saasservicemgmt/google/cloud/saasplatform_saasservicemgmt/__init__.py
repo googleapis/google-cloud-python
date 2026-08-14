@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,12 +33,16 @@ from google.cloud.saasplatform_saasservicemgmt_v1beta1.services.saas_rollouts.cl
 from google.cloud.saasplatform_saasservicemgmt_v1beta1.types.common import (
     Aggregate,
     Blueprint,
+    SaasCondition,
     UnitCondition,
     UnitOperationCondition,
     UnitOperationErrorCategory,
     UnitVariable,
 )
 from google.cloud.saasplatform_saasservicemgmt_v1beta1.types.deployments_resources import (
+    AppParams,
+    ComponentRef,
+    CompositeRef,
     Dependency,
     Deprovision,
     FromMapping,
@@ -124,10 +128,14 @@ __all__ = (
     "SaasRolloutsAsyncClient",
     "Aggregate",
     "Blueprint",
+    "SaasCondition",
     "UnitCondition",
     "UnitOperationCondition",
     "UnitVariable",
     "UnitOperationErrorCategory",
+    "AppParams",
+    "ComponentRef",
+    "CompositeRef",
     "Dependency",
     "Deprovision",
     "FromMapping",

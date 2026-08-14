@@ -16,7 +16,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Callable, Generator, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Callable, Generator, Optional, Tuple, Union, cast
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -34,6 +34,7 @@ if TYPE_CHECKING:  # pragma: NO COVER
     import datetime
 
     from google.cloud.firestore_v1.base_document import DocumentSnapshot
+    from google.cloud.firestore_v1.document import DocumentReference
     from google.cloud.firestore_v1.query_profile import ExplainOptions
     from google.cloud.firestore_v1.stream_generator import StreamGenerator
 
@@ -133,6 +134,22 @@ class CollectionReference(BaseCollectionReference[query_mod.Query]):
         )
         write_result = document_ref.create(document_data, **kwargs)
         return write_result.update_time, document_ref
+
+    def document(self, document_id: Union[str, None] = None) -> "DocumentReference":
+        """Create a sub-document underneath the current collection.
+
+        Args:
+            document_id (Optional[str]): The document identifier
+                within the current collection. If not provided, will default
+                to a random 20 character string composed of digits,
+                uppercase and lowercase and letters.
+
+        Returns:
+            :class:~google.cloud.firestore_v1.document.DocumentReference:
+            The child document.
+        """
+        doc = super().document(document_id)
+        return cast("DocumentReference", doc)
 
     def list_documents(
         self,

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -119,6 +114,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -915,7 +925,14 @@ def test_trip_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -962,7 +979,14 @@ def test_trip_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1269,8 +1293,8 @@ def test_trip_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        trip_api.CreateTripRequest,
-        dict,
+        trip_api.CreateTripRequest(),
+        {},
     ],
 )
 def test_create_trip(request_type, transport: str = "grpc"):
@@ -1281,7 +1305,7 @@ def test_create_trip(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_trip), "__call__") as call:
@@ -1342,10 +1366,11 @@ def test_create_trip_non_empty_request_with_auto_populated_field():
         client.create_trip(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trip_api.CreateTripRequest(
+        request_msg = trip_api.CreateTripRequest(
             parent="parent_value",
             trip_id="trip_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_trip_use_cached_wrapped_rpc():
@@ -1426,9 +1451,14 @@ async def test_create_trip_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_trip_async(
-    transport: str = "grpc_asyncio", request_type=trip_api.CreateTripRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        trip_api.CreateTripRequest(),
+        {},
+    ],
+)
+async def test_create_trip_async(request_type, transport: str = "grpc_asyncio"):
     client = TripServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1436,7 +1466,7 @@ async def test_create_trip_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_trip), "__call__") as call:
@@ -1475,16 +1505,11 @@ async def test_create_trip_async(
     assert response.view == trips.TripView.SDK
 
 
-@pytest.mark.asyncio
-async def test_create_trip_async_from_dict():
-    await test_create_trip_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        trip_api.GetTripRequest,
-        dict,
+        trip_api.GetTripRequest(),
+        {},
     ],
 )
 def test_get_trip(request_type, transport: str = "grpc"):
@@ -1495,7 +1520,7 @@ def test_get_trip(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_trip), "__call__") as call:
@@ -1555,9 +1580,10 @@ def test_get_trip_non_empty_request_with_auto_populated_field():
         client.get_trip(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trip_api.GetTripRequest(
+        request_msg = trip_api.GetTripRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_trip_use_cached_wrapped_rpc():
@@ -1636,9 +1662,14 @@ async def test_get_trip_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_trip_async(
-    transport: str = "grpc_asyncio", request_type=trip_api.GetTripRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        trip_api.GetTripRequest(),
+        {},
+    ],
+)
+async def test_get_trip_async(request_type, transport: str = "grpc_asyncio"):
     client = TripServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1646,7 +1677,7 @@ async def test_get_trip_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_trip), "__call__") as call:
@@ -1685,16 +1716,11 @@ async def test_get_trip_async(
     assert response.view == trips.TripView.SDK
 
 
-@pytest.mark.asyncio
-async def test_get_trip_async_from_dict():
-    await test_get_trip_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        trip_api.DeleteTripRequest,
-        dict,
+        trip_api.DeleteTripRequest(),
+        {},
     ],
 )
 def test_delete_trip(request_type, transport: str = "grpc"):
@@ -1705,7 +1731,7 @@ def test_delete_trip(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_trip), "__call__") as call:
@@ -1746,9 +1772,10 @@ def test_delete_trip_non_empty_request_with_auto_populated_field():
         client.delete_trip(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trip_api.DeleteTripRequest(
+        request_msg = trip_api.DeleteTripRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_trip_use_cached_wrapped_rpc():
@@ -1829,9 +1856,14 @@ async def test_delete_trip_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_trip_async(
-    transport: str = "grpc_asyncio", request_type=trip_api.DeleteTripRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        trip_api.DeleteTripRequest(),
+        {},
+    ],
+)
+async def test_delete_trip_async(request_type, transport: str = "grpc_asyncio"):
     client = TripServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1839,7 +1871,7 @@ async def test_delete_trip_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_trip), "__call__") as call:
@@ -1855,11 +1887,6 @@ async def test_delete_trip_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_trip_async_from_dict():
-    await test_delete_trip_async(request_type=dict)
 
 
 def test_delete_trip_flattened():
@@ -1945,8 +1972,8 @@ async def test_delete_trip_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        trip_api.ReportBillableTripRequest,
-        dict,
+        trip_api.ReportBillableTripRequest(),
+        {},
     ],
 )
 def test_report_billable_trip(request_type, transport: str = "grpc"):
@@ -1957,7 +1984,7 @@ def test_report_billable_trip(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2003,10 +2030,11 @@ def test_report_billable_trip_non_empty_request_with_auto_populated_field():
         client.report_billable_trip(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trip_api.ReportBillableTripRequest(
+        request_msg = trip_api.ReportBillableTripRequest(
             name="name_value",
             country_code="country_code_value",
         )
+        assert args[0] == request_msg
 
 
 def test_report_billable_trip_use_cached_wrapped_rpc():
@@ -2091,8 +2119,15 @@ async def test_report_billable_trip_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        trip_api.ReportBillableTripRequest(),
+        {},
+    ],
+)
 async def test_report_billable_trip_async(
-    transport: str = "grpc_asyncio", request_type=trip_api.ReportBillableTripRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TripServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2101,7 +2136,7 @@ async def test_report_billable_trip_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2121,16 +2156,11 @@ async def test_report_billable_trip_async(
     assert response is None
 
 
-@pytest.mark.asyncio
-async def test_report_billable_trip_async_from_dict():
-    await test_report_billable_trip_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        trip_api.SearchTripsRequest,
-        dict,
+        trip_api.SearchTripsRequest(),
+        {},
     ],
 )
 def test_search_trips(request_type, transport: str = "grpc"):
@@ -2141,7 +2171,7 @@ def test_search_trips(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_trips), "__call__") as call:
@@ -2187,11 +2217,12 @@ def test_search_trips_non_empty_request_with_auto_populated_field():
         client.search_trips(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trip_api.SearchTripsRequest(
+        request_msg = trip_api.SearchTripsRequest(
             parent="parent_value",
             vehicle_id="vehicle_id_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_trips_use_cached_wrapped_rpc():
@@ -2272,9 +2303,14 @@ async def test_search_trips_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_trips_async(
-    transport: str = "grpc_asyncio", request_type=trip_api.SearchTripsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        trip_api.SearchTripsRequest(),
+        {},
+    ],
+)
+async def test_search_trips_async(request_type, transport: str = "grpc_asyncio"):
     client = TripServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2282,7 +2318,7 @@ async def test_search_trips_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_trips), "__call__") as call:
@@ -2303,11 +2339,6 @@ async def test_search_trips_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchTripsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_trips_async_from_dict():
-    await test_search_trips_async(request_type=dict)
 
 
 def test_search_trips_pager(transport_name: str = "grpc"):
@@ -2355,6 +2386,9 @@ def test_search_trips_pager(transport_name: str = "grpc"):
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
         assert pager._timeout == timeout
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -2444,6 +2478,8 @@ async def test_search_trips_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2491,11 +2527,7 @@ async def test_search_trips_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.search_trips(request={})
-        ).pages:
+        async for page_ in (await client.search_trips(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2504,8 +2536,8 @@ async def test_search_trips_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        trip_api.UpdateTripRequest,
-        dict,
+        trip_api.UpdateTripRequest(),
+        {},
     ],
 )
 def test_update_trip(request_type, transport: str = "grpc"):
@@ -2516,7 +2548,7 @@ def test_update_trip(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_trip), "__call__") as call:
@@ -2576,9 +2608,10 @@ def test_update_trip_non_empty_request_with_auto_populated_field():
         client.update_trip(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trip_api.UpdateTripRequest(
+        request_msg = trip_api.UpdateTripRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_trip_use_cached_wrapped_rpc():
@@ -2659,9 +2692,14 @@ async def test_update_trip_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_trip_async(
-    transport: str = "grpc_asyncio", request_type=trip_api.UpdateTripRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        trip_api.UpdateTripRequest(),
+        {},
+    ],
+)
+async def test_update_trip_async(request_type, transport: str = "grpc_asyncio"):
     client = TripServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2669,7 +2707,7 @@ async def test_update_trip_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_trip), "__call__") as call:
@@ -2706,11 +2744,6 @@ async def test_update_trip_async(
     assert response.number_of_passengers == 2135
     assert response.last_location_snappable is True
     assert response.view == trips.TripView.SDK
-
-
-@pytest.mark.asyncio
-async def test_update_trip_async_from_dict():
-    await test_update_trip_async(request_type=dict)
 
 
 def test_credentials_transport_error():
@@ -2835,7 +2868,6 @@ def test_create_trip_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = trip_api.CreateTripRequest()
-
         assert args[0] == request_msg
 
 
@@ -2856,7 +2888,6 @@ def test_get_trip_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = trip_api.GetTripRequest()
-
         assert args[0] == request_msg
 
 
@@ -2877,7 +2908,6 @@ def test_delete_trip_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = trip_api.DeleteTripRequest()
-
         assert args[0] == request_msg
 
 
@@ -2900,7 +2930,6 @@ def test_report_billable_trip_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = trip_api.ReportBillableTripRequest()
-
         assert args[0] == request_msg
 
 
@@ -2921,7 +2950,6 @@ def test_search_trips_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = trip_api.SearchTripsRequest()
-
         assert args[0] == request_msg
 
 
@@ -2942,7 +2970,6 @@ def test_update_trip_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = trip_api.UpdateTripRequest()
-
         assert args[0] == request_msg
 
 
@@ -2961,7 +2988,6 @@ def test_create_trip_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = trip_api.CreateTripRequest(**{"parent": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -2985,7 +3011,6 @@ def test_get_trip_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = trip_api.GetTripRequest(**{"name": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3009,7 +3034,6 @@ def test_delete_trip_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = trip_api.DeleteTripRequest(**{"name": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3037,7 +3061,6 @@ def test_report_billable_trip_routing_parameters_request_1_grpc():
         request_msg = trip_api.ReportBillableTripRequest(
             **{"name": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3061,7 +3084,6 @@ def test_search_trips_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = trip_api.SearchTripsRequest(**{"parent": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3085,7 +3107,6 @@ def test_update_trip_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = trip_api.UpdateTripRequest(**{"name": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3139,7 +3160,6 @@ async def test_create_trip_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = trip_api.CreateTripRequest()
-
         assert args[0] == request_msg
 
 
@@ -3174,7 +3194,6 @@ async def test_get_trip_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = trip_api.GetTripRequest()
-
         assert args[0] == request_msg
 
 
@@ -3197,7 +3216,6 @@ async def test_delete_trip_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = trip_api.DeleteTripRequest()
-
         assert args[0] == request_msg
 
 
@@ -3222,7 +3240,6 @@ async def test_report_billable_trip_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = trip_api.ReportBillableTripRequest()
-
         assert args[0] == request_msg
 
 
@@ -3249,7 +3266,6 @@ async def test_search_trips_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = trip_api.SearchTripsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3284,7 +3300,6 @@ async def test_update_trip_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = trip_api.UpdateTripRequest()
-
         assert args[0] == request_msg
 
 
@@ -3317,7 +3332,6 @@ async def test_create_trip_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = trip_api.CreateTripRequest(**{"parent": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3355,7 +3369,6 @@ async def test_get_trip_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = trip_api.GetTripRequest(**{"name": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3381,7 +3394,6 @@ async def test_delete_trip_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = trip_api.DeleteTripRequest(**{"name": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3411,7 +3423,6 @@ async def test_report_billable_trip_routing_parameters_request_1_grpc_asyncio():
         request_msg = trip_api.ReportBillableTripRequest(
             **{"name": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3441,7 +3452,6 @@ async def test_search_trips_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = trip_api.SearchTripsRequest(**{"parent": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -3479,7 +3489,6 @@ async def test_update_trip_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = trip_api.UpdateTripRequest(**{"name": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}

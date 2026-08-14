@@ -1,0 +1,82 @@
+permissions:
+  contents: read
+
+on:
+  pull_request:
+    paths:
+      - 'packages/google-cloud-bigtable/**'
+      - '.github/workflows/bigtable-conformance.yaml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/google-cloud-bigtable/**'
+      - '.github/workflows/bigtable-conformance.yaml'
+
+defaults:
+  run:
+    working-directory: packages/google-cloud-bigtable
+
+name: Conformance
+jobs:
+  check_changes:
+    runs-on: ubuntu-latest
+    outputs:
+      run_bigtable: ${{ steps.filter.outputs.bigtable }}
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+      - uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4.0.1
+        id: filter
+        with:
+          filters: |
+            bigtable:
+              - 'packages/google-cloud-bigtable/**'
+              - '.github/workflows/bigtable-conformance.yaml'
+
+  system-tests:
+    needs: check_changes
+    if: ${{ needs.check_changes.outputs.run_bigtable == 'true' }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        test-version: [ "v0.0.4" ]
+        py-version: [ 3.13 ]
+        client-type: [ "async", "sync"]
+        # None of the clients currently support reverse scans, execute query plan refresh, retry info, or routing cookie
+        include:
+          - client-type: "async"
+            test_args: "-skip \"PlanRefresh|_Reverse|_WithRetryInfo|_WithRoutingCookie\""
+          - client-type: "sync"
+            test_args: "-skip \"PlanRefresh|_Reverse|_WithRetryInfo|_WithRoutingCookie|_Generic_MultiStream\""
+      fail-fast: false
+    name: "${{ matrix.client-type }} client / python ${{ matrix.py-version }} / test tag ${{ matrix.test-version }}"
+    steps:
+    - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      name: "Checkout google-cloud-python"
+      with:
+        persist-credentials: false
+    - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      name: "Checkout conformance tests"
+      with:
+        repository: googleapis/cloud-bigtable-clients-test
+        ref: ${{ matrix.test-version }}
+        path: packages/google-cloud-bigtable/cloud-bigtable-clients-test
+        persist-credentials: false
+    - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+      with:
+        python-version: ${{ matrix.py-version }}
+    - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+      with:
+        go-version: '>=1.20.2'
+    - run: pip install -e .
+      name: "Install google-cloud-bigtable from HEAD"
+    - run: go version
+    - run: scripts/conformance.sh
+      name: "Run tests"
+      env:
+        CLIENT_TYPE: ${{ matrix.client-type }}
+        PYTHONUNBUFFERED: 1
+        TEST_ARGS: ${{ matrix.test_args }}
+        PROXY_PORT: 9999

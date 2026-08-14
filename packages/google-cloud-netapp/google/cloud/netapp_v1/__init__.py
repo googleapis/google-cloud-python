@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,12 +21,31 @@ from google.cloud.netapp_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER
-    from importlib import metadata
-else:  # pragma: NO COVER
-    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
-    # this code path once we drop support for Python 3.7
-    import importlib_metadata as metadata
+from importlib import metadata
+
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.netapp_v1.services.net_app",
+    "google.cloud.netapp_v1.types.active_directory",
+    "google.cloud.netapp_v1.types.backup",
+    "google.cloud.netapp_v1.types.backup_policy",
+    "google.cloud.netapp_v1.types.backup_vault",
+    "google.cloud.netapp_v1.types.cloud_netapp_service",
+    "google.cloud.netapp_v1.types.common",
+    "google.cloud.netapp_v1.types.host_group",
+    "google.cloud.netapp_v1.types.kms",
+    "google.cloud.netapp_v1.types.ontap",
+    "google.cloud.netapp_v1.types.quota_rule",
+    "google.cloud.netapp_v1.types.replication",
+    "google.cloud.netapp_v1.types.snapshot",
+    "google.cloud.netapp_v1.types.storage_pool",
+    "google.cloud.netapp_v1.types.volume",
+}
 
 
 from .services.net_app import NetAppAsyncClient, NetAppClient
@@ -75,6 +94,7 @@ from .types.common import (
     LocationMetadata,
     OsType,
     QosType,
+    ScaleType,
     ServiceLevel,
     StoragePoolType,
     UserCommands,
@@ -99,6 +119,16 @@ from .types.kms import (
     UpdateKmsConfigRequest,
     VerifyKmsConfigRequest,
     VerifyKmsConfigResponse,
+)
+from .types.ontap import (
+    ExecuteOntapDeleteRequest,
+    ExecuteOntapDeleteResponse,
+    ExecuteOntapGetRequest,
+    ExecuteOntapGetResponse,
+    ExecuteOntapPatchRequest,
+    ExecuteOntapPatchResponse,
+    ExecuteOntapPostRequest,
+    ExecuteOntapPostResponse,
 )
 from .types.quota_rule import (
     CreateQuotaRuleRequest,
@@ -141,6 +171,7 @@ from .types.storage_pool import (
     GetStoragePoolRequest,
     ListStoragePoolsRequest,
     ListStoragePoolsResponse,
+    Mode,
     StoragePool,
     SwitchActiveReplicaZoneRequest,
     UpdateStoragePoolRequest,
@@ -156,10 +187,12 @@ from .types.volume import (
     CreateVolumeRequest,
     DailySchedule,
     DeleteVolumeRequest,
+    EstablishVolumePeeringRequest,
     ExportPolicy,
     GetVolumeRequest,
     HourlySchedule,
     HybridReplicationParameters,
+    LargeCapacityConfig,
     ListVolumesRequest,
     ListVolumesResponse,
     MonthlySchedule,
@@ -189,34 +222,23 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import sys
         import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.netapp_v1"
-        if sys.version_info < (3, 9):
+        if sys.version_info < (3, 10):
             warnings.warn(
                 "You are using a non-supported Python version "
                 + f"({_py_version_str}).  Google will not post any further "
                 + f"updates to {_package_label} supporting this Python version. "
                 + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.9, and then update {_package_label}.",
-                FutureWarning,
-            )
-        if sys.version_info[:2] == (3, 9):
-            warnings.warn(
-                f"You are using a Python version ({_py_version_str}) "
-                + f"which Google will stop supporting in {_package_label} in "
-                + "January 2026. Please "
-                + "upgrade to the latest Python version, or at "
-                + "least to Python 3.10, before then, and "
-                + f"then update {_package_label}.",
+                + f"least to Python 3.10, and then update {_package_label}.",
                 FutureWarning,
             )
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -245,9 +267,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -314,6 +336,15 @@ __all__ = (
     "EncryptVolumesRequest",
     "EncryptionType",
     "EstablishPeeringRequest",
+    "EstablishVolumePeeringRequest",
+    "ExecuteOntapDeleteRequest",
+    "ExecuteOntapDeleteResponse",
+    "ExecuteOntapGetRequest",
+    "ExecuteOntapGetResponse",
+    "ExecuteOntapPatchRequest",
+    "ExecuteOntapPatchResponse",
+    "ExecuteOntapPostRequest",
+    "ExecuteOntapPostResponse",
     "ExportPolicy",
     "FlexPerformance",
     "GetActiveDirectoryRequest",
@@ -333,6 +364,7 @@ __all__ = (
     "HybridReplicationParameters",
     "HybridReplicationSchedule",
     "KmsConfig",
+    "LargeCapacityConfig",
     "ListActiveDirectoriesRequest",
     "ListActiveDirectoriesResponse",
     "ListBackupPoliciesRequest",
@@ -356,6 +388,7 @@ __all__ = (
     "ListVolumesRequest",
     "ListVolumesResponse",
     "LocationMetadata",
+    "Mode",
     "MonthlySchedule",
     "MountOption",
     "NetAppClient",
@@ -373,6 +406,7 @@ __all__ = (
     "ReverseReplicationDirectionRequest",
     "RevertVolumeRequest",
     "SMBSettings",
+    "ScaleType",
     "SecurityStyle",
     "ServiceLevel",
     "SimpleExportPolicyRule",

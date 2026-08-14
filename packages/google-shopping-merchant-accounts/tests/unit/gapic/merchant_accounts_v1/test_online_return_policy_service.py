@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -116,6 +111,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1014,7 +1024,14 @@ def test_online_return_policy_service_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1061,7 +1078,14 @@ def test_online_return_policy_service_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1400,8 +1424,8 @@ def test_online_return_policy_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        online_return_policy.GetOnlineReturnPolicyRequest,
-        dict,
+        online_return_policy.GetOnlineReturnPolicyRequest(),
+        {},
     ],
 )
 def test_get_online_return_policy(request_type, transport: str = "grpc"):
@@ -1412,7 +1436,7 @@ def test_get_online_return_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1489,9 +1513,10 @@ def test_get_online_return_policy_non_empty_request_with_auto_populated_field():
         client.get_online_return_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == online_return_policy.GetOnlineReturnPolicyRequest(
+        request_msg = online_return_policy.GetOnlineReturnPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_online_return_policy_use_cached_wrapped_rpc():
@@ -1577,9 +1602,15 @@ async def test_get_online_return_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        online_return_policy.GetOnlineReturnPolicyRequest(),
+        {},
+    ],
+)
 async def test_get_online_return_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=online_return_policy.GetOnlineReturnPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OnlineReturnPolicyServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1588,7 +1619,7 @@ async def test_get_online_return_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1642,11 +1673,6 @@ async def test_get_online_return_policy_async(
         response.return_label_source
         == online_return_policy.OnlineReturnPolicy.ReturnLabelSource.DOWNLOAD_AND_PRINT
     )
-
-
-@pytest.mark.asyncio
-async def test_get_online_return_policy_async_from_dict():
-    await test_get_online_return_policy_async(request_type=dict)
 
 
 def test_get_online_return_policy_field_headers():
@@ -1803,8 +1829,8 @@ async def test_get_online_return_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        online_return_policy.ListOnlineReturnPoliciesRequest,
-        dict,
+        online_return_policy.ListOnlineReturnPoliciesRequest(),
+        {},
     ],
 )
 def test_list_online_return_policies(request_type, transport: str = "grpc"):
@@ -1815,7 +1841,7 @@ def test_list_online_return_policies(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1864,10 +1890,11 @@ def test_list_online_return_policies_non_empty_request_with_auto_populated_field
         client.list_online_return_policies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == online_return_policy.ListOnlineReturnPoliciesRequest(
+        request_msg = online_return_policy.ListOnlineReturnPoliciesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_online_return_policies_use_cached_wrapped_rpc():
@@ -1953,9 +1980,15 @@ async def test_list_online_return_policies_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        online_return_policy.ListOnlineReturnPoliciesRequest(),
+        {},
+    ],
+)
 async def test_list_online_return_policies_async(
-    transport: str = "grpc_asyncio",
-    request_type=online_return_policy.ListOnlineReturnPoliciesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OnlineReturnPolicyServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1964,7 +1997,7 @@ async def test_list_online_return_policies_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1987,11 +2020,6 @@ async def test_list_online_return_policies_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOnlineReturnPoliciesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_online_return_policies_async_from_dict():
-    await test_list_online_return_policies_async(request_type=dict)
 
 
 def test_list_online_return_policies_field_headers():
@@ -2198,6 +2226,9 @@ def test_list_online_return_policies_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -2292,6 +2323,8 @@ async def test_list_online_return_policies_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2343,11 +2376,7 @@ async def test_list_online_return_policies_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_online_return_policies(request={})
-        ).pages:
+        async for page_ in (await client.list_online_return_policies(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2356,8 +2385,8 @@ async def test_list_online_return_policies_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gsma_online_return_policy.CreateOnlineReturnPolicyRequest,
-        dict,
+        gsma_online_return_policy.CreateOnlineReturnPolicyRequest(),
+        {},
     ],
 )
 def test_create_online_return_policy(request_type, transport: str = "grpc"):
@@ -2368,7 +2397,7 @@ def test_create_online_return_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2447,9 +2476,10 @@ def test_create_online_return_policy_non_empty_request_with_auto_populated_field
         client.create_online_return_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gsma_online_return_policy.CreateOnlineReturnPolicyRequest(
+        request_msg = gsma_online_return_policy.CreateOnlineReturnPolicyRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_online_return_policy_use_cached_wrapped_rpc():
@@ -2535,9 +2565,15 @@ async def test_create_online_return_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gsma_online_return_policy.CreateOnlineReturnPolicyRequest(),
+        {},
+    ],
+)
 async def test_create_online_return_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=gsma_online_return_policy.CreateOnlineReturnPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OnlineReturnPolicyServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2546,7 +2582,7 @@ async def test_create_online_return_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2600,11 +2636,6 @@ async def test_create_online_return_policy_async(
         response.return_label_source
         == gsma_online_return_policy.OnlineReturnPolicy.ReturnLabelSource.DOWNLOAD_AND_PRINT
     )
-
-
-@pytest.mark.asyncio
-async def test_create_online_return_policy_async_from_dict():
-    await test_create_online_return_policy_async(request_type=dict)
 
 
 def test_create_online_return_policy_field_headers():
@@ -2779,8 +2810,8 @@ async def test_create_online_return_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        online_return_policy.DeleteOnlineReturnPolicyRequest,
-        dict,
+        online_return_policy.DeleteOnlineReturnPolicyRequest(),
+        {},
     ],
 )
 def test_delete_online_return_policy(request_type, transport: str = "grpc"):
@@ -2791,7 +2822,7 @@ def test_delete_online_return_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2836,9 +2867,10 @@ def test_delete_online_return_policy_non_empty_request_with_auto_populated_field
         client.delete_online_return_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == online_return_policy.DeleteOnlineReturnPolicyRequest(
+        request_msg = online_return_policy.DeleteOnlineReturnPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_online_return_policy_use_cached_wrapped_rpc():
@@ -2924,9 +2956,15 @@ async def test_delete_online_return_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        online_return_policy.DeleteOnlineReturnPolicyRequest(),
+        {},
+    ],
+)
 async def test_delete_online_return_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=online_return_policy.DeleteOnlineReturnPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = OnlineReturnPolicyServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2935,7 +2973,7 @@ async def test_delete_online_return_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2953,11 +2991,6 @@ async def test_delete_online_return_policy_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_online_return_policy_async_from_dict():
-    await test_delete_online_return_policy_async(request_type=dict)
 
 
 def test_delete_online_return_policy_field_headers():
@@ -3220,7 +3253,7 @@ def test_get_online_return_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_online_return_policy_rest_unset_required_fields():
@@ -3412,7 +3445,7 @@ def test_list_online_return_policies_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_online_return_policies_rest_unset_required_fields():
@@ -3547,6 +3580,9 @@ def test_list_online_return_policies_rest_pager(transport: str = "rest"):
 
         pager = client.list_online_return_policies(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -3672,7 +3708,7 @@ def test_create_online_return_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_online_return_policy_rest_unset_required_fields():
@@ -3866,7 +3902,7 @@ def test_delete_online_return_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_online_return_policy_rest_unset_required_fields():
@@ -4059,7 +4095,6 @@ def test_get_online_return_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = online_return_policy.GetOnlineReturnPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4082,7 +4117,6 @@ def test_list_online_return_policies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = online_return_policy.ListOnlineReturnPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4105,7 +4139,6 @@ def test_create_online_return_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gsma_online_return_policy.CreateOnlineReturnPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4128,7 +4161,6 @@ def test_delete_online_return_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = online_return_policy.DeleteOnlineReturnPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4185,7 +4217,6 @@ async def test_get_online_return_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = online_return_policy.GetOnlineReturnPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4214,7 +4245,6 @@ async def test_list_online_return_policies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = online_return_policy.ListOnlineReturnPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4257,7 +4287,6 @@ async def test_create_online_return_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gsma_online_return_policy.CreateOnlineReturnPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -4282,7 +4311,6 @@ async def test_delete_online_return_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = online_return_policy.DeleteOnlineReturnPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5007,7 +5035,6 @@ def test_get_online_return_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = online_return_policy.GetOnlineReturnPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5029,7 +5056,6 @@ def test_list_online_return_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = online_return_policy.ListOnlineReturnPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5051,7 +5077,6 @@ def test_create_online_return_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gsma_online_return_policy.CreateOnlineReturnPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5073,7 +5098,6 @@ def test_delete_online_return_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = online_return_policy.DeleteOnlineReturnPolicyRequest()
-
         assert args[0] == request_msg
 
 

@@ -17,15 +17,14 @@ from unittest import mock
 import pytest
 
 try:
-    from grpc import aio, Compression
+    from grpc import Compression, aio
 except ImportError:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
-from google.api_core import grpc_helpers_async
-from google.api_core import operations_v1
-from google.api_core import page_iterator_async
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
+
+from google.api_core import grpc_helpers_async, operations_v1, page_iterator_async
 
 
 def _mock_grpc_objects(response):

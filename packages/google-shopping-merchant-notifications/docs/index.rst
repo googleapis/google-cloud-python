@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Merchant API.
+This package includes clients for multiple versions of Shopping Merchant Notifications.
 By default, you will get version ``merchant_notifications_v1``.
 
 

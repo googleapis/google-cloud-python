@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -430,8 +430,10 @@ class BatchControllerGrpcTransport(BatchControllerTransport):
     def delete_batch(self) -> Callable[[batches.DeleteBatchRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete batch method over gRPC.
 
-        Deletes the batch workload resource. If the batch is not in
-        terminal state, the delete fails and the response returns
+        Deletes the batch workload resource. If the batch is not in a
+        ``CANCELLED``, ``SUCCEEDED`` or ``FAILED``
+        [``State``][google.cloud.dataproc.v1.Batch.State], the delete
+        operation fails and the response returns
         ``FAILED_PRECONDITION``.
 
         Returns:

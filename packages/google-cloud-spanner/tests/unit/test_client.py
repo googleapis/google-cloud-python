@@ -836,3 +836,155 @@ class TestClient(unittest.TestCase):
             retry=mock.ANY,
             timeout=mock.ANY,
         )
+
+    @mock.patch.dict(
+        os.environ, {"GOOGLE_CLOUD_SPANNER_ENABLE_LOG_CLIENT_OPTIONS": "false"}
+    )
+    def test_constructor_logs_options_disabled_by_default(self):
+        from google.cloud.spanner_v1 import client as MUT
+
+        logger = MUT.log
+        creds = build_scoped_credentials()
+
+        with mock.patch.object(logger, "info") as info_logger:
+            client = self._make_one(
+                project=self.PROJECT,
+                credentials=creds,
+            )
+            self.assertIsNotNone(client)
+            # Assert that no logs are emitted when the environment variable is explicitly false
+            info_logger.assert_not_called()
+
+        # Also test when the environment variable is not set at all
+        with mock.patch.dict(
+            os.environ, {"SPANNER_DISABLE_BUILTIN_METRICS": "true"}, clear=True
+        ):
+            with mock.patch.object(logger, "info") as info_logger:
+                client = self._make_one(project=self.PROJECT, credentials=creds)
+                self.assertIsNotNone(client)
+                # Assert that no logs are emitted when the environment variable is not set
+                info_logger.assert_not_called()
+
+    def test_constructor_logs_options(self):
+        from google.cloud.spanner_v1 import client as MUT
+
+        creds = build_scoped_credentials()
+        observability_options = {"enable_extended_tracing": True}
+        with self.assertLogs(MUT.__name__, level="INFO") as cm:
+            with mock.patch.dict(
+                os.environ, {"GOOGLE_CLOUD_SPANNER_ENABLE_LOG_CLIENT_OPTIONS": "true"}
+            ):
+                client = self._make_one(
+                    project=self.PROJECT,
+                    credentials=creds,
+                    route_to_leader_enabled=False,
+                    directed_read_options=self.DIRECTED_READ_OPTIONS,
+                    default_transaction_options=self.DEFAULT_TRANSACTION_OPTIONS,
+                    observability_options=observability_options,
+                )
+                self.assertIsNotNone(client)
+
+        # Assert that logs are emitted when the environment variable is true
+        # and verify their content.
+        self.assertEqual(len(cm.output), 1)
+        log_output = cm.output[0]
+        self.assertIn("Spanner options:", log_output)
+        self.assertIn(f"\n  Project ID: {self.PROJECT}", log_output)
+        self.assertIn("\n  Host: spanner.googleapis.com", log_output)
+        self.assertIn("\n  Route to leader enabled: False", log_output)
+        self.assertIn(
+            f"\n  Directed read options: {self.DIRECTED_READ_OPTIONS}", log_output
+        )
+        self.assertIn(
+            f"\n  Default transaction options: {self.DEFAULT_TRANSACTION_OPTIONS}",
+            log_output,
+        )
+        self.assertIn(f"\n  Observability options: {observability_options}", log_output)
+        # SPANNER_DISABLE_BUILTIN_METRICS is "true" from class-level patch
+        self.assertIn("\n  Built-in metrics enabled: False", log_output)
+        # Test with custom host
+        endpoint = "test.googleapis.com"
+        with self.assertLogs(MUT.__name__, level="INFO") as cm:
+            with mock.patch.dict(
+                os.environ, {"GOOGLE_CLOUD_SPANNER_ENABLE_LOG_CLIENT_OPTIONS": "true"}
+            ):
+                self._make_one(
+                    project=self.PROJECT,
+                    credentials=creds,
+                    client_options={"api_endpoint": endpoint},
+                )
+        self.assertEqual(len(cm.output), 1)
+        log_output = cm.output[0]
+        self.assertIn(f"\n  Host: {endpoint}", log_output)
+
+        # Test with emulator host
+        emulator_host = "localhost:9010"
+        with mock.patch.dict(
+            os.environ,
+            {
+                MUT.EMULATOR_ENV_VAR: emulator_host,
+                "GOOGLE_CLOUD_SPANNER_ENABLE_LOG_CLIENT_OPTIONS": "true",
+            },
+        ):
+            with self.assertLogs(MUT.__name__, level="INFO") as cm:
+                self._make_one(project=self.PROJECT, credentials=creds)
+        self.assertEqual(len(cm.output), 1)
+        log_output = cm.output[0]
+        self.assertIn(f"\n  Host: {emulator_host}", log_output)
+
+        # Test with experimental host
+        experimental_host = "exp.googleapis.com"
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_CLOUD_SPANNER_ENABLE_LOG_CLIENT_OPTIONS": "true"}
+        ):
+            with self.assertLogs(MUT.__name__, level="INFO") as cm:
+                self._make_one(
+                    project=self.PROJECT,
+                    credentials=creds,
+                    experimental_host=experimental_host,
+                )
+        self.assertEqual(len(cm.output), 1)
+        log_output = cm.output[0]
+        self.assertIn(f"\n  Host: {experimental_host}", log_output)
+
+    def test_constructor_w_instance_type_omni(self):
+        from google.cloud.spanner_v1.client import InstanceType
+
+        creds = build_scoped_credentials()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            client_options={"api_endpoint": "omni-host:15000"},
+            instance_type=InstanceType.OMNI,
+        )
+        self.assertEqual(client.project, "default")
+        self.assertEqual(client.instance_type, InstanceType.OMNI)
+        self.assertEqual(client._host, "omni-host:15000")
+        self.assertIsInstance(client._credentials, AnonymousCredentials)
+
+    def test_constructor_w_instance_type_omni_no_host_raises_value_error(self):
+        from google.cloud.spanner_v1.client import InstanceType
+
+        creds = build_scoped_credentials()
+        with self.assertRaises(ValueError) as ctx:
+            self._make_one(
+                project=self.PROJECT,
+                credentials=creds,
+                instance_type=InstanceType.OMNI,
+            )
+        self.assertIn(
+            "Host must be set for connecting to Spanner Omni instances",
+            str(ctx.exception),
+        )
+
+    def test_constructor_w_invalid_instance_type_raises_value_error(self):
+        creds = build_scoped_credentials()
+        with self.assertRaises(ValueError) as ctx:
+            self._make_one(
+                project=self.PROJECT,
+                credentials=creds,
+                instance_type="invalid-type",
+            )
+        self.assertIn(
+            "instance_type must be one of 'cloud' or 'omni'", str(ctx.exception)
+        )

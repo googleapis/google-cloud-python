@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -114,6 +109,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1065,7 +1075,14 @@ def test_runtime_project_attachment_service_client_get_mtls_endpoint_and_cert_so
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1112,7 +1129,14 @@ def test_runtime_project_attachment_service_client_get_mtls_endpoint_and_cert_so
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1453,8 +1477,8 @@ def test_runtime_project_attachment_service_client_create_channel_credentials_fi
 @pytest.mark.parametrize(
     "request_type",
     [
-        runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest,
-        dict,
+        runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest(),
+        {},
     ],
 )
 def test_create_runtime_project_attachment(request_type, transport: str = "grpc"):
@@ -1465,7 +1489,7 @@ def test_create_runtime_project_attachment(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1520,12 +1544,13 @@ def test_create_runtime_project_attachment_non_empty_request_with_auto_populated
         client.create_runtime_project_attachment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest(
-            parent="parent_value",
-            runtime_project_attachment_id="runtime_project_attachment_id_value",
+        request_msg = (
+            runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest(
+                parent="parent_value",
+                runtime_project_attachment_id="runtime_project_attachment_id_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_create_runtime_project_attachment_use_cached_wrapped_rpc():
@@ -1611,9 +1636,15 @@ async def test_create_runtime_project_attachment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest(),
+        {},
+    ],
+)
 async def test_create_runtime_project_attachment_async(
-    transport: str = "grpc_asyncio",
-    request_type=runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = RuntimeProjectAttachmentServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1622,7 +1653,7 @@ async def test_create_runtime_project_attachment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1651,11 +1682,6 @@ async def test_create_runtime_project_attachment_async(
     )
     assert response.name == "name_value"
     assert response.runtime_project == "runtime_project_value"
-
-
-@pytest.mark.asyncio
-async def test_create_runtime_project_attachment_async_from_dict():
-    await test_create_runtime_project_attachment_async(request_type=dict)
 
 
 def test_create_runtime_project_attachment_field_headers():
@@ -1850,8 +1876,8 @@ async def test_create_runtime_project_attachment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest,
-        dict,
+        runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest(),
+        {},
     ],
 )
 def test_get_runtime_project_attachment(request_type, transport: str = "grpc"):
@@ -1862,7 +1888,7 @@ def test_get_runtime_project_attachment(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1916,11 +1942,12 @@ def test_get_runtime_project_attachment_non_empty_request_with_auto_populated_fi
         client.get_runtime_project_attachment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest(
-            name="name_value",
+        request_msg = (
+            runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest(
+                name="name_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_get_runtime_project_attachment_use_cached_wrapped_rpc():
@@ -2006,9 +2033,15 @@ async def test_get_runtime_project_attachment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest(),
+        {},
+    ],
+)
 async def test_get_runtime_project_attachment_async(
-    transport: str = "grpc_asyncio",
-    request_type=runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = RuntimeProjectAttachmentServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2017,7 +2050,7 @@ async def test_get_runtime_project_attachment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2046,11 +2079,6 @@ async def test_get_runtime_project_attachment_async(
     )
     assert response.name == "name_value"
     assert response.runtime_project == "runtime_project_value"
-
-
-@pytest.mark.asyncio
-async def test_get_runtime_project_attachment_async_from_dict():
-    await test_get_runtime_project_attachment_async(request_type=dict)
 
 
 def test_get_runtime_project_attachment_field_headers():
@@ -2213,8 +2241,8 @@ async def test_get_runtime_project_attachment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest,
-        dict,
+        runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest(),
+        {},
     ],
 )
 def test_list_runtime_project_attachments(request_type, transport: str = "grpc"):
@@ -2225,7 +2253,7 @@ def test_list_runtime_project_attachments(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2280,14 +2308,15 @@ def test_list_runtime_project_attachments_non_empty_request_with_auto_populated_
         client.list_runtime_project_attachments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest(
-            parent="parent_value",
-            page_token="page_token_value",
-            filter="filter_value",
-            order_by="order_by_value",
+        request_msg = (
+            runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest(
+                parent="parent_value",
+                page_token="page_token_value",
+                filter="filter_value",
+                order_by="order_by_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_list_runtime_project_attachments_use_cached_wrapped_rpc():
@@ -2373,9 +2402,15 @@ async def test_list_runtime_project_attachments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest(),
+        {},
+    ],
+)
 async def test_list_runtime_project_attachments_async(
-    transport: str = "grpc_asyncio",
-    request_type=runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = RuntimeProjectAttachmentServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2384,7 +2419,7 @@ async def test_list_runtime_project_attachments_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2409,11 +2444,6 @@ async def test_list_runtime_project_attachments_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRuntimeProjectAttachmentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_runtime_project_attachments_async_from_dict():
-    await test_list_runtime_project_attachments_async(request_type=dict)
 
 
 def test_list_runtime_project_attachments_field_headers():
@@ -2626,6 +2656,9 @@ def test_list_runtime_project_attachments_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -2721,6 +2754,8 @@ async def test_list_runtime_project_attachments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2773,9 +2808,7 @@ async def test_list_runtime_project_attachments_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_runtime_project_attachments(request={})
         ).pages:
             pages.append(page_)
@@ -2786,8 +2819,8 @@ async def test_list_runtime_project_attachments_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest,
-        dict,
+        runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest(),
+        {},
     ],
 )
 def test_delete_runtime_project_attachment(request_type, transport: str = "grpc"):
@@ -2798,7 +2831,7 @@ def test_delete_runtime_project_attachment(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2845,11 +2878,12 @@ def test_delete_runtime_project_attachment_non_empty_request_with_auto_populated
         client.delete_runtime_project_attachment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest(
-            name="name_value",
+        request_msg = (
+            runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest(
+                name="name_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_delete_runtime_project_attachment_use_cached_wrapped_rpc():
@@ -2935,9 +2969,15 @@ async def test_delete_runtime_project_attachment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest(),
+        {},
+    ],
+)
 async def test_delete_runtime_project_attachment_async(
-    transport: str = "grpc_asyncio",
-    request_type=runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = RuntimeProjectAttachmentServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2946,7 +2986,7 @@ async def test_delete_runtime_project_attachment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2966,11 +3006,6 @@ async def test_delete_runtime_project_attachment_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_runtime_project_attachment_async_from_dict():
-    await test_delete_runtime_project_attachment_async(request_type=dict)
 
 
 def test_delete_runtime_project_attachment_field_headers():
@@ -3123,8 +3158,8 @@ async def test_delete_runtime_project_attachment_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest,
-        dict,
+        runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest(),
+        {},
     ],
 )
 def test_lookup_runtime_project_attachment(request_type, transport: str = "grpc"):
@@ -3135,7 +3170,7 @@ def test_lookup_runtime_project_attachment(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3187,11 +3222,12 @@ def test_lookup_runtime_project_attachment_non_empty_request_with_auto_populated
         client.lookup_runtime_project_attachment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest(
-            name="name_value",
+        request_msg = (
+            runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest(
+                name="name_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_lookup_runtime_project_attachment_use_cached_wrapped_rpc():
@@ -3277,9 +3313,15 @@ async def test_lookup_runtime_project_attachment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest(),
+        {},
+    ],
+)
 async def test_lookup_runtime_project_attachment_async(
-    transport: str = "grpc_asyncio",
-    request_type=runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = RuntimeProjectAttachmentServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3288,7 +3330,7 @@ async def test_lookup_runtime_project_attachment_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3313,11 +3355,6 @@ async def test_lookup_runtime_project_attachment_async(
         response,
         runtime_project_attachment_service.LookupRuntimeProjectAttachmentResponse,
     )
-
-
-@pytest.mark.asyncio
-async def test_lookup_runtime_project_attachment_async_from_dict():
-    await test_lookup_runtime_project_attachment_async(request_type=dict)
 
 
 def test_lookup_runtime_project_attachment_field_headers():
@@ -3618,7 +3655,7 @@ def test_create_runtime_project_attachment_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_runtime_project_attachment_rest_unset_required_fields():
@@ -3828,7 +3865,7 @@ def test_get_runtime_project_attachment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_runtime_project_attachment_rest_unset_required_fields():
@@ -4030,7 +4067,7 @@ def test_list_runtime_project_attachments_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_runtime_project_attachments_rest_unset_required_fields():
@@ -4175,6 +4212,9 @@ def test_list_runtime_project_attachments_rest_pager(transport: str = "rest"):
 
         pager = client.list_runtime_project_attachments(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -4299,7 +4339,7 @@ def test_delete_runtime_project_attachment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_runtime_project_attachment_rest_unset_required_fields():
@@ -4490,7 +4530,7 @@ def test_lookup_runtime_project_attachment_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_lookup_runtime_project_attachment_rest_unset_required_fields():
@@ -4697,7 +4737,6 @@ def test_create_runtime_project_attachment_empty_call_grpc():
         request_msg = (
             runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -4724,7 +4763,6 @@ def test_get_runtime_project_attachment_empty_call_grpc():
         request_msg = (
             runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -4751,7 +4789,6 @@ def test_list_runtime_project_attachments_empty_call_grpc():
         request_msg = (
             runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -4776,7 +4813,6 @@ def test_delete_runtime_project_attachment_empty_call_grpc():
         request_msg = (
             runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -4803,7 +4839,6 @@ def test_lookup_runtime_project_attachment_empty_call_grpc():
         request_msg = (
             runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -4849,7 +4884,6 @@ async def test_create_runtime_project_attachment_empty_call_grpc_asyncio():
         request_msg = (
             runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -4881,7 +4915,6 @@ async def test_get_runtime_project_attachment_empty_call_grpc_asyncio():
         request_msg = (
             runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -4912,7 +4945,6 @@ async def test_list_runtime_project_attachments_empty_call_grpc_asyncio():
         request_msg = (
             runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -4939,7 +4971,6 @@ async def test_delete_runtime_project_attachment_empty_call_grpc_asyncio():
         request_msg = (
             runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -4968,7 +4999,6 @@ async def test_lookup_runtime_project_attachment_empty_call_grpc_asyncio():
         request_msg = (
             runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -6175,7 +6205,6 @@ def test_create_runtime_project_attachment_empty_call_rest():
         request_msg = (
             runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -6199,7 +6228,6 @@ def test_get_runtime_project_attachment_empty_call_rest():
         request_msg = (
             runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -6223,7 +6251,6 @@ def test_list_runtime_project_attachments_empty_call_rest():
         request_msg = (
             runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -6247,7 +6274,6 @@ def test_delete_runtime_project_attachment_empty_call_rest():
         request_msg = (
             runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -6271,7 +6297,6 @@ def test_lookup_runtime_project_attachment_empty_call_rest():
         request_msg = (
             runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest()
         )
-
         assert args[0] == request_msg
 
 

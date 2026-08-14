@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -114,12 +109,28 @@ def modify_default_endpoint_template(client):
     )
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert DestinationServiceClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -141,6 +152,10 @@ def test__get_default_mtls_endpoint():
     assert (
         DestinationServiceClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        DestinationServiceClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -979,7 +994,14 @@ def test_destination_service_client_get_mtls_endpoint_and_cert_source(client_cla
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1026,7 +1048,14 @@ def test_destination_service_client_get_mtls_endpoint_and_cert_source(client_cla
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1323,11 +1352,13 @@ def test_destination_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1356,8 +1387,8 @@ def test_destination_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        destination_service.SearchDestinationsRequest,
-        dict,
+        destination_service.SearchDestinationsRequest(),
+        {},
     ],
 )
 def test_search_destinations(request_type, transport: str = "grpc"):
@@ -1368,7 +1399,7 @@ def test_search_destinations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1415,11 +1446,12 @@ def test_search_destinations_non_empty_request_with_auto_populated_field():
         client.search_destinations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == destination_service.SearchDestinationsRequest(
+        request_msg = destination_service.SearchDestinationsRequest(
             place="place_value",
             language_code="language_code_value",
             region_code="region_code_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_destinations_use_cached_wrapped_rpc():
@@ -1504,10 +1536,14 @@ async def test_search_destinations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_destinations_async(
-    transport: str = "grpc_asyncio",
-    request_type=destination_service.SearchDestinationsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        destination_service.SearchDestinationsRequest(),
+        {},
+    ],
+)
+async def test_search_destinations_async(request_type, transport: str = "grpc_asyncio"):
     client = DestinationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1515,7 +1551,7 @@ async def test_search_destinations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1535,11 +1571,6 @@ async def test_search_destinations_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, destination_service.SearchDestinationsResponse)
-
-
-@pytest.mark.asyncio
-async def test_search_destinations_async_from_dict():
-    await test_search_destinations_async(request_type=dict)
 
 
 def test_search_destinations_rest_use_cached_wrapped_rpc():
@@ -1707,7 +1738,6 @@ def test_search_destinations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = destination_service.SearchDestinationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -1748,7 +1778,6 @@ async def test_search_destinations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = destination_service.SearchDestinationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -1770,8 +1799,9 @@ def test_search_destinations_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -1831,18 +1861,20 @@ def test_search_destinations_rest_interceptors(null_interceptor):
     )
     client = DestinationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DestinationServiceRestInterceptor, "post_search_destinations"
-    ) as post, mock.patch.object(
-        transports.DestinationServiceRestInterceptor,
-        "post_search_destinations_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DestinationServiceRestInterceptor, "pre_search_destinations"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DestinationServiceRestInterceptor, "post_search_destinations"
+        ) as post,
+        mock.patch.object(
+            transports.DestinationServiceRestInterceptor,
+            "post_search_destinations_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DestinationServiceRestInterceptor, "pre_search_destinations"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -1914,7 +1946,6 @@ def test_search_destinations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = destination_service.SearchDestinationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -1969,11 +2000,14 @@ def test_destination_service_base_transport():
 
 def test_destination_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.maps.geocode_v4.services.destination_service.transports.DestinationServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.maps.geocode_v4.services.destination_service.transports.DestinationServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DestinationServiceTransport(
@@ -1994,9 +2028,12 @@ def test_destination_service_base_transport_with_credentials_file():
 
 def test_destination_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.maps.geocode_v4.services.destination_service.transports.DestinationServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.maps.geocode_v4.services.destination_service.transports.DestinationServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DestinationServiceTransport()
@@ -2076,11 +2113,12 @@ def test_destination_service_transport_auth_gdch_credentials(transport_class):
 def test_destination_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

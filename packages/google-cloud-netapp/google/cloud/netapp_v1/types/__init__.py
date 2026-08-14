@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -60,6 +60,7 @@ from .common import (
     LocationMetadata,
     OsType,
     QosType,
+    ScaleType,
     ServiceLevel,
     StoragePoolType,
     UserCommands,
@@ -84,6 +85,16 @@ from .kms import (
     UpdateKmsConfigRequest,
     VerifyKmsConfigRequest,
     VerifyKmsConfigResponse,
+)
+from .ontap import (
+    ExecuteOntapDeleteRequest,
+    ExecuteOntapDeleteResponse,
+    ExecuteOntapGetRequest,
+    ExecuteOntapGetResponse,
+    ExecuteOntapPatchRequest,
+    ExecuteOntapPatchResponse,
+    ExecuteOntapPostRequest,
+    ExecuteOntapPostResponse,
 )
 from .quota_rule import (
     CreateQuotaRuleRequest,
@@ -126,6 +137,7 @@ from .storage_pool import (
     GetStoragePoolRequest,
     ListStoragePoolsRequest,
     ListStoragePoolsResponse,
+    Mode,
     StoragePool,
     SwitchActiveReplicaZoneRequest,
     UpdateStoragePoolRequest,
@@ -141,10 +153,12 @@ from .volume import (
     CreateVolumeRequest,
     DailySchedule,
     DeleteVolumeRequest,
+    EstablishVolumePeeringRequest,
     ExportPolicy,
     GetVolumeRequest,
     HourlySchedule,
     HybridReplicationParameters,
+    LargeCapacityConfig,
     ListVolumesRequest,
     ListVolumesResponse,
     MonthlySchedule,
@@ -203,6 +217,7 @@ __all__ = (
     "HybridReplicationSchedule",
     "OsType",
     "QosType",
+    "ScaleType",
     "ServiceLevel",
     "StoragePoolType",
     "CreateHostGroupRequest",
@@ -222,6 +237,14 @@ __all__ = (
     "UpdateKmsConfigRequest",
     "VerifyKmsConfigRequest",
     "VerifyKmsConfigResponse",
+    "ExecuteOntapDeleteRequest",
+    "ExecuteOntapDeleteResponse",
+    "ExecuteOntapGetRequest",
+    "ExecuteOntapGetResponse",
+    "ExecuteOntapPatchRequest",
+    "ExecuteOntapPatchResponse",
+    "ExecuteOntapPostRequest",
+    "ExecuteOntapPostResponse",
     "CreateQuotaRuleRequest",
     "DeleteQuotaRuleRequest",
     "GetQuotaRuleRequest",
@@ -260,6 +283,7 @@ __all__ = (
     "SwitchActiveReplicaZoneRequest",
     "UpdateStoragePoolRequest",
     "ValidateDirectoryServiceRequest",
+    "Mode",
     "BackupConfig",
     "BlockDevice",
     "CacheConfig",
@@ -268,10 +292,12 @@ __all__ = (
     "CreateVolumeRequest",
     "DailySchedule",
     "DeleteVolumeRequest",
+    "EstablishVolumePeeringRequest",
     "ExportPolicy",
     "GetVolumeRequest",
     "HourlySchedule",
     "HybridReplicationParameters",
+    "LargeCapacityConfig",
     "ListVolumesRequest",
     "ListVolumesResponse",
     "MonthlySchedule",

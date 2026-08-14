@@ -1,0 +1,84 @@
+[
+  {
+    "mode": "REQUIRED",
+    "name": "rowindex",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "customer_id",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "day",
+    "type": "DATE"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "flag",
+    "type": "INTEGER"
+  },
+  {
+    "fields": [
+      {
+        "name": "key",
+        "type": "STRING"
+      },
+      {
+        "name": "value",
+        "type": "STRING"
+      }
+    ],
+    "name": "label",
+    "type": "RECORD"
+  },
+  {
+    "fields": [
+      {
+        "fields": [
+          {
+            "mode": "NULLABLE",
+            "name": "value",
+            "type": "FLOAT"
+          },
+          {
+            "mode": "NULLABLE",
+            "name": "key",
+            "type": "STRING"
+          }
+        ],
+        "mode": "REPEATED",
+        "name": "data",
+        "type": "RECORD"
+      },
+      {
+        "mode": "NULLABLE",
+        "name": "timestamp",
+        "type": "TIMESTAMP"
+      },
+      {
+        "mode": "NULLABLE",
+        "name": "category",
+        "type": "STRING"
+      }
+    ],
+    "mode": "REPEATED",
+    "name": "event_sequence",
+    "type": "RECORD"
+  },
+  {
+    "fields": [
+      {
+        "name": "street",
+        "type": "STRING"
+      },
+      {
+        "name": "city",
+        "type": "STRING"
+      }
+    ],
+    "name": "address",
+    "type": "RECORD"
+  }
+]

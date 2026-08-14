@@ -19,11 +19,6 @@ from google.api_core.exceptions import DeadlineExceeded
 from test_utils.retry import RetryErrors
 
 
-@pytest.fixture(scope="module")
-def sample_name():
-    return "backup"
-
-
 def unique_database_id():
     """Creates a unique id for the database."""
     return f"test-db-{uuid.uuid4().hex[:10]}"
@@ -91,8 +86,10 @@ def test_create_backup_with_encryption_key(
     assert kms_key_name in out
 
 
-@pytest.mark.skip(reason="same test passes on unarchived test suite, "
-                         "but fails here. Needs investigation")
+@pytest.mark.skip(
+    reason="same test passes on unarchived test suite, "
+    "but fails here. Needs investigation"
+)
 @pytest.mark.dependency(depends=["create_backup"])
 @RetryErrors(exception=DeadlineExceeded, max_tries=2)
 def test_restore_database(capsys, instance_id, sample_database):
@@ -103,8 +100,10 @@ def test_restore_database(capsys, instance_id, sample_database):
     assert BACKUP_ID in out
 
 
-@pytest.mark.skip(reason="same test passes on unarchived test suite, "
-                         "but fails here. Needs investigation")
+@pytest.mark.skip(
+    reason="same test passes on unarchived test suite, "
+    "but fails here. Needs investigation"
+)
 @pytest.mark.dependency(depends=["create_backup_with_encryption_key"])
 @RetryErrors(exception=DeadlineExceeded, max_tries=2)
 def test_restore_database_with_encryption_key(

@@ -1,0 +1,18 @@
+name: "db-benchmark"
+description:
+    "This repository contains a reproducible benchmarking suite for evaluating "
+    "database-like operations in single-node environments. It assesses "
+    "scalability across varying data volumes and complexities."
+
+third_party {
+  identifier {
+    type: "Git"
+    value: "https://github.com/h2oai/db-benchmark"
+    primary_source: true
+    version: "Latest Commit on Main Branch as of Access"
+  }
+  version: "Latest Commit on Main Branch as of Access"
+  last_upgrade_date { year: 2024 month: 7 day: 12 }
+  license_type: RECIPROCAL
+  local_modifications: "Modified the queries to test and benchmark the BigFrames project"
+}

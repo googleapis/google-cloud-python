@@ -3,9 +3,9 @@ import logging
 from unittest import mock
 
 from google.api_core.client_logging import (
-    setup_logging,
-    initialize_logging,
     StructuredLogFormatter,
+    initialize_logging,
+    setup_logging,
 )
 
 

@@ -15,21 +15,22 @@
 #
 from typing import Optional, Sequence, Tuple, Union
 
+import grpc
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.longrunning import operations_pb2
+from google.oauth2 import service_account  # type: ignore
+
 from google.api_core import client_options as client_options_lib  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.api_core.operations_v1 import pagers
+from google.api_core.operations_v1.abstract_operations_base_client import (
+    AbstractOperationsBaseClient,
+)
 from google.api_core.operations_v1.transports.base import (
     DEFAULT_CLIENT_INFO,
     OperationsTransport,
 )
-from google.api_core.operations_v1.abstract_operations_base_client import (
-    AbstractOperationsBaseClient,
-)
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.longrunning import operations_pb2
-from google.oauth2 import service_account  # type: ignore
-import grpc
 
 OptionalRetry = Union[retries.Retry, object]
 

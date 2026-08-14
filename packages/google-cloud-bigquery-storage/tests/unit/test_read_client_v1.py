@@ -158,24 +158,15 @@ def test_read_rows(mock_transport, client_under_test):
     ["google.cloud.bigquery_storage_v1", "google.cloud.bigquery_storage_v1beta2"],
 )
 def test_init_default_client_info(module_under_test):
-    from google.api_core.gapic_v1.client_info import METRICS_METADATA_KEY
-
     mut = importlib.import_module(module_under_test)
-
     creds = mock.Mock(spec=credentials.Credentials)
-    client = mut.BigQueryWriteClient(credentials=creds)
+    expected_client_info = f"gccl/{mut.__version__}"
 
-    installed_version = mut.__version__
-    expected_client_info = f"gccl/{installed_version}"
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as mock_wrap:
+        mut.BigQueryWriteClient(credentials=creds)
 
-    for wrapped_method in client.transport._wrapped_methods.values():
-        user_agent = next(
-            (
-                header_value
-                for header, header_value in wrapped_method._metadata
-                if header == METRICS_METADATA_KEY
-            ),
-            None,
-        )
-        assert user_agent is not None
-        assert expected_client_info in user_agent
+        assert mock_wrap.call_count > 0
+        for call in mock_wrap.call_args_list:
+            client_info = call.kwargs.get("client_info")
+            assert client_info is not None
+            assert expected_client_info in client_info.to_user_agent()

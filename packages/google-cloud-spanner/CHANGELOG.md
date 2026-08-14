@@ -4,6 +4,93 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.69.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.69.0...google-cloud-spanner-v3.69.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+* **metrics:** fix GFE and AFE metrics publishing ([#17561](https://github.com/googleapis/google-cloud-python/issues/17561)) ([abf1178](https://github.com/googleapis/google-cloud-python/commit/abf117892eac3e973749f94fc7a225f1d122fd20))
+* **spanner:** escape embedded backticks in dbapi escape_name ([#17810](https://github.com/googleapis/google-cloud-python/issues/17810)) ([c8b0b28](https://github.com/googleapis/google-cloud-python/commit/c8b0b2841d424ad24228d8b537d7920de078dd23))
+* **spanner:** implement dict protocol and nested unwrapping for JsonObject ([#17915](https://github.com/googleapis/google-cloud-python/issues/17915)) ([06c1f05](https://github.com/googleapis/google-cloud-python/commit/06c1f052147c1b69a8d858d17df87bbab3dfdda6)), refs [#15870](https://github.com/googleapis/google-cloud-python/issues/15870)
+
+## [3.69.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.68.0...google-cloud-spanner-v3.69.0) (2026-06-25)
+
+
+### Features
+
+* regenerate google-cloud-spanner ([#17578](https://github.com/googleapis/google-cloud-python/issues/17578)) ([39b252f](https://github.com/googleapis/google-cloud-python/commit/39b252f4effe7e8915efa8796d90fd29f356bf96))
+
+## [3.68.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.67.0...google-cloud-spanner-v3.68.0) (2026-06-11)
+
+
+### Features
+
+* add asynchronous code snippets and minor cleanup changes (#17337) ([d6aaf610fa97b76077cacade2fca306dbe1e8c80](https://github.com/googleapis/google-cloud-python/commit/d6aaf610fa97b76077cacade2fca306dbe1e8c80))
+
+## [3.67.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.66.0...google-cloud-spanner-v3.67.0) (2026-06-02)
+
+
+### Features
+
+* drop Python 3.7-3.9 support and regenerate (#17169) ([2408166fec2fac7fc19f15d89f1b7bbb329c5ace](https://github.com/googleapis/google-cloud-python/commit/2408166fec2fac7fc19f15d89f1b7bbb329c5ace))
+* log client configuration at startup (#17040) ([a830a78547c4fba545f8789fecfac97107ca799f](https://github.com/googleapis/google-cloud-python/commit/a830a78547c4fba545f8789fecfac97107ca799f))
+* drop python runtime 3.9  (#17070) ([cddabc0f48c198f7866756fc1f8e45b5b208731d](https://github.com/googleapis/google-cloud-python/commit/cddabc0f48c198f7866756fc1f8e45b5b208731d))
+* update API sources and regenerate (#16998) ([cef659d8207939aab3834a32c99a3a2738cb3015](https://github.com/googleapis/google-cloud-python/commit/cef659d8207939aab3834a32c99a3a2738cb3015))
+
+
+### Bug Fixes
+
+* replace insecure pickle with json for partition deserialization (#17014) ([86e57cb9b6ec4266773e99e8a5f60eda78cd1e11](https://github.com/googleapis/google-cloud-python/commit/86e57cb9b6ec4266773e99e8a5f60eda78cd1e11))
+
+## [3.66.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.65.0...google-cloud-spanner-v3.66.0) (2026-05-06)
+
+
+### Features
+
+* Add last statement option samples (#16499) ([ee098051f562dd2f26743a622b52605e6cef19f1](https://github.com/googleapis/google-cloud-python/commit/ee098051f562dd2f26743a622b52605e6cef19f1))
+
+
+### Bug Fixes
+
+* correctly parse type assertions in `extends` clause ([@&#8203;nicolo-ribaudo](https://redirect.github.com/nicolo-ribaudo)) - [#&#8203;17723](https://redirect.github.com/babel/babel/pull/17723) \[7.x backport] fix(parser): improve super type argument parsing ([@&#8203;JLHwung](https://redirect.github.com/JLHwung)) - `babel-traverse` - [#&#8203;17708](https://redirect.github.com/babel/babel/pull/17708) ([5098df262245fb333ae73fc7eb568f905bc0190a](https://github.com/googleapis/google-cloud-python/commit/5098df262245fb333ae73fc7eb568f905bc0190a))
+* provide a hub when traversing a File or Program and no parentPath is given ([@&#8203;simbahax](https://redirect.github.com/simbahax)) - `babel-plugin-transform-block-scoping`, `babel-traverse` - [#&#8203;17737](https://redirect.github.com/babel/babel/pull/17737) \[7.x backport] fix: Rename switch discriminant references when body creates shadowing variable ([@&#8203;magic-akari](https://redirect.github.com/magic-akari)) ([5098df262245fb333ae73fc7eb568f905bc0190a](https://github.com/googleapis/google-cloud-python/commit/5098df262245fb333ae73fc7eb568f905bc0190a))
+
+## [3.64.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-spanner-v3.63.0...google-cloud-spanner-v3.64.0) (2026-04-01)
+
+
+### Documentation
+
+* mark new AsyncIO APIs as experimental (#1533) ([3909c04548d5be0f4e08ccc005babaa4b171f693](https://github.com/googleapis/google-cloud-python/commit/3909c04548d5be0f4e08ccc005babaa4b171f693))
+* A comment for field `routing_hint` in messages `.google.spanner.v1.ResultSet` and `.google.spanner.v1.PartialResultSet` are changed ([9d2338a69807463ddb159562eab7784fbce6f098](https://github.com/googleapis/google-cloud-python/commit/9d2338a69807463ddb159562eab7784fbce6f098))
+* A comment in message `.google.spanner.v1.TransactionOptions.ReadWrite.ReadLockMode` is changed ([9d2338a69807463ddb159562eab7784fbce6f098](https://github.com/googleapis/google-cloud-python/commit/9d2338a69807463ddb159562eab7784fbce6f098))
+* A comment for field `params` in message `.google.spanner.v1.PartitionQueryRequest` is changed ([9d2338a69807463ddb159562eab7784fbce6f098](https://github.com/googleapis/google-cloud-python/commit/9d2338a69807463ddb159562eab7784fbce6f098))
+* A comment for field `transaction_tag` in message `.google.spanner.v1.RequestOptions` is changed ([9d2338a69807463ddb159562eab7784fbce6f098](https://github.com/googleapis/google-cloud-python/commit/9d2338a69807463ddb159562eab7784fbce6f098))
+* A comment for field `param_types` in message `.google.spanner.v1.PartitionQueryRequest` is changed ([9d2338a69807463ddb159562eab7784fbce6f098](https://github.com/googleapis/google-cloud-python/commit/9d2338a69807463ddb159562eab7784fbce6f098))
+* A comment for field `commit_timestamp` in message `.google.spanner.v1.BatchWriteResponse` is changed ([9d2338a69807463ddb159562eab7784fbce6f098](https://github.com/googleapis/google-cloud-python/commit/9d2338a69807463ddb159562eab7784fbce6f098))
+* Update high_priority_cpu_utilization_percent in AutoscalingConfig to be Optional and clarify its behavior when not specified ([9d2338a69807463ddb159562eab7784fbce6f098](https://github.com/googleapis/google-cloud-python/commit/9d2338a69807463ddb159562eab7784fbce6f098))
+* minor update for Spanner Location API ([9d2338a69807463ddb159562eab7784fbce6f098](https://github.com/googleapis/google-cloud-python/commit/9d2338a69807463ddb159562eab7784fbce6f098))
+
+
+### Features
+
+* include cache updates and routing hint into BeginTransaction and Commit request/response respectively ([9d2338a69807463ddb159562eab7784fbce6f098](https://github.com/googleapis/google-cloud-python/commit/9d2338a69807463ddb159562eab7784fbce6f098))
+* include cache updates into the ResultSet response ([9d2338a69807463ddb159562eab7784fbce6f098](https://github.com/googleapis/google-cloud-python/commit/9d2338a69807463ddb159562eab7784fbce6f098))
+* add a ClientContext field to Spanner requests ([9d2338a69807463ddb159562eab7784fbce6f098](https://github.com/googleapis/google-cloud-python/commit/9d2338a69807463ddb159562eab7784fbce6f098))
+* add Secure Parameters to the ClientContext ([9d2338a69807463ddb159562eab7784fbce6f098](https://github.com/googleapis/google-cloud-python/commit/9d2338a69807463ddb159562eab7784fbce6f098))
+* Exposing total CPU related fields in AutoscalingConfig ([9d2338a69807463ddb159562eab7784fbce6f098](https://github.com/googleapis/google-cloud-python/commit/9d2338a69807463ddb159562eab7784fbce6f098))
+* implement native asyncio support via Cross-Sync (#1509) ([f822fd7caeb608bbfbf75f5225b4ac13c520d8d8](https://github.com/googleapis/google-cloud-python/commit/f822fd7caeb608bbfbf75f5225b4ac13c520d8d8))
+* use inline begin to eliminate BeginTransaction RPC (#1502) ([00d5f8e6f68cdf3cc2104f8c0de0b114a0e35182](https://github.com/googleapis/google-cloud-python/commit/00d5f8e6f68cdf3cc2104f8c0de0b114a0e35182))
+* add Client Context support to options (#1499) ([0da5f785aba5f50f81ad6d0d352ea012e6be0e2c](https://github.com/googleapis/google-cloud-python/commit/0da5f785aba5f50f81ad6d0d352ea012e6be0e2c))
+* add TLS/mTLS support for experimental host (#1479) ([0c4c5da39bb09d8969c2968c6a4ebab12123b347](https://github.com/googleapis/google-cloud-python/commit/0c4c5da39bb09d8969c2968c6a4ebab12123b347))
+
+
+### Bug Fixes
+
+* add threading import and _resource_info to snapshot.py ([659034aa242780109ed4fa0ee2e6d0a2e5e76dac](https://github.com/googleapis/google-cloud-python/commit/659034aa242780109ed4fa0ee2e6d0a2e5e76dac))
+* restore implicit database_dialect reload in sync client (#1537) ([67f5104326a0f2e57770fd2543a39f5d067cc818](https://github.com/googleapis/google-cloud-python/commit/67f5104326a0f2e57770fd2543a39f5d067cc818))
+* resolve async deadlock in multiplexed session manager (#1520) ([c8f936b0a99837c483e91007dd1c0ffde284ff9f](https://github.com/googleapis/google-cloud-python/commit/c8f936b0a99837c483e91007dd1c0ffde284ff9f))
+
 ## [3.63.0](https://github.com/googleapis/python-spanner/compare/v3.62.0...v3.63.0) (2026-02-13)
 
 

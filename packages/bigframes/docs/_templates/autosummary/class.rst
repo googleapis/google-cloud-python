@@ -1,0 +1,1 @@
+../../../third_party/sphinx/ext/autosummary/templates/autosummary/class.rst

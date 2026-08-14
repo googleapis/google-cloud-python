@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -124,6 +119,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -983,7 +993,14 @@ def test_storage_insights_client_get_mtls_endpoint_and_cert_source(client_class)
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1030,7 +1047,14 @@ def test_storage_insights_client_get_mtls_endpoint_and_cert_source(client_class)
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1353,8 +1377,8 @@ def test_storage_insights_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        storageinsights.ListReportConfigsRequest,
-        dict,
+        storageinsights.ListReportConfigsRequest(),
+        {},
     ],
 )
 def test_list_report_configs(request_type, transport: str = "grpc"):
@@ -1365,7 +1389,7 @@ def test_list_report_configs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1418,12 +1442,13 @@ def test_list_report_configs_non_empty_request_with_auto_populated_field():
         client.list_report_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.ListReportConfigsRequest(
+        request_msg = storageinsights.ListReportConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_report_configs_use_cached_wrapped_rpc():
@@ -1508,10 +1533,14 @@ async def test_list_report_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_report_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=storageinsights.ListReportConfigsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.ListReportConfigsRequest(),
+        {},
+    ],
+)
+async def test_list_report_configs_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageInsightsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1519,7 +1548,7 @@ async def test_list_report_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1544,11 +1573,6 @@ async def test_list_report_configs_async(
     assert isinstance(response, pagers.ListReportConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_report_configs_async_from_dict():
-    await test_list_report_configs_async(request_type=dict)
 
 
 def test_list_report_configs_field_headers():
@@ -1753,6 +1777,9 @@ def test_list_report_configs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, storageinsights.ReportConfig) for i in results)
@@ -1845,6 +1872,8 @@ async def test_list_report_configs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1894,11 +1923,7 @@ async def test_list_report_configs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_report_configs(request={})
-        ).pages:
+        async for page_ in (await client.list_report_configs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1907,8 +1932,8 @@ async def test_list_report_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storageinsights.GetReportConfigRequest,
-        dict,
+        storageinsights.GetReportConfigRequest(),
+        {},
     ],
 )
 def test_get_report_config(request_type, transport: str = "grpc"):
@@ -1919,7 +1944,7 @@ def test_get_report_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1969,9 +1994,10 @@ def test_get_report_config_non_empty_request_with_auto_populated_field():
         client.get_report_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.GetReportConfigRequest(
+        request_msg = storageinsights.GetReportConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_report_config_use_cached_wrapped_rpc():
@@ -2054,9 +2080,14 @@ async def test_get_report_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_report_config_async(
-    transport: str = "grpc_asyncio", request_type=storageinsights.GetReportConfigRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.GetReportConfigRequest(),
+        {},
+    ],
+)
+async def test_get_report_config_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageInsightsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2064,7 +2095,7 @@ async def test_get_report_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2089,11 +2120,6 @@ async def test_get_report_config_async(
     assert isinstance(response, storageinsights.ReportConfig)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_report_config_async_from_dict():
-    await test_get_report_config_async(request_type=dict)
 
 
 def test_get_report_config_field_headers():
@@ -2250,8 +2276,8 @@ async def test_get_report_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storageinsights.CreateReportConfigRequest,
-        dict,
+        storageinsights.CreateReportConfigRequest(),
+        {},
     ],
 )
 def test_create_report_config(request_type, transport: str = "grpc"):
@@ -2262,7 +2288,7 @@ def test_create_report_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2313,10 +2339,11 @@ def test_create_report_config_non_empty_request_with_auto_populated_field():
         client.create_report_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.CreateReportConfigRequest(
+        request_msg = storageinsights.CreateReportConfigRequest(
             parent="parent_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_report_config_use_cached_wrapped_rpc():
@@ -2401,9 +2428,15 @@ async def test_create_report_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.CreateReportConfigRequest(),
+        {},
+    ],
+)
 async def test_create_report_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=storageinsights.CreateReportConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageInsightsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2412,7 +2445,7 @@ async def test_create_report_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2437,11 +2470,6 @@ async def test_create_report_config_async(
     assert isinstance(response, storageinsights.ReportConfig)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_report_config_async_from_dict():
-    await test_create_report_config_async(request_type=dict)
 
 
 def test_create_report_config_field_headers():
@@ -2608,8 +2636,8 @@ async def test_create_report_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storageinsights.UpdateReportConfigRequest,
-        dict,
+        storageinsights.UpdateReportConfigRequest(),
+        {},
     ],
 )
 def test_update_report_config(request_type, transport: str = "grpc"):
@@ -2620,7 +2648,7 @@ def test_update_report_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2670,9 +2698,10 @@ def test_update_report_config_non_empty_request_with_auto_populated_field():
         client.update_report_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.UpdateReportConfigRequest(
+        request_msg = storageinsights.UpdateReportConfigRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_report_config_use_cached_wrapped_rpc():
@@ -2757,9 +2786,15 @@ async def test_update_report_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.UpdateReportConfigRequest(),
+        {},
+    ],
+)
 async def test_update_report_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=storageinsights.UpdateReportConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageInsightsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2768,7 +2803,7 @@ async def test_update_report_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2793,11 +2828,6 @@ async def test_update_report_config_async(
     assert isinstance(response, storageinsights.ReportConfig)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_report_config_async_from_dict():
-    await test_update_report_config_async(request_type=dict)
 
 
 def test_update_report_config_field_headers():
@@ -2964,8 +2994,8 @@ async def test_update_report_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storageinsights.DeleteReportConfigRequest,
-        dict,
+        storageinsights.DeleteReportConfigRequest(),
+        {},
     ],
 )
 def test_delete_report_config(request_type, transport: str = "grpc"):
@@ -2976,7 +3006,7 @@ def test_delete_report_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3022,10 +3052,11 @@ def test_delete_report_config_non_empty_request_with_auto_populated_field():
         client.delete_report_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.DeleteReportConfigRequest(
+        request_msg = storageinsights.DeleteReportConfigRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_report_config_use_cached_wrapped_rpc():
@@ -3110,9 +3141,15 @@ async def test_delete_report_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.DeleteReportConfigRequest(),
+        {},
+    ],
+)
 async def test_delete_report_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=storageinsights.DeleteReportConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageInsightsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3121,7 +3158,7 @@ async def test_delete_report_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3139,11 +3176,6 @@ async def test_delete_report_config_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_report_config_async_from_dict():
-    await test_delete_report_config_async(request_type=dict)
 
 
 def test_delete_report_config_field_headers():
@@ -3296,8 +3328,8 @@ async def test_delete_report_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storageinsights.ListReportDetailsRequest,
-        dict,
+        storageinsights.ListReportDetailsRequest(),
+        {},
     ],
 )
 def test_list_report_details(request_type, transport: str = "grpc"):
@@ -3308,7 +3340,7 @@ def test_list_report_details(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3361,12 +3393,13 @@ def test_list_report_details_non_empty_request_with_auto_populated_field():
         client.list_report_details(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.ListReportDetailsRequest(
+        request_msg = storageinsights.ListReportDetailsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_report_details_use_cached_wrapped_rpc():
@@ -3451,10 +3484,14 @@ async def test_list_report_details_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_report_details_async(
-    transport: str = "grpc_asyncio",
-    request_type=storageinsights.ListReportDetailsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.ListReportDetailsRequest(),
+        {},
+    ],
+)
+async def test_list_report_details_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageInsightsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3462,7 +3499,7 @@ async def test_list_report_details_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3487,11 +3524,6 @@ async def test_list_report_details_async(
     assert isinstance(response, pagers.ListReportDetailsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_report_details_async_from_dict():
-    await test_list_report_details_async(request_type=dict)
 
 
 def test_list_report_details_field_headers():
@@ -3696,6 +3728,9 @@ def test_list_report_details_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, storageinsights.ReportDetail) for i in results)
@@ -3788,6 +3823,8 @@ async def test_list_report_details_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3837,11 +3874,7 @@ async def test_list_report_details_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_report_details(request={})
-        ).pages:
+        async for page_ in (await client.list_report_details(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3850,8 +3883,8 @@ async def test_list_report_details_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storageinsights.GetReportDetailRequest,
-        dict,
+        storageinsights.GetReportDetailRequest(),
+        {},
     ],
 )
 def test_get_report_detail(request_type, transport: str = "grpc"):
@@ -3862,7 +3895,7 @@ def test_get_report_detail(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3914,9 +3947,10 @@ def test_get_report_detail_non_empty_request_with_auto_populated_field():
         client.get_report_detail(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.GetReportDetailRequest(
+        request_msg = storageinsights.GetReportDetailRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_report_detail_use_cached_wrapped_rpc():
@@ -3999,9 +4033,14 @@ async def test_get_report_detail_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_report_detail_async(
-    transport: str = "grpc_asyncio", request_type=storageinsights.GetReportDetailRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.GetReportDetailRequest(),
+        {},
+    ],
+)
+async def test_get_report_detail_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageInsightsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4009,7 +4048,7 @@ async def test_get_report_detail_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4036,11 +4075,6 @@ async def test_get_report_detail_async(
     assert response.name == "name_value"
     assert response.report_path_prefix == "report_path_prefix_value"
     assert response.shards_count == 1293
-
-
-@pytest.mark.asyncio
-async def test_get_report_detail_async_from_dict():
-    await test_get_report_detail_async(request_type=dict)
 
 
 def test_get_report_detail_field_headers():
@@ -4197,8 +4231,8 @@ async def test_get_report_detail_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storageinsights.ListDatasetConfigsRequest,
-        dict,
+        storageinsights.ListDatasetConfigsRequest(),
+        {},
     ],
 )
 def test_list_dataset_configs(request_type, transport: str = "grpc"):
@@ -4209,7 +4243,7 @@ def test_list_dataset_configs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4262,12 +4296,13 @@ def test_list_dataset_configs_non_empty_request_with_auto_populated_field():
         client.list_dataset_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.ListDatasetConfigsRequest(
+        request_msg = storageinsights.ListDatasetConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_dataset_configs_use_cached_wrapped_rpc():
@@ -4352,9 +4387,15 @@ async def test_list_dataset_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.ListDatasetConfigsRequest(),
+        {},
+    ],
+)
 async def test_list_dataset_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=storageinsights.ListDatasetConfigsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageInsightsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4363,7 +4404,7 @@ async def test_list_dataset_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4388,11 +4429,6 @@ async def test_list_dataset_configs_async(
     assert isinstance(response, pagers.ListDatasetConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_dataset_configs_async_from_dict():
-    await test_list_dataset_configs_async(request_type=dict)
 
 
 def test_list_dataset_configs_field_headers():
@@ -4597,6 +4633,9 @@ def test_list_dataset_configs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, storageinsights.DatasetConfig) for i in results)
@@ -4689,6 +4728,8 @@ async def test_list_dataset_configs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4738,11 +4779,7 @@ async def test_list_dataset_configs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_dataset_configs(request={})
-        ).pages:
+        async for page_ in (await client.list_dataset_configs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4751,8 +4788,8 @@ async def test_list_dataset_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storageinsights.GetDatasetConfigRequest,
-        dict,
+        storageinsights.GetDatasetConfigRequest(),
+        {},
     ],
 )
 def test_get_dataset_config(request_type, transport: str = "grpc"):
@@ -4763,7 +4800,7 @@ def test_get_dataset_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4829,9 +4866,10 @@ def test_get_dataset_config_non_empty_request_with_auto_populated_field():
         client.get_dataset_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.GetDatasetConfigRequest(
+        request_msg = storageinsights.GetDatasetConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_dataset_config_use_cached_wrapped_rpc():
@@ -4916,10 +4954,14 @@ async def test_get_dataset_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_dataset_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=storageinsights.GetDatasetConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.GetDatasetConfigRequest(),
+        {},
+    ],
+)
+async def test_get_dataset_config_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageInsightsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4927,7 +4969,7 @@ async def test_get_dataset_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4967,11 +5009,6 @@ async def test_get_dataset_config_async(
         == storageinsights.DatasetConfig.ConfigState.CONFIG_STATE_ACTIVE
     )
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_dataset_config_async_from_dict():
-    await test_get_dataset_config_async(request_type=dict)
 
 
 def test_get_dataset_config_field_headers():
@@ -5128,8 +5165,8 @@ async def test_get_dataset_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storageinsights.CreateDatasetConfigRequest,
-        dict,
+        storageinsights.CreateDatasetConfigRequest(),
+        {},
     ],
 )
 def test_create_dataset_config(request_type, transport: str = "grpc"):
@@ -5140,7 +5177,7 @@ def test_create_dataset_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5187,11 +5224,12 @@ def test_create_dataset_config_non_empty_request_with_auto_populated_field():
         client.create_dataset_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.CreateDatasetConfigRequest(
+        request_msg = storageinsights.CreateDatasetConfigRequest(
             parent="parent_value",
             dataset_config_id="dataset_config_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_dataset_config_use_cached_wrapped_rpc():
@@ -5287,9 +5325,15 @@ async def test_create_dataset_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.CreateDatasetConfigRequest(),
+        {},
+    ],
+)
 async def test_create_dataset_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=storageinsights.CreateDatasetConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageInsightsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5298,7 +5342,7 @@ async def test_create_dataset_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5318,11 +5362,6 @@ async def test_create_dataset_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_dataset_config_async_from_dict():
-    await test_create_dataset_config_async(request_type=dict)
 
 
 def test_create_dataset_config_field_headers():
@@ -5499,8 +5538,8 @@ async def test_create_dataset_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storageinsights.UpdateDatasetConfigRequest,
-        dict,
+        storageinsights.UpdateDatasetConfigRequest(),
+        {},
     ],
 )
 def test_update_dataset_config(request_type, transport: str = "grpc"):
@@ -5511,7 +5550,7 @@ def test_update_dataset_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5556,9 +5595,10 @@ def test_update_dataset_config_non_empty_request_with_auto_populated_field():
         client.update_dataset_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.UpdateDatasetConfigRequest(
+        request_msg = storageinsights.UpdateDatasetConfigRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_dataset_config_use_cached_wrapped_rpc():
@@ -5654,9 +5694,15 @@ async def test_update_dataset_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.UpdateDatasetConfigRequest(),
+        {},
+    ],
+)
 async def test_update_dataset_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=storageinsights.UpdateDatasetConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageInsightsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5665,7 +5711,7 @@ async def test_update_dataset_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5685,11 +5731,6 @@ async def test_update_dataset_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_dataset_config_async_from_dict():
-    await test_update_dataset_config_async(request_type=dict)
 
 
 def test_update_dataset_config_field_headers():
@@ -5856,8 +5897,8 @@ async def test_update_dataset_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storageinsights.DeleteDatasetConfigRequest,
-        dict,
+        storageinsights.DeleteDatasetConfigRequest(),
+        {},
     ],
 )
 def test_delete_dataset_config(request_type, transport: str = "grpc"):
@@ -5868,7 +5909,7 @@ def test_delete_dataset_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5914,10 +5955,11 @@ def test_delete_dataset_config_non_empty_request_with_auto_populated_field():
         client.delete_dataset_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.DeleteDatasetConfigRequest(
+        request_msg = storageinsights.DeleteDatasetConfigRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_dataset_config_use_cached_wrapped_rpc():
@@ -6013,9 +6055,15 @@ async def test_delete_dataset_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.DeleteDatasetConfigRequest(),
+        {},
+    ],
+)
 async def test_delete_dataset_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=storageinsights.DeleteDatasetConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageInsightsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6024,7 +6072,7 @@ async def test_delete_dataset_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6044,11 +6092,6 @@ async def test_delete_dataset_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_dataset_config_async_from_dict():
-    await test_delete_dataset_config_async(request_type=dict)
 
 
 def test_delete_dataset_config_field_headers():
@@ -6205,8 +6248,8 @@ async def test_delete_dataset_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storageinsights.LinkDatasetRequest,
-        dict,
+        storageinsights.LinkDatasetRequest(),
+        {},
     ],
 )
 def test_link_dataset(request_type, transport: str = "grpc"):
@@ -6217,7 +6260,7 @@ def test_link_dataset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.link_dataset), "__call__") as call:
@@ -6258,9 +6301,10 @@ def test_link_dataset_non_empty_request_with_auto_populated_field():
         client.link_dataset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.LinkDatasetRequest(
+        request_msg = storageinsights.LinkDatasetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_link_dataset_use_cached_wrapped_rpc():
@@ -6351,9 +6395,14 @@ async def test_link_dataset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_link_dataset_async(
-    transport: str = "grpc_asyncio", request_type=storageinsights.LinkDatasetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.LinkDatasetRequest(),
+        {},
+    ],
+)
+async def test_link_dataset_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageInsightsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6361,7 +6410,7 @@ async def test_link_dataset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.link_dataset), "__call__") as call:
@@ -6379,11 +6428,6 @@ async def test_link_dataset_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_link_dataset_async_from_dict():
-    await test_link_dataset_async(request_type=dict)
 
 
 def test_link_dataset_field_headers():
@@ -6532,8 +6576,8 @@ async def test_link_dataset_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storageinsights.UnlinkDatasetRequest,
-        dict,
+        storageinsights.UnlinkDatasetRequest(),
+        {},
     ],
 )
 def test_unlink_dataset(request_type, transport: str = "grpc"):
@@ -6544,7 +6588,7 @@ def test_unlink_dataset(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.unlink_dataset), "__call__") as call:
@@ -6585,9 +6629,10 @@ def test_unlink_dataset_non_empty_request_with_auto_populated_field():
         client.unlink_dataset(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.UnlinkDatasetRequest(
+        request_msg = storageinsights.UnlinkDatasetRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_unlink_dataset_use_cached_wrapped_rpc():
@@ -6678,9 +6723,14 @@ async def test_unlink_dataset_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_unlink_dataset_async(
-    transport: str = "grpc_asyncio", request_type=storageinsights.UnlinkDatasetRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storageinsights.UnlinkDatasetRequest(),
+        {},
+    ],
+)
+async def test_unlink_dataset_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageInsightsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6688,7 +6738,7 @@ async def test_unlink_dataset_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.unlink_dataset), "__call__") as call:
@@ -6706,11 +6756,6 @@ async def test_unlink_dataset_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_unlink_dataset_async_from_dict():
-    await test_unlink_dataset_async(request_type=dict)
 
 
 def test_unlink_dataset_field_headers():
@@ -6977,7 +7022,7 @@ def test_list_report_configs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_report_configs_rest_unset_required_fields():
@@ -7111,6 +7156,9 @@ def test_list_report_configs_rest_pager(transport: str = "rest"):
 
         pager = client.list_report_configs(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, storageinsights.ReportConfig) for i in results)
@@ -7230,7 +7278,7 @@ def test_get_report_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_report_config_rest_unset_required_fields():
@@ -7417,7 +7465,7 @@ def test_create_report_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_report_config_rest_unset_required_fields():
@@ -7612,7 +7660,7 @@ def test_update_report_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_report_config_rest_unset_required_fields():
@@ -7817,7 +7865,7 @@ def test_delete_report_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_report_config_rest_unset_required_fields():
@@ -8016,7 +8064,7 @@ def test_list_report_details_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_report_details_rest_unset_required_fields():
@@ -8154,6 +8202,9 @@ def test_list_report_details_rest_pager(transport: str = "rest"):
 
         pager = client.list_report_details(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, storageinsights.ReportDetail) for i in results)
@@ -8273,7 +8324,7 @@ def test_get_report_detail_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_report_detail_rest_unset_required_fields():
@@ -8466,7 +8517,7 @@ def test_list_dataset_configs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_dataset_configs_rest_unset_required_fields():
@@ -8600,6 +8651,9 @@ def test_list_dataset_configs_rest_pager(transport: str = "rest"):
 
         pager = client.list_dataset_configs(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, storageinsights.DatasetConfig) for i in results)
@@ -8721,7 +8775,7 @@ def test_get_dataset_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_dataset_config_rest_unset_required_fields():
@@ -8928,7 +8982,7 @@ def test_create_dataset_config_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_dataset_config_rest_unset_required_fields():
@@ -9131,7 +9185,7 @@ def test_update_dataset_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_dataset_config_rest_unset_required_fields():
@@ -9334,7 +9388,7 @@ def test_delete_dataset_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_dataset_config_rest_unset_required_fields():
@@ -9514,7 +9568,7 @@ def test_link_dataset_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_link_dataset_rest_unset_required_fields():
@@ -9694,7 +9748,7 @@ def test_unlink_dataset_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_unlink_dataset_rest_unset_required_fields():
@@ -9889,7 +9943,6 @@ def test_list_report_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.ListReportConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9912,7 +9965,6 @@ def test_get_report_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.GetReportConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -9935,7 +9987,6 @@ def test_create_report_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.CreateReportConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -9958,7 +10009,6 @@ def test_update_report_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.UpdateReportConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -9981,7 +10031,6 @@ def test_delete_report_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.DeleteReportConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10004,7 +10053,6 @@ def test_list_report_details_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.ListReportDetailsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10027,7 +10075,6 @@ def test_get_report_detail_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.GetReportDetailRequest()
-
         assert args[0] == request_msg
 
 
@@ -10050,7 +10097,6 @@ def test_list_dataset_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.ListDatasetConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10073,7 +10119,6 @@ def test_get_dataset_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.GetDatasetConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10096,7 +10141,6 @@ def test_create_dataset_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.CreateDatasetConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10119,7 +10163,6 @@ def test_update_dataset_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.UpdateDatasetConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10142,7 +10185,6 @@ def test_delete_dataset_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.DeleteDatasetConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10163,7 +10205,6 @@ def test_link_dataset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.LinkDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -10184,7 +10225,6 @@ def test_unlink_dataset_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.UnlinkDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -10228,7 +10268,6 @@ async def test_list_report_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.ListReportConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10258,7 +10297,6 @@ async def test_get_report_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.GetReportConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10288,7 +10326,6 @@ async def test_create_report_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.CreateReportConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10318,7 +10355,6 @@ async def test_update_report_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.UpdateReportConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10343,7 +10379,6 @@ async def test_delete_report_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.DeleteReportConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10373,7 +10408,6 @@ async def test_list_report_details_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.ListReportDetailsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10404,7 +10438,6 @@ async def test_get_report_detail_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.GetReportDetailRequest()
-
         assert args[0] == request_msg
 
 
@@ -10434,7 +10467,6 @@ async def test_list_dataset_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.ListDatasetConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10470,7 +10502,6 @@ async def test_get_dataset_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.GetDatasetConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10497,7 +10528,6 @@ async def test_create_dataset_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.CreateDatasetConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10524,7 +10554,6 @@ async def test_update_dataset_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.UpdateDatasetConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10551,7 +10580,6 @@ async def test_delete_dataset_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.DeleteDatasetConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -10576,7 +10604,6 @@ async def test_link_dataset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.LinkDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -10601,7 +10628,6 @@ async def test_unlink_dataset_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.UnlinkDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -13287,7 +13313,6 @@ def test_list_report_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.ListReportConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13309,7 +13334,6 @@ def test_get_report_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.GetReportConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13331,7 +13355,6 @@ def test_create_report_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.CreateReportConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13353,7 +13376,6 @@ def test_update_report_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.UpdateReportConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13375,7 +13397,6 @@ def test_delete_report_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.DeleteReportConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13397,7 +13418,6 @@ def test_list_report_details_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.ListReportDetailsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13419,7 +13439,6 @@ def test_get_report_detail_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.GetReportDetailRequest()
-
         assert args[0] == request_msg
 
 
@@ -13441,7 +13460,6 @@ def test_list_dataset_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.ListDatasetConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -13463,7 +13481,6 @@ def test_get_dataset_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.GetDatasetConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13485,7 +13502,6 @@ def test_create_dataset_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.CreateDatasetConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13507,7 +13523,6 @@ def test_update_dataset_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.UpdateDatasetConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13529,7 +13544,6 @@ def test_delete_dataset_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.DeleteDatasetConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -13549,7 +13563,6 @@ def test_link_dataset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.LinkDatasetRequest()
-
         assert args[0] == request_msg
 
 
@@ -13569,7 +13582,6 @@ def test_unlink_dataset_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storageinsights.UnlinkDatasetRequest()
-
         assert args[0] == request_msg
 
 

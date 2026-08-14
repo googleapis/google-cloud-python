@@ -30,6 +30,11 @@
                 "get_audience_list"
               ]
             },
+            "GetMetadata": {
+              "methods": [
+                "get_metadata"
+              ]
+            },
             "GetPropertyQuotasSnapshot": {
               "methods": [
                 "get_property_quotas_snapshot"
@@ -75,9 +80,9 @@
                 "run_funnel_report"
               ]
             },
-            "SheetExportAudienceList": {
+            "RunReport": {
               "methods": [
-                "sheet_export_audience_list"
+                "run_report"
               ]
             }
           }
@@ -105,6 +110,11 @@
                 "get_audience_list"
               ]
             },
+            "GetMetadata": {
+              "methods": [
+                "get_metadata"
+              ]
+            },
             "GetPropertyQuotasSnapshot": {
               "methods": [
                 "get_property_quotas_snapshot"
@@ -150,9 +160,9 @@
                 "run_funnel_report"
               ]
             },
-            "SheetExportAudienceList": {
+            "RunReport": {
               "methods": [
-                "sheet_export_audience_list"
+                "run_report"
               ]
             }
           }
@@ -180,6 +190,11 @@
                 "get_audience_list"
               ]
             },
+            "GetMetadata": {
+              "methods": [
+                "get_metadata"
+              ]
+            },
             "GetPropertyQuotasSnapshot": {
               "methods": [
                 "get_property_quotas_snapshot"
@@ -225,9 +240,9 @@
                 "run_funnel_report"
               ]
             },
-            "SheetExportAudienceList": {
+            "RunReport": {
               "methods": [
-                "sheet_export_audience_list"
+                "run_report"
               ]
             }
           }

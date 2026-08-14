@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -339,6 +339,28 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def inspect_template_path(
+        project: str,
+        location: str,
+        inspect_template: str,
+    ) -> str:
+        """Returns a fully-qualified inspect_template string."""
+        return "projects/{project}/locations/{location}/inspectTemplates/{inspect_template}".format(
+            project=project,
+            location=location,
+            inspect_template=inspect_template,
+        )
+
+    @staticmethod
+    def parse_inspect_template_path(path: str) -> Dict[str, str]:
+        """Parses a inspect_template path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/inspectTemplates/(?P<inspect_template>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def instance_path(
         project: str,
         location: str,
@@ -480,6 +502,26 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
         """Parses a repository path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/repositories/(?P<repository>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def service_account_path(
+        project: str,
+        service_account: str,
+    ) -> str:
+        """Returns a fully-qualified service_account string."""
+        return "projects/{project}/serviceAccounts/{service_account}".format(
+            project=project,
+            service_account=service_account,
+        )
+
+    @staticmethod
+    def parse_service_account_path(path: str) -> Dict[str, str]:
+        """Parses a service_account path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/serviceAccounts/(?P<service_account>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -2593,7 +2635,7 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify the fields to be
+                Optional. Field mask is used to specify the fields to be
                 overwritten in the hook resource by the update. The
                 fields specified in the update_mask are relative to the
                 resource, not the full request. A field will be
@@ -3630,7 +3672,7 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify the fields to be
+                Optional. Field mask is used to specify the fields to be
                 overwritten in the branchRule resource by the update.
                 The fields specified in the update_mask are relative to
                 the resource, not the full request. A field will be
@@ -6630,8 +6672,8 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
         used to create multiple PullRequestComments for code
         review. There needs to be exactly one PullRequestComment
         of type Review, and at most 100 PullRequestComments of
-        type Code per request. The Postition of the code
-        comments must be unique within the request.
+        type Code per request. The Position of the code comments
+        must be unique within the request.
 
         .. code-block:: python
 
@@ -8440,8 +8482,6 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("SecureSourceManagerClient",)

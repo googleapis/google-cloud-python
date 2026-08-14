@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,6 +15,12 @@
 #
 from .agent import (
     Agent,
+)
+from .agent_card import (
+    AgentCard,
+    AgentInterface,
+    AgentSkill,
+    RemoteAgentTool,
 )
 from .agent_service import (
     BatchDeleteConversationsRequest,
@@ -38,6 +44,8 @@ from .agent_service import (
     DeleteToolsetRequest,
     ExportAppRequest,
     ExportAppResponse,
+    GenerateAppResourceOperationMetadata,
+    GenerateAppResourceRequest,
     GenerateAppResourceResponse,
     GetAgentRequest,
     GetAppRequest,
@@ -113,6 +121,7 @@ from .app import (
     RedactionConfig,
     SynthesizeSpeechConfig,
     TimeZoneSettings,
+    VpcScSettings,
 )
 from .app_version import (
     AppSnapshot,
@@ -139,6 +148,7 @@ from .client_function import (
 from .common import (
     Callback,
     ChannelProfile,
+    EvaluationRunCachingSettings,
     ExecutionType,
     ModelSettings,
     ServiceDirectoryConfig,
@@ -164,6 +174,9 @@ from .data_store_tool import (
 )
 from .deployment import (
     Deployment,
+    ExperimentConfig,
+    InstagramCredentials,
+    WhatsAppCredentials,
 )
 from .evaluation import (
     AggregatedMetrics,
@@ -180,6 +193,9 @@ from .evaluation import (
     RunEvaluationRequest,
     ScheduledEvaluationRun,
 )
+from .evaluation_metrics_config import (
+    EvaluationMetricsConfig,
+)
 from .evaluation_service import (
     CreateEvaluationDatasetRequest,
     CreateEvaluationExpectationRequest,
@@ -192,6 +208,15 @@ from .evaluation_service import (
     DeleteEvaluationRunOperationMetadata,
     DeleteEvaluationRunRequest,
     DeleteScheduledEvaluationRunRequest,
+    ExportEvaluationResultsOperationMetadata,
+    ExportEvaluationResultsRequest,
+    ExportEvaluationResultsResponse,
+    ExportEvaluationRunsOperationMetadata,
+    ExportEvaluationRunsRequest,
+    ExportEvaluationRunsResponse,
+    ExportEvaluationsRequest,
+    ExportEvaluationsResponse,
+    ExportOptions,
     GenerateEvaluationOperationMetadata,
     GenerateEvaluationRequest,
     GetEvaluationDatasetRequest,
@@ -217,6 +242,9 @@ from .evaluation_service import (
     ListScheduledEvaluationRunsResponse,
     RunEvaluationOperationMetadata,
     RunEvaluationResponse,
+    RunEvaluationResultMetricsOperationMetadata,
+    RunEvaluationResultMetricsRequest,
+    RunEvaluationResultMetricsResponse,
     TestPersonaVoiceRequest,
     TestPersonaVoiceResponse,
     UpdateEvaluationDatasetRequest,
@@ -241,6 +269,9 @@ from .fakes import (
     EvaluationToolCallBehaviour,
     ToolFakeConfig,
 )
+from .file_context import (
+    FileContext,
+)
 from .file_search_tool import (
     FileSearchTool,
 )
@@ -257,7 +288,12 @@ from .mcp_tool import (
     McpTool,
 )
 from .mcp_toolset import (
+    McpToolDefinition,
+    McpToolOverride,
     McpToolset,
+)
+from .mocks import (
+    MockedToolCall,
 )
 from .omnichannel import (
     Omnichannel,
@@ -296,6 +332,7 @@ from .session_service import (
     GoAway,
     InputAudioConfig,
     InterruptionSignal,
+    MockConfig,
     OutputAudioConfig,
     RecognitionResult,
     RunSessionRequest,
@@ -336,6 +373,10 @@ from .widget_tool import (
 
 __all__ = (
     "Agent",
+    "AgentCard",
+    "AgentInterface",
+    "AgentSkill",
+    "RemoteAgentTool",
     "BatchDeleteConversationsRequest",
     "BatchDeleteConversationsResponse",
     "CreateAgentRequest",
@@ -357,6 +398,8 @@ __all__ = (
     "DeleteToolsetRequest",
     "ExportAppRequest",
     "ExportAppResponse",
+    "GenerateAppResourceOperationMetadata",
+    "GenerateAppResourceRequest",
     "GenerateAppResourceResponse",
     "GetAgentRequest",
     "GetAppRequest",
@@ -426,6 +469,7 @@ __all__ = (
     "RedactionConfig",
     "SynthesizeSpeechConfig",
     "TimeZoneSettings",
+    "VpcScSettings",
     "AppSnapshot",
     "AppVersion",
     "ApiAuthentication",
@@ -440,6 +484,7 @@ __all__ = (
     "ClientFunction",
     "Callback",
     "ChannelProfile",
+    "EvaluationRunCachingSettings",
     "ModelSettings",
     "ServiceDirectoryConfig",
     "Span",
@@ -453,6 +498,9 @@ __all__ = (
     "DataStore",
     "DataStoreTool",
     "Deployment",
+    "ExperimentConfig",
+    "InstagramCredentials",
+    "WhatsAppCredentials",
     "AggregatedMetrics",
     "Evaluation",
     "EvaluationConfig",
@@ -466,6 +514,7 @@ __all__ = (
     "PersonaRunConfig",
     "RunEvaluationRequest",
     "ScheduledEvaluationRun",
+    "EvaluationMetricsConfig",
     "CreateEvaluationDatasetRequest",
     "CreateEvaluationExpectationRequest",
     "CreateEvaluationRequest",
@@ -477,6 +526,15 @@ __all__ = (
     "DeleteEvaluationRunOperationMetadata",
     "DeleteEvaluationRunRequest",
     "DeleteScheduledEvaluationRunRequest",
+    "ExportEvaluationResultsOperationMetadata",
+    "ExportEvaluationResultsRequest",
+    "ExportEvaluationResultsResponse",
+    "ExportEvaluationRunsOperationMetadata",
+    "ExportEvaluationRunsRequest",
+    "ExportEvaluationRunsResponse",
+    "ExportEvaluationsRequest",
+    "ExportEvaluationsResponse",
+    "ExportOptions",
     "GenerateEvaluationOperationMetadata",
     "GenerateEvaluationRequest",
     "GetEvaluationDatasetRequest",
@@ -502,6 +560,9 @@ __all__ = (
     "ListScheduledEvaluationRunsResponse",
     "RunEvaluationOperationMetadata",
     "RunEvaluationResponse",
+    "RunEvaluationResultMetricsOperationMetadata",
+    "RunEvaluationResultMetricsRequest",
+    "RunEvaluationResultMetricsResponse",
     "TestPersonaVoiceRequest",
     "TestPersonaVoiceResponse",
     "UpdateEvaluationDatasetRequest",
@@ -521,12 +582,16 @@ __all__ = (
     "CodeBlock",
     "ToolFakeConfig",
     "EvaluationToolCallBehaviour",
+    "FileContext",
     "FileSearchTool",
     "GoldenRunMethod",
     "GoogleSearchTool",
     "Guardrail",
     "McpTool",
+    "McpToolDefinition",
+    "McpToolOverride",
     "McpToolset",
+    "MockedToolCall",
     "Omnichannel",
     "OmnichannelIntegrationConfig",
     "OmnichannelOperationMetadata",
@@ -546,6 +611,7 @@ __all__ = (
     "GoAway",
     "InputAudioConfig",
     "InterruptionSignal",
+    "MockConfig",
     "OutputAudioConfig",
     "RecognitionResult",
     "RunSessionRequest",

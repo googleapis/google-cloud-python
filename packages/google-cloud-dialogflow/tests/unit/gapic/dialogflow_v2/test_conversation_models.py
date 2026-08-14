@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -122,6 +117,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -994,7 +1004,14 @@ def test_conversation_models_client_get_mtls_endpoint_and_cert_source(client_cla
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1041,7 +1058,14 @@ def test_conversation_models_client_get_mtls_endpoint_and_cert_source(client_cla
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1372,8 +1396,8 @@ def test_conversation_models_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_conversation_model.CreateConversationModelRequest,
-        dict,
+        gcd_conversation_model.CreateConversationModelRequest(),
+        {},
     ],
 )
 def test_create_conversation_model(request_type, transport: str = "grpc"):
@@ -1384,7 +1408,7 @@ def test_create_conversation_model(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1429,9 +1453,10 @@ def test_create_conversation_model_non_empty_request_with_auto_populated_field()
         client.create_conversation_model(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_conversation_model.CreateConversationModelRequest(
+        request_msg = gcd_conversation_model.CreateConversationModelRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_conversation_model_use_cached_wrapped_rpc():
@@ -1527,9 +1552,15 @@ async def test_create_conversation_model_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_conversation_model.CreateConversationModelRequest(),
+        {},
+    ],
+)
 async def test_create_conversation_model_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcd_conversation_model.CreateConversationModelRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationModelsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1538,7 +1569,7 @@ async def test_create_conversation_model_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1558,11 +1589,6 @@ async def test_create_conversation_model_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_conversation_model_async_from_dict():
-    await test_create_conversation_model_async(request_type=dict)
 
 
 def test_create_conversation_model_field_headers():
@@ -1737,8 +1763,8 @@ async def test_create_conversation_model_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation_model.GetConversationModelRequest,
-        dict,
+        conversation_model.GetConversationModelRequest(),
+        {},
     ],
 )
 def test_get_conversation_model(request_type, transport: str = "grpc"):
@@ -1749,7 +1775,7 @@ def test_get_conversation_model(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1807,9 +1833,10 @@ def test_get_conversation_model_non_empty_request_with_auto_populated_field():
         client.get_conversation_model(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_model.GetConversationModelRequest(
+        request_msg = conversation_model.GetConversationModelRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_conversation_model_use_cached_wrapped_rpc():
@@ -1895,9 +1922,15 @@ async def test_get_conversation_model_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation_model.GetConversationModelRequest(),
+        {},
+    ],
+)
 async def test_get_conversation_model_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversation_model.GetConversationModelRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationModelsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1906,7 +1939,7 @@ async def test_get_conversation_model_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1939,11 +1972,6 @@ async def test_get_conversation_model_async(
     assert response.language_code == "language_code_value"
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
-
-
-@pytest.mark.asyncio
-async def test_get_conversation_model_async_from_dict():
-    await test_get_conversation_model_async(request_type=dict)
 
 
 def test_get_conversation_model_field_headers():
@@ -2100,8 +2128,8 @@ async def test_get_conversation_model_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation_model.ListConversationModelsRequest,
-        dict,
+        conversation_model.ListConversationModelsRequest(),
+        {},
     ],
 )
 def test_list_conversation_models(request_type, transport: str = "grpc"):
@@ -2112,7 +2140,7 @@ def test_list_conversation_models(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2161,10 +2189,11 @@ def test_list_conversation_models_non_empty_request_with_auto_populated_field():
         client.list_conversation_models(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_model.ListConversationModelsRequest(
+        request_msg = conversation_model.ListConversationModelsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_conversation_models_use_cached_wrapped_rpc():
@@ -2250,9 +2279,15 @@ async def test_list_conversation_models_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation_model.ListConversationModelsRequest(),
+        {},
+    ],
+)
 async def test_list_conversation_models_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversation_model.ListConversationModelsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationModelsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2261,7 +2296,7 @@ async def test_list_conversation_models_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2284,11 +2319,6 @@ async def test_list_conversation_models_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConversationModelsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_conversation_models_async_from_dict():
-    await test_list_conversation_models_async(request_type=dict)
 
 
 def test_list_conversation_models_field_headers():
@@ -2495,6 +2525,9 @@ def test_list_conversation_models_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, conversation_model.ConversationModel) for i in results)
@@ -2587,6 +2620,8 @@ async def test_list_conversation_models_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2638,11 +2673,7 @@ async def test_list_conversation_models_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_conversation_models(request={})
-        ).pages:
+        async for page_ in (await client.list_conversation_models(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2651,8 +2682,8 @@ async def test_list_conversation_models_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation_model.DeleteConversationModelRequest,
-        dict,
+        conversation_model.DeleteConversationModelRequest(),
+        {},
     ],
 )
 def test_delete_conversation_model(request_type, transport: str = "grpc"):
@@ -2663,7 +2694,7 @@ def test_delete_conversation_model(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2708,9 +2739,10 @@ def test_delete_conversation_model_non_empty_request_with_auto_populated_field()
         client.delete_conversation_model(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_model.DeleteConversationModelRequest(
+        request_msg = conversation_model.DeleteConversationModelRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_conversation_model_use_cached_wrapped_rpc():
@@ -2806,9 +2838,15 @@ async def test_delete_conversation_model_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation_model.DeleteConversationModelRequest(),
+        {},
+    ],
+)
 async def test_delete_conversation_model_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversation_model.DeleteConversationModelRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationModelsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2817,7 +2855,7 @@ async def test_delete_conversation_model_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2837,11 +2875,6 @@ async def test_delete_conversation_model_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_conversation_model_async_from_dict():
-    await test_delete_conversation_model_async(request_type=dict)
 
 
 def test_delete_conversation_model_field_headers():
@@ -2998,8 +3031,8 @@ async def test_delete_conversation_model_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation_model.DeployConversationModelRequest,
-        dict,
+        conversation_model.DeployConversationModelRequest(),
+        {},
     ],
 )
 def test_deploy_conversation_model(request_type, transport: str = "grpc"):
@@ -3010,7 +3043,7 @@ def test_deploy_conversation_model(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3055,9 +3088,10 @@ def test_deploy_conversation_model_non_empty_request_with_auto_populated_field()
         client.deploy_conversation_model(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_model.DeployConversationModelRequest(
+        request_msg = conversation_model.DeployConversationModelRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_deploy_conversation_model_use_cached_wrapped_rpc():
@@ -3153,9 +3187,15 @@ async def test_deploy_conversation_model_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation_model.DeployConversationModelRequest(),
+        {},
+    ],
+)
 async def test_deploy_conversation_model_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversation_model.DeployConversationModelRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationModelsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3164,7 +3204,7 @@ async def test_deploy_conversation_model_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3184,11 +3224,6 @@ async def test_deploy_conversation_model_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_deploy_conversation_model_async_from_dict():
-    await test_deploy_conversation_model_async(request_type=dict)
 
 
 def test_deploy_conversation_model_field_headers():
@@ -3259,8 +3294,8 @@ async def test_deploy_conversation_model_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation_model.UndeployConversationModelRequest,
-        dict,
+        conversation_model.UndeployConversationModelRequest(),
+        {},
     ],
 )
 def test_undeploy_conversation_model(request_type, transport: str = "grpc"):
@@ -3271,7 +3306,7 @@ def test_undeploy_conversation_model(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3316,9 +3351,10 @@ def test_undeploy_conversation_model_non_empty_request_with_auto_populated_field
         client.undeploy_conversation_model(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_model.UndeployConversationModelRequest(
+        request_msg = conversation_model.UndeployConversationModelRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_undeploy_conversation_model_use_cached_wrapped_rpc():
@@ -3414,9 +3450,15 @@ async def test_undeploy_conversation_model_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation_model.UndeployConversationModelRequest(),
+        {},
+    ],
+)
 async def test_undeploy_conversation_model_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversation_model.UndeployConversationModelRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationModelsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3425,7 +3467,7 @@ async def test_undeploy_conversation_model_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3445,11 +3487,6 @@ async def test_undeploy_conversation_model_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_undeploy_conversation_model_async_from_dict():
-    await test_undeploy_conversation_model_async(request_type=dict)
 
 
 def test_undeploy_conversation_model_field_headers():
@@ -3520,8 +3557,8 @@ async def test_undeploy_conversation_model_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation_model.GetConversationModelEvaluationRequest,
-        dict,
+        conversation_model.GetConversationModelEvaluationRequest(),
+        {},
     ],
 )
 def test_get_conversation_model_evaluation(request_type, transport: str = "grpc"):
@@ -3532,7 +3569,7 @@ def test_get_conversation_model_evaluation(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3584,9 +3621,10 @@ def test_get_conversation_model_evaluation_non_empty_request_with_auto_populated
         client.get_conversation_model_evaluation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_model.GetConversationModelEvaluationRequest(
+        request_msg = conversation_model.GetConversationModelEvaluationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_conversation_model_evaluation_use_cached_wrapped_rpc():
@@ -3672,9 +3710,15 @@ async def test_get_conversation_model_evaluation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation_model.GetConversationModelEvaluationRequest(),
+        {},
+    ],
+)
 async def test_get_conversation_model_evaluation_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversation_model.GetConversationModelEvaluationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationModelsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3683,7 +3727,7 @@ async def test_get_conversation_model_evaluation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3710,11 +3754,6 @@ async def test_get_conversation_model_evaluation_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.raw_human_eval_template_csv == "raw_human_eval_template_csv_value"
-
-
-@pytest.mark.asyncio
-async def test_get_conversation_model_evaluation_async_from_dict():
-    await test_get_conversation_model_evaluation_async(request_type=dict)
 
 
 def test_get_conversation_model_evaluation_field_headers():
@@ -3871,8 +3910,8 @@ async def test_get_conversation_model_evaluation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation_model.ListConversationModelEvaluationsRequest,
-        dict,
+        conversation_model.ListConversationModelEvaluationsRequest(),
+        {},
     ],
 )
 def test_list_conversation_model_evaluations(request_type, transport: str = "grpc"):
@@ -3883,7 +3922,7 @@ def test_list_conversation_model_evaluations(request_type, transport: str = "grp
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3932,10 +3971,11 @@ def test_list_conversation_model_evaluations_non_empty_request_with_auto_populat
         client.list_conversation_model_evaluations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_model.ListConversationModelEvaluationsRequest(
+        request_msg = conversation_model.ListConversationModelEvaluationsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_conversation_model_evaluations_use_cached_wrapped_rpc():
@@ -4021,9 +4061,15 @@ async def test_list_conversation_model_evaluations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation_model.ListConversationModelEvaluationsRequest(),
+        {},
+    ],
+)
 async def test_list_conversation_model_evaluations_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversation_model.ListConversationModelEvaluationsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationModelsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4032,7 +4078,7 @@ async def test_list_conversation_model_evaluations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4055,11 +4101,6 @@ async def test_list_conversation_model_evaluations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConversationModelEvaluationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_conversation_model_evaluations_async_from_dict():
-    await test_list_conversation_model_evaluations_async(request_type=dict)
 
 
 def test_list_conversation_model_evaluations_field_headers():
@@ -4272,6 +4313,9 @@ def test_list_conversation_model_evaluations_pager(transport_name: str = "grpc")
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -4367,6 +4411,8 @@ async def test_list_conversation_model_evaluations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4419,9 +4465,7 @@ async def test_list_conversation_model_evaluations_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_conversation_model_evaluations(request={})
         ).pages:
             pages.append(page_)
@@ -4432,8 +4476,8 @@ async def test_list_conversation_model_evaluations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation_model.CreateConversationModelEvaluationRequest,
-        dict,
+        conversation_model.CreateConversationModelEvaluationRequest(),
+        {},
     ],
 )
 def test_create_conversation_model_evaluation(request_type, transport: str = "grpc"):
@@ -4444,7 +4488,7 @@ def test_create_conversation_model_evaluation(request_type, transport: str = "gr
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4489,9 +4533,10 @@ def test_create_conversation_model_evaluation_non_empty_request_with_auto_popula
         client.create_conversation_model_evaluation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation_model.CreateConversationModelEvaluationRequest(
+        request_msg = conversation_model.CreateConversationModelEvaluationRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_conversation_model_evaluation_use_cached_wrapped_rpc():
@@ -4587,9 +4632,15 @@ async def test_create_conversation_model_evaluation_async_use_cached_wrapped_rpc
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation_model.CreateConversationModelEvaluationRequest(),
+        {},
+    ],
+)
 async def test_create_conversation_model_evaluation_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversation_model.CreateConversationModelEvaluationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationModelsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4598,7 +4649,7 @@ async def test_create_conversation_model_evaluation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4618,11 +4669,6 @@ async def test_create_conversation_model_evaluation_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_conversation_model_evaluation_async_from_dict():
-    await test_create_conversation_model_evaluation_async(request_type=dict)
 
 
 def test_create_conversation_model_evaluation_field_headers():
@@ -4904,7 +4950,7 @@ def test_create_conversation_model_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_conversation_model_rest_unset_required_fields():
@@ -5090,7 +5136,7 @@ def test_get_conversation_model_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_conversation_model_rest_unset_required_fields():
@@ -5281,7 +5327,7 @@ def test_list_conversation_models_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_conversation_models_rest_unset_required_fields():
@@ -5415,6 +5461,9 @@ def test_list_conversation_models_rest_pager(transport: str = "rest"):
 
         pager = client.list_conversation_models(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, conversation_model.ConversationModel) for i in results)
@@ -5538,7 +5587,7 @@ def test_delete_conversation_model_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_conversation_model_rest_unset_required_fields():
@@ -5720,7 +5769,7 @@ def test_deploy_conversation_model_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_deploy_conversation_model_rest_unset_required_fields():
@@ -5847,7 +5896,7 @@ def test_undeploy_conversation_model_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_undeploy_conversation_model_rest_unset_required_fields():
@@ -5974,7 +6023,7 @@ def test_get_conversation_model_evaluation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_conversation_model_evaluation_rest_unset_required_fields():
@@ -6174,7 +6223,7 @@ def test_list_conversation_model_evaluations_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_conversation_model_evaluations_rest_unset_required_fields():
@@ -6313,6 +6362,9 @@ def test_list_conversation_model_evaluations_rest_pager(transport: str = "rest")
 
         pager = client.list_conversation_model_evaluations(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -6442,7 +6494,7 @@ def test_create_conversation_model_evaluation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_conversation_model_evaluation_rest_unset_required_fields():
@@ -6655,7 +6707,6 @@ def test_create_conversation_model_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation_model.CreateConversationModelRequest()
-
         assert args[0] == request_msg
 
 
@@ -6678,7 +6729,6 @@ def test_get_conversation_model_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.GetConversationModelRequest()
-
         assert args[0] == request_msg
 
 
@@ -6701,7 +6751,6 @@ def test_list_conversation_models_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.ListConversationModelsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6724,7 +6773,6 @@ def test_delete_conversation_model_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.DeleteConversationModelRequest()
-
         assert args[0] == request_msg
 
 
@@ -6747,7 +6795,6 @@ def test_deploy_conversation_model_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.DeployConversationModelRequest()
-
         assert args[0] == request_msg
 
 
@@ -6770,7 +6817,6 @@ def test_undeploy_conversation_model_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.UndeployConversationModelRequest()
-
         assert args[0] == request_msg
 
 
@@ -6793,7 +6839,6 @@ def test_get_conversation_model_evaluation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.GetConversationModelEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -6818,7 +6863,6 @@ def test_list_conversation_model_evaluations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.ListConversationModelEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6841,7 +6885,6 @@ def test_create_conversation_model_evaluation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.CreateConversationModelEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -6882,7 +6925,6 @@ async def test_create_conversation_model_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation_model.CreateConversationModelRequest()
-
         assert args[0] == request_msg
 
 
@@ -6916,7 +6958,6 @@ async def test_get_conversation_model_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.GetConversationModelRequest()
-
         assert args[0] == request_msg
 
 
@@ -6945,7 +6986,6 @@ async def test_list_conversation_models_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.ListConversationModelsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6972,7 +7012,6 @@ async def test_delete_conversation_model_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.DeleteConversationModelRequest()
-
         assert args[0] == request_msg
 
 
@@ -6999,7 +7038,6 @@ async def test_deploy_conversation_model_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.DeployConversationModelRequest()
-
         assert args[0] == request_msg
 
 
@@ -7026,7 +7064,6 @@ async def test_undeploy_conversation_model_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.UndeployConversationModelRequest()
-
         assert args[0] == request_msg
 
 
@@ -7057,7 +7094,6 @@ async def test_get_conversation_model_evaluation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.GetConversationModelEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -7086,7 +7122,6 @@ async def test_list_conversation_model_evaluations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.ListConversationModelEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7113,7 +7148,6 @@ async def test_create_conversation_model_evaluation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.CreateConversationModelEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -8758,7 +8792,6 @@ def test_create_conversation_model_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation_model.CreateConversationModelRequest()
-
         assert args[0] == request_msg
 
 
@@ -8780,7 +8813,6 @@ def test_get_conversation_model_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.GetConversationModelRequest()
-
         assert args[0] == request_msg
 
 
@@ -8802,7 +8834,6 @@ def test_list_conversation_models_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.ListConversationModelsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8824,7 +8855,6 @@ def test_delete_conversation_model_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.DeleteConversationModelRequest()
-
         assert args[0] == request_msg
 
 
@@ -8846,7 +8876,6 @@ def test_deploy_conversation_model_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.DeployConversationModelRequest()
-
         assert args[0] == request_msg
 
 
@@ -8868,7 +8897,6 @@ def test_undeploy_conversation_model_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.UndeployConversationModelRequest()
-
         assert args[0] == request_msg
 
 
@@ -8890,7 +8918,6 @@ def test_get_conversation_model_evaluation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.GetConversationModelEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -8912,7 +8939,6 @@ def test_list_conversation_model_evaluations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.ListConversationModelEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8934,7 +8960,6 @@ def test_create_conversation_model_evaluation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation_model.CreateConversationModelEvaluationRequest()
-
         assert args[0] == request_msg
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
 #
 import logging as std_logging
 import re
-import uuid
 from collections import OrderedDict
 from typing import (
     Callable,
@@ -111,6 +110,8 @@ class CloudRedisClusterAsyncClient:
     parse_backup_collection_path = staticmethod(
         CloudRedisClusterClient.parse_backup_collection_path
     )
+    ca_pool_path = staticmethod(CloudRedisClusterClient.ca_pool_path)
+    parse_ca_pool_path = staticmethod(CloudRedisClusterClient.parse_ca_pool_path)
     certificate_authority_path = staticmethod(
         CloudRedisClusterClient.certificate_authority_path
     )
@@ -138,6 +139,12 @@ class CloudRedisClusterAsyncClient:
     )
     parse_service_attachment_path = staticmethod(
         CloudRedisClusterClient.parse_service_attachment_path
+    )
+    shared_regional_certificate_authority_path = staticmethod(
+        CloudRedisClusterClient.shared_regional_certificate_authority_path
+    )
+    parse_shared_regional_certificate_authority_path = staticmethod(
+        CloudRedisClusterClient.parse_shared_regional_certificate_authority_path
     )
     common_billing_account_path = staticmethod(
         CloudRedisClusterClient.common_billing_account_path
@@ -646,11 +653,11 @@ class CloudRedisClusterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_cluster(request=request)
+                operation = await client.update_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -788,11 +795,11 @@ class CloudRedisClusterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_cluster(request=request)
+                operation = await client.delete_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -937,11 +944,11 @@ class CloudRedisClusterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_cluster(request=request)
+                operation = await client.create_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1173,6 +1180,126 @@ class CloudRedisClusterAsyncClient:
         # Done; return the response.
         return response
 
+    async def get_shared_regional_certificate_authority(
+        self,
+        request: Optional[
+            Union[
+                cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest, dict
+            ]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> cloud_redis_cluster.SharedRegionalCertificateAuthority:
+        r"""Gets the details of regional certificate authority
+        information for Redis cluster.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import redis_cluster_v1
+
+            async def sample_get_shared_regional_certificate_authority():
+                # Create a client
+                client = redis_cluster_v1.CloudRedisClusterAsyncClient()
+
+                # Initialize request argument(s)
+                request = redis_cluster_v1.GetSharedRegionalCertificateAuthorityRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_shared_regional_certificate_authority(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.redis_cluster_v1.types.GetSharedRegionalCertificateAuthorityRequest, dict]]):
+                The request object. Request for
+                [GetSharedRegionalCertificateAuthority][CloudRedis.GetSharedRegionalCertificateAuthority].
+            name (:class:`str`):
+                Required. Regional certificate authority resource name
+                using the form:
+                ``projects/{project_id}/locations/{location_id}/sharedRegionalCertificateAuthority``
+                where ``location_id`` refers to a Google Cloud region.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.redis_cluster_v1.types.SharedRegionalCertificateAuthority:
+                Shared regional certificate authority
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest
+        ):
+            request = cloud_redis_cluster.GetSharedRegionalCertificateAuthorityRequest(
+                request
+            )
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_shared_regional_certificate_authority
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def reschedule_cluster_maintenance(
         self,
         request: Optional[
@@ -1212,11 +1339,11 @@ class CloudRedisClusterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.reschedule_cluster_maintenance(request=request)
+                operation = await client.reschedule_cluster_maintenance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1839,11 +1966,11 @@ class CloudRedisClusterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_backup(request=request)
+                operation = await client.delete_backup(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1972,11 +2099,11 @@ class CloudRedisClusterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.export_backup(request=request)
+                operation = await client.export_backup(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2087,11 +2214,11 @@ class CloudRedisClusterAsyncClient:
                 )
 
                 # Make the request
-                operation = client.backup_cluster(request=request)
+                operation = await client.backup_cluster(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2546,9 +2673,7 @@ class CloudRedisClusterAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("CloudRedisClusterAsyncClient",)

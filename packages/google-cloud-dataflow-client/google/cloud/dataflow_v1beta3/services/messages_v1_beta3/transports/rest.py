@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -53,8 +53,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class MessagesV1Beta3RestInterceptor:
@@ -147,8 +146,8 @@ class MessagesV1Beta3RestStub:
 class MessagesV1Beta3RestTransport(_BaseMessagesV1Beta3RestTransport):
     """REST backend synchronous transport for MessagesV1Beta3.
 
-    The Dataflow Messages API is used for monitoring the progress
-    of Dataflow jobs.
+    The Dataflow Messages API is used to monitor the progress of
+    Dataflow jobs.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

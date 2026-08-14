@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -79,9 +79,10 @@ class ListMinorVersionsRequest(proto.Message):
             that provided this page token.
         filter (str):
             Optional. An expression for filtering the results of the
-            request. Only shapeFamily and gcp_oracle_zone_id are
-            supported in this format:
-            ``shape_family="{shapeFamily}" AND gcp_oracle_zone_id="{gcp_oracle_zone_id}"``.
+            request. Only the ``shape_family`` and
+            ``gcp_oracle_zone_id`` fields are supported in the following
+            format:
+            ``shape_family="{shape_family}" AND gcp_oracle_zone_id="{gcp_oracle_zone_id}"``.
     """
 
     parent: str = proto.Field(

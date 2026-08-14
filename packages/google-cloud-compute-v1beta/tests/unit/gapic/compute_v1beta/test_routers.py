@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -112,6 +107,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -854,7 +864,14 @@ def test_routers_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -901,7 +918,14 @@ def test_routers_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1226,7 +1250,7 @@ def test_aggregated_list_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_aggregated_list_rest_unset_required_fields():
@@ -1360,6 +1384,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1"}
 
         pager = client.aggregated_list(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         assert isinstance(pager.get("a"), compute.RoutersScopedList)
         assert pager.get("h") is None
@@ -1499,7 +1526,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteRouterRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_rest_unset_required_fields():
@@ -1706,7 +1733,7 @@ def test_delete_unary_rest_required_fields(request_type=compute.DeleteRouterRequ
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_unary_rest_unset_required_fields():
@@ -1922,7 +1949,7 @@ def test_delete_named_set_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_named_set_rest_unset_required_fields():
@@ -2143,7 +2170,7 @@ def test_delete_named_set_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_named_set_unary_rest_unset_required_fields():
@@ -2366,7 +2393,7 @@ def test_delete_route_policy_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_route_policy_rest_unset_required_fields():
@@ -2589,7 +2616,7 @@ def test_delete_route_policy_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_route_policy_unary_rest_unset_required_fields():
@@ -2795,7 +2822,7 @@ def test_get_rest_required_fields(request_type=compute.GetRouterRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_rest_unset_required_fields():
@@ -3000,7 +3027,7 @@ def test_get_named_set_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_named_set_rest_unset_required_fields():
@@ -3205,7 +3232,7 @@ def test_get_nat_ip_info_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_nat_ip_info_rest_unset_required_fields():
@@ -3423,7 +3450,7 @@ def test_get_nat_mapping_info_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_nat_mapping_info_rest_unset_required_fields():
@@ -3575,6 +3602,9 @@ def test_get_nat_mapping_info_rest_pager(transport: str = "rest"):
 
         pager = client.get_nat_mapping_info(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.VmEndpointNatMappings) for i in results)
@@ -3704,7 +3734,7 @@ def test_get_route_policy_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_route_policy_rest_unset_required_fields():
@@ -3909,7 +3939,7 @@ def test_get_router_status_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_router_status_rest_unset_required_fields():
@@ -4113,7 +4143,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertRouterRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_rest_unset_required_fields():
@@ -4317,7 +4347,7 @@ def test_insert_unary_rest_required_fields(request_type=compute.InsertRouterRequ
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_unary_rest_unset_required_fields():
@@ -4524,7 +4554,7 @@ def test_list_rest_required_fields(request_type=compute.ListRoutersRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_rest_unset_required_fields():
@@ -4663,6 +4693,9 @@ def test_list_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1", "region": "sample2"}
 
         pager = client.list(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -4804,7 +4837,7 @@ def test_list_bgp_routes_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_bgp_routes_rest_unset_required_fields():
@@ -4960,6 +4993,9 @@ def test_list_bgp_routes_rest_pager(transport: str = "rest"):
 
         pager = client.list_bgp_routes(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.BgpRoute) for i in results)
@@ -5095,7 +5131,7 @@ def test_list_named_sets_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_named_sets_rest_unset_required_fields():
@@ -5246,6 +5282,9 @@ def test_list_named_sets_rest_pager(transport: str = "rest"):
 
         pager = client.list_named_sets(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.NamedSet) for i in results)
@@ -5385,7 +5424,7 @@ def test_list_route_policies_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_route_policies_rest_unset_required_fields():
@@ -5536,6 +5575,9 @@ def test_list_route_policies_rest_pager(transport: str = "rest"):
 
         pager = client.list_route_policies(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.RoutePolicy) for i in results)
@@ -5666,7 +5708,7 @@ def test_patch_rest_required_fields(request_type=compute.PatchRouterRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_rest_unset_required_fields():
@@ -5881,7 +5923,7 @@ def test_patch_unary_rest_required_fields(request_type=compute.PatchRouterReques
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_unary_rest_unset_required_fields():
@@ -6098,7 +6140,7 @@ def test_patch_named_set_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_named_set_rest_unset_required_fields():
@@ -6311,7 +6353,7 @@ def test_patch_named_set_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_named_set_unary_rest_unset_required_fields():
@@ -6528,7 +6570,7 @@ def test_patch_route_policy_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_route_policy_rest_unset_required_fields():
@@ -6745,7 +6787,7 @@ def test_patch_route_policy_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_route_policy_unary_rest_unset_required_fields():
@@ -6950,7 +6992,7 @@ def test_preview_rest_required_fields(request_type=compute.PreviewRouterRequest)
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_preview_rest_unset_required_fields():
@@ -7165,7 +7207,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_test_iam_permissions_rest_unset_required_fields():
@@ -7380,7 +7422,7 @@ def test_update_rest_required_fields(request_type=compute.UpdateRouterRequest):
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_rest_unset_required_fields():
@@ -7595,7 +7637,7 @@ def test_update_unary_rest_required_fields(request_type=compute.UpdateRouterRequ
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_unary_rest_unset_required_fields():
@@ -7814,7 +7856,7 @@ def test_update_named_set_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_named_set_rest_unset_required_fields():
@@ -8029,7 +8071,7 @@ def test_update_named_set_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_named_set_unary_rest_unset_required_fields():
@@ -8246,7 +8288,7 @@ def test_update_route_policy_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_route_policy_rest_unset_required_fields():
@@ -8463,7 +8505,7 @@ def test_update_route_policy_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_route_policy_unary_rest_unset_required_fields():
@@ -10174,6 +10216,7 @@ def test_insert_rest_call_success(request_type):
             {
                 "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
+                "effective_tcp_time_wait_timeout_sec": 3705,
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
@@ -11087,6 +11130,7 @@ def test_patch_rest_call_success(request_type):
             {
                 "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
+                "effective_tcp_time_wait_timeout_sec": 3705,
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
@@ -11966,6 +12010,7 @@ def test_preview_rest_call_success(request_type):
             {
                 "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
+                "effective_tcp_time_wait_timeout_sec": 3705,
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
@@ -12498,6 +12543,7 @@ def test_update_rest_call_success(request_type):
             {
                 "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
+                "effective_tcp_time_wait_timeout_sec": 3705,
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
@@ -13288,7 +13334,6 @@ def test_aggregated_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AggregatedListRoutersRequest()
-
         assert args[0] == request_msg
 
 
@@ -13308,7 +13353,6 @@ def test_delete_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13328,7 +13372,6 @@ def test_delete_named_set_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteNamedSetRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13350,7 +13393,6 @@ def test_delete_route_policy_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteRoutePolicyRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13370,7 +13412,6 @@ def test_get_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13390,7 +13431,6 @@ def test_get_named_set_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetNamedSetRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13410,7 +13450,6 @@ def test_get_nat_ip_info_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetNatIpInfoRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13432,7 +13471,6 @@ def test_get_nat_mapping_info_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetNatMappingInfoRoutersRequest()
-
         assert args[0] == request_msg
 
 
@@ -13452,7 +13490,6 @@ def test_get_route_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetRoutePolicyRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13474,7 +13511,6 @@ def test_get_router_status_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetRouterStatusRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13494,7 +13530,6 @@ def test_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.InsertRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13514,7 +13549,6 @@ def test_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListRoutersRequest()
-
         assert args[0] == request_msg
 
 
@@ -13534,7 +13568,6 @@ def test_list_bgp_routes_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListBgpRoutesRoutersRequest()
-
         assert args[0] == request_msg
 
 
@@ -13554,7 +13587,6 @@ def test_list_named_sets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListNamedSetsRoutersRequest()
-
         assert args[0] == request_msg
 
 
@@ -13576,7 +13608,6 @@ def test_list_route_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListRoutePoliciesRoutersRequest()
-
         assert args[0] == request_msg
 
 
@@ -13596,7 +13627,6 @@ def test_patch_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13616,7 +13646,6 @@ def test_patch_named_set_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchNamedSetRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13638,7 +13667,6 @@ def test_patch_route_policy_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchRoutePolicyRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13658,7 +13686,6 @@ def test_preview_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PreviewRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13680,7 +13707,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.TestIamPermissionsRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13700,7 +13726,6 @@ def test_update_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13720,7 +13745,6 @@ def test_update_named_set_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateNamedSetRouterRequest()
-
         assert args[0] == request_msg
 
 
@@ -13742,7 +13766,6 @@ def test_update_route_policy_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateRoutePolicyRouterRequest()
-
         assert args[0] == request_msg
 
 

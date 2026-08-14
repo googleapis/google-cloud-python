@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1617,8 +1617,8 @@ class SecureSourceManagerGrpcTransport(SecureSourceManagerTransport):
         used to create multiple PullRequestComments for code
         review. There needs to be exactly one PullRequestComment
         of type Review, and at most 100 PullRequestComments of
-        type Code per request. The Postition of the code
-        comments must be unique within the request.
+        type Code per request. The Position of the code comments
+        must be unique within the request.
 
         Returns:
             Callable[[~.BatchCreatePullRequestCommentsRequest],

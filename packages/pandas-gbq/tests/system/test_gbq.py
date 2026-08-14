@@ -11,13 +11,13 @@ import zoneinfo
 import numpy as np
 import packaging.version
 import pandas
-from pandas import DataFrame
 import pandas.api.types
 import pandas.testing as tm
 import pytest
+from pandas import DataFrame
 
-from pandas_gbq import gbq
 import pandas_gbq.schema
+from pandas_gbq import gbq
 
 TABLE_ID = "new_test"
 PANDAS_VERSION = packaging.version.parse(pandas.__version__)
@@ -333,9 +333,7 @@ class TestReadGBQIntegration(object):
         assert len(df.drop_duplicates()) == 10
 
     def test_standard_sql(self, project_id):
-        standard_sql = (
-            "SELECT DISTINCT id FROM " "`publicdata.samples.wikipedia` LIMIT 10"
-        )
+        standard_sql = "SELECT DISTINCT id FROM `publicdata.samples.wikipedia` LIMIT 10"
 
         # Test that a standard sql statement fails when using
         # the legacy SQL dialect.
