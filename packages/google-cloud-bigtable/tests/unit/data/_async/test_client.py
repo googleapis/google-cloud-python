@@ -93,13 +93,14 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture(autouse=True, scope="module")
 def mock_metrics_batch_write():
     """mock out the metrics batch write to avoid sending metrics to GCP during tests."""
     with mock.patch(
         "google.cloud.bigtable.data._metrics.handlers.gcp_exporter.BigtableMetricsExporter._batch_write"
     ):
         yield
+
 
 
 @CrossSync.convert_class(
@@ -302,8 +303,11 @@ class TestBigtableDataClientAsync:
     def test__start_background_channel_refresh_sync(self):
         # should raise RuntimeError if called in a sync context
         client = self._make_client(project="project-id", use_emulator=False)
-        with pytest.raises(RuntimeError):
-            client._start_background_channel_refresh()
+        try:
+            with pytest.raises(RuntimeError):
+                client._start_background_channel_refresh()
+        finally:
+            client._metrics.close()
 
     @CrossSync.pytest
     async def test__start_background_channel_refresh_task_exists(self):
@@ -1143,14 +1147,17 @@ class TestBigtableDataClientAsync:
 
         with pytest.warns(RuntimeWarning) as warnings:
             client = self._make_client(project="project-id", use_emulator=False)
-        expected_warning = [w for w in warnings if "client.py" in w.filename]
-        assert len(expected_warning) == 1
-        assert (
-            "BigtableDataClientAsync should be started in an asyncio event loop."
-            in str(expected_warning[0].message)
-        )
-        assert client.project == "project-id"
-        assert client._channel_refresh_task is None
+        try:
+            expected_warning = [w for w in warnings if "client.py" in w.filename]
+            assert len(expected_warning) == 1
+            assert (
+                "BigtableDataClientAsync should be started in an asyncio event loop."
+                in str(expected_warning[0].message)
+            )
+            assert client.project == "project-id"
+            assert client._channel_refresh_task is None
+        finally:
+            client._metrics.close()
 
     @CrossSync.pytest
     @pytest.mark.parametrize(
