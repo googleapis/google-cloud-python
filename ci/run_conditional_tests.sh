@@ -74,21 +74,34 @@ run_test_in_dir() {
     local log_file="/tmp/test_log_${PY_VERSION}_${pkg_name_clean}.log"
     export COVERAGE_FILE="${PROJECT_ROOT}/.coverage.${PY_VERSION}.${pkg_name_clean}"
 
+    echo "============================================================"
+    echo "Starting tests in ${d}"
+    echo "============================================================"
+
     pushd ${d} > /dev/null
     set +e
-    ${test_script} > "${log_file}" 2>&1
-    local ret=$?
+    if [ "${PARALLEL_WORKERS}" -eq 1 ]; then
+        # When running with a single worker, stream output in real-time while capturing to log file
+        ${test_script} 2>&1 | tee "${log_file}"
+        local ret=${PIPESTATUS[0]}
+    else
+        # When running multiple workers in parallel, buffer output to prevent interleaved log lines
+        ${test_script} > "${log_file}" 2>&1
+        local ret=$?
+        echo "============================================================"
+        echo "Finished tests in ${d} (exit code: ${ret})"
+        echo "============================================================"
+        cat "${log_file}"
+    fi
     set -e
     popd > /dev/null
-
-    echo "============================================================"
-    echo "Running tests in ${d}"
-    echo "============================================================"
-    cat "${log_file}"
     rm -f "${log_file}"
 
     if [ ${ret} -ne 0 ]; then
+        echo "❌ Tests failed in ${d} with exit code ${ret}"
         exit ${ret}
+    else
+        echo "✅ Tests passed in ${d}"
     fi
 }
 export -f run_test_in_dir
