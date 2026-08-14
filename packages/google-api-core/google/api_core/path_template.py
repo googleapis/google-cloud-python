@@ -64,7 +64,7 @@ _MULTI_SEGMENT_PATTERN = r"(.+)"
 
 
 def _extract_and_validate_wildcards(
-    val: str, template_str: str | None, property_name: str = None
+    val: str, template_str: str | None, property_name: str = "property"
 ) -> None:
     """Extract and validate wildcard variables against path traversal.
 

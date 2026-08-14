@@ -865,43 +865,40 @@ def test_generate_pattern_for_template(template_str, expected_pattern):
     )
 
 
-
-
-
 @pytest.mark.parametrize(
     "val, template_str, expect_error, expected_err_match",
     [
         ("api", None, False, None),
         ("api", "*", False, None),
-        (".", None, True, r"^Invalid value \. for positional variable\.$"),
-        ("..", None, True, r"^Invalid value \.\. for positional variable\.$"),
-        (".", "*", True, r"^Invalid value \. for positional variable\.$"),
-        ("..", "*", True, r"^Invalid value \.\. for positional variable\.$"),
+        (".", None, True, r"^Invalid value \. for property\.$"),
+        ("..", None, True, r"^Invalid value \.\. for property\.$"),
+        (".", "*", True, r"^Invalid value \. for property\.$"),
+        ("..", "*", True, r"^Invalid value \.\. for property\.$"),
         ("", "*", False, None),
         ("api/v1", "**", False, None),
         (
             ".",
             "**",
             True,
-            r"^Invalid value \. for positional variable\.$",
+            r"^Invalid value \. for property\.$",
         ),
         (
             "..",
             "**",
             True,
-            r"^Invalid value \.\. for positional variable\.$",
+            r"^Invalid value \.\. for property\.$",
         ),
         (
             "a/./b",
             "**",
             True,
-            r"^Value for positional variable must not contain segments that are exactly \. or \.\. \.$",
+            r"^Value for property must not contain segments that are exactly \. or \.\. \.$",
         ),
         (
             "a/../b",
             "**",
             True,
-            r"^Value for positional variable must not contain segments that are exactly \. or \.\. \.$",
+            r"^Value for property must not contain segments that are exactly \. or \.\. \.$",
         ),
         ("", "**", False, None),
         (
@@ -914,31 +911,31 @@ def test_generate_pattern_for_template(template_str, expected_pattern):
             "projects/my-proj/locations/.",
             "projects/*/locations/*",
             True,
-            r"^Invalid value \. for positional variable\.$",
+            r"^Invalid value \. for property\.$",
         ),
         (
             "projects/my-proj/locations/..",
             "projects/*/locations/*",
             True,
-            r"^Invalid value \.\. for positional variable\.$",
+            r"^Invalid value \.\. for property\.$",
         ),
         (
             "projects/../locations/us-central1",
             "projects/*/locations/*",
             True,
-            r"^Invalid value \.\. for positional variable\.$",
+            r"^Invalid value \.\. for property\.$",
         ),
         (
             "projects/./locations/us-central1",
             "projects/*/locations/*",
             True,
-            r"^Invalid value \. for positional variable\.$",
+            r"^Invalid value \. for property\.$",
         ),
         (
             "projects/my-proj/monitoredResourceDescriptors/instance/my-inst/..",
             "projects/*/monitoredResourceDescriptors/**",
             True,
-            r"^Value for positional variable must not contain segments that are exactly \. or \.\. \.$",
+            r"^Value for property must not contain segments that are exactly \. or \.\. \.$",
         ),
         (
             "projects/my-proj/monitoredResourceDescriptors/instance/my-inst",
