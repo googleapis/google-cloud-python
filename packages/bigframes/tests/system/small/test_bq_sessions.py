@@ -44,6 +44,7 @@ def session_resource_manager(
     )
 
 
+@pytest.mark.flaky(reruns=2, reruns_delay=10)
 def test_bq_session_create_temp_table_clustered(bigquery_client: bigquery.Client):
     session_resource_manager = bigquery_session.SessionResourceManager(
         bigquery_client, "US", publisher=bigframes.core.events.Publisher()
@@ -60,14 +61,21 @@ def test_bq_session_create_temp_table_clustered(bigquery_client: bigquery.Client
     assert result_table.clustering_fields == cluster_cols
 
     session_resource_manager.close()
-    with pytest.raises(google.api_core.exceptions.NotFound):
-        # It may take time for the underlying tables to get cleaned up after
-        # closing the session, so wait at least 1 minute to check.
-        for _ in range(6):
+    # BigQuery cleans up temporary session tables asynchronously after closing the session.
+    table_deleted = False
+    for _ in range(24):
+        try:
             bigquery_client.get_table(session_table_ref)
-            time.sleep(10)
+            time.sleep(5)
+        except google.api_core.exceptions.NotFound:
+            table_deleted = True
+            break
+    assert table_deleted, (
+        f"Session table {session_table_ref} was not deleted after closing session."
+    )
 
 
+@pytest.mark.flaky(reruns=2, reruns_delay=10)
 def test_bq_session_create_multi_temp_tables(bigquery_client: bigquery.Client):
     session_resource_manager = bigquery_session.SessionResourceManager(
         bigquery_client, "US", publisher=bigframes.core.events.Publisher()

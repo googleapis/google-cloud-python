@@ -5,19 +5,43 @@
     "packages/bigframes": {
       "component": "bigframes"
     },
+    "packages/google-cloud-workloadidentity": {
+      "component": "google-cloud-workloadidentity",
+      "extra-files": [
+        "google/cloud/workloadidentity/gapic_version.py",
+        "google/cloud/workloadidentity_v1/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.workloadidentity.v1.json",
+          "type": "json"
+        }
+      ]
+    },
+    "packages/google-cloud-ftp": {
+      "component": "google-cloud-ftp",
+      "extra-files": [
+        "google/cloud/ftp/gapic_version.py",
+        "google/cloud/ftp_v1/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.ftp.v1.json",
+          "type": "json"
+        }
+      ]
+    },
     "packages/google-crc32c": {
       "component": "google-crc32c"
     },
     "preview-packages/google-cloud-compute": {
-      "package-name": "google-cloud-compute",
-      "versioning": "prerelease",
-      "prerelease": true,
-      "prerelease-type": "preview",
+      "draft-pull-request": true,
       "extra-files": [
         "google/cloud/compute/gapic_version.py",
         "google/cloud/compute_v1/gapic_version.py"
       ],
-      "draft-pull-request": true
+      "package-name": "google-cloud-compute",
+      "prerelease": true,
+      "prerelease-type": "preview",
+      "versioning": "prerelease"
     }
   },
   "release-type": "python-librarian",
