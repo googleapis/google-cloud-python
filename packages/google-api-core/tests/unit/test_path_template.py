@@ -66,7 +66,7 @@ from google.api_core import path_template
         ],
         # Encoding / Metacharacters in positional and named params
         ["/v1/*", ["..?$httpMethod=DELETE#"], {}, "/v1/..%3F%24httpMethod%3DDELETE%23"],
-        ["/v1/**", ["path/../with/?and#"], {}, "/v1/path/../with/%3Fand%23"],
+        ["/v1/**", ["path/sub/with/?and#"], {}, "/v1/path/sub/with/%3Fand%23"],
         [
             "/v1/{name}",
             [],
@@ -76,8 +76,8 @@ from google.api_core import path_template
         [
             "/v1/{name=**}",
             [],
-            {"name": "path/../with/?and#"},
-            "/v1/path/../with/%3Fand%23",
+            {"name": "path/sub/with/?and#"},
+            "/v1/path/sub/with/%3Fand%23",
         ],
         [
             "/v3/{session=projects/*/locations/*/agents/*/sessions/*}:detectIntent",
@@ -937,7 +937,12 @@ def test_validate_multi_segment_value(val, expected_valid):
             r"^Value for positional variable must not contain segments that are exactly \. or \.\. \.$",
         ),
         ("", "**", False, None),
-        ("projects/my-proj/locations/us-central1", "projects/*/locations/*", False, None),
+        (
+            "projects/my-proj/locations/us-central1",
+            "projects/*/locations/*",
+            False,
+            None,
+        ),
         (
             "projects/my-proj/locations/.",
             "projects/*/locations/*",
