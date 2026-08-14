@@ -213,6 +213,36 @@ def test_mutations_batcher_response_with_error_codes():
         assert exc.value.exc[1].message == mocked_response[1].message
 
 
+def test_mutations_batcher_asynchronous_flush_exception_is_surfaced():
+    """An exception raised by the underlying ``mutate_rows`` call (e.g. a
+    non-retryable RPC error or a response-count mismatch) is raised inside the
+    async flush task. It must be captured and re-raised at ``close()`` rather
+    than being silently swallowed by the executor -- otherwise the failed
+    mutations are never reported to the user (silent data loss)."""
+    from google.api_core.exceptions import PermissionDenied
+
+    with mock.patch("tests.unit.v2_client.test_batcher._Table") as mocked_table:
+        table = mocked_table.return_value
+        # flush_count=2 forces the batch to flush asynchronously (through the
+        # executor) as soon as the second row is added
+        mutation_batcher = MutationsBatcher(table=table, flush_count=2)
+
+        row1 = DirectRow(row_key=b"row_key")
+        row1.set_cell("cf1", b"c1", b"1")
+        row2 = DirectRow(row_key=b"row_key")
+        row2.set_cell("cf1", b"c1", b"2")
+        table.mutate_rows.side_effect = PermissionDenied("denied")
+
+        mutation_batcher.mutate_rows([row1, row2])
+        with pytest.raises(MutationsBatchError) as exc:
+            mutation_batcher.close()
+        assert exc.value.message == "Errors in batch mutations."
+        # the whole batch (both rows) failed, so both are reported -- the error
+        # count stays aligned with the number of affected mutations
+        assert len(exc.value.exc) == 2
+        assert all(isinstance(e, PermissionDenied) for e in exc.value.exc)
+
+
 def test_flow_control_event_is_set_when_not_blocked():
     flow_control = _FlowControl()
 

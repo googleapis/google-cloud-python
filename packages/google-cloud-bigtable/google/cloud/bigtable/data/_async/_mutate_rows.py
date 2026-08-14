@@ -214,6 +214,18 @@ class _MutateRowsOperationAsync:
                 self._handle_entry_error(idx, exc)
             # bubble up exception to be handled by retry wrapper
             raise
+        # Any entries that were sent but never received a response entry (a
+        # successfully-closed but incomplete stream) must not be treated as
+        # successful. Record a retryable error so idempotent entries are retried
+        # and non-idempotent entries surface as failures instead of being
+        # silently dropped.
+        for idx in active_request_indices.values():
+            self._handle_entry_error(
+                idx,
+                bt_exceptions._MutateRowsIncomplete(
+                    "no response entry received for mutation"
+                ),
+            )
         # check if attempt succeeded, or needs to be retried
         if self.remaining_indices:
             # unfinished work; raise exception to trigger retry
