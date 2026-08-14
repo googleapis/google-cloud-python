@@ -229,7 +229,8 @@ as not to break user applications following this pattern,
 setup.py file. Applications that do not import directly from
 ``google-resumable-media`` can safely disregard this dependency.
 This backwards compatibility feature **will be removed** in a future major
-version update. Please migrate to using the ``google.cloud.storage.exceptions`` classes as above.
+version update. Please migrate to using the ``google.cloud.storage.exceptions``
+classes as above.
 
 Checksum Defaults
 ~~~~~~~~~~~~~~~~~
