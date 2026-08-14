@@ -16,16 +16,49 @@
 
 import sys
 import types
+from concurrent import futures
 from unittest import mock
 
 import pytest
 
 try:
-    from google.api_core import grpc_helpers
-
-    HAS_GRPC_HELPERS = True
+    import grpc
 except ImportError:
-    HAS_GRPC_HELPERS = False
+    pytest.skip("No GRPC", allow_module_level=True)
+
+from google.api_core import grpc_helpers
+
+
+class GenericEchoHandler(grpc.GenericRpcHandler):
+    """
+    A generic handler that routes low-level gRPC calls without requiring
+    compiled protobuf stubs.
+    """
+
+    def service(self, handler_call_details):
+        if handler_call_details.method == "/DummyService/Echo":
+            # Return a simple Unary-Unary handler that echoes back the request
+            return grpc.unary_unary_rpc_method_handler(
+                lambda request, context: request,  # Echo logic
+                request_deserializer=lambda x: x,  # Pass raw bytes through
+                response_serializer=lambda x: x,  # Pass raw bytes through
+            )
+        return None
+
+
+@pytest.fixture(scope="module")
+def local_grpc_server():
+    """Starts a local generic gRPC server on an open port."""
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
+    server.add_generic_rpc_handlers((GenericEchoHandler(),))
+
+    # Bind to an ephemeral port (port 0 lets the OS assign one)
+    port = server.add_insecure_port("localhost:0")
+    server.start()
+
+    yield f"localhost:{port}"
+
+    server.stop(None)
 
 
 @pytest.fixture
@@ -56,7 +89,6 @@ def mock_otel_grpc(monkeypatch):
         pytest.param(False, "true", False, id="not_installed_fails_open"),
     ],
 )
-@pytest.mark.skipif(not HAS_GRPC_HELPERS, reason="Requires google-api-core[grpc]")
 def test_create_channel_otel_combos(
     monkeypatch,
     mock_otel_grpc,
@@ -108,7 +140,6 @@ def test_create_channel_otel_combos(
     ],
     ids=["dict", "object"],
 )
-@pytest.mark.skipif(not HAS_GRPC_HELPERS, reason="Requires google-api-core[grpc]")
 def test_create_channel_with_custom_tracer_provider(
     monkeypatch, mock_otel_grpc, config_factory
 ):
@@ -130,3 +161,54 @@ def test_create_channel_with_custom_tracer_provider(
             mock_otel_grpc.client_interceptor.assert_called_once_with(
                 tracer_provider=mock_tracer_provider
             )
+
+
+def test_otel_integration_with_fake_endpoint(local_grpc_server, monkeypatch):
+    """Verify OpenTelemetry integration with a real local gRPC server."""
+    try:
+        from opentelemetry.sdk.trace import TracerProvider
+        from opentelemetry.sdk.trace.export import (
+            InMemorySpanExporter,
+            SimpleSpanProcessor,
+        )
+    except ImportError as e:
+        pytest.skip(f"opentelemetry-sdk not installed or import failed: {e}")
+
+    # A) Setup OpenTelemetry with an In-Memory Exporter
+    exporter = InMemorySpanExporter()
+    provider = TracerProvider()
+    provider.add_span_processor(SimpleSpanProcessor(exporter))
+
+    # B) Enable tracing via environment variable
+    monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "True")
+
+    # C) Mock secure_channel to return an insecure channel
+    # This is needed because local_grpc_server is insecure but create_channel defaults to secure.
+    def mock_secure(*args, **kwargs):
+        return grpc.insecure_channel(args[0])
+
+    monkeypatch.setattr(grpc, "secure_channel", mock_secure)
+
+    # D) Call the code under test
+    channel = grpc_helpers.create_channel(
+        local_grpc_server, configuration={"tracer_provider": provider}
+    )
+
+    # E) Make a low-level generic call
+    method_callable = channel.unary_unary(
+        "/DummyService/Echo",
+        request_serializer=lambda x: x,
+        response_deserializer=lambda x: x,
+    )
+
+    payload = b"ping-test"
+    response = method_callable(payload)
+
+    # F) Assertions
+    assert response == payload  # Server responded correctly
+
+    spans = exporter.get_finished_spans()
+    assert len(spans) > 0, "No spans were recorded by OpenTelemetry!"
+
+    span_names = [s.name for s in spans]
+    assert any("DummyService" in name for name in span_names)
