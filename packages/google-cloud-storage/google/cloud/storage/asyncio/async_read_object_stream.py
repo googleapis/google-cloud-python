@@ -157,10 +157,7 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
                 self.read_handle = response.read_handle
 
             self._is_stream_open = True
-        except asyncio.CancelledError:
-            await self._close_socket_like_rpc()
-            raise
-        except Exception:
+        except (asyncio.CancelledError, Exception):
             await self._close_socket_like_rpc()
             raise
 
