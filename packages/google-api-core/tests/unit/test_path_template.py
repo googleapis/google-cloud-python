@@ -710,25 +710,25 @@ def helper_test_transcode(http_options_list, expected_result_list):
             "/v2/{parent=projects/*/locations/*}/content:inspect",
             [],
             {"parent": "projects/my-project/locations/.."},
-            r"^Invalid value \.\. for parent\.$",
+            r"^Value for parent must not contain segments that are exactly \. or \.\. \.$",
         ],
         [
             "/v2/{parent=projects/*/locations/*}/content:inspect",
             [],
             {"parent": "projects/my-project/locations/."},
-            r"^Invalid value \. for parent\.$",
+            r"^Value for parent must not contain segments that are exactly \. or \.\. \.$",
         ],
         [
             "/v2/{parent=projects/*/locations/*}/content:inspect",
             [],
             {"parent": "projects/../locations/us-central1"},
-            r"^Invalid value \.\. for parent\.$",
+            r"^Value for parent must not contain segments that are exactly \. or \.\. \.$",
         ],
         [
             "/v2/{parent=projects/*/locations/*}/content:inspect",
             [],
             {"parent": "projects/./locations/us-central1"},
-            r"^Invalid value \. for parent\.$",
+            r"^Value for parent must not contain segments that are exactly \. or \.\. \.$",
         ],
     ],
 )
@@ -816,7 +816,7 @@ def test_percent_encoding_unreserved_characters(tmpl, kwargs, expected_result):
             "/v1/**",
             [".."],
             {},
-            r"^Invalid value \.\. for positional variable\.$",
+            r"^Value for positional variable must not contain segments that are exactly \. or \.\. \.$",
         ),
         (
             "/v1/**",
@@ -828,7 +828,7 @@ def test_percent_encoding_unreserved_characters(tmpl, kwargs, expected_result):
             "/v1/{name=**}",
             [],
             {"name": ".."},
-            r"^Invalid value \.\. for name\.$",
+            r"^Value for name must not contain segments that are exactly \. or \.\. \.$",
         ),
         (
             "/v1/{name=**}",
@@ -880,13 +880,13 @@ def test_generate_pattern_for_template(template_str, expected_pattern):
             ".",
             "**",
             True,
-            r"^Invalid value \. for property\.$",
+            r"^Value for property must not contain segments that are exactly \. or \.\. \.$",
         ),
         (
             "..",
             "**",
             True,
-            r"^Invalid value \.\. for property\.$",
+            r"^Value for property must not contain segments that are exactly \. or \.\. \.$",
         ),
         (
             "a/./b",
@@ -911,25 +911,25 @@ def test_generate_pattern_for_template(template_str, expected_pattern):
             "projects/my-proj/locations/.",
             "projects/*/locations/*",
             True,
-            r"^Invalid value \. for property\.$",
+            r"^Value for property must not contain segments that are exactly \. or \.\. \.$",
         ),
         (
             "projects/my-proj/locations/..",
             "projects/*/locations/*",
             True,
-            r"^Invalid value \.\. for property\.$",
+            r"^Value for property must not contain segments that are exactly \. or \.\. \.$",
         ),
         (
             "projects/../locations/us-central1",
             "projects/*/locations/*",
             True,
-            r"^Invalid value \.\. for property\.$",
+            r"^Value for property must not contain segments that are exactly \. or \.\. \.$",
         ),
         (
             "projects/./locations/us-central1",
             "projects/*/locations/*",
             True,
-            r"^Invalid value \. for property\.$",
+            r"^Value for property must not contain segments that are exactly \. or \.\. \.$",
         ),
         (
             "projects/my-proj/monitoredResourceDescriptors/instance/my-inst/..",
@@ -961,11 +961,11 @@ def test_extract_and_validate_wildcards(
     [
         (
             "projects/../locations/us-central1/buckets/my-bucket",
-            r"^Invalid value \.\. for name\.$",
+            r"^Value for name must not contain segments that are exactly \. or \.\. \.$",
         ),
         (
             "projects/my-project/locations/./buckets/my-bucket",
-            r"^Invalid value \. for name\.$",
+            r"^Value for name must not contain segments that are exactly \. or \.\. \.$",
         ),
         (
             "projects/my-project/locations/us-central1/buckets/foo/../bar",
@@ -973,11 +973,11 @@ def test_extract_and_validate_wildcards(
         ),
         (
             "projects/my-project/locations/us-central1/buckets/.",
-            r"^Invalid value \. for name\.$",
+            r"^Value for name must not contain segments that are exactly \. or \.\. \.$",
         ),
         (
             "projects/my-project/locations/us-central1/buckets/..",
-            r"^Invalid value \.\. for name\.$",
+            r"^Value for name must not contain segments that are exactly \. or \.\. \.$",
         ),
     ],
 )
@@ -1049,7 +1049,10 @@ def test_transcode_routing_with_path_traversal_fallback():
     assert result["uri"] == "/v1/projects/my-project"
 
     # Structurally matching subtemplate with invalid dot segment raises immediately
-    with pytest.raises(ValueError, match=r"^Invalid value \. for name\.$"):
+    with pytest.raises(
+        ValueError,
+        match=r"^Value for name must not contain segments that are exactly \. or \.\. \.$",
+    ):
         path_template.transcode(
             http_options, None, name="projects/my-project/locations/."
         )

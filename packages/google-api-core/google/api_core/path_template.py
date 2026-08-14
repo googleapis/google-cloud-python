@@ -90,13 +90,12 @@ def _extract_and_validate_wildcards(
     if m is not None:
         groups = m.groups()
         for g in groups:
-            if g in (".", ".."):
+            if "." in g and any(seg in (".", "..") for seg in g.split("/")):
+                if "**" in tmpl or "/" in tmpl:
+                    raise ValueError(
+                        f"Value for {property_name} must not contain segments that are exactly . or .. ."
+                    )
                 raise ValueError(f"Invalid value {g} for {property_name}.")
-        # ** can only appear as the final segment of a path template per AIP-127.
-        if "**" in tmpl and any(seg in (".", "..") for seg in groups[-1].split("/")):
-            raise ValueError(
-                f"Value for {property_name} must not contain segments that are exactly . or .. ."
-            )
 
 
 def _expand_variable_match(positional_vars, named_vars, match):
