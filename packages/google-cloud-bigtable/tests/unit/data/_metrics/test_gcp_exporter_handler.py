@@ -53,16 +53,12 @@ class TestGoogleCloudMetricsHandler:
             GoogleCloudMetricsHandler, "_generate_client_uid"
         ) as uid_mock:
             handler = self._make_one(expected_exporter)
-        try:
-            assert isinstance(handler.meter_provider, MeterProvider)
-            assert isinstance(handler.otel, _OpenTelemetryInstruments)
-            assert (
-                handler.shared_labels["client_name"]
-                == f"python-bigtable/{CLIENT_VERSION}"
-            )
-            assert handler.shared_labels["client_uid"] == uid_mock()
-        finally:
-            handler.close()
+        assert isinstance(handler.meter_provider, MeterProvider)
+        assert isinstance(handler.otel, _OpenTelemetryInstruments)
+        assert (
+            handler.shared_labels["client_name"] == f"python-bigtable/{CLIENT_VERSION}"
+        )
+        assert handler.shared_labels["client_uid"] == uid_mock()
 
     @mock.patch("google.auth.default", return_value=(mock.Mock(), "project"))
     def test_ctor_explicit(self, mock_auth):
@@ -74,17 +70,12 @@ class TestGoogleCloudMetricsHandler:
             client_uid=expected_uid,
             client_version=expected_version,
         )
-        try:
-            assert (
-                handler.otel == _OpenTelemetryInstruments() or handler.otel is not None
-            )
-            assert (
-                handler.shared_labels["client_name"]
-                == f"python-bigtable/{expected_version}"
-            )
-            assert handler.shared_labels["client_uid"] == expected_uid
-        finally:
-            handler.close()
+        assert handler.otel == _OpenTelemetryInstruments() or handler.otel is not None
+        assert (
+            handler.shared_labels["client_name"]
+            == f"python-bigtable/{expected_version}"
+        )
+        assert handler.shared_labels["client_uid"] == expected_uid
 
     @mock.patch(
         "google.cloud.bigtable.data._metrics.handlers.gcp_exporter.PeriodicExportingMetricReader"
