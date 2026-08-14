@@ -217,7 +217,7 @@ def default(
     install_extras = []
     if install_grpc:
         # Note: The extra is called `grpc` and not `grpcio`.
-        install_extras.append("grpc")
+        install_extras.extend(["grpc", "tracing", "testing"])
 
     constraints_dir = str(CURRENT_DIRECTORY / "testing")
     if install_async_rest:

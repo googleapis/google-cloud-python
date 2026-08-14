@@ -167,9 +167,9 @@ def test_otel_integration_with_fake_endpoint(local_grpc_server, monkeypatch):
     """Verify OpenTelemetry integration with a real local gRPC server."""
     try:
         from opentelemetry.sdk.trace import TracerProvider
-        from opentelemetry.sdk.trace.export import (
+        from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+        from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
             InMemorySpanExporter,
-            SimpleSpanProcessor,
         )
     except ImportError as e:
         pytest.skip(f"opentelemetry-sdk not installed or import failed: {e}")
