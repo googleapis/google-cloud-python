@@ -97,36 +97,25 @@ def _build_capture_pattern(template_str: str) -> tuple[re.Pattern, tuple[str, ..
     parts = []
     last_idx = 0
     for match in _VARIABLE_RE.finditer(template_str):
-        literal = template_str[last_idx : match.start()]
-        parts.append(re.escape(literal))
-
+        parts.append(re.escape(template_str[last_idx : match.start()]))
         positional = match.group("positional")
         template = match.group("template")
 
-        if positional == "*":
-            wildcard_types.append("*")
-            replaced = _SINGLE_SEGMENT_PATTERN
-        elif positional == "**":
+        if positional == "**" or template == "**":
             wildcard_types.append("**")
-            replaced = _MULTI_SEGMENT_PATTERN
-        elif not template or template == "*":
+            parts.append(_MULTI_SEGMENT_PATTERN)
+        elif positional == "*" or not template or template == "*":
             wildcard_types.append("*")
-            replaced = _SINGLE_SEGMENT_PATTERN
-        elif template == "**":
-            wildcard_types.append("**")
-            replaced = _MULTI_SEGMENT_PATTERN
+            parts.append(_SINGLE_SEGMENT_PATTERN)
         else:
             sub_pattern, sub_types = _build_capture_pattern(template)
             wildcard_types.extend(sub_types)
-            replaced = sub_pattern.pattern
+            parts.append(sub_pattern.pattern)
 
-        parts.append(replaced)
         last_idx = match.end()
-    literal = template_str[last_idx:]
-    parts.append(re.escape(literal))
+    parts.append(re.escape(template_str[last_idx:]))
 
-    pattern = "".join(parts)
-    return re.compile(pattern), tuple(wildcard_types)
+    return re.compile("".join(parts)), tuple(wildcard_types)
 
 
 def _extract_and_validate_wildcards(
@@ -150,28 +139,17 @@ def _extract_and_validate_wildcards(
     Raises:
         ValueError: If a wildcard value contains invalid dot segments.
     """
-    target = property_name or "positional variable"
-    if template_str is None or template_str == "*":
-        if val in (".", ".."):
-            raise ValueError(f"Invalid value {val} for {target}.")
-    elif template_str == "**":
-        if not _validate_multi_segment_value(val):
-            raise ValueError(
-                f"Value for {target} must not contain segments that are exactly . or .. ."
-            )
-    else:
-        pattern, wildcard_types = _build_capture_pattern(template_str)
-        m = pattern.fullmatch(val)
-        if m is not None:
-            for w_type, captured_val in zip(wildcard_types, m.groups()):
-                if w_type == "*":
-                    if captured_val in (".", ".."):
-                        raise ValueError(f"Invalid value {captured_val} for {target}.")
-                elif w_type == "**":
-                    if not _validate_multi_segment_value(captured_val):
-                        raise ValueError(
-                            f"Value for {target} must not contain segments that are exactly . or .. ."
-                        )
+    pattern, wildcard_types = _build_capture_pattern(template_str or "*")
+    m = pattern.fullmatch(val)
+    if m is not None:
+        target = property_name or "positional variable"
+        for w_type, captured_val in zip(wildcard_types, m.groups()):
+            if w_type == "*" and captured_val in (".", ".."):
+                raise ValueError(f"Invalid value {captured_val} for {target}.")
+            elif w_type == "**" and not _validate_multi_segment_value(captured_val):
+                raise ValueError(
+                    f"Value for {target} must not contain segments that are exactly . or .. ."
+                )
 
 
 def _expand_variable_match(positional_vars, named_vars, match):
