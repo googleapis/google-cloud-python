@@ -684,52 +684,51 @@ def helper_test_transcode(http_options_list, expected_result_list):
             "/v1/*",
             ["."],
             {},
-            "Invalid value \\. for positional variable\\.",
+            r"^Invalid value \. for positional variable\.$",
         ],
         [
             "/v1/*",
             [".."],
             {},
-            "Invalid value \\.\\. for positional variable\\.",
+            r"^Invalid value \.\. for positional variable\.$",
         ],
         # Named matching * with . or ..
         [
             "/compute/v1/projects/{project}/regions/{region}/addresses",
             [],
             {"project": "my-project", "region": ".."},
-            "Invalid value \\.\\. for region\\.",
+            r"^Invalid value \.\. for region\.$",
         ],
         [
             "/compute/v1/projects/{project}/regions/{region}/addresses",
             [],
             {"project": "my-project", "region": "."},
-            "Invalid value \\. for region\\.",
+            r"^Invalid value \. for region\.$",
         ],
         # Sub-template named matching * with . or ..
         [
             "/v2/{parent=projects/*/locations/*}/content:inspect",
             [],
             {"parent": "projects/my-project/locations/.."},
-            "Invalid value projects/my-project/locations/\\.\\. for parent\\.",
+            r"^Invalid value \.\. for parent\.$",
         ],
         [
             "/v2/{parent=projects/*/locations/*}/content:inspect",
             [],
             {"parent": "projects/my-project/locations/."},
-            "Invalid value projects/my-project/locations/\\. for parent\\.",
+            r"^Invalid value \. for parent\.$",
         ],
-        # Non-matching values with path traversal (bypass prevention)
         [
             "/v2/{parent=projects/*/locations/*}/content:inspect",
             [],
-            {"parent": "projects/.."},
-            "Invalid value projects/\\.\\. for parent\\.",
+            {"parent": "projects/../locations/us-central1"},
+            r"^Invalid value \.\. for parent\.$",
         ],
         [
-            "/v1/{name}",
+            "/v2/{parent=projects/*/locations/*}/content:inspect",
             [],
-            {"name": "projects/.."},
-            "Invalid value projects/\\.\\. for name\\.",
+            {"parent": "projects/./locations/us-central1"},
+            r"^Invalid value \. for parent\.$",
         ],
     ],
 )
@@ -742,16 +741,20 @@ def test_path_traversal_dots_validation_star(tmpl, args, kwargs, expected_err_ma
     "name_val, expected_path",
     [
         (
-            "projects/my-project/monitoredResourceDescriptors/instance/my-instance/..",
-            "/v3/projects/my-project/monitoredResourceDescriptors/instance/my-instance/..",
+            "projects/my-project/monitoredResourceDescriptors/instance/my-instance",
+            "/v3/projects/my-project/monitoredResourceDescriptors/instance/my-instance",
         ),
         (
-            "projects/my-project/monitoredResourceDescriptors/instance/my-instance/.",
-            "/v3/projects/my-project/monitoredResourceDescriptors/instance/my-instance/.",
+            "projects/my-project/monitoredResourceDescriptors/a/b/c/d/e",
+            "/v3/projects/my-project/monitoredResourceDescriptors/a/b/c/d/e",
         ),
         (
-            "projects/my-project/monitoredResourceDescriptors/a/b/c/d/e/../../../..",
-            "/v3/projects/my-project/monitoredResourceDescriptors/a/b/c/d/e/../../../..",
+            "projects/my-project/monitoredResourceDescriptors/instance...foo/bar",
+            "/v3/projects/my-project/monitoredResourceDescriptors/instance...foo/bar",
+        ),
+        (
+            "projects/my-project/monitoredResourceDescriptors/...",
+            "/v3/projects/my-project/monitoredResourceDescriptors/...",
         ),
     ],
 )
@@ -769,16 +772,22 @@ def test_path_traversal_dots_validation_double_star_valid(name_val, expected_pat
     "name_val",
     [
         "projects/my-project/monitoredResourceDescriptors/.",
+        "projects/my-project/monitoredResourceDescriptors/..",
+        "projects/my-project/monitoredResourceDescriptors/instance/my-instance/..",
+        "projects/my-project/monitoredResourceDescriptors/instance/my-instance/.",
         "projects/my-project/monitoredResourceDescriptors/instance/my-instance/../..",
         "projects/my-project/monitoredResourceDescriptors/instance/../my-instance/..",
-        "projects/my-project/monitoredResourceDescriptors/..",
         "projects/my-project/monitoredResourceDescriptors/instance/../..",
         "projects/my-project/monitoredResourceDescriptors/a/b/../../../c/d/e/..",
+        "projects/my-project/monitoredResourceDescriptors/a/b/c/d/e/../../../..",
         "projects/my-project/monitoredResourceDescriptors/instance//..",
     ],
 )
 def test_path_traversal_dots_validation_double_star_invalid(name_val):
-    with pytest.raises(ValueError, match=r"Invalid value .* for name\."):
+    with pytest.raises(
+        ValueError,
+        match=r"^Value for name must not contain segments that are exactly \. or \.\. \.$",
+    ):
         path_template.expand(
             "/v3/{name=projects/*/monitoredResourceDescriptors/**}",
             name=name_val,
@@ -805,8 +814,30 @@ def test_percent_encoding_unreserved_characters(tmpl, kwargs, expected_result):
 @pytest.mark.parametrize(
     "tmpl, args, kwargs, expected_err_match",
     [
-        ("/v1/**", [".."], {}, r"Invalid value .* for positional variable\."),
-        ("/v1/{name=**}", [], {"name": ".."}, r"Invalid value .* for name\."),
+        (
+            "/v1/**",
+            [".."],
+            {},
+            r"^Value for positional variable must not contain segments that are exactly \. or \.\. \.$",
+        ),
+        (
+            "/v1/**",
+            ["a/./b"],
+            {},
+            r"^Value for positional variable must not contain segments that are exactly \. or \.\. \.$",
+        ),
+        (
+            "/v1/{name=**}",
+            [],
+            {"name": ".."},
+            r"^Value for name must not contain segments that are exactly \. or \.\. \.$",
+        ),
+        (
+            "/v1/{name=**}",
+            [],
+            {"name": "a/../b"},
+            r"^Value for name must not contain segments that are exactly \. or \.\. \.$",
+        ),
     ],
 )
 def test_path_traversal_dots_validation_bare_double_star(
@@ -846,16 +877,19 @@ def test_build_capture_pattern(template_str, expected_pattern, expected_wildcard
     "val, expected_valid",
     [
         ("a/b/c", True),
-        ("a/../b", True),
-        ("a/b/c/d/e/../../../..", True),
+        ("a/b.c/d", True),
+        ("a/.../b", True),
+        ("a/.b/c", True),
+        ("", True),
+        ("a/b", True),
+        ("a/../b", False),
+        ("a/b/c/d/e/../../../..", False),
         ("a/b/../..", False),
         ("a/b/../../..", False),
-        ("", False),
         (".", False),
         ("..", False),
-        ("", False),
-        ("/", False),
-        ("//", False),
+        ("/", True),
+        ("//", True),
         ("a/../../b", False),
         ("../..", False),
         ("instance//..", False),
@@ -868,28 +902,85 @@ def test_validate_multi_segment_value(val, expected_valid):
 
 
 @pytest.mark.parametrize(
-    "val, template_str, expect_error",
+    "val, template_str, expect_error, expected_err_match",
     [
-        ("api", None, False),
-        ("api", "*", False),
-        (".", None, True),
-        ("..", None, True),
-        (".", "*", True),
-        ("..", "*", True),
-        ("", "*", False),
-        ("api/v1", "**", False),
-        (".", "**", True),
-        ("..", "**", True),
-        ("", "**", True),
-        ("projects/my-proj/locations/us-central1", "projects/*/locations/*", False),
-        ("projects/my-proj/locations/.", "projects/*/locations/*", True),
-        ("projects/my-proj/locations/..", "projects/*/locations/*", True),
-        ("projects/../locations/us-central1", "projects/*/locations/*", True),
+        ("api", None, False, None),
+        ("api", "*", False, None),
+        (".", None, True, r"^Invalid value \. for positional variable\.$"),
+        ("..", None, True, r"^Invalid value \.\. for positional variable\.$"),
+        (".", "*", True, r"^Invalid value \. for positional variable\.$"),
+        ("..", "*", True, r"^Invalid value \.\. for positional variable\.$"),
+        ("", "*", False, None),
+        ("api/v1", "**", False, None),
+        (
+            ".",
+            "**",
+            True,
+            r"^Value for positional variable must not contain segments that are exactly \. or \.\. \.$",
+        ),
+        (
+            "..",
+            "**",
+            True,
+            r"^Value for positional variable must not contain segments that are exactly \. or \.\. \.$",
+        ),
+        (
+            "a/./b",
+            "**",
+            True,
+            r"^Value for positional variable must not contain segments that are exactly \. or \.\. \.$",
+        ),
+        (
+            "a/../b",
+            "**",
+            True,
+            r"^Value for positional variable must not contain segments that are exactly \. or \.\. \.$",
+        ),
+        ("", "**", False, None),
+        ("projects/my-proj/locations/us-central1", "projects/*/locations/*", False, None),
+        (
+            "projects/my-proj/locations/.",
+            "projects/*/locations/*",
+            True,
+            r"^Invalid value \. for positional variable\.$",
+        ),
+        (
+            "projects/my-proj/locations/..",
+            "projects/*/locations/*",
+            True,
+            r"^Invalid value \.\. for positional variable\.$",
+        ),
+        (
+            "projects/../locations/us-central1",
+            "projects/*/locations/*",
+            True,
+            r"^Invalid value \.\. for positional variable\.$",
+        ),
+        (
+            "projects/./locations/us-central1",
+            "projects/*/locations/*",
+            True,
+            r"^Invalid value \. for positional variable\.$",
+        ),
+        (
+            "projects/my-proj/monitoredResourceDescriptors/instance/my-inst/..",
+            "projects/*/monitoredResourceDescriptors/**",
+            True,
+            r"^Value for positional variable must not contain segments that are exactly \. or \.\. \.$",
+        ),
+        (
+            "projects/my-proj/monitoredResourceDescriptors/instance/my-inst",
+            "projects/*/monitoredResourceDescriptors/**",
+            False,
+            None,
+        ),
     ],
 )
-def test_extract_and_validate_wildcards(val, template_str, expect_error):
+def test_extract_and_validate_wildcards(
+    val, template_str, expect_error, expected_err_match
+):
     if expect_error:
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError, match=expected_err_match):
             path_template._extract_and_validate_wildcards(val, template_str)
     else:
         # Should not raise any exception

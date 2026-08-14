@@ -63,61 +63,17 @@ _SINGLE_SEGMENT_PATTERN = r"([^/]+)"
 _MULTI_SEGMENT_PATTERN = r"(.+)"
 
 
-class _PathValidationFailed(Exception):
-    """Internal exception used when an invalid path is encountered."""
-
-
 def _validate_multi_segment_value(val: str) -> bool:
-    """Validate a multi-segment wildcard value.
-
-    This function implements the dot and double-dot traversal validation rule
-    for values matching '**'. It splits the value by '/' into segments and
-    simulates path traversal:
-    - '.' segments do not modify the segment count.
-    - '..' segments decrease the leftover segment count by 1.
-    - Any other segments increase the leftover segment count by 1.
-
-    Validation fails if:
-    - Path traversal overflows to the left (leftover segment count drops below 0),
-      meaning it would traverse out of the multi-segment value boundaries.
-    - No segments remain after executing all path traversal commands (leftover
-      segment count is 0), meaning the entire value is consumed.
-
-    Examples:
-        >>> _validate_multi_segment_value("instance/my-instance")
-        True
-        >>> _validate_multi_segment_value("instance/my-instance/..")
-        True
-        >>> _validate_multi_segment_value("instance/../..")
-        False
+    """Validate that a multi-segment wildcard value does not contain '.' or '..' segments.
 
     Args:
         val (str): The value matched to the '**' wildcard to validate.
 
     Returns:
-        bool: True if the value is valid and does not violate traversal boundaries,
-            False otherwise.
+        bool: True if the value does not contain any '.' or '..' segments, False otherwise.
     """
-    if val in ("", ".", ".."):
-        return False
-
     segments = val.split("/")
-    leftover_segments = 0
-    unseen_segments = len(segments)
-
-    for segment in segments:
-        unseen_segments -= 1
-        if segment == "..":
-            leftover_segments -= 1
-        elif segment not in (".", ""):
-            leftover_segments += 1
-
-        if leftover_segments < 0:
-            return False
-        if leftover_segments > unseen_segments:
-            return True
-
-    return leftover_segments > 0
+    return not any(segment in (".", "..") for segment in segments)
 
 
 @functools.lru_cache(maxsize=1024)
@@ -176,75 +132,46 @@ def _build_capture_pattern(template_str: str) -> tuple[re.Pattern, tuple[str, ..
 def _extract_and_validate_wildcards(
     val: str, template_str: str | None, property_name: str | None = None
 ) -> None:
-    """Extract and validate wildcard variables against path traversal rules.
+    """Extract and validate wildcard variables against path traversal.
 
-    This function attempts to structurally match the variable's value against
-    its template. If the value structurally matches, it extracts the substrings
-    corresponding to the individual wildcards and enforces safety constraints:
-    - Single-segment matches ('*') must not be exactly '.' or '..' because
-      this breaks the URI routing contract and leads to path traversal.
-    - Multi-segment matches ('**') are checked using _validate_multi_segment_value
-      to ensure path traversal commands do not consume the entire value or
-      escape the starting boundaries of the matched parameter.
+    Ensures that values matched against single-segment wildcards ('*') are
+    not '.' or '..', and values matched against multi-segment wildcards ('**')
+    do not contain '.' or '..' segments.
 
-    If the value does not structurally match the template, this function allows
-    it to pass through without error. This delegates the rejection of the malformed
-    string to the standard routing mechanisms (like `validate()`) to ensure that
-    `additional_bindings` are evaluated correctly.
-
-    Examples:
-        >>> _extract_and_validate_wildcards("us-central1", None, "region")
-        None
-        >>> _extract_and_validate_wildcards("..", None, "region")
-        ValueError("Invalid value .. for region.")
-        >>> _extract_and_validate_wildcards(
-        ...     "projects/my-proj/locations/.", "projects/*/locations/*", "parent"
-        ... )
-        ValueError("Invalid value projects/my-proj/locations/. for parent.")
+    If the value does not match the sub-template structure, validation is
+    deferred to allow subsequent bindings to be evaluated.
 
     Args:
         val (str): The raw string value to validate.
-        template_str (str): The template string of the variable (e.g. 'projects/*/locations/*').
-        property_name (str | None): The name of the property being validated, used
-            to construct descriptive error messages.
+        template_str (str | None): The template string of the variable (e.g.
+            'projects/*/locations/*').
+        property_name (str | None): The name of the property being validated.
 
     Raises:
-        ValueError: If a wildcard within a structurally valid value violates path traversal rules.
+        ValueError: If a wildcard value contains invalid dot segments.
     """
-    try:
-        if template_str is None or template_str == "*":
-            # Single-segment templates (None or "*") cannot match exactly "." or ".."
-            # and cannot have multi-segment paths resolving to 0 segments.
-            #
-            # Empty strings pose no traversal security risk here.
-            if val and not _validate_multi_segment_value(val):
-                raise _PathValidationFailed()
-        elif template_str == "**":
-            # Multi-segment templates ("**") must represent at least one valid,
-            # non-escaped segment.
-            if not _validate_multi_segment_value(val):
-                raise _PathValidationFailed()
-        else:
-            # Compile the sub-template into a regex capture pattern
-            # to isolate and validate individual wildcard values.
-            pattern, wildcard_types = _build_capture_pattern(template_str)
-
-            m = pattern.fullmatch(val)
-            if m is not None:
-                # Validate each wildcard value within its matched boundaries,
-                # preventing traversals from escaping their structural positions.
-                for captured_val in m.groups():
+    target = property_name or "positional variable"
+    if template_str is None or template_str == "*":
+        if val in (".", ".."):
+            raise ValueError(f"Invalid value {val} for {target}.")
+    elif template_str == "**":
+        if not _validate_multi_segment_value(val):
+            raise ValueError(
+                f"Value for {target} must not contain segments that are exactly . or .. ."
+            )
+    else:
+        pattern, wildcard_types = _build_capture_pattern(template_str)
+        m = pattern.fullmatch(val)
+        if m is not None:
+            for w_type, captured_val in zip(wildcard_types, m.groups()):
+                if w_type == "*":
+                    if captured_val in (".", ".."):
+                        raise ValueError(f"Invalid value {captured_val} for {target}.")
+                elif w_type == "**":
                     if not _validate_multi_segment_value(captured_val):
-                        raise _PathValidationFailed()
-            else:
-                # For values that don't match the pattern, ensure the value doesn't
-                # resolve to 0 segments (e.g. "projects/..").
-                if val and not _validate_multi_segment_value(val):
-                    raise _PathValidationFailed()
-    except _PathValidationFailed:
-        raise ValueError(
-            f"Invalid value {val} for {property_name or 'positional variable'}."
-        )
+                        raise ValueError(
+                            f"Value for {target} must not contain segments that are exactly . or .. ."
+                        )
 
 
 def _expand_variable_match(positional_vars, named_vars, match):
