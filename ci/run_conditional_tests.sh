@@ -99,7 +99,7 @@ run_test_in_dir() {
 
     if [ ${ret} -ne 0 ]; then
         echo "❌ Tests failed in ${d} with exit code ${ret}"
-        exit ${ret}
+        exit 255  # Cancel xargs parallel jobs
     else
         echo "✅ Tests passed in ${d}"
     fi
