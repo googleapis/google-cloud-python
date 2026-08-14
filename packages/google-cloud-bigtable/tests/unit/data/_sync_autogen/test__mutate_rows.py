@@ -52,8 +52,11 @@ class TestMutateRowsOperation:
         mutation.size = lambda: size
         return mutation
 
-    def _mock_stream(self, mutation_list, error_dict):
+    def _mock_stream(self, mutation_list, error_dict, omit_indices=None):
+        omit_indices = omit_indices or set()
         for idx, entry in enumerate(mutation_list):
+            if idx in omit_indices:
+                continue
             code = error_dict.get(idx, 0)
             yield MutateRowsResponse(
                 entries=[
@@ -63,12 +66,12 @@ class TestMutateRowsOperation:
                 ]
             )
 
-    def _make_mock_gapic(self, mutation_list, error_dict=None):
+    def _make_mock_gapic(self, mutation_list, error_dict=None, omit_indices=None):
         mock_fn = CrossSync._Sync_Impl.Mock()
         if error_dict is None:
             error_dict = {}
         mock_fn.side_effect = lambda *args, **kwargs: self._mock_stream(
-            mutation_list, error_dict
+            mutation_list, error_dict, omit_indices
         )
         return mock_fn
 
@@ -145,6 +148,7 @@ class TestMutateRowsOperation:
             instance = self._make_one(
                 client, table, entries, operation_timeout, operation_timeout, metric
             )
+            instance._acknowledged_indices = set(range(len(entries)))
             instance.start()
             assert attempt_mock.call_count == 1
 
@@ -230,8 +234,37 @@ class TestMutateRowsOperation:
                 metric,
                 retryable_exceptions=(exc_type,),
             )
+            instance._acknowledged_indices = set(range(len(entries)))
             instance.start()
             assert attempt_mock.call_count == num_retries + 1
+
+    def test_mutate_rows_unacknowledged_entries_fail(self):
+        """If the server closes the stream without returning a response entry for
+        every request entry, the unacknowledged entries must be surfaced as
+        failures instead of being silently treated as successful."""
+        from google.cloud.bigtable.data.exceptions import (
+            FailedMutationEntryError,
+            MutationsExceptionGroup,
+        )
+
+        mutations = [
+            self._make_mutation(),
+            self._make_mutation(),
+            self._make_mutation(),
+        ]
+        mock_gapic_fn = self._make_mock_gapic(mutations, omit_indices={1})
+        instance = self._make_one(mutation_entries=mutations)
+        with mock.patch.object(instance, "_gapic_fn", mock_gapic_fn):
+            with pytest.raises(MutationsExceptionGroup) as exc_info:
+                instance.start()
+        assert len(exc_info.value.exceptions) == 1
+        failed = exc_info.value.exceptions[0]
+        assert isinstance(failed, FailedMutationEntryError)
+        assert failed.index == 1
+        assert "fewer" in str(failed.__cause__)
+        assert mock_gapic_fn.call_count == 1
+        assert 0 not in instance.errors
+        assert 2 not in instance.errors
 
     def test_mutate_rows_incomplete_ignored(self):
         """MutateRowsIncomplete exceptions should not be added to error list"""

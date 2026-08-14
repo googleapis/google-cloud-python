@@ -117,6 +117,9 @@ class _MutateRowsOperationAsync:
         self.mutations = [_EntryWithProto(m, m._to_pb()) for m in mutation_entries]
         self.remaining_indices = list(range(len(self.mutations)))
         self.errors: dict[int, list[Exception]] = {}
+        # track which original entries received a response entry from the server,
+        # so we can detect entries the server never acknowledged (see start())
+        self._acknowledged_indices: set[int] = set()
         # set up metrics
         self._operation_metric = metric
 
@@ -138,6 +141,24 @@ class _MutateRowsOperationAsync:
                 for idx in incomplete_indices:
                     self._handle_entry_error(idx, exc)
             finally:
+                # response completeness check: the server must return one
+                # response entry for every request entry over the life of the
+                # operation. If fewer distinct entries were acknowledged than
+                # were sent, the stream closed without reporting an outcome for
+                # some mutations; we cannot assume they were applied, so fail
+                # them instead of silently treating them as successful.
+                if len(self._acknowledged_indices) != len(self.mutations):
+                    for idx in range(len(self.mutations)):
+                        if idx not in self._acknowledged_indices and (
+                            idx not in self.errors
+                        ):
+                            self.errors[idx] = [
+                                core_exceptions.ClientError(
+                                    "No response entry received for mutation "
+                                    "entry; the server acknowledged fewer "
+                                    "entries than were sent"
+                                )
+                            ]
                 # raise exception detailing incomplete mutations
                 all_errors: list[Exception] = []
                 for idx, exc_list in self.errors.items():
@@ -194,6 +215,8 @@ class _MutateRowsOperationAsync:
                 for result in result_list.entries:
                     # convert sub-request index to global index
                     orig_idx = active_request_indices[result.index]
+                    # record that the server returned a response for this entry
+                    self._acknowledged_indices.add(orig_idx)
                     entry_error = core_exceptions.from_grpc_status(
                         result.status.code,
                         result.status.message,

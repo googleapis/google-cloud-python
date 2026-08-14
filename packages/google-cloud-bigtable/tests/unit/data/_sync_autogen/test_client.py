@@ -2817,7 +2817,7 @@ class TestBulkMutateRows:
             table = client.get_table("instance", "table")
             with mock.patch.object(client._gapic_client, "mutate_rows") as mock_gapic:
                 mock_gapic.side_effect = [
-                    self._mock_response([DeadlineExceeded("mock")]),
+                    self._mock_response([DeadlineExceeded("mock"), None, None]),
                     self._mock_response([None]),
                 ]
                 mutation = mutations.SetCell(

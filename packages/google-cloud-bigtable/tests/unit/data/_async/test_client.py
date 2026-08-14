@@ -3349,9 +3349,10 @@ class TestBulkMutateRowsAsync:
         async with self._make_client(project="project") as client:
             table = client.get_table("instance", "table")
             with mock.patch.object(client._gapic_client, "mutate_rows") as mock_gapic:
-                # fail with a retryable error, then a non-retryable one
+                # first entry fails with a retryable error, the others succeed;
+                # the retry then resolves the first entry
                 mock_gapic.side_effect = [
-                    self._mock_response([DeadlineExceeded("mock")]),
+                    self._mock_response([DeadlineExceeded("mock"), None, None]),
                     self._mock_response([None]),
                 ]
                 mutation = mutations.SetCell(

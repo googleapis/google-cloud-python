@@ -53,8 +53,13 @@ class TestMutateRowsOperationAsync:
         return mutation
 
     @CrossSync.convert
-    async def _mock_stream(self, mutation_list, error_dict):
+    async def _mock_stream(self, mutation_list, error_dict, omit_indices=None):
+        omit_indices = omit_indices or set()
         for idx, entry in enumerate(mutation_list):
+            if idx in omit_indices:
+                # simulate a server that closes the stream without returning a
+                # response entry for this mutation
+                continue
             code = error_dict.get(idx, 0)
             yield MutateRowsResponse(
                 entries=[
@@ -64,12 +69,12 @@ class TestMutateRowsOperationAsync:
                 ]
             )
 
-    def _make_mock_gapic(self, mutation_list, error_dict=None):
+    def _make_mock_gapic(self, mutation_list, error_dict=None, omit_indices=None):
         mock_fn = CrossSync.Mock()
         if error_dict is None:
             error_dict = {}
         mock_fn.side_effect = lambda *args, **kwargs: self._mock_stream(
-            mutation_list, error_dict
+            mutation_list, error_dict, omit_indices
         )
         return mock_fn
 
@@ -163,6 +168,9 @@ class TestMutateRowsOperationAsync:
             instance = self._make_one(
                 client, table, entries, operation_timeout, operation_timeout, metric
             )
+            # _run_attempt is mocked out, so simulate it acknowledging every
+            # entry to satisfy the response-completeness check in start()
+            instance._acknowledged_indices = set(range(len(entries)))
             await instance.start()
             assert attempt_mock.call_count == 1
 
@@ -265,8 +273,48 @@ class TestMutateRowsOperationAsync:
                 metric,
                 retryable_exceptions=(exc_type,),
             )
+            # _run_attempt is mocked out, so simulate it acknowledging every
+            # entry to satisfy the response-completeness check in start()
+            instance._acknowledged_indices = set(range(len(entries)))
             await instance.start()
             assert attempt_mock.call_count == num_retries + 1
+
+    @CrossSync.pytest
+    async def test_mutate_rows_unacknowledged_entries_fail(self):
+        """
+        If the server closes the stream without returning a response entry for
+        every request entry, the unacknowledged entries must be surfaced as
+        failures instead of being silently treated as successful.
+        """
+        from google.cloud.bigtable.data.exceptions import (
+            FailedMutationEntryError,
+            MutationsExceptionGroup,
+        )
+
+        mutations = [
+            self._make_mutation(),
+            self._make_mutation(),
+            self._make_mutation(),
+        ]
+        # server returns responses for indices 0 and 2, but omits index 1
+        mock_gapic_fn = self._make_mock_gapic(mutations, omit_indices={1})
+        instance = self._make_one(
+            mutation_entries=mutations,
+        )
+        with mock.patch.object(instance, "_gapic_fn", mock_gapic_fn):
+            with pytest.raises(MutationsExceptionGroup) as exc_info:
+                await instance.start()
+        # only the omitted entry should be reported as failed
+        assert len(exc_info.value.exceptions) == 1
+        failed = exc_info.value.exceptions[0]
+        assert isinstance(failed, FailedMutationEntryError)
+        assert failed.index == 1
+        assert "fewer" in str(failed.__cause__)
+        # a single attempt is enough; omitted entries are not retried
+        assert mock_gapic_fn.call_count == 1
+        # acknowledged entries should not be reported as failures
+        assert 0 not in instance.errors
+        assert 2 not in instance.errors
 
     @CrossSync.pytest
     async def test_mutate_rows_incomplete_ignored(self):

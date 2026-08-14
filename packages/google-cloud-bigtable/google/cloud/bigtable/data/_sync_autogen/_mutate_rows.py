@@ -97,6 +97,7 @@ class _MutateRowsOperation:
         self.mutations = [_EntryWithProto(m, m._to_pb()) for m in mutation_entries]
         self.remaining_indices = list(range(len(self.mutations)))
         self.errors: dict[int, list[Exception]] = {}
+        self._acknowledged_indices: set[int] = set()
         self._operation_metric = metric
 
     def start(self):
@@ -112,6 +113,17 @@ class _MutateRowsOperation:
                 for idx in incomplete_indices:
                     self._handle_entry_error(idx, exc)
             finally:
+                if len(self._acknowledged_indices) != len(self.mutations):
+                    for idx in range(len(self.mutations)):
+                        if (
+                            idx not in self._acknowledged_indices
+                            and idx not in self.errors
+                        ):
+                            self.errors[idx] = [
+                                core_exceptions.ClientError(
+                                    "No response entry received for mutation entry; the server acknowledged fewer entries than were sent"
+                                )
+                            ]
                 all_errors: list[Exception] = []
                 for idx, exc_list in self.errors.items():
                     if len(exc_list) == 0:
@@ -159,6 +171,7 @@ class _MutateRowsOperation:
             for result_list in result_generator:
                 for result in result_list.entries:
                     orig_idx = active_request_indices[result.index]
+                    self._acknowledged_indices.add(orig_idx)
                     entry_error = core_exceptions.from_grpc_status(
                         result.status.code,
                         result.status.message,
