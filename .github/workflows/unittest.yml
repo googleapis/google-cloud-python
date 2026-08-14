@@ -73,7 +73,7 @@ jobs:
         PACKAGE_WEIGHTS: ${{ env.PACKAGE_WEIGHTS }}
       run: |
         if [ -n "$TARGET_BRANCH" ]; then
-          git fetch origin "$TARGET_BRANCH" --depth=1 || true
+          git fetch --no-tags --quiet origin "$TARGET_BRANCH" --depth=1 || true
         fi
         python3 ci/get_package_shards.py
 
@@ -199,7 +199,7 @@ jobs:
           echo "should_evaluate_coverage=true" >> "$GITHUB_OUTPUT"
         else
           TARGET_BRANCH="${TARGET_BRANCH:-main}"
-          git fetch origin "$TARGET_BRANCH" --depth=1 || true
+          git fetch --no-tags --quiet origin "$TARGET_BRANCH" --depth=1 || true
           num_files_changed=$(git diff --name-only "origin/${TARGET_BRANCH}" -- ${PACKAGE_DIRS} | wc -l | tr -d ' ')
           if [[ "${num_files_changed}" -gt 0 ]]; then
             echo "should_evaluate_coverage=true" >> "$GITHUB_OUTPUT"

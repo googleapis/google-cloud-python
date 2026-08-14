@@ -50,7 +50,7 @@ jobs:
         TOTAL_SHARDS: 8
       run: |
         TARGET_BRANCH=${TARGET_BRANCH:-main}
-        git fetch origin "${TARGET_BRANCH}" --deepen=200 || true
+        git fetch --no-tags --quiet origin "${TARGET_BRANCH}" --deepen=200 || true
         
         # Get unique list of modified packages under packages/
         modified_packages=$(git diff --name-only origin/"${TARGET_BRANCH}"... | grep '^packages/' | cut -d/ -f1,2 | sort -u)
