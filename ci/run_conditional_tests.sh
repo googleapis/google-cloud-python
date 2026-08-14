@@ -80,7 +80,7 @@ run_test_in_dir() {
 
     pushd ${d} > /dev/null
     set +e
-    if [ "${PARALLEL_WORKERS}" -eq 1 ]; then
+    if [ "${PARALLEL_WORKERS}" = "1" ]; then
         # When running with a single worker, stream output in real-time while capturing to log file
         ${test_script} 2>&1 | tee "${log_file}"
         local ret=${PIPESTATUS[0]}
