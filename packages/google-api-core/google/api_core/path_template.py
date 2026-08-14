@@ -201,6 +201,7 @@ def _replace_variable_with_pattern(match):
         raise ValueError("Unknown template expression {}".format(match.group(0)))
 
 
+@functools.lru_cache(maxsize=256)
 def _generate_pattern_for_template(tmpl):
     """Generate a pattern that can validate a path template.
 
