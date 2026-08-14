@@ -33,6 +33,8 @@ __protobuf__ = proto.module(
         "PpidData",
         "CompositeData",
         "IpData",
+        "GoogleUserIdData",
+        "PartnerProvidedIdData",
     },
 )
 
@@ -82,6 +84,14 @@ class AudienceMember(proto.Message):
             Group of multiple identifier types.
 
             This field is a member of `oneof`_ ``data``.
+        google_user_id_data (google.ads.datamanager_v1.types.GoogleUserIdData):
+            Encrypted Google User IDs.
+
+            This field is a member of `oneof`_ ``data``.
+        partner_provided_id_data (google.ads.datamanager_v1.types.PartnerProvidedIdData):
+            Partner-provided identifiers.
+
+            This field is a member of `oneof`_ ``data``.
         consent (google.ads.datamanager_v1.types.Consent):
             Optional. The consent setting for the user.
     """
@@ -126,6 +136,18 @@ class AudienceMember(proto.Message):
         oneof="data",
         message="CompositeData",
     )
+    google_user_id_data: "GoogleUserIdData" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="data",
+        message="GoogleUserIdData",
+    )
+    partner_provided_id_data: "PartnerProvidedIdData" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        oneof="data",
+        message="PartnerProvidedIdData",
+    )
     consent: gad_consent.Consent = proto.Field(
         proto.MESSAGE,
         number=3,
@@ -162,9 +184,11 @@ class MobileData(proto.Message):
 
     Attributes:
         mobile_ids (MutableSequence[str]):
-            Required. The list of mobile device IDs (advertising
-            ID/IDFA). At most 10 ``mobileIds`` can be provided in a
-            single
+            Required. The list of mobile device IDs (Android advertising
+            ID, iOS IDFA for Customer Match user lists and Android
+            advertising ID, iOS IDFA, Xbox or Microsoft ID, Amazon Fire
+            TV ID, Roku ID, Generic Device ID for basic user lists). At
+            most 10 ``mobileIds`` can be provided in a single
             [AudienceMember][google.ads.datamanager.v1.AudienceMember].
     """
 
@@ -263,6 +287,39 @@ class IpData(proto.Message):
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class GoogleUserIdData(proto.Message):
+    r"""Google user id data holding encrypted google user IDs. At
+    least one google user ID is required.
+
+    Attributes:
+        google_user_ids (MutableSequence[str]):
+            Required. The list of encrypted google user
+            IDs.
+    """
+
+    google_user_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+
+
+class PartnerProvidedIdData(proto.Message):
+    r"""Partner-provided data holding the partner-provided
+    identifiers. At least one partner-provided identifier is
+    required.
+
+    Attributes:
+        partner_provided_ids (MutableSequence[str]):
+            Required. The list of partner-provided
+            identifiers.
+    """
+
+    partner_provided_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
     )
 
 

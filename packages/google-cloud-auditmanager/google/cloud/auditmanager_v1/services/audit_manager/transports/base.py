@@ -39,7 +39,10 @@ DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 class AuditManagerTransport(abc.ABC):
     """Abstract transport class for AuditManager."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/cloud-auditmanager",
+        "https://www.googleapis.com/auth/cloud-platform",
+    )
 
     DEFAULT_HOST: str = "auditmanager.googleapis.com"
 

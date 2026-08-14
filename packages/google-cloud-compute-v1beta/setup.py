@@ -28,9 +28,7 @@ description = "Google Cloud Compute V1beta API client library"
 
 version = None
 
-with open(
-    os.path.join(package_root, "google/cloud/compute_v1beta/gapic_version.py")
-) as fp:
+with open(os.path.join(package_root, "google/cloud/compute/gapic_version.py")) as fp:
     version_candidates = re.findall(
         r"(?<=\")\d+\.\d+\.\d+[^\"\s]*(?=\")",
         fp.read(),

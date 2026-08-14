@@ -29,7 +29,7 @@ import nox
 LOCAL_DEPS = ("google-api-core", "google-cloud-core")
 NOX_DIR = os.path.abspath(os.path.dirname(__file__))
 DEFAULT_INTERPRETER = "3.14"
-ALL_INTERPRETERS = ("3.10", "3.11", "3.12", "3.13", "3.14")
+ALL_INTERPRETERS = ("3.10", "3.11", "3.12", "3.13", "3.14", "3.15")
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 # Path to the centralized mypy configuration file at the repository root.
 # Search upwards to support running nox from both monorepo packages and integration test goldens.

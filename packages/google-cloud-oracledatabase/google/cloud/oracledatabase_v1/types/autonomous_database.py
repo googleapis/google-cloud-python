@@ -44,6 +44,7 @@ __protobuf__ = proto.module(
         "AutonomousDatabaseConnectionUrls",
         "AutonomousDatabaseStandbySummary",
         "ScheduledOperationDetails",
+        "AutonomousDatabaseRefreshableClone",
     },
 )
 
@@ -370,6 +371,8 @@ class AutonomousDatabase(proto.Message):
 class SourceConfig(proto.Message):
     r"""The source configuration for the standby Autonomous Database.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         autonomous_database (str):
             Optional. The name of the primary Autonomous
@@ -379,7 +382,115 @@ class SourceConfig(proto.Message):
             Optional. This field specifies if the
             replication of automatic backups is enabled when
             creating a Data Guard.
+        source_type (google.cloud.oracledatabase_v1.types.SourceConfig.SourceType):
+            Optional. The source type of the Autonomous
+            Database.
+        clone_type (google.cloud.oracledatabase_v1.types.SourceConfig.CloneType):
+            Optional. The clone type of the Autonomous
+            Database. This field is only applicable in case
+            of cloning
+        refreshable_mode (google.cloud.oracledatabase_v1.types.SourceConfig.RefreshableMode):
+            Optional. The refresh mode of the clone.
+        auto_refresh_frequency_seconds (int):
+            Optional. The frequency in seconds a
+            refreshable clone is refreshed after
+            auto-refresh is enabled.
+        auto_refresh_point_lag_seconds (int):
+            Optional. The time, in seconds, the data of
+            the automatic refreshable clone lags the primary
+            database at the point of refresh.
+
+            This field is a member of `oneof`_ ``_auto_refresh_point_lag_seconds``.
+        auto_refresh_start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. The date and time that
+            auto-refreshing will begin for an Autonomous
+            Database refreshable clone. This value controls
+            only the start time for the first refresh
+            operation.
+        autonomous_database_backup (str):
+            Optional. The name of the Autonomous Database Backup
+            resource with the format:
+            projects/{project}/locations/{region}/autonomousDatabaseBackups/{autonomous_database_backup}
+            Required when source_type is BACKUP_FROM_ID.
+        backup_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. The timestamp specified for the point-in-time
+            clone of the source Autonomous Database. This field is only
+            applicable in case of BACKUP_FROM_TIMESTAMP source type and
+            when use_latest_available_backup is false.
+        use_latest_available_backup (bool):
+            Optional. Clone from latest available backup timestamp. This
+            field is only applicable in case of BACKUP_FROM_TIMESTAMP
+            source type.
     """
+
+    class RefreshableMode(proto.Enum):
+        r"""The refresh mode of a refreshable clone.
+
+        Values:
+            REFRESHABLE_MODE_UNSPECIFIED (0):
+                Default unspecified value.
+            AUTOMATIC (1):
+                Automatic refresh.
+            MANUAL (2):
+                Manual refresh.
+        """
+
+        REFRESHABLE_MODE_UNSPECIFIED = 0
+        AUTOMATIC = 1
+        MANUAL = 2
+
+    class SourceType(proto.Enum):
+        r"""Specifies the source of the database. For example, a clone or
+        peer from an existing database.
+        This enum may be expanded to include other source types in the
+        future.
+
+        Values:
+            SOURCE_TYPE_UNSPECIFIED (0):
+                Default unspecified value.
+            CLONE_DATABASE (1):
+                Clone database from an existing database specified in
+                autonomous_database field.
+            CROSS_REGION_DISASTER_RECOVERY (2):
+                Create a cross-region disaster recovery peer
+                adb from an existing adb.
+            CLONE_TO_REFRESHABLE (3):
+                Create a refreshable clone from an existing database
+                specified in autonomous_database field.
+            BACKUP_FROM_ID (4):
+                Create clone from the backup resource.
+            BACKUP_FROM_TIMESTAMP (5):
+                Create clone from backup specified by backup_time field, or
+                use latest available backup if use_latest_available_backup
+                is true. The autonomous_database field must specify the
+                source database to clone from.
+        """
+
+        SOURCE_TYPE_UNSPECIFIED = 0
+        CLONE_DATABASE = 1
+        CROSS_REGION_DISASTER_RECOVERY = 2
+        CLONE_TO_REFRESHABLE = 3
+        BACKUP_FROM_ID = 4
+        BACKUP_FROM_TIMESTAMP = 5
+
+    class CloneType(proto.Enum):
+        r"""The clone type of the Autonomous Database.
+
+        Values:
+            CLONE_TYPE_UNSPECIFIED (0):
+                Default unspecified value.
+            FULL (1):
+                Creates a new database with the source
+                database's data and metadata.
+            METADATA (2):
+                Creates a new database that includes all the
+                source database schema metadata, but none of the
+                source database data.
+        """
+
+        CLONE_TYPE_UNSPECIFIED = 0
+        FULL = 1
+        METADATA = 2
 
     autonomous_database: str = proto.Field(
         proto.STRING,
@@ -388,6 +499,48 @@ class SourceConfig(proto.Message):
     automatic_backups_replication_enabled: bool = proto.Field(
         proto.BOOL,
         number=2,
+    )
+    source_type: SourceType = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=SourceType,
+    )
+    clone_type: CloneType = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=CloneType,
+    )
+    refreshable_mode: RefreshableMode = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=RefreshableMode,
+    )
+    auto_refresh_frequency_seconds: int = proto.Field(
+        proto.INT32,
+        number=6,
+    )
+    auto_refresh_point_lag_seconds: int = proto.Field(
+        proto.INT32,
+        number=7,
+        optional=True,
+    )
+    auto_refresh_start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
+    autonomous_database_backup: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    backup_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
+    )
+    use_latest_available_backup: bool = proto.Field(
+        proto.BOOL,
+        number=11,
     )
 
 
@@ -637,6 +790,13 @@ class AutonomousDatabaseProperties(proto.Message):
             seconds.
 
             This field is a member of `oneof`_ ``_local_adg_auto_failover_max_data_loss_limit_duration``.
+        refreshable_clone (bool):
+            Optional. Indicates if the Autonomous
+            Database is a refreshable clone. This field is
+            used in update flow to connect / disconnect a
+            refreshable clone from its source database.
+
+            This field is a member of `oneof`_ ``_refreshable_clone``.
     """
 
     class DatabaseEdition(proto.Enum):
@@ -1153,6 +1313,11 @@ class AutonomousDatabaseProperties(proto.Message):
     local_adg_auto_failover_max_data_loss_limit_duration: int = proto.Field(
         proto.INT32,
         number=72,
+        optional=True,
+    )
+    refreshable_clone: bool = proto.Field(
+        proto.BOOL,
+        number=73,
         optional=True,
     )
 
@@ -1676,6 +1841,28 @@ class ScheduledOperationDetails(proto.Message):
         proto.MESSAGE,
         number=5,
         message=timeofday_pb2.TimeOfDay,
+    )
+
+
+class AutonomousDatabaseRefreshableClone(proto.Message):
+    r"""An Autonomous Database refreshable clone
+
+    Attributes:
+        name (str):
+            Output only. The GCP resource name of the
+            Autonomous Database.
+        region (str):
+            Output only. The Google Cloud region where
+            the refreshable clone exists.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

@@ -17,6 +17,7 @@ import decimal
 from unittest import mock
 
 import pytest
+
 from google.cloud.bigquery_storage import types
 from google.cloud.bigquery_storage_v1 import reader
 

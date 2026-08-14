@@ -641,15 +641,38 @@ def test_find_module_from_package_metadata_init():
         assert res == "foo.bar"
 
 
+def test_find_module_from_package_metadata_test_utils():
+    with patch("importlib.metadata.files", return_value=["test_utils/__init__.py"]), \
+         patch("importlib.util.find_spec", return_value=True):
+        res = find_module_from_package("google-cloud-testutils")
+        assert res == "test_utils"
+
+
 def test_find_module_from_package_setuptools():
     sys.modules.setdefault("setuptools", MagicMock())
+    def mock_isfile(path):
+        return "my_pkg" in path
     with patch("importlib.metadata.files", side_effect=Exception), \
-         patch("os.path.exists", return_value=True), \
+         patch("profiler.os.path.exists", return_value=True), \
+         patch("profiler.os.path.isdir", return_value=True), \
          patch("setuptools.find_namespace_packages", return_value=["google", "google.cloud", "tests.dummy", "my_pkg"]), \
-         patch("os.path.isfile", return_value=True), \
+         patch("profiler.os.path.isfile", side_effect=mock_isfile), \
          patch("importlib.util.find_spec", return_value=True):
         res = find_module_from_package("my-pkg")
         assert res == "my_pkg"
+
+
+def test_find_module_from_package_setuptools_test_utils():
+    sys.modules.setdefault("setuptools", MagicMock())
+    with patch("importlib.metadata.files", side_effect=Exception), \
+         patch("profiler.os.path.exists", return_value=True), \
+         patch("profiler.os.path.isdir", return_value=True), \
+         patch("setuptools.find_namespace_packages", return_value=["test_utils", "tests"]) as mock_find, \
+         patch("profiler.os.path.isfile", return_value=True), \
+         patch("importlib.util.find_spec", return_value=True):
+        res = find_module_from_package("google-cloud-testutils")
+        assert res == "test_utils"
+        mock_find.assert_called_once_with(where="src")
 
 
 def test_find_module_from_package_setuptools_not_file_and_exception():
@@ -667,11 +690,62 @@ def test_find_module_from_package_setuptools_not_file_and_exception():
         res = find_module_from_package("my-pkg")
         assert res == "my_pkg"
 
+def test_find_module_from_package_oserror_handling(capsys):
+    sys.modules.setdefault("setuptools", MagicMock())
+    def mock_isfile(path):
+        if "bad_pkg" in path:
+            raise OSError("Permission denied")
+        return False
+
+    def mock_listdir(path):
+        if "bad_pkg" in path:
+            raise OSError("Access denied")
+        return ["mod.py"]
+
     with patch("importlib.metadata.files", side_effect=Exception), \
          patch("os.path.exists", return_value=True), \
-         patch("setuptools.find_namespace_packages", side_effect=RuntimeError("setuptools fail")):
+         patch("os.path.isdir", return_value=True), \
+         patch("setuptools.find_namespace_packages", return_value=["bad_pkg", "good_pkg"]), \
+         patch("os.path.isfile", side_effect=mock_isfile), \
+         patch("os.listdir", side_effect=mock_listdir), \
+         patch("importlib.util.find_spec", return_value=True):
+        res = find_module_from_package("my-pkg")
+        assert res == "good_pkg"
+
+    with patch("importlib.metadata.files", side_effect=Exception), \
+         patch("os.path.exists", return_value=True), \
+         patch("setuptools.find_namespace_packages", side_effect=RuntimeError("setuptools failure")):
         res = find_module_from_package("my-pkg")
         assert res == "my.pkg"
+        captured = capsys.readouterr()
+        assert "WARNING: Package discovery failed: setuptools failure" in captured.err
+
+
+def test_find_module_from_package_namespace_package_no_init():
+    sys.modules.setdefault("setuptools", MagicMock())
+    with patch("importlib.metadata.files", side_effect=Exception), \
+         patch("os.path.exists", return_value=True), \
+         patch("os.path.isdir", return_value=True), \
+         patch("setuptools.find_namespace_packages", return_value=["google.api"]), \
+         patch("os.path.isfile", return_value=False), \
+         patch("os.listdir", return_value=["http_pb2.py"]), \
+         patch("importlib.util.find_spec", return_value=True):
+        res = find_module_from_package("googleapis-common-protos")
+        assert res == "google.api"
+
+
+def test_find_module_from_package_src_layout():
+    sys.modules.setdefault("setuptools", MagicMock())
+    def mock_isdir(path):
+        return path == "src" or path == "."
+    with patch("importlib.metadata.files", side_effect=Exception), \
+         patch("os.path.exists", return_value=True), \
+         patch("os.path.isdir", side_effect=mock_isdir), \
+         patch("setuptools.find_namespace_packages", return_value=["google_crc32c"]), \
+         patch("os.path.isfile", return_value=True), \
+         patch("importlib.util.find_spec", return_value=True):
+        res = find_module_from_package("google-crc32c")
+        assert res == "google_crc32c"
 
 
 def test_find_module_from_package_exception_in_find_spec():
@@ -679,8 +753,29 @@ def test_find_module_from_package_exception_in_find_spec():
     def mock_find_spec(mod):
         raise Exception("Find spec error")
 
+    # Exception during metadata lookup falls back
+    with patch("importlib.metadata.files", return_value=["foo/bar/__init__.py"]), \
+         patch("importlib.util.find_spec", side_effect=mock_find_spec), \
+         patch("setuptools.find_namespace_packages", side_effect=Exception):
+        res = find_module_from_package("foo-bar")
+        assert res == "foo.bar"
+
+    # Exception during setuptools __init__.py lookup falls back
     with patch("importlib.metadata.files", side_effect=Exception), \
-         patch("setuptools.find_namespace_packages", side_effect=Exception), \
+         patch("os.path.exists", return_value=True), \
+         patch("setuptools.find_namespace_packages", return_value=["foo_bar"]), \
+         patch("os.path.isfile", return_value=True), \
+         patch("importlib.util.find_spec", side_effect=mock_find_spec):
+        res = find_module_from_package("foo-bar")
+        assert res == "foo.bar"
+
+    # Exception during setuptools namespace package lookup falls back
+    with patch("importlib.metadata.files", side_effect=Exception), \
+         patch("os.path.exists", return_value=True), \
+         patch("os.path.isdir", return_value=True), \
+         patch("setuptools.find_namespace_packages", return_value=["foo_bar"]), \
+         patch("os.path.isfile", return_value=False), \
+         patch("os.listdir", return_value=["mod.py"]), \
          patch("importlib.util.find_spec", side_effect=mock_find_spec):
         res = find_module_from_package("foo-bar")
         assert res == "foo.bar"
@@ -736,6 +831,40 @@ def test_cli_main_options():
         mock_proc = MagicMock(exitcode=0)
         mock_ctx.return_value.Process.return_value = mock_proc
         runpy.run_path(profiler_path, run_name="__main__")
+
+
+def test_should_process_namespace_package():
+    from profiler import _should_process_namespace_package
+
+    # Standard non-library top-level directories should NOT be processed
+    assert _should_process_namespace_package("tests", "google-cloud-storage") is False
+    assert _should_process_namespace_package("samples", "google-cloud-storage") is False
+    assert _should_process_namespace_package("test_utils", "google-cloud-storage") is False
+    assert _should_process_namespace_package("test_helpers", "google-cloud-storage") is False
+
+    # Exception: Target package explicitly contains the top-level directory name (e.g. google-cloud-testutils -> test_utils)
+    assert _should_process_namespace_package("test_utils", "google-cloud-testutils") is True
+
+    # Valid library package top-level should be processed
+    assert _should_process_namespace_package("google", "google-cloud-storage") is True
+    assert _should_process_namespace_package("my_library", "my-library") is True
+
+
+def test_find_module_from_package_testutils():
+    """Verifies that google-cloud-testutils correctly resolves to test_utils namespace package."""
+    sys.modules.setdefault("setuptools", MagicMock())
+    def mock_isfile(path):
+        return "test_utils" in path
+    with patch("importlib.metadata.files", side_effect=Exception), \
+         patch("profiler.os.path.exists", return_value=True), \
+         patch("profiler.os.path.isdir", return_value=True), \
+         patch("setuptools.find_namespace_packages", return_value=["google", "google.cloud", "tests", "test_utils"]) as mock_find, \
+         patch("profiler.os.path.isfile", side_effect=mock_isfile), \
+         patch("importlib.util.find_spec", return_value=True):
+        res = find_module_from_package("google-cloud-testutils")
+        assert res == "test_utils"
+        mock_find.assert_called_once_with(where="src")
+
 
 
 

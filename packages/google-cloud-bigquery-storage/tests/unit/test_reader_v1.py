@@ -25,6 +25,7 @@ import google.rpc.error_details_pb2
 import pandas
 import pandas.testing
 import pytest
+
 from google.cloud.bigquery_storage import types
 
 from .helpers import SCALAR_BLOCKS, SCALAR_COLUMN_NAMES, SCALAR_COLUMNS
