@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import asyncio
+import mock
 
 import pytest
 
@@ -35,3 +36,14 @@ def provide_loop_to_sync_grpc_tests():
             asyncio.set_event_loop(None)
     else:
         yield
+
+
+@pytest.fixture(autouse=True)
+def mock_bigtable_metrics_service_client():
+    """
+    Globally mock MetricServiceClient across all unit tests to avoid starting
+    real gRPC transports, resolving credentials, or sending telemetry to GCP.
+    """
+    with mock.patch("google.cloud.monitoring_v3.MetricServiceClient") as mock_client:
+        yield mock_client
+
