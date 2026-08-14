@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,14 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.bigtable_admin_v2.types import types
 from google.cloud.bigtable_admin_v2.utils import oneof_message
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.bigtable.admin.v2",
@@ -58,6 +57,7 @@ class RestoreSourceType(proto.Enum):
             A backup was used as the source of the
             restore.
     """
+
     RESTORE_SOURCE_TYPE_UNSPECIFIED = 0
     BACKUP = 1
 
@@ -246,9 +246,14 @@ class Table(proto.Message):
             MILLIS (1):
                 The table keeps data versioned at a
                 granularity of 1ms.
+            MICROS (2):
+                The table keeps data versioned at a
+                granularity of 1us.
         """
+
         TIMESTAMP_GRANULARITY_UNSPECIFIED = 0
         MILLIS = 1
+        MICROS = 2
 
     class View(proto.Enum):
         r"""Defines a view over a table's fields.
@@ -271,6 +276,7 @@ class Table(proto.Message):
             FULL (4):
                 Populates all fields.
         """
+
         VIEW_UNSPECIFIED = 0
         NAME_ONLY = 1
         SCHEMA_VIEW = 2
@@ -328,6 +334,7 @@ class Table(proto.Message):
                     optimizations are complete, the table will transition to
                     ``READY`` state.
             """
+
             STATE_NOT_KNOWN = 0
             INITIALIZING = 1
             PLANNED_MAINTENANCE = 2
@@ -352,12 +359,20 @@ class Table(proto.Message):
         Attributes:
             retention_period (google.protobuf.duration_pb2.Duration):
                 Required. How long the automated backups
-                should be retained. The only supported value at
-                this time is 3 days.
+                should be retained. Values must be at least 3
+                days and at most 90 days.
             frequency (google.protobuf.duration_pb2.Duration):
-                Required. How frequently automated backups
-                should occur. The only supported value at this
-                time is 24 hours.
+                How frequently automated backups should
+                occur. The only supported value at this time is
+                24 hours. An undefined frequency is treated as
+                24 hours.
+            locations (MutableSequence[str]):
+                Optional. A list of Cloud Bigtable zones where automated
+                backups are allowed to be created. If empty, automated
+                backups will be created in all zones of the instance.
+                Locations are in the format
+                ``projects/{project}/locations/{zone}``. This field can only
+                set for tables in Enterprise Plus instances.
         """
 
         retention_period: duration_pb2.Duration = proto.Field(
@@ -369,6 +384,10 @@ class Table(proto.Message):
             proto.MESSAGE,
             number=2,
             message=duration_pb2.Duration,
+        )
+        locations: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=3,
         )
 
     name: str = proto.Field(
@@ -470,6 +489,7 @@ class AuthorizedView(proto.Message):
             FULL (3):
                 Populates every fields.
         """
+
         RESPONSE_VIEW_UNSPECIFIED = 0
         NAME_ONLY = 1
         BASIC = 2
@@ -520,13 +540,13 @@ class AuthorizedView(proto.Message):
             proto.BYTES,
             number=1,
         )
-        family_subsets: MutableMapping[
-            str, "AuthorizedView.FamilySubsets"
-        ] = proto.MapField(
-            proto.STRING,
-            proto.MESSAGE,
-            number=2,
-            message="AuthorizedView.FamilySubsets",
+        family_subsets: MutableMapping[str, "AuthorizedView.FamilySubsets"] = (
+            proto.MapField(
+                proto.STRING,
+                proto.MESSAGE,
+                number=2,
+                message="AuthorizedView.FamilySubsets",
+            )
         )
 
     name: str = proto.Field(
@@ -723,6 +743,7 @@ class EncryptionInfo(proto.Message):
                 version is populated but its status is not tracked and is
                 reported as ``UNKNOWN``.
         """
+
         ENCRYPTION_TYPE_UNSPECIFIED = 0
         GOOGLE_DEFAULT_ENCRYPTION = 1
         CUSTOMER_MANAGED_ENCRYPTION = 2
@@ -798,6 +819,7 @@ class Snapshot(proto.Message):
                 encounters an error. A snapshot may not be
                 restored to a table while it is being created.
         """
+
         STATE_NOT_KNOWN = 0
         READY = 1
         CREATING = 2
@@ -917,6 +939,7 @@ class Backup(proto.Message):
             READY (2):
                 The backup is complete and ready for use.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -939,6 +962,7 @@ class Backup(proto.Message):
                 a hot backup reaches production performance more
                 quickly than a standard backup.
         """
+
         BACKUP_TYPE_UNSPECIFIED = 0
         STANDARD = 1
         HOT = 2

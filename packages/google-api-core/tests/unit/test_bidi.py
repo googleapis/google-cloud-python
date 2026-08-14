@@ -31,8 +31,7 @@ try:
 except ImportError:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
-from google.api_core import bidi
-from google.api_core import exceptions
+from google.api_core import bidi, exceptions
 
 
 class Test_RequestQueueGenerator(object):

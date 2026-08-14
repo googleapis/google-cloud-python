@@ -361,9 +361,10 @@ class ExtractFragment(ExtractURLField):
 
 
 @public
-class StringLength(StringUnary):
-    """Compute the length of a string."""
+class StringLength(Unary):
+    """Compute the length of a string or binary value."""
 
+    arg: Value[dt.String | dt.Binary]
     dtype = dt.int64
 
 

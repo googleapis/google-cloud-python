@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -131,6 +126,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -984,7 +994,14 @@ def test_data_migration_service_client_get_mtls_endpoint_and_cert_source(client_
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1031,7 +1048,14 @@ def test_data_migration_service_client_get_mtls_endpoint_and_cert_source(client_
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1356,8 +1380,8 @@ def test_data_migration_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.ListMigrationJobsRequest,
-        dict,
+        clouddms.ListMigrationJobsRequest(),
+        {},
     ],
 )
 def test_list_migration_jobs(request_type, transport: str = "grpc"):
@@ -1368,7 +1392,7 @@ def test_list_migration_jobs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1421,12 +1445,13 @@ def test_list_migration_jobs_non_empty_request_with_auto_populated_field():
         client.list_migration_jobs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ListMigrationJobsRequest(
+        request_msg = clouddms.ListMigrationJobsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_migration_jobs_use_cached_wrapped_rpc():
@@ -1511,9 +1536,14 @@ async def test_list_migration_jobs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_migration_jobs_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.ListMigrationJobsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.ListMigrationJobsRequest(),
+        {},
+    ],
+)
+async def test_list_migration_jobs_async(request_type, transport: str = "grpc_asyncio"):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1521,7 +1551,7 @@ async def test_list_migration_jobs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1546,11 +1576,6 @@ async def test_list_migration_jobs_async(
     assert isinstance(response, pagers.ListMigrationJobsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_migration_jobs_async_from_dict():
-    await test_list_migration_jobs_async(request_type=dict)
 
 
 def test_list_migration_jobs_field_headers():
@@ -1755,6 +1780,9 @@ def test_list_migration_jobs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, clouddms_resources.MigrationJob) for i in results)
@@ -1847,6 +1875,8 @@ async def test_list_migration_jobs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1896,11 +1926,7 @@ async def test_list_migration_jobs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_migration_jobs(request={})
-        ).pages:
+        async for page_ in (await client.list_migration_jobs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1909,8 +1935,8 @@ async def test_list_migration_jobs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.GetMigrationJobRequest,
-        dict,
+        clouddms.GetMigrationJobRequest(),
+        {},
     ],
 )
 def test_get_migration_job(request_type, transport: str = "grpc"):
@@ -1921,7 +1947,7 @@ def test_get_migration_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1987,9 +2013,10 @@ def test_get_migration_job_non_empty_request_with_auto_populated_field():
         client.get_migration_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.GetMigrationJobRequest(
+        request_msg = clouddms.GetMigrationJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_migration_job_use_cached_wrapped_rpc():
@@ -2072,9 +2099,14 @@ async def test_get_migration_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_migration_job_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.GetMigrationJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.GetMigrationJobRequest(),
+        {},
+    ],
+)
+async def test_get_migration_job_async(request_type, transport: str = "grpc_asyncio"):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2082,7 +2114,7 @@ async def test_get_migration_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2123,11 +2155,6 @@ async def test_get_migration_job_async(
     assert response.destination == "destination_value"
     assert response.filter == "filter_value"
     assert response.cmek_key_name == "cmek_key_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_migration_job_async_from_dict():
-    await test_get_migration_job_async(request_type=dict)
 
 
 def test_get_migration_job_field_headers():
@@ -2284,8 +2311,8 @@ async def test_get_migration_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.CreateMigrationJobRequest,
-        dict,
+        clouddms.CreateMigrationJobRequest(),
+        {},
     ],
 )
 def test_create_migration_job(request_type, transport: str = "grpc"):
@@ -2296,7 +2323,7 @@ def test_create_migration_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2343,11 +2370,12 @@ def test_create_migration_job_non_empty_request_with_auto_populated_field():
         client.create_migration_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.CreateMigrationJobRequest(
+        request_msg = clouddms.CreateMigrationJobRequest(
             parent="parent_value",
             migration_job_id="migration_job_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_migration_job_use_cached_wrapped_rpc():
@@ -2442,8 +2470,15 @@ async def test_create_migration_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.CreateMigrationJobRequest(),
+        {},
+    ],
+)
 async def test_create_migration_job_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.CreateMigrationJobRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2452,7 +2487,7 @@ async def test_create_migration_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2472,11 +2507,6 @@ async def test_create_migration_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_migration_job_async_from_dict():
-    await test_create_migration_job_async(request_type=dict)
 
 
 def test_create_migration_job_field_headers():
@@ -2653,8 +2683,8 @@ async def test_create_migration_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.UpdateMigrationJobRequest,
-        dict,
+        clouddms.UpdateMigrationJobRequest(),
+        {},
     ],
 )
 def test_update_migration_job(request_type, transport: str = "grpc"):
@@ -2665,7 +2695,7 @@ def test_update_migration_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2710,9 +2740,10 @@ def test_update_migration_job_non_empty_request_with_auto_populated_field():
         client.update_migration_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.UpdateMigrationJobRequest(
+        request_msg = clouddms.UpdateMigrationJobRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_migration_job_use_cached_wrapped_rpc():
@@ -2807,8 +2838,15 @@ async def test_update_migration_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.UpdateMigrationJobRequest(),
+        {},
+    ],
+)
 async def test_update_migration_job_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.UpdateMigrationJobRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2817,7 +2855,7 @@ async def test_update_migration_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2837,11 +2875,6 @@ async def test_update_migration_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_migration_job_async_from_dict():
-    await test_update_migration_job_async(request_type=dict)
 
 
 def test_update_migration_job_field_headers():
@@ -3008,8 +3041,8 @@ async def test_update_migration_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.DeleteMigrationJobRequest,
-        dict,
+        clouddms.DeleteMigrationJobRequest(),
+        {},
     ],
 )
 def test_delete_migration_job(request_type, transport: str = "grpc"):
@@ -3020,7 +3053,7 @@ def test_delete_migration_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3066,10 +3099,11 @@ def test_delete_migration_job_non_empty_request_with_auto_populated_field():
         client.delete_migration_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.DeleteMigrationJobRequest(
+        request_msg = clouddms.DeleteMigrationJobRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_migration_job_use_cached_wrapped_rpc():
@@ -3164,8 +3198,15 @@ async def test_delete_migration_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.DeleteMigrationJobRequest(),
+        {},
+    ],
+)
 async def test_delete_migration_job_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.DeleteMigrationJobRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3174,7 +3215,7 @@ async def test_delete_migration_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3194,11 +3235,6 @@ async def test_delete_migration_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_migration_job_async_from_dict():
-    await test_delete_migration_job_async(request_type=dict)
 
 
 def test_delete_migration_job_field_headers():
@@ -3355,8 +3391,8 @@ async def test_delete_migration_job_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.StartMigrationJobRequest,
-        dict,
+        clouddms.StartMigrationJobRequest(),
+        {},
     ],
 )
 def test_start_migration_job(request_type, transport: str = "grpc"):
@@ -3367,7 +3403,7 @@ def test_start_migration_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3412,9 +3448,10 @@ def test_start_migration_job_non_empty_request_with_auto_populated_field():
         client.start_migration_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.StartMigrationJobRequest(
+        request_msg = clouddms.StartMigrationJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_start_migration_job_use_cached_wrapped_rpc():
@@ -3509,9 +3546,14 @@ async def test_start_migration_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_start_migration_job_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.StartMigrationJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.StartMigrationJobRequest(),
+        {},
+    ],
+)
+async def test_start_migration_job_async(request_type, transport: str = "grpc_asyncio"):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3519,7 +3561,7 @@ async def test_start_migration_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3539,11 +3581,6 @@ async def test_start_migration_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_start_migration_job_async_from_dict():
-    await test_start_migration_job_async(request_type=dict)
 
 
 def test_start_migration_job_field_headers():
@@ -3614,8 +3651,8 @@ async def test_start_migration_job_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.StopMigrationJobRequest,
-        dict,
+        clouddms.StopMigrationJobRequest(),
+        {},
     ],
 )
 def test_stop_migration_job(request_type, transport: str = "grpc"):
@@ -3626,7 +3663,7 @@ def test_stop_migration_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3671,9 +3708,10 @@ def test_stop_migration_job_non_empty_request_with_auto_populated_field():
         client.stop_migration_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.StopMigrationJobRequest(
+        request_msg = clouddms.StopMigrationJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_stop_migration_job_use_cached_wrapped_rpc():
@@ -3768,9 +3806,14 @@ async def test_stop_migration_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_stop_migration_job_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.StopMigrationJobRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.StopMigrationJobRequest(),
+        {},
+    ],
+)
+async def test_stop_migration_job_async(request_type, transport: str = "grpc_asyncio"):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3778,7 +3821,7 @@ async def test_stop_migration_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3798,11 +3841,6 @@ async def test_stop_migration_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_stop_migration_job_async_from_dict():
-    await test_stop_migration_job_async(request_type=dict)
 
 
 def test_stop_migration_job_field_headers():
@@ -3873,8 +3911,8 @@ async def test_stop_migration_job_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.ResumeMigrationJobRequest,
-        dict,
+        clouddms.ResumeMigrationJobRequest(),
+        {},
     ],
 )
 def test_resume_migration_job(request_type, transport: str = "grpc"):
@@ -3885,7 +3923,7 @@ def test_resume_migration_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3930,9 +3968,10 @@ def test_resume_migration_job_non_empty_request_with_auto_populated_field():
         client.resume_migration_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ResumeMigrationJobRequest(
+        request_msg = clouddms.ResumeMigrationJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_resume_migration_job_use_cached_wrapped_rpc():
@@ -4027,8 +4066,15 @@ async def test_resume_migration_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.ResumeMigrationJobRequest(),
+        {},
+    ],
+)
 async def test_resume_migration_job_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.ResumeMigrationJobRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4037,7 +4083,7 @@ async def test_resume_migration_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4057,11 +4103,6 @@ async def test_resume_migration_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_resume_migration_job_async_from_dict():
-    await test_resume_migration_job_async(request_type=dict)
 
 
 def test_resume_migration_job_field_headers():
@@ -4132,8 +4173,8 @@ async def test_resume_migration_job_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.PromoteMigrationJobRequest,
-        dict,
+        clouddms.PromoteMigrationJobRequest(),
+        {},
     ],
 )
 def test_promote_migration_job(request_type, transport: str = "grpc"):
@@ -4144,7 +4185,7 @@ def test_promote_migration_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4189,9 +4230,10 @@ def test_promote_migration_job_non_empty_request_with_auto_populated_field():
         client.promote_migration_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.PromoteMigrationJobRequest(
+        request_msg = clouddms.PromoteMigrationJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_promote_migration_job_use_cached_wrapped_rpc():
@@ -4287,8 +4329,15 @@ async def test_promote_migration_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.PromoteMigrationJobRequest(),
+        {},
+    ],
+)
 async def test_promote_migration_job_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.PromoteMigrationJobRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4297,7 +4346,7 @@ async def test_promote_migration_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4317,11 +4366,6 @@ async def test_promote_migration_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_promote_migration_job_async_from_dict():
-    await test_promote_migration_job_async(request_type=dict)
 
 
 def test_promote_migration_job_field_headers():
@@ -4392,8 +4436,8 @@ async def test_promote_migration_job_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.VerifyMigrationJobRequest,
-        dict,
+        clouddms.VerifyMigrationJobRequest(),
+        {},
     ],
 )
 def test_verify_migration_job(request_type, transport: str = "grpc"):
@@ -4404,7 +4448,7 @@ def test_verify_migration_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4449,9 +4493,10 @@ def test_verify_migration_job_non_empty_request_with_auto_populated_field():
         client.verify_migration_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.VerifyMigrationJobRequest(
+        request_msg = clouddms.VerifyMigrationJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_verify_migration_job_use_cached_wrapped_rpc():
@@ -4546,8 +4591,15 @@ async def test_verify_migration_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.VerifyMigrationJobRequest(),
+        {},
+    ],
+)
 async def test_verify_migration_job_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.VerifyMigrationJobRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4556,7 +4608,7 @@ async def test_verify_migration_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4576,11 +4628,6 @@ async def test_verify_migration_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_verify_migration_job_async_from_dict():
-    await test_verify_migration_job_async(request_type=dict)
 
 
 def test_verify_migration_job_field_headers():
@@ -4651,8 +4698,8 @@ async def test_verify_migration_job_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.RestartMigrationJobRequest,
-        dict,
+        clouddms.RestartMigrationJobRequest(),
+        {},
     ],
 )
 def test_restart_migration_job(request_type, transport: str = "grpc"):
@@ -4663,7 +4710,7 @@ def test_restart_migration_job(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4708,9 +4755,10 @@ def test_restart_migration_job_non_empty_request_with_auto_populated_field():
         client.restart_migration_job(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.RestartMigrationJobRequest(
+        request_msg = clouddms.RestartMigrationJobRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_restart_migration_job_use_cached_wrapped_rpc():
@@ -4806,8 +4854,15 @@ async def test_restart_migration_job_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.RestartMigrationJobRequest(),
+        {},
+    ],
+)
 async def test_restart_migration_job_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.RestartMigrationJobRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4816,7 +4871,7 @@ async def test_restart_migration_job_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4836,11 +4891,6 @@ async def test_restart_migration_job_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_restart_migration_job_async_from_dict():
-    await test_restart_migration_job_async(request_type=dict)
 
 
 def test_restart_migration_job_field_headers():
@@ -4911,8 +4961,8 @@ async def test_restart_migration_job_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.GenerateSshScriptRequest,
-        dict,
+        clouddms.GenerateSshScriptRequest(),
+        {},
     ],
 )
 def test_generate_ssh_script(request_type, transport: str = "grpc"):
@@ -4923,7 +4973,7 @@ def test_generate_ssh_script(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4972,10 +5022,11 @@ def test_generate_ssh_script_non_empty_request_with_auto_populated_field():
         client.generate_ssh_script(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.GenerateSshScriptRequest(
+        request_msg = clouddms.GenerateSshScriptRequest(
             migration_job="migration_job_value",
             vm="vm_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_ssh_script_use_cached_wrapped_rpc():
@@ -5060,9 +5111,14 @@ async def test_generate_ssh_script_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_generate_ssh_script_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.GenerateSshScriptRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.GenerateSshScriptRequest(),
+        {},
+    ],
+)
+async def test_generate_ssh_script_async(request_type, transport: str = "grpc_asyncio"):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5070,7 +5126,7 @@ async def test_generate_ssh_script_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5093,11 +5149,6 @@ async def test_generate_ssh_script_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, clouddms.SshScript)
     assert response.script == "script_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_ssh_script_async_from_dict():
-    await test_generate_ssh_script_async(request_type=dict)
 
 
 def test_generate_ssh_script_field_headers():
@@ -5166,8 +5217,8 @@ async def test_generate_ssh_script_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.GenerateTcpProxyScriptRequest,
-        dict,
+        clouddms.GenerateTcpProxyScriptRequest(),
+        {},
     ],
 )
 def test_generate_tcp_proxy_script(request_type, transport: str = "grpc"):
@@ -5178,7 +5229,7 @@ def test_generate_tcp_proxy_script(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5230,13 +5281,14 @@ def test_generate_tcp_proxy_script_non_empty_request_with_auto_populated_field()
         client.generate_tcp_proxy_script(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.GenerateTcpProxyScriptRequest(
+        request_msg = clouddms.GenerateTcpProxyScriptRequest(
             migration_job="migration_job_value",
             vm_name="vm_name_value",
             vm_machine_type="vm_machine_type_value",
             vm_zone="vm_zone_value",
             vm_subnet="vm_subnet_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_tcp_proxy_script_use_cached_wrapped_rpc():
@@ -5322,8 +5374,15 @@ async def test_generate_tcp_proxy_script_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.GenerateTcpProxyScriptRequest(),
+        {},
+    ],
+)
 async def test_generate_tcp_proxy_script_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.GenerateTcpProxyScriptRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5332,7 +5391,7 @@ async def test_generate_tcp_proxy_script_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5355,11 +5414,6 @@ async def test_generate_tcp_proxy_script_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, clouddms.TcpProxyScript)
     assert response.script == "script_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_tcp_proxy_script_async_from_dict():
-    await test_generate_tcp_proxy_script_async(request_type=dict)
 
 
 def test_generate_tcp_proxy_script_field_headers():
@@ -5430,8 +5484,8 @@ async def test_generate_tcp_proxy_script_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.ListConnectionProfilesRequest,
-        dict,
+        clouddms.ListConnectionProfilesRequest(),
+        {},
     ],
 )
 def test_list_connection_profiles(request_type, transport: str = "grpc"):
@@ -5442,7 +5496,7 @@ def test_list_connection_profiles(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5495,12 +5549,13 @@ def test_list_connection_profiles_non_empty_request_with_auto_populated_field():
         client.list_connection_profiles(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ListConnectionProfilesRequest(
+        request_msg = clouddms.ListConnectionProfilesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_connection_profiles_use_cached_wrapped_rpc():
@@ -5586,8 +5641,15 @@ async def test_list_connection_profiles_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.ListConnectionProfilesRequest(),
+        {},
+    ],
+)
 async def test_list_connection_profiles_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.ListConnectionProfilesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5596,7 +5658,7 @@ async def test_list_connection_profiles_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5621,11 +5683,6 @@ async def test_list_connection_profiles_async(
     assert isinstance(response, pagers.ListConnectionProfilesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_connection_profiles_async_from_dict():
-    await test_list_connection_profiles_async(request_type=dict)
 
 
 def test_list_connection_profiles_field_headers():
@@ -5832,6 +5889,9 @@ def test_list_connection_profiles_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, clouddms_resources.ConnectionProfile) for i in results)
@@ -5924,6 +5984,8 @@ async def test_list_connection_profiles_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5975,11 +6037,7 @@ async def test_list_connection_profiles_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_connection_profiles(request={})
-        ).pages:
+        async for page_ in (await client.list_connection_profiles(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5988,8 +6046,8 @@ async def test_list_connection_profiles_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.GetConnectionProfileRequest,
-        dict,
+        clouddms.GetConnectionProfileRequest(),
+        {},
     ],
 )
 def test_get_connection_profile(request_type, transport: str = "grpc"):
@@ -6000,7 +6058,7 @@ def test_get_connection_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6054,9 +6112,10 @@ def test_get_connection_profile_non_empty_request_with_auto_populated_field():
         client.get_connection_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.GetConnectionProfileRequest(
+        request_msg = clouddms.GetConnectionProfileRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_connection_profile_use_cached_wrapped_rpc():
@@ -6142,8 +6201,15 @@ async def test_get_connection_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.GetConnectionProfileRequest(),
+        {},
+    ],
+)
 async def test_get_connection_profile_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.GetConnectionProfileRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6152,7 +6218,7 @@ async def test_get_connection_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6181,11 +6247,6 @@ async def test_get_connection_profile_async(
     assert response.state == clouddms_resources.ConnectionProfile.State.DRAFT
     assert response.display_name == "display_name_value"
     assert response.provider == clouddms_resources.DatabaseProvider.CLOUDSQL
-
-
-@pytest.mark.asyncio
-async def test_get_connection_profile_async_from_dict():
-    await test_get_connection_profile_async(request_type=dict)
 
 
 def test_get_connection_profile_field_headers():
@@ -6342,8 +6403,8 @@ async def test_get_connection_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.CreateConnectionProfileRequest,
-        dict,
+        clouddms.CreateConnectionProfileRequest(),
+        {},
     ],
 )
 def test_create_connection_profile(request_type, transport: str = "grpc"):
@@ -6354,7 +6415,7 @@ def test_create_connection_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6401,11 +6462,12 @@ def test_create_connection_profile_non_empty_request_with_auto_populated_field()
         client.create_connection_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.CreateConnectionProfileRequest(
+        request_msg = clouddms.CreateConnectionProfileRequest(
             parent="parent_value",
             connection_profile_id="connection_profile_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_connection_profile_use_cached_wrapped_rpc():
@@ -6501,9 +6563,15 @@ async def test_create_connection_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.CreateConnectionProfileRequest(),
+        {},
+    ],
+)
 async def test_create_connection_profile_async(
-    transport: str = "grpc_asyncio",
-    request_type=clouddms.CreateConnectionProfileRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6512,7 +6580,7 @@ async def test_create_connection_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6532,11 +6600,6 @@ async def test_create_connection_profile_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_connection_profile_async_from_dict():
-    await test_create_connection_profile_async(request_type=dict)
 
 
 def test_create_connection_profile_field_headers():
@@ -6713,8 +6776,8 @@ async def test_create_connection_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.UpdateConnectionProfileRequest,
-        dict,
+        clouddms.UpdateConnectionProfileRequest(),
+        {},
     ],
 )
 def test_update_connection_profile(request_type, transport: str = "grpc"):
@@ -6725,7 +6788,7 @@ def test_update_connection_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6770,9 +6833,10 @@ def test_update_connection_profile_non_empty_request_with_auto_populated_field()
         client.update_connection_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.UpdateConnectionProfileRequest(
+        request_msg = clouddms.UpdateConnectionProfileRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_connection_profile_use_cached_wrapped_rpc():
@@ -6868,9 +6932,15 @@ async def test_update_connection_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.UpdateConnectionProfileRequest(),
+        {},
+    ],
+)
 async def test_update_connection_profile_async(
-    transport: str = "grpc_asyncio",
-    request_type=clouddms.UpdateConnectionProfileRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6879,7 +6949,7 @@ async def test_update_connection_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6899,11 +6969,6 @@ async def test_update_connection_profile_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_connection_profile_async_from_dict():
-    await test_update_connection_profile_async(request_type=dict)
 
 
 def test_update_connection_profile_field_headers():
@@ -7070,8 +7135,8 @@ async def test_update_connection_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.DeleteConnectionProfileRequest,
-        dict,
+        clouddms.DeleteConnectionProfileRequest(),
+        {},
     ],
 )
 def test_delete_connection_profile(request_type, transport: str = "grpc"):
@@ -7082,7 +7147,7 @@ def test_delete_connection_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7128,10 +7193,11 @@ def test_delete_connection_profile_non_empty_request_with_auto_populated_field()
         client.delete_connection_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.DeleteConnectionProfileRequest(
+        request_msg = clouddms.DeleteConnectionProfileRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_connection_profile_use_cached_wrapped_rpc():
@@ -7227,9 +7293,15 @@ async def test_delete_connection_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.DeleteConnectionProfileRequest(),
+        {},
+    ],
+)
 async def test_delete_connection_profile_async(
-    transport: str = "grpc_asyncio",
-    request_type=clouddms.DeleteConnectionProfileRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7238,7 +7310,7 @@ async def test_delete_connection_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7258,11 +7330,6 @@ async def test_delete_connection_profile_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_connection_profile_async_from_dict():
-    await test_delete_connection_profile_async(request_type=dict)
 
 
 def test_delete_connection_profile_field_headers():
@@ -7419,8 +7486,8 @@ async def test_delete_connection_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.CreatePrivateConnectionRequest,
-        dict,
+        clouddms.CreatePrivateConnectionRequest(),
+        {},
     ],
 )
 def test_create_private_connection(request_type, transport: str = "grpc"):
@@ -7431,7 +7498,7 @@ def test_create_private_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7478,11 +7545,12 @@ def test_create_private_connection_non_empty_request_with_auto_populated_field()
         client.create_private_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.CreatePrivateConnectionRequest(
+        request_msg = clouddms.CreatePrivateConnectionRequest(
             parent="parent_value",
             private_connection_id="private_connection_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_private_connection_use_cached_wrapped_rpc():
@@ -7578,9 +7646,15 @@ async def test_create_private_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.CreatePrivateConnectionRequest(),
+        {},
+    ],
+)
 async def test_create_private_connection_async(
-    transport: str = "grpc_asyncio",
-    request_type=clouddms.CreatePrivateConnectionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7589,7 +7663,7 @@ async def test_create_private_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7609,11 +7683,6 @@ async def test_create_private_connection_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_private_connection_async_from_dict():
-    await test_create_private_connection_async(request_type=dict)
 
 
 def test_create_private_connection_field_headers():
@@ -7790,8 +7859,8 @@ async def test_create_private_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.GetPrivateConnectionRequest,
-        dict,
+        clouddms.GetPrivateConnectionRequest(),
+        {},
     ],
 )
 def test_get_private_connection(request_type, transport: str = "grpc"):
@@ -7802,7 +7871,7 @@ def test_get_private_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7854,9 +7923,10 @@ def test_get_private_connection_non_empty_request_with_auto_populated_field():
         client.get_private_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.GetPrivateConnectionRequest(
+        request_msg = clouddms.GetPrivateConnectionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_private_connection_use_cached_wrapped_rpc():
@@ -7942,8 +8012,15 @@ async def test_get_private_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.GetPrivateConnectionRequest(),
+        {},
+    ],
+)
 async def test_get_private_connection_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.GetPrivateConnectionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7952,7 +8029,7 @@ async def test_get_private_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7979,11 +8056,6 @@ async def test_get_private_connection_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.state == clouddms_resources.PrivateConnection.State.CREATING
-
-
-@pytest.mark.asyncio
-async def test_get_private_connection_async_from_dict():
-    await test_get_private_connection_async(request_type=dict)
 
 
 def test_get_private_connection_field_headers():
@@ -8140,8 +8212,8 @@ async def test_get_private_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.ListPrivateConnectionsRequest,
-        dict,
+        clouddms.ListPrivateConnectionsRequest(),
+        {},
     ],
 )
 def test_list_private_connections(request_type, transport: str = "grpc"):
@@ -8152,7 +8224,7 @@ def test_list_private_connections(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8205,12 +8277,13 @@ def test_list_private_connections_non_empty_request_with_auto_populated_field():
         client.list_private_connections(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ListPrivateConnectionsRequest(
+        request_msg = clouddms.ListPrivateConnectionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_private_connections_use_cached_wrapped_rpc():
@@ -8296,8 +8369,15 @@ async def test_list_private_connections_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.ListPrivateConnectionsRequest(),
+        {},
+    ],
+)
 async def test_list_private_connections_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.ListPrivateConnectionsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8306,7 +8386,7 @@ async def test_list_private_connections_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8331,11 +8411,6 @@ async def test_list_private_connections_async(
     assert isinstance(response, pagers.ListPrivateConnectionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_private_connections_async_from_dict():
-    await test_list_private_connections_async(request_type=dict)
 
 
 def test_list_private_connections_field_headers():
@@ -8542,6 +8617,9 @@ def test_list_private_connections_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, clouddms_resources.PrivateConnection) for i in results)
@@ -8634,6 +8712,8 @@ async def test_list_private_connections_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8685,11 +8765,7 @@ async def test_list_private_connections_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_private_connections(request={})
-        ).pages:
+        async for page_ in (await client.list_private_connections(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8698,8 +8774,8 @@ async def test_list_private_connections_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.DeletePrivateConnectionRequest,
-        dict,
+        clouddms.DeletePrivateConnectionRequest(),
+        {},
     ],
 )
 def test_delete_private_connection(request_type, transport: str = "grpc"):
@@ -8710,7 +8786,7 @@ def test_delete_private_connection(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8756,10 +8832,11 @@ def test_delete_private_connection_non_empty_request_with_auto_populated_field()
         client.delete_private_connection(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.DeletePrivateConnectionRequest(
+        request_msg = clouddms.DeletePrivateConnectionRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_private_connection_use_cached_wrapped_rpc():
@@ -8855,9 +8932,15 @@ async def test_delete_private_connection_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.DeletePrivateConnectionRequest(),
+        {},
+    ],
+)
 async def test_delete_private_connection_async(
-    transport: str = "grpc_asyncio",
-    request_type=clouddms.DeletePrivateConnectionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8866,7 +8949,7 @@ async def test_delete_private_connection_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8886,11 +8969,6 @@ async def test_delete_private_connection_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_private_connection_async_from_dict():
-    await test_delete_private_connection_async(request_type=dict)
 
 
 def test_delete_private_connection_field_headers():
@@ -9047,8 +9125,8 @@ async def test_delete_private_connection_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.GetConversionWorkspaceRequest,
-        dict,
+        clouddms.GetConversionWorkspaceRequest(),
+        {},
     ],
 )
 def test_get_conversion_workspace(request_type, transport: str = "grpc"):
@@ -9059,7 +9137,7 @@ def test_get_conversion_workspace(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9113,9 +9191,10 @@ def test_get_conversion_workspace_non_empty_request_with_auto_populated_field():
         client.get_conversion_workspace(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.GetConversionWorkspaceRequest(
+        request_msg = clouddms.GetConversionWorkspaceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_conversion_workspace_use_cached_wrapped_rpc():
@@ -9201,8 +9280,15 @@ async def test_get_conversion_workspace_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.GetConversionWorkspaceRequest(),
+        {},
+    ],
+)
 async def test_get_conversion_workspace_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.GetConversionWorkspaceRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9211,7 +9297,7 @@ async def test_get_conversion_workspace_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9240,11 +9326,6 @@ async def test_get_conversion_workspace_async(
     assert response.has_uncommitted_changes is True
     assert response.latest_commit_id == "latest_commit_id_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_conversion_workspace_async_from_dict():
-    await test_get_conversion_workspace_async(request_type=dict)
 
 
 def test_get_conversion_workspace_field_headers():
@@ -9401,8 +9482,8 @@ async def test_get_conversion_workspace_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.ListConversionWorkspacesRequest,
-        dict,
+        clouddms.ListConversionWorkspacesRequest(),
+        {},
     ],
 )
 def test_list_conversion_workspaces(request_type, transport: str = "grpc"):
@@ -9413,7 +9494,7 @@ def test_list_conversion_workspaces(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9465,11 +9546,12 @@ def test_list_conversion_workspaces_non_empty_request_with_auto_populated_field(
         client.list_conversion_workspaces(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ListConversionWorkspacesRequest(
+        request_msg = clouddms.ListConversionWorkspacesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_conversion_workspaces_use_cached_wrapped_rpc():
@@ -9555,9 +9637,15 @@ async def test_list_conversion_workspaces_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.ListConversionWorkspacesRequest(),
+        {},
+    ],
+)
 async def test_list_conversion_workspaces_async(
-    transport: str = "grpc_asyncio",
-    request_type=clouddms.ListConversionWorkspacesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9566,7 +9654,7 @@ async def test_list_conversion_workspaces_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9591,11 +9679,6 @@ async def test_list_conversion_workspaces_async(
     assert isinstance(response, pagers.ListConversionWorkspacesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_conversion_workspaces_async_from_dict():
-    await test_list_conversion_workspaces_async(request_type=dict)
 
 
 def test_list_conversion_workspaces_field_headers():
@@ -9802,6 +9885,9 @@ def test_list_conversion_workspaces_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -9897,6 +9983,8 @@ async def test_list_conversion_workspaces_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -9949,11 +10037,7 @@ async def test_list_conversion_workspaces_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_conversion_workspaces(request={})
-        ).pages:
+        async for page_ in (await client.list_conversion_workspaces(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -9962,8 +10046,8 @@ async def test_list_conversion_workspaces_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.CreateConversionWorkspaceRequest,
-        dict,
+        clouddms.CreateConversionWorkspaceRequest(),
+        {},
     ],
 )
 def test_create_conversion_workspace(request_type, transport: str = "grpc"):
@@ -9974,7 +10058,7 @@ def test_create_conversion_workspace(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10021,11 +10105,12 @@ def test_create_conversion_workspace_non_empty_request_with_auto_populated_field
         client.create_conversion_workspace(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.CreateConversionWorkspaceRequest(
+        request_msg = clouddms.CreateConversionWorkspaceRequest(
             parent="parent_value",
             conversion_workspace_id="conversion_workspace_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_conversion_workspace_use_cached_wrapped_rpc():
@@ -10121,9 +10206,15 @@ async def test_create_conversion_workspace_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.CreateConversionWorkspaceRequest(),
+        {},
+    ],
+)
 async def test_create_conversion_workspace_async(
-    transport: str = "grpc_asyncio",
-    request_type=clouddms.CreateConversionWorkspaceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10132,7 +10223,7 @@ async def test_create_conversion_workspace_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10152,11 +10243,6 @@ async def test_create_conversion_workspace_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_conversion_workspace_async_from_dict():
-    await test_create_conversion_workspace_async(request_type=dict)
 
 
 def test_create_conversion_workspace_field_headers():
@@ -10341,8 +10427,8 @@ async def test_create_conversion_workspace_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.UpdateConversionWorkspaceRequest,
-        dict,
+        clouddms.UpdateConversionWorkspaceRequest(),
+        {},
     ],
 )
 def test_update_conversion_workspace(request_type, transport: str = "grpc"):
@@ -10353,7 +10439,7 @@ def test_update_conversion_workspace(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10398,9 +10484,10 @@ def test_update_conversion_workspace_non_empty_request_with_auto_populated_field
         client.update_conversion_workspace(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.UpdateConversionWorkspaceRequest(
+        request_msg = clouddms.UpdateConversionWorkspaceRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_conversion_workspace_use_cached_wrapped_rpc():
@@ -10496,9 +10583,15 @@ async def test_update_conversion_workspace_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.UpdateConversionWorkspaceRequest(),
+        {},
+    ],
+)
 async def test_update_conversion_workspace_async(
-    transport: str = "grpc_asyncio",
-    request_type=clouddms.UpdateConversionWorkspaceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10507,7 +10600,7 @@ async def test_update_conversion_workspace_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10527,11 +10620,6 @@ async def test_update_conversion_workspace_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_conversion_workspace_async_from_dict():
-    await test_update_conversion_workspace_async(request_type=dict)
 
 
 def test_update_conversion_workspace_field_headers():
@@ -10706,8 +10794,8 @@ async def test_update_conversion_workspace_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.DeleteConversionWorkspaceRequest,
-        dict,
+        clouddms.DeleteConversionWorkspaceRequest(),
+        {},
     ],
 )
 def test_delete_conversion_workspace(request_type, transport: str = "grpc"):
@@ -10718,7 +10806,7 @@ def test_delete_conversion_workspace(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10764,10 +10852,11 @@ def test_delete_conversion_workspace_non_empty_request_with_auto_populated_field
         client.delete_conversion_workspace(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.DeleteConversionWorkspaceRequest(
+        request_msg = clouddms.DeleteConversionWorkspaceRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_conversion_workspace_use_cached_wrapped_rpc():
@@ -10863,9 +10952,15 @@ async def test_delete_conversion_workspace_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.DeleteConversionWorkspaceRequest(),
+        {},
+    ],
+)
 async def test_delete_conversion_workspace_async(
-    transport: str = "grpc_asyncio",
-    request_type=clouddms.DeleteConversionWorkspaceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10874,7 +10969,7 @@ async def test_delete_conversion_workspace_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10894,11 +10989,6 @@ async def test_delete_conversion_workspace_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_conversion_workspace_async_from_dict():
-    await test_delete_conversion_workspace_async(request_type=dict)
 
 
 def test_delete_conversion_workspace_field_headers():
@@ -11055,8 +11145,8 @@ async def test_delete_conversion_workspace_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.CreateMappingRuleRequest,
-        dict,
+        clouddms.CreateMappingRuleRequest(),
+        {},
     ],
 )
 def test_create_mapping_rule(request_type, transport: str = "grpc"):
@@ -11067,7 +11157,7 @@ def test_create_mapping_rule(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11130,11 +11220,12 @@ def test_create_mapping_rule_non_empty_request_with_auto_populated_field():
         client.create_mapping_rule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.CreateMappingRuleRequest(
+        request_msg = clouddms.CreateMappingRuleRequest(
             parent="parent_value",
             mapping_rule_id="mapping_rule_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_mapping_rule_use_cached_wrapped_rpc():
@@ -11219,9 +11310,14 @@ async def test_create_mapping_rule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_mapping_rule_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.CreateMappingRuleRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.CreateMappingRuleRequest(),
+        {},
+    ],
+)
+async def test_create_mapping_rule_async(request_type, transport: str = "grpc_asyncio"):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11229,7 +11325,7 @@ async def test_create_mapping_rule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11265,11 +11361,6 @@ async def test_create_mapping_rule_async(
     )
     assert response.rule_order == 1075
     assert response.revision_id == "revision_id_value"
-
-
-@pytest.mark.asyncio
-async def test_create_mapping_rule_async_from_dict():
-    await test_create_mapping_rule_async(request_type=dict)
 
 
 def test_create_mapping_rule_field_headers():
@@ -11446,8 +11537,8 @@ async def test_create_mapping_rule_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.DeleteMappingRuleRequest,
-        dict,
+        clouddms.DeleteMappingRuleRequest(),
+        {},
     ],
 )
 def test_delete_mapping_rule(request_type, transport: str = "grpc"):
@@ -11458,7 +11549,7 @@ def test_delete_mapping_rule(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11504,10 +11595,11 @@ def test_delete_mapping_rule_non_empty_request_with_auto_populated_field():
         client.delete_mapping_rule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.DeleteMappingRuleRequest(
+        request_msg = clouddms.DeleteMappingRuleRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_mapping_rule_use_cached_wrapped_rpc():
@@ -11592,9 +11684,14 @@ async def test_delete_mapping_rule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_mapping_rule_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.DeleteMappingRuleRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.DeleteMappingRuleRequest(),
+        {},
+    ],
+)
+async def test_delete_mapping_rule_async(request_type, transport: str = "grpc_asyncio"):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11602,7 +11699,7 @@ async def test_delete_mapping_rule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11620,11 +11717,6 @@ async def test_delete_mapping_rule_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_mapping_rule_async_from_dict():
-    await test_delete_mapping_rule_async(request_type=dict)
 
 
 def test_delete_mapping_rule_field_headers():
@@ -11777,8 +11869,8 @@ async def test_delete_mapping_rule_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.ListMappingRulesRequest,
-        dict,
+        clouddms.ListMappingRulesRequest(),
+        {},
     ],
 )
 def test_list_mapping_rules(request_type, transport: str = "grpc"):
@@ -11789,7 +11881,7 @@ def test_list_mapping_rules(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11838,10 +11930,11 @@ def test_list_mapping_rules_non_empty_request_with_auto_populated_field():
         client.list_mapping_rules(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ListMappingRulesRequest(
+        request_msg = clouddms.ListMappingRulesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_mapping_rules_use_cached_wrapped_rpc():
@@ -11926,9 +12019,14 @@ async def test_list_mapping_rules_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_mapping_rules_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.ListMappingRulesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.ListMappingRulesRequest(),
+        {},
+    ],
+)
+async def test_list_mapping_rules_async(request_type, transport: str = "grpc_asyncio"):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11936,7 +12034,7 @@ async def test_list_mapping_rules_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11959,11 +12057,6 @@ async def test_list_mapping_rules_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMappingRulesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_mapping_rules_async_from_dict():
-    await test_list_mapping_rules_async(request_type=dict)
 
 
 def test_list_mapping_rules_field_headers():
@@ -12168,6 +12261,9 @@ def test_list_mapping_rules_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -12262,6 +12358,8 @@ async def test_list_mapping_rules_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -12313,11 +12411,7 @@ async def test_list_mapping_rules_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_mapping_rules(request={})
-        ).pages:
+        async for page_ in (await client.list_mapping_rules(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -12326,8 +12420,8 @@ async def test_list_mapping_rules_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.GetMappingRuleRequest,
-        dict,
+        clouddms.GetMappingRuleRequest(),
+        {},
     ],
 )
 def test_get_mapping_rule(request_type, transport: str = "grpc"):
@@ -12338,7 +12432,7 @@ def test_get_mapping_rule(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_mapping_rule), "__call__") as call:
@@ -12395,9 +12489,10 @@ def test_get_mapping_rule_non_empty_request_with_auto_populated_field():
         client.get_mapping_rule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.GetMappingRuleRequest(
+        request_msg = clouddms.GetMappingRuleRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_mapping_rule_use_cached_wrapped_rpc():
@@ -12480,9 +12575,14 @@ async def test_get_mapping_rule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_mapping_rule_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.GetMappingRuleRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.GetMappingRuleRequest(),
+        {},
+    ],
+)
+async def test_get_mapping_rule_async(request_type, transport: str = "grpc_asyncio"):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12490,7 +12590,7 @@ async def test_get_mapping_rule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_mapping_rule), "__call__") as call:
@@ -12524,11 +12624,6 @@ async def test_get_mapping_rule_async(
     )
     assert response.rule_order == 1075
     assert response.revision_id == "revision_id_value"
-
-
-@pytest.mark.asyncio
-async def test_get_mapping_rule_async_from_dict():
-    await test_get_mapping_rule_async(request_type=dict)
 
 
 def test_get_mapping_rule_field_headers():
@@ -12677,8 +12772,8 @@ async def test_get_mapping_rule_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.SeedConversionWorkspaceRequest,
-        dict,
+        clouddms.SeedConversionWorkspaceRequest(),
+        {},
     ],
 )
 def test_seed_conversion_workspace(request_type, transport: str = "grpc"):
@@ -12689,7 +12784,7 @@ def test_seed_conversion_workspace(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12736,11 +12831,12 @@ def test_seed_conversion_workspace_non_empty_request_with_auto_populated_field()
         client.seed_conversion_workspace(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.SeedConversionWorkspaceRequest(
+        request_msg = clouddms.SeedConversionWorkspaceRequest(
             name="name_value",
             source_connection_profile="source_connection_profile_value",
             destination_connection_profile="destination_connection_profile_value",
         )
+        assert args[0] == request_msg
 
 
 def test_seed_conversion_workspace_use_cached_wrapped_rpc():
@@ -12836,9 +12932,15 @@ async def test_seed_conversion_workspace_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.SeedConversionWorkspaceRequest(),
+        {},
+    ],
+)
 async def test_seed_conversion_workspace_async(
-    transport: str = "grpc_asyncio",
-    request_type=clouddms.SeedConversionWorkspaceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12847,7 +12949,7 @@ async def test_seed_conversion_workspace_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12867,11 +12969,6 @@ async def test_seed_conversion_workspace_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_seed_conversion_workspace_async_from_dict():
-    await test_seed_conversion_workspace_async(request_type=dict)
 
 
 def test_seed_conversion_workspace_field_headers():
@@ -12942,8 +13039,8 @@ async def test_seed_conversion_workspace_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.ImportMappingRulesRequest,
-        dict,
+        clouddms.ImportMappingRulesRequest(),
+        {},
     ],
 )
 def test_import_mapping_rules(request_type, transport: str = "grpc"):
@@ -12954,7 +13051,7 @@ def test_import_mapping_rules(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12999,9 +13096,10 @@ def test_import_mapping_rules_non_empty_request_with_auto_populated_field():
         client.import_mapping_rules(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ImportMappingRulesRequest(
+        request_msg = clouddms.ImportMappingRulesRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_import_mapping_rules_use_cached_wrapped_rpc():
@@ -13096,8 +13194,15 @@ async def test_import_mapping_rules_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.ImportMappingRulesRequest(),
+        {},
+    ],
+)
 async def test_import_mapping_rules_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.ImportMappingRulesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13106,7 +13211,7 @@ async def test_import_mapping_rules_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13126,11 +13231,6 @@ async def test_import_mapping_rules_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_import_mapping_rules_async_from_dict():
-    await test_import_mapping_rules_async(request_type=dict)
 
 
 def test_import_mapping_rules_field_headers():
@@ -13201,8 +13301,8 @@ async def test_import_mapping_rules_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.ConvertConversionWorkspaceRequest,
-        dict,
+        clouddms.ConvertConversionWorkspaceRequest(),
+        {},
     ],
 )
 def test_convert_conversion_workspace(request_type, transport: str = "grpc"):
@@ -13213,7 +13313,7 @@ def test_convert_conversion_workspace(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13259,10 +13359,11 @@ def test_convert_conversion_workspace_non_empty_request_with_auto_populated_fiel
         client.convert_conversion_workspace(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ConvertConversionWorkspaceRequest(
+        request_msg = clouddms.ConvertConversionWorkspaceRequest(
             name="name_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_convert_conversion_workspace_use_cached_wrapped_rpc():
@@ -13358,9 +13459,15 @@ async def test_convert_conversion_workspace_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.ConvertConversionWorkspaceRequest(),
+        {},
+    ],
+)
 async def test_convert_conversion_workspace_async(
-    transport: str = "grpc_asyncio",
-    request_type=clouddms.ConvertConversionWorkspaceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13369,7 +13476,7 @@ async def test_convert_conversion_workspace_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13389,11 +13496,6 @@ async def test_convert_conversion_workspace_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_convert_conversion_workspace_async_from_dict():
-    await test_convert_conversion_workspace_async(request_type=dict)
 
 
 def test_convert_conversion_workspace_field_headers():
@@ -13464,8 +13566,8 @@ async def test_convert_conversion_workspace_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.CommitConversionWorkspaceRequest,
-        dict,
+        clouddms.CommitConversionWorkspaceRequest(),
+        {},
     ],
 )
 def test_commit_conversion_workspace(request_type, transport: str = "grpc"):
@@ -13476,7 +13578,7 @@ def test_commit_conversion_workspace(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13522,10 +13624,11 @@ def test_commit_conversion_workspace_non_empty_request_with_auto_populated_field
         client.commit_conversion_workspace(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.CommitConversionWorkspaceRequest(
+        request_msg = clouddms.CommitConversionWorkspaceRequest(
             name="name_value",
             commit_name="commit_name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_commit_conversion_workspace_use_cached_wrapped_rpc():
@@ -13621,9 +13724,15 @@ async def test_commit_conversion_workspace_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.CommitConversionWorkspaceRequest(),
+        {},
+    ],
+)
 async def test_commit_conversion_workspace_async(
-    transport: str = "grpc_asyncio",
-    request_type=clouddms.CommitConversionWorkspaceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13632,7 +13741,7 @@ async def test_commit_conversion_workspace_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13652,11 +13761,6 @@ async def test_commit_conversion_workspace_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_commit_conversion_workspace_async_from_dict():
-    await test_commit_conversion_workspace_async(request_type=dict)
 
 
 def test_commit_conversion_workspace_field_headers():
@@ -13727,8 +13831,8 @@ async def test_commit_conversion_workspace_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.RollbackConversionWorkspaceRequest,
-        dict,
+        clouddms.RollbackConversionWorkspaceRequest(),
+        {},
     ],
 )
 def test_rollback_conversion_workspace(request_type, transport: str = "grpc"):
@@ -13739,7 +13843,7 @@ def test_rollback_conversion_workspace(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13784,9 +13888,10 @@ def test_rollback_conversion_workspace_non_empty_request_with_auto_populated_fie
         client.rollback_conversion_workspace(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.RollbackConversionWorkspaceRequest(
+        request_msg = clouddms.RollbackConversionWorkspaceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_rollback_conversion_workspace_use_cached_wrapped_rpc():
@@ -13882,9 +13987,15 @@ async def test_rollback_conversion_workspace_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.RollbackConversionWorkspaceRequest(),
+        {},
+    ],
+)
 async def test_rollback_conversion_workspace_async(
-    transport: str = "grpc_asyncio",
-    request_type=clouddms.RollbackConversionWorkspaceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13893,7 +14004,7 @@ async def test_rollback_conversion_workspace_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13913,11 +14024,6 @@ async def test_rollback_conversion_workspace_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_rollback_conversion_workspace_async_from_dict():
-    await test_rollback_conversion_workspace_async(request_type=dict)
 
 
 def test_rollback_conversion_workspace_field_headers():
@@ -13988,8 +14094,8 @@ async def test_rollback_conversion_workspace_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.ApplyConversionWorkspaceRequest,
-        dict,
+        clouddms.ApplyConversionWorkspaceRequest(),
+        {},
     ],
 )
 def test_apply_conversion_workspace(request_type, transport: str = "grpc"):
@@ -14000,7 +14106,7 @@ def test_apply_conversion_workspace(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14047,11 +14153,12 @@ def test_apply_conversion_workspace_non_empty_request_with_auto_populated_field(
         client.apply_conversion_workspace(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ApplyConversionWorkspaceRequest(
+        request_msg = clouddms.ApplyConversionWorkspaceRequest(
             name="name_value",
             filter="filter_value",
             connection_profile="connection_profile_value",
         )
+        assert args[0] == request_msg
 
 
 def test_apply_conversion_workspace_use_cached_wrapped_rpc():
@@ -14147,9 +14254,15 @@ async def test_apply_conversion_workspace_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.ApplyConversionWorkspaceRequest(),
+        {},
+    ],
+)
 async def test_apply_conversion_workspace_async(
-    transport: str = "grpc_asyncio",
-    request_type=clouddms.ApplyConversionWorkspaceRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -14158,7 +14271,7 @@ async def test_apply_conversion_workspace_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14178,11 +14291,6 @@ async def test_apply_conversion_workspace_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_apply_conversion_workspace_async_from_dict():
-    await test_apply_conversion_workspace_async(request_type=dict)
 
 
 def test_apply_conversion_workspace_field_headers():
@@ -14253,8 +14361,8 @@ async def test_apply_conversion_workspace_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.DescribeDatabaseEntitiesRequest,
-        dict,
+        clouddms.DescribeDatabaseEntitiesRequest(),
+        {},
     ],
 )
 def test_describe_database_entities(request_type, transport: str = "grpc"):
@@ -14265,7 +14373,7 @@ def test_describe_database_entities(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14316,12 +14424,13 @@ def test_describe_database_entities_non_empty_request_with_auto_populated_field(
         client.describe_database_entities(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.DescribeDatabaseEntitiesRequest(
+        request_msg = clouddms.DescribeDatabaseEntitiesRequest(
             conversion_workspace="conversion_workspace_value",
             page_token="page_token_value",
             commit_id="commit_id_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_describe_database_entities_use_cached_wrapped_rpc():
@@ -14407,9 +14516,15 @@ async def test_describe_database_entities_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.DescribeDatabaseEntitiesRequest(),
+        {},
+    ],
+)
 async def test_describe_database_entities_async(
-    transport: str = "grpc_asyncio",
-    request_type=clouddms.DescribeDatabaseEntitiesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -14418,7 +14533,7 @@ async def test_describe_database_entities_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14441,11 +14556,6 @@ async def test_describe_database_entities_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.DescribeDatabaseEntitiesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_describe_database_entities_async_from_dict():
-    await test_describe_database_entities_async(request_type=dict)
 
 
 def test_describe_database_entities_field_headers():
@@ -14566,6 +14676,9 @@ def test_describe_database_entities_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -14660,6 +14773,8 @@ async def test_describe_database_entities_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -14712,11 +14827,7 @@ async def test_describe_database_entities_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.describe_database_entities(request={})
-        ).pages:
+        async for page_ in (await client.describe_database_entities(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -14725,8 +14836,8 @@ async def test_describe_database_entities_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.SearchBackgroundJobsRequest,
-        dict,
+        clouddms.SearchBackgroundJobsRequest(),
+        {},
     ],
 )
 def test_search_background_jobs(request_type, transport: str = "grpc"):
@@ -14737,7 +14848,7 @@ def test_search_background_jobs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14782,9 +14893,10 @@ def test_search_background_jobs_non_empty_request_with_auto_populated_field():
         client.search_background_jobs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.SearchBackgroundJobsRequest(
+        request_msg = clouddms.SearchBackgroundJobsRequest(
             conversion_workspace="conversion_workspace_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_background_jobs_use_cached_wrapped_rpc():
@@ -14870,8 +14982,15 @@ async def test_search_background_jobs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.SearchBackgroundJobsRequest(),
+        {},
+    ],
+)
 async def test_search_background_jobs_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.SearchBackgroundJobsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -14880,7 +14999,7 @@ async def test_search_background_jobs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -14900,11 +15019,6 @@ async def test_search_background_jobs_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, clouddms.SearchBackgroundJobsResponse)
-
-
-@pytest.mark.asyncio
-async def test_search_background_jobs_async_from_dict():
-    await test_search_background_jobs_async(request_type=dict)
 
 
 def test_search_background_jobs_field_headers():
@@ -14975,8 +15089,8 @@ async def test_search_background_jobs_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.DescribeConversionWorkspaceRevisionsRequest,
-        dict,
+        clouddms.DescribeConversionWorkspaceRevisionsRequest(),
+        {},
     ],
 )
 def test_describe_conversion_workspace_revisions(request_type, transport: str = "grpc"):
@@ -14987,7 +15101,7 @@ def test_describe_conversion_workspace_revisions(request_type, transport: str = 
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15033,10 +15147,11 @@ def test_describe_conversion_workspace_revisions_non_empty_request_with_auto_pop
         client.describe_conversion_workspace_revisions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.DescribeConversionWorkspaceRevisionsRequest(
+        request_msg = clouddms.DescribeConversionWorkspaceRevisionsRequest(
             conversion_workspace="conversion_workspace_value",
             commit_id="commit_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_describe_conversion_workspace_revisions_use_cached_wrapped_rpc():
@@ -15122,9 +15237,15 @@ async def test_describe_conversion_workspace_revisions_async_use_cached_wrapped_
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.DescribeConversionWorkspaceRevisionsRequest(),
+        {},
+    ],
+)
 async def test_describe_conversion_workspace_revisions_async(
-    transport: str = "grpc_asyncio",
-    request_type=clouddms.DescribeConversionWorkspaceRevisionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -15133,7 +15254,7 @@ async def test_describe_conversion_workspace_revisions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15153,11 +15274,6 @@ async def test_describe_conversion_workspace_revisions_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, clouddms.DescribeConversionWorkspaceRevisionsResponse)
-
-
-@pytest.mark.asyncio
-async def test_describe_conversion_workspace_revisions_async_from_dict():
-    await test_describe_conversion_workspace_revisions_async(request_type=dict)
 
 
 def test_describe_conversion_workspace_revisions_field_headers():
@@ -15228,8 +15344,8 @@ async def test_describe_conversion_workspace_revisions_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        clouddms.FetchStaticIpsRequest,
-        dict,
+        clouddms.FetchStaticIpsRequest(),
+        {},
     ],
 )
 def test_fetch_static_ips(request_type, transport: str = "grpc"):
@@ -15240,7 +15356,7 @@ def test_fetch_static_ips(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_static_ips), "__call__") as call:
@@ -15287,10 +15403,11 @@ def test_fetch_static_ips_non_empty_request_with_auto_populated_field():
         client.fetch_static_ips(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.FetchStaticIpsRequest(
+        request_msg = clouddms.FetchStaticIpsRequest(
             name="name_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_static_ips_use_cached_wrapped_rpc():
@@ -15373,9 +15490,14 @@ async def test_fetch_static_ips_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_fetch_static_ips_async(
-    transport: str = "grpc_asyncio", request_type=clouddms.FetchStaticIpsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.FetchStaticIpsRequest(),
+        {},
+    ],
+)
+async def test_fetch_static_ips_async(request_type, transport: str = "grpc_asyncio"):
     client = DataMigrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15383,7 +15505,7 @@ async def test_fetch_static_ips_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_static_ips), "__call__") as call:
@@ -15406,11 +15528,6 @@ async def test_fetch_static_ips_async(
     assert isinstance(response, pagers.FetchStaticIpsAsyncPager)
     assert response.static_ips == ["static_ips_value"]
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_fetch_static_ips_async_from_dict():
-    await test_fetch_static_ips_async(request_type=dict)
 
 
 def test_fetch_static_ips_field_headers():
@@ -15605,6 +15722,9 @@ def test_fetch_static_ips_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, str) for i in results)
@@ -15693,6 +15813,8 @@ async def test_fetch_static_ips_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -15740,11 +15862,7 @@ async def test_fetch_static_ips_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.fetch_static_ips(request={})
-        ).pages:
+        async for page_ in (await client.fetch_static_ips(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -15874,7 +15992,6 @@ def test_list_migration_jobs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.ListMigrationJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15897,7 +16014,6 @@ def test_get_migration_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.GetMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -15920,7 +16036,6 @@ def test_create_migration_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.CreateMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -15943,7 +16058,6 @@ def test_update_migration_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.UpdateMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -15966,7 +16080,6 @@ def test_delete_migration_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.DeleteMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -15989,7 +16102,6 @@ def test_start_migration_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.StartMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -16012,7 +16124,6 @@ def test_stop_migration_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.StopMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -16035,7 +16146,6 @@ def test_resume_migration_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.ResumeMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -16058,7 +16168,6 @@ def test_promote_migration_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.PromoteMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -16081,7 +16190,6 @@ def test_verify_migration_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.VerifyMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -16104,7 +16212,6 @@ def test_restart_migration_job_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.RestartMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -16127,7 +16234,6 @@ def test_generate_ssh_script_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.GenerateSshScriptRequest()
-
         assert args[0] == request_msg
 
 
@@ -16150,7 +16256,6 @@ def test_generate_tcp_proxy_script_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.GenerateTcpProxyScriptRequest()
-
         assert args[0] == request_msg
 
 
@@ -16173,7 +16278,6 @@ def test_list_connection_profiles_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.ListConnectionProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -16196,7 +16300,6 @@ def test_get_connection_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.GetConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -16219,7 +16322,6 @@ def test_create_connection_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.CreateConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -16242,7 +16344,6 @@ def test_update_connection_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.UpdateConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -16265,7 +16366,6 @@ def test_delete_connection_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.DeleteConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -16288,7 +16388,6 @@ def test_create_private_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.CreatePrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -16311,7 +16410,6 @@ def test_get_private_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.GetPrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -16334,7 +16432,6 @@ def test_list_private_connections_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.ListPrivateConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16357,7 +16454,6 @@ def test_delete_private_connection_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.DeletePrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -16380,7 +16476,6 @@ def test_get_conversion_workspace_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.GetConversionWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -16403,7 +16498,6 @@ def test_list_conversion_workspaces_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.ListConversionWorkspacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -16426,7 +16520,6 @@ def test_create_conversion_workspace_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.CreateConversionWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -16449,7 +16542,6 @@ def test_update_conversion_workspace_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.UpdateConversionWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -16472,7 +16564,6 @@ def test_delete_conversion_workspace_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.DeleteConversionWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -16495,7 +16586,6 @@ def test_create_mapping_rule_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.CreateMappingRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -16518,7 +16608,6 @@ def test_delete_mapping_rule_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.DeleteMappingRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -16541,7 +16630,6 @@ def test_list_mapping_rules_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.ListMappingRulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -16562,7 +16650,6 @@ def test_get_mapping_rule_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.GetMappingRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -16585,7 +16672,6 @@ def test_seed_conversion_workspace_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.SeedConversionWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -16608,7 +16694,6 @@ def test_import_mapping_rules_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.ImportMappingRulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -16631,7 +16716,6 @@ def test_convert_conversion_workspace_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.ConvertConversionWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -16654,7 +16738,6 @@ def test_commit_conversion_workspace_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.CommitConversionWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -16677,7 +16760,6 @@ def test_rollback_conversion_workspace_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.RollbackConversionWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -16700,7 +16782,6 @@ def test_apply_conversion_workspace_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.ApplyConversionWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -16723,7 +16804,6 @@ def test_describe_database_entities_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.DescribeDatabaseEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -16746,7 +16826,6 @@ def test_search_background_jobs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.SearchBackgroundJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16769,7 +16848,6 @@ def test_describe_conversion_workspace_revisions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.DescribeConversionWorkspaceRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16790,7 +16868,6 @@ def test_fetch_static_ips_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.FetchStaticIpsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16834,7 +16911,6 @@ async def test_list_migration_jobs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.ListMigrationJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16872,7 +16948,6 @@ async def test_get_migration_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.GetMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -16899,7 +16974,6 @@ async def test_create_migration_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.CreateMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -16926,7 +17000,6 @@ async def test_update_migration_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.UpdateMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -16953,7 +17026,6 @@ async def test_delete_migration_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.DeleteMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -16980,7 +17052,6 @@ async def test_start_migration_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.StartMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -17007,7 +17078,6 @@ async def test_stop_migration_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.StopMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -17034,7 +17104,6 @@ async def test_resume_migration_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.ResumeMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -17061,7 +17130,6 @@ async def test_promote_migration_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.PromoteMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -17088,7 +17156,6 @@ async def test_verify_migration_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.VerifyMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -17115,7 +17182,6 @@ async def test_restart_migration_job_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.RestartMigrationJobRequest()
-
         assert args[0] == request_msg
 
 
@@ -17144,7 +17210,6 @@ async def test_generate_ssh_script_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.GenerateSshScriptRequest()
-
         assert args[0] == request_msg
 
 
@@ -17173,7 +17238,6 @@ async def test_generate_tcp_proxy_script_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.GenerateTcpProxyScriptRequest()
-
         assert args[0] == request_msg
 
 
@@ -17203,7 +17267,6 @@ async def test_list_connection_profiles_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.ListConnectionProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -17235,7 +17298,6 @@ async def test_get_connection_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.GetConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -17262,7 +17324,6 @@ async def test_create_connection_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.CreateConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -17289,7 +17350,6 @@ async def test_update_connection_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.UpdateConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -17316,7 +17376,6 @@ async def test_delete_connection_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.DeleteConnectionProfileRequest()
-
         assert args[0] == request_msg
 
 
@@ -17343,7 +17402,6 @@ async def test_create_private_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.CreatePrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -17374,7 +17432,6 @@ async def test_get_private_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.GetPrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -17404,7 +17461,6 @@ async def test_list_private_connections_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.ListPrivateConnectionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17431,7 +17487,6 @@ async def test_delete_private_connection_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.DeletePrivateConnectionRequest()
-
         assert args[0] == request_msg
 
 
@@ -17463,7 +17518,6 @@ async def test_get_conversion_workspace_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.GetConversionWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -17493,7 +17547,6 @@ async def test_list_conversion_workspaces_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.ListConversionWorkspacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -17520,7 +17573,6 @@ async def test_create_conversion_workspace_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.CreateConversionWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -17547,7 +17599,6 @@ async def test_update_conversion_workspace_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.UpdateConversionWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -17574,7 +17625,6 @@ async def test_delete_conversion_workspace_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.DeleteConversionWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -17608,7 +17658,6 @@ async def test_create_mapping_rule_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.CreateMappingRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -17633,7 +17682,6 @@ async def test_delete_mapping_rule_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.DeleteMappingRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -17662,7 +17710,6 @@ async def test_list_mapping_rules_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.ListMappingRulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -17694,7 +17741,6 @@ async def test_get_mapping_rule_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.GetMappingRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -17721,7 +17767,6 @@ async def test_seed_conversion_workspace_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.SeedConversionWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -17748,7 +17793,6 @@ async def test_import_mapping_rules_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.ImportMappingRulesRequest()
-
         assert args[0] == request_msg
 
 
@@ -17775,7 +17819,6 @@ async def test_convert_conversion_workspace_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.ConvertConversionWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -17802,7 +17845,6 @@ async def test_commit_conversion_workspace_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.CommitConversionWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -17829,7 +17871,6 @@ async def test_rollback_conversion_workspace_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.RollbackConversionWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -17856,7 +17897,6 @@ async def test_apply_conversion_workspace_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.ApplyConversionWorkspaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -17885,7 +17925,6 @@ async def test_describe_database_entities_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.DescribeDatabaseEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -17912,7 +17951,6 @@ async def test_search_background_jobs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.SearchBackgroundJobsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17939,7 +17977,6 @@ async def test_describe_conversion_workspace_revisions_empty_call_grpc_asyncio()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.DescribeConversionWorkspaceRevisionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -17967,7 +18004,6 @@ async def test_fetch_static_ips_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = clouddms.FetchStaticIpsRequest()
-
         assert args[0] == request_msg
 
 

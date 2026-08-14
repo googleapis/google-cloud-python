@@ -43,6 +43,10 @@ The following example demonstrates how to perform a distributed aggregation on a
 
     import bigframes.pandas as bpd
 
+    # If running in your local environment or Colab, uncomment these lines and add your GCP project ID
+    # PROJECT_ID = "bigframes-dev"
+    # bpd.options.bigquery.project = PROJECT_ID
+
     # Initialize BigFrames and load a public dataset
     df = bpd.read_gbq("bigquery-public-data.usa_names.usa_1910_2013")
 

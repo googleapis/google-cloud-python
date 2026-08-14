@@ -48,6 +48,10 @@ class ExpressionCompiler:
         sge.LT,
         sge.EQ,
         sge.NEQ,
+        sge.Like,
+        sge.RegexpLike,
+        sge.In,
+        sge.Between,
         # Logical operations
         sge.And,
         sge.Or,
@@ -90,9 +94,10 @@ class ExpressionCompiler:
 
     @compile_expression.register
     def _(self, expr: ex.OpExpression) -> sge.Expression:
-        # Non-recursively compiles the children scalar expressions.
         inputs = tuple(
             TypedExpr(self.compile_expression(sub_expr), sub_expr.output_type)
+            if not isinstance(sub_expr, ex.OmittedArg)
+            else TypedExpr(sge.Null(), None, is_omitted=True)
             for sub_expr in expr.inputs
         )
         return self.compile_row_op(expr.op, inputs)

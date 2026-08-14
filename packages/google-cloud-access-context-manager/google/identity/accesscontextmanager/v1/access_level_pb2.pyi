@@ -12,22 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
 from google.api import resource_pb2 as _resource_pb2
-from google.identity.accesscontextmanager.type import (
-    device_resources_pb2 as _device_resources_pb2,
-)
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.type import expr_pb2 as _expr_pb2
+
+from google.identity.accesscontextmanager.type import (
+    device_resources_pb2 as _device_resources_pb2,
+)
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -62,8 +64,12 @@ class AccessLevel(_message.Message):
         description: _Optional[str] = ...,
         basic: _Optional[_Union[BasicLevel, _Mapping]] = ...,
         custom: _Optional[_Union[CustomLevel, _Mapping]] = ...,
-        create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-        update_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+        create_time: _Optional[
+            _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+        ] = ...,
+        update_time: _Optional[
+            _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+        ] = ...,
     ) -> None: ...
 
 class BasicLevel(_message.Message):
@@ -113,7 +119,7 @@ class Condition(_message.Message):
         ip_subnetworks: _Optional[_Iterable[str]] = ...,
         device_policy: _Optional[_Union[DevicePolicy, _Mapping]] = ...,
         required_access_levels: _Optional[_Iterable[str]] = ...,
-        negate: bool = ...,
+        negate: _Optional[bool] = ...,
         members: _Optional[_Iterable[str]] = ...,
         regions: _Optional[_Iterable[str]] = ...,
     ) -> None: ...
@@ -153,7 +159,7 @@ class DevicePolicy(_message.Message):
     require_corp_owned: bool
     def __init__(
         self,
-        require_screenlock: bool = ...,
+        require_screenlock: _Optional[bool] = ...,
         allowed_encryption_statuses: _Optional[
             _Iterable[_Union[_device_resources_pb2.DeviceEncryptionStatus, str]]
         ] = ...,
@@ -161,8 +167,8 @@ class DevicePolicy(_message.Message):
         allowed_device_management_levels: _Optional[
             _Iterable[_Union[_device_resources_pb2.DeviceManagementLevel, str]]
         ] = ...,
-        require_admin_approval: bool = ...,
-        require_corp_owned: bool = ...,
+        require_admin_approval: _Optional[bool] = ...,
+        require_corp_owned: _Optional[bool] = ...,
     ) -> None: ...
 
 class OsConstraint(_message.Message):
@@ -177,5 +183,5 @@ class OsConstraint(_message.Message):
         self,
         os_type: _Optional[_Union[_device_resources_pb2.OsType, str]] = ...,
         minimum_version: _Optional[str] = ...,
-        require_verified_chrome_os: bool = ...,
+        require_verified_chrome_os: _Optional[bool] = ...,
     ) -> None: ...

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -60,7 +60,13 @@ class Policy(proto.Message):
             exclude Google or third-party infrastructure
             images from Binary Authorization policies.
         cluster_admission_rules (MutableMapping[str, google.cloud.binaryauthorization_v1.types.AdmissionRule]):
-            Optional. Per-cluster admission rules. Cluster spec format:
+            Optional. A valid policy has only one of the following rule
+            maps non-empty, i.e. only one of
+            ``cluster_admission_rules``,
+            ``kubernetes_namespace_admission_rules``,
+            ``kubernetes_service_account_admission_rules``, or
+            ``istio_service_identity_admission_rules`` can be non-empty.
+            Per-cluster admission rules. Cluster spec format:
             ``location.clusterId``. There can be at most one admission
             rule per cluster spec. A ``location`` is either a compute
             zone (e.g. us-central1-a) or a region (e.g. us-central1).
@@ -68,19 +74,17 @@ class Policy(proto.Message):
             https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters.
         kubernetes_namespace_admission_rules (MutableMapping[str, google.cloud.binaryauthorization_v1.types.AdmissionRule]):
             Optional. Per-kubernetes-namespace admission rules. K8s
-            namespace spec format: [a-z.-]+, e.g. 'some-namespace'
+            namespace spec format: ``[a-z.-]+``, e.g. ``some-namespace``
         kubernetes_service_account_admission_rules (MutableMapping[str, google.cloud.binaryauthorization_v1.types.AdmissionRule]):
             Optional. Per-kubernetes-service-account admission rules.
             Service account spec format: ``namespace:serviceaccount``.
-            e.g. 'test-ns:default'
+            e.g. ``test-ns:default``
         istio_service_identity_admission_rules (MutableMapping[str, google.cloud.binaryauthorization_v1.types.AdmissionRule]):
-            Optional. Per-istio-service-identity
-            admission rules. Istio service identity spec
-            format:
-
-            spiffe://<domain>/ns/<namespace>/sa/<serviceaccount>
-            or <domain>/ns/<namespace>/sa/<serviceaccount>
-            e.g. spiffe://example.com/ns/test-ns/sa/default
+            Optional. Per-istio-service-identity admission rules. Istio
+            service identity spec format:
+            ``spiffe://<domain>/ns/<namespace>/sa/<serviceaccount>`` or
+            ``<domain>/ns/<namespace>/sa/<serviceaccount>`` e.g.
+            ``spiffe://example.com/ns/test-ns/sa/default``
         default_admission_rule (google.cloud.binaryauthorization_v1.types.AdmissionRule):
             Required. Default admission rule for a
             cluster without a per-cluster, per-
@@ -89,6 +93,12 @@ class Policy(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the policy was last
             updated.
+        etag (str):
+            Optional. A checksum, returned by the server,
+            that can be sent on update requests to ensure
+            the policy has an up-to-date value before
+            attempting to update it. See
+            https://google.aip.dev/154.
     """
 
     class GlobalPolicyEvaluationMode(proto.Enum):
@@ -96,7 +106,7 @@ class Policy(proto.Message):
 
         Values:
             GLOBAL_POLICY_EVALUATION_MODE_UNSPECIFIED (0):
-                Not specified: DISABLE is assumed.
+                Not specified: ``DISABLE`` is assumed.
             ENABLE (1):
                 Enables system policy evaluation.
             DISABLE (2):
@@ -167,6 +177,10 @@ class Policy(proto.Message):
         number=5,
         message=timestamp_pb2.Timestamp,
     )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=11,
+    )
 
 
 class AdmissionWhitelistPattern(proto.Message):
@@ -216,9 +230,9 @@ class AdmissionRule(proto.Message):
             the principal issuing the policy change request must be able
             to read the attestor resource.
 
-            Note: this field must be non-empty when the evaluation_mode
-            field specifies REQUIRE_ATTESTATION, otherwise it must be
-            empty.
+            Note: this field must be non-empty when the
+            ``evaluation_mode`` field specifies ``REQUIRE_ATTESTATION``,
+            otherwise it must be empty.
         enforcement_mode (google.cloud.binaryauthorization_v1.types.AdmissionRule.EnforcementMode):
             Required. The action when a pod creation is
             denied by the admission rule.
@@ -231,11 +245,11 @@ class AdmissionRule(proto.Message):
             EVALUATION_MODE_UNSPECIFIED (0):
                 Do not use.
             ALWAYS_ALLOW (1):
-                This rule allows all all pod creations.
+                This rule allows all pod creations.
             REQUIRE_ATTESTATION (2):
                 This rule allows a pod creation if all the attestors listed
-                in 'require_attestations_by' have valid attestations for all
-                of the images in the pod spec.
+                in ``require_attestations_by`` have valid attestations for
+                all of the images in the pod spec.
             ALWAYS_DENY (3):
                 This rule denies all pod creations.
         """
@@ -306,6 +320,12 @@ class Attestor(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the attestor was last
             updated.
+        etag (str):
+            Optional. A checksum, returned by the server,
+            that can be sent on update requests to ensure
+            the attestor has an up-to-date value before
+            attempting to update it. See
+            https://google.aip.dev/154.
     """
 
     name: str = proto.Field(
@@ -327,6 +347,10 @@ class Attestor(proto.Message):
         number=4,
         message=timestamp_pb2.Timestamp,
     )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class UserOwnedGrafeasNote(proto.Message):
@@ -338,8 +362,9 @@ class UserOwnedGrafeasNote(proto.Message):
         note_reference (str):
             Required. The Grafeas resource name of a
             Attestation.Authority Note, created by the user, in the
-            format: ``projects/*/notes/*``. This field may not be
-            updated.
+            format: ``projects/[PROJECT_ID]/notes/*``. This field may
+            not be updated. A project ID must be used, not a project
+            number.
 
             An attestation by this attestor is stored as a Grafeas
             Attestation.Authority Occurrence that names a container
@@ -359,14 +384,16 @@ class UserOwnedGrafeasNote(proto.Message):
             returns that no valid attestations exist.
         delegation_service_account_email (str):
             Output only. This field will contain the service account
-            email address that this Attestor will use as the principal
+            email address that this attestor will use as the principal
             when querying Container Analysis. Attestor administrators
             must grant this service account the IAM role needed to read
-            attestations from the [note_reference][Note] in Container
-            Analysis (``containeranalysis.notes.occurrences.viewer``).
+            attestations from the
+            [note_reference][google.cloud.binaryauthorization.v1.UserOwnedGrafeasNote.note_reference]
+            in Container Analysis
+            (``containeranalysis.notes.occurrences.viewer``).
 
             This email address is fixed for the lifetime of the
-            Attestor, but callers should not make any other assumptions
+            attestor, but callers should not make any other assumptions
             about the service account email; future versions may use an
             email based on a different naming pattern.
     """
@@ -387,10 +414,10 @@ class UserOwnedGrafeasNote(proto.Message):
 
 
 class PkixPublicKey(proto.Message):
-    r"""A public key in the PkixPublicKey format (see
-    https://tools.ietf.org/html/rfc5280#section-4.1.2.7 for
-    details). Public keys of this type are typically textually
-    encoded using the PEM format.
+    r"""A public key in the PkixPublicKey
+    `format <https://tools.ietf.org/html/rfc5280#section-4.1.2.7>`__.
+    Public keys of this type are typically textually encoded using the
+    PEM format.
 
     Attributes:
         public_key_pem (str):
@@ -402,27 +429,52 @@ class PkixPublicKey(proto.Message):
             match the structure and any object identifiers encoded in
             ``public_key_pem`` (i.e. this algorithm must match that of
             the public key).
+        key_id (str):
+            Optional. The ID of this public key. Signatures verified by
+            Binary Authorization must include the ID of the public key
+            that can be used to verify them. The ID must match exactly
+            contents of the ``key_id`` field exactly.
+
+            The ID may be explicitly provided by the caller, but it MUST
+            be a valid RFC3986 URI. If ``key_id`` is left blank and this
+            ``PkixPublicKey`` is not used in the context of a wrapper
+            (see next paragraph), a default key ID will be computed
+            based on the digest of the DER encoding of the public key.
+
+            If this ``PkixPublicKey`` is used in the context of a
+            wrapper that has its own notion of key ID (e.g.
+            ``AttestorPublicKey``), then this field can either match
+            that value exactly, or be left blank, in which case it
+            behaves exactly as though it is equal to that wrapper value.
     """
 
     class SignatureAlgorithm(proto.Enum):
-        r"""Represents a signature algorithm and other information
-        necessary to verify signatures with a given public key. This is
-        based primarily on the public key types supported by Tink's
-        PemKeyType, which is in turn based on KMS's supported signing
-        algorithms. See https://cloud.google.com/kms/docs/algorithms. In
-        the future, BinAuthz might support additional public key types
-        independently of Tink and/or KMS.
+        r"""Represents a signature algorithm and other information necessary to
+        verify signatures with a given public key. This is based primarily
+        on the public key types supported by Tink's PemKeyType, which is in
+        turn based on KMS's supported signing
+        `algorithms <https://cloud.google.com/kms/docs/algorithms>`__. In
+        the future, Binary Authorization might support additional public key
+        types independently of Tink and/or KMS.
 
         Values:
             SIGNATURE_ALGORITHM_UNSPECIFIED (0):
                 Not specified.
             RSA_PSS_2048_SHA256 (1):
                 RSASSA-PSS 2048 bit key with a SHA256 digest.
+            RSA_SIGN_PSS_2048_SHA256 (1):
+                RSASSA-PSS 2048 bit key with a SHA256 digest.
             RSA_PSS_3072_SHA256 (2):
+                RSASSA-PSS 3072 bit key with a SHA256 digest.
+            RSA_SIGN_PSS_3072_SHA256 (2):
                 RSASSA-PSS 3072 bit key with a SHA256 digest.
             RSA_PSS_4096_SHA256 (3):
                 RSASSA-PSS 4096 bit key with a SHA256 digest.
+            RSA_SIGN_PSS_4096_SHA256 (3):
+                RSASSA-PSS 4096 bit key with a SHA256 digest.
             RSA_PSS_4096_SHA512 (4):
+                RSASSA-PSS 4096 bit key with a SHA512 digest.
+            RSA_SIGN_PSS_4096_SHA512 (4):
                 RSASSA-PSS 4096 bit key with a SHA512 digest.
             RSA_SIGN_PKCS1_2048_SHA256 (5):
                 RSASSA-PKCS1-v1_5 with a 2048 bit key and a SHA256 digest.
@@ -450,14 +502,21 @@ class PkixPublicKey(proto.Message):
             EC_SIGN_P521_SHA512 (11):
                 ECDSA on the NIST P-521 curve with a SHA512
                 digest.
+            ML_DSA_65 (13):
+                ML-DSA-65 Post-Quantum Cryptography signature
+                algorithm.
         """
 
         _pb_options = {"allow_alias": True}
         SIGNATURE_ALGORITHM_UNSPECIFIED = 0
         RSA_PSS_2048_SHA256 = 1
+        RSA_SIGN_PSS_2048_SHA256 = 1
         RSA_PSS_3072_SHA256 = 2
+        RSA_SIGN_PSS_3072_SHA256 = 2
         RSA_PSS_4096_SHA256 = 3
+        RSA_SIGN_PSS_4096_SHA256 = 3
         RSA_PSS_4096_SHA512 = 4
+        RSA_SIGN_PSS_4096_SHA512 = 4
         RSA_SIGN_PKCS1_2048_SHA256 = 5
         RSA_SIGN_PKCS1_3072_SHA256 = 6
         RSA_SIGN_PKCS1_4096_SHA256 = 7
@@ -468,6 +527,7 @@ class PkixPublicKey(proto.Message):
         EC_SIGN_P384_SHA384 = 10
         ECDSA_P521_SHA512 = 11
         EC_SIGN_P521_SHA512 = 11
+        ML_DSA_65 = 13
 
     public_key_pem: str = proto.Field(
         proto.STRING,
@@ -477,6 +537,10 @@ class PkixPublicKey(proto.Message):
         proto.ENUM,
         number=2,
         enum=SignatureAlgorithm,
+    )
+    key_id: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -497,22 +561,23 @@ class AttestorPublicKey(proto.Message):
             Optional. A descriptive comment. This field
             may be updated.
         id (str):
-            The ID of this public key. Signatures verified by BinAuthz
-            must include the ID of the public key that can be used to
-            verify them, and that ID must match the contents of this
-            field exactly. Additional restrictions on this field can be
-            imposed based on which public key type is encapsulated. See
-            the documentation on ``public_key`` cases below for details.
+            The ID of this public key. Signatures verified by Binary
+            Authorization must include the ID of the public key that can
+            be used to verify them, and that ID must match the contents
+            of this field exactly. Additional restrictions on this field
+            can be imposed based on which public key type is
+            encapsulated. See the documentation on ``public_key`` cases
+            below for details.
         ascii_armored_pgp_public_key (str):
             ASCII-armored representation of a PGP public key, as the
             entire output by the command
             ``gpg --export --armor foo@example.com`` (either LF or CRLF
             line endings). When using this field, ``id`` should be left
-            blank. The BinAuthz API handlers will calculate the ID and
-            fill it in automatically. BinAuthz computes this ID as the
-            OpenPGP RFC4880 V4 fingerprint, represented as upper-case
-            hex. If ``id`` is provided by the caller, it will be
-            overwritten by the API-calculated ID.
+            blank. The Binary Authorization API handlers will calculate
+            the ID and fill it in automatically. Binary Authorization
+            computes this ID as the OpenPGP RFC4880 V4 fingerprint,
+            represented as upper-case hex. If ``id`` is provided by the
+            caller, it will be overwritten by the API-calculated ID.
 
             This field is a member of `oneof`_ ``public_key``.
         pkix_public_key (google.cloud.binaryauthorization_v1.types.PkixPublicKey):

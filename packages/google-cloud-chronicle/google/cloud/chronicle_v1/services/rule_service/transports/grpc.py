@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -464,6 +464,32 @@ class RuleServiceGrpcTransport(RuleServiceTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_rule"]
+
+    @property
+    def verify_rule_text(
+        self,
+    ) -> Callable[[rule.VerifyRuleTextRequest], rule.VerifyRuleTextResponse]:
+        r"""Return a callable for the verify rule text method over gRPC.
+
+        Verifies the given rule text.
+
+        Returns:
+            Callable[[~.VerifyRuleTextRequest],
+                    ~.VerifyRuleTextResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "verify_rule_text" not in self._stubs:
+            self._stubs["verify_rule_text"] = self._logged_channel.unary_unary(
+                "/google.cloud.chronicle.v1.RuleService/VerifyRuleText",
+                request_serializer=rule.VerifyRuleTextRequest.serialize,
+                response_deserializer=rule.VerifyRuleTextResponse.deserialize,
+            )
+        return self._stubs["verify_rule_text"]
 
     @property
     def list_rule_revisions(

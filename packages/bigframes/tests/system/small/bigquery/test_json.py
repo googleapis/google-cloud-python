@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 import geopandas as gpd  # type: ignore
 import pandas as pd
 import pyarrow as pa
@@ -389,7 +390,7 @@ def test_parse_json_w_invalid_series_type():
 def test_to_json_from_int():
     s = bpd.Series([1, 2, None, 3])
     actual = bbq.to_json(s)
-    expected = bpd.Series(["1.0", "2.0", "null", "3.0"], dtype=dtypes.JSON_DTYPE)
+    expected = bpd.Series(["1.0", "2.0", None, "3.0"], dtype=dtypes.JSON_DTYPE)
     pd.testing.assert_series_equal(actual.to_pandas(), expected.to_pandas())
 
 
@@ -404,7 +405,7 @@ def test_to_json_from_struct():
 
     actual = bbq.to_json(s)
     expected = bpd.Series(
-        ['{"project":"pandas","version":1}', '{"project":"numpy","version":2}'],
+        ['{"version":1,"project":"pandas"}', '{"version":2,"project":"numpy"}'],
         dtype=dtypes.JSON_DTYPE,
     )
 
@@ -429,7 +430,7 @@ def test_to_json_string_from_struct():
 
     actual = bbq.to_json_string(s)
     expected = bpd.Series(
-        ['{"project":"pandas","version":1}', '{"project":"numpy","version":2}'],
+        ['{"version":1,"project":"pandas"}', '{"version":2,"project":"numpy"}'],
         dtype=dtypes.STRING_DTYPE,
     )
 

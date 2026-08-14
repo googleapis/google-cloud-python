@@ -42,9 +42,9 @@ def struct(value: dataframe.DataFrame) -> series.Series:
         >>> srs = series.Series([{"version": 1, "project": "pandas"}, {"version": 2, "project": "numpy"},])
         >>> df = srs.struct.explode()
         >>> bbq.struct(df)
-        0    {'project': 'pandas', 'version': 1}
-        1     {'project': 'numpy', 'version': 2}
-        dtype: struct<project: string, version: int64>[pyarrow]
+        0    {'version': 1, 'project': 'pandas'}
+        1     {'version': 2, 'project': 'numpy'}
+        dtype: struct<version: int64, project: string>[pyarrow]
 
         Args:
             value (bigframes.dataframe.DataFrame):
@@ -57,5 +57,5 @@ def struct(value: dataframe.DataFrame) -> series.Series:
     block, result_id = block.apply_nary_op(
         block.value_columns, ops.StructOp(column_names=tuple(block.column_labels))
     )
-    block = block.select_column(result_id)
+    block = block.select_column(result_id).with_column_labels([None])
     return series.Series(block)

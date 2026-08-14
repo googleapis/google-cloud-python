@@ -14,11 +14,10 @@
 
 import uuid
 
+from model import Singer
+from sample_helper import run_sample
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
-
-from sample_helper import run_sample
-from model import Singer
 
 
 # Shows how to use a generated column with SQLAlchemy and Spanner.
@@ -35,15 +34,13 @@ def generated_column_sample():
         singer = Singer(id=str(uuid.uuid4()), first_name="John", last_name="Doe")
         session.add(singer)
         session.commit()
-        print(
-            f"The database generated a full name for the singer: " f"{singer.full_name}"
-        )
+        print(f"The database generated a full name for the singer: {singer.full_name}")
 
         # Updating the first name or last name of the singer will also update
         # the generated full name property.
         singer.last_name = "Jones"
         session.commit()
-        print(f"Updated full name for singer: " f"{singer.full_name}")
+        print(f"Updated full name for singer: {singer.full_name}")
 
 
 if __name__ == "__main__":

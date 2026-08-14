@@ -6,9 +6,9 @@ import functools
 import os
 import pathlib
 
-from google.cloud import bigquery
 import pytest
 import test_utils.prefixer
+from google.cloud import bigquery
 
 prefixer = test_utils.prefixer.Prefixer("python-bigquery-pandas", "tests/system")
 

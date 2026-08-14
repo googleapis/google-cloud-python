@@ -12,21 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
 import datetime
-import uuid
 import os
-from google.api_core import retry
-from google.api_core.exceptions import ClientError, PermissionDenied
+import uuid
 
-from google.cloud.bigtable.data.execute_query.metadata import SqlType
-from google.cloud.bigtable.data.read_modify_write_rules import _MAX_INCREMENT_VALUE
+import pytest
+from google.api_core import retry
+from google.api_core.exceptions import ClientError, PermissionDenied, ServerError
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 from google.type import date_pb2
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable.data._metrics import OperationType
+from google.cloud.bigtable.data.execute_query.metadata import SqlType
+from google.cloud.bigtable.data.read_modify_write_rules import _MAX_INCREMENT_VALUE
 
-from . import TEST_FAMILY, TEST_FAMILY_2, TEST_AGGREGATE_FAMILY
+from . import TEST_AGGREGATE_FAMILY, TEST_FAMILY, TEST_FAMILY_2, SystemTestRunner
 
 if CrossSync.is_async:
     from google.cloud.bigtable_v2.services.bigtable.transports.grpc_asyncio import (
@@ -68,7 +69,7 @@ class TempRowBuilderAsync:
         elif isinstance(value, int):
             value = value.to_bytes(8, byteorder="big", signed=True)
         request = {
-            "table_name": self.target.table_name,
+            **self.target._request_path,
             "row_key": row_key,
             "mutations": [
                 {
@@ -88,7 +89,7 @@ class TempRowBuilderAsync:
         self, row_key, *, family=TEST_AGGREGATE_FAMILY, qualifier=b"q", input=0
     ):
         request = {
-            "table_name": self.target.table_name,
+            **self.target._request_path,
             "row_key": row_key,
             "mutations": [
                 {
@@ -107,18 +108,82 @@ class TempRowBuilderAsync:
     @CrossSync.convert
     async def delete_rows(self):
         if self.rows:
-            request = {
-                "table_name": self.target.table_name,
-                "entries": [
-                    {"row_key": row, "mutations": [{"delete_from_row": {}}]}
-                    for row in self.rows
-                ],
-            }
-            await self.target.client._gapic_client.mutate_rows(request)
+            # Chunk deletions to 5,000 rows. While Bigtable officially supports up to
+            # 100,000 mutations per MutateRows RPC, sending massive batches may hit
+            # the default gRPC 4MB client payload size limit due to metadata
+            # serialization overhead. Keeping chunks at 5,000 ensures we stay safely
+            # under 4MB and minimizes transient network timeouts on live connections.
+            chunk_size = 5000
+            rows_list = list(self.rows)
+
+            # Check if the test target is an Authorized View
+            is_authorized_view = "authorized_view_name" in self.target._request_path
+
+            if is_authorized_view:
+                # For Authorized Views, we cannot use delete_from_row because it attempts
+                # to delete families outside the view's scope. We must delete explicitly
+                # from the allowed families we wrote to.
+                mutations = [
+                    {"delete_from_family": {"family_name": TEST_FAMILY}},
+                    {"delete_from_family": {"family_name": TEST_AGGREGATE_FAMILY}},
+                ]
+            else:
+                mutations = [{"delete_from_row": {}}]
+
+            for i in range(0, len(rows_list), chunk_size):
+                chunk = rows_list[i : i + chunk_size]
+                request = {
+                    **self.target._request_path,
+                    "entries": [
+                        {"row_key": row, "mutations": mutations} for row in chunk
+                    ],
+                }
+                # Await and consume the gRPC stream to guarantee execution
+                stream = await self.target.client._gapic_client.mutate_rows(request)
+                async for response in stream:
+                    for entry in response.entries:
+                        if entry.status.code != 0:
+                            raise RuntimeError(
+                                f"Failed to delete row: {entry.status.message}"
+                            )
+
+    @CrossSync.convert
+    async def retrieve_cell_value(self, target, row_key):
+        """
+        Helper to read an individual row
+        """
+        from google.cloud.bigtable.data import ReadRowsQuery
+
+        row_list = await target.read_rows(ReadRowsQuery(row_keys=row_key))
+        assert len(row_list) == 1
+        row = row_list[0]
+        cell = row.cells[0]
+        return cell.value
+
+    @CrossSync.convert
+    async def create_row_and_mutation(
+        self, table, *, start_value=b"start", new_value=b"new_value"
+    ):
+        """
+        Helper to create a new row, and a sample set_cell mutation to change its value
+        """
+        from google.cloud.bigtable.data.mutations import SetCell
+
+        row_key = uuid.uuid4().hex.encode()
+        family = TEST_FAMILY
+        qualifier = b"test-qualifier"
+        await self.add_row(
+            row_key, family=family, qualifier=qualifier, value=start_value
+        )
+        # ensure cell is initialized
+        assert await self.retrieve_cell_value(table, row_key) == start_value
+
+        mutation = SetCell(family=TEST_FAMILY, qualifier=qualifier, new_value=new_value)
+        return row_key, mutation
 
 
 @CrossSync.convert_class(sync_name="TestSystem")
-class TestSystemAsync:
+class TestSystemAsync(SystemTestRunner):
     def _make_client(self):
         project = os.getenv("GOOGLE_CLOUD_PROJECT") or None
         return CrossSync.DataClient(project=project)
@@ -147,82 +212,6 @@ class TestSystemAsync:
                 yield view
         else:
             raise ValueError(f"unknown target type: {request.param}")
-
-    @pytest.fixture(scope="session")
-    def column_family_config(self):
-        """
-        specify column families to create when creating a new test table
-        """
-        from google.cloud.bigtable_admin_v2 import types
-
-        int_aggregate_type = types.Type.Aggregate(
-            input_type=types.Type(int64_type={"encoding": {"big_endian_bytes": {}}}),
-            sum={},
-        )
-        return {
-            TEST_FAMILY: types.ColumnFamily(),
-            TEST_FAMILY_2: types.ColumnFamily(),
-            TEST_AGGREGATE_FAMILY: types.ColumnFamily(
-                value_type=types.Type(aggregate_type=int_aggregate_type)
-            ),
-        }
-
-    @pytest.fixture(scope="session")
-    def init_table_id(self):
-        """
-        The table_id to use when creating a new test table
-        """
-        return f"test-table-{uuid.uuid4().hex}"
-
-    @pytest.fixture(scope="session")
-    def cluster_config(self, project_id):
-        """
-        Configuration for the clusters to use when creating a new instance
-        """
-        from google.cloud.bigtable_admin_v2 import types
-
-        cluster = {
-            "test-cluster": types.Cluster(
-                location=f"projects/{project_id}/locations/us-central1-b",
-                serve_nodes=1,
-            )
-        }
-        return cluster
-
-    @CrossSync.convert
-    @pytest.mark.usefixtures("target")
-    async def _retrieve_cell_value(self, target, row_key):
-        """
-        Helper to read an individual row
-        """
-        from google.cloud.bigtable.data import ReadRowsQuery
-
-        row_list = await target.read_rows(ReadRowsQuery(row_keys=row_key))
-        assert len(row_list) == 1
-        row = row_list[0]
-        cell = row.cells[0]
-        return cell.value
-
-    @CrossSync.convert
-    async def _create_row_and_mutation(
-        self, table, temp_rows, *, start_value=b"start", new_value=b"new_value"
-    ):
-        """
-        Helper to create a new row, and a sample set_cell mutation to change its value
-        """
-        from google.cloud.bigtable.data.mutations import SetCell
-
-        row_key = uuid.uuid4().hex.encode()
-        family = TEST_FAMILY
-        qualifier = b"test-qualifier"
-        await temp_rows.add_row(
-            row_key, family=family, qualifier=qualifier, value=start_value
-        )
-        # ensure cell is initialized
-        assert await self._retrieve_cell_value(table, row_key) == start_value
-
-        mutation = SetCell(family=TEST_FAMILY, qualifier=qualifier, new_value=new_value)
-        return row_key, mutation
 
     @CrossSync.convert
     @CrossSync.pytest_fixture(scope="function")
@@ -321,13 +310,13 @@ class TestSystemAsync:
         """
         row_key = b"bulk_mutate"
         new_value = uuid.uuid4().hex.encode()
-        row_key, mutation = await self._create_row_and_mutation(
-            target, temp_rows, new_value=new_value
+        row_key, mutation = await temp_rows.create_row_and_mutation(
+            target, new_value=new_value
         )
         await target.mutate_row(row_key, mutation)
 
         # ensure cell is updated
-        assert (await self._retrieve_cell_value(target, row_key)) == new_value
+        assert (await temp_rows.retrieve_cell_value(target, row_key)) == new_value
 
     @CrossSync.pytest
     @pytest.mark.usefixtures("target")
@@ -349,14 +338,14 @@ class TestSystemAsync:
         await target.mutate_row(
             row_key, AddToCell(family, qualifier, 1, timestamp_micros=0)
         )
-        encoded_result = await self._retrieve_cell_value(target, row_key)
+        encoded_result = await temp_rows.retrieve_cell_value(target, row_key)
         int_result = int.from_bytes(encoded_result, byteorder="big")
         assert int_result == 1
         # update again
         await target.mutate_row(
             row_key, AddToCell(family, qualifier, 9, timestamp_micros=0)
         )
-        encoded_result = await self._retrieve_cell_value(target, row_key)
+        encoded_result = await temp_rows.retrieve_cell_value(target, row_key)
         int_result = int.from_bytes(encoded_result, byteorder="big")
         assert int_result == 10
 
@@ -388,6 +377,40 @@ class TestSystemAsync:
         assert results[-1][0] == b""
         assert isinstance(results[-1][1], int)
 
+    @pytest.mark.skipif(
+        bool(os.environ.get(BIGTABLE_EMULATOR)), reason="emulator doesn't use splits"
+    )
+    @pytest.mark.usefixtures("client")
+    @pytest.mark.usefixtures("target")
+    @CrossSync.Retry(
+        predicate=retry.if_exception_type(ClientError), initial=1, maximum=5
+    )
+    @CrossSync.pytest
+    async def test_sample_row_keys_w_row_range(
+        self, client, target, column_split_config
+    ):
+        """
+        Sample keys with row range should return samples within the range,
+        with the last key matching the end of the range.
+        """
+        if len(column_split_config) < 4:
+            pytest.skip("Not enough splits in column_split_config for this test")
+
+        from google.cloud.bigtable.data import RowRange
+
+        start_key = column_split_config[1]
+        end_key = column_split_config[3]
+        row_range = RowRange(start_key=start_key, end_key=end_key)
+
+        results = await target.sample_row_keys(row_range=row_range)
+        assert len(results) == 2
+
+        assert results[0][0] == column_split_config[2]
+        assert results[1][0] == column_split_config[3]
+
+        for _, offset in results:
+            assert isinstance(offset, int)
+
     @pytest.mark.usefixtures("client")
     @pytest.mark.usefixtures("target")
     @CrossSync.pytest
@@ -398,24 +421,26 @@ class TestSystemAsync:
         from google.cloud.bigtable.data.mutations import RowMutationEntry
 
         new_value = uuid.uuid4().hex.encode()
-        row_key, mutation = await self._create_row_and_mutation(
-            target, temp_rows, new_value=new_value
+        row_key, mutation = await temp_rows.create_row_and_mutation(
+            target, new_value=new_value
         )
         bulk_mutation = RowMutationEntry(row_key, [mutation])
 
         await target.bulk_mutate_rows([bulk_mutation])
 
         # ensure cell is updated
-        assert (await self._retrieve_cell_value(target, row_key)) == new_value
+        assert (await temp_rows.retrieve_cell_value(target, row_key)) == new_value
 
     @CrossSync.pytest
     async def test_bulk_mutations_raise_exception(self, client, target):
         """
         If an invalid mutation is passed, an exception should be raised
         """
+        from google.cloud.bigtable.data.exceptions import (
+            FailedMutationEntryError,
+            MutationsExceptionGroup,
+        )
         from google.cloud.bigtable.data.mutations import RowMutationEntry, SetCell
-        from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
-        from google.cloud.bigtable.data.exceptions import FailedMutationEntryError
 
         row_key = uuid.uuid4().hex.encode()
         mutation = SetCell(
@@ -444,11 +469,11 @@ class TestSystemAsync:
         from google.cloud.bigtable.data.mutations import RowMutationEntry
 
         new_value, new_value2 = [uuid.uuid4().hex.encode() for _ in range(2)]
-        row_key, mutation = await self._create_row_and_mutation(
-            target, temp_rows, new_value=new_value
+        row_key, mutation = await temp_rows.create_row_and_mutation(
+            target, new_value=new_value
         )
-        row_key2, mutation2 = await self._create_row_and_mutation(
-            target, temp_rows, new_value=new_value2
+        row_key2, mutation2 = await temp_rows.create_row_and_mutation(
+            target, new_value=new_value2
         )
         bulk_mutation = RowMutationEntry(row_key, [mutation])
         bulk_mutation2 = RowMutationEntry(row_key2, [mutation2])
@@ -457,7 +482,7 @@ class TestSystemAsync:
             await batcher.append(bulk_mutation)
             await batcher.append(bulk_mutation2)
         # ensure cell is updated
-        assert (await self._retrieve_cell_value(target, row_key)) == new_value
+        assert (await temp_rows.retrieve_cell_value(target, row_key)) == new_value
         assert len(batcher._staged_entries) == 0
 
     @pytest.mark.usefixtures("client")
@@ -473,8 +498,8 @@ class TestSystemAsync:
         from google.cloud.bigtable.data.mutations import RowMutationEntry
 
         new_value = uuid.uuid4().hex.encode()
-        row_key, mutation = await self._create_row_and_mutation(
-            target, temp_rows, new_value=new_value
+        row_key, mutation = await temp_rows.create_row_and_mutation(
+            target, new_value=new_value
         )
         bulk_mutation = RowMutationEntry(row_key, [mutation])
         flush_interval = 0.1
@@ -485,7 +510,7 @@ class TestSystemAsync:
             await CrossSync.sleep(flush_interval + 0.1)
             assert len(batcher._staged_entries) == 0
             # ensure cell is updated
-            assert (await self._retrieve_cell_value(target, row_key)) == new_value
+            assert (await temp_rows.retrieve_cell_value(target, row_key)) == new_value
 
     @pytest.mark.usefixtures("client")
     @pytest.mark.usefixtures("target")
@@ -500,12 +525,12 @@ class TestSystemAsync:
         from google.cloud.bigtable.data.mutations import RowMutationEntry
 
         new_value, new_value2 = [uuid.uuid4().hex.encode() for _ in range(2)]
-        row_key, mutation = await self._create_row_and_mutation(
-            target, temp_rows, new_value=new_value
+        row_key, mutation = await temp_rows.create_row_and_mutation(
+            target, new_value=new_value
         )
         bulk_mutation = RowMutationEntry(row_key, [mutation])
-        row_key2, mutation2 = await self._create_row_and_mutation(
-            target, temp_rows, new_value=new_value2
+        row_key2, mutation2 = await temp_rows.create_row_and_mutation(
+            target, new_value=new_value2
         )
         bulk_mutation2 = RowMutationEntry(row_key2, [mutation2])
 
@@ -525,8 +550,8 @@ class TestSystemAsync:
             assert len(batcher._staged_entries) == 0
             assert len(batcher._flush_jobs) == 0
             # ensure cells were updated
-            assert (await self._retrieve_cell_value(target, row_key)) == new_value
-            assert (await self._retrieve_cell_value(target, row_key2)) == new_value2
+            assert (await temp_rows.retrieve_cell_value(target, row_key)) == new_value
+            assert (await temp_rows.retrieve_cell_value(target, row_key2)) == new_value2
 
     @pytest.mark.usefixtures("client")
     @pytest.mark.usefixtures("target")
@@ -541,12 +566,12 @@ class TestSystemAsync:
         from google.cloud.bigtable.data.mutations import RowMutationEntry
 
         new_value, new_value2 = [uuid.uuid4().hex.encode() for _ in range(2)]
-        row_key, mutation = await self._create_row_and_mutation(
-            target, temp_rows, new_value=new_value
+        row_key, mutation = await temp_rows.create_row_and_mutation(
+            target, new_value=new_value
         )
         bulk_mutation = RowMutationEntry(row_key, [mutation])
-        row_key2, mutation2 = await self._create_row_and_mutation(
-            target, temp_rows, new_value=new_value2
+        row_key2, mutation2 = await temp_rows.create_row_and_mutation(
+            target, new_value=new_value2
         )
         bulk_mutation2 = RowMutationEntry(row_key2, [mutation2])
 
@@ -566,8 +591,8 @@ class TestSystemAsync:
                 # for sync version: grab result
                 future.result()
             # ensure cells were updated
-            assert (await self._retrieve_cell_value(target, row_key)) == new_value
-            assert (await self._retrieve_cell_value(target, row_key2)) == new_value2
+            assert (await temp_rows.retrieve_cell_value(target, row_key)) == new_value
+            assert (await temp_rows.retrieve_cell_value(target, row_key2)) == new_value2
 
     @pytest.mark.usefixtures("client")
     @pytest.mark.usefixtures("target")
@@ -580,12 +605,12 @@ class TestSystemAsync:
 
         new_value = uuid.uuid4().hex.encode()
         start_value = b"unchanged"
-        row_key, mutation = await self._create_row_and_mutation(
-            target, temp_rows, start_value=start_value, new_value=new_value
+        row_key, mutation = await temp_rows.create_row_and_mutation(
+            target, start_value=start_value, new_value=new_value
         )
         bulk_mutation = RowMutationEntry(row_key, [mutation])
-        row_key2, mutation2 = await self._create_row_and_mutation(
-            target, temp_rows, start_value=start_value, new_value=new_value
+        row_key2, mutation2 = await temp_rows.create_row_and_mutation(
+            target, start_value=start_value, new_value=new_value
         )
         bulk_mutation2 = RowMutationEntry(row_key2, [mutation2])
 
@@ -602,8 +627,10 @@ class TestSystemAsync:
             assert len(batcher._staged_entries) == 2
             assert len(batcher._flush_jobs) == 0
             # ensure cells were not updated
-            assert (await self._retrieve_cell_value(target, row_key)) == start_value
-            assert (await self._retrieve_cell_value(target, row_key2)) == start_value
+            assert (await temp_rows.retrieve_cell_value(target, row_key)) == start_value
+            assert (
+                await temp_rows.retrieve_cell_value(target, row_key2)
+            ) == start_value
 
     @pytest.mark.usefixtures("client")
     @pytest.mark.usefixtures("target")
@@ -674,7 +701,7 @@ class TestSystemAsync:
         assert result[0].qualifier == qualifier
         assert int(result[0]) == expected
         # ensure that reading from server gives same value
-        assert (await self._retrieve_cell_value(target, row_key)) == result[0].value
+        assert (await temp_rows.retrieve_cell_value(target, row_key)) == result[0].value
 
     @pytest.mark.usefixtures("client")
     @pytest.mark.usefixtures("target")
@@ -714,7 +741,7 @@ class TestSystemAsync:
         assert result[0].qualifier == qualifier
         assert result[0].value == expected
         # ensure that reading from server gives same value
-        assert (await self._retrieve_cell_value(target, row_key)) == result[0].value
+        assert (await temp_rows.retrieve_cell_value(target, row_key)) == result[0].value
 
     @pytest.mark.usefixtures("client")
     @pytest.mark.usefixtures("target")
@@ -723,8 +750,10 @@ class TestSystemAsync:
         """
         test read_modify_write_row with multiple rules
         """
-        from google.cloud.bigtable.data.read_modify_write_rules import AppendValueRule
-        from google.cloud.bigtable.data.read_modify_write_rules import IncrementRule
+        from google.cloud.bigtable.data.read_modify_write_rules import (
+            AppendValueRule,
+            IncrementRule,
+        )
 
         row_key = b"test-row-key"
         family = TEST_FAMILY
@@ -751,7 +780,7 @@ class TestSystemAsync:
             + b"helloworld!"
         )
         # ensure that reading from server gives same value
-        assert (await self._retrieve_cell_value(target, row_key)) == result[0].value
+        assert (await temp_rows.retrieve_cell_value(target, row_key)) == result[0].value
 
     @pytest.mark.usefixtures("client")
     @pytest.mark.usefixtures("target")
@@ -800,7 +829,7 @@ class TestSystemAsync:
         expected_value = (
             true_mutation_value if expected_result else false_mutation_value
         )
-        assert (await self._retrieve_cell_value(target, row_key)) == expected_value
+        assert (await temp_rows.retrieve_cell_value(target, row_key)) == expected_value
 
     @pytest.mark.skipif(
         bool(os.environ.get(BIGTABLE_EMULATOR)),
@@ -893,8 +922,7 @@ class TestSystemAsync:
         """
         Test end-to-end sharding
         """
-        from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
-        from google.cloud.bigtable.data.read_rows_query import RowRange
+        from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery, RowRange
 
         await temp_rows.add_row(b"a")
         await temp_rows.add_row(b"b")
@@ -949,8 +977,7 @@ class TestSystemAsync:
         """
         Ensure that the read_rows method works
         """
-        from google.cloud.bigtable.data import ReadRowsQuery
-        from google.cloud.bigtable.data import RowRange
+        from google.cloud.bigtable.data import ReadRowsQuery, RowRange
 
         await temp_rows.add_row(b"a")
         await temp_rows.add_row(b"b")
@@ -1143,16 +1170,51 @@ class TestSystemAsync:
         Literal value filter does complex escaping on re2 strings.
         Make sure inputs are properly interpreted by the server
         """
-        from google.cloud.bigtable.data.row_filters import LiteralValueFilter
         from google.cloud.bigtable.data import ReadRowsQuery
+        from google.cloud.bigtable.data.row_filters import LiteralValueFilter
 
         f = LiteralValueFilter(filter_input)
         await temp_rows.add_row(b"row_key_1", value=cell_value)
         query = ReadRowsQuery(row_filter=f)
         row_list = await target.read_rows(query)
-        assert len(row_list) == bool(
-            expect_match
-        ), f"row {type(cell_value)}({cell_value}) not found with {type(filter_input)}({filter_input}) filter"
+        assert len(row_list) == bool(expect_match), (
+            f"row {type(cell_value)}({cell_value}) not found with {type(filter_input)}({filter_input}) filter"
+        )
+
+    @pytest.mark.usefixtures("target")
+    @CrossSync.Retry(
+        predicate=retry.if_exception_type(ClientError), initial=1, maximum=5
+    )
+    @pytest.mark.parametrize(
+        "cell_value,mask,expect_match",
+        [
+            (b"\x01\x02\x03", b"\x01\x02\x03", True),
+            (b"\x01\x02\x03", b"\x01\x00\x00", True),
+            (b"\x00\x02\x03", b"\x01\x00\x00", False),
+        ],
+    )
+    @pytest.mark.skipif(
+        bool(os.environ.get(BIGTABLE_EMULATOR)),
+        reason="value_bitmask_filter not supported by emulator",
+    )
+    @CrossSync.pytest
+    async def test_value_bitmask_filter(
+        self, target, temp_rows, cell_value, mask, expect_match
+    ):
+        """
+        ValueBitmaskFilter matches cells where (value & mask) == mask.
+        Make sure inputs are properly interpreted by the server.
+        """
+        from google.cloud.bigtable.data import ReadRowsQuery
+        from google.cloud.bigtable.data.row_filters import ValueBitmaskFilter
+
+        f = ValueBitmaskFilter(mask)
+        await temp_rows.add_row(b"row_key_1", value=cell_value)
+        query = ReadRowsQuery(row_keys=[b"row_key_1"], row_filter=f)
+        row_list = await target.read_rows(query)
+        assert len(row_list) == bool(expect_match), (
+            f"row {cell_value!r} not matched as {expect_match} with {mask!r} bitmask filter"
+        )
 
     @pytest.mark.skipif(
         bool(os.environ.get(BIGTABLE_EMULATOR)),
@@ -1355,3 +1417,52 @@ class TestSystemAsync:
         assert md[TEST_AGGREGATE_FAMILY].column_type == SqlType.Map(
             SqlType.Bytes(), SqlType.Int64()
         )
+
+    @pytest.fixture(scope="session")
+    def metrics_client(self, client):
+        if client._emulator_host is not None:
+            pytest.skip("Metrics export disabled when running against emulator")
+        yield client._metrics.handlers[0]._exporter.client
+
+    @pytest.mark.order("last")
+    @pytest.mark.parametrize(
+        "metric,methods",
+        [
+            ("attempt_latencies", [m.value for m in OperationType]),
+            ("operation_latencies", [m.value for m in OperationType]),
+            ("retry_count", [m.value for m in OperationType]),
+            ("first_response_latencies", [OperationType.READ_ROWS]),
+            ("server_latencies", [m.value for m in OperationType]),
+            ("connectivity_error_count", [m.value for m in OperationType]),
+            ("application_blocking_latencies", [OperationType.READ_ROWS]),
+        ],
+    )
+    @retry.Retry(predicate=retry.if_exception_type(AssertionError, ServerError))
+    def test_metric_existence(
+        self, client, table_id, metrics_client, start_timestamp, metric, methods
+    ):
+        """
+        Checks to make sure metrics were exported by tests
+
+        Runs at the end of test suite, to let other tests write metrics
+        """
+        end_timestamp = datetime.datetime.now(datetime.timezone.utc)
+        for m in methods:
+            metric_filter = (
+                f'metric.type = "bigtable.googleapis.com/client/{metric}" '
+                + f'AND metric.labels.client_name = "python-bigtable/{client._client_version()}" '
+                + f'AND resource.labels.table = "{table_id}" '
+            )
+            results = list(
+                metrics_client.list_time_series(
+                    name=f"projects/{client.project}",
+                    filter=metric_filter,
+                    interval={"start_time": start_timestamp, "end_time": end_timestamp},
+                    view=0,
+                )
+            )
+            assert len(results) > 0, f"No data found for {metric} {m}"
+            for series in results:
+                assert series.resource.labels.get("table") == table_id
+                if "table_id" in series.metric.labels:
+                    assert series.metric.labels["table_id"] == table_id

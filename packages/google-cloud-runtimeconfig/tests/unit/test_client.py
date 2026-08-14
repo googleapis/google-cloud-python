@@ -35,6 +35,7 @@ class TestClient(unittest.TestCase):
 
     def test_ctor_wo_client_info(self):
         from google.cloud._http import ClientInfo
+
         from google.cloud.runtimeconfig._http import Connection
 
         project = "PROJECT"
@@ -49,6 +50,7 @@ class TestClient(unittest.TestCase):
 
     def test_ctor_w_client_info(self):
         from google.cloud._http import ClientInfo
+
         from google.cloud.runtimeconfig._http import Connection
 
         project = "PROJECT"

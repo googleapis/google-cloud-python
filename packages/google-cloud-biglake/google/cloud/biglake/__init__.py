@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,8 +30,11 @@ from google.cloud.biglake_v1.types.iceberg_rest_catalog import (
     FailoverIcebergCatalogResponse,
     GetIcebergCatalogRequest,
     IcebergCatalog,
+    IcebergNamespaceUpdate,
     ListIcebergCatalogsRequest,
     ListIcebergCatalogsResponse,
+    StorageCredential,
+    TableIdentifier,
     UpdateIcebergCatalogRequest,
 )
 
@@ -43,7 +46,10 @@ __all__ = (
     "FailoverIcebergCatalogResponse",
     "GetIcebergCatalogRequest",
     "IcebergCatalog",
+    "IcebergNamespaceUpdate",
     "ListIcebergCatalogsRequest",
     "ListIcebergCatalogsResponse",
+    "StorageCredential",
+    "TableIdentifier",
     "UpdateIcebergCatalogRequest",
 )

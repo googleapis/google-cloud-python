@@ -2467,3 +2467,7 @@ def least(*args: Any) -> ir.Value:
     └────────────┘
     """
     return ops.Least(args).to_expr()
+
+
+def omitted() -> ir.Value:
+    return ops.Omitted().to_expr()

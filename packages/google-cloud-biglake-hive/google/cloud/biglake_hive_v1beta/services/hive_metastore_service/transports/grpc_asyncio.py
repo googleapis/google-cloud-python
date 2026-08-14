@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -96,7 +96,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -249,6 +249,10 @@ class HiveMetastoreServiceGrpcAsyncIOTransport(HiveMetastoreServiceTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -887,6 +891,35 @@ class HiveMetastoreServiceGrpcAsyncIOTransport(HiveMetastoreServiceTransport):
             )
         return self._stubs["list_partitions"]
 
+    @property
+    def failover_hive_catalog(
+        self,
+    ) -> Callable[
+        [hive_metastore.FailoverHiveCatalogRequest],
+        Awaitable[hive_metastore.FailoverHiveCatalogResponse],
+    ]:
+        r"""Return a callable for the failover hive catalog method over gRPC.
+
+        Failover the catalog to a new primary replica region.
+
+        Returns:
+            Callable[[~.FailoverHiveCatalogRequest],
+                    Awaitable[~.FailoverHiveCatalogResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "failover_hive_catalog" not in self._stubs:
+            self._stubs["failover_hive_catalog"] = self._logged_channel.unary_unary(
+                "/google.cloud.biglake.hive.v1beta.HiveMetastoreService/FailoverHiveCatalog",
+                request_serializer=hive_metastore.FailoverHiveCatalogRequest.serialize,
+                response_deserializer=hive_metastore.FailoverHiveCatalogResponse.deserialize,
+            )
+        return self._stubs["failover_hive_catalog"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -982,6 +1015,11 @@ class HiveMetastoreServiceGrpcAsyncIOTransport(HiveMetastoreServiceTransport):
             ),
             self.list_partitions: self._wrap_method(
                 self.list_partitions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.failover_hive_catalog: self._wrap_method(
+                self.failover_hive_catalog,
                 default_timeout=None,
                 client_info=client_info,
             ),

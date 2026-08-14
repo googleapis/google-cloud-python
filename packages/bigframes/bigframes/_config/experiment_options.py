@@ -25,50 +25,8 @@ class ExperimentOptions:
     """
 
     def __init__(self):
-        self._semantic_operators: bool = False
-        self._ai_operators: bool = False
         self._sql_compiler: Literal["legacy", "stable", "experimental"] = "stable"
-
-    @property
-    def semantic_operators(self) -> bool:
-        """Deprecated.
-
-        **Examples:**
-
-            >>> import bigframes.pandas as bpd
-            >>> bpd.options.experiments.semantic_operators = True  # doctest: +SKIP
-        """
-        return self._semantic_operators
-
-    @semantic_operators.setter
-    def semantic_operators(self, value: bool):
-        if value is True:
-            msg = bfe.format_message(
-                "Semantic operators are deprecated, and will be removed in the future"
-            )
-            warnings.warn(msg, category=FutureWarning)
-        self._semantic_operators = value
-
-    @property
-    def ai_operators(self) -> bool:
-        """If True, allow using the AI operators.
-
-        **Examples:**
-
-            >>> import bigframes.pandas as bpd
-            >>> bpd.options.experiments.ai_operators = True  # doctest: +SKIP
-        """
-        return self._ai_operators
-
-    @ai_operators.setter
-    def ai_operators(self, value: bool):
-        if value is True:
-            msg = bfe.format_message(
-                "AI operators are still under experiments, and are subject "
-                "to change in the future."
-            )
-            warnings.warn(msg, category=bfe.PreviewWarning)
-        self._ai_operators = value
+        self._enable_python_transpiler: bool = False
 
     @property
     def sql_compiler(self) -> Literal["legacy", "stable", "experimental"]:
@@ -166,3 +124,17 @@ class ExperimentOptions:
         warnings.warn(msg, category=bfe.ApiDeprecationWarning)
 
         bigframes.options.display.blob_display_height = value
+
+    @property
+    def enable_python_transpiler(self) -> bool:
+        return self._enable_python_transpiler
+
+    @enable_python_transpiler.setter
+    def enable_python_transpiler(self, value: bool):
+        if value:
+            msg = bfe.format_message(
+                "Python transpiler is an unstable, experimental feature, and not yet fully "
+                "validated, use at your own risk."
+            )
+            warnings.warn(msg, category=bfe.PythonTranspilerPreviewWarning)
+        self._enable_python_transpiler = value

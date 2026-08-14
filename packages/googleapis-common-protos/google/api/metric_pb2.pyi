@@ -12,19 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
-from google.api import label_pb2 as _label_pb2
-from google.api import launch_stage_pb2 as _launch_stage_pb2
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf import message as _message
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
+
+from google.api import label_pb2 as _label_pb2
+from google.api import launch_stage_pb2 as _launch_stage_pb2
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
@@ -119,8 +121,12 @@ class MetricDescriptor(_message.Message):
         def __init__(
             self,
             launch_stage: _Optional[_Union[_launch_stage_pb2.LaunchStage, str]] = ...,
-            sample_period: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...,
-            ingest_delay: _Optional[_Union[_duration_pb2.Duration, _Mapping]] = ...,
+            sample_period: _Optional[
+                _Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]
+            ] = ...,
+            ingest_delay: _Optional[
+                _Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]
+            ] = ...,
             time_series_resource_hierarchy_level: _Optional[
                 _Iterable[
                     _Union[

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -64,6 +64,18 @@ class Product(proto.Message):
             consists of:
             ``channel~content_language~feed_label~offer_id``, for
             example: ``accounts/123/products/online~en~US~sku123``.
+        base64_encoded_name (str):
+            Output only. The **unpadded base64url encoded name** of the
+            product. Format: ``accounts/{account}/products/{product}``
+            where the last section ``product`` is the unpadded base64url
+            encoding of the ``content_language~feed_label~offer_id``
+            name. Example: ``accounts/123/products/ZW5-VVN-c2t1LzEyMw``
+            for the decoded product name
+            ``accounts/123/products/en~US~sku/123``. This field can be
+            used directly as input to the API methods that require the
+            product name to be encoded if it contains special
+            characters, for example
+            ```GetProduct`` <https://developers.google.com/merchant/api/reference/rest/products_v1/accounts.products/get>`__.
         legacy_local (bool):
             Output only. Determines whether the product is **only**
             targeting local destinations and whether the product name
@@ -125,11 +137,22 @@ class Product(proto.Message):
         automated_discounts (google.shopping.merchant_products_v1.types.AutomatedDiscounts):
             Output only. The automated discounts
             information for the product.
+        archived (bool):
+            Output only. Determines whether the product is
+            `archived <https://support.google.com/merchants/answer/11909930>`__.
+
+            To archive or restore your product, visit Merchant Center
+            products page. Learn also more about `offer
+            visibility <https://support.google.com/merchants/answer/12488713>`__.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    base64_encoded_name: str = proto.Field(
+        proto.STRING,
+        number=15,
     )
     legacy_local: bool = proto.Field(
         proto.BOOL,
@@ -176,6 +199,10 @@ class Product(proto.Message):
         number=12,
         message=products_common.AutomatedDiscounts,
     )
+    archived: bool = proto.Field(
+        proto.BOOL,
+        number=14,
+    )
 
 
 class GetProductRequest(proto.Message):
@@ -207,11 +234,11 @@ class GetProductRequest(proto.Message):
                as ``/``, ``%``, or ``~``.
 
                - Example: To represent the product ID ``en~US~sku/123``,
-                 the ``{product}`` segment must be the base64url
-                 encoding of this string, which is
-                 ``ZW5-VVMtc2t1LzEyMw``. The full resource name for the
+                 the ``{product}`` segment must be the unpadded
+                 base64url encoding of this string, which is
+                 ``ZW5-VVN-c2t1LzEyMw``. The full resource name for the
                  product would be
-                 ``accounts/123/products/ZW5-VVMtc2t1LzEyMw``.
+                 ``accounts/123/products/ZW5-VVN-c2t1LzEyMw``.
 
             2. **Plain Format**: The ``{product}`` segment is the
                tilde-separated string

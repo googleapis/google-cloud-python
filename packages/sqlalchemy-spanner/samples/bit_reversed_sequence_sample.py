@@ -15,11 +15,10 @@
 import datetime
 import uuid
 
+from model import Concert, Singer, TicketSale, Venue
+from sample_helper import run_sample
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
-
-from sample_helper import run_sample
-from model import Singer, Concert, Venue, TicketSale
 
 
 # Shows how to use a bit-reversed sequence for primary key generation.

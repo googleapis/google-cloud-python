@@ -172,14 +172,14 @@ def method_logger(method=None, /, *, custom_base_name: Optional[str] = None):
                 base_name = custom_base_name
 
             full_method_name = f"{base_name.lower()}-{api_method_name}"
-            # Track directly called methods
-            if len(_call_stack) == 0:
-                session = _find_session(*args, **kwargs)
-                add_api_method(full_method_name, session=session)
-
             _call_stack.append(full_method_name)
 
             try:
+                # Track directly called methods
+                if len(_call_stack) == 1:
+                    session = _find_session(*args, **kwargs)
+                    add_api_method(full_method_name, session=session)
+
                 return method(*args, **kwargs)
             except (NotImplementedError, TypeError) as e:
                 # Log method parameters that are implemented in pandas but either missing (TypeError)
@@ -220,12 +220,12 @@ def property_logger(prop):
             property_name = prop.__name__
             full_property_name = f"{class_name.lower()}-{property_name.lower()}"
 
-            if len(_call_stack) == 0:
-                session = _find_session(*args, **kwargs)
-                add_api_method(full_property_name, session=session)
-
             _call_stack.append(full_property_name)
             try:
+                if len(_call_stack) == 1:
+                    session = _find_session(*args, **kwargs)
+                    add_api_method(full_property_name, session=session)
+
                 return prop(*args, **kwargs)
             finally:
                 _call_stack.pop()
@@ -309,7 +309,9 @@ def _is_session_initialized(session):
     Because the method logger could get called before Session.__init__ has a
     chance to run, we use the globals in that case.
     """
-    return hasattr(session, "_api_methods_lock") and hasattr(session, "_api_methods")
+    return hasattr(session, "_api_methods_lock") and isinstance(
+        getattr(session, "_api_methods", None), list
+    )
 
 
 def _find_session(*args, **kwargs):
@@ -317,13 +319,13 @@ def _find_session(*args, **kwargs):
     # imports log_adapter.
     from bigframes.session import Session
 
-    session = args[0] if args else None
-    if (
-        session is not None
-        and isinstance(session, Session)
-        and _is_session_initialized(session)
-    ):
-        return session
+    for arg in args:
+        if isinstance(arg, Session) and _is_session_initialized(arg):
+            return arg
+        if hasattr(arg, "__dict__") and "_block" in arg.__dict__:
+            session = getattr(arg, "_session", None)
+            if isinstance(session, Session) and _is_session_initialized(session):
+                return session
 
     session = kwargs.get("session")
     if (

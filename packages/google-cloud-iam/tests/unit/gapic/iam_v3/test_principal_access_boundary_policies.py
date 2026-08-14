@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -125,6 +120,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1076,7 +1086,14 @@ def test_principal_access_boundary_policies_client_get_mtls_endpoint_and_cert_so
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1123,7 +1140,14 @@ def test_principal_access_boundary_policies_client_get_mtls_endpoint_and_cert_so
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1464,8 +1488,8 @@ def test_principal_access_boundary_policies_client_create_channel_credentials_fi
 @pytest.mark.parametrize(
     "request_type",
     [
-        principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest,
-        dict,
+        principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest(),
+        {},
     ],
 )
 def test_create_principal_access_boundary_policy(request_type, transport: str = "grpc"):
@@ -1476,7 +1500,7 @@ def test_create_principal_access_boundary_policy(request_type, transport: str = 
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1522,13 +1546,11 @@ def test_create_principal_access_boundary_policy_non_empty_request_with_auto_pop
         client.create_principal_access_boundary_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest(
-                parent="parent_value",
-                principal_access_boundary_policy_id="principal_access_boundary_policy_id_value",
-            )
+        request_msg = principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest(
+            parent="parent_value",
+            principal_access_boundary_policy_id="principal_access_boundary_policy_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_principal_access_boundary_policy_use_cached_wrapped_rpc():
@@ -1624,9 +1646,15 @@ async def test_create_principal_access_boundary_policy_async_use_cached_wrapped_
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest(),
+        {},
+    ],
+)
 async def test_create_principal_access_boundary_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = PrincipalAccessBoundaryPoliciesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1635,7 +1663,7 @@ async def test_create_principal_access_boundary_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1655,11 +1683,6 @@ async def test_create_principal_access_boundary_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_principal_access_boundary_policy_async_from_dict():
-    await test_create_principal_access_boundary_policy_async(request_type=dict)
 
 
 def test_create_principal_access_boundary_policy_field_headers():
@@ -1852,8 +1875,8 @@ async def test_create_principal_access_boundary_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest,
-        dict,
+        principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest(),
+        {},
     ],
 )
 def test_get_principal_access_boundary_policy(request_type, transport: str = "grpc"):
@@ -1864,7 +1887,7 @@ def test_get_principal_access_boundary_policy(request_type, transport: str = "gr
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1923,12 +1946,10 @@ def test_get_principal_access_boundary_policy_non_empty_request_with_auto_popula
         client.get_principal_access_boundary_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest(
-                name="name_value",
-            )
+        request_msg = principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest(
+            name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_principal_access_boundary_policy_use_cached_wrapped_rpc():
@@ -2014,9 +2035,15 @@ async def test_get_principal_access_boundary_policy_async_use_cached_wrapped_rpc
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest(),
+        {},
+    ],
+)
 async def test_get_principal_access_boundary_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = PrincipalAccessBoundaryPoliciesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2025,7 +2052,7 @@ async def test_get_principal_access_boundary_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2057,11 +2084,6 @@ async def test_get_principal_access_boundary_policy_async(
     assert response.uid == "uid_value"
     assert response.etag == "etag_value"
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_principal_access_boundary_policy_async_from_dict():
-    await test_get_principal_access_boundary_policy_async(request_type=dict)
 
 
 def test_get_principal_access_boundary_policy_field_headers():
@@ -2224,8 +2246,8 @@ async def test_get_principal_access_boundary_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest,
-        dict,
+        principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest(),
+        {},
     ],
 )
 def test_update_principal_access_boundary_policy(request_type, transport: str = "grpc"):
@@ -2236,7 +2258,7 @@ def test_update_principal_access_boundary_policy(request_type, transport: str = 
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2279,10 +2301,8 @@ def test_update_principal_access_boundary_policy_non_empty_request_with_auto_pop
         client.update_principal_access_boundary_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest()
-        )
+        request_msg = principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest()
+        assert args[0] == request_msg
 
 
 def test_update_principal_access_boundary_policy_use_cached_wrapped_rpc():
@@ -2378,9 +2398,15 @@ async def test_update_principal_access_boundary_policy_async_use_cached_wrapped_
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest(),
+        {},
+    ],
+)
 async def test_update_principal_access_boundary_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = PrincipalAccessBoundaryPoliciesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2389,7 +2415,7 @@ async def test_update_principal_access_boundary_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2409,11 +2435,6 @@ async def test_update_principal_access_boundary_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_principal_access_boundary_policy_async_from_dict():
-    await test_update_principal_access_boundary_policy_async(request_type=dict)
 
 
 def test_update_principal_access_boundary_policy_field_headers():
@@ -2596,8 +2617,8 @@ async def test_update_principal_access_boundary_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest,
-        dict,
+        principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest(),
+        {},
     ],
 )
 def test_delete_principal_access_boundary_policy(request_type, transport: str = "grpc"):
@@ -2608,7 +2629,7 @@ def test_delete_principal_access_boundary_policy(request_type, transport: str = 
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2654,13 +2675,11 @@ def test_delete_principal_access_boundary_policy_non_empty_request_with_auto_pop
         client.delete_principal_access_boundary_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest(
-                name="name_value",
-                etag="etag_value",
-            )
+        request_msg = principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest(
+            name="name_value",
+            etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_principal_access_boundary_policy_use_cached_wrapped_rpc():
@@ -2756,9 +2775,15 @@ async def test_delete_principal_access_boundary_policy_async_use_cached_wrapped_
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest(),
+        {},
+    ],
+)
 async def test_delete_principal_access_boundary_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = PrincipalAccessBoundaryPoliciesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2767,7 +2792,7 @@ async def test_delete_principal_access_boundary_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2787,11 +2812,6 @@ async def test_delete_principal_access_boundary_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_principal_access_boundary_policy_async_from_dict():
-    await test_delete_principal_access_boundary_policy_async(request_type=dict)
 
 
 def test_delete_principal_access_boundary_policy_field_headers():
@@ -2948,8 +2968,8 @@ async def test_delete_principal_access_boundary_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest,
-        dict,
+        principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest(),
+        {},
     ],
 )
 def test_list_principal_access_boundary_policies(request_type, transport: str = "grpc"):
@@ -2960,7 +2980,7 @@ def test_list_principal_access_boundary_policies(request_type, transport: str = 
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3009,13 +3029,11 @@ def test_list_principal_access_boundary_policies_non_empty_request_with_auto_pop
         client.list_principal_access_boundary_policies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest(
-                parent="parent_value",
-                page_token="page_token_value",
-            )
+        request_msg = principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_principal_access_boundary_policies_use_cached_wrapped_rpc():
@@ -3101,9 +3119,15 @@ async def test_list_principal_access_boundary_policies_async_use_cached_wrapped_
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest(),
+        {},
+    ],
+)
 async def test_list_principal_access_boundary_policies_async(
-    transport: str = "grpc_asyncio",
-    request_type=principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = PrincipalAccessBoundaryPoliciesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3112,7 +3136,7 @@ async def test_list_principal_access_boundary_policies_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3135,11 +3159,6 @@ async def test_list_principal_access_boundary_policies_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPrincipalAccessBoundaryPoliciesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_principal_access_boundary_policies_async_from_dict():
-    await test_list_principal_access_boundary_policies_async(request_type=dict)
 
 
 def test_list_principal_access_boundary_policies_field_headers():
@@ -3346,6 +3365,9 @@ def test_list_principal_access_boundary_policies_pager(transport_name: str = "gr
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -3444,6 +3466,8 @@ async def test_list_principal_access_boundary_policies_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3499,9 +3523,7 @@ async def test_list_principal_access_boundary_policies_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_principal_access_boundary_policies(request={})
         ).pages:
             pages.append(page_)
@@ -3512,8 +3534,8 @@ async def test_list_principal_access_boundary_policies_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest,
-        dict,
+        principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest(),
+        {},
     ],
 )
 def test_search_principal_access_boundary_policy_bindings(
@@ -3526,7 +3548,7 @@ def test_search_principal_access_boundary_policy_bindings(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3577,13 +3599,11 @@ def test_search_principal_access_boundary_policy_bindings_non_empty_request_with
         client.search_principal_access_boundary_policy_bindings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest(
-                name="name_value",
-                page_token="page_token_value",
-            )
+        request_msg = principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest(
+            name="name_value",
+            page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_principal_access_boundary_policy_bindings_use_cached_wrapped_rpc():
@@ -3669,9 +3689,15 @@ async def test_search_principal_access_boundary_policy_bindings_async_use_cached
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest(),
+        {},
+    ],
+)
 async def test_search_principal_access_boundary_policy_bindings_async(
-    transport: str = "grpc_asyncio",
-    request_type=principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = PrincipalAccessBoundaryPoliciesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3680,7 +3706,7 @@ async def test_search_principal_access_boundary_policy_bindings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3708,11 +3734,6 @@ async def test_search_principal_access_boundary_policy_bindings_async(
         response, pagers.SearchPrincipalAccessBoundaryPolicyBindingsAsyncPager
     )
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_search_principal_access_boundary_policy_bindings_async_from_dict():
-    await test_search_principal_access_boundary_policy_bindings_async(request_type=dict)
 
 
 def test_search_principal_access_boundary_policy_bindings_field_headers():
@@ -3926,6 +3947,9 @@ def test_search_principal_access_boundary_policy_bindings_pager(
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -4025,6 +4049,8 @@ async def test_search_principal_access_boundary_policy_bindings_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4076,9 +4102,7 @@ async def test_search_principal_access_boundary_policy_bindings_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.search_principal_access_boundary_policy_bindings(request={})
         ).pages:
             pages.append(page_)
@@ -4233,7 +4257,7 @@ def test_create_principal_access_boundary_policy_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_principal_access_boundary_policy_rest_unset_required_fields():
@@ -4444,7 +4468,7 @@ def test_get_principal_access_boundary_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_principal_access_boundary_policy_rest_unset_required_fields():
@@ -4647,7 +4671,7 @@ def test_update_principal_access_boundary_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_principal_access_boundary_policy_rest_unset_required_fields():
@@ -4863,7 +4887,7 @@ def test_delete_principal_access_boundary_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_principal_access_boundary_policy_rest_unset_required_fields():
@@ -5072,7 +5096,7 @@ def test_list_principal_access_boundary_policies_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_principal_access_boundary_policies_rest_unset_required_fields():
@@ -5212,6 +5236,9 @@ def test_list_principal_access_boundary_policies_rest_pager(transport: str = "re
         sample_request = {"parent": "organizations/sample1/locations/sample2"}
 
         pager = client.list_principal_access_boundary_policies(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -5356,7 +5383,7 @@ def test_search_principal_access_boundary_policy_bindings_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_search_principal_access_boundary_policy_bindings_rest_unset_required_fields():
@@ -5505,6 +5532,9 @@ def test_search_principal_access_boundary_policy_bindings_rest_pager(
             request=sample_request
         )
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -5645,7 +5675,6 @@ def test_create_principal_access_boundary_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5670,7 +5699,6 @@ def test_get_principal_access_boundary_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5693,7 +5721,6 @@ def test_update_principal_access_boundary_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5716,7 +5743,6 @@ def test_delete_principal_access_boundary_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5739,7 +5765,6 @@ def test_list_principal_access_boundary_policies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5763,7 +5788,6 @@ def test_search_principal_access_boundary_policy_bindings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5804,7 +5828,6 @@ async def test_create_principal_access_boundary_policy_empty_call_grpc_asyncio()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5836,7 +5859,6 @@ async def test_get_principal_access_boundary_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5863,7 +5885,6 @@ async def test_update_principal_access_boundary_policy_empty_call_grpc_asyncio()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5890,7 +5911,6 @@ async def test_delete_principal_access_boundary_policy_empty_call_grpc_asyncio()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -5919,7 +5939,6 @@ async def test_list_principal_access_boundary_policies_empty_call_grpc_asyncio()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5949,7 +5968,6 @@ async def test_search_principal_access_boundary_policy_bindings_empty_call_grpc_
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7079,7 +7097,6 @@ def test_create_principal_access_boundary_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -7101,7 +7118,6 @@ def test_get_principal_access_boundary_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -7123,7 +7139,6 @@ def test_update_principal_access_boundary_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -7145,7 +7160,6 @@ def test_delete_principal_access_boundary_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -7167,7 +7181,6 @@ def test_list_principal_access_boundary_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7190,7 +7203,6 @@ def test_search_principal_access_boundary_policy_bindings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest()
-
         assert args[0] == request_msg
 
 

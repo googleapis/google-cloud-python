@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -68,7 +68,34 @@ class DataProfileSpec(proto.Message):
             Optional. If set, the latest DataScan job
             result will be published as Dataplex Universal
             Catalog metadata.
+        mode (google.cloud.dataplex_v1.types.DataProfileSpec.Mode):
+            Optional. The execution mode for the profile
+            scan.
     """
+
+    class Mode(proto.Enum):
+        r"""Defines the execution mode for the profile scan.
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            STANDARD (1):
+                Performs standard profiling. The behavior is controlled by
+                other fields such as ``sampling_percent``, ``row_filter``,
+                and column filters. This mode allows for full scans or
+                custom sampling.
+            LIGHTWEIGHT (2):
+                Specifies lightweight profiling mode. This mode is optimized
+                for low-latency, low-fidelity profiling.
+
+                When this mode is selected, the following fields must not be
+                set: ``sampling_percent``, ``row_filter``,
+                ``include_fields``, and ``exclude_fields``.
+        """
+
+        MODE_UNSPECIFIED = 0
+        STANDARD = 1
+        LIGHTWEIGHT = 2
 
     class PostScanActions(proto.Message):
         r"""The configuration of post scan actions of DataProfileScan
@@ -148,6 +175,11 @@ class DataProfileSpec(proto.Message):
     catalog_publishing_enabled: bool = proto.Field(
         proto.BOOL,
         number=8,
+    )
+    mode: Mode = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=Mode,
     )
 
 

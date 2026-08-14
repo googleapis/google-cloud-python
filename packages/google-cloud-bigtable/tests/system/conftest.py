@@ -14,18 +14,15 @@
 """
 Import pytest fixtures for setting up table for data client system tests
 """
-import sys
+
+import asyncio
 import os
+import sys
 
 import pytest
-import asyncio
 
 script_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(script_path)
-
-pytest_plugins = [
-    "data.setup_fixtures",
-]
 
 
 @pytest.fixture(scope="session")

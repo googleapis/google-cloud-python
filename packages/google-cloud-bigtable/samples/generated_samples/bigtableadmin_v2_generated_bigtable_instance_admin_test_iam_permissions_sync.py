@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-bigtable-admin
+#   python3 -m pip install google-cloud-bigtable
 
 
 # [START bigtableadmin_v2_generated_BigtableInstanceAdmin_TestIamPermissions_sync]
@@ -31,8 +31,9 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+
 from google.cloud import bigtable_admin_v2
-from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 def sample_test_iam_permissions():
@@ -42,7 +43,7 @@ def sample_test_iam_permissions():
     # Initialize request argument(s)
     request = iam_policy_pb2.TestIamPermissionsRequest(
         resource="resource_value",
-        permissions=['permissions_value1', 'permissions_value2'],
+        permissions=["permissions_value1", "permissions_value2"],
     )
 
     # Make the request
@@ -50,5 +51,6 @@ def sample_test_iam_permissions():
 
     # Handle the response
     print(response)
+
 
 # [END bigtableadmin_v2_generated_BigtableInstanceAdmin_TestIamPermissions_sync]

@@ -22,25 +22,26 @@ import os
 import pathlib
 import re
 import shutil
-from typing import Dict, List
 import warnings
+from typing import Dict, List
 
 import nox
 
 FLAKE8_VERSION = "flake8==6.1.0"
 BLACK_VERSION = "black[jupyter]==23.7.0"
+RUFF_VERSION = "ruff==0.14.14"
 ISORT_VERSION = "isort==5.11.0"
 LINT_PATHS = ["docs", "bigquery_magics", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
@@ -57,13 +58,8 @@ UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = []
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
-    "3.9": [
-        "bqstorage",
-    ],
     "3.10": [
         "bqstorage",
-        "bigframes",
-        "geopandas",
     ],
     "3.11": [],
     "3.12": [
@@ -94,9 +90,6 @@ SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_EXTRAS: List[str] = []
 SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
-    "3.9": [
-        "bqstorage",
-    ],
     "3.10": [
         "bqstorage",
         "bigframes",
@@ -120,6 +113,17 @@ SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
 }
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 
 nox.options.sessions = [
     "unit",
@@ -169,19 +173,29 @@ def blacken(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def format(session):
     """
-    Run isort to sort imports. Then run black
-    to format code to uniform standard.
+    Run ruff to sort imports and format code.
     """
-    session.install(BLACK_VERSION, ISORT_VERSION)
-    # Use the --fss option to sort imports using strict alphabetical order.
-    # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
     session.run(
-        "isort",
-        "--fss",
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
         *LINT_PATHS,
     )
+
+    # 3. Run Ruff to format code
     session.run(
-        "black",
+        "ruff",
+        "format",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
         *LINT_PATHS,
     )
 
@@ -224,6 +238,10 @@ def install_unittest_dependencies(session, *constraints):
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
     # Install all test dependencies, then install this package in-place.
+    if session.python == "3.15":
+        session.skip(
+            "Skipping 3.15 until wheels are available for pyproj needed for dependency geopandas"
+        )
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
@@ -277,6 +295,7 @@ def install_systemtest_dependencies(session, with_extras, *constraints):
 @nox.parametrize("with_extras", [True, False])
 def system(session, with_extras):
     """Run the system test suite."""
+
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
@@ -541,3 +560,18 @@ def mypy(session):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
     # Add mypy tests
     session.skip("mypy tests are not yet supported")
+
+    session.install("-e", ".")
+    session.install(
+        "mypy",
+        "types-setuptools",
+        "types-protobuf",
+        "types-requests",
+    )
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "bigquery_magics",
+        *session.posargs,
+    )

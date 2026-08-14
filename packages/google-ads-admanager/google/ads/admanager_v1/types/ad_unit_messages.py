@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ class AdUnit(proto.Message):
             Identifier. The resource name of the AdUnit. Format:
             ``networks/{network_code}/adUnits/{ad_unit_id}``
         ad_unit_id (int):
-            Output only. AdUnit ID.
+            Output only. Deprecated: AdUnit ID.
         parent_ad_unit (str):
             Required. Immutable. The AdUnit's parent. Every ad unit has
             a parent except for the root ad unit, which is created by
@@ -184,6 +184,12 @@ class AdUnit(proto.Message):
             defaulted to true.
 
             This field is a member of `oneof`_ ``_effective_adsense_enabled``.
+        refresh_rate_type (google.ads.admanager_v1.types.RefreshRateTypeEnum.RefreshRateType):
+            Optional. Non-empty default. Defines the type of refresh
+            rate control for this ad unit. This field defaults to
+            ``DISABLED``.
+
+            This field is a member of `oneof`_ ``_refresh_rate_type``.
     """
 
     name: str = proto.Field(
@@ -318,6 +324,12 @@ class AdUnit(proto.Message):
         proto.BOOL,
         number=27,
         optional=True,
+    )
+    refresh_rate_type: ad_unit_enums.RefreshRateTypeEnum.RefreshRateType = proto.Field(
+        proto.ENUM,
+        number=78,
+        optional=True,
+        enum=ad_unit_enums.RefreshRateTypeEnum.RefreshRateType,
     )
 
 

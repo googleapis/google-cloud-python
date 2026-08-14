@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -442,6 +442,36 @@ class ReferenceListServiceGrpcTransport(ReferenceListServiceTransport):
                 response_deserializer=gcc_reference_list.ReferenceList.deserialize,
             )
         return self._stubs["update_reference_list"]
+
+    @property
+    def verify_reference_list(
+        self,
+    ) -> Callable[
+        [reference_list.VerifyReferenceListRequest],
+        reference_list.VerifyReferenceListResponse,
+    ]:
+        r"""Return a callable for the verify reference list method over gRPC.
+
+        VerifyReferenceList validates list content and
+        returns line errors, if any.
+
+        Returns:
+            Callable[[~.VerifyReferenceListRequest],
+                    ~.VerifyReferenceListResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "verify_reference_list" not in self._stubs:
+            self._stubs["verify_reference_list"] = self._logged_channel.unary_unary(
+                "/google.cloud.chronicle.v1.ReferenceListService/VerifyReferenceList",
+                request_serializer=reference_list.VerifyReferenceListRequest.serialize,
+                response_deserializer=reference_list.VerifyReferenceListResponse.deserialize,
+            )
+        return self._stubs["verify_reference_list"]
 
     def close(self):
         self._logged_channel.close()

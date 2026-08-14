@@ -23,8 +23,8 @@ def test_data_type_logging(scalars_df_index):
 
     # We want to check the job_config passed to _query_and_wait_bigframes
     with mock.patch(
-        "bigframes.session._io.bigquery.start_query_with_client",
-        wraps=bq_io.start_query_with_client,
+        "bigframes.session._io.bigquery.start_query_job_optional",
+        wraps=bq_io.start_query_job_optional,
     ) as mock_query:
         s.to_pandas()
 

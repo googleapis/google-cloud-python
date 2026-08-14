@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Cloud Security Scanner.
+This package includes clients for multiple versions of Web Security Scanner.
 By default, you will get version ``websecurityscanner_v1``.
 
 

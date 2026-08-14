@@ -13,28 +13,30 @@
 # limitations under the License.
 from __future__ import annotations
 
-from typing import Any
+from typing import Literal
 
-from bigframes import options
 from bigframes.core.compile.api import test_only_ibis_inferred_schema
 from bigframes.core.compile.configs import CompileRequest, CompileResult
 
 
-def compiler() -> Any:
-    """Returns the appropriate compiler module based on session options."""
-    if options.experiments.sql_compiler == "experimental":
+def compile_sql(
+    request: CompileRequest,
+    compiler_name: Literal["sqlglot", "ibis"] = "sqlglot",
+) -> CompileResult:
+    """Compiles a BigFrameNode according to the request into SQL."""
+    if compiler_name == "sqlglot":
         import bigframes.core.compile.sqlglot.compiler as sqlglot_compiler
 
-        return sqlglot_compiler
+        return sqlglot_compiler.compile_sql(request)
     else:
         import bigframes.core.compile.ibis_compiler.ibis_compiler as ibis_compiler
 
-        return ibis_compiler
+        return ibis_compiler.compile_sql(request)
 
 
 __all__ = [
     "test_only_ibis_inferred_schema",
     "CompileRequest",
     "CompileResult",
-    "compiler",
+    "compile_sql",
 ]

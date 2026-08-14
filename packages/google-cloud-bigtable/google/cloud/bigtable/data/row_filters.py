@@ -13,15 +13,18 @@
 # limitations under the License.
 
 """Filters for Google Cloud Bigtable Row classes."""
+
 from __future__ import annotations
 
 import struct
-
-from typing import Any, Sequence, TYPE_CHECKING, overload
 from abc import ABC, abstractmethod
+from typing import TYPE_CHECKING, Any, Sequence, overload
 
-from google.cloud._helpers import _microseconds_from_datetime  # type: ignore
-from google.cloud._helpers import _to_bytes  # type: ignore
+from google.cloud._helpers import (
+    _microseconds_from_datetime,  # type: ignore
+    _to_bytes,  # type: ignore
+)
+
 from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
 if TYPE_CHECKING:
@@ -479,6 +482,34 @@ class ValueRegexFilter(_RegexFilter):
     def _to_dict(self) -> dict[str, bytes]:
         """Converts the row filter to a dict representation."""
         return {"value_regex_filter": self.regex}
+
+
+class ValueBitmaskFilter(RowFilter):
+    """Row filter for a value bitmask.
+
+    Matches only cells with values that satisfy the condition
+    ``(value & mask) == mask``. The mask length must exactly match the value
+    length, otherwise the cell is not considered a match.
+
+    :type mask: bytes or str
+    :param mask: A bitmask to match against cell values. String values
+                 will be encoded as ASCII.
+    """
+
+    def __init__(self, mask: bytes | str):
+        self.mask: bytes = _to_bytes(mask)
+
+    def __eq__(self, other):
+        if not isinstance(other, ValueBitmaskFilter):
+            return NotImplemented
+        return other.mask == self.mask
+
+    def _to_dict(self) -> dict[str, Any]:
+        """Converts the row filter to a dict representation."""
+        return {"value_bitmask_filter": {"mask": self.mask}}
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(mask={self.mask!r})"
 
 
 class LiteralValueFilter(ValueRegexFilter):

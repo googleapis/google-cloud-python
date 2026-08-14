@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-reservation/#history
 
+## [1.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.24.0...google-cloud-bigquery-reservation-v1.25.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-b packages (#17090) ([77d4fcc15d1a6d96adb5f2765ecd0fcc47e478bd](https://github.com/googleapis/google-cloud-python/commit/77d4fcc15d1a6d96adb5f2765ecd0fcc47e478bd))
+
+## [1.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.23.0...google-cloud-bigquery-reservation-v1.24.0) (2026-05-06)
+
 ## [1.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.22.0...google-cloud-bigquery-reservation-v1.23.0) (2026-03-26)
 
 

@@ -14,14 +14,13 @@
 
 import pytest
 
-import bigframes.functions.function as bff
 from bigframes.testing import mocks
 
 
 def test_missing_input_types():
     session = mocks.create_bigquery_session()
-    remote_function_decorator = bff.remote_function(
-        session=session, cloud_function_service_account="default"
+    remote_function_decorator = session._function_session.remote_function(
+        cloud_function_service_account="default"
     )
 
     def function_without_parameter_annotations(myparam) -> str:
@@ -38,8 +37,8 @@ def test_missing_input_types():
 
 def test_missing_output_type():
     session = mocks.create_bigquery_session()
-    remote_function_decorator = bff.remote_function(
-        session=session, cloud_function_service_account="default"
+    remote_function_decorator = session._function_session.remote_function(
+        cloud_function_service_account="default"
     )
 
     def function_without_return_annotation(myparam: int):
@@ -62,8 +61,7 @@ def test_deploy_udf():
 
     deployed = session.deploy_udf(my_remote_func)
 
-    # Test that the function would have been deployed somewhere.
-    assert deployed.bigframes_bigquery_function
+    assert deployed.udf_def is not None
 
 
 def test_deploy_udf_with_name():

@@ -87,18 +87,15 @@ manager is not available so the default is to have an unset or empty
 namespace. To explicitly select the empty namespace pass ``namespace=""``.
 """
 
-
 import base64
 import functools
+import typing
 
+import google.cloud.datastore
 from google.cloud.datastore import _app_engine_key_pb2
 from google.cloud.datastore import key as _key_module
-import google.cloud.datastore
 
-from google.cloud.ndb import exceptions
-from google.cloud.ndb import _options
-from google.cloud.ndb import tasklets
-from google.cloud.ndb import utils
+from google.cloud.ndb import _options, exceptions, tasklets, utils
 
 __all__ = ["Key", "UNDEFINED"]
 _APP_ID_ENVIRONMENT = "APPLICATION_ID"
@@ -917,9 +914,8 @@ class Key(object):
             :class:`~google.cloud.ndb.tasklets.Future`
         """
         # Avoid circular import in Python 2.7
-        from google.cloud.ndb import model
+        from google.cloud.ndb import _datastore_api, model
         from google.cloud.ndb import context as context_module
-        from google.cloud.ndb import _datastore_api
 
         cls = model.Model._kind_map.get(self.kind())
 
@@ -1053,9 +1049,8 @@ class Key(object):
             force_writes (bool): No longer supported.
         """
         # Avoid circular import in Python 2.7
-        from google.cloud.ndb import model
+        from google.cloud.ndb import _datastore_api, model
         from google.cloud.ndb import context as context_module
-        from google.cloud.ndb import _datastore_api
 
         cls = model.Model._kind_map.get(self.kind())
         if cls:
@@ -1315,8 +1310,8 @@ def _parse_from_ref(
     urlsafe=None,
     app=None,
     namespace=None,
-    database: str = None,
-    **kwargs
+    database: typing.Optional[str] = None,
+    **kwargs,
 ):
     """Construct a key from a Reference.
 
@@ -1360,7 +1355,7 @@ def _parse_from_ref(
 
     if kwargs or not _exactly_one_specified(reference, serialized, urlsafe):
         raise TypeError(
-            "Cannot construct Key reference from incompatible " "keyword arguments."
+            "Cannot construct Key reference from incompatible keyword arguments."
         )
 
     if reference:
@@ -1523,12 +1518,11 @@ def _clean_flat_path(flat):
         # Make sure the ``kind`` is either a string or a Model.
         kind = flat[i]
         if isinstance(kind, type):
-            kind = kind._get_kind()
+            kind = kind._get_kind()  # type: ignore[attr-defined]
             flat[i] = kind
         if not isinstance(kind, str):
             raise TypeError(
-                "Key kind must be a string or Model class; "
-                "received {!r}".format(kind)
+                "Key kind must be a string or Model class; received {!r}".format(kind)
             )
         # Make sure the ``id_`` is either a string or int. In the special case
         # of a partial key, ``id_`` can be ``None`` for the last pair.
@@ -1607,7 +1601,7 @@ def _to_legacy_path(dict_path):
             element_kwargs["id"] = _verify_path_value(part["id"], False)
         elif "name" in part:
             element_kwargs["name"] = _verify_path_value(part["name"], True)
-        element = _app_engine_key_pb2.Path.Element(**element_kwargs)
+        element = _app_engine_key_pb2.Path.Element(**element_kwargs)  # type: ignore[attr-defined]
         elements.append(element)
 
     return _app_engine_key_pb2.Path(element=elements)

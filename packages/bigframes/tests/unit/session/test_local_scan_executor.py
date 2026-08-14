@@ -13,12 +13,18 @@
 # limitations under the License.
 from __future__ import annotations
 
+import asyncio
+
 import pyarrow
 import pytest
 
 from bigframes.core import identifiers, local_data, nodes
-from bigframes.session import local_scan_executor
+from bigframes.session import execution_spec, local_scan_executor
 from bigframes.testing import mocks
+
+SPEC = execution_spec.ExecutionSpec(
+    ordered=True,
+)
 
 
 @pytest.fixture
@@ -72,7 +78,7 @@ def test_local_scan_executor_with_slice(start, stop, expected_rows, object_under
         stop=stop,
     )
 
-    result = object_under_test.execute(plan, ordered=True)
+    result = asyncio.run(object_under_test.execute(plan, SPEC))
     result_table = pyarrow.Table.from_batches(result.batches().arrow_batches)
     assert result_table.num_rows == expected_rows
 
@@ -98,4 +104,4 @@ def test_local_scan_executor_with_slice_unsupported_inputs(
         stop=stop,
         step=step,
     )
-    assert object_under_test.execute(plan, ordered=True) is None
+    assert asyncio.run(object_under_test.execute(plan, SPEC)) is None

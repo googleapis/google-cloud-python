@@ -232,11 +232,11 @@ configure them just like the System Tests.
 
    # Run all tests in a folder
    $ cd samples/snippets
-   $ nox -s py-3.8
+   $ nox -s py-3.10
 
    # Run a single sample test
    $ cd samples/snippets
-   $ nox -s py-3.8 -- -k <name of test>
+   $ nox -s py-3.10 -- -k <name of test>
 
 ********************************************
 Note About ``README`` as it pertains to PyPI
@@ -276,17 +276,7 @@ Supported versions can be found in our ``noxfile.py`` `config`_.
 .. _config: https://github.com/googleapis/google-cloud-python/blob/main/packages/bigframes/noxfile.py
 
 
-We also explicitly decided to support Python 3 beginning with version 3.10.
-Reasons for this include:
 
--  Encouraging use of newest versions of Python 3
--  Taking the lead of `prominent`_ open-source `projects`_
--  `Unicode literal support`_ which allows for a cleaner codebase that
-   works in both Python 2 and Python 3
-
-.. _prominent: https://docs.djangoproject.com/en/1.9/faq/install/#what-python-version-can-i-use-with-django
-.. _projects: http://flask.pocoo.org/docs/0.10/python3/
-.. _Unicode literal support: https://www.python.org/dev/peps/pep-0414/
 
 **********
 Versioning

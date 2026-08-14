@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ class Mesh(proto.Message):
     Attributes:
         name (str):
             Identifier. Name of the Mesh resource. It matches pattern
-            ``projects/*/locations/global/meshes/<mesh_name>``.
+            ``projects/*/locations/*/meshes/<mesh_name>``.
         self_link (str):
             Output only. Server-defined URL of this
             resource
@@ -131,7 +131,7 @@ class ListMeshesRequest(proto.Message):
         parent (str):
             Required. The project and location from which the Meshes
             should be listed, specified in the format
-            ``projects/*/locations/global``.
+            ``projects/*/locations/*``.
         page_size (int):
             Maximum number of Meshes to return per call.
         page_token (str):
@@ -208,7 +208,7 @@ class GetMeshRequest(proto.Message):
     Attributes:
         name (str):
             Required. A name of the Mesh to get. Must be in the format
-            ``projects/*/locations/global/meshes/*``.
+            ``projects/*/locations/*/meshes/*``.
     """
 
     name: str = proto.Field(
@@ -223,7 +223,7 @@ class CreateMeshRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent resource of the Mesh. Must be in the
-            format ``projects/*/locations/global``.
+            format ``projects/*/locations/*``.
         mesh_id (str):
             Required. Short name of the Mesh resource to
             be created.
@@ -279,7 +279,7 @@ class DeleteMeshRequest(proto.Message):
     Attributes:
         name (str):
             Required. A name of the Mesh to delete. Must be in the
-            format ``projects/*/locations/global/meshes/*``.
+            format ``projects/*/locations/*/meshes/*``.
     """
 
     name: str = proto.Field(

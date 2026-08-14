@@ -35,6 +35,11 @@
                 "create_reaction"
               ]
             },
+            "CreateSection": {
+              "methods": [
+                "create_section"
+              ]
+            },
             "CreateSpace": {
               "methods": [
                 "create_space"
@@ -60,6 +65,11 @@
                 "delete_reaction"
               ]
             },
+            "DeleteSection": {
+              "methods": [
+                "delete_section"
+              ]
+            },
             "DeleteSpace": {
               "methods": [
                 "delete_space"
@@ -70,9 +80,19 @@
                 "find_direct_message"
               ]
             },
+            "FindGroupChats": {
+              "methods": [
+                "find_group_chats"
+              ]
+            },
             "GetAttachment": {
               "methods": [
                 "get_attachment"
+              ]
+            },
+            "GetAvailability": {
+              "methods": [
+                "get_availability"
               ]
             },
             "GetCustomEmoji": {
@@ -135,6 +155,16 @@
                 "list_reactions"
               ]
             },
+            "ListSectionItems": {
+              "methods": [
+                "list_section_items"
+              ]
+            },
+            "ListSections": {
+              "methods": [
+                "list_sections"
+              ]
+            },
             "ListSpaceEvents": {
               "methods": [
                 "list_space_events"
@@ -143,6 +173,36 @@
             "ListSpaces": {
               "methods": [
                 "list_spaces"
+              ]
+            },
+            "MarkAsActive": {
+              "methods": [
+                "mark_as_active"
+              ]
+            },
+            "MarkAsAway": {
+              "methods": [
+                "mark_as_away"
+              ]
+            },
+            "MarkAsDoNotDisturb": {
+              "methods": [
+                "mark_as_do_not_disturb"
+              ]
+            },
+            "MoveSectionItem": {
+              "methods": [
+                "move_section_item"
+              ]
+            },
+            "PositionSection": {
+              "methods": [
+                "position_section"
+              ]
+            },
+            "SearchMessages": {
+              "methods": [
+                "search_messages"
               ]
             },
             "SearchSpaces": {
@@ -155,6 +215,11 @@
                 "set_up_space"
               ]
             },
+            "UpdateAvailability": {
+              "methods": [
+                "update_availability"
+              ]
+            },
             "UpdateMembership": {
               "methods": [
                 "update_membership"
@@ -163,6 +228,11 @@
             "UpdateMessage": {
               "methods": [
                 "update_message"
+              ]
+            },
+            "UpdateSection": {
+              "methods": [
+                "update_section"
               ]
             },
             "UpdateSpace": {
@@ -215,6 +285,11 @@
                 "create_reaction"
               ]
             },
+            "CreateSection": {
+              "methods": [
+                "create_section"
+              ]
+            },
             "CreateSpace": {
               "methods": [
                 "create_space"
@@ -240,6 +315,11 @@
                 "delete_reaction"
               ]
             },
+            "DeleteSection": {
+              "methods": [
+                "delete_section"
+              ]
+            },
             "DeleteSpace": {
               "methods": [
                 "delete_space"
@@ -250,9 +330,19 @@
                 "find_direct_message"
               ]
             },
+            "FindGroupChats": {
+              "methods": [
+                "find_group_chats"
+              ]
+            },
             "GetAttachment": {
               "methods": [
                 "get_attachment"
+              ]
+            },
+            "GetAvailability": {
+              "methods": [
+                "get_availability"
               ]
             },
             "GetCustomEmoji": {
@@ -315,6 +405,16 @@
                 "list_reactions"
               ]
             },
+            "ListSectionItems": {
+              "methods": [
+                "list_section_items"
+              ]
+            },
+            "ListSections": {
+              "methods": [
+                "list_sections"
+              ]
+            },
             "ListSpaceEvents": {
               "methods": [
                 "list_space_events"
@@ -323,6 +423,36 @@
             "ListSpaces": {
               "methods": [
                 "list_spaces"
+              ]
+            },
+            "MarkAsActive": {
+              "methods": [
+                "mark_as_active"
+              ]
+            },
+            "MarkAsAway": {
+              "methods": [
+                "mark_as_away"
+              ]
+            },
+            "MarkAsDoNotDisturb": {
+              "methods": [
+                "mark_as_do_not_disturb"
+              ]
+            },
+            "MoveSectionItem": {
+              "methods": [
+                "move_section_item"
+              ]
+            },
+            "PositionSection": {
+              "methods": [
+                "position_section"
+              ]
+            },
+            "SearchMessages": {
+              "methods": [
+                "search_messages"
               ]
             },
             "SearchSpaces": {
@@ -335,6 +465,11 @@
                 "set_up_space"
               ]
             },
+            "UpdateAvailability": {
+              "methods": [
+                "update_availability"
+              ]
+            },
             "UpdateMembership": {
               "methods": [
                 "update_membership"
@@ -343,6 +478,11 @@
             "UpdateMessage": {
               "methods": [
                 "update_message"
+              ]
+            },
+            "UpdateSection": {
+              "methods": [
+                "update_section"
               ]
             },
             "UpdateSpace": {
@@ -395,6 +535,11 @@
                 "create_reaction"
               ]
             },
+            "CreateSection": {
+              "methods": [
+                "create_section"
+              ]
+            },
             "CreateSpace": {
               "methods": [
                 "create_space"
@@ -420,6 +565,11 @@
                 "delete_reaction"
               ]
             },
+            "DeleteSection": {
+              "methods": [
+                "delete_section"
+              ]
+            },
             "DeleteSpace": {
               "methods": [
                 "delete_space"
@@ -430,9 +580,19 @@
                 "find_direct_message"
               ]
             },
+            "FindGroupChats": {
+              "methods": [
+                "find_group_chats"
+              ]
+            },
             "GetAttachment": {
               "methods": [
                 "get_attachment"
+              ]
+            },
+            "GetAvailability": {
+              "methods": [
+                "get_availability"
               ]
             },
             "GetCustomEmoji": {
@@ -495,6 +655,16 @@
                 "list_reactions"
               ]
             },
+            "ListSectionItems": {
+              "methods": [
+                "list_section_items"
+              ]
+            },
+            "ListSections": {
+              "methods": [
+                "list_sections"
+              ]
+            },
             "ListSpaceEvents": {
               "methods": [
                 "list_space_events"
@@ -503,6 +673,36 @@
             "ListSpaces": {
               "methods": [
                 "list_spaces"
+              ]
+            },
+            "MarkAsActive": {
+              "methods": [
+                "mark_as_active"
+              ]
+            },
+            "MarkAsAway": {
+              "methods": [
+                "mark_as_away"
+              ]
+            },
+            "MarkAsDoNotDisturb": {
+              "methods": [
+                "mark_as_do_not_disturb"
+              ]
+            },
+            "MoveSectionItem": {
+              "methods": [
+                "move_section_item"
+              ]
+            },
+            "PositionSection": {
+              "methods": [
+                "position_section"
+              ]
+            },
+            "SearchMessages": {
+              "methods": [
+                "search_messages"
               ]
             },
             "SearchSpaces": {
@@ -515,6 +715,11 @@
                 "set_up_space"
               ]
             },
+            "UpdateAvailability": {
+              "methods": [
+                "update_availability"
+              ]
+            },
             "UpdateMembership": {
               "methods": [
                 "update_membership"
@@ -523,6 +728,11 @@
             "UpdateMessage": {
               "methods": [
                 "update_message"
+              ]
+            },
+            "UpdateSection": {
+              "methods": [
+                "update_section"
               ]
             },
             "UpdateSpace": {

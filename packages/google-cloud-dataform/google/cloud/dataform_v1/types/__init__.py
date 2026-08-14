@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -64,6 +64,8 @@ from .dataform import (
     FileSearchResult,
     FilesystemEntryMetadata,
     Folder,
+    GcsRepositorySnapshotDestination,
+    GcsRepositorySnapshotMetadata,
     GetCompilationResultRequest,
     GetConfigRequest,
     GetFolderRequest,
@@ -99,6 +101,7 @@ from .dataform import (
     MoveRepositoryMetadata,
     MoveRepositoryRequest,
     NotebookRuntimeOptions,
+    PipelineConfig,
     PrivateResourceMetadata,
     PullGitCommitsRequest,
     PullGitCommitsResponse,
@@ -202,6 +205,8 @@ __all__ = (
     "FileSearchResult",
     "FilesystemEntryMetadata",
     "Folder",
+    "GcsRepositorySnapshotDestination",
+    "GcsRepositorySnapshotMetadata",
     "GetCompilationResultRequest",
     "GetConfigRequest",
     "GetFolderRequest",
@@ -237,6 +242,7 @@ __all__ = (
     "MoveRepositoryMetadata",
     "MoveRepositoryRequest",
     "NotebookRuntimeOptions",
+    "PipelineConfig",
     "PrivateResourceMetadata",
     "PullGitCommitsRequest",
     "PullGitCommitsResponse",

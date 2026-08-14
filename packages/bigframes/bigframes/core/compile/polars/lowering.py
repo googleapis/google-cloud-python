@@ -26,7 +26,6 @@ from bigframes.operations import (
     comparison_ops,
     datetime_ops,
     generic_ops,
-    json_ops,
     numeric_ops,
     string_ops,
 )
@@ -412,9 +411,6 @@ def _coerce_comparables(
 def _lower_cast(cast_op: ops.AsTypeOp, arg: expression.Expression):
     if arg.output_type == cast_op.to_type:
         return arg
-
-    if arg.output_type == dtypes.JSON_DTYPE:
-        return json_ops.JSONDecode(cast_op.to_type).as_expr(arg)
     if (
         arg.output_type == dtypes.STRING_DTYPE
         and cast_op.to_type == dtypes.DATETIME_DTYPE

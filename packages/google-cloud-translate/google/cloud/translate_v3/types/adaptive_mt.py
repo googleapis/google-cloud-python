@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -252,6 +252,8 @@ class AdaptiveMtTranslateRequest(proto.Message):
         content (MutableSequence[str]):
             Required. The content of the input in string
             format.
+        mime_type (str):
+            The format of the source text.
         reference_sentence_config (google.cloud.translate_v3.types.AdaptiveMtTranslateRequest.ReferenceSentenceConfig):
             Configuration for caller provided reference
             sentences.
@@ -381,6 +383,10 @@ class AdaptiveMtTranslateRequest(proto.Message):
     content: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
+    )
+    mime_type: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
     reference_sentence_config: ReferenceSentenceConfig = proto.Field(
         proto.MESSAGE,

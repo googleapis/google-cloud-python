@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -122,6 +117,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -957,7 +967,14 @@ def test_transport_manager_client_get_mtls_endpoint_and_cert_source(client_class
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1004,7 +1021,14 @@ def test_transport_manager_client_get_mtls_endpoint_and_cert_source(client_class
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1325,8 +1349,8 @@ def test_transport_manager_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        transport_manager.ListRemoteTransportProfilesRequest,
-        dict,
+        transport_manager.ListRemoteTransportProfilesRequest(),
+        {},
     ],
 )
 def test_list_remote_transport_profiles(request_type, transport: str = "grpc"):
@@ -1337,7 +1361,7 @@ def test_list_remote_transport_profiles(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1390,12 +1414,13 @@ def test_list_remote_transport_profiles_non_empty_request_with_auto_populated_fi
         client.list_remote_transport_profiles(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == transport_manager.ListRemoteTransportProfilesRequest(
+        request_msg = transport_manager.ListRemoteTransportProfilesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_remote_transport_profiles_use_cached_wrapped_rpc():
@@ -1481,9 +1506,15 @@ async def test_list_remote_transport_profiles_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transport_manager.ListRemoteTransportProfilesRequest(),
+        {},
+    ],
+)
 async def test_list_remote_transport_profiles_async(
-    transport: str = "grpc_asyncio",
-    request_type=transport_manager.ListRemoteTransportProfilesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TransportManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1492,7 +1523,7 @@ async def test_list_remote_transport_profiles_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1517,11 +1548,6 @@ async def test_list_remote_transport_profiles_async(
     assert isinstance(response, pagers.ListRemoteTransportProfilesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_remote_transport_profiles_async_from_dict():
-    await test_list_remote_transport_profiles_async(request_type=dict)
 
 
 def test_list_remote_transport_profiles_field_headers():
@@ -1728,6 +1754,9 @@ def test_list_remote_transport_profiles_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -1822,6 +1851,8 @@ async def test_list_remote_transport_profiles_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1873,9 +1904,7 @@ async def test_list_remote_transport_profiles_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_remote_transport_profiles(request={})
         ).pages:
             pages.append(page_)
@@ -1886,8 +1915,8 @@ async def test_list_remote_transport_profiles_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        transport_manager.GetRemoteTransportProfileRequest,
-        dict,
+        transport_manager.GetRemoteTransportProfileRequest(),
+        {},
     ],
 )
 def test_get_remote_transport_profile(request_type, transport: str = "grpc"):
@@ -1898,7 +1927,7 @@ def test_get_remote_transport_profile(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1917,6 +1946,7 @@ def test_get_remote_transport_profile(request_type, transport: str = "grpc"):
             flow=transport_manager.RemoteTransportProfile.KeyProvisioningFlow.INPUT_ONLY,
             order_state=transport_manager.RemoteTransportProfile.State.CLOSED,
             display_name="display_name_value",
+            provider_type=transport_manager.RemoteTransportProfile.ProviderType.CLOUD,
         )
         response = client.get_remote_transport_profile(request)
 
@@ -1945,6 +1975,10 @@ def test_get_remote_transport_profile(request_type, transport: str = "grpc"):
     )
     assert response.order_state == transport_manager.RemoteTransportProfile.State.CLOSED
     assert response.display_name == "display_name_value"
+    assert (
+        response.provider_type
+        == transport_manager.RemoteTransportProfile.ProviderType.CLOUD
+    )
 
 
 def test_get_remote_transport_profile_non_empty_request_with_auto_populated_field():
@@ -1972,9 +2006,10 @@ def test_get_remote_transport_profile_non_empty_request_with_auto_populated_fiel
         client.get_remote_transport_profile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == transport_manager.GetRemoteTransportProfileRequest(
+        request_msg = transport_manager.GetRemoteTransportProfileRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_remote_transport_profile_use_cached_wrapped_rpc():
@@ -2060,9 +2095,15 @@ async def test_get_remote_transport_profile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transport_manager.GetRemoteTransportProfileRequest(),
+        {},
+    ],
+)
 async def test_get_remote_transport_profile_async(
-    transport: str = "grpc_asyncio",
-    request_type=transport_manager.GetRemoteTransportProfileRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = TransportManagerAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2071,7 +2112,7 @@ async def test_get_remote_transport_profile_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2091,6 +2132,7 @@ async def test_get_remote_transport_profile_async(
                 flow=transport_manager.RemoteTransportProfile.KeyProvisioningFlow.INPUT_ONLY,
                 order_state=transport_manager.RemoteTransportProfile.State.CLOSED,
                 display_name="display_name_value",
+                provider_type=transport_manager.RemoteTransportProfile.ProviderType.CLOUD,
             )
         )
         response = await client.get_remote_transport_profile(request)
@@ -2120,11 +2162,10 @@ async def test_get_remote_transport_profile_async(
     )
     assert response.order_state == transport_manager.RemoteTransportProfile.State.CLOSED
     assert response.display_name == "display_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_remote_transport_profile_async_from_dict():
-    await test_get_remote_transport_profile_async(request_type=dict)
+    assert (
+        response.provider_type
+        == transport_manager.RemoteTransportProfile.ProviderType.CLOUD
+    )
 
 
 def test_get_remote_transport_profile_field_headers():
@@ -2281,8 +2322,359 @@ async def test_get_remote_transport_profile_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        transport_manager.ListTransportsRequest,
-        dict,
+        transport_manager.ParseFromActivationKeyRequest(),
+        {},
+    ],
+)
+def test_parse_from_activation_key(request_type, transport: str = "grpc"):
+    client = TransportManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.parse_from_activation_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = transport_manager.ParseFromActivationKeyResponse()
+        response = client.parse_from_activation_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = transport_manager.ParseFromActivationKeyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, transport_manager.ParseFromActivationKeyResponse)
+
+
+def test_parse_from_activation_key_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TransportManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = transport_manager.ParseFromActivationKeyRequest(
+        parent="parent_value",
+        activation_key="activation_key_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.parse_from_activation_key), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.parse_from_activation_key(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = transport_manager.ParseFromActivationKeyRequest(
+            parent="parent_value",
+            activation_key="activation_key_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_parse_from_activation_key_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = TransportManagerClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.parse_from_activation_key
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.parse_from_activation_key
+        ] = mock_rpc
+        request = {}
+        client.parse_from_activation_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.parse_from_activation_key(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_parse_from_activation_key_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = TransportManagerAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.parse_from_activation_key
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.parse_from_activation_key
+        ] = mock_rpc
+
+        request = {}
+        await client.parse_from_activation_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.parse_from_activation_key(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transport_manager.ParseFromActivationKeyRequest(),
+        {},
+    ],
+)
+async def test_parse_from_activation_key_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = TransportManagerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.parse_from_activation_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transport_manager.ParseFromActivationKeyResponse()
+        )
+        response = await client.parse_from_activation_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = transport_manager.ParseFromActivationKeyRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, transport_manager.ParseFromActivationKeyResponse)
+
+
+def test_parse_from_activation_key_field_headers():
+    client = TransportManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = transport_manager.ParseFromActivationKeyRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.parse_from_activation_key), "__call__"
+    ) as call:
+        call.return_value = transport_manager.ParseFromActivationKeyResponse()
+        client.parse_from_activation_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_parse_from_activation_key_field_headers_async():
+    client = TransportManagerAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = transport_manager.ParseFromActivationKeyRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.parse_from_activation_key), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transport_manager.ParseFromActivationKeyResponse()
+        )
+        await client.parse_from_activation_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_parse_from_activation_key_flattened():
+    client = TransportManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.parse_from_activation_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = transport_manager.ParseFromActivationKeyResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.parse_from_activation_key(
+            parent="parent_value",
+            activation_key="activation_key_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].activation_key
+        mock_val = "activation_key_value"
+        assert arg == mock_val
+
+
+def test_parse_from_activation_key_flattened_error():
+    client = TransportManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.parse_from_activation_key(
+            transport_manager.ParseFromActivationKeyRequest(),
+            parent="parent_value",
+            activation_key="activation_key_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_parse_from_activation_key_flattened_async():
+    client = TransportManagerAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.parse_from_activation_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = transport_manager.ParseFromActivationKeyResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transport_manager.ParseFromActivationKeyResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.parse_from_activation_key(
+            parent="parent_value",
+            activation_key="activation_key_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].activation_key
+        mock_val = "activation_key_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_parse_from_activation_key_flattened_error_async():
+    client = TransportManagerAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.parse_from_activation_key(
+            transport_manager.ParseFromActivationKeyRequest(),
+            parent="parent_value",
+            activation_key="activation_key_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transport_manager.ListTransportsRequest(),
+        {},
     ],
 )
 def test_list_transports(request_type, transport: str = "grpc"):
@@ -2293,7 +2685,7 @@ def test_list_transports(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_transports), "__call__") as call:
@@ -2342,12 +2734,13 @@ def test_list_transports_non_empty_request_with_auto_populated_field():
         client.list_transports(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == transport_manager.ListTransportsRequest(
+        request_msg = transport_manager.ListTransportsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_transports_use_cached_wrapped_rpc():
@@ -2428,10 +2821,14 @@ async def test_list_transports_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_transports_async(
-    transport: str = "grpc_asyncio",
-    request_type=transport_manager.ListTransportsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transport_manager.ListTransportsRequest(),
+        {},
+    ],
+)
+async def test_list_transports_async(request_type, transport: str = "grpc_asyncio"):
     client = TransportManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2439,7 +2836,7 @@ async def test_list_transports_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_transports), "__call__") as call:
@@ -2462,11 +2859,6 @@ async def test_list_transports_async(
     assert isinstance(response, pagers.ListTransportsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_transports_async_from_dict():
-    await test_list_transports_async(request_type=dict)
 
 
 def test_list_transports_field_headers():
@@ -2661,6 +3053,9 @@ def test_list_transports_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, transport_manager.Transport) for i in results)
@@ -2749,6 +3144,8 @@ async def test_list_transports_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2796,11 +3193,7 @@ async def test_list_transports_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_transports(request={})
-        ).pages:
+        async for page_ in (await client.list_transports(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2809,8 +3202,8 @@ async def test_list_transports_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        transport_manager.GetTransportRequest,
-        dict,
+        transport_manager.GetTransportRequest(),
+        {},
     ],
 )
 def test_get_transport(request_type, transport: str = "grpc"):
@@ -2821,7 +3214,7 @@ def test_get_transport(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_transport), "__call__") as call:
@@ -2841,6 +3234,9 @@ def test_get_transport(request_type, transport: str = "grpc"):
             advertised_routes=["advertised_routes_value"],
             remote_account_id="remote_account_id_value",
             peering_network="peering_network_value",
+            hub="hub_value",
+            psc_routing_enabled=True,
+            auto_accept=True,
         )
         response = client.get_transport(request)
 
@@ -2866,6 +3262,9 @@ def test_get_transport(request_type, transport: str = "grpc"):
     assert response.advertised_routes == ["advertised_routes_value"]
     assert response.remote_account_id == "remote_account_id_value"
     assert response.peering_network == "peering_network_value"
+    assert response.hub == "hub_value"
+    assert response.psc_routing_enabled is True
+    assert response.auto_accept is True
 
 
 def test_get_transport_non_empty_request_with_auto_populated_field():
@@ -2891,9 +3290,10 @@ def test_get_transport_non_empty_request_with_auto_populated_field():
         client.get_transport(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == transport_manager.GetTransportRequest(
+        request_msg = transport_manager.GetTransportRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_transport_use_cached_wrapped_rpc():
@@ -2974,9 +3374,14 @@ async def test_get_transport_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_transport_async(
-    transport: str = "grpc_asyncio", request_type=transport_manager.GetTransportRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transport_manager.GetTransportRequest(),
+        {},
+    ],
+)
+async def test_get_transport_async(request_type, transport: str = "grpc_asyncio"):
     client = TransportManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2984,7 +3389,7 @@ async def test_get_transport_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_transport), "__call__") as call:
@@ -3005,6 +3410,9 @@ async def test_get_transport_async(
                 advertised_routes=["advertised_routes_value"],
                 remote_account_id="remote_account_id_value",
                 peering_network="peering_network_value",
+                hub="hub_value",
+                psc_routing_enabled=True,
+                auto_accept=True,
             )
         )
         response = await client.get_transport(request)
@@ -3031,11 +3439,9 @@ async def test_get_transport_async(
     assert response.advertised_routes == ["advertised_routes_value"]
     assert response.remote_account_id == "remote_account_id_value"
     assert response.peering_network == "peering_network_value"
-
-
-@pytest.mark.asyncio
-async def test_get_transport_async_from_dict():
-    await test_get_transport_async(request_type=dict)
+    assert response.hub == "hub_value"
+    assert response.psc_routing_enabled is True
+    assert response.auto_accept is True
 
 
 def test_get_transport_field_headers():
@@ -3184,8 +3590,8 @@ async def test_get_transport_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        transport_manager.GetStatusRequest,
-        dict,
+        transport_manager.GetStatusRequest(),
+        {},
     ],
 )
 def test_get_status(request_type, transport: str = "grpc"):
@@ -3196,7 +3602,7 @@ def test_get_status(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_status), "__call__") as call:
@@ -3258,9 +3664,10 @@ def test_get_status_non_empty_request_with_auto_populated_field():
         client.get_status(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == transport_manager.GetStatusRequest(
+        request_msg = transport_manager.GetStatusRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_status_use_cached_wrapped_rpc():
@@ -3339,9 +3746,14 @@ async def test_get_status_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_status_async(
-    transport: str = "grpc_asyncio", request_type=transport_manager.GetStatusRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transport_manager.GetStatusRequest(),
+        {},
+    ],
+)
+async def test_get_status_async(request_type, transport: str = "grpc_asyncio"):
     client = TransportManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3349,7 +3761,7 @@ async def test_get_status_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_status), "__call__") as call:
@@ -3388,11 +3800,6 @@ async def test_get_status_async(
         response.mac_sec_status
         == transport_manager.GetStatusResponse.MacSecStatus.MAC_SEC_STATUS_ACTIVE_FAIL_CLOSED
     )
-
-
-@pytest.mark.asyncio
-async def test_get_status_async_from_dict():
-    await test_get_status_async(request_type=dict)
 
 
 def test_get_status_field_headers():
@@ -3541,8 +3948,8 @@ async def test_get_status_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        transport_manager.CreateTransportRequest,
-        dict,
+        transport_manager.CreateTransportRequest(),
+        {},
     ],
 )
 def test_create_transport(request_type, transport: str = "grpc"):
@@ -3553,7 +3960,7 @@ def test_create_transport(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_transport), "__call__") as call:
@@ -3595,10 +4002,11 @@ def test_create_transport_non_empty_request_with_auto_populated_field():
         client.create_transport(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == transport_manager.CreateTransportRequest(
+        request_msg = transport_manager.CreateTransportRequest(
             parent="parent_value",
             transport_id="transport_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_transport_use_cached_wrapped_rpc():
@@ -3691,10 +4099,14 @@ async def test_create_transport_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_transport_async(
-    transport: str = "grpc_asyncio",
-    request_type=transport_manager.CreateTransportRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transport_manager.CreateTransportRequest(),
+        {},
+    ],
+)
+async def test_create_transport_async(request_type, transport: str = "grpc_asyncio"):
     client = TransportManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3702,7 +4114,7 @@ async def test_create_transport_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_transport), "__call__") as call:
@@ -3720,11 +4132,6 @@ async def test_create_transport_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_transport_async_from_dict():
-    await test_create_transport_async(request_type=dict)
 
 
 def test_create_transport_field_headers():
@@ -3893,8 +4300,8 @@ async def test_create_transport_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        transport_manager.UpdateTransportRequest,
-        dict,
+        transport_manager.UpdateTransportRequest(),
+        {},
     ],
 )
 def test_update_transport(request_type, transport: str = "grpc"):
@@ -3905,7 +4312,7 @@ def test_update_transport(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_transport), "__call__") as call:
@@ -3944,7 +4351,8 @@ def test_update_transport_non_empty_request_with_auto_populated_field():
         client.update_transport(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == transport_manager.UpdateTransportRequest()
+        request_msg = transport_manager.UpdateTransportRequest()
+        assert args[0] == request_msg
 
 
 def test_update_transport_use_cached_wrapped_rpc():
@@ -4037,10 +4445,14 @@ async def test_update_transport_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_transport_async(
-    transport: str = "grpc_asyncio",
-    request_type=transport_manager.UpdateTransportRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transport_manager.UpdateTransportRequest(),
+        {},
+    ],
+)
+async def test_update_transport_async(request_type, transport: str = "grpc_asyncio"):
     client = TransportManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4048,7 +4460,7 @@ async def test_update_transport_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_transport), "__call__") as call:
@@ -4066,11 +4478,6 @@ async def test_update_transport_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_transport_async_from_dict():
-    await test_update_transport_async(request_type=dict)
 
 
 def test_update_transport_field_headers():
@@ -4229,8 +4636,8 @@ async def test_update_transport_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        transport_manager.DeleteTransportRequest,
-        dict,
+        transport_manager.DeleteTransportRequest(),
+        {},
     ],
 )
 def test_delete_transport(request_type, transport: str = "grpc"):
@@ -4241,7 +4648,7 @@ def test_delete_transport(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_transport), "__call__") as call:
@@ -4282,9 +4689,10 @@ def test_delete_transport_non_empty_request_with_auto_populated_field():
         client.delete_transport(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == transport_manager.DeleteTransportRequest(
+        request_msg = transport_manager.DeleteTransportRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_transport_use_cached_wrapped_rpc():
@@ -4377,10 +4785,14 @@ async def test_delete_transport_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_transport_async(
-    transport: str = "grpc_asyncio",
-    request_type=transport_manager.DeleteTransportRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transport_manager.DeleteTransportRequest(),
+        {},
+    ],
+)
+async def test_delete_transport_async(request_type, transport: str = "grpc_asyncio"):
     client = TransportManagerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4388,7 +4800,7 @@ async def test_delete_transport_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_transport), "__call__") as call:
@@ -4406,11 +4818,6 @@ async def test_delete_transport_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_transport_async_from_dict():
-    await test_delete_transport_async(request_type=dict)
 
 
 def test_delete_transport_field_headers():
@@ -4680,7 +5087,6 @@ def test_list_remote_transport_profiles_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = transport_manager.ListRemoteTransportProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4703,7 +5109,28 @@ def test_get_remote_transport_profile_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = transport_manager.GetRemoteTransportProfileRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_parse_from_activation_key_empty_call_grpc():
+    client = TransportManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.parse_from_activation_key), "__call__"
+    ) as call:
+        call.return_value = transport_manager.ParseFromActivationKeyResponse()
+        client.parse_from_activation_key(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = transport_manager.ParseFromActivationKeyRequest()
         assert args[0] == request_msg
 
 
@@ -4724,7 +5151,6 @@ def test_list_transports_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = transport_manager.ListTransportsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4745,7 +5171,6 @@ def test_get_transport_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = transport_manager.GetTransportRequest()
-
         assert args[0] == request_msg
 
 
@@ -4766,7 +5191,6 @@ def test_get_status_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = transport_manager.GetStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -4787,7 +5211,6 @@ def test_create_transport_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = transport_manager.CreateTransportRequest()
-
         assert args[0] == request_msg
 
 
@@ -4808,7 +5231,6 @@ def test_update_transport_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = transport_manager.UpdateTransportRequest()
-
         assert args[0] == request_msg
 
 
@@ -4829,7 +5251,6 @@ def test_delete_transport_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = transport_manager.DeleteTransportRequest()
-
         assert args[0] == request_msg
 
 
@@ -4873,7 +5294,6 @@ async def test_list_remote_transport_profiles_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = transport_manager.ListRemoteTransportProfilesRequest()
-
         assert args[0] == request_msg
 
 
@@ -4904,6 +5324,7 @@ async def test_get_remote_transport_profile_empty_call_grpc_asyncio():
                 flow=transport_manager.RemoteTransportProfile.KeyProvisioningFlow.INPUT_ONLY,
                 order_state=transport_manager.RemoteTransportProfile.State.CLOSED,
                 display_name="display_name_value",
+                provider_type=transport_manager.RemoteTransportProfile.ProviderType.CLOUD,
             )
         )
         await client.get_remote_transport_profile(request=None)
@@ -4912,7 +5333,32 @@ async def test_get_remote_transport_profile_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = transport_manager.GetRemoteTransportProfileRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_parse_from_activation_key_empty_call_grpc_asyncio():
+    client = TransportManagerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.parse_from_activation_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transport_manager.ParseFromActivationKeyResponse()
+        )
+        await client.parse_from_activation_key(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = transport_manager.ParseFromActivationKeyRequest()
         assert args[0] == request_msg
 
 
@@ -4940,7 +5386,6 @@ async def test_list_transports_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = transport_manager.ListTransportsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4972,6 +5417,9 @@ async def test_get_transport_empty_call_grpc_asyncio():
                 advertised_routes=["advertised_routes_value"],
                 remote_account_id="remote_account_id_value",
                 peering_network="peering_network_value",
+                hub="hub_value",
+                psc_routing_enabled=True,
+                auto_accept=True,
             )
         )
         await client.get_transport(request=None)
@@ -4980,7 +5428,6 @@ async def test_get_transport_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = transport_manager.GetTransportRequest()
-
         assert args[0] == request_msg
 
 
@@ -5010,7 +5457,6 @@ async def test_get_status_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = transport_manager.GetStatusRequest()
-
         assert args[0] == request_msg
 
 
@@ -5035,7 +5481,6 @@ async def test_create_transport_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = transport_manager.CreateTransportRequest()
-
         assert args[0] == request_msg
 
 
@@ -5060,7 +5505,6 @@ async def test_update_transport_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = transport_manager.UpdateTransportRequest()
-
         assert args[0] == request_msg
 
 
@@ -5085,7 +5529,6 @@ async def test_delete_transport_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = transport_manager.DeleteTransportRequest()
-
         assert args[0] == request_msg
 
 
@@ -5124,6 +5567,7 @@ def test_transport_manager_base_transport():
     methods = (
         "list_remote_transport_profiles",
         "get_remote_transport_profile",
+        "parse_from_activation_key",
         "list_transports",
         "get_transport",
         "get_status",
@@ -5531,9 +5975,32 @@ def test_transport_manager_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_network_path():
+def test_hub_path():
     project = "squid"
-    resource_id = "clam"
+    hub = "clam"
+    expected = "projects/{project}/locations/global/hubs/{hub}".format(
+        project=project,
+        hub=hub,
+    )
+    actual = TransportManagerClient.hub_path(project, hub)
+    assert expected == actual
+
+
+def test_parse_hub_path():
+    expected = {
+        "project": "whelk",
+        "hub": "octopus",
+    }
+    path = TransportManagerClient.hub_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = TransportManagerClient.parse_hub_path(path)
+    assert expected == actual
+
+
+def test_network_path():
+    project = "oyster"
+    resource_id = "nudibranch"
     expected = "projects/{project}/global/networks/{resource_id}".format(
         project=project,
         resource_id=resource_id,
@@ -5544,8 +6011,8 @@ def test_network_path():
 
 def test_parse_network_path():
     expected = {
-        "project": "whelk",
-        "resource_id": "octopus",
+        "project": "cuttlefish",
+        "resource_id": "mussel",
     }
     path = TransportManagerClient.network_path(**expected)
 
@@ -5555,9 +6022,9 @@ def test_parse_network_path():
 
 
 def test_remote_transport_profile_path():
-    project = "oyster"
-    location = "nudibranch"
-    remote_transport_profile = "cuttlefish"
+    project = "winkle"
+    location = "nautilus"
+    remote_transport_profile = "scallop"
     expected = "projects/{project}/locations/{location}/remoteTransportProfiles/{remote_transport_profile}".format(
         project=project,
         location=location,
@@ -5571,9 +6038,9 @@ def test_remote_transport_profile_path():
 
 def test_parse_remote_transport_profile_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "remote_transport_profile": "nautilus",
+        "project": "abalone",
+        "location": "squid",
+        "remote_transport_profile": "clam",
     }
     path = TransportManagerClient.remote_transport_profile_path(**expected)
 
@@ -5583,9 +6050,9 @@ def test_parse_remote_transport_profile_path():
 
 
 def test_transport_path():
-    project = "scallop"
-    location = "abalone"
-    transport = "squid"
+    project = "whelk"
+    location = "octopus"
+    transport = "oyster"
     expected = "projects/{project}/locations/{location}/transports/{transport}".format(
         project=project,
         location=location,
@@ -5597,9 +6064,9 @@ def test_transport_path():
 
 def test_parse_transport_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "transport": "octopus",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "transport": "mussel",
     }
     path = TransportManagerClient.transport_path(**expected)
 
@@ -5609,7 +6076,7 @@ def test_parse_transport_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5619,7 +6086,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "nautilus",
     }
     path = TransportManagerClient.common_billing_account_path(**expected)
 
@@ -5629,7 +6096,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -5639,7 +6106,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "abalone",
     }
     path = TransportManagerClient.common_folder_path(**expected)
 
@@ -5649,7 +6116,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -5659,7 +6126,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "clam",
     }
     path = TransportManagerClient.common_organization_path(**expected)
 
@@ -5669,7 +6136,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -5679,7 +6146,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "octopus",
     }
     path = TransportManagerClient.common_project_path(**expected)
 
@@ -5689,8 +6156,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -5701,8 +6168,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = TransportManagerClient.common_location_path(**expected)
 

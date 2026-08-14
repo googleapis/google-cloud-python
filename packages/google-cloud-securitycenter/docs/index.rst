@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Google Cloud Security Command Center.
+This package includes clients for multiple versions of Security Command Center.
 By default, you will get version ``securitycenter_v1``.
 
 

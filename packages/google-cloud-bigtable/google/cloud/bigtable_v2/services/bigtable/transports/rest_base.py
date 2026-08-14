@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,17 +14,15 @@
 # limitations under the License.
 #
 import json  # type: ignore
-from google.api_core import path_template
-from google.api_core import gapic_v1
-
-from google.protobuf import json_format
-from .base import BigtableTransport, DEFAULT_CLIENT_INFO
-
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+from google.api_core import gapic_v1, path_template
+from google.protobuf import json_format
 
 from google.cloud.bigtable_v2.types import bigtable
+
+from .base import DEFAULT_CLIENT_INFO, BigtableTransport
 
 
 class _BaseBigtableRestTransport(BigtableTransport):

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -900,7 +900,8 @@ class WorkstationsGrpcTransport(WorkstationsTransport):
 
         Returns a short-lived credential that can be used to
         send authenticated and authorized traffic to a
-        workstation.
+        workstation. Once generated this token cannot be revoked
+        and is good for the lifetime of the token.
 
         Returns:
             Callable[[~.GenerateAccessTokenRequest],
@@ -919,6 +920,35 @@ class WorkstationsGrpcTransport(WorkstationsTransport):
                 response_deserializer=workstations.GenerateAccessTokenResponse.deserialize,
             )
         return self._stubs["generate_access_token"]
+
+    @property
+    def push_credentials(
+        self,
+    ) -> Callable[[workstations.PushCredentialsRequest], operations_pb2.Operation]:
+        r"""Return a callable for the push credentials method over gRPC.
+
+        Pushes credentials to a running workstation on behalf of a user.
+        Once complete, supported credential types
+        (application_default_credentials) are made available to
+        processes running in the user container.
+
+        Returns:
+            Callable[[~.PushCredentialsRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "push_credentials" not in self._stubs:
+            self._stubs["push_credentials"] = self._logged_channel.unary_unary(
+                "/google.cloud.workstations.v1beta.Workstations/PushCredentials",
+                request_serializer=workstations.PushCredentialsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["push_credentials"]
 
     def close(self):
         self._logged_channel.close()

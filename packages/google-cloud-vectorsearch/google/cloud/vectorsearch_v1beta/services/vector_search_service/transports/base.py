@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,9 +33,7 @@ from google.cloud.vectorsearch_v1beta.types import vectorsearch_service
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class VectorSearchServiceTransport(abc.ABC):
@@ -256,6 +254,11 @@ class VectorSearchServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.update_index: gapic_v1.method.wrap_method(
+                self.update_index,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_index: gapic_v1.method.wrap_method(
                 self.delete_index,
                 default_retry=retries.Retry(
@@ -411,6 +414,15 @@ class VectorSearchServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [vectorsearch_service.CreateIndexRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_index(
+        self,
+    ) -> Callable[
+        [vectorsearch_service.UpdateIndexRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

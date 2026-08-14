@@ -35,6 +35,16 @@ class BinaryValue(Value):
     def __invert__(self) -> BinaryValue:
         return ops.BitwiseNot(self).to_expr()
 
+    def length(self) -> ir.IntegerValue:
+        """Compute the length of a binary value.
+
+        Returns
+        -------
+        IntegerValue
+            The length of each binary value in the expression
+        """
+        return ops.StringLength(self).to_expr()
+
 
 @public
 class BinaryScalar(Scalar, BinaryValue):

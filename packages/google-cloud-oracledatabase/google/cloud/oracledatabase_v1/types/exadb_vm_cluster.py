@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -81,6 +81,10 @@ class ExadbVmCluster(proto.Message):
         entitlement_id (str):
             Output only. The ID of the subscription
             entitlement associated with the ExadbVmCluster.
+        identity_connector (google.cloud.oracledatabase_v1.types.IdentityConnector):
+            Output only. The identity connector details
+            which will allow OCI to securely access the
+            resources in the customer project.
     """
 
     name: str = proto.Field(
@@ -125,6 +129,11 @@ class ExadbVmCluster(proto.Message):
     entitlement_id: str = proto.Field(
         proto.STRING,
         number=11,
+    )
+    identity_connector: common.IdentityConnector = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=common.IdentityConnector,
     )
 
 

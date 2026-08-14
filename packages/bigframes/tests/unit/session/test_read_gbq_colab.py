@@ -47,6 +47,36 @@ def test_read_gbq_colab_includes_label():
     assert "session-read_gbq_colab" in label_values
 
 
+def test_read_gbq_colab_includes_label_in_anywidget_mode():
+    """Make sure read_gbq_colab label is preserved in recent-bigframes-api labels in anywidget mode."""
+    pytest.importorskip("anywidget")
+    pytest.importorskip("traitlets")
+
+    import bigframes
+    import bigframes.display.html as bf_html
+
+    bqclient = mock.create_autospec(bigquery.Client, instance=True)
+    bqclient.project = "proj"
+    session = mocks.create_bigquery_session(bqclient=bqclient)
+    df = session._read_gbq_colab("SELECT 'read-gbq-colab-test'")
+
+    with bigframes.option_context("display.render_mode", "anywidget"):
+        _ = bf_html.get_anywidget_bundle(df)
+
+    label_values = []
+    for kall in itertools.chain(
+        bqclient.query_and_wait.call_args_list,
+        bqclient._query_and_wait_bigframes.call_args_list,
+        bqclient.query.call_args_list,
+    ):
+        job_config = kall.kwargs.get("job_config")
+        if job_config is None:
+            continue
+        label_values.extend(job_config.labels.values())
+
+    assert "session-read_gbq_colab" in label_values
+
+
 @pytest.mark.parametrize("dry_run", [True, False])
 def test_read_gbq_colab_includes_formatted_values_in_dry_run(monkeypatch, dry_run):
     bqclient = mock.create_autospec(bigquery.Client, instance=True)
@@ -126,3 +156,91 @@ def test_read_gbq_colab_doesnt_set_destination_table():
 
     assert query == "SELECT 'my-test-query';"
     assert config.destination is None
+
+
+def test_read_gbq_colab_with_callback():
+    """Make sure callback receives events during execution."""
+    session = mocks.create_bigquery_session()
+    callback = mock.Mock()
+
+    _ = session._read_gbq_colab("SELECT 'my-test-query';", callback=callback)
+
+    assert callback.call_count > 0
+
+
+def test_read_gbq_colab_filters_by_cell():
+    """Verify that callbacks are scoped to individual executions."""
+    session = mocks.create_bigquery_session()
+    callback1 = mock.Mock()
+    callback2 = mock.Mock()
+
+    _ = session._read_gbq_colab("SELECT 'cell_1_query';", callback=callback1)
+    callback1_initial_count = callback1.call_count
+
+    _ = session._read_gbq_colab("SELECT 'cell_2_query';", callback=callback2)
+
+    # Verify callback1 was automatically unsubscribed upon completion
+    # of the first query.
+    assert callback1.call_count == callback1_initial_count
+    assert callback2.call_count > 0
+
+
+def test_execution_history_filtering():
+    """Verify that execution_history can be filtered by job_ids or events."""
+    from bigframes.session import metrics
+
+    session = mocks.create_bigquery_session()
+
+    job1 = metrics.JobMetadata(job_id="job_1", job_type="query", query="SELECT 1")
+    job2 = metrics.JobMetadata(job_id="job_2", job_type="query", query="SELECT 2")
+    session._metrics.jobs.extend([job1, job2])
+
+    history_job1 = session.execution_history(job_ids=["job_1"]).to_dataframe()
+    assert len(history_job1) == 1
+    assert history_job1.iloc[0]["job_id"] == "job_1"
+
+    event2 = mock.Mock()
+    event2.job_id = "job_2"
+    history_job2 = session.execution_history(events=[event2]).to_dataframe()
+    assert len(history_job2) == 1
+    assert history_job2.iloc[0]["job_id"] == "job_2"
+
+
+def test_execution_history_returns_all_executions_by_default():
+    """Verify that execution_history returns all executions by default."""
+    from bigframes.session import metrics
+
+    session = mocks.create_bigquery_session()
+    job1 = metrics.JobMetadata(
+        job_id="job_1", job_type="query", query="SELECT 1", cell_execution_count=10
+    )
+    job2 = metrics.JobMetadata(
+        job_id="job_2", job_type="query", query="SELECT 2", cell_execution_count=20
+    )
+    session._metrics.jobs.extend([job1, job2])
+
+    history = session.execution_history().to_dataframe()
+
+    assert len(history) == 2
+
+
+def test_execution_history_filters_by_notebook_cell_when_all_cells_is_false():
+    """Verify that execution_history filters to the current cell when all_cells is False."""
+    from bigframes.session import metrics
+
+    session = mocks.create_bigquery_session()
+    job1 = metrics.JobMetadata(
+        job_id="job_1", job_type="query", query="SELECT 1", cell_execution_count=10
+    )
+    job2 = metrics.JobMetadata(
+        job_id="job_2", job_type="query", query="SELECT 2", cell_execution_count=20
+    )
+    session._metrics.jobs.extend([job1, job2])
+
+    with mock.patch(
+        "bigframes.core.utils.get_ipython_execution_count", return_value=20
+    ):
+        history = session.execution_history(all_cells=False).to_dataframe()
+
+    assert len(history) == 1
+    assert history.iloc[0]["job_id"] == "job_2"

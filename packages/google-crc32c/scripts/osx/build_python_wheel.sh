@@ -39,8 +39,9 @@ eval "$(pyenv init --path)"
 
 install_python_pyenv() {
     version=$1
-
-    if [ -z "$(pyenv versions --bare | grep $version)" ]; then
+    # escapes the dot in the version number to avoid regex expansion issues.
+    escaped_version="${version//./\.}"
+    if ! pyenv versions --bare | grep -q "^${escaped_version}\b"; then
         echo "Python $version is not installed. Installing..."
         pyenv install $version
         echo "Python $version installed."
@@ -59,7 +60,7 @@ OSX_DIR="${REPO_ROOT}/scripts/osx"
 VENV=${REPO_ROOT}/venv${PY_BIN}
 "python${PY_BIN}" -m venv ${VENV}
 
-curl https://bootstrap.pypa.io/get-pip.py | ${VENV}/bin/python
+curl https://bootstrap.pypa.io/pip/3.9/get-pip.py | ${VENV}/bin/python
 ${VENV}/bin/python -m pip install \
     --requirement ${REPO_ROOT}/scripts/dev-requirements.txt
 

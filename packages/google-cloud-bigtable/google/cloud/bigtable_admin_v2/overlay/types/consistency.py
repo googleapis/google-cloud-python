@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Union, Callable
+from typing import Callable, Union
 
-from google.api_core.future import polling
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.future import polling
+
 from google.cloud.bigtable_admin_v2.types import bigtable_table_admin
 
 try:
@@ -60,7 +61,7 @@ class _CheckConsistencyPollingFuture(polling.PollingFuture):
             [OptionalRetry], bigtable_table_admin.CheckConsistencyResponse
         ],
         polling: retries.Retry = DEFAULT_RETRY,
-        **kwargs
+        **kwargs,
     ):
         super(_CheckConsistencyPollingFuture, self).__init__(polling=polling, **kwargs)
 

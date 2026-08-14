@@ -6,9 +6,9 @@ from __future__ import annotations
 
 from typing import Optional, cast
 
-from google.cloud.bigquery import schema
 import pyarrow
 import pyarrow.types
+from google.cloud.bigquery import schema
 
 _ARROW_SCALAR_IDS_TO_BQ = {
     # https://arrow.apache.org/docs/python/api/datatypes.html#type-classes

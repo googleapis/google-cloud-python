@@ -21,12 +21,14 @@ from bigframes.core.groupby.dataframe_group_by import DataFrameGroupBy
 from bigframes.core.groupby.series_group_by import SeriesGroupBy
 from bigframes.core.window import Window
 from bigframes.operations.datetimes import DatetimeMethods
+from bigframes.operations.plotting import PlotAccessor
 from bigframes.operations.strings import StringMethods
 from bigframes.operations.structs import StructAccessor, StructFrameAccessor
 
 __all__ = [
     "DataFrameGroupBy",
     "DatetimeMethods",
+    "PlotAccessor",
     "SeriesGroupBy",
     "StringMethods",
     "StructAccessor",

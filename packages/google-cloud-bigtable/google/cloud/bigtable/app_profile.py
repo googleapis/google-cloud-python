@@ -14,13 +14,13 @@
 
 """User-friendly container for Google Cloud Bigtable AppProfile."""
 
-
 import re
+
+from google.api_core.exceptions import NotFound
+from google.protobuf import field_mask_pb2
 
 from google.cloud.bigtable.enums import RoutingPolicyType
 from google.cloud.bigtable_admin_v2.types import instance
-from google.protobuf import field_mask_pb2
-from google.api_core.exceptions import NotFound
 
 _APP_PROFILE_NAME_RE = re.compile(
     r"^projects/(?P<project>[^/]+)/"
@@ -165,7 +165,7 @@ class AppProfile(object):
         match_app_profile_name = _APP_PROFILE_NAME_RE.match(app_profile_pb.name)
         if match_app_profile_name is None:
             raise ValueError(
-                "AppProfile protobuf name was not in the " "expected format.",
+                "AppProfile protobuf name was not in the expected format.",
                 app_profile_pb.name,
             )
         if match_app_profile_name.group("instance") != instance.instance_id:
@@ -175,8 +175,7 @@ class AppProfile(object):
             )
         if match_app_profile_name.group("project") != instance._client.project:
             raise ValueError(
-                "Project ID on app_profile does not match the "
-                "project ID on the client"
+                "Project ID on app_profile does not match the project ID on the client"
             )
         app_profile_id = match_app_profile_name.group("app_profile_id")
 

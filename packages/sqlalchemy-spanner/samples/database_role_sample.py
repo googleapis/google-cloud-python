@@ -14,11 +14,10 @@
 
 import uuid
 
+from model import Singer
+from sample_helper import run_sample
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
-
-from sample_helper import run_sample
-from model import Singer
 
 
 # Shows how to set the database role for a connection.

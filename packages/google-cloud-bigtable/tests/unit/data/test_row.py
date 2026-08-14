@@ -12,9 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
-
 import time
+import unittest
 
 TEST_VALUE = b"1234"
 TEST_ROW_KEY = b"row"
@@ -59,10 +58,10 @@ class TestRow(unittest.TestCase):
         """
         Construct from protobuf.
         """
-        from google.cloud.bigtable_v2.types import Row as RowPB
-        from google.cloud.bigtable_v2.types import Family as FamilyPB
-        from google.cloud.bigtable_v2.types import Column as ColumnPB
         from google.cloud.bigtable_v2.types import Cell as CellPB
+        from google.cloud.bigtable_v2.types import Column as ColumnPB
+        from google.cloud.bigtable_v2.types import Family as FamilyPB
+        from google.cloud.bigtable_v2.types import Row as RowPB
 
         row_key = b"row_key"
         cells = [

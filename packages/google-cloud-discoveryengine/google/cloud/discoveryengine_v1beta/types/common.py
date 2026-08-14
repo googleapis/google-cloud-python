@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -27,11 +28,17 @@ __protobuf__ = proto.module(
         "SearchUseCase",
         "SearchTier",
         "SearchAddOn",
+        "SubscriptionTier",
+        "SubscriptionTerm",
         "Interval",
         "CustomAttribute",
         "UserInfo",
         "EmbeddingConfig",
         "DoubleList",
+        "IdpConfig",
+        "Principal",
+        "HealthcareFhirConfig",
+        "SearchLinkPromotion",
     },
 )
 
@@ -76,6 +83,8 @@ class SolutionType(proto.Enum):
             It's used for Generative chat engine only, the associated
             data stores must enrolled with ``SOLUTION_TYPE_CHAT``
             solution.
+        SOLUTION_TYPE_AI_MODE (5):
+            Used for AI Mode.
     """
 
     SOLUTION_TYPE_UNSPECIFIED = 0
@@ -83,6 +92,7 @@ class SolutionType(proto.Enum):
     SOLUTION_TYPE_SEARCH = 2
     SOLUTION_TYPE_CHAT = 3
     SOLUTION_TYPE_GENERATIVE_CHAT = 4
+    SOLUTION_TYPE_AI_MODE = 5
 
 
 class SearchUseCase(proto.Enum):
@@ -139,6 +149,86 @@ class SearchAddOn(proto.Enum):
 
     SEARCH_ADD_ON_UNSPECIFIED = 0
     SEARCH_ADD_ON_LLM = 1
+
+
+class SubscriptionTier(proto.Enum):
+    r"""Subscription tier information.
+
+    Values:
+        SUBSCRIPTION_TIER_UNSPECIFIED (0):
+            Default value.
+        SUBSCRIPTION_TIER_SEARCH (1):
+            Search tier.
+            Search tier can access Vertex AI Search features
+            and NotebookLM features.
+        SUBSCRIPTION_TIER_SEARCH_AND_ASSISTANT (2):
+            Gemini Enterprise Plus tier.
+        SUBSCRIPTION_TIER_NOTEBOOK_LM (3):
+            NotebookLM tier.
+            NotebookLM is a subscription tier can only
+            access NotebookLM features.
+        SUBSCRIPTION_TIER_FRONTLINE_WORKER (4):
+            Gemini Frontline worker tier.
+        SUBSCRIPTION_TIER_AGENTSPACE_STARTER (10):
+            Gemini Business Starter tier.
+        SUBSCRIPTION_TIER_AGENTSPACE_BUSINESS (6):
+            Gemini Business tier.
+        SUBSCRIPTION_TIER_ENTERPRISE (7):
+            Gemini Enterprise Standard tier.
+        SUBSCRIPTION_TIER_ENTERPRISE_EMERGING (15):
+            Gemini Enterprise Standard tier for emerging
+            markets.
+        SUBSCRIPTION_TIER_EDU (8):
+            Gemini Enterprise EDU tier.
+        SUBSCRIPTION_TIER_EDU_PRO (9):
+            Gemini Enterprise EDU Pro tier.
+        SUBSCRIPTION_TIER_EDU_EMERGING (11):
+            Gemini Enterprise EDU tier for emerging
+            market only.
+        SUBSCRIPTION_TIER_EDU_PRO_EMERGING (12):
+            Gemini Enterprise EDU Pro tier for emerging
+            market.
+        SUBSCRIPTION_TIER_FRONTLINE_STARTER (13):
+            Gemini Frontline Starter tier.
+    """
+
+    SUBSCRIPTION_TIER_UNSPECIFIED = 0
+    SUBSCRIPTION_TIER_SEARCH = 1
+    SUBSCRIPTION_TIER_SEARCH_AND_ASSISTANT = 2
+    SUBSCRIPTION_TIER_NOTEBOOK_LM = 3
+    SUBSCRIPTION_TIER_FRONTLINE_WORKER = 4
+    SUBSCRIPTION_TIER_AGENTSPACE_STARTER = 10
+    SUBSCRIPTION_TIER_AGENTSPACE_BUSINESS = 6
+    SUBSCRIPTION_TIER_ENTERPRISE = 7
+    SUBSCRIPTION_TIER_ENTERPRISE_EMERGING = 15
+    SUBSCRIPTION_TIER_EDU = 8
+    SUBSCRIPTION_TIER_EDU_PRO = 9
+    SUBSCRIPTION_TIER_EDU_EMERGING = 11
+    SUBSCRIPTION_TIER_EDU_PRO_EMERGING = 12
+    SUBSCRIPTION_TIER_FRONTLINE_STARTER = 13
+
+
+class SubscriptionTerm(proto.Enum):
+    r"""Subscription term.
+
+    Values:
+        SUBSCRIPTION_TERM_UNSPECIFIED (0):
+            Default value, do not use.
+        SUBSCRIPTION_TERM_ONE_MONTH (1):
+            1 month.
+        SUBSCRIPTION_TERM_ONE_YEAR (2):
+            1 year.
+        SUBSCRIPTION_TERM_THREE_YEARS (3):
+            3 years.
+        SUBSCRIPTION_TERM_CUSTOM (6):
+            Custom term. Must set the end_date.
+    """
+
+    SUBSCRIPTION_TERM_UNSPECIFIED = 0
+    SUBSCRIPTION_TERM_ONE_MONTH = 1
+    SUBSCRIPTION_TERM_ONE_YEAR = 2
+    SUBSCRIPTION_TERM_THREE_YEARS = 3
+    SUBSCRIPTION_TERM_CUSTOM = 6
 
 
 class Interval(proto.Message):
@@ -250,6 +340,11 @@ class UserInfo(proto.Message):
             The field must be a UTF-8 encoded string with a length limit
             of 128 characters. Otherwise, an ``INVALID_ARGUMENT`` error
             is returned.
+
+            Represents an opaque ID to the Search API. The Search API
+            doesn't interpret the value in any way. This field is used
+            to associate events with a user across sessions if the
+            events are being uploaded.
         user_agent (str):
             User agent as included in the HTTP header.
 
@@ -263,7 +358,52 @@ class UserInfo(proto.Message):
             or if
             [UserEvent.direct_user_request][google.cloud.discoveryengine.v1beta.UserEvent.direct_user_request]
             is set.
+        time_zone (str):
+            Optional. IANA time zone, e.g.
+            Europe/Budapest.
+        precise_location (google.cloud.discoveryengine_v1beta.types.UserInfo.PreciseLocation):
+            Optional. Input only. Precise location of the
+            user. It is used in Custom Ranking to calculate
+            the distance between the user and the relevant
+            documents.
     """
+
+    class PreciseLocation(proto.Message):
+        r"""Precise location info with multiple representation options.
+        Currently only latitude and longitude point is supported.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            point (google.type.latlng_pb2.LatLng):
+                Optional. Location represented by a
+                latitude/longitude point.
+
+                This field is a member of `oneof`_ ``location``.
+            address (str):
+                Optional. Location represented by a natural
+                language address. Will later be geocoded and
+                converted to either a point or a polygon.
+
+                This field is a member of `oneof`_ ``location``.
+        """
+
+        point: latlng_pb2.LatLng = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="location",
+            message=latlng_pb2.LatLng,
+        )
+        address: str = proto.Field(
+            proto.STRING,
+            number=2,
+            oneof="location",
+        )
 
     user_id: str = proto.Field(
         proto.STRING,
@@ -272,6 +412,15 @@ class UserInfo(proto.Message):
     user_agent: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    time_zone: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    precise_location: PreciseLocation = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=PreciseLocation,
     )
 
 
@@ -302,6 +451,205 @@ class DoubleList(proto.Message):
     values: MutableSequence[float] = proto.RepeatedField(
         proto.DOUBLE,
         number=1,
+    )
+
+
+class IdpConfig(proto.Message):
+    r"""Identity Provider Config.
+
+    Attributes:
+        idp_type (google.cloud.discoveryengine_v1beta.types.IdpConfig.IdpType):
+            Identity provider type configured.
+        external_idp_config (google.cloud.discoveryengine_v1beta.types.IdpConfig.ExternalIdpConfig):
+            External Identity provider config.
+    """
+
+    class IdpType(proto.Enum):
+        r"""Identity Provider Type.
+
+        Values:
+            IDP_TYPE_UNSPECIFIED (0):
+                Default value. ACL search not enabled.
+            GSUITE (1):
+                Google 1P provider.
+            THIRD_PARTY (2):
+                Third party provider.
+        """
+
+        IDP_TYPE_UNSPECIFIED = 0
+        GSUITE = 1
+        THIRD_PARTY = 2
+
+    class ExternalIdpConfig(proto.Message):
+        r"""Third party IDP Config.
+
+        Attributes:
+            workforce_pool_name (str):
+                Workforce pool name. Example:
+                "locations/global/workforcePools/pool_id".
+        """
+
+        workforce_pool_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    idp_type: IdpType = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=IdpType,
+    )
+    external_idp_config: ExternalIdpConfig = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=ExternalIdpConfig,
+    )
+
+
+class Principal(proto.Message):
+    r"""Principal identifier of a user or a group.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        user_id (str):
+            User identifier. For Google Workspace user account, user_id
+            should be the google workspace user email. For non-google
+            identity provider user account, user_id is the mapped user
+            identifier configured during the workforcepool config.
+
+            This field is a member of `oneof`_ ``principal``.
+        group_id (str):
+            Group identifier. For Google Workspace user account,
+            group_id should be the google workspace group email. For
+            non-google identity provider user account, group_id is the
+            mapped group identifier configured during the workforcepool
+            config.
+
+            This field is a member of `oneof`_ ``principal``.
+        external_entity_id (str):
+            For 3P application identities which are not
+            present in the customer identity provider.
+
+            This field is a member of `oneof`_ ``principal``.
+    """
+
+    user_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="principal",
+    )
+    group_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="principal",
+    )
+    external_entity_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="principal",
+    )
+
+
+class HealthcareFhirConfig(proto.Message):
+    r"""Config to data store for ``HEALTHCARE_FHIR`` vertical.
+
+    Attributes:
+        enable_configurable_schema (bool):
+            Whether to enable configurable schema for
+            ``HEALTHCARE_FHIR`` vertical.
+
+            If set to ``true``, the predefined healthcare fhir schema
+            can be extended for more customized searching and filtering.
+        enable_static_indexing_for_batch_ingestion (bool):
+            Whether to enable static indexing for ``HEALTHCARE_FHIR``
+            batch ingestion.
+
+            If set to ``true``, the batch ingestion will be processed in
+            a static indexing mode which is slower but more capable of
+            handling larger volume.
+        initial_filter_groups (MutableSequence[str]):
+            Optional. Names of the Group resources to use as a basis for
+            the initial patient filter, in format
+            ``projects/{project_id}/locations/{location_id}/datasets/{dataset_id}/fhirStores/{fhir_store_id}/fhir/Group/{group_id}``.
+            The filter group must be a FHIR resource name of type Group,
+            and the filter will be constructed from the direct members
+            of the group which are Patient resources.
+    """
+
+    enable_configurable_schema: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    enable_static_indexing_for_batch_ingestion: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    initial_filter_groups: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+
+
+class SearchLinkPromotion(proto.Message):
+    r"""Promotion proto includes uri and other helping information to
+    display the promotion.
+
+    Attributes:
+        title (str):
+            Required. The title of the promotion.
+            Maximum length: 160 characters.
+        uri (str):
+            Optional. The URL for the page the user wants
+            to promote. Must be set for site search. For
+            other verticals, this is optional.
+        document (str):
+            Optional. The
+            [Document][google.cloud.discoveryengine.v1beta.Document] the
+            user wants to promote. For site search, leave unset and only
+            populate uri. Can be set along with uri.
+        image_uri (str):
+            Optional. The promotion thumbnail image url.
+        description (str):
+            Optional. The Promotion description.
+            Maximum length: 200 characters.
+        enabled (bool):
+            Optional. The enabled promotion will be
+            returned for any serving configs associated with
+            the parent of the control this promotion is
+            attached to.
+
+            This flag is used for basic site search only.
+    """
+
+    title: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    document: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    image_uri: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=5,
     )
 
 

@@ -16,9 +16,11 @@
 
 import struct
 
+from google.cloud._helpers import (
+    _microseconds_from_datetime,  # type: ignore
+    _to_bytes,  # type: ignore
+)
 
-from google.cloud._helpers import _microseconds_from_datetime  # type: ignore
-from google.cloud._helpers import _to_bytes  # type: ignore
 from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
 _PACK_I64 = struct.Struct(">q").pack
@@ -374,7 +376,7 @@ class ColumnRangeFilter(RowFilter):
             inclusive_start = True
         elif start_column is None:
             raise ValueError(
-                "Inclusive start was specified but no " "start column was given."
+                "Inclusive start was specified but no start column was given."
             )
         self.start_column = start_column
         self.inclusive_start = inclusive_start
@@ -382,9 +384,7 @@ class ColumnRangeFilter(RowFilter):
         if inclusive_end is None:
             inclusive_end = True
         elif end_column is None:
-            raise ValueError(
-                "Inclusive end was specified but no " "end column was given."
-            )
+            raise ValueError("Inclusive end was specified but no end column was given.")
         self.end_column = end_column
         self.inclusive_end = inclusive_end
 
@@ -427,6 +427,39 @@ class ColumnRangeFilter(RowFilter):
 
         column_range = data_v2_pb2.ColumnRange(**column_range_kwargs)
         return data_v2_pb2.RowFilter(column_range_filter=column_range)
+
+
+class ValueBitmaskFilter(RowFilter):
+    """Row filter for a value bitmask.
+
+    Matches only cells with values that satisfy the condition
+    ``(value & mask) == mask``. The mask length must exactly match the value
+    length, otherwise the cell is not considered a match.
+
+    :type mask: bytes or str
+    :param mask: A bitmask to match against cells with values. String values
+                 will be encoded as ASCII.
+    """
+
+    def __init__(self, mask):
+        self.mask = _to_bytes(mask)
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return other.mask == self.mask
+
+    def __ne__(self, other):
+        return not self == other
+
+    def to_pb(self):
+        """Converts the row filter to a protobuf.
+
+        :rtype: :class:`.data_v2_pb2.RowFilter`
+        :returns: The converted current object.
+        """
+        value_bitmask = data_v2_pb2.ValueBitmask(mask=self.mask)
+        return data_v2_pb2.RowFilter(value_bitmask_filter=value_bitmask)
 
 
 class ValueRegexFilter(_RegexFilter):
@@ -516,7 +549,7 @@ class ValueRangeFilter(RowFilter):
             inclusive_start = True
         elif start_value is None:
             raise ValueError(
-                "Inclusive start was specified but no " "start value was given."
+                "Inclusive start was specified but no start value was given."
             )
         if isinstance(start_value, int):
             start_value = _PACK_I64(start_value)
@@ -526,9 +559,7 @@ class ValueRangeFilter(RowFilter):
         if inclusive_end is None:
             inclusive_end = True
         elif end_value is None:
-            raise ValueError(
-                "Inclusive end was specified but no " "end value was given."
-            )
+            raise ValueError("Inclusive end was specified but no end value was given.")
         if isinstance(end_value, int):
             end_value = _PACK_I64(end_value)
         self.end_value = end_value

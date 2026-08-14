@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -612,9 +612,12 @@ class ListGlossaryCategoriesRequest(proto.Message):
             - immediate_parent
 
             Examples of using a filter are:
+            -------------------------------
 
-            - ``immediate_parent="projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}"``
-            - ``immediate_parent="projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}"``
+            ``immediate_parent="projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}"``
+            -------------------------------------------------------------------------------------------------------
+
+            ``immediate_parent="projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}"``
 
             This will only return the GlossaryCategories that are
             directly nested under the specified parent.
@@ -796,9 +799,12 @@ class ListGlossaryTermsRequest(proto.Message):
             - immediate_parent
 
             Examples of using a filter are:
+            -------------------------------
 
-            - ``immediate_parent="projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}"``
-            - ``immediate_parent="projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}"``
+            ``immediate_parent="projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}"``
+            -------------------------------------------------------------------------------------------------------
+
+            ``immediate_parent="projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}"``
 
             This will only return the GlossaryTerms that are directly
             nested under the specified parent.

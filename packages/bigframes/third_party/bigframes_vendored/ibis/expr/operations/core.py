@@ -136,6 +136,10 @@ class Value(Node, Coercible, DefaultTypeVars, Generic[T, S]):
 
         return getattr(ir, typename)(self)
 
+    @property
+    def omitted(self) -> bool:
+        return False
+
 
 # convenience aliases
 Scalar = Value[T, ds.Scalar]

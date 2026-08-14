@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -122,6 +117,21 @@ def modify_default_endpoint_template(client):
         if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
         else client._DEFAULT_ENDPOINT_TEMPLATE
     )
+
+
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
 
 
 def test__get_default_mtls_endpoint():
@@ -1015,7 +1025,14 @@ def test_rapid_migration_assessment_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1062,7 +1079,14 @@ def test_rapid_migration_assessment_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1399,8 +1423,8 @@ def test_rapid_migration_assessment_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        rapidmigrationassessment.CreateCollectorRequest,
-        dict,
+        rapidmigrationassessment.CreateCollectorRequest(),
+        {},
     ],
 )
 def test_create_collector(request_type, transport: str = "grpc"):
@@ -1411,7 +1435,7 @@ def test_create_collector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_collector), "__call__") as call:
@@ -1454,11 +1478,12 @@ def test_create_collector_non_empty_request_with_auto_populated_field():
         client.create_collector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.CreateCollectorRequest(
+        request_msg = rapidmigrationassessment.CreateCollectorRequest(
             parent="parent_value",
             collector_id="collector_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_collector_use_cached_wrapped_rpc():
@@ -1551,10 +1576,14 @@ async def test_create_collector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_collector_async(
-    transport: str = "grpc_asyncio",
-    request_type=rapidmigrationassessment.CreateCollectorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        rapidmigrationassessment.CreateCollectorRequest(),
+        {},
+    ],
+)
+async def test_create_collector_async(request_type, transport: str = "grpc_asyncio"):
     client = RapidMigrationAssessmentAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1562,7 +1591,7 @@ async def test_create_collector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_collector), "__call__") as call:
@@ -1580,11 +1609,6 @@ async def test_create_collector_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_collector_async_from_dict():
-    await test_create_collector_async(request_type=dict)
 
 
 def test_create_collector_field_headers():
@@ -1753,8 +1777,8 @@ async def test_create_collector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        rapidmigrationassessment.CreateAnnotationRequest,
-        dict,
+        rapidmigrationassessment.CreateAnnotationRequest(),
+        {},
     ],
 )
 def test_create_annotation(request_type, transport: str = "grpc"):
@@ -1765,7 +1789,7 @@ def test_create_annotation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1811,10 +1835,11 @@ def test_create_annotation_non_empty_request_with_auto_populated_field():
         client.create_annotation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.CreateAnnotationRequest(
+        request_msg = rapidmigrationassessment.CreateAnnotationRequest(
             parent="parent_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_annotation_use_cached_wrapped_rpc():
@@ -1907,10 +1932,14 @@ async def test_create_annotation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_annotation_async(
-    transport: str = "grpc_asyncio",
-    request_type=rapidmigrationassessment.CreateAnnotationRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        rapidmigrationassessment.CreateAnnotationRequest(),
+        {},
+    ],
+)
+async def test_create_annotation_async(request_type, transport: str = "grpc_asyncio"):
     client = RapidMigrationAssessmentAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1918,7 +1947,7 @@ async def test_create_annotation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1938,11 +1967,6 @@ async def test_create_annotation_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_annotation_async_from_dict():
-    await test_create_annotation_async(request_type=dict)
 
 
 def test_create_annotation_field_headers():
@@ -2109,8 +2133,8 @@ async def test_create_annotation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        rapidmigrationassessment.GetAnnotationRequest,
-        dict,
+        rapidmigrationassessment.GetAnnotationRequest(),
+        {},
     ],
 )
 def test_get_annotation(request_type, transport: str = "grpc"):
@@ -2121,7 +2145,7 @@ def test_get_annotation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_annotation), "__call__") as call:
@@ -2167,9 +2191,10 @@ def test_get_annotation_non_empty_request_with_auto_populated_field():
         client.get_annotation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.GetAnnotationRequest(
+        request_msg = rapidmigrationassessment.GetAnnotationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_annotation_use_cached_wrapped_rpc():
@@ -2250,10 +2275,14 @@ async def test_get_annotation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_annotation_async(
-    transport: str = "grpc_asyncio",
-    request_type=rapidmigrationassessment.GetAnnotationRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        rapidmigrationassessment.GetAnnotationRequest(),
+        {},
+    ],
+)
+async def test_get_annotation_async(request_type, transport: str = "grpc_asyncio"):
     client = RapidMigrationAssessmentAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2261,7 +2290,7 @@ async def test_get_annotation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_annotation), "__call__") as call:
@@ -2284,11 +2313,6 @@ async def test_get_annotation_async(
     assert isinstance(response, api_entities.Annotation)
     assert response.name == "name_value"
     assert response.type_ == api_entities.Annotation.Type.TYPE_LEGACY_EXPORT_CONSENT
-
-
-@pytest.mark.asyncio
-async def test_get_annotation_async_from_dict():
-    await test_get_annotation_async(request_type=dict)
 
 
 def test_get_annotation_field_headers():
@@ -2437,8 +2461,8 @@ async def test_get_annotation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        rapidmigrationassessment.ListCollectorsRequest,
-        dict,
+        rapidmigrationassessment.ListCollectorsRequest(),
+        {},
     ],
 )
 def test_list_collectors(request_type, transport: str = "grpc"):
@@ -2449,7 +2473,7 @@ def test_list_collectors(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_collectors), "__call__") as call:
@@ -2498,12 +2522,13 @@ def test_list_collectors_non_empty_request_with_auto_populated_field():
         client.list_collectors(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.ListCollectorsRequest(
+        request_msg = rapidmigrationassessment.ListCollectorsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_collectors_use_cached_wrapped_rpc():
@@ -2584,10 +2609,14 @@ async def test_list_collectors_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_collectors_async(
-    transport: str = "grpc_asyncio",
-    request_type=rapidmigrationassessment.ListCollectorsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        rapidmigrationassessment.ListCollectorsRequest(),
+        {},
+    ],
+)
+async def test_list_collectors_async(request_type, transport: str = "grpc_asyncio"):
     client = RapidMigrationAssessmentAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2595,7 +2624,7 @@ async def test_list_collectors_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_collectors), "__call__") as call:
@@ -2618,11 +2647,6 @@ async def test_list_collectors_async(
     assert isinstance(response, pagers.ListCollectorsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_collectors_async_from_dict():
-    await test_list_collectors_async(request_type=dict)
 
 
 def test_list_collectors_field_headers():
@@ -2817,6 +2841,9 @@ def test_list_collectors_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, api_entities.Collector) for i in results)
@@ -2905,6 +2932,8 @@ async def test_list_collectors_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2952,11 +2981,7 @@ async def test_list_collectors_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_collectors(request={})
-        ).pages:
+        async for page_ in (await client.list_collectors(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2965,8 +2990,8 @@ async def test_list_collectors_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        rapidmigrationassessment.GetCollectorRequest,
-        dict,
+        rapidmigrationassessment.GetCollectorRequest(),
+        {},
     ],
 )
 def test_get_collector(request_type, transport: str = "grpc"):
@@ -2977,7 +3002,7 @@ def test_get_collector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_collector), "__call__") as call:
@@ -3039,9 +3064,10 @@ def test_get_collector_non_empty_request_with_auto_populated_field():
         client.get_collector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.GetCollectorRequest(
+        request_msg = rapidmigrationassessment.GetCollectorRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_collector_use_cached_wrapped_rpc():
@@ -3122,10 +3148,14 @@ async def test_get_collector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_collector_async(
-    transport: str = "grpc_asyncio",
-    request_type=rapidmigrationassessment.GetCollectorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        rapidmigrationassessment.GetCollectorRequest(),
+        {},
+    ],
+)
+async def test_get_collector_async(request_type, transport: str = "grpc_asyncio"):
     client = RapidMigrationAssessmentAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3133,7 +3163,7 @@ async def test_get_collector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_collector), "__call__") as call:
@@ -3172,11 +3202,6 @@ async def test_get_collector_async(
     assert response.client_version == "client_version_value"
     assert response.collection_days == 1596
     assert response.eula_uri == "eula_uri_value"
-
-
-@pytest.mark.asyncio
-async def test_get_collector_async_from_dict():
-    await test_get_collector_async(request_type=dict)
 
 
 def test_get_collector_field_headers():
@@ -3325,8 +3350,8 @@ async def test_get_collector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        rapidmigrationassessment.UpdateCollectorRequest,
-        dict,
+        rapidmigrationassessment.UpdateCollectorRequest(),
+        {},
     ],
 )
 def test_update_collector(request_type, transport: str = "grpc"):
@@ -3337,7 +3362,7 @@ def test_update_collector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_collector), "__call__") as call:
@@ -3378,9 +3403,10 @@ def test_update_collector_non_empty_request_with_auto_populated_field():
         client.update_collector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.UpdateCollectorRequest(
+        request_msg = rapidmigrationassessment.UpdateCollectorRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_collector_use_cached_wrapped_rpc():
@@ -3473,10 +3499,14 @@ async def test_update_collector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_collector_async(
-    transport: str = "grpc_asyncio",
-    request_type=rapidmigrationassessment.UpdateCollectorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        rapidmigrationassessment.UpdateCollectorRequest(),
+        {},
+    ],
+)
+async def test_update_collector_async(request_type, transport: str = "grpc_asyncio"):
     client = RapidMigrationAssessmentAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3484,7 +3514,7 @@ async def test_update_collector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_collector), "__call__") as call:
@@ -3502,11 +3532,6 @@ async def test_update_collector_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_collector_async_from_dict():
-    await test_update_collector_async(request_type=dict)
 
 
 def test_update_collector_field_headers():
@@ -3665,8 +3690,8 @@ async def test_update_collector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        rapidmigrationassessment.DeleteCollectorRequest,
-        dict,
+        rapidmigrationassessment.DeleteCollectorRequest(),
+        {},
     ],
 )
 def test_delete_collector(request_type, transport: str = "grpc"):
@@ -3677,7 +3702,7 @@ def test_delete_collector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_collector), "__call__") as call:
@@ -3719,10 +3744,11 @@ def test_delete_collector_non_empty_request_with_auto_populated_field():
         client.delete_collector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.DeleteCollectorRequest(
+        request_msg = rapidmigrationassessment.DeleteCollectorRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_collector_use_cached_wrapped_rpc():
@@ -3815,10 +3841,14 @@ async def test_delete_collector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_collector_async(
-    transport: str = "grpc_asyncio",
-    request_type=rapidmigrationassessment.DeleteCollectorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        rapidmigrationassessment.DeleteCollectorRequest(),
+        {},
+    ],
+)
+async def test_delete_collector_async(request_type, transport: str = "grpc_asyncio"):
     client = RapidMigrationAssessmentAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3826,7 +3856,7 @@ async def test_delete_collector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_collector), "__call__") as call:
@@ -3844,11 +3874,6 @@ async def test_delete_collector_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_collector_async_from_dict():
-    await test_delete_collector_async(request_type=dict)
 
 
 def test_delete_collector_field_headers():
@@ -3997,8 +4022,8 @@ async def test_delete_collector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        rapidmigrationassessment.ResumeCollectorRequest,
-        dict,
+        rapidmigrationassessment.ResumeCollectorRequest(),
+        {},
     ],
 )
 def test_resume_collector(request_type, transport: str = "grpc"):
@@ -4009,7 +4034,7 @@ def test_resume_collector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_collector), "__call__") as call:
@@ -4051,10 +4076,11 @@ def test_resume_collector_non_empty_request_with_auto_populated_field():
         client.resume_collector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.ResumeCollectorRequest(
+        request_msg = rapidmigrationassessment.ResumeCollectorRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_resume_collector_use_cached_wrapped_rpc():
@@ -4147,10 +4173,14 @@ async def test_resume_collector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_resume_collector_async(
-    transport: str = "grpc_asyncio",
-    request_type=rapidmigrationassessment.ResumeCollectorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        rapidmigrationassessment.ResumeCollectorRequest(),
+        {},
+    ],
+)
+async def test_resume_collector_async(request_type, transport: str = "grpc_asyncio"):
     client = RapidMigrationAssessmentAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4158,7 +4188,7 @@ async def test_resume_collector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_collector), "__call__") as call:
@@ -4176,11 +4206,6 @@ async def test_resume_collector_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_resume_collector_async_from_dict():
-    await test_resume_collector_async(request_type=dict)
 
 
 def test_resume_collector_field_headers():
@@ -4329,8 +4354,8 @@ async def test_resume_collector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        rapidmigrationassessment.RegisterCollectorRequest,
-        dict,
+        rapidmigrationassessment.RegisterCollectorRequest(),
+        {},
     ],
 )
 def test_register_collector(request_type, transport: str = "grpc"):
@@ -4341,7 +4366,7 @@ def test_register_collector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4387,10 +4412,11 @@ def test_register_collector_non_empty_request_with_auto_populated_field():
         client.register_collector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.RegisterCollectorRequest(
+        request_msg = rapidmigrationassessment.RegisterCollectorRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_register_collector_use_cached_wrapped_rpc():
@@ -4485,10 +4511,14 @@ async def test_register_collector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_register_collector_async(
-    transport: str = "grpc_asyncio",
-    request_type=rapidmigrationassessment.RegisterCollectorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        rapidmigrationassessment.RegisterCollectorRequest(),
+        {},
+    ],
+)
+async def test_register_collector_async(request_type, transport: str = "grpc_asyncio"):
     client = RapidMigrationAssessmentAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4496,7 +4526,7 @@ async def test_register_collector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4516,11 +4546,6 @@ async def test_register_collector_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_register_collector_async_from_dict():
-    await test_register_collector_async(request_type=dict)
 
 
 def test_register_collector_field_headers():
@@ -4677,8 +4702,8 @@ async def test_register_collector_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        rapidmigrationassessment.PauseCollectorRequest,
-        dict,
+        rapidmigrationassessment.PauseCollectorRequest(),
+        {},
     ],
 )
 def test_pause_collector(request_type, transport: str = "grpc"):
@@ -4689,7 +4714,7 @@ def test_pause_collector(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_collector), "__call__") as call:
@@ -4731,10 +4756,11 @@ def test_pause_collector_non_empty_request_with_auto_populated_field():
         client.pause_collector(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == rapidmigrationassessment.PauseCollectorRequest(
+        request_msg = rapidmigrationassessment.PauseCollectorRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_pause_collector_use_cached_wrapped_rpc():
@@ -4825,10 +4851,14 @@ async def test_pause_collector_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_pause_collector_async(
-    transport: str = "grpc_asyncio",
-    request_type=rapidmigrationassessment.PauseCollectorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        rapidmigrationassessment.PauseCollectorRequest(),
+        {},
+    ],
+)
+async def test_pause_collector_async(request_type, transport: str = "grpc_asyncio"):
     client = RapidMigrationAssessmentAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4836,7 +4866,7 @@ async def test_pause_collector_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_collector), "__call__") as call:
@@ -4854,11 +4884,6 @@ async def test_pause_collector_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_pause_collector_async_from_dict():
-    await test_pause_collector_async(request_type=dict)
 
 
 def test_pause_collector_field_headers():
@@ -5136,7 +5161,7 @@ def test_create_collector_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_collector_rest_unset_required_fields():
@@ -5335,7 +5360,7 @@ def test_create_annotation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_annotation_rest_unset_required_fields():
@@ -5521,7 +5546,7 @@ def test_get_annotation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_annotation_rest_unset_required_fields():
@@ -5712,7 +5737,7 @@ def test_list_collectors_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_collectors_rest_unset_required_fields():
@@ -5845,6 +5870,9 @@ def test_list_collectors_rest_pager(transport: str = "rest"):
 
         pager = client.list_collectors(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, api_entities.Collector) for i in results)
@@ -5962,7 +5990,7 @@ def test_get_collector_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_collector_rest_unset_required_fields():
@@ -6147,7 +6175,7 @@ def test_update_collector_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_collector_rest_unset_required_fields():
@@ -6347,7 +6375,7 @@ def test_delete_collector_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_collector_rest_unset_required_fields():
@@ -6528,7 +6556,7 @@ def test_resume_collector_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_resume_collector_rest_unset_required_fields():
@@ -6712,7 +6740,7 @@ def test_register_collector_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_register_collector_rest_unset_required_fields():
@@ -6892,7 +6920,7 @@ def test_pause_collector_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_pause_collector_rest_unset_required_fields():
@@ -7085,7 +7113,6 @@ def test_create_collector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.CreateCollectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -7108,7 +7135,6 @@ def test_create_annotation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.CreateAnnotationRequest()
-
         assert args[0] == request_msg
 
 
@@ -7129,7 +7155,6 @@ def test_get_annotation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.GetAnnotationRequest()
-
         assert args[0] == request_msg
 
 
@@ -7150,7 +7175,6 @@ def test_list_collectors_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.ListCollectorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7171,7 +7195,6 @@ def test_get_collector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.GetCollectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -7192,7 +7215,6 @@ def test_update_collector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.UpdateCollectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -7213,7 +7235,6 @@ def test_delete_collector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.DeleteCollectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -7234,7 +7255,6 @@ def test_resume_collector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.ResumeCollectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -7257,7 +7277,6 @@ def test_register_collector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.RegisterCollectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -7278,7 +7297,6 @@ def test_pause_collector_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.PauseCollectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -7317,7 +7335,6 @@ async def test_create_collector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.CreateCollectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -7344,7 +7361,6 @@ async def test_create_annotation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.CreateAnnotationRequest()
-
         assert args[0] == request_msg
 
 
@@ -7372,7 +7388,6 @@ async def test_get_annotation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.GetAnnotationRequest()
-
         assert args[0] == request_msg
 
 
@@ -7400,7 +7415,6 @@ async def test_list_collectors_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.ListCollectorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7436,7 +7450,6 @@ async def test_get_collector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.GetCollectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -7461,7 +7474,6 @@ async def test_update_collector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.UpdateCollectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -7486,7 +7498,6 @@ async def test_delete_collector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.DeleteCollectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -7511,7 +7522,6 @@ async def test_resume_collector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.ResumeCollectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -7538,7 +7548,6 @@ async def test_register_collector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.RegisterCollectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -7563,7 +7572,6 @@ async def test_pause_collector_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.PauseCollectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -9526,7 +9534,6 @@ def test_create_collector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.CreateCollectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -9548,7 +9555,6 @@ def test_create_annotation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.CreateAnnotationRequest()
-
         assert args[0] == request_msg
 
 
@@ -9568,7 +9574,6 @@ def test_get_annotation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.GetAnnotationRequest()
-
         assert args[0] == request_msg
 
 
@@ -9588,7 +9593,6 @@ def test_list_collectors_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.ListCollectorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9608,7 +9612,6 @@ def test_get_collector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.GetCollectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -9628,7 +9631,6 @@ def test_update_collector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.UpdateCollectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -9648,7 +9650,6 @@ def test_delete_collector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.DeleteCollectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -9668,7 +9669,6 @@ def test_resume_collector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.ResumeCollectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -9690,7 +9690,6 @@ def test_register_collector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.RegisterCollectorRequest()
-
         assert args[0] == request_msg
 
 
@@ -9710,7 +9709,6 @@ def test_pause_collector_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = rapidmigrationassessment.PauseCollectorRequest()
-
         assert args[0] == request_msg
 
 

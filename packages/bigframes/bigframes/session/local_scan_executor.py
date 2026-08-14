@@ -16,7 +16,7 @@ from __future__ import annotations
 from typing import Optional
 
 from bigframes.core import bigframe_node, rewrite
-from bigframes.session import executor, semi_executor
+from bigframes.session import execution_spec, executor, semi_executor
 
 
 class LocalScanExecutor(semi_executor.SemiExecutor):
@@ -24,18 +24,20 @@ class LocalScanExecutor(semi_executor.SemiExecutor):
     Executes plans reducible to a arrow table scan.
     """
 
-    def execute(
+    async def execute(
         self,
         plan: bigframe_node.BigFrameNode,
-        ordered: bool,
-        peek: Optional[int] = None,
+        execution_spec: execution_spec.ExecutionSpec,
     ) -> Optional[executor.ExecuteResult]:
+        if execution_spec.destination_spec is not None:
+            return None
+
         reduced_result = rewrite.try_reduce_to_local_scan(plan)
         if not reduced_result:
             return None
 
         node, limit = reduced_result
-
+        peek = execution_spec.peek
         if limit is not None:
             if peek is None or limit < peek:
                 peek = limit

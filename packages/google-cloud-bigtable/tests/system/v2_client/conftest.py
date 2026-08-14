@@ -15,10 +15,10 @@
 import os
 
 import pytest
+from google.cloud.environment_vars import BIGTABLE_EMULATOR
 from test_utils.system import unique_resource_id
 
 from google.cloud.bigtable.client import Client
-from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
 from . import _helpers
 

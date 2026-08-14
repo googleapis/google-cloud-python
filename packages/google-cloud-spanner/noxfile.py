@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,12 +31,12 @@ DEFAULT_MOCK_SERVER_TESTS_PYTHON_VERSION = "3.12"
 SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.12"]
 
 ALL_PYTHON: List[str] = [
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
@@ -44,6 +44,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest",
     "pytest-cov",
     "pytest-asyncio",
+    "pytest-xdist",
 ]
 MOCK_SERVER_ADDITIONAL_DEPENDENCIES = [
     "google-cloud-testutils",
@@ -71,7 +72,6 @@ SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 nox.options.sessions = [
-    "unit-3.9",
     "unit-3.10",
     "unit-3.11",
     "unit-3.12",
@@ -215,35 +215,21 @@ def install_unittest_dependencies(session, *constraints):
 @nox.session(python=ALL_PYTHON)
 @nox.parametrize(
     "protobuf_implementation",
-    ["python", "upb", "cpp"],
+    ["python", "upb"],
 )
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
-
-    if session.python in ("3.7",):
-        session.skip("Python 3.7 is no longer supported")
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     install_unittest_dependencies(session, "-c", constraints_path)
 
-    # TODO(https://github.com/googleapis/synthtool/issues/1976):
-    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
-    # The 'cpp' implementation requires Protobuf<4.
-    if protobuf_implementation == "cpp":
-        session.install("protobuf<4")
-
     # Run py.test against the unit tests.
     args = [
         "py.test",
+        "-n",
+        "auto",
         "-s",
         f"--junitxml=unit_{session.python}_sponge_log.xml",
         "--cov=google",
@@ -334,8 +320,6 @@ def install_systemtest_dependencies(session, *constraints):
         ("python", "POSTGRESQL"),
         ("upb", "GOOGLE_STANDARD_SQL"),
         ("upb", "POSTGRESQL"),
-        ("cpp", "GOOGLE_STANDARD_SQL"),
-        ("cpp", "POSTGRESQL"),
     ],
 )
 def system(session, protobuf_implementation, database_dialect):
@@ -363,14 +347,6 @@ def system(session, protobuf_implementation, database_dialect):
             "Only run system tests on real Spanner with one protobuf implementation to speed up the build"
         )
 
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
-
     # Install pyopenssl for mTLS testing.
     if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
         session.install("pyopenssl")
@@ -382,12 +358,6 @@ def system(session, protobuf_implementation, database_dialect):
         session.skip("System tests were not found")
 
     install_systemtest_dependencies(session, "-c", constraints_path)
-
-    # TODO(https://github.com/googleapis/synthtool/issues/1976):
-    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
-    # The 'cpp' implementation requires Protobuf<4.
-    if protobuf_implementation == "cpp":
-        session.install("protobuf<4")
 
     # Run py.test against the system tests.
     if system_test_exists:
@@ -562,20 +532,10 @@ def docfx(session):
         ("python", "POSTGRESQL"),
         ("upb", "GOOGLE_STANDARD_SQL"),
         ("upb", "POSTGRESQL"),
-        ("cpp", "GOOGLE_STANDARD_SQL"),
-        ("cpp", "POSTGRESQL"),
     ],
 )
 def prerelease_deps(session, protobuf_implementation, database_dialect):
     """Run all tests with prerelease versions of dependencies installed."""
-
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
     session.install("-e", ".[all, tests, tracing]")
@@ -655,6 +615,12 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
 
+    system_test_exists = os.path.exists(system_test_path)
+    system_test_folder_exists = os.path.exists(system_test_folder_path)
+    # Sanity check: only run tests if found.
+    if not system_test_exists and not system_test_folder_exists:
+        session.skip("System tests were not found")
+
     if os.environ.get("SPANNER_EMULATOR_HOST"):
         # Run tests against the emulator
         run_system = True
@@ -675,31 +641,83 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
         run_system = False
 
     if run_system:
-        # Run the tests (deduplicated logic)
-        test_path = (
-            system_test_path
-            if os.path.exists(system_test_path)
-            else system_test_folder_path
-        )
-        session.run(
-            "py.test",
-            "--verbose",
-            f"--junitxml=system_{session.python}_sponge_log.xml",
-            test_path,
-            *session.posargs,
-            env={
-                "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-                "SPANNER_DATABASE_DIALECT": database_dialect,
-                "SKIP_BACKUP_TESTS": "true",
-            },
-        )
+        # Run py.test against the system tests.
+        if system_test_exists:
+            args = [
+                "py.test",
+                "--quiet",
+                "-o",
+                "asyncio_mode=auto",
+                f"--junitxml=system_{session.python}_sponge_log.xml",
+            ]
+            if not session.posargs:
+                args.append(system_test_path)
+            args.extend(session.posargs)
+
+            session.run(
+                *args,
+                env={
+                    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                    "SPANNER_DATABASE_DIALECT": database_dialect,
+                    "SKIP_BACKUP_TESTS": "true",
+                },
+            )
+        elif system_test_folder_exists:
+            # Run sync tests
+            sync_args = [
+                "py.test",
+                "--quiet",
+                "-o",
+                "asyncio_mode=auto",
+                f"--junitxml=system_{session.python}_sync_sponge_log.xml",
+            ]
+            if not session.posargs:
+                sync_args.append(system_test_folder_path)
+                sync_args.append(
+                    f"--ignore={os.path.join(system_test_folder_path, '_async')}"
+                )
+            else:
+                sync_args.extend(session.posargs)
+
+            session.run(
+                *sync_args,
+                env={
+                    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                    "SPANNER_DATABASE_DIALECT": database_dialect,
+                    "SKIP_BACKUP_TESTS": "true",
+                },
+            )
+
+            # Run async tests
+            async_args = [
+                "py.test",
+                "--quiet",
+                "-o",
+                "asyncio_mode=auto",
+                f"--junitxml=system_{session.python}_async_sponge_log.xml",
+            ]
+            if not session.posargs:
+                async_args.append(os.path.join(system_test_folder_path, "_async"))
+            else:
+                # If posargs are provided, only run if they match async tests
+                # or just skip if they were already run in sync.
+                # For simplicity, we only run async folder if no posargs.
+                return
+
+            session.run(
+                *async_args,
+                env={
+                    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                    "SPANNER_DATABASE_DIALECT": database_dialect,
+                    "SKIP_BACKUP_TESTS": "true",
+                },
+            )
 
 
 @nox.session(python=ALL_PYTHON)
 def mypy(session):
     """Run the type checker."""
     session.skip("Mypy is not yet supported")
-
     # TODO(https://github.com/googleapis/gapic-generator-python/issues/2579):
     # use the latest version of mypy
     session.install(
@@ -734,14 +752,6 @@ def core_deps_from_source(session, protobuf_implementation):
     unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
     session.install(*unit_deps_all)
 
-    # Install dependencies for the system test environment
-    system_deps_all = (
-        SYSTEM_TEST_STANDARD_DEPENDENCIES
-        + SYSTEM_TEST_EXTERNAL_DEPENDENCIES
-        + SYSTEM_TEST_EXTRAS
-    )
-    session.install(*system_deps_all)
-
     # Because we test minimum dependency versions on the minimum Python
     # version, the first version we test with in the unit tests sessions has a
     # constraints file containing all dependencies and extras.
@@ -770,19 +780,30 @@ def core_deps_from_source(session, protobuf_implementation):
     # Note: If a dependency is added to the `core_dependencies_from_source` list,
     # the `prerel_deps` list in the `prerelease_deps` nox session should also be updated.
     core_dependencies_from_source = [
-        "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
-        "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
-        "google-auth @ git+https://github.com/googleapis/google-cloud-python#egg=google-auth&subdirectory=packages/google-auth",
-        "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
-        "proto-plus @ git+https://github.com/googleapis/google-cloud-python#egg=proto-plus&subdirectory=packages/proto-plus",
+        "googleapis-common-protos",
+        "google-api-core",
+        "google-auth",
+        "grpc-google-iam-v1",
+        "proto-plus",
     ]
 
-    for dep in core_dependencies_from_source:
-        session.install(dep, "--no-deps", "--ignore-installed")
-        print(f"Installed {dep}")
+    deps_dir = CURRENT_DIRECTORY.parent
+    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
+        deps_dir = deps_dir.parent
+
+    # Batch the pip installation to avoid sequential overhead
+    dep_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source]
+
+    session.install(*dep_paths, "--no-deps", "--ignore-installed")
+    session.install("pytest-xdist")
+    print(
+        f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}"
+    )
 
     session.run(
         "py.test",
+        "-n",
+        "auto",
         "tests/unit",
         env={
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,

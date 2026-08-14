@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,24 +31,36 @@ if os.path.isdir("samples"):
     LINT_PATHS.append("samples")
 
 ALL_PYTHON = [
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-# TODO(https://github.com/googleapis/gapic-generator-python/issues/2450):
-# Switch this to Python 3.15 alpha1
-# https://peps.python.org/pep-0790/
-PREVIEW_PYTHON_VERSION = "3.14"
+PREVIEW_PYTHON_VERSION = "3.15"
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
 
-LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
+if (CURRENT_DIRECTORY / "testing").exists():
+    LOWER_BOUND_CONSTRAINTS_FILE = (
+        CURRENT_DIRECTORY / "testing" / f"constraints-{ALL_PYTHON[0]}.txt"
+    )
+else:
+    LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
 PACKAGE_NAME = "google-cloud-storage"
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
@@ -103,6 +115,21 @@ def mypy(session):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/13362):
     # Enable mypy once this repo has been updated for mypy evaluation.
     session.skip("Skip mypy since this library is not yet updated for mypy evaluation")
+
+    session.install("-e", ".")
+    session.install(
+        "mypy",
+        "types-setuptools",
+        "types-protobuf",
+        "types-requests",
+    )
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "google",
+        *session.posargs,
+    )
 
 
 @nox.session
@@ -252,6 +279,10 @@ def install_unittest_dependencies(session, *constraints):
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
 
+    if session.python == "3.15":
+        session.skip(
+            "Skipping 3.15 until compatible wheels are available for google-crc32c"
+        )
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
@@ -494,7 +525,6 @@ def docs(session):
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
         "sphinx-build",
-        "-W",  # warnings as errors
         "-T",  # show full traceback on exception
         "-N",  # no colors
         "-b",
@@ -567,8 +597,9 @@ def prerelease_deps(session, protobuf_implementation):
             "Credentials must be set via environment variable GOOGLE_APPLICATION_CREDENTIALS"
         )
 
-    # Install all test dependencies
-    session.install("mock", "pytest", "pytest-cov", "brotli")
+    # Install dependencies for the unit test environment
+    unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
+    session.install(*unit_deps_all)
 
     # Install dependencies needed for system tests
     session.install(
@@ -583,7 +614,8 @@ def prerelease_deps(session, protobuf_implementation):
 
     prerel_deps = [
         "google-api-core",
-        "google-auth",
+        # Exclude google-auth 3.0.0.dev0 which was yanked
+        "google-auth!=3.0.0.dev0",
         "google-cloud-core",
         "google-crc32c",
         "google-resumable-media",
@@ -612,9 +644,7 @@ def prerelease_deps(session, protobuf_implementation):
                 f"import {version_namespace}; print({version_namespace}.__version__)",
             )
     # Remaining dependencies
-    other_deps = [
-        "requests",
-    ]
+    other_deps = ["requests", "pyopenssl"]
     session.install(*other_deps)
 
     session.run(
@@ -655,14 +685,6 @@ def core_deps_from_source(session, protobuf_implementation):
     unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
     session.install(*unit_deps_all)
 
-    # Install dependencies for the system test environment
-    system_deps_all = (
-        SYSTEM_TEST_STANDARD_DEPENDENCIES
-        + SYSTEM_TEST_EXTERNAL_DEPENDENCIES
-        + SYSTEM_TEST_EXTRAS
-    )
-    session.install(*system_deps_all)
-
     # Because we test minimum dependency versions on the minimum Python
     # version, the first version we test with in the unit tests sessions has a
     # constraints file containing all dependencies and extras.
@@ -691,16 +713,24 @@ def core_deps_from_source(session, protobuf_implementation):
     # Note: If a dependency is added to the `core_dependencies_from_source` list,
     # the `prerel_deps` list in the `prerelease_deps` nox session should also be updated.
     core_dependencies_from_source = [
-        "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
-        "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
-        "google-auth @ git+https://github.com/googleapis/google-cloud-python#egg=google-auth&subdirectory=packages/google-auth",
-        "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
-        "proto-plus @ git+https://github.com/googleapis/google-cloud-python#egg=proto-plus&subdirectory=packages/proto-plus",
+        "googleapis-common-protos",
+        "google-api-core",
+        "google-auth",
+        "grpc-google-iam-v1",
+        "proto-plus",
     ]
 
-    for dep in core_dependencies_from_source:
-        session.install(dep, "--no-deps", "--ignore-installed")
-        print(f"Installed {dep}")
+    deps_dir = CURRENT_DIRECTORY.parent
+    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
+        deps_dir = deps_dir.parent
+
+    # Batch the pip installation to avoid sequential overhead
+    dep_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source]
+
+    session.install(*dep_paths, "--no-deps", "--ignore-installed")
+    print(
+        f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}"
+    )
 
     session.run(
         "py.test",

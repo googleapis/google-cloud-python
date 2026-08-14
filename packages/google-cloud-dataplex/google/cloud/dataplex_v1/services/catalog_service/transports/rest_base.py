@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1608,6 +1608,63 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
+    class _BaseModifyEntry:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        @staticmethod
+        def _get_http_options():
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/locations/*}:modifyEntry",
+                    "body": "*",
+                },
+            ]
+            return http_options
+
+        @staticmethod
+        def _get_transcoded_request(http_options, request):
+            pb_request = catalog.ModifyEntryRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+            return transcoded_request
+
+        @staticmethod
+        def _get_request_body_json(transcoded_request):
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            return body
+
+        @staticmethod
+        def _get_query_params_json(transcoded_request):
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(
+                _BaseCatalogServiceRestTransport._BaseModifyEntry._get_unset_required_fields(
+                    query_params
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+            return query_params
+
     class _BaseSearchEntries:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
@@ -2080,10 +2137,6 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{resource=projects/*/locations/*/lakes/*/environments/*}:getIamPolicy",
-                },
-                {
-                    "method": "get",
                     "uri": "/v1/{resource=projects/*/locations/*/dataScans/*}:getIamPolicy",
                 },
                 {
@@ -2142,6 +2195,10 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     "method": "get",
                     "uri": "/v1/{resource=organizations/*/locations/*/encryptionConfigs/*}:getIamPolicy",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{resource=projects/*/locations/*/dataDomains/*}:getIamPolicy",
+                },
             ]
             return http_options
 
@@ -2181,11 +2238,6 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{resource=projects/*/locations/*/lakes/*/tasks/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/lakes/*/environments/*}:setIamPolicy",
                     "body": "*",
                 },
                 {
@@ -2263,6 +2315,11 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     "uri": "/v1/{resource=projects/*/locations/*/dataProducts/*}:setIamPolicy",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/locations/*/dataDomains/*}:setIamPolicy",
+                    "body": "*",
+                },
             ]
             return http_options
 
@@ -2307,11 +2364,6 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{resource=projects/*/locations/*/lakes/*/tasks/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/lakes/*/environments/*}:testIamPermissions",
                     "body": "*",
                 },
                 {
@@ -2387,6 +2439,11 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                 {
                     "method": "post",
                     "uri": "/v1/{resource=projects/*/locations/*/dataProducts/*}:testIamPermissions",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{resource=projects/*/locations/*/dataDomains/*}:testIamPermissions",
                     "body": "*",
                 },
             ]

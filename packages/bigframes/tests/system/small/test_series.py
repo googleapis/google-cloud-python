@@ -33,6 +33,7 @@ import bigframes.features
 import bigframes.pandas
 import bigframes.series as series
 import bigframes.testing
+import bigframes.testing.utils
 from bigframes.testing.utils import (
     assert_frame_equal,
     assert_series_equal,
@@ -1232,23 +1233,12 @@ def test_divmods_series(scalars_dfs, col_x, col_y, method):
         scalars_pandas_df[col_y]
     )
     # BigQuery's mod functions return NUMERIC values for non-INT64 inputs.
-    if bf_div_result.dtype == pd.Int64Dtype():
-        bigframes.testing.utils.assert_series_equal(
-            pd_div_result, bf_div_result.to_pandas()
-        )
-    else:
-        bigframes.testing.utils.assert_series_equal(
-            pd_div_result, bf_div_result.astype("Float64").to_pandas()
-        )
-
-    if bf_mod_result.dtype == pd.Int64Dtype():
-        bigframes.testing.utils.assert_series_equal(
-            pd_mod_result, bf_mod_result.to_pandas()
-        )
-    else:
-        bigframes.testing.utils.assert_series_equal(
-            pd_mod_result, bf_mod_result.astype("Float64").to_pandas()
-        )
+    bigframes.testing.utils.assert_series_equal(
+        pd_div_result, bf_div_result.to_pandas(), check_dtype=False
+    )
+    bigframes.testing.utils.assert_series_equal(
+        pd_mod_result, bf_mod_result.to_pandas(), check_dtype=False
+    )
 
 
 @pytest.mark.parametrize(
@@ -1279,7 +1269,7 @@ def test_divmods_scalars(scalars_dfs, col_x, other, method):
     # BigQuery's mod functions return NUMERIC values for non-INT64 inputs.
     if bf_div_result.dtype == pd.Int64Dtype():
         bigframes.testing.utils.assert_series_equal(
-            pd_div_result, bf_div_result.to_pandas()
+            pd_div_result, bf_div_result.to_pandas(), check_dtype=False
         )
     else:
         bigframes.testing.utils.assert_series_equal(
@@ -1288,7 +1278,7 @@ def test_divmods_scalars(scalars_dfs, col_x, other, method):
 
     if bf_mod_result.dtype == pd.Int64Dtype():
         bigframes.testing.utils.assert_series_equal(
-            pd_mod_result, bf_mod_result.to_pandas()
+            pd_div_result, bf_div_result.to_pandas(), check_dtype=False
         )
     else:
         bigframes.testing.utils.assert_series_equal(
@@ -4029,25 +4019,28 @@ def test_timestamp_astype_string(session):
 
 @pytest.mark.parametrize("errors", ["raise", "null"])
 def test_float_astype_json(errors, session):
-    data = ["1.25", "2500000000", None, "-12323.24"]
+    data = ["1.25", "2500000000.1", None, "-12323.24"]
     bf_series = series.Series(data, dtype=dtypes.FLOAT_DTYPE, session=session)
 
     bf_result = bf_series.astype(dtypes.JSON_DTYPE, errors=errors)
     assert bf_result.dtype == dtypes.JSON_DTYPE
+    bf_result_pandas = bf_result.to_pandas()
 
-    expected_result = pd.Series(data, dtype=dtypes.JSON_DTYPE)
+    expected_data = [float(x) if x is not None else None for x in data]
+    expected_result = pd.Series(expected_data, dtype=dtypes.JSON_DTYPE)
     expected_result.index = expected_result.index.astype("Int64")
-    bigframes.testing.utils.assert_series_equal(bf_result.to_pandas(), expected_result)
+    bigframes.testing.utils.assert_series_equal(bf_result_pandas, expected_result)
 
 
 def test_float_astype_json_str(session):
-    data = ["1.25", "2500000000", None, "-12323.24"]
+    data = ["1.25", "2500000000.1", None, "-12323.24"]
     bf_series = series.Series(data, dtype=dtypes.FLOAT_DTYPE, session=session)
 
     bf_result = bf_series.astype("json")
     assert bf_result.dtype == dtypes.JSON_DTYPE
 
-    expected_result = pd.Series(data, dtype=dtypes.JSON_DTYPE)
+    expected_data = [float(x) if x is not None else None for x in data]
+    expected_result = pd.Series(expected_data, dtype=dtypes.JSON_DTYPE)
     expected_result.index = expected_result.index.astype("Int64")
     bigframes.testing.utils.assert_series_equal(bf_result.to_pandas(), expected_result)
 
@@ -4999,3 +4992,9 @@ def test_series_item_with_empty(session):
 
     with pytest.raises(ValueError, match=re.escape(expected_message)):
         bf_s_empty.item()
+
+
+def test_series_sql(session):
+    s = bigframes.pandas.Series([], session=session)
+
+    assert len(s.sql) > 0

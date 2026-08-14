@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -152,6 +152,9 @@ class Agent(proto.Message):
             Optional. Agent transfer rules.
             If multiple rules match, the first one in the
             list will be used.
+        validation_errors (MutableSequence[str]):
+            Output only. Misconfigurations or errors in
+            the agent that may affect agent quality.
     """
 
     class LlmAgent(proto.Message):
@@ -201,6 +204,12 @@ class Agent(proto.Message):
                   ```allow_playback_interruption`` <https://docs.cloud.google.com/dialogflow/cx/docs/reference/rpc/google.cloud.dialogflow.cx.v3#text>`__
                   set to true will be interruptable, all other messages
                   follow the app-level barge-in settings.
+            language_code_variable (str):
+                Optional. The name of the variable that
+                contains the language code to be used for the
+                Dialogflow session. If unspecified, the default
+                language code of the Dialogflow agent will be
+                used.
         """
 
         agent: str = proto.Field(
@@ -228,6 +237,10 @@ class Agent(proto.Message):
         respect_response_interruption_settings: bool = proto.Field(
             proto.BOOL,
             number=6,
+        )
+        language_code_variable: str = proto.Field(
+            proto.STRING,
+            number=7,
         )
 
     class AgentToolset(proto.Message):
@@ -353,6 +366,10 @@ class Agent(proto.Message):
         proto.MESSAGE,
         number=30,
         message=agent_transfers.TransferRule,
+    )
+    validation_errors: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=32,
     )
 
 

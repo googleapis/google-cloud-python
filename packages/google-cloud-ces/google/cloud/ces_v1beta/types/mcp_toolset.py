@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,12 +19,14 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.ces_v1beta.types import auth, common
+from google.cloud.ces_v1beta.types import auth, common, schema
 
 __protobuf__ = proto.module(
     package="google.cloud.ces.v1beta",
     manifest={
         "McpToolset",
+        "McpToolOverride",
+        "McpToolDefinition",
     },
 )
 
@@ -65,6 +67,12 @@ class McpToolset(proto.Message):
             the session variables. See
             https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/tool/open-api#openapi-injection
             for more details.
+        tool_overrides (MutableSequence[google.cloud.ces_v1beta.types.McpToolOverride]):
+            Optional. Overrides for individual tools
+            within this toolset. This allows overriding
+            specific details like descriptions, names, or
+            pinning the tools' states so they aren't fully
+            dynamic.
     """
 
     server_address: str = proto.Field(
@@ -90,6 +98,89 @@ class McpToolset(proto.Message):
         proto.STRING,
         proto.STRING,
         number=5,
+    )
+    tool_overrides: MutableSequence["McpToolOverride"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="McpToolOverride",
+    )
+
+
+class McpToolOverride(proto.Message):
+    r"""Overrides associated with a given tool in a Toolset.
+    This enables "pinning" or "overriding" of tool definitions from
+    the external dynamic server.
+
+    Attributes:
+        tool (str):
+            Required. The original name of the tool as it
+            is emitted by the MCP server.
+        name_override (str):
+            Optional. If present, this tool uses this
+            name in the Agent instead of the original name.
+            This is primarily used as an alias if the MCP
+            server offers poorly named tools.
+        description_override (str):
+            Optional. If present, this tool uses this
+            description instead of the original description
+            from the server.
+        snapshot (google.cloud.ces_v1beta.types.McpToolDefinition):
+            Output only. If present, this tool is
+            "Pinned" and uses the snapshot values as
+            fallbacks if the server becomes temporarily
+            unavailable or if no Override is present.
+    """
+
+    tool: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    name_override: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description_override: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    snapshot: "McpToolDefinition" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="McpToolDefinition",
+    )
+
+
+class McpToolDefinition(proto.Message):
+    r"""Container for a tool's core definition elements that are
+    snapshot. Schemas in the snapshot are used as-is and cannot be
+    overridden.
+
+    Attributes:
+        description (str):
+            Output only. The description of the MCP tool. This can be
+            overridden by ``description_override`` in
+            ``McpToolOverride``.
+        input_schema (google.cloud.ces_v1beta.types.Schema):
+            Output only. The schema of the input
+            arguments of the MCP tool.
+        output_schema (google.cloud.ces_v1beta.types.Schema):
+            Output only. The schema of the output
+            arguments of the MCP tool.
+    """
+
+    description: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    input_schema: schema.Schema = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=schema.Schema,
+    )
+    output_schema: schema.Schema = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=schema.Schema,
     )
 
 

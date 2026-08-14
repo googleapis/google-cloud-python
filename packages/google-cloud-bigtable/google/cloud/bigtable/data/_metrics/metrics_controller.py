@@ -13,9 +13,11 @@
 # limitations under the License.
 from __future__ import annotations
 
-from google.cloud.bigtable.data._metrics.data_model import ActiveOperationMetric
+from google.cloud.bigtable.data._metrics.data_model import (
+    ActiveOperationMetric,
+    OperationType,
+)
 from google.cloud.bigtable.data._metrics.handlers._base import MetricsHandler
-from google.cloud.bigtable.data._metrics.data_model import OperationType
 
 
 class BigtableClientSideMetricsController:

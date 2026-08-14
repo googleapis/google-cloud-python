@@ -1,7 +1,8 @@
 import ast
-import sys
 import os
-import black
+import subprocess
+import sys
+
 import pytest
 import yaml
 
@@ -11,11 +12,11 @@ cross_sync_path = os.path.join(test_dir_name, "..", "..", "..", ".cross_sync")
 sys.path.append(cross_sync_path)
 
 from transformers import (  # noqa: F401 E402
-    SymbolReplacer,
     AsyncToSync,
+    CrossSyncFileProcessor,
     RmAioFunctions,
     StripAsyncConditionalBranches,
-    CrossSyncFileProcessor,
+    SymbolReplacer,
 )
 
 
@@ -38,9 +39,6 @@ def loader():
 @pytest.mark.parametrize(
     "test_dict", loader(), ids=lambda x: f"{x['file_name']}: {x.get('description', '')}"
 )
-@pytest.mark.skipif(
-    sys.version_info < (3, 9), reason="ast.unparse requires python3.9 or higher"
-)
 def test_e2e_scenario(test_dict):
     before_ast = ast.parse(test_dict["before"])
     got_ast = before_ast
@@ -57,9 +55,39 @@ def test_e2e_scenario(test_dict):
     if got_ast is None:
         final_str = ""
     else:
-        final_str = black.format_str(ast.unparse(got_ast), mode=black.FileMode())
+        final_str = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "ruff",
+                "format",
+                "--line-length=88",
+                "--config",
+                "format.skip-magic-trailing-comma=true",
+                "-",
+            ],
+            input=ast.unparse(got_ast),
+            text=True,
+            capture_output=True,
+            check=True,
+        ).stdout
     if test_dict.get("after") is None:
         expected_str = ""
     else:
-        expected_str = black.format_str(test_dict["after"], mode=black.FileMode())
+        expected_str = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "ruff",
+                "format",
+                "--line-length=88",
+                "--config",
+                "format.skip-magic-trailing-comma=true",
+                "-",
+            ],
+            input=test_dict["after"],
+            text=True,
+            capture_output=True,
+            check=True,
+        ).stdout
     assert final_str == expected_str, f"Expected:\n{expected_str}\nGot:\n{final_str}"

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -501,6 +501,40 @@ class DataProductServiceGrpcAsyncIOTransport(DataProductServiceTransport):
         return self._stubs["update_data_product"]
 
     @property
+    def request_data_product_access(
+        self,
+    ) -> Callable[
+        [data_products.RequestDataProductAccessRequest],
+        Awaitable[data_products.RequestDataProductAccessResponse],
+    ]:
+        r"""Return a callable for the request data product access method over gRPC.
+
+        Requests access to a data product. This will trigger
+        an access approval workflow, and the requester will need
+        to wait for the approval to be granted before they will
+        be able to access the data product assets.
+
+        Returns:
+            Callable[[~.RequestDataProductAccessRequest],
+                    Awaitable[~.RequestDataProductAccessResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "request_data_product_access" not in self._stubs:
+            self._stubs["request_data_product_access"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dataplex.v1.DataProductService/RequestDataProductAccess",
+                    request_serializer=data_products.RequestDataProductAccessRequest.serialize,
+                    response_deserializer=data_products.RequestDataProductAccessResponse.deserialize,
+                )
+            )
+        return self._stubs["request_data_product_access"]
+
+    @property
     def create_data_asset(
         self,
     ) -> Callable[
@@ -666,6 +700,11 @@ class DataProductServiceGrpcAsyncIOTransport(DataProductServiceTransport):
             ),
             self.update_data_product: self._wrap_method(
                 self.update_data_product,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.request_data_product_access: self._wrap_method(
+                self.request_data_product_access,
                 default_timeout=None,
                 client_info=client_info,
             ),

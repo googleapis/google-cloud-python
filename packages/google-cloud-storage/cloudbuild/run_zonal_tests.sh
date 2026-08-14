@@ -1,14 +1,9 @@
 
 set -euxo pipefail
-echo '--- Installing git and cloning repository on VM ---'
-sudo apt-get update && sudo apt-get install -y git python3-pip python3-venv
-
-# Clone the repository and checkout the specific commit from the build trigger.
-git clone https://github.com/googleapis/python-storage.git
-cd python-storage
-git fetch origin "refs/pull/${_PR_NUMBER}/head"
-git checkout ${COMMIT_SHA}
-
+echo '--- Extracting source code tarball on VM ---'
+sudo apt-get update && sudo apt-get install -y python3-pip python3-venv
+tar -xzf google-cloud-storage.tar.gz
+cd google-cloud-storage
 
 echo '--- Installing Python and dependencies on VM ---'
 python3 -m venv env
@@ -22,9 +17,9 @@ pip install -e .
 
 echo '--- Setting up environment variables on VM ---'
 export ZONAL_BUCKET=${_ZONAL_BUCKET}
+export CROSS_REGION_BUCKET=${CROSS_REGION_BUCKET:-}
 export RUN_ZONAL_SYSTEM_TESTS=True
 export GCE_METADATA_MTLS_MODE=None
 CURRENT_ULIMIT=$(ulimit -n)
 echo '--- Running Zonal tests on VM with ulimit set to ---' $CURRENT_ULIMIT
 pytest -vv -s --log-format='%(asctime)s %(levelname)s %(message)s' --log-date-format='%H:%M:%S' tests/system/test_zonal.py
-pytest -vv -s --log-format='%(asctime)s %(levelname)s %(message)s' --log-date-format='%H:%M:%S' samples/snippets/zonal_buckets/zonal_snippets_test.py

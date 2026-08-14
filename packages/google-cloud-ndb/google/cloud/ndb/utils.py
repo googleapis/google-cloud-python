@@ -14,7 +14,6 @@
 
 """Low-level utilities used internally by ``ndb``"""
 
-
 import functools
 import inspect
 import os

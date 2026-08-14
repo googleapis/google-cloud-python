@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,46 +14,45 @@
 # limitations under the License.
 #
 import logging as std_logging
-from collections import OrderedDict
 import re
+from collections import OrderedDict
 from typing import (
-    Dict,
+    AsyncIterable,
+    Awaitable,
     Callable,
+    Dict,
     Mapping,
     MutableMapping,
     MutableSequence,
     Optional,
-    AsyncIterable,
-    Awaitable,
     Sequence,
     Tuple,
     Type,
     Union,
 )
 
-from google.cloud.bigtable_v2 import gapic_version as package_version
-
-from google.api_core.client_options import ClientOptions
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
+from google.cloud.bigtable_v2 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.bigtable_v2.types import bigtable
-from google.cloud.bigtable_v2.types import data
-from google.cloud.bigtable_v2.types import request_stats
-from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import BigtableTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import BigtableGrpcAsyncIOTransport
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+
+from google.cloud.bigtable_v2.types import bigtable, data, request_stats
+
 from .client import BigtableClient
+from .transports.base import DEFAULT_CLIENT_INFO, BigtableTransport
+from .transports.grpc_asyncio import BigtableGrpcAsyncIOTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -119,7 +118,10 @@ class BigtableAsyncClient:
         Returns:
             BigtableAsyncClient: The constructed client.
         """
-        return BigtableClient.from_service_account_info.__func__(BigtableAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            BigtableClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(BigtableAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -135,7 +137,10 @@ class BigtableAsyncClient:
         Returns:
             BigtableAsyncClient: The constructed client.
         """
-        return BigtableClient.from_service_account_file.__func__(BigtableAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            BigtableClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(BigtableAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -185,7 +190,7 @@ class BigtableAsyncClient:
         return self._client.transport
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -433,11 +438,13 @@ class BigtableAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> Awaitable[AsyncIterable[bigtable.SampleRowKeysResponse]]:
-        r"""Returns a sample of row keys in the table. The
-        returned row keys will delimit contiguous sections of
-        the table of approximately equal size, which can be used
-        to break up the data for distributed tasks like
-        mapreduces.
+        r"""Returns a sample of row keys in the table. The returned row keys
+        will delimit contiguous sections of the table of approximately
+        equal size, which can be used to break up the data for
+        distributed tasks like mapreduces.
+
+        If a ``row_range`` is provided in the request, the returned
+        samples will be restricted to the specified range.
 
         Args:
             request (Optional[Union[google.cloud.bigtable_v2.types.SampleRowKeysRequest, dict]]):
@@ -1743,9 +1750,7 @@ class BigtableAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("BigtableAsyncClient",)

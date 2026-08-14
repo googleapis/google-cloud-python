@@ -1,0 +1,44 @@
+{% include 'license.py.j2' %}
+
+#
+# DO NOT MODIFY THIS FILE DIRECTLY.
+# This file was generated from: {{ yaml_path }}
+# by the script: {{ script_path }}
+
+import bigframes.core.col
+import bigframes.core.expression as ex
+import bigframes.pandas as bpd
+import {{ import_path }} as {{ short_name }}_op
+import bigframes.bigquery as bbq
+
+
+{% for func in functions %}
+def test_{{ func.name }}_expression():
+    # Call the function with col() expressions
+{% if is_global %}
+    result = bbq.{{ func.name }}(
+{% else %}
+    result = bbq.{{ short_name }}.{{ func.name }}(
+{% endif %}
+        {% for arg in func.args %}
+        bpd.col("{{ arg.name }}"),
+        {% endfor %}
+    )
+
+    # Verify result is a col Expression
+    assert isinstance(result, bigframes.core.col.Expression)
+
+    # Verify the internal expression structure
+    expr = result._value
+    assert isinstance(expr, ex.OpExpression)
+    assert expr.op == {{ short_name }}_op.{{ func.op_name }}
+
+    # Verify arguments are free variables matching the names
+    assert len(expr.inputs) == {{ func.args | length }}
+    {% for arg in func.args %}
+    assert isinstance(expr.inputs[{{ loop.index0 }}], ex.UnboundVariableExpression)
+    assert expr.inputs[{{ loop.index0 }}].id == "{{ arg.name }}"
+    {% endfor %}
+
+
+{% endfor %}

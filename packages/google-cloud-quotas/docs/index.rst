@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Cloud Quotas API.
+This package includes clients for multiple versions of Cloud Quotas.
 By default, you will get version ``cloudquotas_v1``.
 
 

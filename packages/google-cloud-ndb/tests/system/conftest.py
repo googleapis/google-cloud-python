@@ -6,9 +6,7 @@ import uuid
 import pytest
 import requests
 
-from google.cloud import datastore
-from google.cloud import ndb
-
+from google.cloud import datastore, ndb
 from google.cloud.ndb import global_cache as global_cache_module
 
 from . import KIND, OTHER_KIND, _helpers
@@ -138,7 +136,7 @@ def fix_key_db(key, database):
             *key.flat_path,
             project=key.project,
             database=database,
-            namespace=key.namespace
+            namespace=key.namespace,
         )
         # If the current parent has already been set, we re-use
         # the same instance

@@ -13,25 +13,22 @@
 # limitations under the License.
 from __future__ import annotations
 
-from typing import ClassVar, Tuple, cast, TYPE_CHECKING
-
-import time
-import re
-import logging
 import contextvars
-
+import logging
+import re
+import time
+from dataclasses import dataclass, field
 from enum import Enum
 from functools import lru_cache
-from dataclasses import dataclass
-from dataclasses import field
-from grpc import StatusCode
-from grpc import RpcError
+from typing import TYPE_CHECKING, ClassVar, Tuple, cast
+
+from google.protobuf.message import DecodeError
+from grpc import RpcError, StatusCode
 from grpc.aio import AioRpcError
 
 import google.cloud.bigtable.data.exceptions as bt_exceptions
-from google.cloud.bigtable_v2.types.response_params import ResponseParams
 from google.cloud.bigtable.data._helpers import TrackedBackoffGenerator
-from google.protobuf.message import DecodeError
+from google.cloud.bigtable_v2.types.response_params import ResponseParams
 
 if TYPE_CHECKING:
     from google.cloud.bigtable.data._metrics.handlers._base import MetricsHandler
@@ -121,6 +118,10 @@ class CompletedOperationMetric:
     cluster_id: str
     zone: str
     is_streaming: bool
+    project_id: str | None = None
+    instance_id: str | None = None
+    table_id: str | None = None
+    app_profile_id: str | None = None
     first_response_latency_ns: int | None = None
     flow_throttling_time_ns: int = 0
 
@@ -139,7 +140,6 @@ class ActiveAttemptMetric:
     # time waiting on user to process the response, in nanoseconds
     # currently only relevant for ReadRows
     application_blocking_time_ns: int = 0
-    # backoff time is added to application_blocking_time_ns
     backoff_before_attempt_ns: int = 0
 
 
@@ -163,6 +163,10 @@ class ActiveOperationMetric:
     active_attempt: ActiveAttemptMetric | None = None
     cluster_id: str | None = None
     zone: str | None = None
+    project_id: str | None = None
+    instance_id: str | None = None
+    table_id: str | None = None
+    app_profile_id: str | None = None
     completed_attempts: list[CompletedAttemptMetric] = field(default_factory=list)
     is_streaming: bool = False  # only True for read_rows operations
     handlers: list[MetricsHandler] = field(default_factory=list)
@@ -378,6 +382,10 @@ class ActiveOperationMetric:
             cluster_id=self.cluster_id or DEFAULT_CLUSTER_ID,
             zone=self.zone or DEFAULT_ZONE,
             is_streaming=self.is_streaming,
+            project_id=self.project_id,
+            instance_id=self.instance_id,
+            table_id=self.table_id,
+            app_profile_id=self.app_profile_id,
             first_response_latency_ns=self.first_response_latency_ns,
             flow_throttling_time_ns=self.flow_throttling_time_ns,
         )

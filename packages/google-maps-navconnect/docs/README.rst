@@ -1,9 +1,9 @@
-Python Client for Navigation Connect API
-========================================
+Python Client for Navigation Connect
+====================================
 
 |preview| |pypi| |versions|
 
-`Navigation Connect API`_: Navigation Connect API.
+`Navigation Connect`_: Navigation Connect API.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for Navigation Connect API
    :target: https://pypi.org/project/google-maps-navconnect/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-maps-navconnect.svg
    :target: https://pypi.org/project/google-maps-navconnect/
-.. _Navigation Connect API: https://developers.google.com/maps/documentation/mobility/navigationconnect
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-maps-navconnect/latest
-.. _Product Documentation:  https://developers.google.com/maps/documentation/mobility/navigationconnect
+.. _Navigation Connect: https://developers.google.com/maps/documentation/navigation/connect
+.. _Client Library Documentation: https://googleapis.dev/python/google-maps-navconnect/latest
+.. _Product Documentation:  https://developers.google.com/maps/documentation/navigation/connect
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Navigation Connect API.`_
+3. `Enable the Navigation Connect.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Navigation Connect API.:  https://developers.google.com/maps/documentation/mobility/navigationconnect
+.. _Enable the Navigation Connect.:  https://developers.google.com/maps/documentation/navigation/connect
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +61,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.9, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.8
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -97,14 +98,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Navigation Connect API
+-  Read the `Client Library Documentation`_ for Navigation Connect
    to see other available methods on the client.
--  Read the `Navigation Connect API Product documentation`_ to learn
+-  Read the `Navigation Connect Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Navigation Connect API Product documentation:  https://developers.google.com/maps/documentation/mobility/navigationconnect
+.. _Navigation Connect Product documentation:  https://developers.google.com/maps/documentation/navigation/connect
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

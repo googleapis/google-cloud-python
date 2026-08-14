@@ -52,7 +52,6 @@ import google.cloud.bigquery.job
 import google.cloud.bigquery.table
 import numpy
 import pandas
-import pandas.io.formats.format
 import pyarrow
 import tabulate
 from pandas.api import extensions as pd_ext
@@ -81,9 +80,7 @@ import bigframes.formatting_helpers as formatter
 import bigframes.functions
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
-import bigframes.operations.ai
 import bigframes.operations.plotting as plotting
-import bigframes.operations.semantics
 import bigframes.operations.structs
 import bigframes.series
 import bigframes.session._io.bigquery
@@ -317,7 +314,6 @@ class DataFrame:
         return indexers.LocDataFrameIndexer(self)
 
     @property
-    @validations.requires_ordering()
     def iloc(self) -> indexers.ILocDataFrameIndexer:
         return indexers.ILocDataFrameIndexer(self)
 
@@ -442,17 +438,41 @@ class DataFrame:
         if errors not in ["raise", "null"]:
             raise ValueError("Arg 'error' must be one of 'raise' or 'null'")
 
+        if isinstance(dtype, dict):
+            for col in dtype:
+                if col not in self.columns:
+                    raise KeyError(
+                        f"Only Column Names are allowed in dtypes dict. '{col}' is not in the columns."
+                    )
+
         safe_cast = errors == "null"
 
-        if isinstance(dtype, dict):
-            result = self.copy()
-            for col, to_type in dtype.items():
-                result[col] = result[col].astype(to_type)
-            return result
+        exprs: list[ex.Expression] = []
+        for col_id, col_label in zip(
+            self._block.value_columns, self._block.column_labels
+        ):
+            from_type = self._block._column_type(col_id)
 
-        dtype = bigframes.dtypes.bigframes_type(dtype)
+            if isinstance(dtype, dict):
+                if col_label not in dtype:
+                    exprs.append(ex.deref(col_id))
+                    continue
+                to_type = bigframes.dtypes.bigframes_type(dtype[col_label])
+            else:
+                to_type = bigframes.dtypes.bigframes_type(dtype)
 
-        return self._apply_unary_op(ops.AsTypeOp(dtype, safe_cast))
+            op: ops.UnaryOp
+            if to_type == bigframes.dtypes.JSON_DTYPE:
+                op = ops.ToJSON(safe=safe_cast)
+            elif from_type == bigframes.dtypes.JSON_DTYPE:
+                op = ops.JSONDecode(to_type=to_type, safe=safe_cast)
+            else:
+                op = ops.AsTypeOp(to_type=to_type, safe=safe_cast)
+
+            exprs.append(op.as_expr(ex.deref(col_id)))
+
+        block = self._block.project_exprs(exprs, labels=self.columns, drop=True)
+        return DataFrame(block)
 
     def _should_sql_have_index(self) -> bool:
         """Should the SQL we pass to BQML and other I/O include the index?"""
@@ -733,7 +753,7 @@ class DataFrame:
         # https://github.com/googleapis/python-bigquery-dataframes/issues/728
         # and
         # https://nedbatchelder.com/blog/201010/surprising_getattr_recursion.html
-        if key == "_block":
+        if "_block" not in self.__dict__ or key == "_block":
             raise AttributeError(key)
 
         if key in self._block.column_labels:
@@ -819,22 +839,27 @@ class DataFrame:
             column_count=len(self.columns),
         )
 
-    def _get_display_df_and_blob_cols(self) -> tuple[DataFrame, list[str]]:
-        """Process ObjectRef columns for display."""
+    def _prepare_display_df(self) -> DataFrame:
+        """Process ObjectRef and JSON/nested JSON columns for display."""
+        import bigframes.bigquery as bbq
+
         df = self
-        blob_cols = []
-        if bigframes.options.display.blob_display:
-            blob_cols = [
-                series_name
-                for series_name, series in self.items()
-                if series.dtype == bigframes.dtypes.OBJ_REF_DTYPE
-            ]
-            if blob_cols:
-                df = self.copy()
-                for col in blob_cols:
-                    # TODO(garrettwu): Not necessary to get access urls for all the rows. Update when having a to get URLs from local data.
-                    df[col] = df[col].blob._get_runtime(mode="R", with_metadata=True)
-        return df, blob_cols
+        # Arrow/Pandas to_pandas_batches does not support raw JSON/nested JSON
+        # columns. Pre-serialize them to string format to bypass this limit.
+        # Using TO_JSON_STRING via SqlScalarOp handles complex nested STRUCT
+        # types correctly. Use the offset so that we can handle duplicate and
+        # non-string column names.
+        json_col_indexes = [
+            col_index
+            for col_index, col in enumerate(df.columns)
+            if bigframes.dtypes.contains_db_dtypes_json_dtype(df[col].dtype)
+        ]
+        if json_col_indexes:
+            df.iloc[:, json_col_indexes] = cast(
+                DataFrame,
+                df.iloc[:, json_col_indexes].apply(bbq.to_json_string),  # type: ignore
+            )
+        return df
 
     def _repr_mimebundle_(self, include=None, exclude=None):
         """
@@ -1743,7 +1768,8 @@ class DataFrame:
         )
         if query_job:
             self._set_internal_query_job(query_job)
-        return df.set_axis(self._block.column_labels, axis=1, copy=False)
+        df.columns = self._block.column_labels
+        return df
 
     def to_pandas_batches(
         self,
@@ -1751,6 +1777,7 @@ class DataFrame:
         max_results: Optional[int] = None,
         *,
         allow_large_results: Optional[bool] = None,
+        cell_execution_count: Optional[int] = None,
     ) -> blocks.PandasBatches:
         """Stream DataFrame results to an iterable of pandas DataFrame.
 
@@ -1803,6 +1830,7 @@ class DataFrame:
             page_size=page_size,
             max_results=max_results,
             allow_large_results=allow_large_results,
+            cell_execution_count=cell_execution_count,
         )
 
     def _to_pandas_batches(
@@ -1811,11 +1839,13 @@ class DataFrame:
         max_results: Optional[int] = None,
         *,
         allow_large_results: Optional[bool] = None,
+        cell_execution_count: Optional[int] = None,
     ) -> blocks.PandasBatches:
         return self._block.to_pandas_batches(
             page_size=page_size,
             max_results=max_results,
             allow_large_results=allow_large_results,
+            cell_execution_count=cell_execution_count,
         )
 
     def _compute_dry_run(self) -> google.cloud.bigquery.job.QueryJob:
@@ -1869,7 +1899,8 @@ class DataFrame:
                 raise ValueError(
                     "Cannot peek efficiently when data has aggregates, joins or window functions applied. Use force=True to fully compute dataframe."
                 )
-        return maybe_result.set_axis(self._block.column_labels, axis=1, copy=False)
+        maybe_result.columns = self._block.column_labels
+        return maybe_result
 
     def nlargest(
         self,
@@ -2210,10 +2241,47 @@ class DataFrame:
         else:
             return self._assign_scalar(k, v)  # type: ignore
 
-    def _assign_multi_items(
+    def _assign_single_item_by_offset(
         self,
-        k: list[str] | pandas.Index,
+        offset: int,
+        value: SingleItemValue | MultiItemValue,
+    ) -> DataFrame:
+        if isinstance(value, bigframes.series.Series):
+            return self._assign_series_join_on_index_by_offset(offset, value)
+        elif isinstance(value, bigframes.core.col.Expression):
+            label_to_col_ref = {
+                label: ex.deref(id) for id, label in self._block.col_id_to_label.items()
+            }
+            resolved_expr = value._value.bind_variables(label_to_col_ref)
+            block, new_col_id = self._block.project_expr(resolved_expr)
+            target_col_id = self._block.value_columns[offset]
+            block = block.copy_values(new_col_id, target_col_id).drop_columns(
+                [new_col_id]
+            )
+            return DataFrame(block)
+        elif isinstance(value, DataFrame):
+            v_df_col_count = len(value._block.value_columns)
+            if v_df_col_count != 1:
+                raise ValueError(
+                    f"Cannot set a DataFrame with {v_df_col_count} columns to the single column at offset {offset}"
+                )
+            return self._assign_series_join_on_index_by_offset(
+                offset, cast(bigframes.series.Series, value[value.columns[0]])
+            )
+        elif callable(value):
+            raise NotImplementedError(
+                "Callable assignment is not supported by column offset."
+            )
+        elif utils.is_list_like(value):
+            return self._assign_single_item_listlike_by_offset(offset, value)
+        else:
+            return self._assign_scalar_by_offset(offset, value)  # type: ignore
+
+    def _assign_multi_items_helper(
+        self,
+        k: Sequence[Any] | pandas.Index,
         v: SingleItemValue | MultiItemValue,
+        assign_single_fn: Callable[[DataFrame, Any, Any], DataFrame],
     ) -> DataFrame:
         value_sources: Sequence[Any] = []
         if isinstance(v, DataFrame):
@@ -2231,13 +2299,35 @@ class DataFrame:
             raise ValueError("Columns must be same length as key")
 
         # Repeatedly assign columns in order.
-        result = self._assign_single_item(k[0], value_sources[0])
+        result = assign_single_fn(self, k[0], value_sources[0])
         for target, source in zip(k[1:], value_sources[1:]):
-            result = result._assign_single_item(target, source)
+            result = assign_single_fn(result, target, source)
         return result
 
-    def _assign_single_item_listlike(self, k: str, v: Sequence) -> DataFrame:
-        given_rows = len(v)
+    def _assign_multi_items(
+        self,
+        k: list[str] | pandas.Index,
+        v: SingleItemValue | MultiItemValue,
+    ) -> DataFrame:
+        return self._assign_multi_items_helper(k, v, DataFrame._assign_single_item)
+
+    def _assign_multi_items_by_offsets(
+        self,
+        k: Sequence[int],
+        v: SingleItemValue | MultiItemValue,
+    ) -> DataFrame:
+        return self._assign_multi_items_helper(
+            k, v, DataFrame._assign_single_item_by_offset
+        )
+
+    _assign_multi_items_by_offset = _assign_multi_items_by_offsets
+    _assign_multi_items_by_label = _assign_multi_items
+    _assign_multi_items_by_labels = _assign_multi_items
+
+    def _assign_single_item_listlike_to_col_ids(
+        self, col_ids: Sequence[str], label: Optional[str], value: Sequence
+    ) -> DataFrame:
+        given_rows = len(value)
         actual_rows = len(self)
         assigning_to_empty_df = len(self.columns) == 0 and actual_rows == 0
         if not assigning_to_empty_df and given_rows != actual_rows:
@@ -2245,7 +2335,14 @@ class DataFrame:
                 f"Length of values ({given_rows}) does not match length of index ({actual_rows})"
             )
 
-        local_df = DataFrame({k: v}, session=self._get_block().expr.session)
+        temp_col_name = (
+            label
+            if label is not None
+            else bigframes.core.guid.generate_guid("listlike_col_")
+        )
+        local_df = DataFrame(
+            {temp_col_name: value}, session=self._get_block().expr.session
+        )
         # local_df is likely (but not guaranteed) to be cached locally
         # since the original list came from memory and so is probably < MAX_INLINE_DF_SIZE
 
@@ -2253,13 +2350,17 @@ class DataFrame:
         original_index_column_ids = self._block.index_columns
         self_block = self._block.reset_index(drop=False)
         if assigning_to_empty_df:
+            if label is None:
+                raise ValueError(
+                    "Label required when assigning listlike to empty DataFrame."
+                )
             if len(self._block.index_columns) > 1:
                 # match error raised by pandas here
                 raise ValueError(
                     "Assigning listlike to a first column under multiindex is not supported."
                 )
             result_block = new_column_block.with_index_labels(self._block.index.names)
-            result_block = result_block.with_column_labels([k])
+            result_block = result_block.with_column_labels([label])
         else:
             (
                 result_block,
@@ -2274,7 +2375,6 @@ class DataFrame:
             )
             src_col = get_column_right[new_column_block.value_columns[0]]
             # Check to see if key exists, and modify in place
-            col_ids = self._block.cols_matching_label(k)
             for col_id in col_ids:
                 result_block = result_block.copy_values(
                     src_col, get_column_left[col_id]
@@ -2283,9 +2383,22 @@ class DataFrame:
                 result_block = result_block.drop_columns([src_col])
         return DataFrame(result_block)
 
-    def _assign_scalar(self, label: str, value: Union[int, float, str]) -> DataFrame:
-        col_ids = self._block.cols_matching_label(label)
+    def _assign_single_item_listlike(self, k: str, v: Sequence) -> DataFrame:
+        col_ids = self._block.cols_matching_label(k)
+        return self._assign_single_item_listlike_to_col_ids(col_ids, k, v)
 
+    def _assign_single_item_listlike_by_offset(
+        self, offset: int, value: Sequence
+    ) -> DataFrame:
+        col_ids = [self._block.value_columns[offset]]
+        return self._assign_single_item_listlike_to_col_ids(col_ids, None, value)
+
+    def _assign_scalar_to_col_ids(
+        self,
+        col_ids: Sequence[str],
+        label: Optional[str],
+        value: Union[int, float, str],
+    ) -> DataFrame:
         block, constant_col_id = self._block.create_constant(value, label)
         for col_id in col_ids:
             block = block.copy_values(constant_col_id, col_id)
@@ -2295,25 +2408,40 @@ class DataFrame:
 
         return DataFrame(block)
 
-    def _assign_series_join_on_index(
-        self, label: str, series: bigframes.series.Series
+    def _assign_scalar(self, label: str, value: Union[int, float, str]) -> DataFrame:
+        col_ids = self._block.cols_matching_label(label)
+        return self._assign_scalar_to_col_ids(col_ids, label, value)
+
+    def _assign_scalar_by_offset(
+        self, offset: int, value: Union[int, float, str]
+    ) -> DataFrame:
+        col_ids = [self._block.value_columns[offset]]
+        return self._assign_scalar_to_col_ids(col_ids, None, value)
+
+    def _assign_series_join_on_index_to_col_ids(
+        self,
+        column_ids: Sequence[str],
+        label: Optional[str],
+        series: bigframes.series.Series,
     ) -> DataFrame:
         block, (get_column_left, get_column_right) = self._block.join(
             series._block, how="left"
         )
 
-        column_ids = [
-            get_column_left[col_id] for col_id in self._block.cols_matching_label(label)
-        ]
+        mapped_column_ids = [get_column_left[col_id] for col_id in column_ids]
         source_column = get_column_right[series._value_column]
 
-        # Replace each column matching the label
-        for column_id in column_ids:
-            block = block.copy_values(source_column, column_id).assign_label(
-                column_id, label
-            )
+        # Replace each column matching the ids
+        for column_id in mapped_column_ids:
+            block = block.copy_values(source_column, column_id)
+            if label is not None:
+                block = block.assign_label(column_id, label)
 
-        if not column_ids:
+        if not mapped_column_ids:
+            if label is None:
+                raise ValueError(
+                    "Label required when appending a new column from Series."
+                )
             # Append case, so new column needs appropriate label
             block = block.assign_label(source_column, label)
         else:
@@ -2321,6 +2449,18 @@ class DataFrame:
             block = block.drop_columns([source_column])
 
         return DataFrame(block.with_index_labels(self._block.index.names))
+
+    def _assign_series_join_on_index(
+        self, label: str, series: bigframes.series.Series
+    ) -> DataFrame:
+        column_ids = self._block.cols_matching_label(label)
+        return self._assign_series_join_on_index_to_col_ids(column_ids, label, series)
+
+    def _assign_series_join_on_index_by_offset(
+        self, offset: int, series: bigframes.series.Series
+    ) -> DataFrame:
+        column_ids = [self._block.value_columns[offset]]
+        return self._assign_series_join_on_index_to_col_ids(column_ids, None, series)
 
     @overload  # type: ignore[override]
     def reset_index(
@@ -2418,6 +2558,7 @@ class DataFrame:
         *,
         ascending: bool = ...,
         inplace: Literal[False] = ...,
+        kind: str | None = ...,
         na_position: Literal["first", "last"] = ...,
     ) -> DataFrame: ...
 
@@ -2427,6 +2568,7 @@ class DataFrame:
         *,
         ascending: bool = ...,
         inplace: Literal[True] = ...,
+        kind: str | None = ...,
         na_position: Literal["first", "last"] = ...,
     ) -> None: ...
 
@@ -2436,6 +2578,7 @@ class DataFrame:
         axis: Union[int, str] = 0,
         ascending: bool = True,
         inplace: bool = False,
+        kind: str | None = None,
         na_position: Literal["first", "last"] = "last",
     ) -> Optional[DataFrame]:
         if utils.get_axis_number(axis) == 0:
@@ -2449,7 +2592,10 @@ class DataFrame:
                 else order.descending_over(column, na_last)
                 for column in index_columns
             ]
-            block = self._block.order_by(ordering)
+            is_stable = (
+                kind or constants.DEFAULT_SORT_KIND
+            ) in constants.STABLE_SORT_KINDS
+            block = self._block.order_by(ordering, stable=is_stable)
         else:  # axis=1
             _, indexer = self.columns.sort_values(
                 return_indexer=True,
@@ -2472,7 +2618,7 @@ class DataFrame:
         *,
         inplace: Literal[False] = ...,
         ascending: bool | typing.Sequence[bool] = ...,
-        kind: str = ...,
+        kind: str | None = ...,
         na_position: typing.Literal["first", "last"] = ...,
     ) -> DataFrame: ...
 
@@ -2483,7 +2629,7 @@ class DataFrame:
         *,
         inplace: Literal[True] = ...,
         ascending: bool | typing.Sequence[bool] = ...,
-        kind: str = ...,
+        kind: str | None = ...,
         na_position: typing.Literal["first", "last"] = ...,
     ) -> None: ...
 
@@ -2493,7 +2639,7 @@ class DataFrame:
         *,
         inplace: bool = False,
         ascending: bool | typing.Sequence[bool] = True,
-        kind: str = "quicksort",
+        kind: str | None = None,
         na_position: typing.Literal["first", "last"] = "last",
     ) -> Optional[DataFrame]:
         if isinstance(by, (bigframes.series.Series, indexes.Index, DataFrame)):
@@ -2525,7 +2671,8 @@ class DataFrame:
                 if is_ascending
                 else order.descending_over(column_id, na_last)
             )
-        block = self._block.order_by(ordering)
+        is_stable = (kind or constants.DEFAULT_SORT_KIND) in constants.STABLE_SORT_KINDS
+        block = self._block.order_by(ordering, stable=is_stable)
         if inplace:
             self._set_block(block)
             return None
@@ -2577,9 +2724,9 @@ class DataFrame:
         if not utils.is_list_like(indices):
             raise ValueError("indices should be a list-like object.")
         if axis == 0 or axis == "index":
-            return self.iloc[indices]
+            return typing.cast(DataFrame, self.iloc[indices])
         elif axis == 1 or axis == "columns":
-            return self.iloc[:, indices]
+            return typing.cast(DataFrame, self.iloc[:, indices])
         else:
             raise ValueError(f"No axis named {axis} for object type DataFrame")
 
@@ -2768,11 +2915,11 @@ class DataFrame:
     ):
         if utils.is_dict_like(value):
             return self.apply(
-                lambda x: x.replace(
-                    to_replace=to_replace, value=value[x.name], regex=regex
+                lambda x: (
+                    x.replace(to_replace=to_replace, value=value[x.name], regex=regex)
+                    if (x.name in value)
+                    else x
                 )
-                if (x.name in value)
-                else x
             )
         return self.apply(
             lambda x: x.replace(to_replace=to_replace, value=value, regex=regex)
@@ -2842,7 +2989,7 @@ class DataFrame:
         """Executes the possible callable condition as needed."""
         if callable(condition):
             # When it's a bigframes function.
-            if hasattr(condition, "bigframes_bigquery_function"):
+            if isinstance(condition, bigframes.functions.Udf):
                 return self.apply(condition, axis=1)
 
             # When it's a plain Python function.
@@ -3926,12 +4073,13 @@ class DataFrame:
                 bigframes.dtypes.BOOL_DTYPE
             }:
                 if is_mapping:
-                    if label in decimals:  # type: ignore
+                    decimals_dict = typing.cast(dict[typing.Hashable, int], decimals)
+                    if label in decimals_dict:
                         exprs.append(
                             ops.round_op.as_expr(
                                 col_id,
                                 ex.const(
-                                    decimals[label],
+                                    decimals_dict[label],
                                     dtype=bigframes.dtypes.INT_DTYPE,  # type: ignore
                                 ),
                             )
@@ -4447,8 +4595,8 @@ class DataFrame:
     ) -> str | None:
         return self.to_pandas(allow_large_results=allow_large_results).to_latex(
             buf,
-            columns=columns,
-            header=header,
+            columns=typing.cast(typing.Optional[list[str]], columns),
+            header=typing.cast(typing.Union[bool, list[str]], header),
             index=index,
             **kwargs,  # type: ignore
         )
@@ -4675,18 +4823,24 @@ class DataFrame:
         return array_value, id_overrides
 
     def map(self, func, na_action: Optional[str] = None) -> DataFrame:
-        if not isinstance(func, bigframes.functions.BigqueryCallableRoutine):
+        from bigframes._config import options
+
+        if not isinstance(func, bigframes.functions.Udf) and not (
+            options.experiments.enable_python_transpiler and callable(func)
+        ):
             raise TypeError("the first argument must be callable")
 
         if na_action not in {None, "ignore"}:
             raise ValueError(f"na_action={na_action} not supported")
 
-        # TODO(shobs): Support **kwargs
-        return self._apply_unary_op(
-            ops.RemoteFunctionOp(
-                function_def=func.udf_def, apply_on_null=(na_action is None)
+        expr = ops.func_to_expr(func).apply(ex.free_var("input"))
+        if na_action == "ignore":
+            # True case, predicate, False case
+            expr = ops.where_op.as_expr(
+                expr, ops.notnull_op.as_expr(ex.free_var("input")), ex.const(None)
             )
-        )
+
+        return DataFrame(self._block.multi_apply_unary_op(expr))
 
     def apply(self, func, *, axis=0, args: typing.Tuple = (), **kwargs):
         # In Bigframes BigQuery function, DataFrame '.apply' method is specifically
@@ -4699,18 +4853,26 @@ class DataFrame:
             )
             warnings.warn(msg, category=bfe.FunctionAxisOnePreviewWarning)
 
-            if not isinstance(
-                func,
-                (
-                    bigframes.functions.BigqueryCallableRoutine,
-                    bigframes.functions.BigqueryCallableRowRoutine,
-                ),
+            from bigframes._config import options
+
+            if not isinstance(func, bigframes.functions.Udf) and not (
+                options.experiments.enable_python_transpiler and callable(func)
             ):
                 raise ValueError(
                     "For axis=1 a BigFrames BigQuery function must be used."
                 )
 
-            if func.is_row_processor:
+            if (
+                not isinstance(func, bigframes.functions.Udf)
+                and options.experiments.enable_python_transpiler
+                and callable(func)
+            ):
+                result_block = block_ops.apply_to_block_rows(
+                    func, self._block, *args, **kwargs
+                )
+                return bigframes.series.Series(result_block)
+
+            if func.udf_def.signature.is_row_processor:
                 # Early check whether the dataframe dtypes are currently supported
                 # in the bigquery function
                 # NOTE: Keep in sync with the value converters used in the gcf code
@@ -4763,17 +4925,17 @@ class DataFrame:
                 )
 
                 # Apply the function
-                if args:
-                    result_series = rows_as_json_series._apply_nary_op(
-                        ops.NaryRemoteFunctionOp(function_def=func.udf_def),
-                        list(args),
-                    )
-                else:
-                    result_series = rows_as_json_series._apply_unary_op(
-                        ops.RemoteFunctionOp(
-                            function_def=func.udf_def, apply_on_null=True
-                        )
-                    )
+                expr = ops.func_to_expr(func).expr
+                if not (
+                    isinstance(expr, ex.OpExpression)
+                    and isinstance(expr.op, ops.NaryOp)
+                ):
+                    raise TypeError(f"Expected OpExpression with NaryOp, got {expr}")
+                result_series = rows_as_json_series._apply_nary_op(
+                    expr.op,
+                    list(args),
+                )
+
             else:
                 # This is a special case where we are providing not-pandas-like
                 # extension. If the bigquery function can take one or more
@@ -4830,8 +4992,8 @@ class DataFrame:
 
                 series_list = [self[col] for col in self.columns]
                 op_list = series_list[1:] + list(args)
-                result_series = series_list[0]._apply_nary_op(
-                    ops.NaryRemoteFunctionOp(function_def=func.udf_def), op_list
+                result_series = series_list[0]._apply_callable_expr(
+                    ops.func_to_expr(func), op_list
                 )
             result_series.name = None
 
@@ -4839,7 +5001,7 @@ class DataFrame:
 
         # At this point column-wise or element-wise bigquery function operation will
         # be performed (not supported).
-        if hasattr(func, "bigframes_bigquery_function"):
+        if isinstance(func, bigframes.functions.Udf):
             raise formatter.create_exception_with_feedback_link(
                 NotImplementedError,
                 "BigFrames DataFrame '.apply()' does not support BigFrames "
@@ -5122,20 +5284,3 @@ class DataFrame:
             raise bigframes.exceptions.NullIndexError(
                 f"DataFrame cannot perform {opname} as it has no index. Set an index using set_index."
             )
-
-    @property
-    def semantics(self):
-        msg = bfe.format_message(
-            "The 'semantics' property will be removed. Please use 'bigframes.bigquery.ai' instead."
-        )
-        warnings.warn(msg, category=FutureWarning)
-        return bigframes.operations.semantics.Semantics(self)
-
-    @property
-    def ai(self):
-        """Returns the accessor for AI operators."""
-        msg = bfe.format_message(
-            "The 'ai' property will be removed. Please use 'bigframes.bigquery.ai' instead."
-        )
-        warnings.warn(msg, category=FutureWarning)
-        return bigframes.operations.ai.AIAccessor(self)

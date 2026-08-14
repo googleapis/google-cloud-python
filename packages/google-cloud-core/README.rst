@@ -32,9 +32,8 @@ to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
 
 Supported Python Versions
 -------------------------
-Python >= 3.9
+Python >= 3.10
 
 Unsupported Python Versions
 ---------------------------
-
-Python <= 3.8
+Python <= 3.9

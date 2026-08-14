@@ -34,6 +34,20 @@ def inherit_docs(source_class):
                         except AttributeError:
                             pass
 
+                        underlying = None
+                        if isinstance(target_item, property):
+                            underlying = target_item.fget
+                        elif hasattr(target_item, "__func__"):
+                            underlying = target_item.__func__
+                        elif hasattr(target_item, "func"):
+                            underlying = getattr(target_item, "func", None)
+
+                        if underlying is not None:
+                            try:
+                                underlying.__doc__ = source_item.__doc__
+                            except AttributeError:
+                                pass
+
         return target_class
 
     return decorator

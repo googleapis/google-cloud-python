@@ -1,6 +1,6 @@
 SELECT
   AI.GENERATE(
-    prompt => (`string_col`, ' is the same as ', `string_col`),
+    prompt => STRUCT(`string_col`, ' is the same as ', `string_col`),
     endpoint => 'gemini-2.5-flash',
     request_type => 'SHARED'
   ) AS `result`

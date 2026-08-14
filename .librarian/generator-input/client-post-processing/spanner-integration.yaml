@@ -41,7 +41,10 @@ replacements:
   - paths: [packages/google-cloud-spanner/google/cloud/spanner_v1/services/spanner/transports/grpc_asyncio.py]
     before: '(from grpc\.experimental import aio  # type: ignore\n\n)(?!from google\.cloud\.spanner_v1\.metrics)'
     after: |
-      \g<1>from google.cloud.spanner_v1.metrics.metrics_interceptor import MetricsInterceptor
+      \g<1>from google.cloud.spanner_v1.metrics.metrics_interceptor import (
+          AsyncMetricsInterceptor,
+          MetricsInterceptor,
+      )
     count: 1
   
   - paths: [packages/google-cloud-spanner/google/cloud/spanner_v1/services/spanner/transports/grpc.py]
@@ -92,7 +95,42 @@ replacements:
     after: |
       \g<1>            metrics_interceptor=mock.ANY,
     count: 1
-  
+    # Temporary patch until gapic-generator 1.38 or newer is released.
+    # From https://github.com/googleapis/google-cloud-python/pull/17838
+  - paths:
+      - packages/google-cloud-spanner/tests/unit/gapic/spanner_admin_database_v1/test_database_admin.py
+      - packages/google-cloud-spanner/tests/unit/gapic/spanner_admin_instance_v1/test_instance_admin.py
+      - packages/google-cloud-spanner/tests/unit/gapic/spanner_v1/test_spanner.py
+    before: |
+      for config_data, expected_cert_source in test_cases:
+      \            env = os.environ.copy\(\)
+      \            env.pop\("GOOGLE_API_USE_CLIENT_CERTIFICATE", None\)
+      \            with mock.patch.dict\(os.environ, env, clear=True\):
+    after: |
+      for config_data, expected_cert_source in test_cases:
+                env = os.environ.copy()
+                env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+                env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
+                with mock.patch.dict(os.environ, env, clear=True):
+    count: 3
+    # Temporary patch until gapic-generator 1.38 or newer is released.
+    # From https://github.com/googleapis/google-cloud-python/pull/17838
+  - paths:
+      - packages/google-cloud-spanner/tests/unit/gapic/spanner_admin_database_v1/test_database_admin.py
+      - packages/google-cloud-spanner/tests/unit/gapic/spanner_admin_instance_v1/test_instance_admin.py
+      - packages/google-cloud-spanner/tests/unit/gapic/spanner_v1/test_spanner.py
+    before: |
+      for config_data, expected_cert_source in test_cases:
+      \            env = os.environ.copy\(\)
+      \            env.pop\("GOOGLE_API_USE_CLIENT_CERTIFICATE", ""\)
+      \            with mock.patch.dict\(os.environ, env, clear=True\):
+    after: |
+      for config_data, expected_cert_source in test_cases:
+                env = os.environ.copy()
+                env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+                env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
+                with mock.patch.dict(os.environ, env, clear=True):
+    count: 3
   - paths: 
       - packages/google-cloud-spanner/tests/unit/gapic/spanner_v1/test_spanner.py
     # Group 1: Captures ONLY the spaces/tabs before the text
@@ -121,27 +159,67 @@ replacements:
 
       \g<3>\g<4>
     count: 1
+  - paths:
+      - packages/google-cloud-spanner/google/cloud/spanner_v1/services/spanner/transports/grpc_asyncio.py
+    before: '([ \t]+)(\("grpc\.keepalive_time_ms", 120000\),\n[ \t]+\](?:,\n[ \t]*|\n[ \t]*)\)\n+)([ \t]+)(self\._interceptor = _LoggingClientAIOInterceptor\(\)\n)'
+    after: |
+      \g<1>\g<2>\g<3>if metrics_interceptor is not None:
+                  self._metrics_interceptor = AsyncMetricsInterceptor()
+                  # Attach interceptor directly since grpc.aio does not provide intercept_channel.
+                  if hasattr(self._grpc_channel, "_unary_unary_interceptors"):
+                      self._grpc_channel._unary_unary_interceptors.append(
+                          self._metrics_interceptor
+                      )
+                  if hasattr(self._grpc_channel, "_unary_stream_interceptors"):
+                      self._grpc_channel._unary_stream_interceptors.append(
+                          self._metrics_interceptor
+                      )
+                  if hasattr(self._grpc_channel, "_stream_unary_interceptors"):
+                      self._grpc_channel._stream_unary_interceptors.append(
+                          self._metrics_interceptor
+                      )
+                  if hasattr(self._grpc_channel, "_stream_stream_interceptors"):
+                      self._grpc_channel._stream_stream_interceptors.append(
+                          self._metrics_interceptor
+                      )
+
+              self._interceptor = _LoggingClientAIOInterceptor()
+    count: 1
   - paths: [packages/google-cloud-spanner/setup.py]
-    before: '(?s)dependencies = \[.*?\]\nextras = \{\}'
+    before: '(?s)dependencies = \[.*?\]\nextras = \{\s*\}'
     after: |
       dependencies = [
-          "google-api-core[grpc] >= 1.34.0, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
-          "google-cloud-core >= 1.4.4, < 3.0.0",
-          "grpc-google-iam-v1 >= 0.12.4, <1.0.0",
-          "proto-plus >= 1.22.0, <2.0.0",
-          "sqlparse >= 0.4.4",
-          "proto-plus >= 1.22.2, <2.0.0; python_version>='3.11'",
-          "protobuf >= 4.25.8, < 8.0.0",
+          "google-api-core[grpc] >= 2.25.0, <3.0.0",
+          # Exclude incompatible versions of `google-auth`
+          # See https://github.com/googleapis/google-cloud-python/issues/12364
+          "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
+          "google-cloud-core >= 2.0.0, < 3.0.0",
+          "grpcio >= 1.59.0, < 2.0.0",
+          "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
+          "grpc-google-iam-v1 >= 0.14.2, <1.0.0",
+          "proto-plus >= 1.26.1, <2.0.0",
+          "protobuf >= 6.33.5, < 8.0.0",
           "grpc-interceptor >= 0.15.4",
+          "sqlparse >= 0.4.4",
           # Make OpenTelemetry a core dependency
           "opentelemetry-api >= 1.22.0",
           "opentelemetry-sdk >= 1.22.0",
           "opentelemetry-semantic-conventions >= 0.43b0",
           "opentelemetry-resourcedetector-gcp >= 1.8.0a0",
-          "google-cloud-monitoring >= 2.16.0",
+          "google-cloud-monitoring >= 2.28.0",
           "mmh3 >= 4.1.0",
       ]
-      extras = {"libcst": "libcst >= 0.2.5"}
+      extras = {
+          "libcst": "libcst >= 0.2.5",
+          "test": [
+              "pytest",
+              "mock",
+              "asyncmock",
+              "pytest-cov",
+              "pytest-asyncio",
+              "pytest-xdist",
+          ],
+      }
     count: 1
   - paths: [packages/google-cloud-spanner/docs/index.rst]
     before: '(?s)API Reference\n-------------.*'
@@ -601,6 +679,9 @@ replacements:
 
       Next Steps
     count: 1
+
+
+
     # Note: noxfile.py is heavily customized so we clobber the whole file. 
   - paths: [
       packages/google-cloud-spanner/noxfile.py
@@ -627,12 +708,12 @@ replacements:
       SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.12"]
 
       ALL_PYTHON: List[str] = [
-          "3.9",
           "3.10",
           "3.11",
           "3.12",
           "3.13",
           "3.14",
+          "3.15",
       ]
       UNIT_TEST_STANDARD_DEPENDENCIES = [
           "mock",
@@ -640,6 +721,7 @@ replacements:
           "pytest",
           "pytest-cov",
           "pytest-asyncio",
+          "pytest-xdist",
       ]
       MOCK_SERVER_ADDITIONAL_DEPENDENCIES = [
           "google-cloud-testutils",
@@ -667,7 +749,6 @@ replacements:
       CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
       nox.options.sessions = [
-          "unit-3.9",
           "unit-3.10",
           "unit-3.11",
           "unit-3.12",
@@ -811,35 +892,21 @@ replacements:
       @nox.session(python=ALL_PYTHON)
       @nox.parametrize(
           "protobuf_implementation",
-          ["python", "upb", "cpp"],
+          ["python", "upb"],
       )
       def unit(session, protobuf_implementation):
           # Install all test dependencies, then install this package in-place.
-
-          if session.python in ("3.7",):
-              session.skip("Python 3.7 is no longer supported")
-          if protobuf_implementation == "cpp" and session.python in (
-              "3.11",
-              "3.12",
-              "3.13",
-              "3.14",
-          ):
-              session.skip("cpp implementation is not supported in python 3.11+")
 
           constraints_path = str(
               CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
           )
           install_unittest_dependencies(session, "-c", constraints_path)
 
-          # TODO(https://github.com/googleapis/synthtool/issues/1976):
-          # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
-          # The 'cpp' implementation requires Protobuf<4.
-          if protobuf_implementation == "cpp":
-              session.install("protobuf<4")
-
           # Run py.test against the unit tests.
           args = [
               "py.test",
+              "-n",
+              "auto",
               "-s",
               f"--junitxml=unit_{session.python}_sponge_log.xml",
               "--cov=google",
@@ -930,8 +997,6 @@ replacements:
               ("python", "POSTGRESQL"),
               ("upb", "GOOGLE_STANDARD_SQL"),
               ("upb", "POSTGRESQL"),
-              ("cpp", "GOOGLE_STANDARD_SQL"),
-              ("cpp", "POSTGRESQL"),
           ],
       )
       def system(session, protobuf_implementation, database_dialect):
@@ -959,14 +1024,6 @@ replacements:
                   "Only run system tests on real Spanner with one protobuf implementation to speed up the build"
               )
 
-          if protobuf_implementation == "cpp" and session.python in (
-              "3.11",
-              "3.12",
-              "3.13",
-              "3.14",
-          ):
-              session.skip("cpp implementation is not supported in python 3.11+")
-
           # Install pyopenssl for mTLS testing.
           if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
               session.install("pyopenssl")
@@ -978,12 +1035,6 @@ replacements:
               session.skip("System tests were not found")
 
           install_systemtest_dependencies(session, "-c", constraints_path)
-
-          # TODO(https://github.com/googleapis/synthtool/issues/1976):
-          # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
-          # The 'cpp' implementation requires Protobuf<4.
-          if protobuf_implementation == "cpp":
-              session.install("protobuf<4")
 
           # Run py.test against the system tests.
           if system_test_exists:
@@ -1158,20 +1209,10 @@ replacements:
               ("python", "POSTGRESQL"),
               ("upb", "GOOGLE_STANDARD_SQL"),
               ("upb", "POSTGRESQL"),
-              ("cpp", "GOOGLE_STANDARD_SQL"),
-              ("cpp", "POSTGRESQL"),
           ],
       )
       def prerelease_deps(session, protobuf_implementation, database_dialect):
           """Run all tests with prerelease versions of dependencies installed."""
-
-          if protobuf_implementation == "cpp" and session.python in (
-              "3.11",
-              "3.12",
-              "3.13",
-              "3.14",
-          ):
-              session.skip("cpp implementation is not supported in python 3.11+")
 
           # Install all dependencies
           session.install("-e", ".[all, tests, tracing]")
@@ -1251,6 +1292,12 @@ replacements:
           system_test_path = os.path.join("tests", "system.py")
           system_test_folder_path = os.path.join("tests", "system")
 
+          system_test_exists = os.path.exists(system_test_path)
+          system_test_folder_exists = os.path.exists(system_test_folder_path)
+          # Sanity check: only run tests if found.
+          if not system_test_exists and not system_test_folder_exists:
+              session.skip("System tests were not found")
+
           if os.environ.get("SPANNER_EMULATOR_HOST"):
               # Run tests against the emulator
               run_system = True
@@ -1271,31 +1318,83 @@ replacements:
               run_system = False
 
           if run_system:
-              # Run the tests (deduplicated logic)
-              test_path = (
-                  system_test_path
-                  if os.path.exists(system_test_path)
-                  else system_test_folder_path
-              )
-              session.run(
-                  "py.test",
-                  "--verbose",
-                  f"--junitxml=system_{session.python}_sponge_log.xml",
-                  test_path,
-                  *session.posargs,
-                  env={
-                      "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
-                      "SPANNER_DATABASE_DIALECT": database_dialect,
-                      "SKIP_BACKUP_TESTS": "true",
-                  },
-              )
+              # Run py.test against the system tests.
+              if system_test_exists:
+                  args = [
+                      "py.test",
+                      "--quiet",
+                      "-o",
+                      "asyncio_mode=auto",
+                      f"--junitxml=system_{session.python}_sponge_log.xml",
+                  ]
+                  if not session.posargs:
+                      args.append(system_test_path)
+                  args.extend(session.posargs)
+  
+                  session.run(
+                      *args,
+                      env={
+                          "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                          "SPANNER_DATABASE_DIALECT": database_dialect,
+                          "SKIP_BACKUP_TESTS": "true",
+                      },
+                  )
+              elif system_test_folder_exists:
+                  # Run sync tests
+                  sync_args = [
+                      "py.test",
+                      "--quiet",
+                      "-o",
+                      "asyncio_mode=auto",
+                      f"--junitxml=system_{session.python}_sync_sponge_log.xml",
+                  ]
+                  if not session.posargs:
+                      sync_args.append(system_test_folder_path)
+                      sync_args.append(
+                          f"--ignore={os.path.join(system_test_folder_path, '_async')}"
+                      )
+                  else:
+                      sync_args.extend(session.posargs)
+
+                  session.run(
+                      *sync_args,
+                      env={
+                          "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                          "SPANNER_DATABASE_DIALECT": database_dialect,
+                          "SKIP_BACKUP_TESTS": "true",
+                      },
+                  )
+
+                  # Run async tests
+                  async_args = [
+                      "py.test",
+                      "--quiet",
+                      "-o",
+                      "asyncio_mode=auto",
+                      f"--junitxml=system_{session.python}_async_sponge_log.xml",
+                  ]
+                  if not session.posargs:
+                      async_args.append(os.path.join(system_test_folder_path, "_async"))
+                  else:
+                      # If posargs are provided, only run if they match async tests
+                      # or just skip if they were already run in sync.
+                      # For simplicity, we only run async folder if no posargs.
+                      return
+
+                  session.run(
+                      *async_args,
+                      env={
+                          "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+                          "SPANNER_DATABASE_DIALECT": database_dialect,
+                          "SKIP_BACKUP_TESTS": "true",
+                      },
+                  )
 
 
       @nox.session(python=ALL_PYTHON)
       def mypy(session):
           """Run the type checker."""
           session.skip("Mypy is not yet supported")
-
           # TODO(https://github.com/googleapis/gapic-generator-python/issues/2579):
           # use the latest version of mypy
           session.install(
@@ -1320,4 +1419,50 @@ replacements:
       )
       def core_deps_from_source(session, protobuf_implementation):
           """Run all tests with core dependencies installed from source,
+    count: 1
+  - paths: [packages/google-cloud-spanner/testing/constraints-3.10.txt]
+    before: '(?s)protobuf==6.33.5\n(?!google-cloud-core)'
+    after: |
+      protobuf==6.33.5
+      google-cloud-core==2.0.0
+      grpc-google-iam-v1==0.14.2
+      grpcio-status==1.59.0
+      sqlparse==0.4.4
+      grpc-interceptor==0.15.4
+      opentelemetry-api==1.22.0
+      opentelemetry-sdk==1.22.0
+      opentelemetry-semantic-conventions==0.43b0
+      opentelemetry-resourcedetector-gcp==1.8.0a0
+      google-cloud-monitoring==2.28.0
+      mmh3==4.1.0
+      libcst==0.2.5
+      googleapis-common-protos==1.69.2
+    count: 1
+  - paths: [
+      packages/google-cloud-spanner/noxfile.py
+    ]
+    before: |
+        session.install\(\*dep_paths, "--no-deps", "--ignore-installed"\)
+        [\s\S]*?session.run\(\s+"py.test",\s+"tests/unit",
+    after: |
+        session.install(*dep_paths, "--no-deps", "--ignore-installed")
+            session.install("pytest-xdist")
+            print(
+                f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}"
+            )
+
+            session.run(
+                "py.test",
+                "-n",
+                "auto",
+                "tests/unit",
+    count: 1
+  - paths: [packages/google-cloud-spanner/.coveragerc]
+    before: |
+      \[report\]
+      show_missing = True
+    after: |
+      [report]
+      fail_under = 98
+      show_missing = True
     count: 1

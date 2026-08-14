@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,6 +37,8 @@ __protobuf__ = proto.module(
         "ListRulesResponse",
         "UpdateRuleRequest",
         "DeleteRuleRequest",
+        "VerifyRuleTextRequest",
+        "VerifyRuleTextResponse",
         "ListRuleRevisionsRequest",
         "ListRuleRevisionsResponse",
         "CreateRetrohuntRequest",
@@ -689,6 +691,55 @@ class DeleteRuleRequest(proto.Message):
     force: bool = proto.Field(
         proto.BOOL,
         number=2,
+    )
+
+
+class VerifyRuleTextRequest(proto.Message):
+    r"""Request message for VerifyRuleText method.
+
+    Attributes:
+        instance (str):
+            Required. The name of the parent resource, which is the
+            SecOps instance associated with the request. Format:
+            ``projects/{project}/locations/{location}/instances/{instance}``
+        rule_text (str):
+            Required. The rule text to verify as a UTF-8
+            string.
+    """
+
+    instance: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    rule_text: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class VerifyRuleTextResponse(proto.Message):
+    r"""Response message for VerifyRuleText method.
+
+    Attributes:
+        success (bool):
+            Whether or not the rule text was successfully
+            verified.
+        compilation_diagnostics (MutableSequence[google.cloud.chronicle_v1.types.CompilationDiagnostic]):
+            A list of a rule's corresponding compilation
+            diagnostic messages such as compilation errors
+            and compilation warnings.
+    """
+
+    success: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    compilation_diagnostics: MutableSequence["CompilationDiagnostic"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="CompilationDiagnostic",
+        )
     )
 
 

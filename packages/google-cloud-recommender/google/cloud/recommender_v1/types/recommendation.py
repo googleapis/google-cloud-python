@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ class Recommendation(proto.Message):
 
     Attributes:
         name (str):
-            Name of recommendation.
+            Identifier. Name of recommendation.
         description (str):
             Free-form human readable summary in English.
             The maximum length is 500 characters.
@@ -97,6 +97,9 @@ class Recommendation(proto.Message):
             exclusive group. This means that only one
             recommendation within the group is suggested to
             be applied.
+        target_resources (MutableSequence[str]):
+            Fully qualified resource names that this
+            recommendation is targeting.
     """
 
     class Priority(proto.Enum):
@@ -193,6 +196,10 @@ class Recommendation(proto.Message):
     xor_group_id: str = proto.Field(
         proto.STRING,
         number=18,
+    )
+    target_resources: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=19,
     )
 
 
@@ -577,6 +584,9 @@ class Impact(proto.Message):
             Use with CategoryType.RELIABILITY
 
             This field is a member of `oneof`_ ``projection``.
+        service (str):
+            The service that this impact is associated
+            with.
     """
 
     class Category(proto.Enum):
@@ -642,6 +652,10 @@ class Impact(proto.Message):
         number=103,
         oneof="projection",
         message="ReliabilityProjection",
+    )
+    service: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-common/#history
 
+## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-common-v1.9.0...google-cloud-common-v1.10.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-c packages (#17091) ([165839343695fc74d09fc7900d4c55ddcb31a4d8](https://github.com/googleapis/google-cloud-python/commit/165839343695fc74d09fc7900d4c55ddcb31a4d8))
+
 ## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-common-v1.8.0...google-cloud-common-v1.9.0) (2026-03-26)
 
 

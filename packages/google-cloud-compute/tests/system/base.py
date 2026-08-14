@@ -50,34 +50,35 @@ class TestBase(unittest.TestCase):
 
     def wait_for_zonal_operation(self, operation):
         client = ZoneOperationsClient()
-        result = client.wait(
-            operation=operation, zone=self.DEFAULT_ZONE, project=self.DEFAULT_PROJECT
-        )
-        if result.error:
-            self.fail("Zonal operation {} has errors".format(operation))
-        op = client.get(
-            operation=operation, zone=self.DEFAULT_ZONE, project=self.DEFAULT_PROJECT
-        )
-        # this is a workaround, some operations take up to 3 min, currently we cant set timeout for wait()
-        if op.status != Operation.Status.DONE:
-            client.wait(
+        while True:
+            op = client.wait(
                 operation=operation,
                 zone=self.DEFAULT_ZONE,
                 project=self.DEFAULT_PROJECT,
             )
+            if op.status == Operation.Status.DONE:
+                if op.error:
+                    self.fail("Zonal operation {} has errors".format(operation))
+                break
 
     def wait_for_regional_operation(self, operation):
         client = RegionOperationsClient()
-        result = client.wait(
-            operation=operation,
-            region=self.DEFAULT_REGION,
-            project=self.DEFAULT_PROJECT,
-        )
-        if result.error:
-            self.fail("Region operation {} has errors".format(operation))
+        while True:
+            op = client.wait(
+                operation=operation,
+                region=self.DEFAULT_REGION,
+                project=self.DEFAULT_PROJECT,
+            )
+            if op.status == Operation.Status.DONE:
+                if op.error:
+                    self.fail("Region operation {} has errors".format(operation))
+                break
 
     def wait_for_global_operation(self, operation):
         client = GlobalOperationsClient()
-        result = client.wait(operation=operation, project=self.DEFAULT_PROJECT)
-        if result.error:
-            self.fail("Global operation {} has errors".format(operation))
+        while True:
+            op = client.wait(operation=operation, project=self.DEFAULT_PROJECT)
+            if op.status == Operation.Status.DONE:
+                if op.error:
+                    self.fail("Global operation {} has errors".format(operation))
+                break

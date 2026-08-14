@@ -17,11 +17,14 @@
 """
 This module contains the client handler process for proxy_server.py.
 """
+
 import os
-from google.cloud.environment_vars import BIGTABLE_EMULATOR
-from google.cloud.bigtable.data._cross_sync import CrossSync
-from helpers import sql_encoding_helpers
+
 from client_handler_data_async import error_safe
+from google.cloud.environment_vars import BIGTABLE_EMULATOR
+from helpers import sql_encoding_helpers
+
+from google.cloud.bigtable.data._cross_sync import CrossSync
 
 
 class TestProxyClientHandler:
@@ -41,7 +44,7 @@ class TestProxyClientHandler:
         instance_id=None,
         app_profile_id=None,
         per_operation_timeout=None,
-        **kwargs
+        **kwargs,
     ):
         self.closed = False
         os.environ[BIGTABLE_EMULATOR] = data_target
@@ -140,14 +143,16 @@ class TestProxyClientHandler:
             predicate_filter,
             true_case_mutations=true_mutations,
             false_case_mutations=false_mutations,
-            **kwargs
+            **kwargs,
         )
         return result
 
     @error_safe
     async def ReadModifyWriteRow(self, request, **kwargs):
-        from google.cloud.bigtable.data.read_modify_write_rules import IncrementRule
-        from google.cloud.bigtable.data.read_modify_write_rules import AppendValueRule
+        from google.cloud.bigtable.data.read_modify_write_rules import (
+            AppendValueRule,
+            IncrementRule,
+        )
 
         table_id = request["table_name"].split("/")[-1]
         app_profile_id = self.app_profile_id or request.get("app_profile_id", None)
@@ -182,7 +187,12 @@ class TestProxyClientHandler:
         kwargs["operation_timeout"] = (
             kwargs.get("operation_timeout", self.per_operation_timeout) or 20
         )
-        result = table.sample_row_keys(**kwargs)
+        row_range = None
+        if "row_range" in request:
+            from google.cloud.bigtable.data.read_rows_query import RowRange
+
+            row_range = RowRange._from_dict(request["row_range"])
+        result = table.sample_row_keys(row_range=row_range, **kwargs)
         return result
 
     @error_safe
@@ -190,9 +200,7 @@ class TestProxyClientHandler:
         app_profile_id = self.app_profile_id or request.get("app_profile_id", None)
         query = request.get("query")
         params = request.get("params") or {}
-        (formatted_params, parameter_types) = sql_encoding_helpers.convert_params(
-            params
-        )
+        formatted_params, parameter_types = sql_encoding_helpers.convert_params(params)
         operation_timeout = (
             kwargs.get("operation_timeout", self.per_operation_timeout) or 20
         )

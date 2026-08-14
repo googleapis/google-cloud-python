@@ -15,10 +15,22 @@
 """Create / interact with Google Cloud Storage connections."""
 
 import functools
+import logging
+import re
+
+from google.api_core import exceptions as api_exceptions
+from google.cloud.exceptions import NotFound
 
 from google.cloud import _http
 from google.cloud.storage import __version__, _helpers
-from google.cloud.storage._opentelemetry_tracing import create_trace_span
+from google.cloud.storage._opentelemetry_tracing import (
+    HAS_OPENTELEMETRY,
+    _is_bucket_metadata_disabled,
+    create_trace_span,
+    enable_otel_traces,
+)
+
+logger = logging.getLogger(__name__)
 
 
 class Connection(_http.JSONConnection):
@@ -71,11 +83,31 @@ class Connection(_http.JSONConnection):
         span_attributes = {
             "gccl-invocation-id": invocation_id,
         }
+        client = self._client
+        if (
+            HAS_OPENTELEMETRY
+            and enable_otel_traces
+            and hasattr(client, "_bucket_metadata_cache")
+            and client._bucket_metadata_cache
+            and not _is_bucket_metadata_disabled()
+        ):
+            path = kwargs.get("path") or ""
+            match = re.search(r"/b/([^/?#]+)", path)
+            if match:
+                try:
+                    cached = client._bucket_metadata_cache.get(match.group(1))
+                    if cached and isinstance(cached, tuple) and len(cached) == 2:
+                        dest_id, loc = cached
+                        span_attributes["gcp.resource.destination.id"] = dest_id
+                        span_attributes["gcp.resource.destination.location"] = loc
+                except Exception as e:
+                    logger.debug(f"Failed cache.get_or_queue_fetch in api_request: {e}")
+
         call = functools.partial(super(Connection, self).api_request, *args, **kwargs)
         with create_trace_span(
             name="Storage.Connection.api_request",
             attributes=span_attributes,
-            client=self._client,
+            client=client,
             api_request=kwargs,
             retry=retry,
         ):
@@ -87,4 +119,24 @@ class Connection(_http.JSONConnection):
                     pass
                 if retry:
                     call = retry(call)
-            return call()
+            try:
+                return call()
+            except (NotFound, api_exceptions.NotFound):
+                if (
+                    HAS_OPENTELEMETRY
+                    and enable_otel_traces
+                    and hasattr(client, "_bucket_metadata_cache")
+                    and client._bucket_metadata_cache
+                ):
+                    path = kwargs.get("path") or ""
+                    match = re.search(r"/b/([^/?#]+)", path)
+                    if match:
+                        try:
+                            client._bucket_metadata_cache.check_and_evict(
+                                match.group(1)
+                            )
+                        except Exception as e:
+                            logger.debug(
+                                f"Failed cache.check_and_evict on 404 in api_request: {e}"
+                            )
+                raise

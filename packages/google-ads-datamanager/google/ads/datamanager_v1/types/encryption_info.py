@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
         "EncryptionInfo",
         "GcpWrappedKeyInfo",
         "AwsWrappedKeyInfo",
+        "CoordinatorKeyInfo",
     },
 )
 
@@ -49,6 +50,17 @@ class EncryptionInfo(proto.Message):
             Amazon Web Services wrapped key information.
 
             This field is a member of `oneof`_ ``wrapped_key``.
+        coordinator_key_info (google.ads.datamanager_v1.types.CoordinatorKeyInfo):
+            Key information for the chosen coordinator key.
+
+            This is not supported for the
+            [IngestEvents][google.ads.datamanager.v1.IngestionService.IngestEvents],
+            [IngestAudienceMembers][google.ads.datamanager.v1.IngestionService.IngestAudienceMembers],
+            and
+            [RemoveAudienceMembers][google.ads.datamanager.v1.IngestionService.RemoveAudienceMembers]
+            methods.
+
+            This field is a member of `oneof`_ ``wrapped_key``.
     """
 
     gcp_wrapped_key_info: "GcpWrappedKeyInfo" = proto.Field(
@@ -62,6 +74,12 @@ class EncryptionInfo(proto.Message):
         number=2,
         oneof="wrapped_key",
         message="AwsWrappedKeyInfo",
+    )
+    coordinator_key_info: "CoordinatorKeyInfo" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="wrapped_key",
+        message="CoordinatorKeyInfo",
     )
 
 
@@ -173,6 +191,21 @@ class AwsWrappedKeyInfo(proto.Message):
     encrypted_dek: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+
+
+class CoordinatorKeyInfo(proto.Message):
+    r"""Information about the coordinator key.
+
+    Attributes:
+        key_id (str):
+            Required. The ID of the chosen coordinator
+            key.
+    """
+
+    key_id: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

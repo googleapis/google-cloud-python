@@ -13,10 +13,11 @@
 # limitations under the License.
 
 from alembic.ddl import base as ddl_base
-from google.cloud.sqlalchemy_spanner import sqlalchemy_spanner
 from sqlalchemy import String, TextClause
 from sqlalchemy.testing import eq_
 from sqlalchemy.testing.plugin.plugin_base import fixtures
+
+from google.cloud.sqlalchemy_spanner import sqlalchemy_spanner
 
 
 class TestAlembicTest(fixtures.TestBase):

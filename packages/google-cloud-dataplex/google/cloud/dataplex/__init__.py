@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -71,6 +71,10 @@ from google.cloud.dataplex_v1.services.metadata_service.client import (
     MetadataServiceClient,
 )
 from google.cloud.dataplex_v1.types.analyze import Content, Environment, Session
+from google.cloud.dataplex_v1.types.approval_workflow import (
+    ChangeRequest,
+    DataProductAccessRequest,
+)
 from google.cloud.dataplex_v1.types.business_glossary import (
     CreateGlossaryCategoryRequest,
     CreateGlossaryRequest,
@@ -145,6 +149,7 @@ from google.cloud.dataplex_v1.types.catalog import (
     LookupEntryRequest,
     MetadataFeed,
     MetadataJob,
+    ModifyEntryRequest,
     SearchEntriesRequest,
     SearchEntriesResponse,
     SearchEntriesResult,
@@ -186,6 +191,8 @@ from google.cloud.dataplex_v1.types.data_products import (
     ListDataAssetsResponse,
     ListDataProductsRequest,
     ListDataProductsResponse,
+    RequestDataProductAccessRequest,
+    RequestDataProductAccessResponse,
     UpdateDataAssetRequest,
     UpdateDataProductRequest,
 )
@@ -201,6 +208,9 @@ from google.cloud.dataplex_v1.types.data_quality import (
     DataQualityRule,
     DataQualityRuleResult,
     DataQualitySpec,
+)
+from google.cloud.dataplex_v1.types.data_quality_rule_template import (
+    DataQualityRuleTemplate,
 )
 from google.cloud.dataplex_v1.types.data_taxonomy import (
     CreateDataAttributeBindingRequest,
@@ -226,11 +236,14 @@ from google.cloud.dataplex_v1.types.data_taxonomy import (
     UpdateDataTaxonomyRequest,
 )
 from google.cloud.dataplex_v1.types.datascans import (
+    CancelDataScanJobRequest,
+    CancelDataScanJobResponse,
     CreateDataScanRequest,
     DataScan,
     DataScanJob,
     DataScanType,
     DeleteDataScanRequest,
+    ExecutionIdentity,
     GenerateDataQualityRulesRequest,
     GenerateDataQualityRulesResponse,
     GetDataScanJobRequest,
@@ -346,6 +359,8 @@ __all__ = (
     "Content",
     "Environment",
     "Session",
+    "ChangeRequest",
+    "DataProductAccessRequest",
     "CreateGlossaryCategoryRequest",
     "CreateGlossaryRequest",
     "CreateGlossaryTermRequest",
@@ -416,6 +431,7 @@ __all__ = (
     "LookupEntryRequest",
     "MetadataFeed",
     "MetadataJob",
+    "ModifyEntryRequest",
     "SearchEntriesRequest",
     "SearchEntriesResponse",
     "SearchEntriesResult",
@@ -450,6 +466,8 @@ __all__ = (
     "ListDataAssetsResponse",
     "ListDataProductsRequest",
     "ListDataProductsResponse",
+    "RequestDataProductAccessRequest",
+    "RequestDataProductAccessResponse",
     "UpdateDataAssetRequest",
     "UpdateDataProductRequest",
     "DataProfileResult",
@@ -461,6 +479,7 @@ __all__ = (
     "DataQualityRule",
     "DataQualityRuleResult",
     "DataQualitySpec",
+    "DataQualityRuleTemplate",
     "CreateDataAttributeBindingRequest",
     "CreateDataAttributeRequest",
     "CreateDataTaxonomyRequest",
@@ -482,10 +501,13 @@ __all__ = (
     "UpdateDataAttributeBindingRequest",
     "UpdateDataAttributeRequest",
     "UpdateDataTaxonomyRequest",
+    "CancelDataScanJobRequest",
+    "CancelDataScanJobResponse",
     "CreateDataScanRequest",
     "DataScan",
     "DataScanJob",
     "DeleteDataScanRequest",
+    "ExecutionIdentity",
     "GenerateDataQualityRulesRequest",
     "GenerateDataQualityRulesResponse",
     "GetDataScanJobRequest",

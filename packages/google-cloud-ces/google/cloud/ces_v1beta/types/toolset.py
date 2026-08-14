@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -68,6 +69,10 @@ class Toolset(proto.Message):
             Must be unique within the same app.
         description (str):
             Optional. The description of the toolset.
+        timeout (google.protobuf.duration_pb2.Duration):
+            Optional. The timeout for the toolset execution. If not set,
+            the default timeout is 30 seconds for ``SYNCHRONOUS``
+            toolsets and 60 seconds for ``ASYNCHRONOUS`` toolsets.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp when the toolset was
             created.
@@ -116,6 +121,11 @@ class Toolset(proto.Message):
     description: str = proto.Field(
         proto.STRING,
         number=10,
+    )
+    timeout: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=duration_pb2.Duration,
     )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,

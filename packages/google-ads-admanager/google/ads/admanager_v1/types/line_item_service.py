@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -67,9 +67,46 @@ class ListLineItemsRequest(proto.Message):
             ``ListLineItems`` must match the call that provided the page
             token.
         filter (str):
-            Optional. Expression to filter the response.
-            See syntax details at
+            Optional. Expression to filter the response. See syntax
+            details at
             https://developers.google.com/ad-manager/api/beta/filters
+
+            **Filterable fields:**
+
+            - ``archived``
+            - ``contractedUnitsBought``
+            - ``costType``
+            - ``createTime``
+            - ``creativePlaceholders.size.canonicalName``
+            - ``dealInfo.externalDealId``
+            - ``deliveryRateType``
+            - ``displayName``
+            - ``endTime``
+            - ``environmentType``
+            - ``externalLineItemId``
+            - ``goal.units``
+            - ``grpSettings.growbirdNielsenEnabled``
+            - ``grpSettings.inTargetRatioEstimateMilliPercent``
+            - ``lineItemType``
+            - ``missingCreatives``
+            - ``name``
+            - ``notes``
+            - ``order``
+            - ``orderDisplayName``
+            - ``priority``
+            - ``roadblockingType``
+            - ``startTime``
+            - ``stats.clickThroughRate``
+            - ``stats.clicksDelivered``
+            - ``stats.impressionsDelivered``
+            - ``stats.viewableImpressionsDelivered``
+            - ``status``
+            - ``targeting.inventoryTargeting.targetedAdUnits.adUnit``
+            - ``targeting.inventoryTargeting.targetedPlacements``
+            - ``targeting.mobileApplicationTargeting.firstPartyTargeting.targetedApplications``
+            - ``updateSource``
+            - ``updateTime``
+            - ``webPropertyCode``
         order_by (str):
             Optional. Expression to specify sorting
             order. See syntax details at

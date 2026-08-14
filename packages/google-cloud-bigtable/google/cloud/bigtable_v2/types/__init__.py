@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -63,6 +63,7 @@ from .data import (
     StreamPartition,
     TimestampRange,
     Value,
+    ValueBitmask,
     ValueRange,
 )
 from .feature_flags import (
@@ -79,6 +80,41 @@ from .request_stats import (
 )
 from .response_params import (
     ResponseParams,
+)
+from .session import (
+    AuthorizedViewRequest,
+    AuthorizedViewResponse,
+    BackendIdentifier,
+    CloseSessionRequest,
+    ClusterInformation,
+    ErrorResponse,
+    GoAwayResponse,
+    HeartbeatResponse,
+    LoadBalancingOptions,
+    MaterializedViewRequest,
+    MaterializedViewResponse,
+    OpenAuthorizedViewRequest,
+    OpenAuthorizedViewResponse,
+    OpenMaterializedViewRequest,
+    OpenMaterializedViewResponse,
+    OpenSessionRequest,
+    OpenSessionResponse,
+    OpenTableRequest,
+    OpenTableResponse,
+    SessionClientConfiguration,
+    SessionMutateRowRequest,
+    SessionMutateRowResponse,
+    SessionParametersResponse,
+    SessionReadRowRequest,
+    SessionReadRowResponse,
+    SessionRefreshConfig,
+    SessionRequestStats,
+    SessionType,
+    TableRequest,
+    TableResponse,
+    TelemetryConfiguration,
+    VirtualRpcRequest,
+    VirtualRpcResponse,
 )
 from .types import (
     Type,
@@ -132,6 +168,7 @@ __all__ = (
     "StreamPartition",
     "TimestampRange",
     "Value",
+    "ValueBitmask",
     "ValueRange",
     "FeatureFlags",
     "PeerInfo",
@@ -140,5 +177,38 @@ __all__ = (
     "RequestLatencyStats",
     "RequestStats",
     "ResponseParams",
+    "AuthorizedViewRequest",
+    "AuthorizedViewResponse",
+    "BackendIdentifier",
+    "CloseSessionRequest",
+    "ClusterInformation",
+    "ErrorResponse",
+    "GoAwayResponse",
+    "HeartbeatResponse",
+    "LoadBalancingOptions",
+    "MaterializedViewRequest",
+    "MaterializedViewResponse",
+    "OpenAuthorizedViewRequest",
+    "OpenAuthorizedViewResponse",
+    "OpenMaterializedViewRequest",
+    "OpenMaterializedViewResponse",
+    "OpenSessionRequest",
+    "OpenSessionResponse",
+    "OpenTableRequest",
+    "OpenTableResponse",
+    "SessionClientConfiguration",
+    "SessionMutateRowRequest",
+    "SessionMutateRowResponse",
+    "SessionParametersResponse",
+    "SessionReadRowRequest",
+    "SessionReadRowResponse",
+    "SessionRefreshConfig",
+    "SessionRequestStats",
+    "TableRequest",
+    "TableResponse",
+    "TelemetryConfiguration",
+    "VirtualRpcRequest",
+    "VirtualRpcResponse",
+    "SessionType",
     "Type",
 )

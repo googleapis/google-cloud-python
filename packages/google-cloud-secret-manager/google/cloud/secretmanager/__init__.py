@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,6 +43,7 @@ from google.cloud.secretmanager_v1.types.service import (
     DeleteSecretRequest,
     DestroySecretVersionRequest,
     DisableSecretVersionRequest,
+    EnableManagedRotationRequest,
     EnableSecretVersionRequest,
     GetSecretRequest,
     GetSecretVersionRequest,
@@ -50,6 +51,7 @@ from google.cloud.secretmanager_v1.types.service import (
     ListSecretsResponse,
     ListSecretVersionsRequest,
     ListSecretVersionsResponse,
+    RotateSecretRequest,
     UpdateSecretRequest,
 )
 
@@ -72,6 +74,7 @@ __all__ = (
     "DeleteSecretRequest",
     "DestroySecretVersionRequest",
     "DisableSecretVersionRequest",
+    "EnableManagedRotationRequest",
     "EnableSecretVersionRequest",
     "GetSecretRequest",
     "GetSecretVersionRequest",
@@ -79,5 +82,6 @@ __all__ = (
     "ListSecretsResponse",
     "ListSecretVersionsRequest",
     "ListSecretVersionsResponse",
+    "RotateSecretRequest",
     "UpdateSecretRequest",
 )

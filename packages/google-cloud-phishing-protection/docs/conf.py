@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -83,7 +83,7 @@ root_doc = "index"
 
 # General information about the project.
 project = "google-cloud-phishing-protection"
-copyright = "2025, Google, LLC"
+copyright = "2026, Google, LLC"
 author = "Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for

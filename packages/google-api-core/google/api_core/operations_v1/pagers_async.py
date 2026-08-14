@@ -14,13 +14,14 @@
 # limitations under the License.
 #
 from typing import (
-    Callable,
     AsyncIterator,
+    Callable,
     Sequence,
     Tuple,
 )
 
 from google.longrunning import operations_pb2
+
 from google.api_core.operations_v1.pagers_base import ListOperationsPagerBase
 
 

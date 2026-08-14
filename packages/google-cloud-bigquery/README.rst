@@ -21,6 +21,26 @@ processing power of Google's infrastructure.
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigquery/latest/summary_overview
 .. _Product Documentation: https://cloud.google.com/bigquery/docs/reference/v2/
 
+
+Related Libraries
+-----------------
+
+For higher-level data analysis and DataFrame operations, consider using one of the following connector libraries:
+
+.. list-table::
+   :header-rows: 1
+
+   * - Library
+     - Description
+     - Documentation
+   * - `BigQuery DataFrames (bigframes) <https://dataframes.bigquery.dev/>`_
+     - Flexible pandas-like and scikit-learn-like API powered by BigQuery engine for large-scale data analysis and ML.
+     - `BigFrames Docs <https://dataframes.bigquery.dev/>`_
+   * - `pandas-gbq <https://pandas-gbq.readthedocs.io/>`_
+     - Convenient integration allowing pandas DataFrames to load from and write to BigQuery.
+     - `pandas-gbq Docs <https://pandas-gbq.readthedocs.io/>`_
+
+
 Quick Start
 -----------
 
@@ -52,11 +72,11 @@ dependencies.
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.9
+Python >= 3.10
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7, Python == 3.5, Python == 3.6, Python == 3.7, and Python == 3.8.
+Python <= 3.9.
 
 The last version of this library compatible with Python 2.7 and 3.5 is
 `google-cloud-bigquery==1.28.0`.

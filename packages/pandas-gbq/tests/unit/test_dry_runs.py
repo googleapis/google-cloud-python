@@ -4,9 +4,9 @@
 
 from unittest import mock
 
-from google.cloud import bigquery
 import pandas
 import pandas.testing
+from google.cloud import bigquery
 
 from pandas_gbq import dry_runs
 

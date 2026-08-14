@@ -11,24 +11,23 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import google.cloud.spanner_v1.types.result_set as result_set
+import google.cloud.spanner_v1.types.type as spanner_type
 import pytest
+from google.cloud.spanner_v1 import (
+    CommitRequest,
+    CreateSessionRequest,
+    ExecuteSqlRequest,
+    TransactionOptions,
+)
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from sqlalchemy.testing import eq_, is_instance_of
-from google.cloud.spanner_v1 import (
-    CreateSessionRequest,
-    ExecuteSqlRequest,
-    CommitRequest,
-    BeginTransactionRequest,
-    TransactionOptions,
-)
 
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_result,
 )
-import google.cloud.spanner_v1.types.type as spanner_type
-import google.cloud.spanner_v1.types.result_set as result_set
 
 ISOLATION_LEVEL_UNSPECIFIED = (
     TransactionOptions.IsolationLevel.ISOLATION_LEVEL_UNSPECIFIED
@@ -150,12 +149,12 @@ class TestIsolationLevel(MockServerTestBase):
     def verify_isolation_level(self, level):
         # Verify the requests that we got.
         requests = self.spanner_service.requests
-        eq_(4, len(requests))
+        # Dialect now inlines BeginTransaction into the first statement.
+        eq_(3, len(requests))
         is_instance_of(requests[0], CreateSessionRequest)
-        is_instance_of(requests[1], BeginTransactionRequest)
-        is_instance_of(requests[2], ExecuteSqlRequest)
-        is_instance_of(requests[3], CommitRequest)
-        begin_request: BeginTransactionRequest = requests[1]
+        is_instance_of(requests[1], ExecuteSqlRequest)
+        is_instance_of(requests[2], CommitRequest)
+        execute_request: ExecuteSqlRequest = requests[1]
         eq_(
             TransactionOptions(
                 dict(
@@ -163,7 +162,7 @@ class TestIsolationLevel(MockServerTestBase):
                     read_write=TransactionOptions.ReadWrite(),
                 )
             ),
-            begin_request.options,
+            execute_request.transaction.begin,
         )
 
     def add_insert_result(self, sql):

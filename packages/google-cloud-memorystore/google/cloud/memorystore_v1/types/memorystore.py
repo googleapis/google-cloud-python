@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,11 +30,17 @@ __protobuf__ = proto.module(
         "PscConnectionStatus",
         "ConnectionType",
         "Instance",
+        "StartMigrationRequest",
+        "FinishMigrationRequest",
+        "SelfManagedSource",
+        "MigrationConfig",
         "AutomatedBackupConfig",
         "BackupCollection",
         "Backup",
         "BackupFile",
         "CrossInstanceReplicationConfig",
+        "TokenAuthUser",
+        "AuthToken",
         "MaintenancePolicy",
         "WeeklyMaintenanceWindow",
         "MaintenanceSchedule",
@@ -62,6 +68,16 @@ __protobuf__ = proto.module(
         "ExportBackupRequest",
         "BackupInstanceRequest",
         "GetCertificateAuthorityRequest",
+        "ListTokenAuthUsersRequest",
+        "ListTokenAuthUsersResponse",
+        "GetTokenAuthUserRequest",
+        "ListAuthTokensRequest",
+        "ListAuthTokensResponse",
+        "GetAuthTokenRequest",
+        "AddTokenAuthUserRequest",
+        "DeleteTokenAuthUserRequest",
+        "AddAuthTokenRequest",
+        "DeleteAuthTokenRequest",
         "CertificateAuthority",
         "SharedRegionalCertificateAuthority",
         "GetSharedRegionalCertificateAuthorityRequest",
@@ -209,7 +225,8 @@ class Instance(proto.Message):
         endpoints (MutableSequence[google.cloud.memorystore_v1.types.Instance.InstanceEndpoint]):
             Optional. Endpoints for the instance.
         mode (google.cloud.memorystore_v1.types.Instance.Mode):
-            Optional. The mode config for the instance.
+            Optional. Immutable. The mode config for the
+            instance.
         simulate_maintenance_event (bool):
             Optional. Input only. Simulate a maintenance
             event.
@@ -301,6 +318,9 @@ class Instance(proto.Message):
             certificates.
 
             This field is a member of `oneof`_ ``_rotate_server_certificate``.
+        migration_config (google.cloud.memorystore_v1.types.MigrationConfig):
+            Output only. Migration config for the
+            instance.
     """
 
     class State(proto.Enum):
@@ -317,6 +337,8 @@ class Instance(proto.Message):
                 Instance is being updated.
             DELETING (4):
                 Instance is being deleted.
+            MIGRATING (6):
+                Instance is being migrated.
         """
 
         STATE_UNSPECIFIED = 0
@@ -324,6 +346,7 @@ class Instance(proto.Message):
         ACTIVE = 2
         UPDATING = 3
         DELETING = 4
+        MIGRATING = 6
 
     class AuthorizationMode(proto.Enum):
         r"""Possible authorization modes of the instance.
@@ -335,11 +358,14 @@ class Instance(proto.Message):
                 Authorization disabled.
             IAM_AUTH (2):
                 IAM basic authorization.
+            TOKEN_AUTH (3):
+                Token based authorization.
         """
 
         AUTHORIZATION_MODE_UNSPECIFIED = 0
         AUTH_DISABLED = 1
         IAM_AUTH = 2
+        TOKEN_AUTH = 3
 
     class TransitEncryptionMode(proto.Enum):
         r"""Possible in-transit encryption modes of the instance.
@@ -374,6 +400,18 @@ class Instance(proto.Message):
                 High memory extra large.
             STANDARD_SMALL (4):
                 Standard small.
+            CUSTOM_MICRO (5):
+                Custom micro.
+            CUSTOM_MINI (6):
+                Custom mini.
+            HIGHCPU_MEDIUM (7):
+                High cpu medium.
+            STANDARD_LARGE (8):
+                Standard large.
+            HIGHMEM_2XLARGE (9):
+                High memory 2xlarge.
+            CUSTOM_PICO (10):
+                Custom pico.
         """
 
         NODE_TYPE_UNSPECIFIED = 0
@@ -381,6 +419,12 @@ class Instance(proto.Message):
         HIGHMEM_MEDIUM = 2
         HIGHMEM_XLARGE = 3
         STANDARD_SMALL = 4
+        CUSTOM_MICRO = 5
+        CUSTOM_MINI = 6
+        HIGHCPU_MEDIUM = 7
+        STANDARD_LARGE = 8
+        HIGHMEM_2XLARGE = 9
+        CUSTOM_PICO = 10
 
     class Mode(proto.Enum):
         r"""The mode config, which is used to enable/disable cluster
@@ -812,6 +856,182 @@ class Instance(proto.Message):
         proto.BOOL,
         number=58,
         optional=True,
+    )
+    migration_config: "MigrationConfig" = proto.Field(
+        proto.MESSAGE,
+        number=59,
+        message="MigrationConfig",
+    )
+
+
+class StartMigrationRequest(proto.Message):
+    r"""Request for ``StartMigration``.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        self_managed_source (google.cloud.memorystore_v1.types.SelfManagedSource):
+            Required. Configuration for migrating from a
+            self-managed Valkey/Redis instance
+
+            This field is a member of `oneof`_ ``source``.
+        name (str):
+            Required. The resource name of the instance
+            to start migration on. Format:
+            projects/{project}/locations/{location}/instances/{instance}
+    """
+
+    self_managed_source: "SelfManagedSource" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="source",
+        message="SelfManagedSource",
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class FinishMigrationRequest(proto.Message):
+    r"""Request for ``FinishMigration``.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the instance
+            to finalize migration on. Format:
+            projects/{project}/locations/{location}/instances/{instance}
+        force (bool):
+            Optional. By default, the ``FinishMigration`` operation
+            ensures the target replication offset to catch up to the
+            source offset as of the time of the call. Set this field to
+            ``true`` to bypass this offset verification check.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+
+
+class SelfManagedSource(proto.Message):
+    r"""Details of the self-managed source instance.
+
+    Attributes:
+        ip_address (str):
+            Required. The IP address of the source
+            instance. This IP address should be a stable IP
+            address that can be accessed by the Memorystore
+            instance throughout the migration process.
+        port (int):
+            Required. The port of the source instance.
+            This port should be a stable port that can be
+            accessed by the Memorystore instance throughout
+            the migration process.
+        network_attachment (str):
+            Required. The resource name of the Private Service Connect
+            Network Attachment used to establish connectivity to the
+            source instance. This network attachment has the following
+            requirements:
+
+            1. It must be in the same project as the Memorystore
+               instance.
+            2. It must be in the same region as the Memorystore
+               instance.
+            3. The subnet attached to the network attachment must be in
+               the same VPC network as the source instance nodes.
+
+            Format:
+            projects/{project}/regions/{region}/networkAttachments/{network_attachment}
+    """
+
+    ip_address: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    port: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    network_attachment: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class MigrationConfig(proto.Message):
+    r"""Configuration for the migration of an instance.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        self_managed_source (google.cloud.memorystore_v1.types.SelfManagedSource):
+            Output only. Configuration for migrating from
+            a self-managed Valkey/Redis instance
+
+            This field is a member of `oneof`_ ``source``.
+        state (google.cloud.memorystore_v1.types.MigrationConfig.State):
+            Output only. Migration state of the instance.
+        force_finish_migration (bool):
+            Output only. Represents a boolean flag to
+            force migration finalization without offset
+            catch up validation between source and target
+            before stopping replication.
+    """
+
+    class State(proto.Enum):
+        r"""Migration state of the instance.
+        New values may be added in the future.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Instance has no migration related activity.
+                This is the initial state.
+            ROLLED_BACK (1):
+                Instance is not currently migrating. The
+                instance underwent a migration attempt that
+                failed, and the subsequent rollback was
+                successful. The instance is now ready for a new
+                migration attempt if desired.
+            ROLLING_BACK (5):
+                Indicates a previous migration attempt failed. The
+                high-level instance state will be ``MIGRATING``. The
+                instance is not ready for a new migration attempt. Rollback
+                is in progress to restore the instance to its original
+                state. The instance will remain in this state until rollback
+                is successful.
+            REPLICATION_ESTABLISHED (6):
+                Instance is in the process of migration.
+                Instance has established successful replication
+                and is ready for cutover.
+            MIGRATED (4):
+                Instance is successfully migrated.
+        """
+
+        STATE_UNSPECIFIED = 0
+        ROLLED_BACK = 1
+        ROLLING_BACK = 5
+        REPLICATION_ESTABLISHED = 6
+        MIGRATED = 4
+
+    self_managed_source: "SelfManagedSource" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="source",
+        message="SelfManagedSource",
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=State,
+    )
+    force_finish_migration: bool = proto.Field(
+        proto.BOOL,
+        number=4,
     )
 
 
@@ -1295,6 +1515,105 @@ class CrossInstanceReplicationConfig(proto.Message):
     )
 
 
+class TokenAuthUser(proto.Message):
+    r"""Token based auth user for the instance.
+
+    Attributes:
+        name (str):
+            Identifier. Token based auth user name.
+        state (google.cloud.memorystore_v1.types.TokenAuthUser.State):
+            Output only. The state of the token based
+            auth user.
+    """
+
+    class State(proto.Enum):
+        r"""Represents the different states of a token based auth user.
+        New values may be added in the future.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not set.
+            ACTIVE (1):
+                The auth user is active.
+            CREATING (2):
+                The auth user is being created.
+            UPDATING (3):
+                The auth user is being updated.
+            DELETING (4):
+                The auth user is being deleted.
+        """
+
+        STATE_UNSPECIFIED = 0
+        ACTIVE = 1
+        CREATING = 2
+        UPDATING = 3
+        DELETING = 4
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=State,
+    )
+
+
+class AuthToken(proto.Message):
+    r"""Auth token for the instance.
+
+    Attributes:
+        name (str):
+            Identifier. Name of the auth token.
+        token (str):
+            Output only. The auth token.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Create time of the auth token.
+        state (google.cloud.memorystore_v1.types.AuthToken.State):
+            Output only. The state of the auth token.
+    """
+
+    class State(proto.Enum):
+        r"""Represents the different states of an auth token.
+        New values may be added in the future.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Not set.
+            ACTIVE (1):
+                The auth token is active.
+            CREATING (2):
+                The auth token is being created.
+            DELETING (3):
+                The auth token is being deleted.
+        """
+
+        STATE_UNSPECIFIED = 0
+        ACTIVE = 1
+        CREATING = 2
+        DELETING = 3
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+
+
 class MaintenancePolicy(proto.Message):
     r"""Maintenance policy per instance.
 
@@ -1430,7 +1749,7 @@ class PscAutoConnection(proto.Message):
         network (str):
             Required. The network where the PSC endpoints are created,
             in the form of
-            projects/{project_id}/global/networks/{network_id}.
+            projects/{project_id}/global/networks/{network_name}.
         service_attachment (str):
             Output only. The service attachment which is
             the target of the PSC connection, in the form of
@@ -1515,7 +1834,7 @@ class PscConnection(proto.Message):
         network (str):
             Required. The consumer network where the IP address resides,
             in the form of
-            projects/{project_id}/global/networks/{network_id}.
+            projects/{project_id}/global/networks/{network_name}.
         service_attachment (str):
             Required. The service attachment which is the
             target of the PSC connection, in the form of
@@ -1586,7 +1905,7 @@ class DiscoveryEndpoint(proto.Message):
         network (str):
             Output only. The network where the IP address of the
             discovery endpoint will be reserved, in the form of
-            projects/{network_project}/global/networks/{network_id}.
+            projects/{network_project}/global/networks/{network_name}.
     """
 
     address: str = proto.Field(
@@ -1890,7 +2209,7 @@ class ListInstancesRequest(proto.Message):
 
 
 class ListInstancesResponse(proto.Message):
-    r"""Response message for [ListInstances][].
+    r"""Response message for ``ListInstances``.
 
     Attributes:
         instances (MutableSequence[google.cloud.memorystore_v1.types.Instance]):
@@ -2092,7 +2411,7 @@ class DeleteInstanceRequest(proto.Message):
 
 
 class ListBackupCollectionsRequest(proto.Message):
-    r"""Request for [ListBackupCollections]
+    r"""Request for ``ListBackupCollections``.
 
     Attributes:
         parent (str):
@@ -2106,12 +2425,11 @@ class ListBackupCollectionsRequest(proto.Message):
             If not specified, a default value of 1000 will be used by
             the service. Regardless of the page_size value, the response
             may include a partial list and a caller should only rely on
-            response's
-            [``next_page_token``][google.cloud.memorystore.v1.ListBackupCollectionsResponse.next_page_token]
-            to determine if there are more clusters left to be queried.
+            response's ``next_page_token`` to determine if there are
+            more clusters left to be queried.
         page_token (str):
             Optional. The ``next_page_token`` value returned from a
-            previous [ListBackupCollections] request, if any.
+            previous ``ListBackupCollections`` request, if any.
     """
 
     parent: str = proto.Field(
@@ -2129,7 +2447,7 @@ class ListBackupCollectionsRequest(proto.Message):
 
 
 class ListBackupCollectionsResponse(proto.Message):
-    r"""Response for [ListBackupCollections].
+    r"""Response for ``ListBackupCollections``.
 
     Attributes:
         backup_collections (MutableSequence[google.cloud.memorystore_v1.types.BackupCollection]):
@@ -2173,7 +2491,7 @@ class ListBackupCollectionsResponse(proto.Message):
 
 
 class GetBackupCollectionRequest(proto.Message):
-    r"""Request for [GetBackupCollection].
+    r"""Request for ``GetBackupCollection``.
 
     Attributes:
         name (str):
@@ -2190,7 +2508,7 @@ class GetBackupCollectionRequest(proto.Message):
 
 
 class ListBackupsRequest(proto.Message):
-    r"""Request for [ListBackups].
+    r"""Request for ``ListBackups``.
 
     Attributes:
         parent (str):
@@ -2203,12 +2521,11 @@ class ListBackupsRequest(proto.Message):
             If not specified, a default value of 1000 will be used by
             the service. Regardless of the page_size value, the response
             may include a partial list and a caller should only rely on
-            response's
-            [``next_page_token``][google.cloud.memorystore.v1.ListBackupsResponse.next_page_token]
-            to determine if there are more clusters left to be queried.
+            response's ``next_page_token`` to determine if there are
+            more clusters left to be queried.
         page_token (str):
             Optional. The ``next_page_token`` value returned from a
-            previous [ListBackupCollections] request, if any.
+            previous ``ListBackupCollections`` request, if any.
     """
 
     parent: str = proto.Field(
@@ -2226,7 +2543,7 @@ class ListBackupsRequest(proto.Message):
 
 
 class ListBackupsResponse(proto.Message):
-    r"""Response for [ListBackups].
+    r"""Response for ``ListBackups``.
 
     Attributes:
         backups (MutableSequence[google.cloud.memorystore_v1.types.Backup]):
@@ -2259,7 +2576,7 @@ class ListBackupsResponse(proto.Message):
 
 
 class GetBackupRequest(proto.Message):
-    r"""Request for [GetBackup].
+    r"""Request for ``GetBackup``.
 
     Attributes:
         name (str):
@@ -2274,7 +2591,7 @@ class GetBackupRequest(proto.Message):
 
 
 class DeleteBackupRequest(proto.Message):
-    r"""Request for [DeleteBackup].
+    r"""Request for ``DeleteBackup``.
 
     Attributes:
         name (str):
@@ -2295,7 +2612,7 @@ class DeleteBackupRequest(proto.Message):
 
 
 class ExportBackupRequest(proto.Message):
-    r"""Request for [ExportBackup].
+    r"""Request for ``ExportBackup``.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -2322,7 +2639,7 @@ class ExportBackupRequest(proto.Message):
 
 
 class BackupInstanceRequest(proto.Message):
-    r"""Request for [BackupInstance].
+    r"""Request for ``BackupInstance``.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -2360,7 +2677,7 @@ class BackupInstanceRequest(proto.Message):
 
 
 class GetCertificateAuthorityRequest(proto.Message):
-    r"""Request message for [GetCertificateAuthority][].
+    r"""Request message for ``GetCertificateAuthority``.
 
     Attributes:
         name (str):
@@ -2368,6 +2685,309 @@ class GetCertificateAuthorityRequest(proto.Message):
             authority. Format:
 
             projects/{project}/locations/{location}/instances/{instance}/certificateAuthority
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListTokenAuthUsersRequest(proto.Message):
+    r"""Request message for ``ListTokenAuthUsers``.
+
+    Attributes:
+        parent (str):
+            Required. The parent to list token auth users
+            from. Format:
+            projects/{project}/locations/{location}/instances/{instance}
+        page_size (int):
+            Optional. The maximum number of items to return. The maximum
+            value is 1000; values above 1000 will be coerced to 1000. If
+            not specified, a default value of 1000 will be used by the
+            service. Regardless of the page_size value, the response may
+            include a partial list and a caller should only rely on
+            response's ``next_page_token`` to determine if there are
+            more token auth users left to be queried.
+        page_token (str):
+            Optional. The ``next_page_token`` value returned from a
+            previous ``ListTokenAuthUsers`` request, if any.
+        filter (str):
+            Optional. Expression for filtering results.
+        order_by (str):
+            Optional. Sort results by a defined order.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListTokenAuthUsersResponse(proto.Message):
+    r"""Response message for ``ListTokenAuthUsers``.
+
+    Attributes:
+        token_auth_users (MutableSequence[google.cloud.memorystore_v1.types.TokenAuthUser]):
+            A list of token auth users in the project.
+        next_page_token (str):
+            Token to retrieve the next page of results,
+            or empty if there are no more results in the
+            list.
+        unreachable (MutableSequence[str]):
+            Unordered list. Token auth users that could
+            not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    token_auth_users: MutableSequence["TokenAuthUser"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="TokenAuthUser",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetTokenAuthUserRequest(proto.Message):
+    r"""Request message for ``GetTokenAuthUser``.
+
+    Attributes:
+        name (str):
+            Required. The name of token auth user for a basic auth
+            enabled instance. Format:
+            projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListAuthTokensRequest(proto.Message):
+    r"""Request message for ``ListAuthTokens``.
+
+    Attributes:
+        parent (str):
+            Required. The parent to list auth tokens from. Format:
+            projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}
+        page_size (int):
+            Optional. The maximum number of items to return. The maximum
+            value is 1000; values above 1000 will be coerced to 1000.
+
+            If not specified, a default value of 1000 will be used by
+            the service. Regardless of the page_size value, the response
+            may include a partial list and a caller should only rely on
+            response's ``next_page_token`` to determine if there are
+            more auth tokens left to be queried.
+        page_token (str):
+            Optional. The ``next_page_token`` value returned from a
+            previous ``ListAuthTokens`` request, if any.
+        filter (str):
+            Optional. Expression for filtering results.
+        order_by (str):
+            Optional. Sort results by a defined order.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListAuthTokensResponse(proto.Message):
+    r"""Response message for ``ListAuthTokens``.
+
+    Attributes:
+        auth_tokens (MutableSequence[google.cloud.memorystore_v1.types.AuthToken]):
+            A list of auth tokens in the project.
+        next_page_token (str):
+            Token to retrieve the next page of results,
+            or empty if there are no more results in the
+            list.
+        unreachable (MutableSequence[str]):
+            Unordered list. Auth tokens that could not be
+            reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    auth_tokens: MutableSequence["AuthToken"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="AuthToken",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetAuthTokenRequest(proto.Message):
+    r"""Request message for ``GetAuthToken``.
+
+    Attributes:
+        name (str):
+            Required. The name of token auth user for a token auth
+            enabled instance. Format:
+            projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}/authTokens/{auth_token}
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class AddTokenAuthUserRequest(proto.Message):
+    r"""Request message for ``AddTokenAuthUser``.
+
+    Attributes:
+        instance (str):
+            Required. The instance resource that this
+            token auth user will be added for. Format:
+            projects/{project}/locations/{location}/instances/{instance}
+        token_auth_user (str):
+            Required. The name of the token auth user to
+            add.
+    """
+
+    instance: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    token_auth_user: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class DeleteTokenAuthUserRequest(proto.Message):
+    r"""Request message for ``DeleteTokenAuthUser``.
+
+    Attributes:
+        name (str):
+            Required. The name of the token auth user to delete. Format:
+            projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes after the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+        force (bool):
+            Optional. If set to true, any auth tokens
+            from this user will also be deleted. Otherwise,
+            the request will only work if the user has no
+            auth tokens.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class AddAuthTokenRequest(proto.Message):
+    r"""Request message for ``AddAuthToken``.
+
+    Attributes:
+        token_auth_user (str):
+            Required. The name of the token auth user
+            resource that this token will be added for.
+        auth_token (google.cloud.memorystore_v1.types.AuthToken):
+            Required. The auth token to add.
+    """
+
+    token_auth_user: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    auth_token: "AuthToken" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="AuthToken",
+    )
+
+
+class DeleteAuthTokenRequest(proto.Message):
+    r"""Request message for ``DeleteAuthToken``.
+
+    Attributes:
+        name (str):
+            Required. The name of the token auth user resource that this
+            token will be deleted from. Format:
+            projects/{project}/locations/{location}/instances/{instance}/tokenAuthUsers/{token_auth_user}/authTokens/{name}
     """
 
     name: str = proto.Field(
@@ -2499,8 +3119,7 @@ class SharedRegionalCertificateAuthority(proto.Message):
 
 
 class GetSharedRegionalCertificateAuthorityRequest(proto.Message):
-    r"""Request for
-    [GetSharedRegionalCertificateAuthority][google.cloud.memorystore.v1.Memorystore.GetSharedRegionalCertificateAuthority].
+    r"""Request for ``GetSharedRegionalCertificateAuthority``.
 
     Attributes:
         name (str):

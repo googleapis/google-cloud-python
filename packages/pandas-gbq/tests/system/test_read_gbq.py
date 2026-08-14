@@ -8,11 +8,11 @@ import decimal
 import random
 
 import db_dtypes
-from google.cloud import bigquery
 import packaging.version
 import pandas
 import pandas.testing
 import pytest
+from google.cloud import bigquery
 
 from pandas_gbq.features import FEATURES
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,7 +27,13 @@ import proto  # type: ignore
 from google.geo.type.types import viewport as ggt_viewport
 
 from google.maps.places_v1.types import address_descriptor as gmp_address_descriptor
-from google.maps.places_v1.types import content_block, ev_charging, photo, review
+from google.maps.places_v1.types import (
+    content_block,
+    ev_charging,
+    photo,
+    review,
+    transit,
+)
 from google.maps.places_v1.types import fuel_options as gmp_fuel_options
 from google.maps.places_v1.types import price_range as gmp_price_range
 
@@ -424,6 +430,9 @@ class Place(proto.Message):
             multiple times, this field will represent the
             first moved Place. This field will not be
             populated if this Place has not moved.
+        transit_station (google.maps.places_v1.types.TransitStation):
+            The transit station information for the
+            place.
     """
 
     class BusinessStatus(proto.Enum):
@@ -1653,6 +1662,11 @@ class Place(proto.Message):
     moved_place_id: str = proto.Field(
         proto.STRING,
         number=94,
+    )
+    transit_station: transit.TransitStation = proto.Field(
+        proto.MESSAGE,
+        number=98,
+        message=transit.TransitStation,
     )
 
 

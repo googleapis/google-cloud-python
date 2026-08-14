@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -24,6 +24,13 @@ from google.api import field_behavior_pb2 as _field_behavior_pb2
 from google.api import resource_pb2 as _resource_pb2
 from google.iam.v1 import iam_policy_pb2 as _iam_policy_pb2
 from google.iam.v1 import policy_pb2 as _policy_pb2
+from google.longrunning import operations_pb2 as _operations_pb2
+from google.protobuf import descriptor as _descriptor
+from google.protobuf import field_mask_pb2 as _field_mask_pb2
+from google.protobuf import message as _message
+from google.protobuf.internal import containers as _containers
+from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
+
 from google.identity.accesscontextmanager.v1 import (
     access_level_pb2 as _access_level_pb2,
 )
@@ -36,12 +43,6 @@ from google.identity.accesscontextmanager.v1 import (
 from google.identity.accesscontextmanager.v1 import (
     service_perimeter_pb2 as _service_perimeter_pb2,
 )
-from google.longrunning import operations_pb2 as _operations_pb2
-from google.protobuf import descriptor as _descriptor
-from google.protobuf import field_mask_pb2 as _field_mask_pb2
-from google.protobuf import message as _message
-from google.protobuf.internal import containers as _containers
-from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 
 DESCRIPTOR: _descriptor.FileDescriptor
 

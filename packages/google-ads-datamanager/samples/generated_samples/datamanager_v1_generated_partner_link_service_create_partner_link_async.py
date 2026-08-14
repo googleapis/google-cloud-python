@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,7 +41,9 @@ async def sample_create_partner_link():
     # Initialize request argument(s)
     partner_link = datamanager_v1.PartnerLink()
     partner_link.owning_account.account_id = "account_id_value"
+    partner_link.owning_account.account_type = "FLOODLIGHT_CONFIG"
     partner_link.partner_account.account_id = "account_id_value"
+    partner_link.partner_account.account_type = "FLOODLIGHT_CONFIG"
 
     request = datamanager_v1.CreatePartnerLinkRequest(
         parent="parent_value",

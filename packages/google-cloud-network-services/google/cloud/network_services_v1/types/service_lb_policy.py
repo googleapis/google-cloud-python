@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -150,7 +150,6 @@ class ServiceLbPolicy(proto.Message):
             enable (bool):
                 Optional. If set to 'True', an unhealthy
                 IG/NEG will be set as drained.
-
                 - An IG/NEG is considered unhealthy if less than
                   25% of the instances/endpoints in the IG/NEG
                   are healthy.

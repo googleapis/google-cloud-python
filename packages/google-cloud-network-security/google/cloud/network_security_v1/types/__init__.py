@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -218,6 +218,20 @@ from .server_tls_policy import (
     ServerTlsPolicy,
     UpdateServerTlsPolicyRequest,
 )
+from .sse_realm import (
+    CreateSACAttachmentRequest,
+    CreateSACRealmRequest,
+    DeleteSACAttachmentRequest,
+    DeleteSACRealmRequest,
+    GetSACAttachmentRequest,
+    GetSACRealmRequest,
+    ListSACAttachmentsRequest,
+    ListSACAttachmentsResponse,
+    ListSACRealmsRequest,
+    ListSACRealmsResponse,
+    SACAttachment,
+    SACRealm,
+)
 from .tls import (
     CertificateProvider,
     CertificateProviderInstance,
@@ -411,6 +425,18 @@ __all__ = (
     "ListServerTlsPoliciesResponse",
     "ServerTlsPolicy",
     "UpdateServerTlsPolicyRequest",
+    "CreateSACAttachmentRequest",
+    "CreateSACRealmRequest",
+    "DeleteSACAttachmentRequest",
+    "DeleteSACRealmRequest",
+    "GetSACAttachmentRequest",
+    "GetSACRealmRequest",
+    "ListSACAttachmentsRequest",
+    "ListSACAttachmentsResponse",
+    "ListSACRealmsRequest",
+    "ListSACRealmsResponse",
+    "SACAttachment",
+    "SACRealm",
     "CertificateProvider",
     "CertificateProviderInstance",
     "GrpcEndpoint",

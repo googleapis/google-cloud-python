@@ -27,8 +27,6 @@ from bigframes.testing import utils
 @pytest.mark.parametrize(
     "model_name",
     (
-        "gemini-2.0-flash-001",
-        "gemini-2.0-flash-lite-001",
         "gemini-2.5-pro",
         "gemini-2.5-flash",
         "gemini-2.5-flash-lite",
@@ -56,8 +54,6 @@ def test_create_load_gemini_text_generator_model(
 @pytest.mark.parametrize(
     "model_name",
     (
-        "gemini-2.0-flash-001",
-        "gemini-2.0-flash-lite-001",
         "gemini-2.5-pro",
         "gemini-2.5-flash",
         "gemini-2.5-flash-lite",
@@ -79,8 +75,6 @@ def test_gemini_text_generator_predict_default_params_success(
 @pytest.mark.parametrize(
     "model_name",
     (
-        "gemini-2.0-flash-001",
-        "gemini-2.0-flash-lite-001",
         "gemini-2.5-pro",
         "gemini-2.5-flash",
         "gemini-2.5-flash-lite",
@@ -104,8 +98,6 @@ def test_gemini_text_generator_predict_with_params_success(
 @pytest.mark.parametrize(
     "model_name",
     (
-        "gemini-2.0-flash-001",
-        "gemini-2.0-flash-lite-001",
         "gemini-2.5-pro",
         "gemini-2.5-flash",
         "gemini-2.5-flash-lite",
@@ -131,8 +123,6 @@ def test_gemini_text_generator_multi_cols_predict_success(
 @pytest.mark.parametrize(
     "model_name",
     (
-        "gemini-2.0-flash-001",
-        "gemini-2.0-flash-lite-001",
         "gemini-2.5-pro",
         "gemini-2.5-flash",
         "gemini-2.5-flash-lite",
@@ -176,8 +166,8 @@ def test_gemini_text_generator_predict_output_schema_success(
 @pytest.mark.parametrize(
     "model_name",
     (
-        "gemini-2.0-flash-001",
-        "gemini-2.0-flash-lite-001",
+        "gemini-2.5-flash",
+        "gemini-2.5-flash-lite",
     ),
 )
 def test_llm_gemini_score(llm_fine_tune_df_default_index, model_name):
@@ -205,8 +195,8 @@ def test_llm_gemini_score(llm_fine_tune_df_default_index, model_name):
 @pytest.mark.parametrize(
     "model_name",
     (
-        "gemini-2.0-flash-001",
-        "gemini-2.0-flash-lite-001",
+        "gemini-2.5-flash",
+        "gemini-2.5-flash-lite",
     ),
 )
 def test_llm_gemini_pro_score_params(llm_fine_tune_df_default_index, model_name):

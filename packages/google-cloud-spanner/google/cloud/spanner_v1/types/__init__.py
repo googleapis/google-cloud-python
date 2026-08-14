@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -59,6 +59,7 @@ from .spanner import (
     ExecuteBatchDmlRequest,
     ExecuteBatchDmlResponse,
     ExecuteSqlRequest,
+    FetchCacheUpdateRequest,
     GetSessionRequest,
     ListSessionsRequest,
     ListSessionsResponse,
@@ -117,6 +118,7 @@ __all__ = (
     "ExecuteBatchDmlRequest",
     "ExecuteBatchDmlResponse",
     "ExecuteSqlRequest",
+    "FetchCacheUpdateRequest",
     "GetSessionRequest",
     "ListSessionsRequest",
     "ListSessionsResponse",

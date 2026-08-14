@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -280,7 +280,7 @@ class Account(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this account.
+            Identifier. Resource name of this account.
             Format: accounts/{account}
             Example: "accounts/100".
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -344,7 +344,7 @@ class Property(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this property. Format:
+            Identifier. Resource name of this property. Format:
             properties/{property_id} Example: "properties/1000".
         property_type (google.analytics.admin_v1beta.types.PropertyType):
             Immutable. The property type for this Property resource.
@@ -493,7 +493,7 @@ class DataStream(proto.Message):
 
             This field is a member of `oneof`_ ``stream_data``.
         name (str):
-            Output only. Resource name of this Data Stream. Format:
+            Identifier. Resource name of this Data Stream. Format:
             properties/{property_id}/dataStreams/{stream_id} Example:
             "properties/1000/dataStreams/2000".
         type_ (google.analytics.admin_v1beta.types.DataStream.DataStreamType):
@@ -658,7 +658,7 @@ class FirebaseLink(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Example format:
+            Identifier. Example format:
             properties/1234/firebaseLinks/5678
         project (str):
             Immutable. Firebase project resource name. When creating a
@@ -694,7 +694,7 @@ class GoogleAdsLink(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Format:
+            Identifier. Format:
 
             properties/{propertyId}/googleAdsLinks/{googleAdsLinkId}
 
@@ -765,28 +765,53 @@ class DataSharingSettings(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name.
+            Identifier. Resource name.
             Format: accounts/{account}/dataSharingSettings
             Example: "accounts/1000/dataSharingSettings".
         sharing_with_google_support_enabled (bool):
-            Allows Google support to access the data in
-            order to help troubleshoot issues.
+            Allows Google technical support
+            representatives access to your Google Analytics
+            data and account when necessary to provide
+            service and find solutions to technical issues.
+
+            This field maps to the "Technical support" field
+            in the Google Analytics Admin UI.
         sharing_with_google_assigned_sales_enabled (bool):
-            Allows Google sales teams that are assigned
-            to the customer to access the data in order to
-            suggest configuration changes to improve
-            results. Sales team restrictions still apply
-            when enabled.
+            Allows Google access to your Google Analytics
+            account data, including account usage and
+            configuration data, product spending, and users
+            associated with your Google Analytics account,
+            so that Google can help you make the most of
+            Google products, providing you with insights,
+            offers, recommendations, and optimization tips
+            across Google Analytics and other Google
+            products for business.
+
+            This field maps to the "Recommendations for your
+            business" field in the Google Analytics Admin
+            UI.
         sharing_with_google_any_sales_enabled (bool):
-            Allows any of Google sales to access the data
-            in order to suggest configuration changes to
-            improve results.
+            Deprecated. This field is no longer used and
+            always returns false.
         sharing_with_google_products_enabled (bool):
             Allows Google to use the data to improve
             other Google products or services.
+            This fields maps to the "Google products &
+            services" field in the Google Analytics Admin
+            UI.
         sharing_with_others_enabled (bool):
-            Allows Google to share the data anonymously
-            in aggregate form with others.
+            Enable features like predictions, modeled
+            data, and benchmarking that can provide you with
+            richer business insights when you contribute
+            aggregated measurement data. The data you share
+            (including information about the property from
+            which it is shared) is aggregated and
+            de-identified before being used to generate
+            business insights.
+
+            This field maps to the "Modeling contributions &
+            business insights" field in the Google Analytics
+            Admin UI.
     """
 
     name: str = proto.Field(
@@ -821,7 +846,7 @@ class AccountSummary(proto.Message):
 
     Attributes:
         name (str):
-            Resource name for this account summary. Format:
+            Identifier. Resource name for this account summary. Format:
             accountSummaries/{account_id} Example:
             "accountSummaries/1000".
         account (str):
@@ -875,6 +900,9 @@ class PropertySummary(proto.Message):
             change the parent. Format: accounts/{account},
             properties/{property} Example: "accounts/100",
             "properties/200".
+        can_edit (bool):
+            If true, then the user has a Google Analytics
+            role that permits them to edit the property.
     """
 
     property: str = proto.Field(
@@ -894,6 +922,10 @@ class PropertySummary(proto.Message):
         proto.STRING,
         number=4,
     )
+    can_edit: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class MeasurementProtocolSecret(proto.Message):
@@ -901,7 +933,7 @@ class MeasurementProtocolSecret(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this secret.
+            Identifier. Resource name of this secret.
             This secret may be a child of any type of
             stream. Format:
 
@@ -1142,7 +1174,7 @@ class ConversionEvent(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this conversion event. Format:
+            Identifier. Resource name of this conversion event. Format:
             properties/{property}/conversionEvents/{conversion_event}
         event_name (str):
             Immutable. The event name for this conversion
@@ -1381,7 +1413,7 @@ class CustomDimension(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name for this
+            Identifier. Resource name for this
             CustomDimension resource. Format:
             properties/{property}/customDimensions/{customDimension}
         parameter_name (str):
@@ -1473,7 +1505,7 @@ class CustomMetric(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name for this
+            Identifier. Resource name for this
             CustomMetric resource. Format:
             properties/{property}/customMetrics/{customMetric}
         parameter_name (str):
@@ -1621,7 +1653,7 @@ class DataRetentionSettings(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name for this
+            Identifier. Resource name for this
             DataRetentionSetting resource. Format:
             properties/{property}/dataRetentionSettings
         event_data_retention (google.analytics.admin_v1beta.types.DataRetentionSettings.RetentionDuration):

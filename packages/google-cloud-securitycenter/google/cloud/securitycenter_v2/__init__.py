@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,17 +21,83 @@ from google.cloud.securitycenter_v2 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER
-    from importlib import metadata
-else:  # pragma: NO COVER
-    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
-    # this code path once we drop support for Python 3.7
-    import importlib_metadata as metadata
+from importlib import metadata
+
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.securitycenter_v2.services.security_center",
+    "google.cloud.securitycenter_v2.types.access",
+    "google.cloud.securitycenter_v2.types.affected_resources",
+    "google.cloud.securitycenter_v2.types.agent",
+    "google.cloud.securitycenter_v2.types.agent_anomaly",
+    "google.cloud.securitycenter_v2.types.agent_session",
+    "google.cloud.securitycenter_v2.types.ai_model",
+    "google.cloud.securitycenter_v2.types.application",
+    "google.cloud.securitycenter_v2.types.attack_exposure",
+    "google.cloud.securitycenter_v2.types.attack_path",
+    "google.cloud.securitycenter_v2.types.backup_disaster_recovery",
+    "google.cloud.securitycenter_v2.types.bigquery_export",
+    "google.cloud.securitycenter_v2.types.chokepoint",
+    "google.cloud.securitycenter_v2.types.cloud_armor",
+    "google.cloud.securitycenter_v2.types.cloud_dlp_data_profile",
+    "google.cloud.securitycenter_v2.types.cloud_dlp_inspection",
+    "google.cloud.securitycenter_v2.types.compliance",
+    "google.cloud.securitycenter_v2.types.connection",
+    "google.cloud.securitycenter_v2.types.contact_details",
+    "google.cloud.securitycenter_v2.types.container",
+    "google.cloud.securitycenter_v2.types.data_access_event",
+    "google.cloud.securitycenter_v2.types.data_flow_event",
+    "google.cloud.securitycenter_v2.types.data_retention_deletion_event",
+    "google.cloud.securitycenter_v2.types.database",
+    "google.cloud.securitycenter_v2.types.disk",
+    "google.cloud.securitycenter_v2.types.exfiltration",
+    "google.cloud.securitycenter_v2.types.external_system",
+    "google.cloud.securitycenter_v2.types.file",
+    "google.cloud.securitycenter_v2.types.finding",
+    "google.cloud.securitycenter_v2.types.folder",
+    "google.cloud.securitycenter_v2.types.group_membership",
+    "google.cloud.securitycenter_v2.types.iam_binding",
+    "google.cloud.securitycenter_v2.types.indicator",
+    "google.cloud.securitycenter_v2.types.ip_rules",
+    "google.cloud.securitycenter_v2.types.job",
+    "google.cloud.securitycenter_v2.types.kernel_rootkit",
+    "google.cloud.securitycenter_v2.types.kubernetes",
+    "google.cloud.securitycenter_v2.types.label",
+    "google.cloud.securitycenter_v2.types.load_balancer",
+    "google.cloud.securitycenter_v2.types.log_entry",
+    "google.cloud.securitycenter_v2.types.mitre_attack",
+    "google.cloud.securitycenter_v2.types.mute_config",
+    "google.cloud.securitycenter_v2.types.network",
+    "google.cloud.securitycenter_v2.types.notebook",
+    "google.cloud.securitycenter_v2.types.notification_config",
+    "google.cloud.securitycenter_v2.types.notification_message",
+    "google.cloud.securitycenter_v2.types.org_policy",
+    "google.cloud.securitycenter_v2.types.process",
+    "google.cloud.securitycenter_v2.types.resource",
+    "google.cloud.securitycenter_v2.types.resource_value_config",
+    "google.cloud.securitycenter_v2.types.security_marks",
+    "google.cloud.securitycenter_v2.types.security_posture",
+    "google.cloud.securitycenter_v2.types.securitycenter_service",
+    "google.cloud.securitycenter_v2.types.simulation",
+    "google.cloud.securitycenter_v2.types.source",
+    "google.cloud.securitycenter_v2.types.toxic_combination",
+    "google.cloud.securitycenter_v2.types.valued_resource",
+    "google.cloud.securitycenter_v2.types.vertex_ai",
+    "google.cloud.securitycenter_v2.types.vulnerability",
+}
 
 
 from .services.security_center import SecurityCenterAsyncClient, SecurityCenterClient
 from .types.access import Access, Geolocation, ServiceAccountDelegationInfo
 from .types.affected_resources import AffectedResources
+from .types.agent import Agent
+from .types.agent_anomaly import AgentAnomaly, DetectorReference, InvocationReference
+from .types.agent_session import AgentSession
 from .types.ai_model import AiModel
 from .types.application import Application
 from .types.attack_exposure import AttackExposure
@@ -170,34 +236,23 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import sys
         import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.securitycenter_v2"
-        if sys.version_info < (3, 9):
+        if sys.version_info < (3, 10):
             warnings.warn(
                 "You are using a non-supported Python version "
                 + f"({_py_version_str}).  Google will not post any further "
                 + f"updates to {_package_label} supporting this Python version. "
                 + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.9, and then update {_package_label}.",
-                FutureWarning,
-            )
-        if sys.version_info[:2] == (3, 9):
-            warnings.warn(
-                f"You are using a Python version ({_py_version_str}) "
-                + f"which Google will stop supporting in {_package_label} in "
-                + "January 2026. Please "
-                + "upgrade to the latest Python version, or at "
-                + "least to Python 3.10, before then, and "
-                + f"then update {_package_label}.",
+                + f"least to Python 3.10, and then update {_package_label}.",
                 FutureWarning,
             )
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -226,9 +281,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -260,6 +315,9 @@ __all__ = (
     "Access",
     "AdaptiveProtection",
     "AffectedResources",
+    "Agent",
+    "AgentAnomaly",
+    "AgentSession",
     "AiModel",
     "Allowed",
     "Application",
@@ -304,6 +362,7 @@ __all__ = (
     "DeleteNotificationConfigRequest",
     "DeleteResourceValueConfigRequest",
     "Denied",
+    "DetectorReference",
     "Disk",
     "EnvironmentVariable",
     "ExfilResource",
@@ -329,6 +388,7 @@ __all__ = (
     "GroupResult",
     "IamBinding",
     "Indicator",
+    "InvocationReference",
     "IpRule",
     "IpRules",
     "Job",

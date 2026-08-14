@@ -18,7 +18,7 @@ from typing import Optional
 from google.cloud import bigquery_storage_v1
 
 from bigframes.core import bigframe_node, bq_data, nodes, rewrite
-from bigframes.session import executor, semi_executor
+from bigframes.session import execution_spec, executor, semi_executor
 
 
 class ReadApiSemiExecutor(semi_executor.SemiExecutor):
@@ -34,17 +34,19 @@ class ReadApiSemiExecutor(semi_executor.SemiExecutor):
         self.bqstoragereadclient = bqstoragereadclient
         self.project = project
 
-    def execute(
+    async def execute(
         self,
         plan: bigframe_node.BigFrameNode,
-        ordered: bool,
-        peek: Optional[int] = None,
+        execution_spec: execution_spec.ExecutionSpec,
     ) -> Optional[executor.ExecuteResult]:
-        adapt_result = self._try_adapt_plan(plan, ordered)
+        if execution_spec.destination_spec is not None:
+            return None
+
+        adapt_result = self._try_adapt_plan(plan, execution_spec.ordered)
         if not adapt_result:
             return None
         node, limit = adapt_result
-        if node.explicitly_ordered and ordered:
+        if node.explicitly_ordered and execution_spec.ordered:
             return None
 
         if not isinstance(node.source.table, bq_data.GbqNativeTable):
@@ -53,6 +55,7 @@ class ReadApiSemiExecutor(semi_executor.SemiExecutor):
         if not node.source.table.is_physically_stored:
             return None
 
+        peek = execution_spec.peek
         if limit is not None:
             if peek is None or limit < peek:
                 peek = limit

@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-backupdr/#history
 
+## [0.10.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.10.0...google-cloud-backupdr-v0.10.1) (2026-08-06)
+
+
+### Features
+
+* update googleapis and regenerate ([#17893](https://github.com/googleapis/google-cloud-python/issues/17893)) ([e70ab6f](https://github.com/googleapis/google-cloud-python/commit/e70ab6fd45edfec5ca0c865e01876f0ea4f09cae))
+
+## [0.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.9.0...google-cloud-backupdr-v0.10.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-b packages (#17090) ([77d4fcc15d1a6d96adb5f2765ecd0fcc47e478bd](https://github.com/googleapis/google-cloud-python/commit/77d4fcc15d1a6d96adb5f2765ecd0fcc47e478bd))
+
 ## [0.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.8.0...google-cloud-backupdr-v0.9.0) (2026-03-26)
 
 

@@ -121,9 +121,10 @@ def test_query_and_wait_via_client_library_timeout_raises_querytimeout(
         "fake timeout"
     )
 
-    with freezegun.freeze_time(
-        "2020-01-01 00:00:00", auto_tick_seconds=15
-    ), pytest.raises(pandas_gbq.exceptions.QueryTimeout):
+    with (
+        freezegun.freeze_time("2020-01-01 00:00:00", auto_tick_seconds=15),
+        pytest.raises(pandas_gbq.exceptions.QueryTimeout),
+    ):
         module_under_test.query_and_wait_via_client_library(
             connector,
             mock_bigquery_client,
@@ -199,9 +200,10 @@ def test__wait_for_query_job_cancels_after_timeout(mock_bigquery_client):
     mock_query.state = "RUNNING"
     mock_query.result.side_effect = concurrent.futures.TimeoutError("fake timeout")
 
-    with freezegun.freeze_time(
-        "2020-01-01 00:00:00", auto_tick_seconds=15
-    ), pytest.raises(pandas_gbq.exceptions.QueryTimeout):
+    with (
+        freezegun.freeze_time("2020-01-01 00:00:00", auto_tick_seconds=15),
+        pytest.raises(pandas_gbq.exceptions.QueryTimeout),
+    ):
         module_under_test._wait_for_query_job(
             connector, mock_bigquery_client, mock_query, 60
         )

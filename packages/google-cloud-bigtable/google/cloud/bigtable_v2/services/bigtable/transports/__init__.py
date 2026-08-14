@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import BigtableTransport
 from .grpc import BigtableGrpcTransport
 from .grpc_asyncio import BigtableGrpcAsyncIOTransport
-from .rest import BigtableRestTransport
-from .rest import BigtableRestInterceptor
-
+from .rest import BigtableRestInterceptor, BigtableRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[BigtableTransport]]

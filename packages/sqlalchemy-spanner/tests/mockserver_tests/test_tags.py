@@ -12,22 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import google.cloud.spanner_v1.types.result_set as result_set
+import google.cloud.spanner_v1.types.type as spanner_type
+from google.cloud.spanner_v1 import (
+    BeginTransactionRequest,
+    CommitRequest,
+    CreateSessionRequest,
+    ExecuteSqlRequest,
+)
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.testing import eq_, is_instance_of
-from google.cloud.spanner_v1 import (
-    CreateSessionRequest,
-    ExecuteSqlRequest,
-    BeginTransactionRequest,
-    CommitRequest,
-)
+
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
+    add_result,
     add_update_count,
 )
-from tests.mockserver_tests.mock_server_test_base import add_result
-import google.cloud.spanner_v1.types.type as spanner_type
-import google.cloud.spanner_v1.types.result_set as result_set
 
 
 class TestStaleReads(MockServerTestBase):
@@ -62,9 +63,7 @@ class TestStaleReads(MockServerTestBase):
 
         add_singer_query_result("SELECT singers.id, singers.name\n" + "FROM singers")
         add_single_singer_query_result(
-            "SELECT singers.id AS singers_id, singers.name AS singers_name\n"
-            "FROM singers\n"
-            "WHERE singers.id = @a0"
+            "SELECT singers.id, singers.name\nFROM singers\nWHERE singers.id = @a0"
         )
         add_update_count("INSERT INTO singers (id, name) VALUES (@a0, @a1)", 1)
         engine = self.create_engine()
@@ -83,18 +82,18 @@ class TestStaleReads(MockServerTestBase):
 
         # Verify the requests that we got.
         requests = self.spanner_service.requests
-        eq_(6, len(requests))
+        # Dialect now inlines BeginTransaction into the first statement.
+        eq_(5, len(requests))
         is_instance_of(requests[0], CreateSessionRequest)
-        is_instance_of(requests[1], BeginTransactionRequest)
+        is_instance_of(requests[1], ExecuteSqlRequest)
         is_instance_of(requests[2], ExecuteSqlRequest)
         is_instance_of(requests[3], ExecuteSqlRequest)
-        is_instance_of(requests[4], ExecuteSqlRequest)
-        is_instance_of(requests[5], CommitRequest)
-        for request in requests[2:]:
+        is_instance_of(requests[4], CommitRequest)
+        for request in requests[1:]:
             eq_("my-transaction-tag", request.request_options.transaction_tag)
-        eq_("my-tag-1", requests[2].request_options.request_tag)
-        eq_("my-tag-2", requests[3].request_options.request_tag)
-        eq_("insert-singer", requests[4].request_options.request_tag)
+        eq_("my-tag-1", requests[1].request_options.request_tag)
+        eq_("my-tag-2", requests[2].request_options.request_tag)
+        eq_("insert-singer", requests[3].request_options.request_tag)
 
 
 def empty_singer_result_set():

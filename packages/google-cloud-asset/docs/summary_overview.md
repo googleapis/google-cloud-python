@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Cloud Asset Inventory API
+# Cloud Asset API
 
-Overview of the APIs available for Cloud Asset Inventory API.
+Overview of the APIs available for Cloud Asset API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Cloud Asset Inventory API.
+Cloud Asset API.
 
 [classes](https://cloud.google.com/python/docs/reference/cloudasset/latest/summary_class.html)
 

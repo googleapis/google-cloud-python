@@ -15,115 +15,138 @@
 
 from __future__ import annotations
 
+import abc
+import concurrent.futures
+import logging
+import os
+import random
+import time
+import warnings
+from functools import partial
 from typing import (
-    cast,
+    TYPE_CHECKING,
     Any,
     AsyncIterable,
     Callable,
     Optional,
-    Set,
     Sequence,
-    TYPE_CHECKING,
+    Set,
+    cast,
 )
 
-import abc
-import time
-import warnings
-import random
-import os
-import concurrent.futures
-
-from functools import partial
+import google.auth._default
+import google.auth.credentials
+from google.api_core import client_options as client_options_lib
+from google.api_core import retry as retries
+from google.api_core.exceptions import (
+    Aborted,
+    Cancelled,
+    DeadlineExceeded,
+    ServiceUnavailable,
+)
+from google.cloud.client import ClientWithProject
+from google.cloud.environment_vars import BIGTABLE_EMULATOR  # type: ignore
+from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
+from google.protobuf.message import Message
 from grpc import Channel
 
-from google.cloud.bigtable.data.execute_query.values import ExecuteQueryValueType
+from google.cloud.bigtable.client import _DEFAULT_BIGTABLE_EMULATOR_CLIENT
+from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable.data._helpers import (
+    _CONCURRENCY_LIMIT,
+    TABLE_DEFAULT,
+    _align_timeouts,
+    _attempt_timeout_generator,
+    _get_error_type,
+    _get_retryable_errors,
+    _get_timeouts,
+    _retry_exception_factory,
+    _validate_timeouts,
+    _WarmedInstanceKey,
+)
+from google.cloud.bigtable.data._metrics import (
+    ActiveOperationMetric,
+    BigtableClientSideMetricsController,
+    OperationType,
+    tracked_retry,
+)
+from google.cloud.bigtable.data._metrics.handlers._base import MetricsHandler
+from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
+    BigtableMetricsExporter,
+    GoogleCloudMetricsHandler,
+)
+from google.cloud.bigtable.data.exceptions import (
+    FailedQueryShardError,
+    ShardedReadRowsExceptionGroup,
+)
+from google.cloud.bigtable.data.execute_query._parameters_formatting import (
+    _format_execute_query_params,
+    _format_execute_query_view_params,
+    _to_param_types,
+)
 from google.cloud.bigtable.data.execute_query.metadata import (
     SqlType,
     _pb_metadata_to_metadata_types,
 )
-from google.cloud.bigtable.data.execute_query._parameters_formatting import (
-    _format_execute_query_params,
-    _to_param_types,
+from google.cloud.bigtable.data.execute_query.values import ExecuteQueryValueType
+from google.cloud.bigtable.data.mutations import Mutation, RowMutationEntry
+from google.cloud.bigtable.data.read_modify_write_rules import ReadModifyWriteRule
+from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery, RowRange
+from google.cloud.bigtable.data.row import Row
+from google.cloud.bigtable.data.row_filters import (
+    CellsRowLimitFilter,
+    RowFilter,
+    RowFilterChain,
+    StripValueTransformerFilter,
 )
 from google.cloud.bigtable_v2.services.bigtable.transports.base import (
     DEFAULT_CLIENT_INFO,
 )
-from google.cloud.bigtable_v2.types.bigtable import PingAndWarmRequest
-from google.cloud.bigtable_v2.types.bigtable import SampleRowKeysRequest
-from google.cloud.bigtable_v2.types.bigtable import MutateRowRequest
-from google.cloud.bigtable_v2.types.bigtable import CheckAndMutateRowRequest
-from google.cloud.bigtable_v2.types.bigtable import ReadModifyWriteRowRequest
-from google.cloud.client import ClientWithProject
-from google.cloud.environment_vars import BIGTABLE_EMULATOR  # type: ignore
-from google.api_core import retry as retries
-from google.api_core.exceptions import DeadlineExceeded
-from google.api_core.exceptions import ServiceUnavailable
-from google.api_core.exceptions import Aborted
-from google.api_core.exceptions import Cancelled
-from google.protobuf.message import Message
-from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
-
-import google.auth.credentials
-import google.auth._default
-from google.api_core import client_options as client_options_lib
-from google.cloud.bigtable.client import _DEFAULT_BIGTABLE_EMULATOR_CLIENT
-from google.cloud.bigtable.data.row import Row
-from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
-from google.cloud.bigtable.data.exceptions import FailedQueryShardError
-from google.cloud.bigtable.data.exceptions import ShardedReadRowsExceptionGroup
-
-from google.cloud.bigtable.data._helpers import TABLE_DEFAULT, _align_timeouts
-from google.cloud.bigtable.data._helpers import _WarmedInstanceKey
-from google.cloud.bigtable.data._helpers import _CONCURRENCY_LIMIT
-from google.cloud.bigtable.data._helpers import _retry_exception_factory
-from google.cloud.bigtable.data._helpers import _validate_timeouts
-from google.cloud.bigtable.data._helpers import _get_error_type
-from google.cloud.bigtable.data._helpers import _get_retryable_errors
-from google.cloud.bigtable.data._helpers import _get_timeouts
-from google.cloud.bigtable.data._helpers import _attempt_timeout_generator
-from google.cloud.bigtable.data.mutations import Mutation, RowMutationEntry
-
-from google.cloud.bigtable.data.read_modify_write_rules import ReadModifyWriteRule
-from google.cloud.bigtable.data.row_filters import RowFilter
-from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
-from google.cloud.bigtable.data.row_filters import CellsRowLimitFilter
-from google.cloud.bigtable.data.row_filters import RowFilterChain
-from google.cloud.bigtable.data._metrics import BigtableClientSideMetricsController
-
-from google.cloud.bigtable.data._cross_sync import CrossSync
+from google.cloud.bigtable_v2.types.bigtable import (
+    CheckAndMutateRowRequest,
+    MutateRowRequest,
+    PingAndWarmRequest,
+    ReadModifyWriteRowRequest,
+    SampleRowKeysRequest,
+)
 
 if CrossSync.is_async:
     from grpc.aio import insecure_channel
-    from google.cloud.bigtable_v2.services.bigtable.transports import (
-        BigtableGrpcAsyncIOTransport as TransportType,
-    )
-    from google.cloud.bigtable_v2.services.bigtable import (
-        BigtableAsyncClient as GapicClient,
-    )
-    from google.cloud.bigtable.data._async.mutations_batcher import _MB_SIZE
+
     from google.cloud.bigtable.data._async._swappable_channel import (
         AsyncSwappableChannel as SwappableChannelType,
     )
     from google.cloud.bigtable.data._async.metrics_interceptor import (
         AsyncBigtableMetricsInterceptor as MetricsInterceptorType,
     )
+    from google.cloud.bigtable.data._async.mutations_batcher import _MB_SIZE
+    from google.cloud.bigtable_v2.services.bigtable import (
+        BigtableAsyncClient as GapicClient,
+    )
+    from google.cloud.bigtable_v2.services.bigtable.transports import (
+        BigtableGrpcAsyncIOTransport as TransportType,
+    )
 else:
     from typing import Iterable  # noqa: F401
-    from grpc import insecure_channel
-    from grpc import intercept_channel
-    from google.cloud.bigtable_v2.services.bigtable.transports import BigtableGrpcTransport as TransportType  # type: ignore
-    from google.cloud.bigtable_v2.services.bigtable import BigtableClient as GapicClient  # type: ignore
-    from google.cloud.bigtable.data._sync_autogen.mutations_batcher import _MB_SIZE
+
+    from grpc import insecure_channel, intercept_channel
+
     from google.cloud.bigtable.data._sync_autogen._swappable_channel import (  # noqa: F401
         SwappableChannel as SwappableChannelType,
     )
     from google.cloud.bigtable.data._sync_autogen.metrics_interceptor import (  # noqa: F401
         BigtableMetricsInterceptor as MetricsInterceptorType,
     )
+    from google.cloud.bigtable.data._sync_autogen.mutations_batcher import _MB_SIZE
+    from google.cloud.bigtable_v2.services.bigtable import (  # type: ignore
+        BigtableClient as GapicClient,
+    )
+    from google.cloud.bigtable_v2.services.bigtable.transports import (  # type: ignore
+        BigtableGrpcTransport as TransportType,
+    )
 
 if TYPE_CHECKING:
-    from google.cloud.bigtable.data._helpers import RowKeySamples
-    from google.cloud.bigtable.data._helpers import ShardedQuery
+    from google.cloud.bigtable.data._helpers import RowKeySamples, ShardedQuery
 
     if CrossSync.is_async:
         from google.cloud.bigtable.data._async.mutations_batcher import (
@@ -142,6 +165,8 @@ if TYPE_CHECKING:
 
 
 __CROSS_SYNC_OUTPUT__ = "google.cloud.bigtable.data._sync_autogen.client"
+
+_LOGGER = logging.getLogger(__name__)
 
 
 @CrossSync.convert_class(
@@ -232,6 +257,7 @@ class BigtableDataClientAsync(ClientWithProject):
         )
         if (
             credentials
+            and hasattr(credentials, "universe_domain")
             and credentials.universe_domain != self.universe_domain
             and self._emulator_host is None
         ):
@@ -245,6 +271,27 @@ class BigtableDataClientAsync(ClientWithProject):
                 "is the default."
             )
         self._is_closed = CrossSync.Event()
+        handlers: list[MetricsHandler] = []
+        if self._emulator_host is None:
+            try:
+                # create a metrics exporter using the same client configuration
+                exporter = BigtableMetricsExporter(
+                    credentials=self._credentials,
+                    client_options=client_options,
+                )
+                handlers.append(
+                    GoogleCloudMetricsHandler(
+                        exporter=exporter,
+                        client_version=self._client_version(),
+                    )
+                )
+            except Exception as e:
+                _LOGGER.warning(
+                    "Failed to initialize Google Cloud Metrics Exporter: %s. "
+                    "Client-side metrics will be disabled.",
+                    e,
+                )
+        self._metrics = BigtableClientSideMetricsController(handlers=handlers)
         self.transport = cast(TransportType, self._gapic_client.transport)
         # keep track of active instances to for warmup on channel refresh
         self._active_instances: Set[_WarmedInstanceKey] = set()
@@ -377,6 +424,7 @@ class BigtableDataClientAsync(ClientWithProject):
         if self._executor:
             self._executor.shutdown(wait=False)
         self._channel_refresh_task = None
+        self._metrics.close()
 
     @CrossSync.convert
     async def _ping_and_warm_instances(
@@ -692,6 +740,62 @@ class BigtableDataClientAsync(ClientWithProject):
         )
 
     @CrossSync.convert(
+        replace_symbols={"MaterializedViewAsync": "MaterializedView"},
+        docstring_format_vars={
+            "LOOP_MESSAGE": (
+                "Must be created within an async context (running event loop)",
+                "",
+            ),
+            "RAISE_NO_LOOP": (
+                "RuntimeError: if called outside of an async context (no running event loop)",
+                "None",
+            ),
+        },
+    )
+    def get_materialized_view(
+        self, instance_id: str, materialized_view_id: str, *args, **kwargs
+    ) -> MaterializedViewAsync:
+        """
+        Returns a materialized view instance for making read requests. All arguments are passed
+        directly to the MaterializedViewAsync constructor.
+
+        {LOOP_MESSAGE}
+
+        Args:
+            instance_id: The Bigtable instance ID to associate with this client.
+                instance_id is combined with the client's project to fully
+                specify the instance
+            materialized_view_id: The id for the materialized view to use for requests
+            app_profile_id: The app profile to associate with requests.
+                https://cloud.google.com/bigtable/docs/app-profiles
+            default_read_rows_operation_timeout: The default timeout for read rows
+                operations, in seconds. If not set, defaults to 600 seconds (10 minutes)
+            default_read_rows_attempt_timeout: The default timeout for individual
+                read rows rpc requests, in seconds. If not set, defaults to 20 seconds
+            default_operation_timeout: The default timeout for all other operations, in
+                seconds. If not set, defaults to 60 seconds
+            default_attempt_timeout: The default timeout for all other individual rpc
+                requests, in seconds. If not set, defaults to 20 seconds
+            default_read_rows_retryable_errors: a list of errors that will be retried
+                if encountered during read_rows and related operations.
+                Defaults to 4 (DeadlineExceeded), 14 (ServiceUnavailable), and 10 (Aborted)
+            default_retryable_errors: a list of errors that will be retried if
+                encountered during all other operations.
+                Defaults to 4 (DeadlineExceeded) and 14 (ServiceUnavailable)
+        Returns:
+            MaterializedViewAsync: a materialized view instance for making read requests
+        Raises:
+            {RAISE_NO_LOOP}
+        """
+        return CrossSync.MaterializedView(
+            self,
+            instance_id,
+            materialized_view_id,
+            *args,
+            **kwargs,
+        )
+
+    @CrossSync.convert(
         replace_symbols={"ExecuteQueryIteratorAsync": "ExecuteQueryIterator"}
     )
     async def execute_query(
@@ -701,6 +805,7 @@ class BigtableDataClientAsync(ClientWithProject):
         *,
         parameters: dict[str, ExecuteQueryValueType] | None = None,
         parameter_types: dict[str, SqlType.Type] | None = None,
+        view_parameters: dict[str, str] | None = None,
         app_profile_id: str | None = None,
         operation_timeout: float = 600,
         attempt_timeout: float | None = 20,
@@ -742,6 +847,8 @@ class BigtableDataClientAsync(ClientWithProject):
                 Required to contain entries only for parameters whose type cannot be
                 detected automatically (i.e. the value can be None, an empty list or
                 an empty dict).
+            view_parameters: Dictionary with values for all view parameters. Currently only
+                string values are supported.
             app_profile_id: The app profile to associate with requests.
                 https://cloud.google.com/bigtable/docs/app-profiles
             operation_timeout: the time budget for the entire executeQuery operation, in seconds.
@@ -867,12 +974,14 @@ class BigtableDataClientAsync(ClientWithProject):
         retryable_excs = [_get_error_type(e) for e in retryable_errors]
 
         pb_params = _format_execute_query_params(parameters, parameter_types)
+        pb_view_params = _format_execute_query_view_params(view_parameters)
 
         request_body = {
             "instance_name": instance_name,
             "app_profile_id": app_profile_id,
             "prepared_query": prepare_result.prepared_query,
             "params": pb_params,
+            "view_parameters": pb_view_params,
         }
         operation_timeout, attempt_timeout = _align_timeouts(
             operation_timeout, attempt_timeout
@@ -906,7 +1015,7 @@ class _DataApiTargetAsync(abc.ABC):
     """
     Abstract class containing API surface for BigtableDataClient. Should not be created directly
 
-    Can be instantiated as a Table or an AuthorizedView
+    Can be instantiated as a Table, an AuthorizedView, or a MaterializedView
     """
 
     @CrossSync.convert(
@@ -926,7 +1035,6 @@ class _DataApiTargetAsync(abc.ABC):
         self,
         client: BigtableDataClientAsync,
         instance_id: str,
-        table_id: str,
         app_profile_id: str | None = None,
         *,
         default_read_rows_operation_timeout: float = 600,
@@ -951,7 +1059,7 @@ class _DataApiTargetAsync(abc.ABC):
         ),
     ):
         """
-        Initialize a Table instance
+        Initialize a data API target instance
 
         {LOOP_MESSAGE}
 
@@ -959,8 +1067,6 @@ class _DataApiTargetAsync(abc.ABC):
             instance_id: The Bigtable instance ID to associate with this client.
                 instance_id is combined with the client's project to fully
                 specify the instance
-            table_id: The ID of the table. table_id is combined with the
-                instance_id and the client's project to fully specify the table
             app_profile_id: The app profile to associate with requests.
                 https://cloud.google.com/bigtable/docs/app-profiles
             default_read_rows_operation_timeout: The default timeout for read rows
@@ -987,8 +1093,6 @@ class _DataApiTargetAsync(abc.ABC):
         Raises:
             {RAISE_NO_LOOP}
         """
-        # NOTE: any changes to the signature of this method should also be reflected
-        # in client.get_table()
         # validate timeouts
         _validate_timeouts(
             default_operation_timeout, default_attempt_timeout, allow_none=True
@@ -1008,10 +1112,6 @@ class _DataApiTargetAsync(abc.ABC):
         self.instance_id = instance_id
         self.instance_name = self.client._gapic_client.instance_path(
             self.client.project, instance_id
-        )
-        self.table_id = table_id
-        self.table_name = self.client._gapic_client.table_path(
-            self.client.project, instance_id, table_id
         )
         self.app_profile_id: str | None = app_profile_id
 
@@ -1040,8 +1140,6 @@ class _DataApiTargetAsync(abc.ABC):
             default_retryable_errors or ()
         )
 
-        self._metrics = BigtableClientSideMetricsController()
-
         try:
             self._register_instance_future = CrossSync.create_task(
                 self.client._register_instance,
@@ -1055,11 +1153,30 @@ class _DataApiTargetAsync(abc.ABC):
                 f"{self.__class__.__name__} must be created within an async event loop context."
             ) from e
 
+    def _create_operation(
+        self, op_type: OperationType, **kwargs
+    ) -> ActiveOperationMetric:
+        table_id = getattr(self, "table_id", None) or getattr(
+            self, "materialized_view_id", None
+        )
+        return self.client._metrics.create_operation(
+            op_type,
+            project_id=self.client.project,
+            instance_id=self.instance_id,
+            table_id=table_id,
+            app_profile_id=self.app_profile_id,
+            **kwargs,
+        )
+
     @property
     @abc.abstractmethod
     def _request_path(self) -> dict[str, str]:
         """
-        Used to populate table_name or authorized_view_name for rpc requests, depending on the subclass
+        Used to populate table_name, authorized_view_name, or materialized_view_name
+        for rpc requests, depending on the subclass
+
+        The returned key must be a valid field on each request proto it is passed to;
+        mutation requests only accept table_name and authorized_view_name
 
         Unimplemented in base class
         """
@@ -1116,6 +1233,7 @@ class _DataApiTargetAsync(abc.ABC):
             self,
             operation_timeout=operation_timeout,
             attempt_timeout=attempt_timeout,
+            metric=self._create_operation(OperationType.READ_ROWS, is_streaming=True),
             retryable_exceptions=retryable_excs,
         )
         return row_merger.start_operation()
@@ -1208,15 +1326,26 @@ class _DataApiTargetAsync(abc.ABC):
         if row_key is None:
             raise ValueError("row_key must be string or bytes")
         query = ReadRowsQuery(row_keys=row_key, row_filter=row_filter, limit=1)
-        results = await self.read_rows(
+
+        operation_timeout, attempt_timeout = _get_timeouts(
+            operation_timeout, attempt_timeout, self
+        )
+        retryable_excs = _get_retryable_errors(retryable_errors, self)
+
+        row_merger = CrossSync._ReadRowsOperation(
             query,
+            self,
             operation_timeout=operation_timeout,
             attempt_timeout=attempt_timeout,
-            retryable_errors=retryable_errors,
+            metric=self._create_operation(OperationType.READ_ROWS, is_streaming=False),
+            retryable_exceptions=retryable_excs,
         )
-        if len(results) == 0:
+        results_generator = row_merger.start_operation()
+        try:
+            results = [a async for a in results_generator]
+            return results[0]
+        except IndexError:
             return None
-        return results[0]
 
     @CrossSync.convert
     async def read_rows_sharded(
@@ -1270,12 +1399,15 @@ class _DataApiTargetAsync(abc.ABC):
 
         # limit the number of concurrent requests using a semaphore
         concurrency_sem = CrossSync.Semaphore(_CONCURRENCY_LIMIT)
+        # lock to ensure rpc_timeout_generator is thread-safe in sync version
+        gen_lock = CrossSync.Semaphore(1)
 
         @CrossSync.convert
         async def read_rows_with_semaphore(query):
             async with concurrency_sem:
-                # calculate new timeout based on time left in overall operation
-                shard_timeout = next(rpc_timeout_generator)
+                async with gen_lock:
+                    # calculate new timeout based on time left in overall operation
+                    shard_timeout = next(rpc_timeout_generator)
                 if shard_timeout <= 0:
                     raise DeadlineExceeded(
                         "Operation timeout exceeded before starting query"
@@ -1355,25 +1487,23 @@ class _DataApiTargetAsync(abc.ABC):
                 from any retries that failed
             google.api_core.exceptions.GoogleAPIError: raised if the request encounters an unrecoverable error
         """
-        if row_key is None:
-            raise ValueError("row_key must be string or bytes")
-
         strip_filter = StripValueTransformerFilter(flag=True)
         limit_filter = CellsRowLimitFilter(1)
         chain_filter = RowFilterChain(filters=[limit_filter, strip_filter])
-        query = ReadRowsQuery(row_keys=row_key, limit=1, row_filter=chain_filter)
-        results = await self.read_rows(
-            query,
+        result = await self.read_row(
+            row_key=row_key,
+            row_filter=chain_filter,
             operation_timeout=operation_timeout,
             attempt_timeout=attempt_timeout,
             retryable_errors=retryable_errors,
         )
-        return len(results) > 0
+        return result is not None
 
     @CrossSync.convert
     async def sample_row_keys(
         self,
         *,
+        row_range: RowRange | None = None,
         operation_timeout: float | TABLE_DEFAULT = TABLE_DEFAULT.DEFAULT,
         attempt_timeout: float | None | TABLE_DEFAULT = TABLE_DEFAULT.DEFAULT,
         retryable_errors: Sequence[type[Exception]]
@@ -1391,6 +1521,8 @@ class _DataApiTargetAsync(abc.ABC):
         row_keys, along with offset positions in the table
 
         Args:
+            row_range: the range of rows to sample. If not provided, samples the
+                entire table.
             operation_timeout: the time budget for the entire operation, in seconds.
                 Failed requests will be retried within the budget.i
                 Defaults to the Table's default_operation_timeout
@@ -1420,26 +1552,28 @@ class _DataApiTargetAsync(abc.ABC):
         retryable_excs = _get_retryable_errors(retryable_errors, self)
         predicate = retries.if_exception_type(*retryable_excs)
 
-        sleep_generator = retries.exponential_sleep_generator(0.01, 2, 60)
+        with self._create_operation(OperationType.SAMPLE_ROW_KEYS) as operation_metric:
 
-        @CrossSync.convert
-        async def execute_rpc():
-            results = await self.client._gapic_client.sample_row_keys(
-                request=SampleRowKeysRequest(
-                    app_profile_id=self.app_profile_id, **self._request_path
-                ),
-                timeout=next(attempt_timeout_gen),
-                retry=None,
+            @CrossSync.convert
+            async def execute_rpc():
+                results = await self.client._gapic_client.sample_row_keys(
+                    request=SampleRowKeysRequest(
+                        app_profile_id=self.app_profile_id,
+                        row_range=row_range._to_pb() if row_range is not None else None,
+                        **self._request_path,
+                    ),
+                    timeout=next(attempt_timeout_gen),
+                    retry=None,
+                )
+                return [(s.row_key, s.offset_bytes) async for s in results]
+
+            return await tracked_retry(
+                retry_fn=CrossSync.retry_target,
+                operation=operation_metric,
+                target=execute_rpc,
+                predicate=predicate,
+                timeout=operation_timeout,
             )
-            return [(s.row_key, s.offset_bytes) async for s in results]
-
-        return await CrossSync.retry_target(
-            execute_rpc,
-            predicate,
-            sleep_generator,
-            operation_timeout,
-            exception_factory=_retry_exception_factory,
-        )
 
     @CrossSync.convert(replace_symbols={"MutationsBatcherAsync": "MutationsBatcher"})
     def mutations_batcher(
@@ -1550,28 +1684,27 @@ class _DataApiTargetAsync(abc.ABC):
             # mutations should not be retried
             predicate = retries.if_exception_type()
 
-        sleep_generator = retries.exponential_sleep_generator(0.01, 2, 60)
-
-        target = partial(
-            self.client._gapic_client.mutate_row,
-            request=MutateRowRequest(
-                row_key=row_key.encode("utf-8")
-                if isinstance(row_key, str)
-                else row_key,
-                mutations=[mutation._to_pb() for mutation in mutations_list],
-                app_profile_id=self.app_profile_id,
-                **self._request_path,
-            ),
-            timeout=attempt_timeout,
-            retry=None,
-        )
-        return await CrossSync.retry_target(
-            target,
-            predicate,
-            sleep_generator,
-            operation_timeout,
-            exception_factory=_retry_exception_factory,
-        )
+        with self._create_operation(OperationType.MUTATE_ROW) as operation_metric:
+            target = partial(
+                self.client._gapic_client.mutate_row,
+                request=MutateRowRequest(
+                    row_key=row_key.encode("utf-8")
+                    if isinstance(row_key, str)
+                    else row_key,
+                    mutations=[mutation._to_pb() for mutation in mutations_list],
+                    app_profile_id=self.app_profile_id,
+                    **self._request_path,
+                ),
+                timeout=attempt_timeout,
+                retry=None,
+            )
+            return await tracked_retry(
+                retry_fn=CrossSync.retry_target,
+                operation=operation_metric,
+                target=target,
+                predicate=predicate,
+                timeout=operation_timeout,
+            )
 
     @CrossSync.convert
     async def bulk_mutate_rows(
@@ -1625,6 +1758,7 @@ class _DataApiTargetAsync(abc.ABC):
             mutation_entries,
             operation_timeout,
             attempt_timeout,
+            metric=self._create_operation(OperationType.BULK_MUTATE_ROWS),
             retryable_exceptions=retryable_excs,
         )
         await operation.start()
@@ -1682,21 +1816,25 @@ class _DataApiTargetAsync(abc.ABC):
         ):
             false_case_mutations = [false_case_mutations]
         false_case_list = [m._to_pb() for m in false_case_mutations or []]
-        result = await self.client._gapic_client.check_and_mutate_row(
-            request=CheckAndMutateRowRequest(
-                true_mutations=true_case_list,
-                false_mutations=false_case_list,
-                predicate_filter=predicate._to_pb() if predicate is not None else None,
-                row_key=row_key.encode("utf-8")
-                if isinstance(row_key, str)
-                else row_key,
-                app_profile_id=self.app_profile_id,
-                **self._request_path,
-            ),
-            timeout=operation_timeout,
-            retry=None,
-        )
-        return result.predicate_matched
+
+        with self._create_operation(OperationType.CHECK_AND_MUTATE):
+            result = await self.client._gapic_client.check_and_mutate_row(
+                request=CheckAndMutateRowRequest(
+                    true_mutations=true_case_list,
+                    false_mutations=false_case_list,
+                    predicate_filter=predicate._to_pb()
+                    if predicate is not None
+                    else None,
+                    row_key=row_key.encode("utf-8")
+                    if isinstance(row_key, str)
+                    else row_key,
+                    app_profile_id=self.app_profile_id,
+                    **self._request_path,
+                ),
+                timeout=operation_timeout,
+                retry=None,
+            )
+            return result.predicate_matched
 
     @CrossSync.convert
     async def read_modify_write_row(
@@ -1736,27 +1874,28 @@ class _DataApiTargetAsync(abc.ABC):
             rules = [rules]
         if not rules:
             raise ValueError("rules must contain at least one item")
-        result = await self.client._gapic_client.read_modify_write_row(
-            request=ReadModifyWriteRowRequest(
-                rules=[rule._to_pb() for rule in rules],
-                row_key=row_key.encode("utf-8")
-                if isinstance(row_key, str)
-                else row_key,
-                app_profile_id=self.app_profile_id,
-                **self._request_path,
-            ),
-            timeout=operation_timeout,
-            retry=None,
-        )
-        # construct Row from result
-        return Row._from_pb(result.row)
+
+        with self._create_operation(OperationType.READ_MODIFY_WRITE):
+            result = await self.client._gapic_client.read_modify_write_row(
+                request=ReadModifyWriteRowRequest(
+                    rules=[rule._to_pb() for rule in rules],
+                    row_key=row_key.encode("utf-8")
+                    if isinstance(row_key, str)
+                    else row_key,
+                    app_profile_id=self.app_profile_id,
+                    **self._request_path,
+                ),
+                timeout=operation_timeout,
+                retry=None,
+            )
+            # construct Row from result
+            return Row._from_pb(result.row)
 
     @CrossSync.convert
     async def close(self):
         """
         Called to close the Table instance and release any resources held by it.
         """
-        self._metrics.close()
         if self._register_instance_future:
             self._register_instance_future.cancel()
         self.client._remove_instance_registration(
@@ -1798,6 +1937,73 @@ class TableAsync(_DataApiTargetAsync):
     Table object maintains table_id, and app_profile_id context, and passes them with
     each call
     """
+
+    @CrossSync.convert(
+        replace_symbols={"BigtableDataClientAsync": "BigtableDataClient"},
+        docstring_format_vars={
+            "LOOP_MESSAGE": (
+                "Must be created within an async context (running event loop)",
+                "",
+            ),
+            "RAISE_NO_LOOP": (
+                "RuntimeError: if called outside of an async context (no running event loop)",
+                "None",
+            ),
+        },
+    )
+    def __init__(
+        self,
+        client: BigtableDataClientAsync,
+        instance_id: str,
+        table_id: str,
+        app_profile_id: str | None = None,
+        **kwargs,
+    ):
+        """
+        Initialize a Table instance
+
+        {LOOP_MESSAGE}
+
+        Args:
+            instance_id: The Bigtable instance ID to associate with this client.
+                instance_id is combined with the client's project to fully
+                specify the instance
+            table_id: The ID of the table. table_id is combined with the
+                instance_id and the client's project to fully specify the table
+            app_profile_id: The app profile to associate with requests.
+                https://cloud.google.com/bigtable/docs/app-profiles
+            default_read_rows_operation_timeout: The default timeout for read rows
+                operations, in seconds. If not set, defaults to 600 seconds (10 minutes)
+            default_read_rows_attempt_timeout: The default timeout for individual
+                read rows rpc requests, in seconds. If not set, defaults to 20 seconds
+            default_mutate_rows_operation_timeout: The default timeout for mutate rows
+                operations, in seconds. If not set, defaults to 600 seconds (10 minutes)
+            default_mutate_rows_attempt_timeout: The default timeout for individual
+                mutate rows rpc requests, in seconds. If not set, defaults to 60 seconds
+            default_operation_timeout: The default timeout for all other operations, in
+                seconds. If not set, defaults to 60 seconds
+            default_attempt_timeout: The default timeout for all other individual rpc
+                requests, in seconds. If not set, defaults to 20 seconds
+            default_read_rows_retryable_errors: a list of errors that will be retried
+                if encountered during read_rows and related operations.
+                Defaults to 4 (DeadlineExceeded), 14 (ServiceUnavailable), and 10 (Aborted)
+            default_mutate_rows_retryable_errors: a list of errors that will be retried
+                if encountered during mutate_rows and related operations.
+                Defaults to 4 (DeadlineExceeded) and 14 (ServiceUnavailable)
+            default_retryable_errors: a list of errors that will be retried if
+                encountered during all other operations.
+                Defaults to 4 (DeadlineExceeded) and 14 (ServiceUnavailable)
+        Raises:
+            {RAISE_NO_LOOP}
+        """
+        # NOTE: any changes to the signature of this method should also be reflected
+        # in client.get_table()
+        # build paths before super().__init__, which registers this instance with the client
+        self.table_id = table_id
+        self.table_name = client._gapic_client.table_path(
+            client.project, instance_id, table_id
+        )
+        super().__init__(client, instance_id, app_profile_id, **kwargs)
 
     @property
     def _request_path(self) -> dict[str, str]:
@@ -1879,12 +2085,145 @@ class AuthorizedViewAsync(_DataApiTargetAsync):
         Raises:
             {RAISE_NO_LOOP}
         """
-        super().__init__(client, instance_id, table_id, app_profile_id, **kwargs)
-        self.authorized_view_id = authorized_view_id
-        self.authorized_view_name: str = self.client._gapic_client.authorized_view_path(
-            self.client.project, instance_id, table_id, authorized_view_id
+        # build paths before super().__init__, which registers this instance with the client
+        self.table_id = table_id
+        self.table_name = client._gapic_client.table_path(
+            client.project, instance_id, table_id
         )
+        self.authorized_view_id = authorized_view_id
+        self.authorized_view_name: str = client._gapic_client.authorized_view_path(
+            client.project, instance_id, table_id, authorized_view_id
+        )
+        super().__init__(client, instance_id, app_profile_id, **kwargs)
 
     @property
     def _request_path(self) -> dict[str, str]:
         return {"authorized_view_name": self.authorized_view_name}
+
+
+@CrossSync.convert_class(
+    sync_name="MaterializedView",
+    add_mapping_for_name="MaterializedView",
+    replace_symbols={"_DataApiTargetAsync": "_DataApiTarget"},
+)
+class MaterializedViewAsync(_DataApiTargetAsync):
+    """
+    Provides read access to a materialized view of a table.
+
+    A materialized view is a pre-computed, read-only view over a table, defined
+    by a SQL query. Materialized views support read operations only; mutation
+    methods raise NotImplementedError.
+
+    MaterializedView object maintains materialized_view_id and app_profile_id context,
+    and passes them with each call
+    """
+
+    @CrossSync.convert(
+        replace_symbols={"BigtableDataClientAsync": "BigtableDataClient"},
+        docstring_format_vars={
+            "LOOP_MESSAGE": (
+                "Must be created within an async context (running event loop)",
+                "",
+            ),
+            "RAISE_NO_LOOP": (
+                "RuntimeError: if called outside of an async context (no running event loop)",
+                "None",
+            ),
+        },
+    )
+    def __init__(
+        self,
+        client: BigtableDataClientAsync,
+        instance_id: str,
+        materialized_view_id: str,
+        app_profile_id: str | None = None,
+        **kwargs,
+    ):
+        """
+        Initialize a MaterializedView instance
+
+        {LOOP_MESSAGE}
+
+        Args:
+            instance_id: The Bigtable instance ID to associate with this client.
+                instance_id is combined with the client's project to fully
+                specify the instance
+            materialized_view_id: The id for the materialized view to use for requests
+            app_profile_id: The app profile to associate with requests.
+                https://cloud.google.com/bigtable/docs/app-profiles
+            default_read_rows_operation_timeout: The default timeout for read rows
+                operations, in seconds. If not set, defaults to 600 seconds (10 minutes)
+            default_read_rows_attempt_timeout: The default timeout for individual
+                read rows rpc requests, in seconds. If not set, defaults to 20 seconds
+            default_operation_timeout: The default timeout for all other operations, in
+                seconds. If not set, defaults to 60 seconds
+            default_attempt_timeout: The default timeout for all other individual rpc
+                requests, in seconds. If not set, defaults to 20 seconds
+            default_read_rows_retryable_errors: a list of errors that will be retried
+                if encountered during read_rows and related operations.
+                Defaults to 4 (DeadlineExceeded), 14 (ServiceUnavailable), and 10 (Aborted)
+            default_retryable_errors: a list of errors that will be retried if
+                encountered during all other operations.
+                Defaults to 4 (DeadlineExceeded) and 14 (ServiceUnavailable)
+        Raises:
+            {RAISE_NO_LOOP}
+        """
+        # build paths before super().__init__, which registers this instance with the client
+        self.materialized_view_id = materialized_view_id
+        self.materialized_view_name: str = client._gapic_client.materialized_view_path(
+            client.project, instance_id, materialized_view_id
+        )
+        super().__init__(client, instance_id, app_profile_id, **kwargs)
+
+    @property
+    def _request_path(self) -> dict[str, str]:
+        return {"materialized_view_name": self.materialized_view_name}
+
+    def mutations_batcher(self, *args, **kwargs):
+        """
+        Mutations are not supported for materialized views
+
+        Raises:
+            NotImplementedError: always; materialized views are read-only
+        """
+        raise NotImplementedError("Mutations are not supported for materialized views")
+
+    @CrossSync.convert
+    async def mutate_row(self, *args, **kwargs):
+        """
+        Mutations are not supported for materialized views
+
+        Raises:
+            NotImplementedError: always; materialized views are read-only
+        """
+        raise NotImplementedError("Mutations are not supported for materialized views")
+
+    @CrossSync.convert
+    async def bulk_mutate_rows(self, *args, **kwargs):
+        """
+        Mutations are not supported for materialized views
+
+        Raises:
+            NotImplementedError: always; materialized views are read-only
+        """
+        raise NotImplementedError("Mutations are not supported for materialized views")
+
+    @CrossSync.convert
+    async def check_and_mutate_row(self, *args, **kwargs):
+        """
+        Mutations are not supported for materialized views
+
+        Raises:
+            NotImplementedError: always; materialized views are read-only
+        """
+        raise NotImplementedError("Mutations are not supported for materialized views")
+
+    @CrossSync.convert
+    async def read_modify_write_row(self, *args, **kwargs):
+        """
+        Mutations are not supported for materialized views
+
+        Raises:
+            NotImplementedError: always; materialized views are read-only
+        """
+        raise NotImplementedError("Mutations are not supported for materialized views")
