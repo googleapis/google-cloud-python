@@ -64,7 +64,7 @@ _MULTI_SEGMENT_PATTERN = r"(.+)"
 
 
 def _extract_and_validate_wildcards(
-    val: str, template_str: str | None, property_name: str | None = None
+    val: str, template_str: str | None, property_name: str = None
 ) -> None:
     """Extract and validate wildcard variables against path traversal.
 
@@ -79,7 +79,8 @@ def _extract_and_validate_wildcards(
         val (str): The raw string value to validate.
         template_str (str | None): The template string of the variable (e.g.
             'projects/*/locations/*').
-        property_name (str | None): The name of the property being validated.
+        property_name (str): The name of the property being validated, for use
+            in error messages.
 
     Raises:
         ValueError: If a wildcard value contains invalid dot segments.
@@ -87,15 +88,14 @@ def _extract_and_validate_wildcards(
     tmpl = template_str or "*"
     m = re.fullmatch(_generate_pattern_for_template(tmpl), val)
     if m is not None:
-        target = property_name or "positional variable"
         groups = m.groups()
         for g in groups:
             if g in (".", ".."):
-                raise ValueError(f"Invalid value {g} for {target}.")
+                raise ValueError(f"Invalid value {g} for {property_name}.")
         # ** can only appear as the final segment of a path template per AIP-127.
         if "**" in tmpl and any(seg in (".", "..") for seg in groups[-1].split("/")):
             raise ValueError(
-                f"Value for {target} must not contain segments that are exactly . or .. ."
+                f"Value for {property_name} must not contain segments that are exactly . or .. ."
             )
 
 
@@ -133,7 +133,7 @@ def _expand_variable_match(positional_vars, named_vars, match):
     elif positional is not None:
         try:
             val = str(positional_vars.pop(0))
-            _extract_and_validate_wildcards(val, positional, None)
+            _extract_and_validate_wildcards(val, positional, "positional variable")
             return urllib.parse.quote(val, safe="/")
         except IndexError:
             raise ValueError(
