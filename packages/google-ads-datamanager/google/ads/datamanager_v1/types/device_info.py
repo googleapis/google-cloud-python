@@ -37,7 +37,8 @@ class DeviceInfo(proto.Message):
             for the given context.
         ip_address (str):
             Optional. The IP address of the device for the given
-            context.
+            context. Required when used in an
+            [AdEvent][google.ads.datamanager.v1.AdEvent].
 
             **Note:** Google Ads does not support IP address matching
             for end users in the European Economic Area (EEA), United

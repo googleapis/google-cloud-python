@@ -116,9 +116,6 @@ from .types.trigger import StateCondition
 from .types.trigger import Transport
 from .types.trigger import Trigger
 
-api_core.check_python_version("google.cloud.eventarc_v1")
-api_core.check_dependency_versions("google.cloud.eventarc_v1")
-
 __all__ = (
     'EventarcAsyncClient',
 'Channel',
@@ -193,3 +190,6 @@ __all__ = (
 'UpdatePipelineRequest',
 'UpdateTriggerRequest',
 )
+
+api_core.check_python_version("google.cloud.eventarc_v1")
+api_core.check_dependency_versions("google.cloud.eventarc_v1")

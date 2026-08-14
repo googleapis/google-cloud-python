@@ -756,6 +756,60 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["delete_message"]
 
     @property
+    def search_messages(
+        self,
+    ) -> Callable[[message.SearchMessagesRequest], message.SearchMessagesResponse]:
+        r"""Return a callable for the search messages method over gRPC.
+
+        Searches for messages in Google Chat that the calling user has
+        access to. Returns a list of messages matching the search
+        criteria.
+
+        To search across all spaces the user has access to, set
+        ``parent`` to ``spaces/-``. Using any other value for ``parent``
+        results in an ``INVALID_ARGUMENT`` error. The returned messages
+        have their ``name`` field populated with the full resource name,
+        which includes the specific ``space`` in which the message
+        resides.
+
+        This API doesn't return all message types. The types of messages
+        listed below aren't included in the response. Use
+        [ListMessages][google.chat.v1.ChatService.ListMessages] to list
+        all messages.
+
+        - Private Messages that are visible to the authenticated user.
+        - Messages posted by Chat apps in spaces or group chats.
+        - Messages in a Chat app DM.
+        - Messages from blocked users.
+        - Messages in spaces that the caller has muted.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with one of the following `authorization
+        scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.messages.readonly``
+        - ``https://www.googleapis.com/auth/chat.messages``
+
+        Returns:
+            Callable[[~.SearchMessagesRequest],
+                    ~.SearchMessagesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "search_messages" not in self._stubs:
+            self._stubs["search_messages"] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/SearchMessages",
+                request_serializer=message.SearchMessagesRequest.serialize,
+                response_deserializer=message.SearchMessagesResponse.deserialize,
+            )
+        return self._stubs["search_messages"]
+
+    @property
     def get_attachment(
         self,
     ) -> Callable[[attachment.GetAttachmentRequest], attachment.Attachment]:
@@ -892,19 +946,32 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
     ) -> Callable[[space.SearchSpacesRequest], space.SearchSpacesResponse]:
         r"""Return a callable for the search spaces method over gRPC.
 
-        Returns a list of spaces in a Google Workspace organization
-        based on an administrator's search. In the request, set
-        ``use_admin_access`` to ``true``. For an example, see `Search
-        for and manage
+        Returns a list of spaces in a Google Workspace organization. For
+        an example, see `Search for and manage
         spaces <https://developers.google.com/workspace/chat/search-manage-admin>`__.
 
-        Requires `user authentication with administrator
-        privileges <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user#admin-privileges>`__
-        and one of the following `authorization
-        scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+        When ``use_admin_access`` is set to ``false``, the results are
+        limited to spaces where the calling user is a joined member. To
+        search with administrator privileges, set ``use_admin_access``
+        to ``true``.
 
-        - ``https://www.googleapis.com/auth/chat.admin.spaces.readonly``
-        - ``https://www.googleapis.com/auth/chat.admin.spaces``
+        Supports the following types of
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
+
+        - `User
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+          with one of the following authorization scopes:
+
+          - ``https://www.googleapis.com/auth/chat.spaces.readonly``
+          - ``https://www.googleapis.com/auth/chat.spaces``
+
+        - `User authentication with administrator
+          privileges <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user#admin-privileges>`__
+          and one of the following `authorization
+          scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+          - ``https://www.googleapis.com/auth/chat.admin.spaces.readonly``
+          - ``https://www.googleapis.com/auth/chat.admin.spaces``
 
         Returns:
             Callable[[~.SearchSpacesRequest],
