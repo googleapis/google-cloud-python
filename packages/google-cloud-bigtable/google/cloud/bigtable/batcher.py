@@ -359,6 +359,13 @@ class MutationsBatcher(object):
         # ``_flush_rows``; here the whole batch failed with a single exception,
         # so record it once per row in the batch to keep the reported error
         # count aligned with the number of affected mutations.
+        #
+        # A cancelled future is "done", so this callback still runs for it, but
+        # ``future.exception()`` would raise ``CancelledError``. Nothing here
+        # cancels futures today, but guard against it so the callback stays
+        # correct if cancellation is ever introduced.
+        if future.cancelled():
+            return
         exc = future.exception()
         if exc is not None:
             for _ in range(processed_rows.rows_count):
