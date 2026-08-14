@@ -102,7 +102,6 @@ def mock_metrics_batch_write():
         yield
 
 
-
 @CrossSync.convert_class(
     sync_name="TestBigtableDataClient",
     add_mapping_for_name="TestBigtableDataClient",

@@ -57,7 +57,8 @@ class TestGoogleCloudMetricsHandler:
             assert isinstance(handler.meter_provider, MeterProvider)
             assert isinstance(handler.otel, _OpenTelemetryInstruments)
             assert (
-                handler.shared_labels["client_name"] == f"python-bigtable/{CLIENT_VERSION}"
+                handler.shared_labels["client_name"]
+                == f"python-bigtable/{CLIENT_VERSION}"
             )
             assert handler.shared_labels["client_uid"] == uid_mock()
         finally:
@@ -74,7 +75,9 @@ class TestGoogleCloudMetricsHandler:
             client_version=expected_version,
         )
         try:
-            assert handler.otel == _OpenTelemetryInstruments() or handler.otel is not None
+            assert (
+                handler.otel == _OpenTelemetryInstruments() or handler.otel is not None
+            )
             assert (
                 handler.shared_labels["client_name"]
                 == f"python-bigtable/{expected_version}"
