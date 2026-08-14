@@ -276,7 +276,14 @@ class SqlSelectNode(nodes.UnaryNode):
 
     @property
     def is_star_selection(self) -> bool:
-        return tuple(self.ids) == tuple(self.child.ids)
+        if tuple(self.ids) != tuple(self.child.ids):
+            return False
+        for cdef in self.selections:
+            if not isinstance(cdef.expression, ex.DerefOp):
+                return False
+            if cdef.expression.id != cdef.id:
+                return False
+        return True
 
     @functools.cache
     def get_id_mapping(self) -> dict[identifiers.ColumnId, ex.Expression]:

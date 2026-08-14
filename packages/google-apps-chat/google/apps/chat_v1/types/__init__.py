@@ -36,6 +36,19 @@ from .attachment import (
     UploadAttachmentRequest,
     UploadAttachmentResponse,
 )
+from .audience import (
+    Audience,
+)
+from .availability import (
+    Availability,
+    CustomStatus,
+    DoNotDisturbMetadata,
+    GetAvailabilityRequest,
+    MarkAsActiveRequest,
+    MarkAsAwayRequest,
+    MarkAsDoNotDisturbRequest,
+    UpdateAvailabilityRequest,
+)
 from .contextual_addon import (
     ContextualAddOnMarkup,
 )
@@ -97,6 +110,9 @@ from .message import (
     Message,
     QuotedMessageMetadata,
     QuotedMessageSnapshot,
+    SearchMessageResult,
+    SearchMessagesRequest,
+    SearchMessagesResponse,
     Thread,
     UpdateMessageRequest,
 )
@@ -198,6 +214,15 @@ __all__ = (
     "GetAttachmentRequest",
     "UploadAttachmentRequest",
     "UploadAttachmentResponse",
+    "Audience",
+    "Availability",
+    "CustomStatus",
+    "DoNotDisturbMetadata",
+    "GetAvailabilityRequest",
+    "MarkAsActiveRequest",
+    "MarkAsAwayRequest",
+    "MarkAsDoNotDisturbRequest",
+    "UpdateAvailabilityRequest",
     "ContextualAddOnMarkup",
     "DeletionMetadata",
     "MembershipBatchCreatedEventData",
@@ -244,6 +269,9 @@ __all__ = (
     "Message",
     "QuotedMessageMetadata",
     "QuotedMessageSnapshot",
+    "SearchMessageResult",
+    "SearchMessagesRequest",
+    "SearchMessagesResponse",
     "Thread",
     "UpdateMessageRequest",
     "CreateCustomEmojiRequest",

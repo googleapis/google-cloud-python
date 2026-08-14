@@ -1002,7 +1002,14 @@ def test_cloud_redis_cluster_client_get_mtls_endpoint_and_cert_source(client_cla
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1049,7 +1056,14 @@ def test_cloud_redis_cluster_client_get_mtls_endpoint_and_cert_source(client_cla
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1753,6 +1767,9 @@ def test_list_clusters_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloud_redis_cluster.Cluster) for i in results)
@@ -1841,6 +1858,8 @@ async def test_list_clusters_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1928,6 +1947,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
             deletion_protection_enabled=True,
             backup_collection="backup_collection_value",
             kms_key="kms_key_value",
+            async_cluster_endpoints_deletion_enabled=True,
             server_ca_mode=cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA,
             server_ca_pool="server_ca_pool_value",
             rotate_server_certificate=True,
@@ -1961,6 +1981,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
     assert response.deletion_protection_enabled is True
     assert response.backup_collection == "backup_collection_value"
     assert response.kms_key == "kms_key_value"
+    assert response.async_cluster_endpoints_deletion_enabled is True
     assert (
         response.server_ca_mode
         == cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA
@@ -2111,6 +2132,7 @@ async def test_get_cluster_async(request_type, transport: str = "grpc_asyncio"):
                 deletion_protection_enabled=True,
                 backup_collection="backup_collection_value",
                 kms_key="kms_key_value",
+                async_cluster_endpoints_deletion_enabled=True,
                 server_ca_mode=cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA,
                 server_ca_pool="server_ca_pool_value",
                 rotate_server_certificate=True,
@@ -2145,6 +2167,7 @@ async def test_get_cluster_async(request_type, transport: str = "grpc_asyncio"):
     assert response.deletion_protection_enabled is True
     assert response.backup_collection == "backup_collection_value"
     assert response.kms_key == "kms_key_value"
+    assert response.async_cluster_endpoints_deletion_enabled is True
     assert (
         response.server_ca_mode
         == cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA
@@ -4819,6 +4842,9 @@ def test_list_backup_collections_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloud_redis_cluster.BackupCollection) for i in results)
@@ -4911,6 +4937,8 @@ async def test_list_backup_collections_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5708,6 +5736,9 @@ def test_list_backups_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloud_redis_cluster.Backup) for i in results)
@@ -5796,6 +5827,8 @@ async def test_list_backups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7363,6 +7396,9 @@ def test_list_clusters_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_clusters(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -9001,6 +9037,9 @@ def test_list_backup_collections_rest_pager(transport: str = "rest"):
 
         pager = client.list_backup_collections(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cloud_redis_cluster.BackupCollection) for i in results)
@@ -9445,6 +9484,9 @@ def test_list_backups_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_backups(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -10600,6 +10642,7 @@ async def test_get_cluster_empty_call_grpc_asyncio():
                 deletion_protection_enabled=True,
                 backup_collection="backup_collection_value",
                 kms_key="kms_key_value",
+                async_cluster_endpoints_deletion_enabled=True,
                 server_ca_mode=cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA,
                 server_ca_pool="server_ca_pool_value",
                 rotate_server_certificate=True,
@@ -11168,6 +11211,7 @@ def test_get_cluster_rest_call_success(request_type):
             deletion_protection_enabled=True,
             backup_collection="backup_collection_value",
             kms_key="kms_key_value",
+            async_cluster_endpoints_deletion_enabled=True,
             server_ca_mode=cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA,
             server_ca_pool="server_ca_pool_value",
             rotate_server_certificate=True,
@@ -11206,6 +11250,7 @@ def test_get_cluster_rest_call_success(request_type):
     assert response.deletion_protection_enabled is True
     assert response.backup_collection == "backup_collection_value"
     assert response.kms_key == "kms_key_value"
+    assert response.async_cluster_endpoints_deletion_enabled is True
     assert (
         response.server_ca_mode
         == cloud_redis_cluster.ServerCaMode.SERVER_CA_MODE_GOOGLE_MANAGED_PER_INSTANCE_CA
@@ -11424,6 +11469,7 @@ def test_update_cluster_rest_call_success(request_type):
             "kms_key_primary_state": 1,
             "last_update_time": {},
         },
+        "async_cluster_endpoints_deletion_enabled": True,
         "server_ca_mode": 1,
         "server_ca_pool": "server_ca_pool_value",
         "rotate_server_certificate": True,
@@ -11846,6 +11892,7 @@ def test_create_cluster_rest_call_success(request_type):
             "kms_key_primary_state": 1,
             "last_update_time": {},
         },
+        "async_cluster_endpoints_deletion_enabled": True,
         "server_ca_mode": 1,
         "server_ca_pool": "server_ca_pool_value",
         "rotate_server_certificate": True,

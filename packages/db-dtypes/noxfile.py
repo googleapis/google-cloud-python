@@ -42,6 +42,7 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
@@ -70,6 +71,17 @@ SYSTEM_TEST_EXTRAS: List[str] = []
 SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
 nox.options.sessions = [
@@ -291,6 +303,8 @@ def prerelease(session, tests_path):
 @nox.parametrize("test_type", ["unit", "compliance"])
 def unit(session, test_type):
     """Run the unit test suite."""
+    if session.python == "3.15":
+        session.skip("Skipping 3.15 until wheels are available for pyarrow.")
 
     # Compliance tests only run on the latest Python version
     if test_type == "compliance" and session.python != DEFAULT_PYTHON_VERSION:
@@ -541,6 +555,7 @@ def mypy(session):
     session.install("-e", ".")
     session.run(
         "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
         "-p",
         "db_dtypes",
         "--check-untyped-defs",

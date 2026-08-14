@@ -13,6 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .agent_gateway import (
+    AgentGateway,
+    CreateAgentGatewayRequest,
+    DeleteAgentGatewayRequest,
+    GetAgentGatewayRequest,
+    ListAgentGatewaysRequest,
+    ListAgentGatewaysResponse,
+    UpdateAgentGatewayRequest,
+)
 from .common import (
     EndpointMatcher,
     EnvoyHeaders,
@@ -21,6 +30,7 @@ from .common import (
 )
 from .dep import (
     AuthzExtension,
+    BodySendMode,
     CreateAuthzExtensionRequest,
     CreateLbEdgeExtensionRequest,
     CreateLbRouteExtensionRequest,
@@ -162,6 +172,13 @@ from .tls_route import (
 )
 
 __all__ = (
+    "AgentGateway",
+    "CreateAgentGatewayRequest",
+    "DeleteAgentGatewayRequest",
+    "GetAgentGatewayRequest",
+    "ListAgentGatewaysRequest",
+    "ListAgentGatewaysResponse",
+    "UpdateAgentGatewayRequest",
     "EndpointMatcher",
     "OperationMetadata",
     "TrafficPortSelector",
@@ -195,6 +212,7 @@ __all__ = (
     "UpdateLbEdgeExtensionRequest",
     "UpdateLbRouteExtensionRequest",
     "UpdateLbTrafficExtensionRequest",
+    "BodySendMode",
     "EventType",
     "LoadBalancingScheme",
     "WireFormat",

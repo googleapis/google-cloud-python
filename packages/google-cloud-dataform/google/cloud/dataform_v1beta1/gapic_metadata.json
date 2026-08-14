@@ -75,6 +75,11 @@
                 "delete_folder"
               ]
             },
+            "DeleteFolderTree": {
+              "methods": [
+                "delete_folder_tree"
+              ]
+            },
             "DeleteReleaseConfig": {
               "methods": [
                 "delete_release_config"
@@ -85,9 +90,19 @@
                 "delete_repository"
               ]
             },
+            "DeleteRepositoryLongRunning": {
+              "methods": [
+                "delete_repository_long_running"
+              ]
+            },
             "DeleteTeamFolder": {
               "methods": [
                 "delete_team_folder"
+              ]
+            },
+            "DeleteTeamFolderTree": {
+              "methods": [
+                "delete_team_folder_tree"
               ]
             },
             "DeleteWorkflowConfig": {
@@ -435,6 +450,11 @@
                 "delete_folder"
               ]
             },
+            "DeleteFolderTree": {
+              "methods": [
+                "delete_folder_tree"
+              ]
+            },
             "DeleteReleaseConfig": {
               "methods": [
                 "delete_release_config"
@@ -445,9 +465,19 @@
                 "delete_repository"
               ]
             },
+            "DeleteRepositoryLongRunning": {
+              "methods": [
+                "delete_repository_long_running"
+              ]
+            },
             "DeleteTeamFolder": {
               "methods": [
                 "delete_team_folder"
+              ]
+            },
+            "DeleteTeamFolderTree": {
+              "methods": [
+                "delete_team_folder_tree"
               ]
             },
             "DeleteWorkflowConfig": {
@@ -795,6 +825,11 @@
                 "delete_folder"
               ]
             },
+            "DeleteFolderTree": {
+              "methods": [
+                "delete_folder_tree"
+              ]
+            },
             "DeleteReleaseConfig": {
               "methods": [
                 "delete_release_config"
@@ -805,9 +840,19 @@
                 "delete_repository"
               ]
             },
+            "DeleteRepositoryLongRunning": {
+              "methods": [
+                "delete_repository_long_running"
+              ]
+            },
             "DeleteTeamFolder": {
               "methods": [
                 "delete_team_folder"
+              ]
+            },
+            "DeleteTeamFolderTree": {
+              "methods": [
+                "delete_team_folder_tree"
               ]
             },
             "DeleteWorkflowConfig": {

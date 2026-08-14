@@ -993,7 +993,14 @@ def test_partner_link_service_client_get_mtls_endpoint_and_cert_source(client_cl
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1040,7 +1047,14 @@ def test_partner_link_service_client_get_mtls_endpoint_and_cert_source(client_cl
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1393,6 +1407,7 @@ def test_create_partner_link(request_type, transport: str = "grpc"):
         call.return_value = partner_link_service.PartnerLink(
             name="name_value",
             partner_link_id="partner_link_id_value",
+            feature_set=partner_link_service.FeatureSet.FEATURE_SET_AUDIENCE_AND_EVENT_MANAGEMENT,
         )
         response = client.create_partner_link(request)
 
@@ -1406,6 +1421,10 @@ def test_create_partner_link(request_type, transport: str = "grpc"):
     assert isinstance(response, partner_link_service.PartnerLink)
     assert response.name == "name_value"
     assert response.partner_link_id == "partner_link_id_value"
+    assert (
+        response.feature_set
+        == partner_link_service.FeatureSet.FEATURE_SET_AUDIENCE_AND_EVENT_MANAGEMENT
+    )
 
 
 def test_create_partner_link_non_empty_request_with_auto_populated_field():
@@ -1547,6 +1566,7 @@ async def test_create_partner_link_async(request_type, transport: str = "grpc_as
             partner_link_service.PartnerLink(
                 name="name_value",
                 partner_link_id="partner_link_id_value",
+                feature_set=partner_link_service.FeatureSet.FEATURE_SET_AUDIENCE_AND_EVENT_MANAGEMENT,
             )
         )
         response = await client.create_partner_link(request)
@@ -1561,6 +1581,10 @@ async def test_create_partner_link_async(request_type, transport: str = "grpc_as
     assert isinstance(response, partner_link_service.PartnerLink)
     assert response.name == "name_value"
     assert response.partner_link_id == "partner_link_id_value"
+    assert (
+        response.feature_set
+        == partner_link_service.FeatureSet.FEATURE_SET_AUDIENCE_AND_EVENT_MANAGEMENT
+    )
 
 
 def test_create_partner_link_field_headers():
@@ -2453,6 +2477,9 @@ def test_search_partner_links_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, partner_link_service.PartnerLink) for i in results)
@@ -2545,6 +2572,8 @@ async def test_search_partner_links_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3227,6 +3256,9 @@ def test_search_partner_links_rest_pager(transport: str = "rest"):
 
         pager = client.search_partner_links(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, partner_link_service.PartnerLink) for i in results)
@@ -3440,6 +3472,7 @@ async def test_create_partner_link_empty_call_grpc_asyncio():
             partner_link_service.PartnerLink(
                 name="name_value",
                 partner_link_id="partner_link_id_value",
+                feature_set=partner_link_service.FeatureSet.FEATURE_SET_AUDIENCE_AND_EVENT_MANAGEMENT,
             )
         )
         await client.create_partner_link(request=None)
@@ -3559,6 +3592,13 @@ def test_create_partner_link_rest_call_success(request_type):
             "account_type": 1,
         },
         "partner_account": {},
+        "feature_set": 1,
+        "partner_customer_account": {
+            "account_id": "account_id_value",
+            "account_name": "account_name_value",
+            "account_type": "account_type_value",
+        },
+        "partner_link_metadata": {"implicit_accounts": {}},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -3637,6 +3677,7 @@ def test_create_partner_link_rest_call_success(request_type):
         return_value = partner_link_service.PartnerLink(
             name="name_value",
             partner_link_id="partner_link_id_value",
+            feature_set=partner_link_service.FeatureSet.FEATURE_SET_AUDIENCE_AND_EVENT_MANAGEMENT,
         )
 
         # Wrap the value into a proper Response obj
@@ -3655,6 +3696,10 @@ def test_create_partner_link_rest_call_success(request_type):
     assert isinstance(response, partner_link_service.PartnerLink)
     assert response.name == "name_value"
     assert response.partner_link_id == "partner_link_id_value"
+    assert (
+        response.feature_set
+        == partner_link_service.FeatureSet.FEATURE_SET_AUDIENCE_AND_EVENT_MANAGEMENT
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

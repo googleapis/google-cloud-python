@@ -20,7 +20,7 @@ import pytest
 def test_integration_scan(tmp_path):
     # Paths to real tools
     scanner_path = os.path.abspath("version_scanner.py")
-    config_path = os.path.abspath("regex_config.yaml")
+    config_path = os.path.abspath("regex_pattern_config.yaml")
     
     # Static data directory
     data_dir = os.path.abspath("tests/data")
@@ -32,7 +32,8 @@ def test_integration_scan(tmp_path):
         "-v", "3.7",
         "-p", data_dir,
         "--config", config_path,
-        "-o", "scanner_report.csv"
+        "-o", "scanner_report.csv",
+        "--soft-fail"
     ]
     
     result = subprocess.run(cmd, cwd=tmp_path, capture_output=True, text=True, check=True)

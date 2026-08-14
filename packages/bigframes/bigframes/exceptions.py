@@ -75,6 +75,10 @@ class MaximumResultRowsExceeded(RuntimeError):
     """Maximum number of rows in the result was exceeded."""
 
 
+class TranspilationError(RuntimeError):
+    """Failed to transpile a Python function to BigFrames Expression."""
+
+
 class TimeTravelDisabledWarning(Warning):
     """A query was reattempted without time travel."""
 
@@ -124,6 +128,10 @@ class FunctionPackageVersionWarning(PreviewWarning):
     Warns that package versions in remote function or managed function may not
     match local or specified versions, which might cause unexpected behavior.
     """
+
+
+class PythonTranspilerPreviewWarning(PreviewWarning):
+    """Python Transpiler is a preview feature."""
 
 
 def format_message(message: str, fill: bool = True):

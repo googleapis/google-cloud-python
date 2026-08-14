@@ -661,7 +661,7 @@ class DocumentServiceAsyncClient:
 
                 This field must conform to
                 `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__
-                standard with a length limit of 63 characters.
+                standard with a length limit of 128 characters.
                 Otherwise, an ``INVALID_ARGUMENT`` error is returned.
 
                 This corresponds to the ``document_id`` field
@@ -1526,9 +1526,7 @@ class DocumentServiceAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("DocumentServiceAsyncClient",)

@@ -660,6 +660,35 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["list_managed_folders"]
 
     @property
+    def update_managed_folder(
+        self,
+    ) -> Callable[
+        [storage_control.UpdateManagedFolderRequest], storage_control.ManagedFolder
+    ]:
+        r"""Return a callable for the update managed folder method over gRPC.
+
+        Updates a managed folder. Currently, this RPC only supports
+        updating the ``rapid_cache_config`` field.
+
+        Returns:
+            Callable[[~.UpdateManagedFolderRequest],
+                    ~.ManagedFolder]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_managed_folder" not in self._stubs:
+            self._stubs["update_managed_folder"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/UpdateManagedFolder",
+                request_serializer=storage_control.UpdateManagedFolderRequest.serialize,
+                response_deserializer=storage_control.ManagedFolder.deserialize,
+            )
+        return self._stubs["update_managed_folder"]
+
+    @property
     def create_anywhere_cache(
         self,
     ) -> Callable[
@@ -860,6 +889,113 @@ class StorageControlGrpcTransport(StorageControlTransport):
                 response_deserializer=storage_control.ListAnywhereCachesResponse.deserialize,
             )
         return self._stubs["list_anywhere_caches"]
+
+    @property
+    def create_rapid_cache(
+        self,
+    ) -> Callable[[storage_control.CreateRapidCacheRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create rapid cache method over gRPC.
+
+        Creates a Rapid Cache instance.
+
+        Returns:
+            Callable[[~.CreateRapidCacheRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_rapid_cache" not in self._stubs:
+            self._stubs["create_rapid_cache"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/CreateRapidCache",
+                request_serializer=storage_control.CreateRapidCacheRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_rapid_cache"]
+
+    @property
+    def update_rapid_cache(
+        self,
+    ) -> Callable[[storage_control.UpdateRapidCacheRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update rapid cache method over gRPC.
+
+        Updates a Rapid Cache instance.
+
+        Returns:
+            Callable[[~.UpdateRapidCacheRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_rapid_cache" not in self._stubs:
+            self._stubs["update_rapid_cache"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/UpdateRapidCache",
+                request_serializer=storage_control.UpdateRapidCacheRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_rapid_cache"]
+
+    @property
+    def get_rapid_cache(
+        self,
+    ) -> Callable[[storage_control.GetRapidCacheRequest], storage_control.RapidCache]:
+        r"""Return a callable for the get rapid cache method over gRPC.
+
+        Gets a Rapid Cache instance.
+
+        Returns:
+            Callable[[~.GetRapidCacheRequest],
+                    ~.RapidCache]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_rapid_cache" not in self._stubs:
+            self._stubs["get_rapid_cache"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/GetRapidCache",
+                request_serializer=storage_control.GetRapidCacheRequest.serialize,
+                response_deserializer=storage_control.RapidCache.deserialize,
+            )
+        return self._stubs["get_rapid_cache"]
+
+    @property
+    def list_rapid_caches(
+        self,
+    ) -> Callable[
+        [storage_control.ListRapidCachesRequest],
+        storage_control.ListRapidCachesResponse,
+    ]:
+        r"""Return a callable for the list rapid caches method over gRPC.
+
+        Lists Rapid Cache instances for a given bucket.
+
+        Returns:
+            Callable[[~.ListRapidCachesRequest],
+                    ~.ListRapidCachesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_rapid_caches" not in self._stubs:
+            self._stubs["list_rapid_caches"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/ListRapidCaches",
+                request_serializer=storage_control.ListRapidCachesRequest.serialize,
+                response_deserializer=storage_control.ListRapidCachesResponse.deserialize,
+            )
+        return self._stubs["list_rapid_caches"]
 
     @property
     def get_project_intelligence_config(
@@ -1193,7 +1329,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         r"""Return a callable for the list intelligence findings method over gRPC.
 
         Lists the ``IntelligenceFinding`` resources for the specified
-        project.
+        the project.
 
         Returns:
             Callable[[~.ListIntelligenceFindingsRequest],
@@ -1225,8 +1361,8 @@ class StorageControlGrpcTransport(StorageControlTransport):
         r"""Return a callable for the summarize intelligence
         findings method over gRPC.
 
-        Summarize the intelligence findings for the specified
-        scope(org, folder or project).
+        Summarizes the intelligence findings for the
+        specified scope (organization, folder or project).
 
         Returns:
             Callable[[~.SummarizeIntelligenceFindingsRequest],
@@ -1311,6 +1447,45 @@ class StorageControlGrpcTransport(StorageControlTransport):
                 )
             )
         return self._stubs["list_intelligence_finding_revisions"]
+
+    @property
+    def view_object_full_context(
+        self,
+    ) -> Callable[
+        [storage_control.ViewObjectFullContextRequest],
+        storage_control.ObjectFullContext,
+    ]:
+        r"""Return a callable for the view object full context method over gRPC.
+
+        Retrieves the full content of an object context, including its
+        key, value, and any associated extended data for a given context
+        key.
+
+        Object contexts can optionally contain extended data. If an
+        object context contains extended data, the metadata payload
+        structure will contain only its type URL. To retrieve the full
+        extended data, call this method.
+
+        Returns the complete representation of the context as an
+        [``ObjectFullContext``][google.storage.control.v2.ObjectFullContext].
+
+        Returns:
+            Callable[[~.ViewObjectFullContextRequest],
+                    ~.ObjectFullContext]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "view_object_full_context" not in self._stubs:
+            self._stubs["view_object_full_context"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/ViewObjectFullContext",
+                request_serializer=storage_control.ViewObjectFullContextRequest.serialize,
+                response_deserializer=storage_control.ObjectFullContext.deserialize,
+            )
+        return self._stubs["view_object_full_context"]
 
     def close(self):
         self._logged_channel.close()

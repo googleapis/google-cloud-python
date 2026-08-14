@@ -36,12 +36,6 @@ def _(expr: TypedExpr, op: ops.AsTypeOp) -> sge.Expression:
     sg_to_type = sqlglot_types.from_bigframes_dtype(to_type)
     sg_expr = expr.expr
 
-    if to_type == dtypes.JSON_DTYPE:
-        return _cast_to_json(expr, op)
-
-    if from_type == dtypes.JSON_DTYPE:
-        return _cast_from_json(expr, op)
-
     if to_type == dtypes.INT_DTYPE:
         result = _cast_to_int(expr, op)
         if result is not None:
@@ -154,6 +148,28 @@ def _(expr: TypedExpr) -> sge.Expression:
     )
 
 
+@register_unary_op(ops.coerce_to_bool_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    from_type = expr.dtype
+    sg_expr = expr.expr
+
+    if from_type == dtypes.BOOL_DTYPE:
+        res = sg_expr
+    elif dtypes.is_numeric(from_type):
+        res = sge.NEQ(this=sg_expr, expression=sge.convert(0))
+    elif dtypes.is_string_like(from_type):
+        res = sge.GT(this=sge.func("LENGTH", sg_expr), expression=sge.convert(0))
+    elif dtypes.is_array_like(from_type):
+        res = sge.GT(this=sge.func("ARRAY_LENGTH", sg_expr), expression=sge.convert(0))
+    else:
+        res = sge.Is(
+            this=sge.paren(sg_expr, copy=False),
+            expression=sg.not_(sge.Null(), copy=False),
+        )
+
+    return sge.Coalesce(this=res, expressions=[sge.convert(False)])
+
+
 @register_ternary_op(ops.where_op)
 def _(
     original: TypedExpr, condition: TypedExpr, replacement: TypedExpr
@@ -251,35 +267,6 @@ def _(*values: TypedExpr) -> sge.Expression:
 
 
 # Helper functions
-def _cast_to_json(expr: TypedExpr, op: ops.AsTypeOp) -> sge.Expression:
-    from_type = expr.dtype
-    sg_expr = expr.expr
-
-    if from_type == dtypes.STRING_DTYPE:
-        func_name = "SAFE.PARSE_JSON" if op.safe else "PARSE_JSON"
-        return sge.func(func_name, sg_expr)
-    if from_type in (dtypes.INT_DTYPE, dtypes.BOOL_DTYPE, dtypes.FLOAT_DTYPE):
-        sg_expr = sge.Cast(this=sg_expr, to="STRING")
-        return sge.func("PARSE_JSON", sg_expr)
-    raise TypeError(f"Cannot cast from {from_type} to {dtypes.JSON_DTYPE}")
-
-
-def _cast_from_json(expr: TypedExpr, op: ops.AsTypeOp) -> sge.Expression:
-    to_type = op.to_type
-    sg_expr = expr.expr
-    func_name = ""
-    if to_type == dtypes.INT_DTYPE:
-        func_name = "INT64"
-    elif to_type == dtypes.FLOAT_DTYPE:
-        func_name = "FLOAT64"
-    elif to_type == dtypes.BOOL_DTYPE:
-        func_name = "BOOL"
-    elif to_type == dtypes.STRING_DTYPE:
-        func_name = "STRING"
-    if func_name:
-        func_name = "SAFE." + func_name if op.safe else func_name
-        return sge.func(func_name, sg_expr)
-    raise TypeError(f"Cannot cast from {dtypes.JSON_DTYPE} to {to_type}")
 
 
 def _cast_to_int(expr: TypedExpr, op: ops.AsTypeOp) -> sge.Expression | None:

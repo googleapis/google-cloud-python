@@ -24,6 +24,8 @@ from google.ads.admanager_v1.services.ad_break_service.client import (
 from google.ads.admanager_v1.services.ad_review_center_ad_service.client import (
     AdReviewCenterAdServiceClient,
 )
+from google.ads.admanager_v1.services.ad_rule_service.client import AdRuleServiceClient
+from google.ads.admanager_v1.services.ad_spot_service.client import AdSpotServiceClient
 from google.ads.admanager_v1.services.ad_unit_service.client import AdUnitServiceClient
 from google.ads.admanager_v1.services.application_service.client import (
     ApplicationServiceClient,
@@ -38,6 +40,12 @@ from google.ads.admanager_v1.services.browser_language_service.client import (
     BrowserLanguageServiceClient,
 )
 from google.ads.admanager_v1.services.browser_service.client import BrowserServiceClient
+from google.ads.admanager_v1.services.cdn_config_service.client import (
+    CdnConfigServiceClient,
+)
+from google.ads.admanager_v1.services.child_publisher_service.client import (
+    ChildPublisherServiceClient,
+)
 from google.ads.admanager_v1.services.cms_metadata_key_service.client import (
     CmsMetadataKeyServiceClient,
 )
@@ -53,8 +61,14 @@ from google.ads.admanager_v1.services.content_label_service.client import (
     ContentLabelServiceClient,
 )
 from google.ads.admanager_v1.services.content_service.client import ContentServiceClient
+from google.ads.admanager_v1.services.creative_set_service.client import (
+    CreativeSetServiceClient,
+)
 from google.ads.admanager_v1.services.creative_template_service.client import (
     CreativeTemplateServiceClient,
+)
+from google.ads.admanager_v1.services.creative_wrapper_service.client import (
+    CreativeWrapperServiceClient,
 )
 from google.ads.admanager_v1.services.custom_field_service.client import (
     CustomFieldServiceClient,
@@ -64,6 +78,12 @@ from google.ads.admanager_v1.services.custom_targeting_key_service.client import
 )
 from google.ads.admanager_v1.services.custom_targeting_value_service.client import (
     CustomTargetingValueServiceClient,
+)
+from google.ads.admanager_v1.services.dai_authentication_key_service.client import (
+    DaiAuthenticationKeyServiceClient,
+)
+from google.ads.admanager_v1.services.dai_encoding_profile_service.client import (
+    DaiEncodingProfileServiceClient,
 )
 from google.ads.admanager_v1.services.device_capability_service.client import (
     DeviceCapabilityServiceClient,
@@ -87,6 +107,9 @@ from google.ads.admanager_v1.services.line_item_service.client import (
 from google.ads.admanager_v1.services.linked_device_service.client import (
     LinkedDeviceServiceClient,
 )
+from google.ads.admanager_v1.services.live_stream_service.client import (
+    LiveStreamServiceClient,
+)
 from google.ads.admanager_v1.services.mcm_earnings_service.client import (
     McmEarningsServiceClient,
 )
@@ -107,6 +130,7 @@ from google.ads.admanager_v1.services.operating_system_version_service.client im
     OperatingSystemVersionServiceClient,
 )
 from google.ads.admanager_v1.services.order_service.client import OrderServiceClient
+from google.ads.admanager_v1.services.partner_service.client import PartnerServiceClient
 from google.ads.admanager_v1.services.placement_service.client import (
     PlacementServiceClient,
 )
@@ -125,11 +149,24 @@ from google.ads.admanager_v1.services.rich_media_ads_company_service.client impo
 )
 from google.ads.admanager_v1.services.role_service.client import RoleServiceClient
 from google.ads.admanager_v1.services.site_service.client import SiteServiceClient
+from google.ads.admanager_v1.services.slate_service.client import SlateServiceClient
+from google.ads.admanager_v1.services.suggested_ad_unit_service.client import (
+    SuggestedAdUnitServiceClient,
+)
+from google.ads.admanager_v1.services.targeting_preset_service.client import (
+    TargetingPresetServiceClient,
+)
 from google.ads.admanager_v1.services.taxonomy_category_service.client import (
     TaxonomyCategoryServiceClient,
 )
 from google.ads.admanager_v1.services.team_service.client import TeamServiceClient
+from google.ads.admanager_v1.services.third_party_company_service.client import (
+    ThirdPartyCompanyServiceClient,
+)
 from google.ads.admanager_v1.services.user_service.client import UserServiceClient
+from google.ads.admanager_v1.services.viewability_provider_service.client import (
+    ViewabilityProviderServiceClient,
+)
 from google.ads.admanager_v1.types.ad_break_messages import AdBreak
 from google.ads.admanager_v1.types.ad_break_service import (
     CreateAdBreakRequest,
@@ -153,8 +190,52 @@ from google.ads.admanager_v1.types.ad_review_center_ad_service import (
     SearchAdReviewCenterAdsRequest,
     SearchAdReviewCenterAdsResponse,
 )
+from google.ads.admanager_v1.types.ad_rule_enums import (
+    AdRuleFrequencyCapBehaviorEnum,
+    AdRuleStatusEnum,
+)
+from google.ads.admanager_v1.types.ad_rule_messages import AdRule, AdRuleSlot
+from google.ads.admanager_v1.types.ad_rule_service import (
+    BatchActivateAdRulesRequest,
+    BatchActivateAdRulesResponse,
+    BatchCreateAdRulesRequest,
+    BatchCreateAdRulesResponse,
+    BatchDeactivateAdRulesRequest,
+    BatchDeactivateAdRulesResponse,
+    BatchDeleteAdRulesRequest,
+    BatchUpdateAdRulesRequest,
+    BatchUpdateAdRulesResponse,
+    CreateAdRuleRequest,
+    GetAdRuleRequest,
+    ListAdRulesRequest,
+    ListAdRulesResponse,
+    UpdateAdRuleRequest,
+)
+from google.ads.admanager_v1.types.ad_rule_slot_behavior_enum import (
+    AdRuleSlotBehaviorEnum,
+)
+from google.ads.admanager_v1.types.ad_rule_slot_bumper_enum import AdRuleSlotBumperEnum
+from google.ads.admanager_v1.types.ad_rule_slot_midroll_frequency_type_enum import (
+    AdRuleSlotMidrollFrequencyTypeEnum,
+)
+from google.ads.admanager_v1.types.ad_spot_messages import AdSpot
+from google.ads.admanager_v1.types.ad_spot_service import (
+    BatchCreateAdSpotsRequest,
+    BatchCreateAdSpotsResponse,
+    BatchUpdateAdSpotsRequest,
+    BatchUpdateAdSpotsResponse,
+    CreateAdSpotRequest,
+    GetAdSpotRequest,
+    ListAdSpotsRequest,
+    ListAdSpotsResponse,
+    UpdateAdSpotRequest,
+)
+from google.ads.admanager_v1.types.ad_spot_targeting_type_enum import (
+    AdSpotTargetingTypeEnum,
+)
 from google.ads.admanager_v1.types.ad_unit_enums import (
     AdUnitStatusEnum,
+    RefreshRateTypeEnum,
     SmartSizeModeEnum,
     TargetWindowEnum,
 )
@@ -219,6 +300,7 @@ from google.ads.admanager_v1.types.bandwidth_group_service import (
     ListBandwidthGroupsRequest,
     ListBandwidthGroupsResponse,
 )
+from google.ads.admanager_v1.types.brand_lift_partner_enum import BrandLiftPartnerEnum
 from google.ads.admanager_v1.types.browser_language_messages import BrowserLanguage
 from google.ads.admanager_v1.types.browser_language_service import (
     GetBrowserLanguageRequest,
@@ -231,7 +313,51 @@ from google.ads.admanager_v1.types.browser_service import (
     ListBrowsersRequest,
     ListBrowsersResponse,
 )
+from google.ads.admanager_v1.types.cdn_config_messages import (
+    AdMediaDeliveryConfig,
+    CdnConfig,
+    CdnSecurityPolicy,
+    MediaLocation,
+    SourceContentConfig,
+)
+from google.ads.admanager_v1.types.cdn_config_service import (
+    BatchActivateCdnConfigsRequest,
+    BatchActivateCdnConfigsResponse,
+    BatchArchiveCdnConfigsRequest,
+    BatchArchiveCdnConfigsResponse,
+    BatchCreateCdnConfigsRequest,
+    BatchCreateCdnConfigsResponse,
+    BatchUpdateCdnConfigsRequest,
+    BatchUpdateCdnConfigsResponse,
+    CreateCdnConfigRequest,
+    GetCdnConfigRequest,
+    ListCdnConfigsRequest,
+    ListCdnConfigsResponse,
+    UpdateCdnConfigRequest,
+)
+from google.ads.admanager_v1.types.cdn_config_status_enum import CdnConfigStatusEnum
+from google.ads.admanager_v1.types.cdn_config_type_enum import CdnConfigTypeEnum
+from google.ads.admanager_v1.types.cdn_security_policy_enum import (
+    CdnSecurityPolicyTypeEnum,
+)
+from google.ads.admanager_v1.types.cdn_security_policy_origin_forwarding_enum import (
+    CdnSecurityPolicyOriginForwardingEnum,
+)
+from google.ads.admanager_v1.types.child_content_eligibility_enum import (
+    ChildContentEligibilityEnum,
+)
 from google.ads.admanager_v1.types.child_publisher_messages import ChildPublisher
+from google.ads.admanager_v1.types.child_publisher_service import (
+    BatchCreateChildPublishersRequest,
+    BatchCreateChildPublishersResponse,
+    BatchUpdateChildPublishersRequest,
+    BatchUpdateChildPublishersResponse,
+    CreateChildPublisherRequest,
+    GetChildPublisherRequest,
+    ListChildPublishersRequest,
+    ListChildPublishersResponse,
+    UpdateChildPublisherRequest,
+)
 from google.ads.admanager_v1.types.cms_metadata_key_enums import (
     CmsMetadataKeyStatusEnum,
 )
@@ -264,9 +390,15 @@ from google.ads.admanager_v1.types.company_enums import (
 )
 from google.ads.admanager_v1.types.company_messages import Company
 from google.ads.admanager_v1.types.company_service import (
+    BatchCreateCompaniesRequest,
+    BatchCreateCompaniesResponse,
+    BatchUpdateCompaniesRequest,
+    BatchUpdateCompaniesResponse,
+    CreateCompanyRequest,
     GetCompanyRequest,
     ListCompaniesRequest,
     ListCompaniesResponse,
+    UpdateCompanyRequest,
 )
 from google.ads.admanager_v1.types.contact_enums import ContactStatusEnum
 from google.ads.admanager_v1.types.contact_messages import Contact
@@ -281,11 +413,22 @@ from google.ads.admanager_v1.types.contact_service import (
     ListContactsResponse,
     UpdateContactRequest,
 )
+from google.ads.admanager_v1.types.content_bundle_enums import ContentBundleStatusEnum
 from google.ads.admanager_v1.types.content_bundle_messages import ContentBundle
 from google.ads.admanager_v1.types.content_bundle_service import (
+    BatchActivateContentBundlesRequest,
+    BatchActivateContentBundlesResponse,
+    BatchDeactivateContentBundlesRequest,
+    BatchDeactivateContentBundlesResponse,
     GetContentBundleRequest,
     ListContentBundlesRequest,
     ListContentBundlesResponse,
+)
+from google.ads.admanager_v1.types.content_enums import (
+    ContentStatusEnum,
+    ContentStatusSourceEnum,
+    DaiIngestErrorReasonEnum,
+    DaiIngestStatusEnum,
 )
 from google.ads.admanager_v1.types.content_label_messages import ContentLabel
 from google.ads.admanager_v1.types.content_label_service import (
@@ -293,12 +436,31 @@ from google.ads.admanager_v1.types.content_label_service import (
     ListContentLabelsRequest,
     ListContentLabelsResponse,
 )
-from google.ads.admanager_v1.types.content_messages import Content
+from google.ads.admanager_v1.types.content_messages import (
+    CmsContent,
+    Content,
+    DaiIngestError,
+)
 from google.ads.admanager_v1.types.content_service import (
     GetContentRequest,
     ListContentRequest,
     ListContentResponse,
 )
+from google.ads.admanager_v1.types.conversion_event_enum import ConversionEventEnum
+from google.ads.admanager_v1.types.creative_messages import Creative
+from google.ads.admanager_v1.types.creative_placeholder import (
+    CreativePlaceholder,
+    CreativePlaceholderCompanion,
+)
+from google.ads.admanager_v1.types.creative_set_messages import CreativeSet
+from google.ads.admanager_v1.types.creative_set_service import (
+    CreateCreativeSetRequest,
+    GetCreativeSetRequest,
+    ListCreativeSetsRequest,
+    ListCreativeSetsResponse,
+    UpdateCreativeSetRequest,
+)
+from google.ads.admanager_v1.types.creative_targeting import CreativeTargeting
 from google.ads.admanager_v1.types.creative_template_enums import (
     CreativeTemplateStatusEnum,
     CreativeTemplateTypeEnum,
@@ -314,6 +476,27 @@ from google.ads.admanager_v1.types.creative_template_service import (
 )
 from google.ads.admanager_v1.types.creative_template_variable_url_type_enum import (
     CreativeTemplateVariableUrlTypeEnum,
+)
+from google.ads.admanager_v1.types.creative_wrapper_enums import (
+    CreativeWrapperOrderingEnum,
+    CreativeWrapperStatusEnum,
+    CreativeWrapperTypeEnum,
+)
+from google.ads.admanager_v1.types.creative_wrapper_messages import CreativeWrapper
+from google.ads.admanager_v1.types.creative_wrapper_service import (
+    BatchActivateCreativeWrappersRequest,
+    BatchActivateCreativeWrappersResponse,
+    BatchCreateCreativeWrappersRequest,
+    BatchCreateCreativeWrappersResponse,
+    BatchDeactivateCreativeWrappersRequest,
+    BatchDeactivateCreativeWrappersResponse,
+    BatchUpdateCreativeWrappersRequest,
+    BatchUpdateCreativeWrappersResponse,
+    CreateCreativeWrapperRequest,
+    GetCreativeWrapperRequest,
+    ListCreativeWrappersRequest,
+    ListCreativeWrappersResponse,
+    UpdateCreativeWrapperRequest,
 )
 from google.ads.admanager_v1.types.custom_field_enums import (
     CustomFieldDataTypeEnum,
@@ -341,6 +524,13 @@ from google.ads.admanager_v1.types.custom_field_service import (
     UpdateCustomFieldRequest,
 )
 from google.ads.admanager_v1.types.custom_field_value import CustomFieldValue
+from google.ads.admanager_v1.types.custom_pacing_curve import (
+    CustomPacingCurve,
+    CustomPacingGoal,
+)
+from google.ads.admanager_v1.types.custom_pacing_goal_unit_enum import (
+    CustomPacingGoalUnitEnum,
+)
 from google.ads.admanager_v1.types.custom_targeting_key_enums import (
     CustomTargetingKeyReportableTypeEnum,
     CustomTargetingKeyStatusEnum,
@@ -372,13 +562,82 @@ from google.ads.admanager_v1.types.custom_targeting_value_messages import (
     CustomTargetingValue,
 )
 from google.ads.admanager_v1.types.custom_targeting_value_service import (
+    ActivateCustomTargetingValueRequest,
+    BatchActivateCustomTargetingValuesRequest,
+    BatchActivateCustomTargetingValuesResponse,
+    BatchCreateCustomTargetingValuesRequest,
+    BatchCreateCustomTargetingValuesResponse,
+    BatchDeactivateCustomTargetingValuesRequest,
+    BatchDeactivateCustomTargetingValuesResponse,
+    BatchUpdateCustomTargetingValuesRequest,
+    BatchUpdateCustomTargetingValuesResponse,
+    CreateCustomTargetingValueRequest,
+    DeactivateCustomTargetingValueRequest,
     GetCustomTargetingValueRequest,
     ListCustomTargetingValuesRequest,
     ListCustomTargetingValuesResponse,
+    UpdateCustomTargetingValueRequest,
+)
+from google.ads.admanager_v1.types.dai_authentication_key_enums import (
+    DaiAuthenticationKeyStatusEnum,
+    DaiAuthenticationKeyTypeEnum,
+)
+from google.ads.admanager_v1.types.dai_authentication_key_messages import (
+    DaiAuthenticationKey,
+)
+from google.ads.admanager_v1.types.dai_authentication_key_service import (
+    BatchActivateDaiAuthenticationKeysRequest,
+    BatchActivateDaiAuthenticationKeysResponse,
+    BatchCreateDaiAuthenticationKeysRequest,
+    BatchCreateDaiAuthenticationKeysResponse,
+    BatchDeactivateDaiAuthenticationKeysRequest,
+    BatchDeactivateDaiAuthenticationKeysResponse,
+    BatchUpdateDaiAuthenticationKeysRequest,
+    BatchUpdateDaiAuthenticationKeysResponse,
+    CreateDaiAuthenticationKeyRequest,
+    GetDaiAuthenticationKeyRequest,
+    ListDaiAuthenticationKeysRequest,
+    ListDaiAuthenticationKeysResponse,
+    UpdateDaiAuthenticationKeyRequest,
+)
+from google.ads.admanager_v1.types.dai_encoding_profile_enums import (
+    ContainerTypeEnum,
+    DaiEncodingProfileStatusEnum,
+    DaiEncodingProfileVariantTypeEnum,
+)
+from google.ads.admanager_v1.types.dai_encoding_profile_messages import (
+    AudioSettings,
+    DaiEncodingProfile,
+    VideoSettings,
+)
+from google.ads.admanager_v1.types.dai_encoding_profile_service import (
+    ActivateDaiEncodingProfileRequest,
+    ArchiveDaiEncodingProfileRequest,
+    BatchActivateDaiEncodingProfilesRequest,
+    BatchActivateDaiEncodingProfilesResponse,
+    BatchArchiveDaiEncodingProfilesRequest,
+    BatchArchiveDaiEncodingProfilesResponse,
+    BatchCreateDaiEncodingProfilesRequest,
+    BatchCreateDaiEncodingProfilesResponse,
+    BatchUpdateDaiEncodingProfilesRequest,
+    BatchUpdateDaiEncodingProfilesResponse,
+    CreateDaiEncodingProfileRequest,
+    GetDaiEncodingProfileRequest,
+    ListDaiEncodingProfilesRequest,
+    ListDaiEncodingProfilesResponse,
+    UpdateDaiEncodingProfileRequest,
 )
 from google.ads.admanager_v1.types.deal_buyer_permission_type_enum import (
     DealBuyerPermissionTypeEnum,
 )
+from google.ads.admanager_v1.types.deal_priority_tier_enum import DealPriorityTierEnum
+from google.ads.admanager_v1.types.delivery_enums import (
+    CompanionDeliveryOptionEnum,
+    CreativeRotationTypeEnum,
+    LineItemDeliveryRateTypeEnum,
+    RoadblockingTypeEnum,
+)
+from google.ads.admanager_v1.types.delivery_indicator import DeliveryIndicator
 from google.ads.admanager_v1.types.device_capability_messages import DeviceCapability
 from google.ads.admanager_v1.types.device_capability_service import (
     GetDeviceCapabilityRequest,
@@ -399,6 +658,7 @@ from google.ads.admanager_v1.types.device_manufacturer_service import (
     ListDeviceManufacturersRequest,
     ListDeviceManufacturersResponse,
 )
+from google.ads.admanager_v1.types.discount_type_enum import DiscountTypeEnum
 from google.ads.admanager_v1.types.early_ad_break_notification_enums import (
     AdBreakStateEnum,
 )
@@ -420,6 +680,7 @@ from google.ads.admanager_v1.types.environment_type_enum import EnvironmentTypeE
 from google.ads.admanager_v1.types.exchange_syndication_product_enum import (
     ExchangeSyndicationProductEnum,
 )
+from google.ads.admanager_v1.types.exclusion_scope_enum import ExclusionScopeEnum
 from google.ads.admanager_v1.types.frequency_cap import FrequencyCap
 from google.ads.admanager_v1.types.geo_target_messages import GeoTarget
 from google.ads.admanager_v1.types.geo_target_service import (
@@ -429,6 +690,9 @@ from google.ads.admanager_v1.types.geo_target_service import (
 )
 from google.ads.admanager_v1.types.goal import Goal
 from google.ads.admanager_v1.types.goal_enums import GoalTypeEnum, UnitTypeEnum
+from google.ads.admanager_v1.types.grp_provider_enum import GrpProviderEnum
+from google.ads.admanager_v1.types.grp_settings import GrpSettings
+from google.ads.admanager_v1.types.grp_target_gender_enum import GrpTargetGenderEnum
 from google.ads.admanager_v1.types.label_enums import LabelTypeEnum
 from google.ads.admanager_v1.types.label_messages import Label
 from google.ads.admanager_v1.types.label_service import (
@@ -446,13 +710,27 @@ from google.ads.admanager_v1.types.label_service import (
     ListLabelsResponse,
     UpdateLabelRequest,
 )
-from google.ads.admanager_v1.types.line_item_enums import LineItemTypeEnum
+from google.ads.admanager_v1.types.line_item_allowed_format_enum import (
+    LineItemAllowedFormatEnum,
+)
+from google.ads.admanager_v1.types.line_item_deal_info import LineItemDealInfo
+from google.ads.admanager_v1.types.line_item_delivery_forecast_source_enum import (
+    LineItemDeliveryForecastSourceEnum,
+)
+from google.ads.admanager_v1.types.line_item_discount import LineItemDiscount
+from google.ads.admanager_v1.types.line_item_enums import (
+    LineItemComputedStatusEnum,
+    LineItemCostTypeEnum,
+    LineItemReservationStatusEnum,
+    LineItemTypeEnum,
+)
 from google.ads.admanager_v1.types.line_item_messages import LineItem
 from google.ads.admanager_v1.types.line_item_service import (
     GetLineItemRequest,
     ListLineItemsRequest,
     ListLineItemsResponse,
 )
+from google.ads.admanager_v1.types.line_item_stats import LineItemStats
 from google.ads.admanager_v1.types.linked_device_enums import LinkedDeviceVisibilityEnum
 from google.ads.admanager_v1.types.linked_device_messages import LinkedDevice
 from google.ads.admanager_v1.types.linked_device_service import (
@@ -460,7 +738,48 @@ from google.ads.admanager_v1.types.linked_device_service import (
     ListLinkedDevicesRequest,
     ListLinkedDevicesResponse,
 )
+from google.ads.admanager_v1.types.live_stream_event_enums import (
+    AdBreakFillTypeEnum,
+    AdBreakMarkupTypeEnum,
+    DynamicAdInsertionTypeEnum,
+    HlsMasterPlaylistRefreshTypeEnum,
+    HlsSettingsPlaylistTypeEnum,
+    LiveStreamEventStatusEnum,
+    LiveStreamEventStreamingFormatEnum,
+    SlateStatusEnum,
+)
 from google.ads.admanager_v1.types.live_stream_event_messages import LiveStreamEvent
+from google.ads.admanager_v1.types.live_stream_messages import (
+    AuxiliaryAdSettings,
+    DashBridge,
+    HlsSettings,
+    LiveStream,
+    LiveStreamConditioning,
+    MasterPlaylistSettings,
+    PrefetchSettings,
+    PrerollSettings,
+)
+from google.ads.admanager_v1.types.live_stream_service import (
+    BatchActivateLiveStreamsRequest,
+    BatchActivateLiveStreamsResponse,
+    BatchArchiveLiveStreamsRequest,
+    BatchArchiveLiveStreamsResponse,
+    BatchCreateLiveStreamsRequest,
+    BatchCreateLiveStreamsResponse,
+    BatchPauseAdsLiveStreamsRequest,
+    BatchPauseAdsLiveStreamsResponse,
+    BatchPauseLiveStreamsRequest,
+    BatchPauseLiveStreamsResponse,
+    BatchRefreshMasterPlaylistsRequest,
+    BatchRefreshMasterPlaylistsResponse,
+    BatchUpdateLiveStreamsRequest,
+    BatchUpdateLiveStreamsResponse,
+    CreateLiveStreamRequest,
+    GetLiveStreamRequest,
+    ListLiveStreamsRequest,
+    ListLiveStreamsResponse,
+    UpdateLiveStreamRequest,
+)
 from google.ads.admanager_v1.types.mcm_earnings_messages import (
     EarningsProductBreakdown,
     McmEarnings,
@@ -470,8 +789,15 @@ from google.ads.admanager_v1.types.mcm_earnings_service import (
     FetchMcmEarningsResponse,
 )
 from google.ads.admanager_v1.types.mcm_enums import (
+    ChildPublisherAddressVerificationStatusEnum,
+    ChildPublisherIdentityVerificationStatusEnum,
+    ChildPublisherOnboardingTaskEnum,
+    DelegationAccountStatusEnum,
+    DelegationApprovalStatusEnum,
+    DelegationInvitationStatusEnum,
     DelegationTypeEnum,
     McmEarningsProductTypeEnum,
+    McmReadinessStatusEnum,
 )
 from google.ads.admanager_v1.types.mobile_carrier_messages import MobileCarrier
 from google.ads.admanager_v1.types.mobile_carrier_service import (
@@ -499,6 +825,10 @@ from google.ads.admanager_v1.types.network_service import (
     ListNetworksRequest,
     ListNetworksResponse,
 )
+from google.ads.admanager_v1.types.nielsen_ctv_pacing_enum import NielsenCtvPacingEnum
+from google.ads.admanager_v1.types.non_guaranteed_deal_priority import (
+    NonGuaranteedDealPriority,
+)
 from google.ads.admanager_v1.types.operating_system_messages import OperatingSystem
 from google.ads.admanager_v1.types.operating_system_service import (
     GetOperatingSystemRequest,
@@ -516,9 +846,59 @@ from google.ads.admanager_v1.types.operating_system_version_service import (
 from google.ads.admanager_v1.types.order_enums import OrderStatusEnum
 from google.ads.admanager_v1.types.order_messages import Order
 from google.ads.admanager_v1.types.order_service import (
+    BatchApproveAndOverbookOrdersRequest,
+    BatchApproveAndOverbookOrdersResponse,
+    BatchApproveOrdersRequest,
+    BatchApproveOrdersResponse,
+    BatchApproveOrdersWithoutReservationRequest,
+    BatchApproveOrdersWithoutReservationResponse,
+    BatchArchiveOrdersRequest,
+    BatchArchiveOrdersResponse,
+    BatchCreateOrdersRequest,
+    BatchCreateOrdersResponse,
+    BatchDeleteOrdersRequest,
+    BatchDeleteOrdersResponse,
+    BatchDisapproveOrdersRequest,
+    BatchDisapproveOrdersResponse,
+    BatchDisapproveOrdersWithoutReservationChangesRequest,
+    BatchDisapproveOrdersWithoutReservationChangesResponse,
+    BatchPauseOrdersRequest,
+    BatchPauseOrdersResponse,
+    BatchResumeAndOverbookOrdersRequest,
+    BatchResumeAndOverbookOrdersResponse,
+    BatchResumeOrdersRequest,
+    BatchResumeOrdersResponse,
+    BatchRetractOrdersRequest,
+    BatchRetractOrdersResponse,
+    BatchRetractOrdersWithoutReservationChangesRequest,
+    BatchRetractOrdersWithoutReservationChangesResponse,
+    BatchSubmitOrdersForApprovalAndOverbookRequest,
+    BatchSubmitOrdersForApprovalAndOverbookResponse,
+    BatchSubmitOrdersForApprovalRequest,
+    BatchSubmitOrdersForApprovalResponse,
+    BatchSubmitOrdersForApprovalWithoutReservationChangesRequest,
+    BatchSubmitOrdersForApprovalWithoutReservationChangesResponse,
+    BatchUnarchiveOrdersRequest,
+    BatchUnarchiveOrdersResponse,
+    BatchUpdateOrdersRequest,
+    BatchUpdateOrdersResponse,
+    CreateOrderRequest,
     GetOrderRequest,
     ListOrdersRequest,
     ListOrdersResponse,
+    UpdateOrderRequest,
+)
+from google.ads.admanager_v1.types.pacing_device_categorization_enum import (
+    PacingDeviceCategorizationEnum,
+)
+from google.ads.admanager_v1.types.partner_messages import Partner
+from google.ads.admanager_v1.types.partner_service import (
+    BatchUpdatePartnersRequest,
+    BatchUpdatePartnersResponse,
+    GetPartnerRequest,
+    ListPartnersRequest,
+    ListPartnersResponse,
+    UpdatePartnerRequest,
 )
 from google.ads.admanager_v1.types.placement_enums import PlacementStatusEnum
 from google.ads.admanager_v1.types.placement_messages import Placement
@@ -566,12 +946,10 @@ from google.ads.admanager_v1.types.programmatic_buyer_service import (
     ListProgrammaticBuyersRequest,
     ListProgrammaticBuyersResponse,
 )
+from google.ads.admanager_v1.types.reach_partner_enum import ReachPartnerEnum
 from google.ads.admanager_v1.types.report_definition import ReportDefinition
-from google.ads.admanager_v1.types.report_messages import (
-    Report,
-    ReportDataTable,
-    ScheduleOptions,
-)
+from google.ads.admanager_v1.types.report_delivery import ScheduleOptions
+from google.ads.admanager_v1.types.report_messages import Report, ReportDataTable
 from google.ads.admanager_v1.types.report_service import (
     CreateReportRequest,
     FetchReportResultRowsRequest,
@@ -585,6 +963,7 @@ from google.ads.admanager_v1.types.report_service import (
     UpdateReportRequest,
 )
 from google.ads.admanager_v1.types.report_value import ReportValue
+from google.ads.admanager_v1.types.report_visibility_enum import ReportVisibilityEnum
 from google.ads.admanager_v1.types.request_platform_enum import RequestPlatformEnum
 from google.ads.admanager_v1.types.rich_media_ads_company_enums import (
     RichMediaAdsCompanyGdprStatusEnum,
@@ -626,6 +1005,32 @@ from google.ads.admanager_v1.types.site_service import (
 )
 from google.ads.admanager_v1.types.size import Size
 from google.ads.admanager_v1.types.size_type_enum import SizeTypeEnum
+from google.ads.admanager_v1.types.skippable_ad_type_enum import SkippableAdTypeEnum
+from google.ads.admanager_v1.types.slate_messages import Slate
+from google.ads.admanager_v1.types.slate_service import (
+    BatchArchiveSlatesRequest,
+    BatchArchiveSlatesResponse,
+    BatchCreateSlatesRequest,
+    BatchCreateSlatesResponse,
+    BatchUnarchiveSlatesRequest,
+    BatchUnarchiveSlatesResponse,
+    BatchUpdateSlatesRequest,
+    BatchUpdateSlatesResponse,
+    CreateSlateRequest,
+    GetSlateRequest,
+    ListSlatesRequest,
+    ListSlatesResponse,
+    UpdateSlateRequest,
+)
+from google.ads.admanager_v1.types.suggested_ad_unit_messages import SuggestedAdUnit
+from google.ads.admanager_v1.types.suggested_ad_unit_service import (
+    BatchApproveSuggestedAdUnitsRequest,
+    BatchApproveSuggestedAdUnitsResponse,
+    GetSuggestedAdUnitRequest,
+    ListSuggestedAdUnitsRequest,
+    ListSuggestedAdUnitsResponse,
+)
+from google.ads.admanager_v1.types.target_platform_enum import TargetPlatformEnum
 from google.ads.admanager_v1.types.targeted_video_bumper_type_enum import (
     TargetedVideoBumperTypeEnum,
 )
@@ -650,12 +1055,31 @@ from google.ads.admanager_v1.types.targeting import (
     MobileApplicationTargeting,
     MobileCarrierTargeting,
     OperatingSystemTargeting,
+    RequestFormatTargeting,
     RequestPlatformTargeting,
     Targeting,
     TechnologyTargeting,
     UserDomainTargeting,
     VideoPosition,
     VideoPositionTargeting,
+)
+from google.ads.admanager_v1.types.targeting_preset_enums import (
+    TargetingPresetStatusEnum,
+)
+from google.ads.admanager_v1.types.targeting_preset_messages import TargetingPreset
+from google.ads.admanager_v1.types.targeting_preset_service import (
+    BatchCreateTargetingPresetsRequest,
+    BatchCreateTargetingPresetsResponse,
+    BatchDeactivateTargetingPresetsRequest,
+    BatchDeactivateTargetingPresetsResponse,
+    BatchUpdateTargetingPresetsRequest,
+    BatchUpdateTargetingPresetsResponse,
+    CreateTargetingPresetRequest,
+    DeactivateTargetingPresetRequest,
+    GetTargetingPresetRequest,
+    ListTargetingPresetsRequest,
+    ListTargetingPresetsResponse,
+    UpdateTargetingPresetRequest,
 )
 from google.ads.admanager_v1.types.taxonomy_category_messages import TaxonomyCategory
 from google.ads.admanager_v1.types.taxonomy_category_service import (
@@ -681,21 +1105,65 @@ from google.ads.admanager_v1.types.team_service import (
     ListTeamsResponse,
     UpdateTeamRequest,
 )
+from google.ads.admanager_v1.types.third_party_company_enums import (
+    ThirdPartyCompanyStatusEnum,
+    ThirdPartyCompanyTypeEnum,
+)
+from google.ads.admanager_v1.types.third_party_company_messages import ThirdPartyCompany
+from google.ads.admanager_v1.types.third_party_company_service import (
+    GetThirdPartyCompanyRequest,
+    ListThirdPartyCompaniesRequest,
+    ListThirdPartyCompaniesResponse,
+)
+from google.ads.admanager_v1.types.third_party_data_declaration import (
+    ThirdPartyDataDeclaration,
+)
+from google.ads.admanager_v1.types.third_party_data_declaration_type_enum import (
+    ThirdPartyDataDeclarationTypeEnum,
+)
+from google.ads.admanager_v1.types.third_party_measurement_settings import (
+    ThirdPartyMeasurementSettings,
+)
 from google.ads.admanager_v1.types.time_unit_enum import TimeUnitEnum
 from google.ads.admanager_v1.types.user_messages import User
 from google.ads.admanager_v1.types.user_service import GetUserRequest
 from google.ads.admanager_v1.types.video_position_enum import VideoPositionEnum
+from google.ads.admanager_v1.types.video_tracking_url import VideoTrackingUrl
+from google.ads.admanager_v1.types.video_transcode_status_enum import (
+    VideoTranscodeStatusEnum,
+)
+from google.ads.admanager_v1.types.viewability_partner_enum import (
+    ViewabilityPartnerEnum,
+)
+from google.ads.admanager_v1.types.viewability_provider_messages import (
+    ViewabilityProvider,
+)
+from google.ads.admanager_v1.types.viewability_provider_service import (
+    BatchCreateViewabilityProvidersRequest,
+    BatchCreateViewabilityProvidersResponse,
+    BatchUpdateViewabilityProvidersRequest,
+    BatchUpdateViewabilityProvidersResponse,
+    CreateViewabilityProviderRequest,
+    GetViewabilityProviderRequest,
+    ListViewabilityProvidersRequest,
+    ListViewabilityProvidersResponse,
+    UpdateViewabilityProviderRequest,
+)
 from google.ads.admanager_v1.types.web_property import WebProperty
 
 __all__ = (
     "AdBreakServiceClient",
     "AdReviewCenterAdServiceClient",
+    "AdRuleServiceClient",
+    "AdSpotServiceClient",
     "AdUnitServiceClient",
     "ApplicationServiceClient",
     "AudienceSegmentServiceClient",
     "BandwidthGroupServiceClient",
     "BrowserLanguageServiceClient",
     "BrowserServiceClient",
+    "CdnConfigServiceClient",
+    "ChildPublisherServiceClient",
     "CmsMetadataKeyServiceClient",
     "CmsMetadataValueServiceClient",
     "CompanyServiceClient",
@@ -703,10 +1171,14 @@ __all__ = (
     "ContentBundleServiceClient",
     "ContentLabelServiceClient",
     "ContentServiceClient",
+    "CreativeSetServiceClient",
     "CreativeTemplateServiceClient",
+    "CreativeWrapperServiceClient",
     "CustomFieldServiceClient",
     "CustomTargetingKeyServiceClient",
     "CustomTargetingValueServiceClient",
+    "DaiAuthenticationKeyServiceClient",
+    "DaiEncodingProfileServiceClient",
     "DeviceCapabilityServiceClient",
     "DeviceCategoryServiceClient",
     "DeviceManufacturerServiceClient",
@@ -715,6 +1187,7 @@ __all__ = (
     "LabelServiceClient",
     "LineItemServiceClient",
     "LinkedDeviceServiceClient",
+    "LiveStreamServiceClient",
     "McmEarningsServiceClient",
     "MobileCarrierServiceClient",
     "MobileDeviceServiceClient",
@@ -723,6 +1196,7 @@ __all__ = (
     "OperatingSystemServiceClient",
     "OperatingSystemVersionServiceClient",
     "OrderServiceClient",
+    "PartnerServiceClient",
     "PlacementServiceClient",
     "PrivateAuctionDealServiceClient",
     "PrivateAuctionServiceClient",
@@ -731,9 +1205,14 @@ __all__ = (
     "RichMediaAdsCompanyServiceClient",
     "RoleServiceClient",
     "SiteServiceClient",
+    "SlateServiceClient",
+    "SuggestedAdUnitServiceClient",
+    "TargetingPresetServiceClient",
     "TaxonomyCategoryServiceClient",
     "TeamServiceClient",
+    "ThirdPartyCompanyServiceClient",
     "UserServiceClient",
+    "ViewabilityProviderServiceClient",
     "AdBreak",
     "CreateAdBreakRequest",
     "DeleteAdBreakRequest",
@@ -751,7 +1230,40 @@ __all__ = (
     "BatchBlockAdReviewCenterAdsResponse",
     "SearchAdReviewCenterAdsRequest",
     "SearchAdReviewCenterAdsResponse",
+    "AdRuleFrequencyCapBehaviorEnum",
+    "AdRuleStatusEnum",
+    "AdRule",
+    "AdRuleSlot",
+    "BatchActivateAdRulesRequest",
+    "BatchActivateAdRulesResponse",
+    "BatchCreateAdRulesRequest",
+    "BatchCreateAdRulesResponse",
+    "BatchDeactivateAdRulesRequest",
+    "BatchDeactivateAdRulesResponse",
+    "BatchDeleteAdRulesRequest",
+    "BatchUpdateAdRulesRequest",
+    "BatchUpdateAdRulesResponse",
+    "CreateAdRuleRequest",
+    "GetAdRuleRequest",
+    "ListAdRulesRequest",
+    "ListAdRulesResponse",
+    "UpdateAdRuleRequest",
+    "AdRuleSlotBehaviorEnum",
+    "AdRuleSlotBumperEnum",
+    "AdRuleSlotMidrollFrequencyTypeEnum",
+    "AdSpot",
+    "BatchCreateAdSpotsRequest",
+    "BatchCreateAdSpotsResponse",
+    "BatchUpdateAdSpotsRequest",
+    "BatchUpdateAdSpotsResponse",
+    "CreateAdSpotRequest",
+    "GetAdSpotRequest",
+    "ListAdSpotsRequest",
+    "ListAdSpotsResponse",
+    "UpdateAdSpotRequest",
+    "AdSpotTargetingTypeEnum",
     "AdUnitStatusEnum",
+    "RefreshRateTypeEnum",
     "SmartSizeModeEnum",
     "TargetWindowEnum",
     "AdUnit",
@@ -803,6 +1315,7 @@ __all__ = (
     "GetBandwidthGroupRequest",
     "ListBandwidthGroupsRequest",
     "ListBandwidthGroupsResponse",
+    "BrandLiftPartnerEnum",
     "BrowserLanguage",
     "GetBrowserLanguageRequest",
     "ListBrowserLanguagesRequest",
@@ -811,7 +1324,39 @@ __all__ = (
     "GetBrowserRequest",
     "ListBrowsersRequest",
     "ListBrowsersResponse",
+    "AdMediaDeliveryConfig",
+    "CdnConfig",
+    "CdnSecurityPolicy",
+    "MediaLocation",
+    "SourceContentConfig",
+    "BatchActivateCdnConfigsRequest",
+    "BatchActivateCdnConfigsResponse",
+    "BatchArchiveCdnConfigsRequest",
+    "BatchArchiveCdnConfigsResponse",
+    "BatchCreateCdnConfigsRequest",
+    "BatchCreateCdnConfigsResponse",
+    "BatchUpdateCdnConfigsRequest",
+    "BatchUpdateCdnConfigsResponse",
+    "CreateCdnConfigRequest",
+    "GetCdnConfigRequest",
+    "ListCdnConfigsRequest",
+    "ListCdnConfigsResponse",
+    "UpdateCdnConfigRequest",
+    "CdnConfigStatusEnum",
+    "CdnConfigTypeEnum",
+    "CdnSecurityPolicyTypeEnum",
+    "CdnSecurityPolicyOriginForwardingEnum",
+    "ChildContentEligibilityEnum",
     "ChildPublisher",
+    "BatchCreateChildPublishersRequest",
+    "BatchCreateChildPublishersResponse",
+    "BatchUpdateChildPublishersRequest",
+    "BatchUpdateChildPublishersResponse",
+    "CreateChildPublisherRequest",
+    "GetChildPublisherRequest",
+    "ListChildPublishersRequest",
+    "ListChildPublishersResponse",
+    "UpdateChildPublisherRequest",
     "CmsMetadataKeyStatusEnum",
     "CmsMetadataKey",
     "BatchActivateCmsMetadataKeysRequest",
@@ -833,9 +1378,15 @@ __all__ = (
     "CompanyCreditStatusEnum",
     "CompanyTypeEnum",
     "Company",
+    "BatchCreateCompaniesRequest",
+    "BatchCreateCompaniesResponse",
+    "BatchUpdateCompaniesRequest",
+    "BatchUpdateCompaniesResponse",
+    "CreateCompanyRequest",
     "GetCompanyRequest",
     "ListCompaniesRequest",
     "ListCompaniesResponse",
+    "UpdateCompanyRequest",
     "ContactStatusEnum",
     "Contact",
     "BatchCreateContactsRequest",
@@ -847,18 +1398,40 @@ __all__ = (
     "ListContactsRequest",
     "ListContactsResponse",
     "UpdateContactRequest",
+    "ContentBundleStatusEnum",
     "ContentBundle",
+    "BatchActivateContentBundlesRequest",
+    "BatchActivateContentBundlesResponse",
+    "BatchDeactivateContentBundlesRequest",
+    "BatchDeactivateContentBundlesResponse",
     "GetContentBundleRequest",
     "ListContentBundlesRequest",
     "ListContentBundlesResponse",
+    "ContentStatusEnum",
+    "ContentStatusSourceEnum",
+    "DaiIngestErrorReasonEnum",
+    "DaiIngestStatusEnum",
     "ContentLabel",
     "GetContentLabelRequest",
     "ListContentLabelsRequest",
     "ListContentLabelsResponse",
+    "CmsContent",
     "Content",
+    "DaiIngestError",
     "GetContentRequest",
     "ListContentRequest",
     "ListContentResponse",
+    "ConversionEventEnum",
+    "Creative",
+    "CreativePlaceholder",
+    "CreativePlaceholderCompanion",
+    "CreativeSet",
+    "CreateCreativeSetRequest",
+    "GetCreativeSetRequest",
+    "ListCreativeSetsRequest",
+    "ListCreativeSetsResponse",
+    "UpdateCreativeSetRequest",
+    "CreativeTargeting",
     "CreativeTemplateStatusEnum",
     "CreativeTemplateTypeEnum",
     "CreativeTemplate",
@@ -867,6 +1440,23 @@ __all__ = (
     "ListCreativeTemplatesRequest",
     "ListCreativeTemplatesResponse",
     "CreativeTemplateVariableUrlTypeEnum",
+    "CreativeWrapperOrderingEnum",
+    "CreativeWrapperStatusEnum",
+    "CreativeWrapperTypeEnum",
+    "CreativeWrapper",
+    "BatchActivateCreativeWrappersRequest",
+    "BatchActivateCreativeWrappersResponse",
+    "BatchCreateCreativeWrappersRequest",
+    "BatchCreateCreativeWrappersResponse",
+    "BatchDeactivateCreativeWrappersRequest",
+    "BatchDeactivateCreativeWrappersResponse",
+    "BatchUpdateCreativeWrappersRequest",
+    "BatchUpdateCreativeWrappersResponse",
+    "CreateCreativeWrapperRequest",
+    "GetCreativeWrapperRequest",
+    "ListCreativeWrappersRequest",
+    "ListCreativeWrappersResponse",
+    "UpdateCreativeWrapperRequest",
     "CustomFieldDataTypeEnum",
     "CustomFieldEntityTypeEnum",
     "CustomFieldStatusEnum",
@@ -887,6 +1477,9 @@ __all__ = (
     "ListCustomFieldsResponse",
     "UpdateCustomFieldRequest",
     "CustomFieldValue",
+    "CustomPacingCurve",
+    "CustomPacingGoal",
+    "CustomPacingGoalUnitEnum",
     "CustomTargetingKeyReportableTypeEnum",
     "CustomTargetingKeyStatusEnum",
     "CustomTargetingKeyTypeEnum",
@@ -907,10 +1500,65 @@ __all__ = (
     "CustomTargetingValueMatchTypeEnum",
     "CustomTargetingValueStatusEnum",
     "CustomTargetingValue",
+    "ActivateCustomTargetingValueRequest",
+    "BatchActivateCustomTargetingValuesRequest",
+    "BatchActivateCustomTargetingValuesResponse",
+    "BatchCreateCustomTargetingValuesRequest",
+    "BatchCreateCustomTargetingValuesResponse",
+    "BatchDeactivateCustomTargetingValuesRequest",
+    "BatchDeactivateCustomTargetingValuesResponse",
+    "BatchUpdateCustomTargetingValuesRequest",
+    "BatchUpdateCustomTargetingValuesResponse",
+    "CreateCustomTargetingValueRequest",
+    "DeactivateCustomTargetingValueRequest",
     "GetCustomTargetingValueRequest",
     "ListCustomTargetingValuesRequest",
     "ListCustomTargetingValuesResponse",
+    "UpdateCustomTargetingValueRequest",
+    "DaiAuthenticationKeyStatusEnum",
+    "DaiAuthenticationKeyTypeEnum",
+    "DaiAuthenticationKey",
+    "BatchActivateDaiAuthenticationKeysRequest",
+    "BatchActivateDaiAuthenticationKeysResponse",
+    "BatchCreateDaiAuthenticationKeysRequest",
+    "BatchCreateDaiAuthenticationKeysResponse",
+    "BatchDeactivateDaiAuthenticationKeysRequest",
+    "BatchDeactivateDaiAuthenticationKeysResponse",
+    "BatchUpdateDaiAuthenticationKeysRequest",
+    "BatchUpdateDaiAuthenticationKeysResponse",
+    "CreateDaiAuthenticationKeyRequest",
+    "GetDaiAuthenticationKeyRequest",
+    "ListDaiAuthenticationKeysRequest",
+    "ListDaiAuthenticationKeysResponse",
+    "UpdateDaiAuthenticationKeyRequest",
+    "ContainerTypeEnum",
+    "DaiEncodingProfileStatusEnum",
+    "DaiEncodingProfileVariantTypeEnum",
+    "AudioSettings",
+    "DaiEncodingProfile",
+    "VideoSettings",
+    "ActivateDaiEncodingProfileRequest",
+    "ArchiveDaiEncodingProfileRequest",
+    "BatchActivateDaiEncodingProfilesRequest",
+    "BatchActivateDaiEncodingProfilesResponse",
+    "BatchArchiveDaiEncodingProfilesRequest",
+    "BatchArchiveDaiEncodingProfilesResponse",
+    "BatchCreateDaiEncodingProfilesRequest",
+    "BatchCreateDaiEncodingProfilesResponse",
+    "BatchUpdateDaiEncodingProfilesRequest",
+    "BatchUpdateDaiEncodingProfilesResponse",
+    "CreateDaiEncodingProfileRequest",
+    "GetDaiEncodingProfileRequest",
+    "ListDaiEncodingProfilesRequest",
+    "ListDaiEncodingProfilesResponse",
+    "UpdateDaiEncodingProfileRequest",
     "DealBuyerPermissionTypeEnum",
+    "DealPriorityTierEnum",
+    "CompanionDeliveryOptionEnum",
+    "CreativeRotationTypeEnum",
+    "LineItemDeliveryRateTypeEnum",
+    "RoadblockingTypeEnum",
+    "DeliveryIndicator",
     "DeviceCapability",
     "GetDeviceCapabilityRequest",
     "ListDeviceCapabilitiesRequest",
@@ -923,6 +1571,7 @@ __all__ = (
     "GetDeviceManufacturerRequest",
     "ListDeviceManufacturersRequest",
     "ListDeviceManufacturersResponse",
+    "DiscountTypeEnum",
     "AdBreakStateEnum",
     "EntitySignalsMapping",
     "BatchCreateEntitySignalsMappingsRequest",
@@ -936,6 +1585,7 @@ __all__ = (
     "UpdateEntitySignalsMappingRequest",
     "EnvironmentTypeEnum",
     "ExchangeSyndicationProductEnum",
+    "ExclusionScopeEnum",
     "FrequencyCap",
     "GeoTarget",
     "GetGeoTargetRequest",
@@ -944,6 +1594,9 @@ __all__ = (
     "Goal",
     "GoalTypeEnum",
     "UnitTypeEnum",
+    "GrpProviderEnum",
+    "GrpSettings",
+    "GrpTargetGenderEnum",
     "LabelTypeEnum",
     "Label",
     "BatchActivateLabelsRequest",
@@ -959,23 +1612,73 @@ __all__ = (
     "ListLabelsRequest",
     "ListLabelsResponse",
     "UpdateLabelRequest",
+    "LineItemAllowedFormatEnum",
+    "LineItemDealInfo",
+    "LineItemDeliveryForecastSourceEnum",
+    "LineItemDiscount",
+    "LineItemComputedStatusEnum",
+    "LineItemCostTypeEnum",
+    "LineItemReservationStatusEnum",
     "LineItemTypeEnum",
     "LineItem",
     "GetLineItemRequest",
     "ListLineItemsRequest",
     "ListLineItemsResponse",
+    "LineItemStats",
     "LinkedDeviceVisibilityEnum",
     "LinkedDevice",
     "GetLinkedDeviceRequest",
     "ListLinkedDevicesRequest",
     "ListLinkedDevicesResponse",
+    "AdBreakFillTypeEnum",
+    "AdBreakMarkupTypeEnum",
+    "DynamicAdInsertionTypeEnum",
+    "HlsMasterPlaylistRefreshTypeEnum",
+    "HlsSettingsPlaylistTypeEnum",
+    "LiveStreamEventStatusEnum",
+    "LiveStreamEventStreamingFormatEnum",
+    "SlateStatusEnum",
     "LiveStreamEvent",
+    "AuxiliaryAdSettings",
+    "DashBridge",
+    "HlsSettings",
+    "LiveStream",
+    "LiveStreamConditioning",
+    "MasterPlaylistSettings",
+    "PrefetchSettings",
+    "PrerollSettings",
+    "BatchActivateLiveStreamsRequest",
+    "BatchActivateLiveStreamsResponse",
+    "BatchArchiveLiveStreamsRequest",
+    "BatchArchiveLiveStreamsResponse",
+    "BatchCreateLiveStreamsRequest",
+    "BatchCreateLiveStreamsResponse",
+    "BatchPauseAdsLiveStreamsRequest",
+    "BatchPauseAdsLiveStreamsResponse",
+    "BatchPauseLiveStreamsRequest",
+    "BatchPauseLiveStreamsResponse",
+    "BatchRefreshMasterPlaylistsRequest",
+    "BatchRefreshMasterPlaylistsResponse",
+    "BatchUpdateLiveStreamsRequest",
+    "BatchUpdateLiveStreamsResponse",
+    "CreateLiveStreamRequest",
+    "GetLiveStreamRequest",
+    "ListLiveStreamsRequest",
+    "ListLiveStreamsResponse",
+    "UpdateLiveStreamRequest",
     "EarningsProductBreakdown",
     "McmEarnings",
     "FetchMcmEarningsRequest",
     "FetchMcmEarningsResponse",
+    "ChildPublisherAddressVerificationStatusEnum",
+    "ChildPublisherIdentityVerificationStatusEnum",
+    "ChildPublisherOnboardingTaskEnum",
+    "DelegationAccountStatusEnum",
+    "DelegationApprovalStatusEnum",
+    "DelegationInvitationStatusEnum",
     "DelegationTypeEnum",
     "McmEarningsProductTypeEnum",
+    "McmReadinessStatusEnum",
     "MobileCarrier",
     "GetMobileCarrierRequest",
     "ListMobileCarriersRequest",
@@ -992,6 +1695,8 @@ __all__ = (
     "GetNetworkRequest",
     "ListNetworksRequest",
     "ListNetworksResponse",
+    "NielsenCtvPacingEnum",
+    "NonGuaranteedDealPriority",
     "OperatingSystem",
     "GetOperatingSystemRequest",
     "ListOperatingSystemsRequest",
@@ -1002,9 +1707,55 @@ __all__ = (
     "ListOperatingSystemVersionsResponse",
     "OrderStatusEnum",
     "Order",
+    "BatchApproveAndOverbookOrdersRequest",
+    "BatchApproveAndOverbookOrdersResponse",
+    "BatchApproveOrdersRequest",
+    "BatchApproveOrdersResponse",
+    "BatchApproveOrdersWithoutReservationRequest",
+    "BatchApproveOrdersWithoutReservationResponse",
+    "BatchArchiveOrdersRequest",
+    "BatchArchiveOrdersResponse",
+    "BatchCreateOrdersRequest",
+    "BatchCreateOrdersResponse",
+    "BatchDeleteOrdersRequest",
+    "BatchDeleteOrdersResponse",
+    "BatchDisapproveOrdersRequest",
+    "BatchDisapproveOrdersResponse",
+    "BatchDisapproveOrdersWithoutReservationChangesRequest",
+    "BatchDisapproveOrdersWithoutReservationChangesResponse",
+    "BatchPauseOrdersRequest",
+    "BatchPauseOrdersResponse",
+    "BatchResumeAndOverbookOrdersRequest",
+    "BatchResumeAndOverbookOrdersResponse",
+    "BatchResumeOrdersRequest",
+    "BatchResumeOrdersResponse",
+    "BatchRetractOrdersRequest",
+    "BatchRetractOrdersResponse",
+    "BatchRetractOrdersWithoutReservationChangesRequest",
+    "BatchRetractOrdersWithoutReservationChangesResponse",
+    "BatchSubmitOrdersForApprovalAndOverbookRequest",
+    "BatchSubmitOrdersForApprovalAndOverbookResponse",
+    "BatchSubmitOrdersForApprovalRequest",
+    "BatchSubmitOrdersForApprovalResponse",
+    "BatchSubmitOrdersForApprovalWithoutReservationChangesRequest",
+    "BatchSubmitOrdersForApprovalWithoutReservationChangesResponse",
+    "BatchUnarchiveOrdersRequest",
+    "BatchUnarchiveOrdersResponse",
+    "BatchUpdateOrdersRequest",
+    "BatchUpdateOrdersResponse",
+    "CreateOrderRequest",
     "GetOrderRequest",
     "ListOrdersRequest",
     "ListOrdersResponse",
+    "UpdateOrderRequest",
+    "PacingDeviceCategorizationEnum",
+    "Partner",
+    "BatchUpdatePartnersRequest",
+    "BatchUpdatePartnersResponse",
+    "GetPartnerRequest",
+    "ListPartnersRequest",
+    "ListPartnersResponse",
+    "UpdatePartnerRequest",
     "PlacementStatusEnum",
     "Placement",
     "BatchActivatePlacementsRequest",
@@ -1039,10 +1790,11 @@ __all__ = (
     "GetProgrammaticBuyerRequest",
     "ListProgrammaticBuyersRequest",
     "ListProgrammaticBuyersResponse",
+    "ReachPartnerEnum",
     "ReportDefinition",
+    "ScheduleOptions",
     "Report",
     "ReportDataTable",
-    "ScheduleOptions",
     "CreateReportRequest",
     "FetchReportResultRowsRequest",
     "FetchReportResultRowsResponse",
@@ -1054,6 +1806,7 @@ __all__ = (
     "RunReportResponse",
     "UpdateReportRequest",
     "ReportValue",
+    "ReportVisibilityEnum",
     "RequestPlatformEnum",
     "RichMediaAdsCompanyGdprStatusEnum",
     "RichMediaAdsCompany",
@@ -1084,6 +1837,28 @@ __all__ = (
     "UpdateSiteRequest",
     "Size",
     "SizeTypeEnum",
+    "SkippableAdTypeEnum",
+    "Slate",
+    "BatchArchiveSlatesRequest",
+    "BatchArchiveSlatesResponse",
+    "BatchCreateSlatesRequest",
+    "BatchCreateSlatesResponse",
+    "BatchUnarchiveSlatesRequest",
+    "BatchUnarchiveSlatesResponse",
+    "BatchUpdateSlatesRequest",
+    "BatchUpdateSlatesResponse",
+    "CreateSlateRequest",
+    "GetSlateRequest",
+    "ListSlatesRequest",
+    "ListSlatesResponse",
+    "UpdateSlateRequest",
+    "SuggestedAdUnit",
+    "BatchApproveSuggestedAdUnitsRequest",
+    "BatchApproveSuggestedAdUnitsResponse",
+    "GetSuggestedAdUnitRequest",
+    "ListSuggestedAdUnitsRequest",
+    "ListSuggestedAdUnitsResponse",
+    "TargetPlatformEnum",
     "TargetedVideoBumperTypeEnum",
     "AdUnitTargeting",
     "AudienceSegmentTargeting",
@@ -1105,12 +1880,27 @@ __all__ = (
     "MobileApplicationTargeting",
     "MobileCarrierTargeting",
     "OperatingSystemTargeting",
+    "RequestFormatTargeting",
     "RequestPlatformTargeting",
     "Targeting",
     "TechnologyTargeting",
     "UserDomainTargeting",
     "VideoPosition",
     "VideoPositionTargeting",
+    "TargetingPresetStatusEnum",
+    "TargetingPreset",
+    "BatchCreateTargetingPresetsRequest",
+    "BatchCreateTargetingPresetsResponse",
+    "BatchDeactivateTargetingPresetsRequest",
+    "BatchDeactivateTargetingPresetsResponse",
+    "BatchUpdateTargetingPresetsRequest",
+    "BatchUpdateTargetingPresetsResponse",
+    "CreateTargetingPresetRequest",
+    "DeactivateTargetingPresetRequest",
+    "GetTargetingPresetRequest",
+    "ListTargetingPresetsRequest",
+    "ListTargetingPresetsResponse",
+    "UpdateTargetingPresetRequest",
     "TaxonomyCategory",
     "GetTaxonomyCategoryRequest",
     "ListTaxonomyCategoriesRequest",
@@ -1132,9 +1922,31 @@ __all__ = (
     "ListTeamsRequest",
     "ListTeamsResponse",
     "UpdateTeamRequest",
+    "ThirdPartyCompanyStatusEnum",
+    "ThirdPartyCompanyTypeEnum",
+    "ThirdPartyCompany",
+    "GetThirdPartyCompanyRequest",
+    "ListThirdPartyCompaniesRequest",
+    "ListThirdPartyCompaniesResponse",
+    "ThirdPartyDataDeclaration",
+    "ThirdPartyDataDeclarationTypeEnum",
+    "ThirdPartyMeasurementSettings",
     "TimeUnitEnum",
     "User",
     "GetUserRequest",
     "VideoPositionEnum",
+    "VideoTrackingUrl",
+    "VideoTranscodeStatusEnum",
+    "ViewabilityPartnerEnum",
+    "ViewabilityProvider",
+    "BatchCreateViewabilityProvidersRequest",
+    "BatchCreateViewabilityProvidersResponse",
+    "BatchUpdateViewabilityProvidersRequest",
+    "BatchUpdateViewabilityProvidersResponse",
+    "CreateViewabilityProviderRequest",
+    "GetViewabilityProviderRequest",
+    "ListViewabilityProvidersRequest",
+    "ListViewabilityProvidersResponse",
+    "UpdateViewabilityProviderRequest",
     "WebProperty",
 )

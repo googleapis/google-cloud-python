@@ -859,6 +859,9 @@ def test_list_occurrences_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, grafeas.Occurrence) for i in results)
@@ -947,6 +950,8 @@ async def test_list_occurrences_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3488,6 +3493,9 @@ def test_list_notes_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, grafeas.Note) for i in results)
@@ -3576,6 +3584,8 @@ async def test_list_notes_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5411,6 +5421,9 @@ def test_list_note_occurrences_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, grafeas.Occurrence) for i in results)
@@ -5503,6 +5516,8 @@ async def test_list_note_occurrences_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5982,6 +5997,9 @@ def test_list_occurrences_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1"}
 
         pager = client.list_occurrences(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -7343,6 +7361,9 @@ def test_list_notes_rest_pager(transport: str = "rest"):
 
         pager = client.list_notes(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, grafeas.Note) for i in results)
@@ -8359,6 +8380,9 @@ def test_list_note_occurrences_rest_pager(transport: str = "rest"):
         sample_request = {"name": "projects/sample1/notes/sample2"}
 
         pager = client.list_note_occurrences(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -9567,6 +9591,14 @@ def test_create_occurrence_rest_call_success(request_type):
                 "confidentiality_impact": 1,
                 "integrity_impact": 1,
                 "availability_impact": 1,
+                "attack_requirements": 1,
+                "vulnerable_system_confidentiality_impact": 1,
+                "vulnerable_system_integrity_impact": 1,
+                "vulnerable_system_availability_impact": 1,
+                "subsequent_system_confidentiality_impact": 1,
+                "subsequent_system_integrity_impact": 1,
+                "subsequent_system_availability_impact": 1,
+                "exploit_maturity": 1,
             },
             "package_issue": [
                 {
@@ -9638,6 +9670,7 @@ def test_create_occurrence_rest_call_success(request_type):
                 },
                 "epss": {"percentile": 0.1067, "score": 0.54},
             },
+            "cvss_v4": {},
         },
         "build": {
             "provenance": {
@@ -10305,6 +10338,14 @@ def test_update_occurrence_rest_call_success(request_type):
                 "confidentiality_impact": 1,
                 "integrity_impact": 1,
                 "availability_impact": 1,
+                "attack_requirements": 1,
+                "vulnerable_system_confidentiality_impact": 1,
+                "vulnerable_system_integrity_impact": 1,
+                "vulnerable_system_availability_impact": 1,
+                "subsequent_system_confidentiality_impact": 1,
+                "subsequent_system_integrity_impact": 1,
+                "subsequent_system_availability_impact": 1,
+                "exploit_maturity": 1,
             },
             "package_issue": [
                 {
@@ -10376,6 +10417,7 @@ def test_update_occurrence_rest_call_success(request_type):
                 },
                 "epss": {"percentile": 0.1067, "score": 0.54},
             },
+            "cvss_v4": {},
         },
         "build": {
             "provenance": {
@@ -11450,8 +11492,17 @@ def test_create_note_rest_call_success(request_type):
                 "confidentiality_impact": 1,
                 "integrity_impact": 1,
                 "availability_impact": 1,
+                "attack_requirements": 1,
+                "vulnerable_system_confidentiality_impact": 1,
+                "vulnerable_system_integrity_impact": 1,
+                "vulnerable_system_availability_impact": 1,
+                "subsequent_system_confidentiality_impact": 1,
+                "subsequent_system_integrity_impact": 1,
+                "subsequent_system_availability_impact": 1,
+                "exploit_maturity": 1,
             },
             "advisory_publish_time": {},
+            "cvss_v4": {},
         },
         "build": {"builder_version": "builder_version_value"},
         "image": {
@@ -11969,8 +12020,17 @@ def test_update_note_rest_call_success(request_type):
                 "confidentiality_impact": 1,
                 "integrity_impact": 1,
                 "availability_impact": 1,
+                "attack_requirements": 1,
+                "vulnerable_system_confidentiality_impact": 1,
+                "vulnerable_system_integrity_impact": 1,
+                "vulnerable_system_availability_impact": 1,
+                "subsequent_system_confidentiality_impact": 1,
+                "subsequent_system_integrity_impact": 1,
+                "subsequent_system_availability_impact": 1,
+                "exploit_maturity": 1,
             },
             "advisory_publish_time": {},
+            "cvss_v4": {},
         },
         "build": {"builder_version": "builder_version_value"},
         "image": {

@@ -5450,7 +5450,7 @@ class Series(NDFrame):  # type: ignore[misc]
             <Axes: title={'center': 'My plot'}, ylabel='Frequency'>
 
         Returns:
-            bigframes.operations.plotting.PlotAccessor:
+            bigframes.pandas.api.typing.PlotAccessor:
                 An accessor making plots.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
@@ -5629,6 +5629,17 @@ class Series(NDFrame):  # type: ignore[misc]
             1       dOg
             2       N/A
             3    rAbbIt
+            dtype: string
+
+        With experimental Python Transpiler enabled, you can use some lambda functions without
+        deploying them as remote functions:
+
+            >>> bpd.options.experiments.enable_python_transpiler = True
+            >>> s.map(lambda val: val + "fish")
+            0       catfish
+            1       dogfish
+            2          <NA>
+            3    rabbitfish
             dtype: string
 
         Args:

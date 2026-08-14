@@ -51,6 +51,84 @@ def test_concat_dataframe_w_struct_cols(nested_structs_df, nested_structs_pandas
     pd.testing.assert_frame_equal(bf_result, pd_result)
 
 
+def test_nested_structs_dtypes_and_edge_cases(nested_structs_df):
+    """Explicitly verify dtypes and edge case values for all supported types."""
+    import datetime as dt
+    import decimal
+
+    import numpy as np
+    import pandas as pd
+
+    import bigframes.dtypes as bfd
+
+    # 1. Verify BigFrames dtypes
+    expected_bf_dtypes = {
+        "person": nested_structs_df["person"].dtype,
+        "bool_col": bfd.BOOL_DTYPE,
+        "int64_col": bfd.INT_DTYPE,
+        "float64_col": bfd.FLOAT_DTYPE,
+        "string_col": bfd.STRING_DTYPE,
+        "json_col": bfd.JSON_DTYPE,
+        "date_col": bfd.DATE_DTYPE,
+        "time_col": bfd.TIME_DTYPE,
+        "datetime_col": bfd.DATETIME_DTYPE,
+        "timestamp_col": bfd.TIMESTAMP_DTYPE,
+        "bytes_col": bfd.BYTES_DTYPE,
+        "numeric_col": bfd.NUMERIC_DTYPE,
+        "bignumeric_col": bfd.BIGNUMERIC_DTYPE,
+        "geography_col": bfd.GEO_DTYPE,
+        "duration_col": bfd.TIMEDELTA_DTYPE,
+    }
+
+    for col_name, expected_dtype in expected_bf_dtypes.items():
+        assert nested_structs_df[col_name].dtype == expected_dtype, (
+            f"Dtype mismatch for {col_name}"
+        )
+
+    # 2. Convert to pandas for value assertions
+    pd_df = nested_structs_df.to_pandas()
+
+    # Verify we have 6 rows
+    assert len(pd_df) == 6
+
+    # Row 1: Normal typical values
+    assert pd_df.loc[1, "bool_col"] == True
+    assert pd_df.loc[1, "int64_col"] == 123456789
+    assert pd_df.loc[1, "float64_col"] == 1.25
+    assert pd_df.loc[1, "string_col"] == "Hello World"
+    assert pd_df.loc[1, "json_col"] == '{"a":1,"b":[1,2]}'
+    assert pd_df.loc[1, "date_col"] == dt.date(2026, 6, 24)
+
+    # Row 2: Min bounds / negative infinity
+    assert pd_df.loc[2, "int64_col"] == -9223372036854775808
+    assert pd_df.loc[2, "float64_col"] == float("-inf")
+    assert pd_df.loc[2, "numeric_col"] == decimal.Decimal(
+        "-99999999999999999999999999999.999999999"
+    )
+
+    # Row 3: Max bounds / infinity
+    assert pd_df.loc[3, "int64_col"] == 9223372036854775807
+    assert pd_df.loc[3, "float64_col"] == float("inf")
+
+    # Row 4: SQL NULLs (omitted keys)
+    assert pd.isna(pd_df.loc[4, "bool_col"])
+    assert pd.isna(pd_df.loc[4, "int64_col"])
+    assert pd.isna(pd_df.loc[4, "float64_col"])
+    assert pd.isna(pd_df.loc[4, "json_col"])
+    assert pd.isna(pd_df.loc[4, "geography_col"])
+
+    # Row 5: Special edge cases (NaN, empty, multiline)
+    assert np.isnan(pd_df.loc[5, "float64_col"])
+    assert pd_df.loc[5, "float64_col"] is not pd.NA
+    assert not pd_df["float64_col"].isna().loc[5]
+    assert pd_df.loc[5, "string_col"] == 'Line 1\nLine 2\n"Quotes"'
+    assert pd_df.loc[5, "bytes_col"] == b"\x00"
+
+    # Row 6: JSON null literal
+    assert pd_df.loc[6, "json_col"] == "null"
+    assert not pd_df["json_col"].isna().loc[6]
+
+
 def test_concat_series(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_result = bpd.concat(

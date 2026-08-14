@@ -23,6 +23,83 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.discoveryengine_v1.services.assistant_service",
+    "google.cloud.discoveryengine_v1.services.cmek_config_service",
+    "google.cloud.discoveryengine_v1.services.completion_service",
+    "google.cloud.discoveryengine_v1.services.control_service",
+    "google.cloud.discoveryengine_v1.services.conversational_search_service",
+    "google.cloud.discoveryengine_v1.services.data_store_service",
+    "google.cloud.discoveryengine_v1.services.document_service",
+    "google.cloud.discoveryengine_v1.services.engine_service",
+    "google.cloud.discoveryengine_v1.services.grounded_generation_service",
+    "google.cloud.discoveryengine_v1.services.identity_mapping_store_service",
+    "google.cloud.discoveryengine_v1.services.project_service",
+    "google.cloud.discoveryengine_v1.services.rank_service",
+    "google.cloud.discoveryengine_v1.services.recommendation_service",
+    "google.cloud.discoveryengine_v1.services.schema_service",
+    "google.cloud.discoveryengine_v1.services.search_service",
+    "google.cloud.discoveryengine_v1.services.search_tuning_service",
+    "google.cloud.discoveryengine_v1.services.serving_config_service",
+    "google.cloud.discoveryengine_v1.services.session_service",
+    "google.cloud.discoveryengine_v1.services.site_search_engine_service",
+    "google.cloud.discoveryengine_v1.services.user_event_service",
+    "google.cloud.discoveryengine_v1.services.user_license_service",
+    "google.cloud.discoveryengine_v1.types.answer",
+    "google.cloud.discoveryengine_v1.types.assist_answer",
+    "google.cloud.discoveryengine_v1.types.assistant",
+    "google.cloud.discoveryengine_v1.types.assistant_service",
+    "google.cloud.discoveryengine_v1.types.chunk",
+    "google.cloud.discoveryengine_v1.types.cmek_config_service",
+    "google.cloud.discoveryengine_v1.types.common",
+    "google.cloud.discoveryengine_v1.types.completion",
+    "google.cloud.discoveryengine_v1.types.completion_service",
+    "google.cloud.discoveryengine_v1.types.control",
+    "google.cloud.discoveryengine_v1.types.control_service",
+    "google.cloud.discoveryengine_v1.types.conversation",
+    "google.cloud.discoveryengine_v1.types.conversational_search_service",
+    "google.cloud.discoveryengine_v1.types.custom_tuning_model",
+    "google.cloud.discoveryengine_v1.types.data_store",
+    "google.cloud.discoveryengine_v1.types.data_store_service",
+    "google.cloud.discoveryengine_v1.types.document",
+    "google.cloud.discoveryengine_v1.types.document_processing_config",
+    "google.cloud.discoveryengine_v1.types.document_service",
+    "google.cloud.discoveryengine_v1.types.engine",
+    "google.cloud.discoveryengine_v1.types.engine_service",
+    "google.cloud.discoveryengine_v1.types.grounded_generation_service",
+    "google.cloud.discoveryengine_v1.types.grounding",
+    "google.cloud.discoveryengine_v1.types.identity_mapping_store",
+    "google.cloud.discoveryengine_v1.types.identity_mapping_store_service",
+    "google.cloud.discoveryengine_v1.types.import_config",
+    "google.cloud.discoveryengine_v1.types.project",
+    "google.cloud.discoveryengine_v1.types.project_service",
+    "google.cloud.discoveryengine_v1.types.purge_config",
+    "google.cloud.discoveryengine_v1.types.rank_service",
+    "google.cloud.discoveryengine_v1.types.recommendation_service",
+    "google.cloud.discoveryengine_v1.types.safety",
+    "google.cloud.discoveryengine_v1.types.schema",
+    "google.cloud.discoveryengine_v1.types.schema_service",
+    "google.cloud.discoveryengine_v1.types.search_service",
+    "google.cloud.discoveryengine_v1.types.search_tuning_service",
+    "google.cloud.discoveryengine_v1.types.serving_config",
+    "google.cloud.discoveryengine_v1.types.serving_config_service",
+    "google.cloud.discoveryengine_v1.types.session",
+    "google.cloud.discoveryengine_v1.types.session_service",
+    "google.cloud.discoveryengine_v1.types.site_search_engine",
+    "google.cloud.discoveryengine_v1.types.site_search_engine_service",
+    "google.cloud.discoveryengine_v1.types.user_event",
+    "google.cloud.discoveryengine_v1.types.user_event_service",
+    "google.cloud.discoveryengine_v1.types.user_license",
+    "google.cloud.discoveryengine_v1.types.user_license_service",
+}
+
+
 from .services.assistant_service import (
     AssistantServiceAsyncClient,
     AssistantServiceClient,
@@ -375,7 +452,7 @@ else:  # pragma: NO COVER
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -404,9 +481,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(

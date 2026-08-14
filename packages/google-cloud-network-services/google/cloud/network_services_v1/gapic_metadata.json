@@ -329,6 +329,11 @@
         "grpc": {
           "libraryClient": "NetworkServicesClient",
           "rpcs": {
+            "CreateAgentGateway": {
+              "methods": [
+                "create_agent_gateway"
+              ]
+            },
             "CreateEndpointPolicy": {
               "methods": [
                 "create_endpoint_policy"
@@ -384,6 +389,11 @@
                 "create_wasm_plugin_version"
               ]
             },
+            "DeleteAgentGateway": {
+              "methods": [
+                "delete_agent_gateway"
+              ]
+            },
             "DeleteEndpointPolicy": {
               "methods": [
                 "delete_endpoint_policy"
@@ -437,6 +447,11 @@
             "DeleteWasmPluginVersion": {
               "methods": [
                 "delete_wasm_plugin_version"
+              ]
+            },
+            "GetAgentGateway": {
+              "methods": [
+                "get_agent_gateway"
               ]
             },
             "GetEndpointPolicy": {
@@ -504,6 +519,11 @@
                 "get_wasm_plugin_version"
               ]
             },
+            "ListAgentGateways": {
+              "methods": [
+                "list_agent_gateways"
+              ]
+            },
             "ListEndpointPolicies": {
               "methods": [
                 "list_endpoint_policies"
@@ -567,6 +587,11 @@
             "ListWasmPlugins": {
               "methods": [
                 "list_wasm_plugins"
+              ]
+            },
+            "UpdateAgentGateway": {
+              "methods": [
+                "update_agent_gateway"
               ]
             },
             "UpdateEndpointPolicy": {
@@ -624,6 +649,11 @@
         "grpc-async": {
           "libraryClient": "NetworkServicesAsyncClient",
           "rpcs": {
+            "CreateAgentGateway": {
+              "methods": [
+                "create_agent_gateway"
+              ]
+            },
             "CreateEndpointPolicy": {
               "methods": [
                 "create_endpoint_policy"
@@ -679,6 +709,11 @@
                 "create_wasm_plugin_version"
               ]
             },
+            "DeleteAgentGateway": {
+              "methods": [
+                "delete_agent_gateway"
+              ]
+            },
             "DeleteEndpointPolicy": {
               "methods": [
                 "delete_endpoint_policy"
@@ -732,6 +767,11 @@
             "DeleteWasmPluginVersion": {
               "methods": [
                 "delete_wasm_plugin_version"
+              ]
+            },
+            "GetAgentGateway": {
+              "methods": [
+                "get_agent_gateway"
               ]
             },
             "GetEndpointPolicy": {
@@ -799,6 +839,11 @@
                 "get_wasm_plugin_version"
               ]
             },
+            "ListAgentGateways": {
+              "methods": [
+                "list_agent_gateways"
+              ]
+            },
             "ListEndpointPolicies": {
               "methods": [
                 "list_endpoint_policies"
@@ -862,6 +907,11 @@
             "ListWasmPlugins": {
               "methods": [
                 "list_wasm_plugins"
+              ]
+            },
+            "UpdateAgentGateway": {
+              "methods": [
+                "update_agent_gateway"
               ]
             },
             "UpdateEndpointPolicy": {
@@ -919,6 +969,11 @@
         "rest": {
           "libraryClient": "NetworkServicesClient",
           "rpcs": {
+            "CreateAgentGateway": {
+              "methods": [
+                "create_agent_gateway"
+              ]
+            },
             "CreateEndpointPolicy": {
               "methods": [
                 "create_endpoint_policy"
@@ -974,6 +1029,11 @@
                 "create_wasm_plugin_version"
               ]
             },
+            "DeleteAgentGateway": {
+              "methods": [
+                "delete_agent_gateway"
+              ]
+            },
             "DeleteEndpointPolicy": {
               "methods": [
                 "delete_endpoint_policy"
@@ -1027,6 +1087,11 @@
             "DeleteWasmPluginVersion": {
               "methods": [
                 "delete_wasm_plugin_version"
+              ]
+            },
+            "GetAgentGateway": {
+              "methods": [
+                "get_agent_gateway"
               ]
             },
             "GetEndpointPolicy": {
@@ -1094,6 +1159,11 @@
                 "get_wasm_plugin_version"
               ]
             },
+            "ListAgentGateways": {
+              "methods": [
+                "list_agent_gateways"
+              ]
+            },
             "ListEndpointPolicies": {
               "methods": [
                 "list_endpoint_policies"
@@ -1157,6 +1227,11 @@
             "ListWasmPlugins": {
               "methods": [
                 "list_wasm_plugins"
+              ]
+            },
+            "UpdateAgentGateway": {
+              "methods": [
+                "update_agent_gateway"
               ]
             },
             "UpdateEndpointPolicy": {

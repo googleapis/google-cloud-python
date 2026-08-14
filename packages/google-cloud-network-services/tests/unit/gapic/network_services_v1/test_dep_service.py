@@ -944,7 +944,14 @@ def test_dep_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -991,7 +998,14 @@ def test_dep_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1705,6 +1719,9 @@ def test_list_lb_traffic_extensions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dep.LbTrafficExtension) for i in results)
@@ -1797,6 +1814,8 @@ async def test_list_lb_traffic_extensions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3692,6 +3711,9 @@ def test_list_lb_route_extensions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dep.LbRouteExtension) for i in results)
@@ -3784,6 +3806,8 @@ async def test_list_lb_route_extensions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5677,6 +5701,9 @@ def test_list_lb_edge_extensions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dep.LbEdgeExtension) for i in results)
@@ -5769,6 +5796,8 @@ async def test_list_lb_edge_extensions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7658,6 +7687,9 @@ def test_list_authz_extensions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dep.AuthzExtension) for i in results)
@@ -7750,6 +7782,8 @@ async def test_list_authz_extensions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7835,6 +7869,7 @@ def test_get_authz_extension(request_type, transport: str = "grpc"):
             service="service_value",
             fail_open=True,
             forward_headers=["forward_headers_value"],
+            forward_attributes=["forward_attributes_value"],
             wire_format=dep.WireFormat.EXT_PROC_GRPC,
         )
         response = client.get_authz_extension(request)
@@ -7854,6 +7889,7 @@ def test_get_authz_extension(request_type, transport: str = "grpc"):
     assert response.service == "service_value"
     assert response.fail_open is True
     assert response.forward_headers == ["forward_headers_value"]
+    assert response.forward_attributes == ["forward_attributes_value"]
     assert response.wire_format == dep.WireFormat.EXT_PROC_GRPC
 
 
@@ -8001,6 +8037,7 @@ async def test_get_authz_extension_async(request_type, transport: str = "grpc_as
                 service="service_value",
                 fail_open=True,
                 forward_headers=["forward_headers_value"],
+                forward_attributes=["forward_attributes_value"],
                 wire_format=dep.WireFormat.EXT_PROC_GRPC,
             )
         )
@@ -8021,6 +8058,7 @@ async def test_get_authz_extension_async(request_type, transport: str = "grpc_as
     assert response.service == "service_value"
     assert response.fail_open is True
     assert response.forward_headers == ["forward_headers_value"]
+    assert response.forward_attributes == ["forward_attributes_value"]
     assert response.wire_format == dep.WireFormat.EXT_PROC_GRPC
 
 
@@ -9502,6 +9540,9 @@ def test_list_lb_traffic_extensions_rest_pager(transport: str = "rest"):
 
         pager = client.list_lb_traffic_extensions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dep.LbTrafficExtension) for i in results)
@@ -10559,6 +10600,9 @@ def test_list_lb_route_extensions_rest_pager(transport: str = "rest"):
 
         pager = client.list_lb_route_extensions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dep.LbRouteExtension) for i in results)
@@ -11615,6 +11659,9 @@ def test_list_lb_edge_extensions_rest_pager(transport: str = "rest"):
 
         pager = client.list_lb_edge_extensions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dep.LbEdgeExtension) for i in results)
@@ -12670,6 +12717,9 @@ def test_list_authz_extensions_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_authz_extensions(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -14501,6 +14551,7 @@ async def test_get_authz_extension_empty_call_grpc_asyncio():
                 service="service_value",
                 fail_open=True,
                 forward_headers=["forward_headers_value"],
+                forward_attributes=["forward_attributes_value"],
                 wire_format=dep.WireFormat.EXT_PROC_GRPC,
             )
         )
@@ -14940,7 +14991,14 @@ def test_create_lb_traffic_extension_rest_call_success(request_type):
                             "forward_headers_value1",
                             "forward_headers_value2",
                         ],
+                        "forward_attributes": [
+                            "forward_attributes_value1",
+                            "forward_attributes_value2",
+                        ],
                         "metadata": {"fields": {}},
+                        "request_body_send_mode": 1,
+                        "response_body_send_mode": 1,
+                        "observability_mode": True,
                     }
                 ],
             }
@@ -15174,7 +15232,14 @@ def test_update_lb_traffic_extension_rest_call_success(request_type):
                             "forward_headers_value1",
                             "forward_headers_value2",
                         ],
+                        "forward_attributes": [
+                            "forward_attributes_value1",
+                            "forward_attributes_value2",
+                        ],
                         "metadata": {"fields": {}},
+                        "request_body_send_mode": 1,
+                        "response_body_send_mode": 1,
+                        "observability_mode": True,
                     }
                 ],
             }
@@ -15804,7 +15869,14 @@ def test_create_lb_route_extension_rest_call_success(request_type):
                             "forward_headers_value1",
                             "forward_headers_value2",
                         ],
+                        "forward_attributes": [
+                            "forward_attributes_value1",
+                            "forward_attributes_value2",
+                        ],
                         "metadata": {"fields": {}},
+                        "request_body_send_mode": 1,
+                        "response_body_send_mode": 1,
+                        "observability_mode": True,
                     }
                 ],
             }
@@ -16036,7 +16108,14 @@ def test_update_lb_route_extension_rest_call_success(request_type):
                             "forward_headers_value1",
                             "forward_headers_value2",
                         ],
+                        "forward_attributes": [
+                            "forward_attributes_value1",
+                            "forward_attributes_value2",
+                        ],
                         "metadata": {"fields": {}},
+                        "request_body_send_mode": 1,
+                        "response_body_send_mode": 1,
+                        "observability_mode": True,
                     }
                 ],
             }
@@ -16664,7 +16743,14 @@ def test_create_lb_edge_extension_rest_call_success(request_type):
                             "forward_headers_value1",
                             "forward_headers_value2",
                         ],
+                        "forward_attributes": [
+                            "forward_attributes_value1",
+                            "forward_attributes_value2",
+                        ],
                         "metadata": {"fields": {}},
+                        "request_body_send_mode": 1,
+                        "response_body_send_mode": 1,
+                        "observability_mode": True,
                     }
                 ],
             }
@@ -16895,7 +16981,14 @@ def test_update_lb_edge_extension_rest_call_success(request_type):
                             "forward_headers_value1",
                             "forward_headers_value2",
                         ],
+                        "forward_attributes": [
+                            "forward_attributes_value1",
+                            "forward_attributes_value2",
+                        ],
                         "metadata": {"fields": {}},
+                        "request_body_send_mode": 1,
+                        "response_body_send_mode": 1,
+                        "observability_mode": True,
                     }
                 ],
             }
@@ -17375,6 +17468,7 @@ def test_get_authz_extension_rest_call_success(request_type):
             service="service_value",
             fail_open=True,
             forward_headers=["forward_headers_value"],
+            forward_attributes=["forward_attributes_value"],
             wire_format=dep.WireFormat.EXT_PROC_GRPC,
         )
 
@@ -17399,6 +17493,7 @@ def test_get_authz_extension_rest_call_success(request_type):
     assert response.service == "service_value"
     assert response.fail_open is True
     assert response.forward_headers == ["forward_headers_value"]
+    assert response.forward_attributes == ["forward_attributes_value"]
     assert response.wire_format == dep.WireFormat.EXT_PROC_GRPC
 
 
@@ -17518,6 +17613,10 @@ def test_create_authz_extension_rest_call_success(request_type):
         "fail_open": True,
         "metadata": {"fields": {}},
         "forward_headers": ["forward_headers_value1", "forward_headers_value2"],
+        "forward_attributes": [
+            "forward_attributes_value1",
+            "forward_attributes_value2",
+        ],
         "wire_format": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -17734,6 +17833,10 @@ def test_update_authz_extension_rest_call_success(request_type):
         "fail_open": True,
         "metadata": {"fields": {}},
         "forward_headers": ["forward_headers_value1", "forward_headers_value2"],
+        "forward_attributes": [
+            "forward_attributes_value1",
+            "forward_attributes_value2",
+        ],
         "wire_format": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

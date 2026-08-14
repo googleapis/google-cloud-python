@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring-dashboards/#history
 
+## [2.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-dashboards-v2.21.0...google-cloud-monitoring-dashboards-v2.22.0) (2026-06-22)
+
+
+### Features
+
+* regenerate google-cloud-[k-n] packages ([#17074](https://github.com/googleapis/google-cloud-python/issues/17074)) ([ec54f78](https://github.com/googleapis/google-cloud-python/commit/ec54f78e37bb3b48e0794d544784b99fa13d6f85))
+
 ## [2.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-dashboards-v2.20.1...google-cloud-monitoring-dashboards-v2.21.0) (2026-03-26)
 
 

@@ -981,7 +981,14 @@ def test_products_service_client_get_mtls_endpoint_and_cert_source(client_class)
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1028,7 +1035,14 @@ def test_products_service_client_get_mtls_endpoint_and_cert_source(client_class)
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1377,6 +1391,7 @@ def test_get_product(request_type, transport: str = "grpc"):
             feed_label="feed_label_value",
             data_source="data_source_value",
             version_number=1518,
+            archived=True,
         )
         response = client.get_product(request)
 
@@ -1396,6 +1411,7 @@ def test_get_product(request_type, transport: str = "grpc"):
     assert response.feed_label == "feed_label_value"
     assert response.data_source == "data_source_value"
     assert response.version_number == 1518
+    assert response.archived is True
 
 
 def test_get_product_non_empty_request_with_auto_populated_field():
@@ -1535,6 +1551,7 @@ async def test_get_product_async(request_type, transport: str = "grpc_asyncio"):
                 feed_label="feed_label_value",
                 data_source="data_source_value",
                 version_number=1518,
+                archived=True,
             )
         )
         response = await client.get_product(request)
@@ -1555,6 +1572,7 @@ async def test_get_product_async(request_type, transport: str = "grpc_asyncio"):
     assert response.feed_label == "feed_label_value"
     assert response.data_source == "data_source_value"
     assert response.version_number == 1518
+    assert response.archived is True
 
 
 def test_get_product_field_headers():
@@ -2071,6 +2089,9 @@ def test_list_products_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, products.Product) for i in results)
@@ -2159,6 +2180,8 @@ async def test_list_products_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2629,6 +2652,9 @@ def test_list_products_rest_pager(transport: str = "rest"):
 
         pager = client.list_products(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, products.Product) for i in results)
@@ -2820,6 +2846,7 @@ async def test_get_product_empty_call_grpc_asyncio():
                 feed_label="feed_label_value",
                 data_source="data_source_value",
                 version_number=1518,
+                archived=True,
             )
         )
         await client.get_product(request=None)
@@ -2916,6 +2943,7 @@ def test_get_product_rest_call_success(request_type):
             feed_label="feed_label_value",
             data_source="data_source_value",
             version_number=1518,
+            archived=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -2940,6 +2968,7 @@ def test_get_product_rest_call_success(request_type):
     assert response.feed_label == "feed_label_value"
     assert response.data_source == "data_source_value"
     assert response.version_number == 1518
+    assert response.archived is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

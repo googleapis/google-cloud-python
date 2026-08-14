@@ -448,6 +448,16 @@ class SearchRequest(proto.Message):
             ``relevance_filter_spec`` instead.
 
             This feature is not supported for healthcare search.
+        relevance_filter_spec (google.cloud.discoveryengine_v1.types.SearchRequest.RelevanceFilterSpec):
+            Optional. The granular relevance filtering specification.
+
+            If not specified, the global ``relevance_threshold`` will be
+            used for all sub-searches. If specified, this overrides the
+            global ``relevance_threshold`` to use thresholds on a per
+            sub-search basis.
+
+            This feature is currently supported only for custom and site
+            search.
         relevance_score_spec (google.cloud.discoveryengine_v1.types.SearchRequest.RelevanceScoreSpec):
             Optional. The specification for returning the
             relevance score.
@@ -1759,6 +1769,65 @@ class SearchRequest(proto.Message):
             number=1,
         )
 
+    class RelevanceFilterSpec(proto.Message):
+        r"""Relevance filtering specification.
+
+        Attributes:
+            keyword_search_threshold (google.cloud.discoveryengine_v1.types.SearchRequest.RelevanceFilterSpec.RelevanceThresholdSpec):
+                Optional. Relevance filtering threshold
+                specification for keyword search.
+            semantic_search_threshold (google.cloud.discoveryengine_v1.types.SearchRequest.RelevanceFilterSpec.RelevanceThresholdSpec):
+                Optional. Relevance filtering threshold
+                specification for semantic search.
+        """
+
+        class RelevanceThresholdSpec(proto.Message):
+            r"""Specification for relevance filtering on a specific
+            sub-search.
+
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                relevance_threshold (google.cloud.discoveryengine_v1.types.SearchRequest.RelevanceThreshold):
+                    Pre-defined relevance threshold for the
+                    sub-search.
+
+                    This field is a member of `oneof`_ ``relevance_threshold_spec``.
+                semantic_relevance_threshold (float):
+                    Custom relevance threshold for the sub-search. The value
+                    must be in [0.0, 1.0].
+
+                    This field is a member of `oneof`_ ``relevance_threshold_spec``.
+            """
+
+            relevance_threshold: "SearchRequest.RelevanceThreshold" = proto.Field(
+                proto.ENUM,
+                number=1,
+                oneof="relevance_threshold_spec",
+                enum="SearchRequest.RelevanceThreshold",
+            )
+            semantic_relevance_threshold: float = proto.Field(
+                proto.FLOAT,
+                number=2,
+                oneof="relevance_threshold_spec",
+            )
+
+        keyword_search_threshold: "SearchRequest.RelevanceFilterSpec.RelevanceThresholdSpec" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="SearchRequest.RelevanceFilterSpec.RelevanceThresholdSpec",
+        )
+        semantic_search_threshold: "SearchRequest.RelevanceFilterSpec.RelevanceThresholdSpec" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="SearchRequest.RelevanceFilterSpec.RelevanceThresholdSpec",
+        )
+
     serving_config: str = proto.Field(
         proto.STRING,
         number=1,
@@ -1910,6 +1979,11 @@ class SearchRequest(proto.Message):
         proto.ENUM,
         number=44,
         enum=RelevanceThreshold,
+    )
+    relevance_filter_spec: RelevanceFilterSpec = proto.Field(
+        proto.MESSAGE,
+        number=86,
+        message=RelevanceFilterSpec,
     )
     relevance_score_spec: RelevanceScoreSpec = proto.Field(
         proto.MESSAGE,

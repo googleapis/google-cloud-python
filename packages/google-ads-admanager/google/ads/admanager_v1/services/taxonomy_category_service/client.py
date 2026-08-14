@@ -762,7 +762,7 @@ class TaxonomyCategoryServiceClient(metaclass=TaxonomyCategoryServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> taxonomy_category_messages.TaxonomyCategory:
-        r"""API to retrieve a ``TaxonomyCategory`` object.
+        r"""Retrieves a ``TaxonomyCategory`` object.
 
         .. code-block:: python
 
@@ -872,7 +872,7 @@ class TaxonomyCategoryServiceClient(metaclass=TaxonomyCategoryServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListTaxonomyCategoriesPager:
-        r"""API to retrieve a list of ``TaxonomyCategory`` objects.
+        r"""Lists ``TaxonomyCategory`` objects.
 
         .. code-block:: python
 
@@ -1126,8 +1126,6 @@ class TaxonomyCategoryServiceClient(metaclass=TaxonomyCategoryServiceClientMeta)
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("TaxonomyCategoryServiceClient",)

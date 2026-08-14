@@ -33,8 +33,11 @@ __protobuf__ = proto.module(
         "ListReferenceListsResponse",
         "CreateReferenceListRequest",
         "UpdateReferenceListRequest",
+        "VerifyReferenceListRequest",
+        "VerifyReferenceListResponse",
         "ReferenceList",
         "ReferenceListEntry",
+        "ReferenceListError",
     },
 )
 
@@ -282,6 +285,60 @@ class UpdateReferenceListRequest(proto.Message):
     )
 
 
+class VerifyReferenceListRequest(proto.Message):
+    r"""VerifyReferenceList request message.
+
+    Attributes:
+        instance (str):
+            Required. The name of the parent resource, which is the
+            SecOps instance associated with the request. Format:
+            ``projects/{project}/locations/{location}/instances/{instance}``
+        syntax_type (google.cloud.chronicle_v1.types.ReferenceListSyntaxType):
+            Required. Type (format) of list lines.
+        entries (MutableSequence[google.cloud.chronicle_v1.types.ReferenceListEntry]):
+            Required. The entries of the reference list.
+            Each line may be either an item in the list or a
+            comment.
+    """
+
+    instance: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    syntax_type: "ReferenceListSyntaxType" = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="ReferenceListSyntaxType",
+    )
+    entries: MutableSequence["ReferenceListEntry"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="ReferenceListEntry",
+    )
+
+
+class VerifyReferenceListResponse(proto.Message):
+    r"""VerifyListResponse response message.
+
+    Attributes:
+        success (bool):
+            Validity of list - true if no errors found.
+        errors (MutableSequence[google.cloud.chronicle_v1.types.ReferenceListError]):
+            Line-level errors causing the list to be
+            invalid.
+    """
+
+    success: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    errors: MutableSequence["ReferenceListError"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="ReferenceListError",
+    )
+
+
 class ReferenceList(proto.Message):
     r"""A reference list.
     Reference lists are user-defined lists of values which users can
@@ -379,6 +436,27 @@ class ReferenceListEntry(proto.Message):
     value: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class ReferenceListError(proto.Message):
+    r"""The error generated when verifying the reference list.
+
+    Attributes:
+        line_number (int):
+            1-indexed line number where the error occurs.
+            General list errors are indexed at -1.
+        error_message (str):
+            Message explaining why the line is invalid.
+    """
+
+    line_number: int = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    error_message: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

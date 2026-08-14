@@ -39,11 +39,27 @@ def set_trace_provider():
 
 @pytest.fixture(scope="function")
 def span_exporter():
+    """Provides an InMemorySpanExporter for testing OpenTelemetry traces.
+
+    Registers a SimpleSpanProcessor with the global TracerProvider at start,
+    and removes it during teardown to prevent trace/span processor accumulation
+    and test pollution across tests.
+    """
     exporter = InMemorySpanExporter()
     processor = SimpleSpanProcessor(exporter)
     provider = trace.get_tracer_provider()
     provider.add_span_processor(processor)
-    yield exporter
+    try:
+        yield exporter
+    finally:
+        if hasattr(provider, "_active_span_processor") and hasattr(
+            provider._active_span_processor, "_span_processors"
+        ):
+            processors = provider._active_span_processor._span_processors
+            if isinstance(processors, tuple):
+                provider._active_span_processor._span_processors = tuple(
+                    p for p in processors if p is not processor
+                )
 
 
 @pytest.fixture()

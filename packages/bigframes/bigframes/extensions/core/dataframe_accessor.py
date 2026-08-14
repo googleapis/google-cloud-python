@@ -214,6 +214,91 @@ class AIAccessor(AbstractBigQueryDataFrameAccessor[T, S]):
         )
         return self._to_series(result)
 
+    def classify(
+        self,
+        input: PROMPT_TYPE,
+        categories: tuple[str, ...] | list[str],
+        *,
+        examples: list[tuple[str, str]]
+        | list[tuple[str, list[str] | tuple[str, ...]]]
+        | None = None,
+        connection_id: str | None = None,
+        endpoint: str | None = None,
+        output_mode: Literal["single", "multi"] | None = None,
+        optimization_mode: Literal["minimize_cost", "maximize_quality"] | None = None,
+        max_error_ratio: float | None = None,
+    ) -> S:
+        """
+        Classifies a given input into one of the specified categories. It will always return one of the provided categories best fit the prompt input.
+
+        This is an accessor for :func:`bigframes.bigquery.ai.classify`. See that
+        function's documentation for detailed parameter descriptions and examples.
+        """
+        import bigframes.bigquery.ai
+
+        result = bigframes.bigquery.ai.classify(
+            input,
+            categories,
+            examples=examples,
+            connection_id=connection_id,
+            endpoint=endpoint,
+            output_mode=output_mode,
+            optimization_mode=optimization_mode,
+            max_error_ratio=max_error_ratio,
+        )
+        return self._to_series(result)
+
+    def if_(
+        self,
+        prompt: PROMPT_TYPE,
+        *,
+        connection_id: str | None = None,
+        endpoint: str | None = None,
+        optimization_mode: Literal["minimize_cost", "maximize_quality"] | None = None,
+        max_error_ratio: float | None = None,
+    ) -> S:
+        """
+        Evaluates the prompt to True or False. Compared to ``ai.generate_bool()``, this function
+        provides optimization such that not all rows are evaluated with the LLM.
+
+        This is an accessor for :func:`bigframes.bigquery.ai.if_`. See that
+        function's documentation for detailed parameter descriptions and examples.
+        """
+        import bigframes.bigquery.ai
+
+        result = bigframes.bigquery.ai.if_(
+            prompt,
+            connection_id=connection_id,
+            endpoint=endpoint,
+            optimization_mode=optimization_mode,
+            max_error_ratio=max_error_ratio,
+        )
+        return self._to_series(result)
+
+    def score(
+        self,
+        prompt: PROMPT_TYPE,
+        *,
+        connection_id: str | None = None,
+        endpoint: str | None = None,
+        max_error_ratio: float | None = None,
+    ) -> S:
+        """
+        Computes a score based on rubrics described in natural language. It will return a double value.
+
+        This is an accessor for :func:`bigframes.bigquery.ai.score`. See that
+        function's documentation for detailed parameter descriptions and examples.
+        """
+        import bigframes.bigquery.ai
+
+        result = bigframes.bigquery.ai.score(
+            prompt,
+            connection_id=connection_id,
+            endpoint=endpoint,
+            max_error_ratio=max_error_ratio,
+        )
+        return self._to_series(result)
+
 
 class BigQueryDataFrameAccessor(AbstractBigQueryDataFrameAccessor[T, S]):
     """

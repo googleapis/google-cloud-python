@@ -14,12 +14,14 @@
 
 from __future__ import absolute_import
 
-from functools import wraps
+import contextlib
 import os
 import pathlib
 import re
 import shutil
 import time
+from functools import wraps
+from typing import Generator
 
 import nox
 
@@ -36,9 +38,20 @@ BLACK_PATHS = (
 )
 
 DEFAULT_PYTHON_VERSION = "3.14"
-ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
 UNIT_TEST_PYTHON_VERSIONS = ALL_PYTHON
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 
 SYSTEM_TEST_PYTHON_VERSIONS = UNIT_TEST_PYTHON_VERSIONS
 
@@ -78,6 +91,25 @@ nox.options.sessions = [
     "core_deps_from_source",
     "format",
 ]
+
+
+@contextlib.contextmanager
+def log_package_context(session: nox.Session) -> Generator[None, None, None]:
+    """Logs a highly visible package context banner right before a session exits.
+
+    Ensures metadata is printed adjacent to Nox's final status log,
+    even if the session fails or raises an exception.
+    """
+    # Dynamically extract current folder name (e.g., 'google-cloud-bigquery')
+    package_name = CURRENT_DIRECTORY.name
+
+    try:
+        # Hands control back to the session code block
+        yield
+    finally:
+        # This executes AFTER test output finishes, immediately above Nox's summary line
+        banner_text = f"Finished session for {package_name.lower()}"
+        session.log(banner_text)
 
 
 def default(session, install_extras=True):
@@ -148,6 +180,10 @@ def default(session, install_extras=True):
 @_calculate_duration
 def unit(session, test_type):
     """Run the unit test suite."""
+    if session.python == "3.15":
+        session.skip(
+            "Skipping 3.15 until wheels are available for pyarrow. Also pyproj wheels are needed for dependency geopandas."
+        )
 
     install_extras = True
     if test_type == "unit_noextras":
@@ -193,7 +229,14 @@ def mypy(session):
         "types-setuptools",
     )
     session.run("python", "-m", "pip", "freeze")
-    session.run("mypy", "-p", "google", "--show-traceback")
+    with log_package_context(session):
+        session.run(
+            "mypy",
+            f"--config-file={MYPY_CONFIG_FILE}",
+            "-p",
+            "google",
+            "--show-traceback",
+        )
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)

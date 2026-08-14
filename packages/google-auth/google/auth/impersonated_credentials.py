@@ -362,8 +362,12 @@ class Credentials(
 
         Returns:
             Optional[str]: The URL for the Regional Access Boundary lookup endpoint, or None
-                 if the service account email is missing.
+                 if the service account email is missing. Returns None if the subject is populated.
         """
+        if self._subject:
+            # RAB does not apply to Workspace User Accounts via Domain-wide Delegation.
+            return None
+
         if not self.service_account_email:
             _LOGGER.error(
                 "Service account email is required to build the Regional Access Boundary lookup URL for impersonated credentials."
@@ -388,6 +392,7 @@ class Credentials(
         headers = {"Content-Type": "application/json"}
 
         authed_session = AuthorizedSession(self._source_credentials)
+        authed_session.configure_mtls_channel()
 
         try:
             retries = _exponential_backoff.ExponentialBackoff()
@@ -627,6 +632,7 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
         authed_session = AuthorizedSession(
             self._target_credentials._source_credentials, auth_request=request
         )
+        authed_session.configure_mtls_channel()
 
         try:
             response = authed_session.post(

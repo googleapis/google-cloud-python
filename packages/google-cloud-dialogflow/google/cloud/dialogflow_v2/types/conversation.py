@@ -1587,6 +1587,9 @@ class SearchKnowledgeDebugInfo(proto.Message):
             search knowledge.
         service_latency (google.cloud.dialogflow_v2.types.ServiceLatency):
             The latency of the service.
+        ces_debug_info (google.protobuf.struct_pb2.Struct):
+            Optional. Debug info from the Customer
+            Engagement Suite (CES) execution.
     """
 
     class SearchKnowledgeBehavior(proto.Message):
@@ -1638,6 +1641,11 @@ class SearchKnowledgeDebugInfo(proto.Message):
         proto.MESSAGE,
         number=4,
         message=participant.ServiceLatency,
+    )
+    ces_debug_info: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=struct_pb2.Struct,
     )
 
 
@@ -1700,12 +1708,18 @@ class SearchKnowledgeAnswer(proto.Message):
                 The answer is from generative model.
             INTENT (3):
                 The answer is from intent matching.
+            PLAYBOOK (4):
+                The answer is from Playbook.
+            EVENT (5):
+                The answer is from event.
         """
 
         ANSWER_TYPE_UNSPECIFIED = 0
         FAQ = 1
         GENERATIVE = 2
         INTENT = 3
+        PLAYBOOK = 4
+        EVENT = 5
 
     class AnswerSource(proto.Message):
         r"""The sources of the answers.

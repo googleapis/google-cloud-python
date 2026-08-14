@@ -32,9 +32,7 @@ from google.cloud.recaptchaenterprise_v1.types import recaptchaenterprise
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class RecaptchaEnterpriseServiceTransport(abc.ABC):
@@ -205,6 +203,16 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
             ),
             self.get_metrics: gapic_v1.method.wrap_method(
                 self.get_metrics,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_policy: gapic_v1.method.wrap_method(
+                self.get_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_policy: gapic_v1.method.wrap_method(
+                self.update_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -398,6 +406,24 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
     ) -> Callable[
         [recaptchaenterprise.GetMetricsRequest],
         Union[recaptchaenterprise.Metrics, Awaitable[recaptchaenterprise.Metrics]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_policy(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.GetPolicyRequest],
+        Union[recaptchaenterprise.Policy, Awaitable[recaptchaenterprise.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_policy(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.UpdatePolicyRequest],
+        Union[recaptchaenterprise.Policy, Awaitable[recaptchaenterprise.Policy]],
     ]:
         raise NotImplementedError()
 

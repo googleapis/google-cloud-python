@@ -20,3 +20,14 @@ repositories.bzl
 *.png
 *.gif
 *.ico
+*.pdf
+
+# Ignore caches and temporary directories
+.ruff_cache
+.pytest_cache
+.mypy_cache
+.coverage
+.htmlcov
+
+# Ignore data files
+*.csv

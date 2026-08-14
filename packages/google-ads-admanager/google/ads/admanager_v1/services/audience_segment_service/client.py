@@ -759,7 +759,7 @@ class AudienceSegmentServiceClient(metaclass=AudienceSegmentServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> audience_segment_messages.AudienceSegment:
-        r"""API to retrieve an ``AudienceSegment`` object.
+        r"""Retrieves an ``AudienceSegment`` object.
 
         .. code-block:: python
 
@@ -867,7 +867,7 @@ class AudienceSegmentServiceClient(metaclass=AudienceSegmentServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListAudienceSegmentsPager:
-        r"""API to retrieve a list of ``AudienceSegment`` objects.
+        r"""Lists ``AudienceSegment`` objects.
 
         .. code-block:: python
 
@@ -1122,8 +1122,6 @@ class AudienceSegmentServiceClient(metaclass=AudienceSegmentServiceClientMeta):
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("AudienceSegmentServiceClient",)

@@ -50,7 +50,7 @@ def python_and_auth_lib_version():
 
 
 # x-goog-api-client header value for access token request via metadata server.
-# Example: "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/mds"
+# Example: "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/mds"
 def token_request_access_token_mds():
     return "{} {} {}".format(
         python_and_auth_lib_version(), REQUEST_TYPE_ACCESS_TOKEN, CRED_TYPE_SA_MDS
@@ -58,7 +58,7 @@ def token_request_access_token_mds():
 
 
 # x-goog-api-client header value for ID token request via metadata server.
-# Example: "gl-python/3.7 auth/1.1 auth-request-type/it cred-type/mds"
+# Example: "gl-python/<python-version> auth/<library-version> auth-request-type/it cred-type/mds"
 def token_request_id_token_mds():
     return "{} {} {}".format(
         python_and_auth_lib_version(), REQUEST_TYPE_ID_TOKEN, CRED_TYPE_SA_MDS
@@ -66,7 +66,7 @@ def token_request_id_token_mds():
 
 
 # x-goog-api-client header value for impersonated credentials access token request.
-# Example: "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/imp"
+# Example: "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/imp"
 def token_request_access_token_impersonate():
     return "{} {} {}".format(
         python_and_auth_lib_version(),
@@ -76,7 +76,7 @@ def token_request_access_token_impersonate():
 
 
 # x-goog-api-client header value for impersonated credentials ID token request.
-# Example: "gl-python/3.7 auth/1.1 auth-request-type/it cred-type/imp"
+# Example: "gl-python/<python-version> auth/<library-version> auth-request-type/it cred-type/imp"
 def token_request_id_token_impersonate():
     return "{} {} {}".format(
         python_and_auth_lib_version(), REQUEST_TYPE_ID_TOKEN, CRED_TYPE_SA_IMPERSONATE
@@ -85,7 +85,7 @@ def token_request_id_token_impersonate():
 
 # x-goog-api-client header value for service account credentials access token
 # request (assertion flow).
-# Example: "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/sa"
+# Example: "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/sa"
 def token_request_access_token_sa_assertion():
     return "{} {} {}".format(
         python_and_auth_lib_version(), REQUEST_TYPE_ACCESS_TOKEN, CRED_TYPE_SA_ASSERTION
@@ -94,7 +94,7 @@ def token_request_access_token_sa_assertion():
 
 # x-goog-api-client header value for service account credentials ID token
 # request (assertion flow).
-# Example: "gl-python/3.7 auth/1.1 auth-request-type/it cred-type/sa"
+# Example: "gl-python/<python-version> auth/<library-version> auth-request-type/it cred-type/sa"
 def token_request_id_token_sa_assertion():
     return "{} {} {}".format(
         python_and_auth_lib_version(), REQUEST_TYPE_ID_TOKEN, CRED_TYPE_SA_ASSERTION
@@ -102,7 +102,7 @@ def token_request_id_token_sa_assertion():
 
 
 # x-goog-api-client header value for user credentials token request.
-# Example: "gl-python/3.7 auth/1.1 cred-type/u"
+# Example: "gl-python/<python-version> auth/<library-version> cred-type/u"
 def token_request_user():
     return "{} {}".format(python_and_auth_lib_version(), CRED_TYPE_USER)
 
@@ -111,25 +111,25 @@ def token_request_user():
 
 
 # x-goog-api-client header value for metadata server ping.
-# Example: "gl-python/3.7 auth/1.1 auth-request-type/mds"
+# Example: "gl-python/<python-version> auth/<library-version> auth-request-type/mds"
 def mds_ping():
     return "{} {}".format(python_and_auth_lib_version(), REQUEST_TYPE_MDS_PING)
 
 
 # x-goog-api-client header value for reauth start endpoint calls.
-# Example: "gl-python/3.7 auth/1.1 auth-request-type/re-start"
+# Example: "gl-python/<python-version> auth/<library-version> auth-request-type/re-start"
 def reauth_start():
     return "{} {}".format(python_and_auth_lib_version(), REQUEST_TYPE_REAUTH_START)
 
 
 # x-goog-api-client header value for reauth continue endpoint calls.
-# Example: "gl-python/3.7 auth/1.1 cred-type/re-cont"
+# Example: "gl-python/<python-version> auth/<library-version> cred-type/re-cont"
 def reauth_continue():
     return "{} {}".format(python_and_auth_lib_version(), REQUEST_TYPE_REAUTH_CONTINUE)
 
 
 # x-goog-api-client header value for BYOID calls to the Security Token Service exchange token endpoint.
-# Example: "gl-python/3.7 auth/1.1 google-byoid-sdk source/aws sa-impersonation/true sa-impersonation/true"
+# Example: "gl-python/<python-version> auth/<library-version> google-byoid-sdk source/aws sa-impersonation/true sa-impersonation/true"
 def byoid_metrics_header(metrics_options):
     header = "{} {}".format(python_and_auth_lib_version(), BYOID_HEADER_SECTION)
     for key, value in metrics_options.items():

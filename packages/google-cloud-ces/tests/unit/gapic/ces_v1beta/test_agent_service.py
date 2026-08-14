@@ -71,6 +71,7 @@ from google.cloud.ces_v1beta.services.agent_service import (
 )
 from google.cloud.ces_v1beta.types import (
     agent,
+    agent_card,
     agent_service,
     agent_tool,
     agent_transfers,
@@ -87,6 +88,7 @@ from google.cloud.ces_v1beta.types import (
     data_store,
     data_store_tool,
     deployment,
+    evaluation_metrics_config,
     example,
     fakes,
     file_context,
@@ -994,7 +996,14 @@ def test_agent_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1041,7 +1050,14 @@ def test_agent_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1741,6 +1757,9 @@ def test_list_apps_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, app.App) for i in results)
@@ -1829,6 +1848,8 @@ async def test_list_apps_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1914,6 +1935,7 @@ def test_get_app(request_type, transport: str = "grpc"):
             etag="etag_value",
             deployment_count=1737,
             locked=True,
+            validation_errors=["validation_errors_value"],
         )
         response = client.get_app(request)
 
@@ -1936,6 +1958,7 @@ def test_get_app(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
     assert response.deployment_count == 1737
     assert response.locked is True
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 def test_get_app_non_empty_request_with_auto_populated_field():
@@ -2076,6 +2099,7 @@ async def test_get_app_async(request_type, transport: str = "grpc_asyncio"):
                 etag="etag_value",
                 deployment_count=1737,
                 locked=True,
+                validation_errors=["validation_errors_value"],
             )
         )
         response = await client.get_app(request)
@@ -2099,6 +2123,7 @@ async def test_get_app_async(request_type, transport: str = "grpc_asyncio"):
     assert response.etag == "etag_value"
     assert response.deployment_count == 1737
     assert response.locked is True
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 def test_get_app_field_headers():
@@ -2620,6 +2645,7 @@ def test_update_app(request_type, transport: str = "grpc"):
             etag="etag_value",
             deployment_count=1737,
             locked=True,
+            validation_errors=["validation_errors_value"],
         )
         response = client.update_app(request)
 
@@ -2642,6 +2668,7 @@ def test_update_app(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
     assert response.deployment_count == 1737
     assert response.locked is True
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 def test_update_app_non_empty_request_with_auto_populated_field():
@@ -2778,6 +2805,7 @@ async def test_update_app_async(request_type, transport: str = "grpc_asyncio"):
                 etag="etag_value",
                 deployment_count=1737,
                 locked=True,
+                validation_errors=["validation_errors_value"],
             )
         )
         response = await client.update_app(request)
@@ -2801,6 +2829,7 @@ async def test_update_app_async(request_type, transport: str = "grpc_asyncio"):
     assert response.etag == "etag_value"
     assert response.deployment_count == 1737
     assert response.locked is True
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 def test_update_app_field_headers():
@@ -5045,6 +5074,9 @@ def test_list_agents_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, agent.Agent) for i in results)
@@ -5133,6 +5165,8 @@ async def test_list_agents_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5216,6 +5250,7 @@ def test_get_agent(request_type, transport: str = "grpc"):
             guardrails=["guardrails_value"],
             etag="etag_value",
             generated_summary="generated_summary_value",
+            validation_errors=["validation_errors_value"],
         )
         response = client.get_agent(request)
 
@@ -5236,6 +5271,7 @@ def test_get_agent(request_type, transport: str = "grpc"):
     assert response.guardrails == ["guardrails_value"]
     assert response.etag == "etag_value"
     assert response.generated_summary == "generated_summary_value"
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 def test_get_agent_non_empty_request_with_auto_populated_field():
@@ -5374,6 +5410,7 @@ async def test_get_agent_async(request_type, transport: str = "grpc_asyncio"):
                 guardrails=["guardrails_value"],
                 etag="etag_value",
                 generated_summary="generated_summary_value",
+                validation_errors=["validation_errors_value"],
             )
         )
         response = await client.get_agent(request)
@@ -5395,6 +5432,7 @@ async def test_get_agent_async(request_type, transport: str = "grpc_asyncio"):
     assert response.guardrails == ["guardrails_value"]
     assert response.etag == "etag_value"
     assert response.generated_summary == "generated_summary_value"
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 def test_get_agent_field_headers():
@@ -5566,6 +5604,7 @@ def test_create_agent(request_type, transport: str = "grpc"):
             guardrails=["guardrails_value"],
             etag="etag_value",
             generated_summary="generated_summary_value",
+            validation_errors=["validation_errors_value"],
         )
         response = client.create_agent(request)
 
@@ -5586,6 +5625,7 @@ def test_create_agent(request_type, transport: str = "grpc"):
     assert response.guardrails == ["guardrails_value"]
     assert response.etag == "etag_value"
     assert response.generated_summary == "generated_summary_value"
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 def test_create_agent_non_empty_request_with_auto_populated_field():
@@ -5728,6 +5768,7 @@ async def test_create_agent_async(request_type, transport: str = "grpc_asyncio")
                 guardrails=["guardrails_value"],
                 etag="etag_value",
                 generated_summary="generated_summary_value",
+                validation_errors=["validation_errors_value"],
             )
         )
         response = await client.create_agent(request)
@@ -5749,6 +5790,7 @@ async def test_create_agent_async(request_type, transport: str = "grpc_asyncio")
     assert response.guardrails == ["guardrails_value"]
     assert response.etag == "etag_value"
     assert response.generated_summary == "generated_summary_value"
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 def test_create_agent_field_headers():
@@ -5940,6 +5982,7 @@ def test_update_agent(request_type, transport: str = "grpc"):
             guardrails=["guardrails_value"],
             etag="etag_value",
             generated_summary="generated_summary_value",
+            validation_errors=["validation_errors_value"],
         )
         response = client.update_agent(request)
 
@@ -5960,6 +6003,7 @@ def test_update_agent(request_type, transport: str = "grpc"):
     assert response.guardrails == ["guardrails_value"]
     assert response.etag == "etag_value"
     assert response.generated_summary == "generated_summary_value"
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 def test_update_agent_non_empty_request_with_auto_populated_field():
@@ -6096,6 +6140,7 @@ async def test_update_agent_async(request_type, transport: str = "grpc_asyncio")
                 guardrails=["guardrails_value"],
                 etag="etag_value",
                 generated_summary="generated_summary_value",
+                validation_errors=["validation_errors_value"],
             )
         )
         response = await client.update_agent(request)
@@ -6117,6 +6162,7 @@ async def test_update_agent_async(request_type, transport: str = "grpc_asyncio")
     assert response.guardrails == ["guardrails_value"]
     assert response.etag == "etag_value"
     assert response.generated_summary == "generated_summary_value"
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 def test_update_agent_field_headers():
@@ -6961,6 +7007,9 @@ def test_list_examples_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, example.Example) for i in results)
@@ -7049,6 +7098,8 @@ async def test_list_examples_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8841,6 +8892,9 @@ def test_list_tools_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, tool.Tool) for i in results)
@@ -8929,6 +8983,8 @@ async def test_list_tools_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -9713,6 +9769,9 @@ def test_list_conversations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, conversation.Conversation) for i in results)
@@ -9805,6 +9864,8 @@ async def test_list_conversations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -12314,6 +12375,9 @@ def test_list_guardrails_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, guardrail.Guardrail) for i in results)
@@ -12402,6 +12466,8 @@ async def test_list_guardrails_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -14246,6 +14312,9 @@ def test_list_deployments_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, deployment.Deployment) for i in results)
@@ -14334,6 +14403,8 @@ async def test_list_deployments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -16164,6 +16235,9 @@ def test_list_toolsets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, toolset.Toolset) for i in results)
@@ -16252,6 +16326,8 @@ async def test_list_toolsets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -18092,6 +18168,9 @@ def test_list_app_versions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, app_version.AppVersion) for i in results)
@@ -18184,6 +18263,8 @@ async def test_list_app_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -20365,6 +20446,9 @@ def test_list_changelogs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, changelog.Changelog) for i in results)
@@ -20453,6 +20537,8 @@ async def test_list_changelogs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -21099,6 +21185,9 @@ def test_list_apps_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_apps(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -22808,6 +22897,9 @@ def test_list_agents_rest_pager(transport: str = "rest"):
 
         pager = client.list_agents(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, agent.Agent) for i in results)
@@ -23811,6 +23903,9 @@ def test_list_examples_rest_pager(transport: str = "rest"):
 
         pager = client.list_examples(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, example.Example) for i in results)
@@ -24797,6 +24892,9 @@ def test_list_tools_rest_pager(transport: str = "rest"):
 
         pager = client.list_tools(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, tool.Tool) for i in results)
@@ -25240,6 +25338,9 @@ def test_list_conversations_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2/apps/sample3"}
 
         pager = client.list_conversations(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -26628,6 +26729,9 @@ def test_list_guardrails_rest_pager(transport: str = "rest"):
 
         pager = client.list_guardrails(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, guardrail.Guardrail) for i in results)
@@ -27655,6 +27759,9 @@ def test_list_deployments_rest_pager(transport: str = "rest"):
 
         pager = client.list_deployments(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, deployment.Deployment) for i in results)
@@ -28652,6 +28759,9 @@ def test_list_toolsets_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2/apps/sample3"}
 
         pager = client.list_toolsets(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -29673,6 +29783,9 @@ def test_list_app_versions_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2/apps/sample3"}
 
         pager = client.list_app_versions(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -30858,6 +30971,9 @@ def test_list_changelogs_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2/apps/sample3"}
 
         pager = client.list_changelogs(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -32266,6 +32382,7 @@ async def test_get_app_empty_call_grpc_asyncio():
                 etag="etag_value",
                 deployment_count=1737,
                 locked=True,
+                validation_errors=["validation_errors_value"],
             )
         )
         await client.get_app(request=None)
@@ -32326,6 +32443,7 @@ async def test_update_app_empty_call_grpc_asyncio():
                 etag="etag_value",
                 deployment_count=1737,
                 locked=True,
+                validation_errors=["validation_errors_value"],
             )
         )
         await client.update_app(request=None)
@@ -32516,6 +32634,7 @@ async def test_get_agent_empty_call_grpc_asyncio():
                 guardrails=["guardrails_value"],
                 etag="etag_value",
                 generated_summary="generated_summary_value",
+                validation_errors=["validation_errors_value"],
             )
         )
         await client.get_agent(request=None)
@@ -32550,6 +32669,7 @@ async def test_create_agent_empty_call_grpc_asyncio():
                 guardrails=["guardrails_value"],
                 etag="etag_value",
                 generated_summary="generated_summary_value",
+                validation_errors=["validation_errors_value"],
             )
         )
         await client.create_agent(request=None)
@@ -32584,6 +32704,7 @@ async def test_update_agent_empty_call_grpc_asyncio():
                 guardrails=["guardrails_value"],
                 etag="etag_value",
                 generated_summary="generated_summary_value",
+                validation_errors=["validation_errors_value"],
             )
         )
         await client.update_agent(request=None)
@@ -33842,6 +33963,7 @@ def test_get_app_rest_call_success(request_type):
             etag="etag_value",
             deployment_count=1737,
             locked=True,
+            validation_errors=["validation_errors_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -33869,6 +33991,7 @@ def test_get_app_rest_call_success(request_type):
     assert response.etag == "etag_value"
     assert response.deployment_count == 1737
     assert response.locked is True
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -34006,11 +34129,13 @@ def test_create_app_rest_call_success(request_type):
                 "gcs_bucket": "gcs_bucket_value",
                 "gcs_path_prefix": "gcs_path_prefix_value",
             },
+            "unredacted_audio_recording_config": {},
             "bigquery_export_settings": {
                 "enabled": True,
                 "project": "project_value",
                 "dataset": "dataset_value",
             },
+            "unredacted_bigquery_export_settings": {},
             "cloud_logging_settings": {"enable_cloud_logging": True},
             "conversation_logging_settings": {
                 "disable_conversation_logging": True,
@@ -34104,6 +34229,20 @@ def test_create_app_rest_call_success(request_type):
                 },
             },
             "noise_suppression_level": "noise_suppression_level_value",
+            "whatsapp_config": {
+                "waba_id": "waba_id_value",
+                "phone_number_id": "phone_number_id_value",
+                "phone_number": "phone_number_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
+            "instagram_config": {
+                "instagram_account_id": "instagram_account_id_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
         },
         "metadata": {},
         "create_time": {"seconds": 751, "nanos": 543},
@@ -34114,6 +34253,9 @@ def test_create_app_rest_call_success(request_type):
             "tls_certificate": "tls_certificate_value",
             "private_key": "private_key_value",
             "passphrase": "passphrase_value",
+        },
+        "vpc_sc_settings": {
+            "allowed_origins": ["allowed_origins_value1", "allowed_origins_value2"]
         },
         "locked": True,
         "evaluation_personas": [
@@ -34134,7 +34276,29 @@ def test_create_app_rest_call_success(request_type):
             "golden_run_method": 1,
             "golden_evaluation_tool_call_behaviour": 1,
             "scenario_evaluation_tool_call_behaviour": 1,
+            "metrics_config": {
+                "golden_metrics_config": {
+                    "semantic_similarity_metrics_config": {
+                        "enable_semantic_similarity_metrics": True
+                    },
+                    "tool_correctness_metrics_config": {
+                        "enable_tool_correctness_metrics": True
+                    },
+                    "step_tool_correctness_metrics_config": {},
+                },
+                "scenario_metrics_config": {
+                    "user_goal_met_metrics_config": {
+                        "enable_user_goal_met_metrics": True
+                    },
+                    "expectations_met_metrics_config": {
+                        "enable_expectations_met_metrics": True
+                    },
+                },
+            },
+            "scenario_execution_mode": 1,
+            "evaluation_run_caching_settings": {"run_caching_mode": 1},
         },
+        "validation_errors": ["validation_errors_value1", "validation_errors_value2"],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -34361,11 +34525,13 @@ def test_update_app_rest_call_success(request_type):
                 "gcs_bucket": "gcs_bucket_value",
                 "gcs_path_prefix": "gcs_path_prefix_value",
             },
+            "unredacted_audio_recording_config": {},
             "bigquery_export_settings": {
                 "enabled": True,
                 "project": "project_value",
                 "dataset": "dataset_value",
             },
+            "unredacted_bigquery_export_settings": {},
             "cloud_logging_settings": {"enable_cloud_logging": True},
             "conversation_logging_settings": {
                 "disable_conversation_logging": True,
@@ -34459,6 +34625,20 @@ def test_update_app_rest_call_success(request_type):
                 },
             },
             "noise_suppression_level": "noise_suppression_level_value",
+            "whatsapp_config": {
+                "waba_id": "waba_id_value",
+                "phone_number_id": "phone_number_id_value",
+                "phone_number": "phone_number_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
+            "instagram_config": {
+                "instagram_account_id": "instagram_account_id_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
         },
         "metadata": {},
         "create_time": {"seconds": 751, "nanos": 543},
@@ -34469,6 +34649,9 @@ def test_update_app_rest_call_success(request_type):
             "tls_certificate": "tls_certificate_value",
             "private_key": "private_key_value",
             "passphrase": "passphrase_value",
+        },
+        "vpc_sc_settings": {
+            "allowed_origins": ["allowed_origins_value1", "allowed_origins_value2"]
         },
         "locked": True,
         "evaluation_personas": [
@@ -34489,7 +34672,29 @@ def test_update_app_rest_call_success(request_type):
             "golden_run_method": 1,
             "golden_evaluation_tool_call_behaviour": 1,
             "scenario_evaluation_tool_call_behaviour": 1,
+            "metrics_config": {
+                "golden_metrics_config": {
+                    "semantic_similarity_metrics_config": {
+                        "enable_semantic_similarity_metrics": True
+                    },
+                    "tool_correctness_metrics_config": {
+                        "enable_tool_correctness_metrics": True
+                    },
+                    "step_tool_correctness_metrics_config": {},
+                },
+                "scenario_metrics_config": {
+                    "user_goal_met_metrics_config": {
+                        "enable_user_goal_met_metrics": True
+                    },
+                    "expectations_met_metrics_config": {
+                        "enable_expectations_met_metrics": True
+                    },
+                },
+            },
+            "scenario_execution_mode": 1,
+            "evaluation_run_caching_settings": {"run_caching_mode": 1},
         },
+        "validation_errors": ["validation_errors_value1", "validation_errors_value2"],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -34575,6 +34780,7 @@ def test_update_app_rest_call_success(request_type):
             etag="etag_value",
             deployment_count=1737,
             locked=True,
+            validation_errors=["validation_errors_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -34602,6 +34808,7 @@ def test_update_app_rest_call_success(request_type):
     assert response.etag == "etag_value"
     assert response.deployment_count == 1737
     assert response.locked is True
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -35576,6 +35783,7 @@ def test_get_agent_rest_call_success(request_type):
             guardrails=["guardrails_value"],
             etag="etag_value",
             generated_summary="generated_summary_value",
+            validation_errors=["validation_errors_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -35601,6 +35809,7 @@ def test_get_agent_rest_call_success(request_type):
     assert response.guardrails == ["guardrails_value"]
     assert response.etag == "etag_value"
     assert response.generated_summary == "generated_summary_value"
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -35712,6 +35921,7 @@ def test_create_agent_rest_call_success(request_type):
             "input_variable_mapping": {},
             "output_variable_mapping": {},
             "respect_response_interruption_settings": True,
+            "language_code_variable": "language_code_variable_value",
         },
         "name": "name_value",
         "display_name": "display_name_value",
@@ -35755,6 +35965,7 @@ def test_create_agent_rest_call_success(request_type):
                 "direction": 1,
             }
         ],
+        "validation_errors": ["validation_errors_value1", "validation_errors_value2"],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -35838,6 +36049,7 @@ def test_create_agent_rest_call_success(request_type):
             guardrails=["guardrails_value"],
             etag="etag_value",
             generated_summary="generated_summary_value",
+            validation_errors=["validation_errors_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -35863,6 +36075,7 @@ def test_create_agent_rest_call_success(request_type):
     assert response.guardrails == ["guardrails_value"]
     assert response.etag == "etag_value"
     assert response.generated_summary == "generated_summary_value"
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -35984,6 +36197,7 @@ def test_update_agent_rest_call_success(request_type):
             "input_variable_mapping": {},
             "output_variable_mapping": {},
             "respect_response_interruption_settings": True,
+            "language_code_variable": "language_code_variable_value",
         },
         "name": "projects/sample1/locations/sample2/apps/sample3/agents/sample4",
         "display_name": "display_name_value",
@@ -36027,6 +36241,7 @@ def test_update_agent_rest_call_success(request_type):
                 "direction": 1,
             }
         ],
+        "validation_errors": ["validation_errors_value1", "validation_errors_value2"],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -36110,6 +36325,7 @@ def test_update_agent_rest_call_success(request_type):
             guardrails=["guardrails_value"],
             etag="etag_value",
             generated_summary="generated_summary_value",
+            validation_errors=["validation_errors_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -36135,6 +36351,7 @@ def test_update_agent_rest_call_success(request_type):
     assert response.guardrails == ["guardrails_value"]
     assert response.etag == "etag_value"
     assert response.generated_summary == "generated_summary_value"
+    assert response.validation_errors == ["validation_errors_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -38225,9 +38442,11 @@ def test_create_tool_rest_call_success(request_type):
             "name": "name_value",
             "python_code": "python_code_value",
             "description": "description_value",
+            "service_directory_config": {},
         },
         "mcp_tool": {
             "name": "name_value",
+            "name_override": "name_override_value",
             "description": "description_value",
             "input_schema": {},
             "output_schema": {},
@@ -38236,6 +38455,7 @@ def test_create_tool_rest_call_success(request_type):
             "tls_config": {},
             "service_directory_config": {},
             "custom_headers": {},
+            "state": 1,
         },
         "file_search_tool": {
             "corpus_type": 1,
@@ -38247,7 +38467,6 @@ def test_create_tool_rest_call_success(request_type):
         "agent_tool": {
             "name": "name_value",
             "description": "description_value",
-            "root_agent": "root_agent_value",
             "agent": "agent_value",
         },
         "widget_tool": {
@@ -38263,10 +38482,44 @@ def test_create_tool_rest_call_success(request_type):
                 "mode": 1,
                 "python_script": "python_script_value",
             },
+            "text_response_config": {
+                "type_": 1,
+                "static_text": "static_text_value",
+                "text_response_instruction": "text_response_instruction_value",
+            },
+        },
+        "remote_agent_tool": {
+            "name": "name_value",
+            "description": "description_value",
+            "agent_card": {
+                "name": "name_value",
+                "description": "description_value",
+                "supported_interfaces": [
+                    {
+                        "url": "url_value",
+                        "protocol_binding": "protocol_binding_value",
+                        "tenant": "tenant_value",
+                        "protocol_version": "protocol_version_value",
+                    }
+                ],
+                "version": "version_value",
+                "skills": [
+                    {
+                        "id": "id_value",
+                        "name": "name_value",
+                        "description": "description_value",
+                        "tags": ["tags_value1", "tags_value2"],
+                        "examples": ["examples_value1", "examples_value2"],
+                        "input_modes": ["input_modes_value1", "input_modes_value2"],
+                        "output_modes": ["output_modes_value1", "output_modes_value2"],
+                    }
+                ],
+            },
         },
         "name": "name_value",
         "display_name": "display_name_value",
         "execution_type": 1,
+        "timeout": {"seconds": 751, "nanos": 543},
         "create_time": {},
         "update_time": {},
         "etag": "etag_value",
@@ -38664,9 +38917,11 @@ def test_update_tool_rest_call_success(request_type):
             "name": "name_value",
             "python_code": "python_code_value",
             "description": "description_value",
+            "service_directory_config": {},
         },
         "mcp_tool": {
             "name": "name_value",
+            "name_override": "name_override_value",
             "description": "description_value",
             "input_schema": {},
             "output_schema": {},
@@ -38675,6 +38930,7 @@ def test_update_tool_rest_call_success(request_type):
             "tls_config": {},
             "service_directory_config": {},
             "custom_headers": {},
+            "state": 1,
         },
         "file_search_tool": {
             "corpus_type": 1,
@@ -38686,7 +38942,6 @@ def test_update_tool_rest_call_success(request_type):
         "agent_tool": {
             "name": "name_value",
             "description": "description_value",
-            "root_agent": "root_agent_value",
             "agent": "agent_value",
         },
         "widget_tool": {
@@ -38702,10 +38957,44 @@ def test_update_tool_rest_call_success(request_type):
                 "mode": 1,
                 "python_script": "python_script_value",
             },
+            "text_response_config": {
+                "type_": 1,
+                "static_text": "static_text_value",
+                "text_response_instruction": "text_response_instruction_value",
+            },
+        },
+        "remote_agent_tool": {
+            "name": "name_value",
+            "description": "description_value",
+            "agent_card": {
+                "name": "name_value",
+                "description": "description_value",
+                "supported_interfaces": [
+                    {
+                        "url": "url_value",
+                        "protocol_binding": "protocol_binding_value",
+                        "tenant": "tenant_value",
+                        "protocol_version": "protocol_version_value",
+                    }
+                ],
+                "version": "version_value",
+                "skills": [
+                    {
+                        "id": "id_value",
+                        "name": "name_value",
+                        "description": "description_value",
+                        "tags": ["tags_value1", "tags_value2"],
+                        "examples": ["examples_value1", "examples_value2"],
+                        "input_modes": ["input_modes_value1", "input_modes_value2"],
+                        "output_modes": ["output_modes_value1", "output_modes_value2"],
+                    }
+                ],
+            },
         },
         "name": "projects/sample1/locations/sample2/apps/sample3/tools/sample4",
         "display_name": "display_name_value",
         "execution_type": 1,
+        "timeout": {"seconds": 751, "nanos": 543},
         "create_time": {},
         "update_time": {},
         "etag": "etag_value",
@@ -40254,10 +40543,48 @@ def test_create_deployment_rest_call_success(request_type):
                 },
             },
             "noise_suppression_level": "noise_suppression_level_value",
+            "whatsapp_config": {
+                "waba_id": "waba_id_value",
+                "phone_number_id": "phone_number_id_value",
+                "phone_number": "phone_number_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
+            "instagram_config": {
+                "instagram_account_id": "instagram_account_id_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
         },
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "etag": "etag_value",
+        "experiment_config": {
+            "version_release": {
+                "state": 1,
+                "traffic_allocations": [
+                    {
+                        "id": "id_value",
+                        "traffic_percentage": 1884,
+                        "app_version": "app_version_value",
+                    }
+                ],
+            }
+        },
+        "whatsapp_credentials": {
+            "auth_code": "auth_code_value",
+            "pin": "pin_value",
+            "phone_number": "phone_number_value",
+            "business_account_id": "business_account_id_value",
+            "waba_id": "waba_id_value",
+            "conversation_profile_id": "conversation_profile_id_value",
+        },
+        "instagram_credentials": {
+            "auth_code": "auth_code_value",
+            "conversation_profile_id": "conversation_profile_id_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -40496,10 +40823,48 @@ def test_update_deployment_rest_call_success(request_type):
                 },
             },
             "noise_suppression_level": "noise_suppression_level_value",
+            "whatsapp_config": {
+                "waba_id": "waba_id_value",
+                "phone_number_id": "phone_number_id_value",
+                "phone_number": "phone_number_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
+            "instagram_config": {
+                "instagram_account_id": "instagram_account_id_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
         },
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "etag": "etag_value",
+        "experiment_config": {
+            "version_release": {
+                "state": 1,
+                "traffic_allocations": [
+                    {
+                        "id": "id_value",
+                        "traffic_percentage": 1884,
+                        "app_version": "app_version_value",
+                    }
+                ],
+            }
+        },
+        "whatsapp_credentials": {
+            "auth_code": "auth_code_value",
+            "pin": "pin_value",
+            "phone_number": "phone_number_value",
+            "business_account_id": "business_account_id_value",
+            "waba_id": "waba_id_value",
+            "conversation_profile_id": "conversation_profile_id_value",
+        },
+        "instagram_credentials": {
+            "auth_code": "auth_code_value",
+            "conversation_profile_id": "conversation_profile_id_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -41119,6 +41484,45 @@ def test_create_toolset_rest_call_success(request_type):
                 ]
             },
             "custom_headers": {},
+            "tool_overrides": [
+                {
+                    "tool": "tool_value",
+                    "name_override": "name_override_value",
+                    "description_override": "description_override_value",
+                    "snapshot": {
+                        "description": "description_value",
+                        "input_schema": {
+                            "type_": 1,
+                            "properties": {},
+                            "required": ["required_value1", "required_value2"],
+                            "description": "description_value",
+                            "items": {},
+                            "nullable": True,
+                            "unique_items": True,
+                            "prefix_items": {},
+                            "additional_properties": {},
+                            "any_of": {},
+                            "enum": ["enum_value1", "enum_value2"],
+                            "default": {
+                                "null_value": 0,
+                                "number_value": 0.1285,
+                                "string_value": "string_value_value",
+                                "bool_value": True,
+                                "struct_value": {"fields": {}},
+                                "list_value": {"values": {}},
+                            },
+                            "ref": "ref_value",
+                            "defs": {},
+                            "title": "title_value",
+                            "min_items": 965,
+                            "max_items": 967,
+                            "minimum": 0.764,
+                            "maximum": 0.766,
+                        },
+                        "output_schema": {},
+                    },
+                }
+            ],
         },
         "open_api_toolset": {
             "open_api_schema": "open_api_schema_value",
@@ -41153,6 +41557,7 @@ def test_create_toolset_rest_call_success(request_type):
         "name": "name_value",
         "display_name": "display_name_value",
         "description": "description_value",
+        "timeout": {"seconds": 751, "nanos": 543},
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "etag": "etag_value",
@@ -41405,6 +41810,45 @@ def test_update_toolset_rest_call_success(request_type):
                 ]
             },
             "custom_headers": {},
+            "tool_overrides": [
+                {
+                    "tool": "tool_value",
+                    "name_override": "name_override_value",
+                    "description_override": "description_override_value",
+                    "snapshot": {
+                        "description": "description_value",
+                        "input_schema": {
+                            "type_": 1,
+                            "properties": {},
+                            "required": ["required_value1", "required_value2"],
+                            "description": "description_value",
+                            "items": {},
+                            "nullable": True,
+                            "unique_items": True,
+                            "prefix_items": {},
+                            "additional_properties": {},
+                            "any_of": {},
+                            "enum": ["enum_value1", "enum_value2"],
+                            "default": {
+                                "null_value": 0,
+                                "number_value": 0.1285,
+                                "string_value": "string_value_value",
+                                "bool_value": True,
+                                "struct_value": {"fields": {}},
+                                "list_value": {"values": {}},
+                            },
+                            "ref": "ref_value",
+                            "defs": {},
+                            "title": "title_value",
+                            "min_items": 965,
+                            "max_items": 967,
+                            "minimum": 0.764,
+                            "maximum": 0.766,
+                        },
+                        "output_schema": {},
+                    },
+                }
+            ],
         },
         "open_api_toolset": {
             "open_api_schema": "open_api_schema_value",
@@ -41439,6 +41883,7 @@ def test_update_toolset_rest_call_success(request_type):
         "name": "projects/sample1/locations/sample2/apps/sample3/toolsets/sample4",
         "display_name": "display_name_value",
         "description": "description_value",
+        "timeout": {"seconds": 751, "nanos": 543},
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "etag": "etag_value",
@@ -42092,11 +42537,13 @@ def test_create_app_version_rest_call_success(request_type):
                         "gcs_bucket": "gcs_bucket_value",
                         "gcs_path_prefix": "gcs_path_prefix_value",
                     },
+                    "unredacted_audio_recording_config": {},
                     "bigquery_export_settings": {
                         "enabled": True,
                         "project": "project_value",
                         "dataset": "dataset_value",
                     },
+                    "unredacted_bigquery_export_settings": {},
                     "cloud_logging_settings": {"enable_cloud_logging": True},
                     "conversation_logging_settings": {
                         "disable_conversation_logging": True,
@@ -42192,6 +42639,20 @@ def test_create_app_version_rest_call_success(request_type):
                         },
                     },
                     "noise_suppression_level": "noise_suppression_level_value",
+                    "whatsapp_config": {
+                        "waba_id": "waba_id_value",
+                        "phone_number_id": "phone_number_id_value",
+                        "phone_number": "phone_number_value",
+                        "display_name": "display_name_value",
+                        "thumbnail_url": "thumbnail_url_value",
+                        "description": "description_value",
+                    },
+                    "instagram_config": {
+                        "instagram_account_id": "instagram_account_id_value",
+                        "display_name": "display_name_value",
+                        "thumbnail_url": "thumbnail_url_value",
+                        "description": "description_value",
+                    },
                 },
                 "metadata": {},
                 "create_time": {},
@@ -42202,6 +42663,12 @@ def test_create_app_version_rest_call_success(request_type):
                     "tls_certificate": "tls_certificate_value",
                     "private_key": "private_key_value",
                     "passphrase": "passphrase_value",
+                },
+                "vpc_sc_settings": {
+                    "allowed_origins": [
+                        "allowed_origins_value1",
+                        "allowed_origins_value2",
+                    ]
                 },
                 "locked": True,
                 "evaluation_personas": [
@@ -42222,7 +42689,32 @@ def test_create_app_version_rest_call_success(request_type):
                     "golden_run_method": 1,
                     "golden_evaluation_tool_call_behaviour": 1,
                     "scenario_evaluation_tool_call_behaviour": 1,
+                    "metrics_config": {
+                        "golden_metrics_config": {
+                            "semantic_similarity_metrics_config": {
+                                "enable_semantic_similarity_metrics": True
+                            },
+                            "tool_correctness_metrics_config": {
+                                "enable_tool_correctness_metrics": True
+                            },
+                            "step_tool_correctness_metrics_config": {},
+                        },
+                        "scenario_metrics_config": {
+                            "user_goal_met_metrics_config": {
+                                "enable_user_goal_met_metrics": True
+                            },
+                            "expectations_met_metrics_config": {
+                                "enable_expectations_met_metrics": True
+                            },
+                        },
+                    },
+                    "scenario_execution_mode": 1,
+                    "evaluation_run_caching_settings": {"run_caching_mode": 1},
                 },
+                "validation_errors": [
+                    "validation_errors_value1",
+                    "validation_errors_value2",
+                ],
             },
             "agents": [
                 {
@@ -42234,6 +42726,7 @@ def test_create_app_version_rest_call_success(request_type):
                         "input_variable_mapping": {},
                         "output_variable_mapping": {},
                         "respect_response_interruption_settings": True,
+                        "language_code_variable": "language_code_variable_value",
                     },
                     "name": "name_value",
                     "display_name": "display_name_value",
@@ -42280,6 +42773,10 @@ def test_create_app_version_rest_call_success(request_type):
                             "child_agent": "child_agent_value",
                             "direction": 1,
                         }
+                    ],
+                    "validation_errors": [
+                        "validation_errors_value1",
+                        "validation_errors_value2",
                     ],
                 }
             ],
@@ -42451,9 +42948,11 @@ def test_create_app_version_rest_call_success(request_type):
                         "name": "name_value",
                         "python_code": "python_code_value",
                         "description": "description_value",
+                        "service_directory_config": {},
                     },
                     "mcp_tool": {
                         "name": "name_value",
+                        "name_override": "name_override_value",
                         "description": "description_value",
                         "input_schema": {},
                         "output_schema": {},
@@ -42462,6 +42961,7 @@ def test_create_app_version_rest_call_success(request_type):
                         "tls_config": {},
                         "service_directory_config": {},
                         "custom_headers": {},
+                        "state": 1,
                     },
                     "file_search_tool": {
                         "corpus_type": 1,
@@ -42476,7 +42976,6 @@ def test_create_app_version_rest_call_success(request_type):
                     "agent_tool": {
                         "name": "name_value",
                         "description": "description_value",
-                        "root_agent": "root_agent_value",
                         "agent": "agent_value",
                     },
                     "widget_tool": {
@@ -42492,10 +42991,50 @@ def test_create_app_version_rest_call_success(request_type):
                             "mode": 1,
                             "python_script": "python_script_value",
                         },
+                        "text_response_config": {
+                            "type_": 1,
+                            "static_text": "static_text_value",
+                            "text_response_instruction": "text_response_instruction_value",
+                        },
+                    },
+                    "remote_agent_tool": {
+                        "name": "name_value",
+                        "description": "description_value",
+                        "agent_card": {
+                            "name": "name_value",
+                            "description": "description_value",
+                            "supported_interfaces": [
+                                {
+                                    "url": "url_value",
+                                    "protocol_binding": "protocol_binding_value",
+                                    "tenant": "tenant_value",
+                                    "protocol_version": "protocol_version_value",
+                                }
+                            ],
+                            "version": "version_value",
+                            "skills": [
+                                {
+                                    "id": "id_value",
+                                    "name": "name_value",
+                                    "description": "description_value",
+                                    "tags": ["tags_value1", "tags_value2"],
+                                    "examples": ["examples_value1", "examples_value2"],
+                                    "input_modes": [
+                                        "input_modes_value1",
+                                        "input_modes_value2",
+                                    ],
+                                    "output_modes": [
+                                        "output_modes_value1",
+                                        "output_modes_value2",
+                                    ],
+                                }
+                            ],
+                        },
                     },
                     "name": "name_value",
                     "display_name": "display_name_value",
                     "execution_type": 1,
+                    "timeout": {},
                     "create_time": {},
                     "update_time": {},
                     "etag": "etag_value",
@@ -42628,6 +43167,18 @@ def test_create_app_version_rest_call_success(request_type):
                         "service_directory_config": {},
                         "tls_config": {},
                         "custom_headers": {},
+                        "tool_overrides": [
+                            {
+                                "tool": "tool_value",
+                                "name_override": "name_override_value",
+                                "description_override": "description_override_value",
+                                "snapshot": {
+                                    "description": "description_value",
+                                    "input_schema": {},
+                                    "output_schema": {},
+                                },
+                            }
+                        ],
                     },
                     "open_api_toolset": {
                         "open_api_schema": "open_api_schema_value",
@@ -42645,6 +43196,7 @@ def test_create_app_version_rest_call_success(request_type):
                     "name": "name_value",
                     "display_name": "display_name_value",
                     "description": "description_value",
+                    "timeout": {},
                     "create_time": {},
                     "update_time": {},
                     "etag": "etag_value",

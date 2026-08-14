@@ -582,7 +582,7 @@ def _lookup_regional_access_boundary_request(
         request, url, can_retry=can_retry, headers=headers, fail_fast=fail_fast
     )
     if not response_status_ok:
-        _LOGGER.warning(
+        _LOGGER.debug(
             "Regional Access Boundary HTTP request failed after retries: response_data=%s, retryable_error=%s",
             response_data,
             retryable_error,

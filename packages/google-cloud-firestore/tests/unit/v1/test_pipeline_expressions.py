@@ -284,7 +284,8 @@ class TestBooleanExpression:
         """
         test composite OR filters
 
-        should create an or statement, made up of ands checking of existance of relevant fields
+        should create an or statement, made up of ands checking of existance
+        of relevant fields
         """
         filter1_pb = query_pb.StructuredQuery.FieldFilter(
             field=query_pb.StructuredQuery.FieldReference(field_path="field1"),

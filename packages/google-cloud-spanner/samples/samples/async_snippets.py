@@ -18,8 +18,6 @@
 Cloud Spanner.
 """
 
-import asyncio
-
 from google.cloud.spanner_v1 import AsyncClient, KeySet
 
 
@@ -28,7 +26,7 @@ async def async_create_client(instance_id, database_id):
     """Instantiates an asynchronous Spanner client."""
     spanner_client = AsyncClient()
     instance = spanner_client.instance(instance_id)
-    database = instance.database(database_id)
+    database = await instance.database(database_id)
 
     print("Async Spanner client instantiated successfully.")
     return database
@@ -42,7 +40,7 @@ async def async_query_data(instance_id, database_id):
     """Queries sample data from the database using asynchronous SQL."""
     spanner_client = AsyncClient()
     instance = spanner_client.instance(instance_id)
-    database = instance.database(database_id)
+    database = await instance.database(database_id)
 
     async with database.snapshot() as snapshot:
         results = await snapshot.execute_sql(
@@ -61,7 +59,7 @@ async def async_insert_data(instance_id, database_id):
     """Inserts sample data into the database using DML asynchronously."""
     spanner_client = AsyncClient()
     instance = spanner_client.instance(instance_id)
-    database = instance.database(database_id)
+    database = await instance.database(database_id)
 
     async def insert_singers(transaction):
         dml = (
@@ -83,7 +81,7 @@ async def async_read_write_transaction(instance_id, database_id):
     """Performs an asynchronous read-write transaction."""
     spanner_client = AsyncClient()
     instance = spanner_client.instance(instance_id)
-    database = instance.database(database_id)
+    database = await instance.database(database_id)
 
     async def update_singer_lastname(transaction):
         # Retrieve current name
@@ -112,7 +110,7 @@ async def async_read_only_transaction(instance_id, database_id):
     """Performs an asynchronous read-only transaction."""
     spanner_client = AsyncClient()
     instance = spanner_client.instance(instance_id)
-    database = instance.database(database_id)
+    database = await instance.database(database_id)
 
     async with database.snapshot() as snapshot:
         # Execute a read using standard KeySet

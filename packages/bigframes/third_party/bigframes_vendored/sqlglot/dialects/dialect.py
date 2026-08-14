@@ -1236,7 +1236,14 @@ def inline_array_sql(self: Generator, expression: exp.Expression) -> str:
 
 def inline_array_unless_query(self: Generator, expression: exp.Expression) -> str:
     elem = seq_get(expression.expressions, 0)
-    if isinstance(elem, exp.Expression) and elem.find(exp.Query):
+    if (
+        len(expression.expressions) == 1
+        and isinstance(elem, exp.Expression)
+        and (
+            isinstance(elem, exp.Query)
+            or (isinstance(elem, exp.Subquery) and isinstance(elem.this, exp.Query))
+        )
+    ):
         return self.func("ARRAY", elem)
     return inline_array_sql(self, expression)
 

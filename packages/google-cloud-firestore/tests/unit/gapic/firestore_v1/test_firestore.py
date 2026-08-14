@@ -942,7 +942,14 @@ def test_firestore_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -989,7 +996,14 @@ def test_firestore_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1842,6 +1856,9 @@ def test_list_documents_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, document.Document) for i in results)
@@ -1930,6 +1947,8 @@ async def test_list_documents_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4833,6 +4852,9 @@ def test_partition_query_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, query.Cursor) for i in results)
@@ -4921,6 +4943,8 @@ async def test_partition_query_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5665,6 +5689,9 @@ def test_list_collection_ids_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, str) for i in results)
@@ -5757,6 +5784,8 @@ async def test_list_collection_ids_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6360,6 +6389,7 @@ def test_get_document_rest_required_fields(request_type=firestore.GetDocumentReq
         (
             "mask",
             "read_time",
+            "request_options",
             "transaction",
         )
     )
@@ -6422,6 +6452,7 @@ def test_get_document_rest_unset_required_fields():
             (
                 "mask",
                 "readTime",
+                "requestOptions",
                 "transaction",
             )
         )
@@ -6500,6 +6531,7 @@ def test_list_documents_rest_required_fields(
             "page_size",
             "page_token",
             "read_time",
+            "request_options",
             "show_missing",
             "transaction",
         )
@@ -6566,6 +6598,7 @@ def test_list_documents_rest_unset_required_fields():
                 "pageSize",
                 "pageToken",
                 "readTime",
+                "requestOptions",
                 "showMissing",
                 "transaction",
             )
@@ -6628,6 +6661,9 @@ def test_list_documents_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_documents(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -6703,6 +6739,7 @@ def test_update_document_rest_required_fields(
         (
             "current_document",
             "mask",
+            "request_options",
             "update_mask",
         )
     )
@@ -6764,6 +6801,7 @@ def test_update_document_rest_unset_required_fields():
             (
                 "currentDocument",
                 "mask",
+                "requestOptions",
                 "updateMask",
             )
         )
@@ -6899,7 +6937,12 @@ def test_delete_document_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete_document._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("current_document",))
+    assert not set(unset_fields) - set(
+        (
+            "current_document",
+            "request_options",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -6951,7 +6994,15 @@ def test_delete_document_rest_unset_required_fields():
     )
 
     unset_fields = transport.delete_document._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("currentDocument",)) & set(("name",)))
+    assert set(unset_fields) == (
+        set(
+            (
+                "currentDocument",
+                "requestOptions",
+            )
+        )
+        & set(("name",))
+    )
 
 
 def test_delete_document_rest_flattened():
@@ -8236,6 +8287,9 @@ def test_partition_query_rest_pager(transport: str = "rest"):
 
         pager = client.partition_query(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, query.Cursor) for i in results)
@@ -8504,6 +8558,9 @@ def test_list_collection_ids_rest_pager(transport: str = "rest"):
 
         pager = client.list_collection_ids(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, str) for i in results)
@@ -8702,6 +8759,7 @@ def test_create_document_rest_required_fields(
         (
             "document_id",
             "mask",
+            "request_options",
         )
     )
     jsonified_request.update(unset_fields)
@@ -8766,6 +8824,7 @@ def test_create_document_rest_unset_required_fields():
             (
                 "documentId",
                 "mask",
+                "requestOptions",
             )
         )
         & set(

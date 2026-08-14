@@ -29,6 +29,7 @@ from google.oauth2 import service_account  # type: ignore
 from google.apps.chat_v1 import gapic_version as package_version
 from google.apps.chat_v1.types import (
     attachment,
+    availability,
     membership,
     message,
     reaction,
@@ -40,6 +41,7 @@ from google.apps.chat_v1.types import (
     space_setup,
     thread_read_state,
 )
+from google.apps.chat_v1.types import availability as gc_availability
 from google.apps.chat_v1.types import membership as gc_membership
 from google.apps.chat_v1.types import message as gc_message
 from google.apps.chat_v1.types import reaction as gc_reaction
@@ -53,9 +55,7 @@ from google.apps.chat_v1.types import space_read_state as gc_space_read_state
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ChatServiceTransport(abc.ABC):
@@ -91,6 +91,8 @@ class ChatServiceTransport(abc.ABC):
         "https://www.googleapis.com/auth/chat.spaces",
         "https://www.googleapis.com/auth/chat.spaces.create",
         "https://www.googleapis.com/auth/chat.spaces.readonly",
+        "https://www.googleapis.com/auth/chat.users.availability",
+        "https://www.googleapis.com/auth/chat.users.availability.readonly",
         "https://www.googleapis.com/auth/chat.users.readstate",
         "https://www.googleapis.com/auth/chat.users.readstate.readonly",
         "https://www.googleapis.com/auth/chat.users.sections",
@@ -285,6 +287,20 @@ class ChatServiceTransport(abc.ABC):
             ),
             self.delete_message: gapic_v1.method.wrap_method(
                 self.delete_message,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.search_messages: gapic_v1.method.wrap_method(
+                self.search_messages,
                 default_retry=retries.Retry(
                     initial=1.0,
                     maximum=10.0,
@@ -647,6 +663,76 @@ class ChatServiceTransport(abc.ABC):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
+            self.get_availability: gapic_v1.method.wrap_method(
+                self.get_availability,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.mark_as_active: gapic_v1.method.wrap_method(
+                self.mark_as_active,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.mark_as_away: gapic_v1.method.wrap_method(
+                self.mark_as_away,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.mark_as_do_not_disturb: gapic_v1.method.wrap_method(
+                self.mark_as_do_not_disturb,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.update_availability: gapic_v1.method.wrap_method(
+                self.update_availability,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
             self.get_space_event: gapic_v1.method.wrap_method(
                 self.get_space_event,
                 default_retry=retries.Retry(
@@ -874,6 +960,17 @@ class ChatServiceTransport(abc.ABC):
     ) -> Callable[
         [message.DeleteMessageRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def search_messages(
+        self,
+    ) -> Callable[
+        [message.SearchMessagesRequest],
+        Union[
+            message.SearchMessagesResponse, Awaitable[message.SearchMessagesResponse]
+        ],
     ]:
         raise NotImplementedError()
 
@@ -1110,6 +1207,51 @@ class ChatServiceTransport(abc.ABC):
             thread_read_state.ThreadReadState,
             Awaitable[thread_read_state.ThreadReadState],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_availability(
+        self,
+    ) -> Callable[
+        [availability.GetAvailabilityRequest],
+        Union[availability.Availability, Awaitable[availability.Availability]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def mark_as_active(
+        self,
+    ) -> Callable[
+        [availability.MarkAsActiveRequest],
+        Union[availability.Availability, Awaitable[availability.Availability]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def mark_as_away(
+        self,
+    ) -> Callable[
+        [availability.MarkAsAwayRequest],
+        Union[availability.Availability, Awaitable[availability.Availability]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def mark_as_do_not_disturb(
+        self,
+    ) -> Callable[
+        [availability.MarkAsDoNotDisturbRequest],
+        Union[availability.Availability, Awaitable[availability.Availability]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_availability(
+        self,
+    ) -> Callable[
+        [gc_availability.UpdateAvailabilityRequest],
+        Union[gc_availability.Availability, Awaitable[gc_availability.Availability]],
     ]:
         raise NotImplementedError()
 

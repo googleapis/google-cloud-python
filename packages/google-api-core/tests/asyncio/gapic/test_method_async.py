@@ -22,15 +22,17 @@ except ImportError:  # pragma: NO COVER
 import pytest
 
 try:
-    from grpc import aio, Compression
+    from grpc import Compression, aio
 except ImportError:
     pytest.skip("No GRPC", allow_module_level=True)
 
-from google.api_core import exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers_async
-from google.api_core import retry_async
-from google.api_core import timeout
+from google.api_core import (
+    exceptions,
+    gapic_v1,
+    grpc_helpers_async,
+    retry_async,
+    timeout,
+)
 
 
 def _utcnow_monotonic():

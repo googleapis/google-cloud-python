@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-managed-identities/#history
 
+## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managed-identities-v1.15.0...google-cloud-managed-identities-v1.16.0) (2026-06-22)
+
+
+### Features
+
+* regenerate google-cloud-[k-n] packages ([#17074](https://github.com/googleapis/google-cloud-python/issues/17074)) ([ec54f78](https://github.com/googleapis/google-cloud-python/commit/ec54f78e37bb3b48e0794d544784b99fa13d6f85))
+
 ## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managed-identities-v1.14.0...google-cloud-managed-identities-v1.15.0) (2026-03-26)
 
 

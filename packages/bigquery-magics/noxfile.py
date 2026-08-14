@@ -41,6 +41,7 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
@@ -112,6 +113,17 @@ SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
 }
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 
 nox.options.sessions = [
     "unit",
@@ -226,6 +238,10 @@ def install_unittest_dependencies(session, *constraints):
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
     # Install all test dependencies, then install this package in-place.
+    if session.python == "3.15":
+        session.skip(
+            "Skipping 3.15 until wheels are available for pyproj needed for dependency geopandas"
+        )
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
@@ -279,8 +295,6 @@ def install_systemtest_dependencies(session, with_extras, *constraints):
 @nox.parametrize("with_extras", [True, False])
 def system(session, with_extras):
     """Run the system test suite."""
-    if session.python == "3.9":
-        session.skip("Python 3.9 is not supported.")
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
@@ -546,3 +560,18 @@ def mypy(session):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
     # Add mypy tests
     session.skip("mypy tests are not yet supported")
+
+    session.install("-e", ".")
+    session.install(
+        "mypy",
+        "types-setuptools",
+        "types-protobuf",
+        "types-requests",
+    )
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "bigquery_magics",
+        *session.posargs,
+    )

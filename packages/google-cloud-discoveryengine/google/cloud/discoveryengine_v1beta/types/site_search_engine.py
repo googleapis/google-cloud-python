@@ -65,7 +65,7 @@ class TargetSite(proto.Message):
             The type of the target site, e.g., whether
             the site is to be included or excluded.
         exact_match (bool):
-            Input only. If set to false, a uri_pattern is generated to
+            Immutable. If set to false, a uri_pattern is generated to
             include all pages whose address contains the
             provided_uri_pattern. If set to true, an uri_pattern is
             generated to try to be an exact match of the
@@ -130,6 +130,11 @@ class TargetSite(proto.Message):
                     successful;
                 2. state reverts to SUCCEEDED if the unindexing
                     fails.
+            CANCELLABLE (5):
+                The target site change is pending but
+                cancellable.
+            CANCELLED (6):
+                The target site change is cancelled.
         """
 
         INDEXING_STATUS_UNSPECIFIED = 0
@@ -137,6 +142,8 @@ class TargetSite(proto.Message):
         FAILED = 2
         SUCCEEDED = 3
         DELETING = 4
+        CANCELLABLE = 5
+        CANCELLED = 6
 
     class FailureReason(proto.Message):
         r"""Site search indexing failure reasons.

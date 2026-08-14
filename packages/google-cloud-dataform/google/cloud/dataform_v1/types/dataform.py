@@ -106,7 +106,10 @@ __protobuf__ = proto.module(
         "DeleteReleaseConfigRequest",
         "CompilationResult",
         "CodeCompilationConfig",
+        "GcsRepositorySnapshotMetadata",
+        "GcsRepositorySnapshotDestination",
         "NotebookRuntimeOptions",
+        "PipelineConfig",
         "ListCompilationResultsRequest",
         "ListCompilationResultsResponse",
         "GetCompilationResultRequest",
@@ -172,7 +175,7 @@ class DirectoryContentsView(proto.Enum):
 
     Values:
         DIRECTORY_CONTENTS_VIEW_UNSPECIFIED (0):
-            The default / unset value. Defaults to
+            The default unset value. Defaults to
             DIRECTORY_CONTENTS_VIEW_BASIC.
         DIRECTORY_CONTENTS_VIEW_BASIC (1):
             Includes only the file or directory name.
@@ -284,12 +287,18 @@ class Repository(proto.Message):
     class GitRemoteSettings(proto.Message):
         r"""Controls Git remote configuration for a repository.
 
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             url (str):
                 Required. The Git remote's URL.
             default_branch (str):
-                Required. The Git remote's default branch
-                name.
+                Optional. The Git remote's default branch name. If not set,
+                ``main`` will be used.
+            effective_default_branch (str):
+                Output only. The Git remote's effective default branch name.
+                This is the default branch name of the Git remote if it is
+                set, otherwise it is ``main``.
             authentication_token_secret_version (str):
                 Optional. The name of the Secret Manager secret version to
                 use as an authentication token for Git operations. Must be
@@ -297,6 +306,12 @@ class Repository(proto.Message):
             ssh_authentication_config (google.cloud.dataform_v1.types.Repository.GitRemoteSettings.SshAuthenticationConfig):
                 Optional. Authentication fields for remote
                 uris using SSH protocol.
+            git_repository_link (str):
+                Optional. Resource name for the ``GitRepositoryLink`` used
+                for machine credentials. Must be in the format
+                ``projects/*/locations/*/connections/*/gitRepositoryLinks/*``
+
+                This field is a member of `oneof`_ ``_git_repository_link``.
             token_status (google.cloud.dataform_v1.types.Repository.GitRemoteSettings.TokenStatus):
                 Output only. Deprecated: The field does not
                 contain any token status information.
@@ -355,6 +370,10 @@ class Repository(proto.Message):
             proto.STRING,
             number=2,
         )
+        effective_default_branch: str = proto.Field(
+            proto.STRING,
+            number=9,
+        )
         authentication_token_secret_version: str = proto.Field(
             proto.STRING,
             number=3,
@@ -363,6 +382,11 @@ class Repository(proto.Message):
             proto.MESSAGE,
             number=5,
             message="Repository.GitRemoteSettings.SshAuthenticationConfig",
+        )
+        git_repository_link: str = proto.Field(
+            proto.STRING,
+            number=7,
+            optional=True,
         )
         token_status: "Repository.GitRemoteSettings.TokenStatus" = proto.Field(
             proto.ENUM,
@@ -1740,11 +1764,15 @@ class DirectoryEntry(proto.Message):
 
     Attributes:
         file (str):
-            A file in the directory.
+            A file in the directory. The path is returned
+            including the full folder structure from the
+            root.
 
             This field is a member of `oneof`_ ``entry``.
         directory (str):
-            A child directory in the directory.
+            A child directory in the directory. The path
+            is returned including the full folder structure
+            from the root.
 
             This field is a member of `oneof`_ ``entry``.
         metadata (google.cloud.dataform_v1.types.FilesystemEntryMetadata):
@@ -2146,11 +2174,20 @@ class InstallNpmPackagesRequest(proto.Message):
     Attributes:
         workspace (str):
             Required. The workspace's name.
+        pipeline_config (google.cloud.dataform_v1.types.PipelineConfig):
+            Optional. The pipeline options which defines
+            the pipeline type and path within the Git
+            repository.
     """
 
     workspace: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    pipeline_config: "PipelineConfig" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="PipelineConfig",
     )
 
 
@@ -2184,9 +2221,9 @@ class ReleaseConfig(proto.Message):
         time_zone (str):
             Optional. Specifies the time zone to be used when
             interpreting cron_schedule. Must be a time zone name from
-            the time zone database
-            (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
-            If left unspecified, the default is UTC.
+            the `time zone
+            database <https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>`__.
+            If left unspecified, the default is ``UTC``.
         recent_scheduled_release_records (MutableSequence[google.cloud.dataform_v1.types.ReleaseConfig.ScheduledReleaseRecord]):
             Output only. Records of the 10 most recent scheduled release
             attempts, ordered in descending order of ``release_time``.
@@ -2521,6 +2558,9 @@ class CompilationResult(proto.Message):
             Output only. Metadata indicating whether this resource is
             user-scoped. ``CompilationResult`` resource is
             ``user_scoped`` only if it is sourced from a workspace.
+        gcs_repository_snapshot_metadata (google.cloud.dataform_v1.types.GcsRepositorySnapshotMetadata):
+            Output only. Metadata about the repository
+            snapshot used by scheduled notebooks.
     """
 
     class CompilationError(proto.Message):
@@ -2616,6 +2656,11 @@ class CompilationResult(proto.Message):
         number=12,
         message="PrivateResourceMetadata",
     )
+    gcs_repository_snapshot_metadata: "GcsRepositorySnapshotMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message="GcsRepositorySnapshotMetadata",
+    )
 
 
 class CodeCompilationConfig(proto.Message):
@@ -2656,6 +2701,10 @@ class CodeCompilationConfig(proto.Message):
         default_notebook_runtime_options (google.cloud.dataform_v1.types.NotebookRuntimeOptions):
             Optional. The default notebook runtime
             options.
+        pipeline_config (google.cloud.dataform_v1.types.PipelineConfig):
+            Optional. The pipeline options which defines
+            the pipeline type and path within the Git
+            repository.
     """
 
     default_database: str = proto.Field(
@@ -2700,6 +2749,57 @@ class CodeCompilationConfig(proto.Message):
         number=9,
         message="NotebookRuntimeOptions",
     )
+    pipeline_config: "PipelineConfig" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message="PipelineConfig",
+    )
+
+
+class GcsRepositorySnapshotMetadata(proto.Message):
+    r"""Metadata about a repository snapshot stored in Google Cloud
+    Storage.
+
+    Attributes:
+        repository_snapshot_uri (str):
+            Output only. The Google Cloud Storage URI of
+            the repository snapshot.
+        crc32c_checksum (str):
+            Output only. The crc32c checksum of the
+            repository snapshot, big-endian base64 encoded.
+        generation (int):
+            Output only. The generation number of the
+            Cloud Storage object. See
+            https://cloud.google.com/storage/docs/metadata#generation-number.
+    """
+
+    repository_snapshot_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    crc32c_checksum: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    generation: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+
+
+class GcsRepositorySnapshotDestination(proto.Message):
+    r"""Configures the destination for a repository snapshot.
+
+    Attributes:
+        repository_snapshot_uri (str):
+            Optional. The Google Cloud Storage destination to upload the
+            repository snapshot to. Format: ``gs://bucket-name/path/``.
+    """
+
+    repository_snapshot_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class NotebookRuntimeOptions(proto.Message):
@@ -2713,6 +2813,12 @@ class NotebookRuntimeOptions(proto.Message):
             result to. Format: ``gs://bucket-name``.
 
             This field is a member of `oneof`_ ``execution_sink``.
+        gcs_repository_snapshot_destination (google.cloud.dataform_v1.types.GcsRepositorySnapshotDestination):
+            Optional. The Google Cloud Storage destination to upload the
+            snapshot to. For empty URI it defaults to the provided
+            gcs_output_bucket. Format: ``gs://bucket-name/path/``.
+
+            This field is a member of `oneof`_ ``repository_snapshot_storage``.
         ai_platform_notebook_runtime_template (str):
             Optional. The resource name of the [Colab runtime template]
             (https://cloud.google.com/colab/docs/runtimes), from which a
@@ -2726,7 +2832,59 @@ class NotebookRuntimeOptions(proto.Message):
         number=1,
         oneof="execution_sink",
     )
+    gcs_repository_snapshot_destination: "GcsRepositorySnapshotDestination" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="repository_snapshot_storage",
+            message="GcsRepositorySnapshotDestination",
+        )
+    )
     ai_platform_notebook_runtime_template: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class PipelineConfig(proto.Message):
+    r"""Defines the pipeline type and path within the Git repository.
+
+    Attributes:
+        pipeline_type (google.cloud.dataform_v1.types.PipelineConfig.PipelineType):
+            Required. The type of the pipeline.
+        path (str):
+            Required. The relative path within the Git repository where
+            the pipeline is defined. For example, for a Dataform
+            pipeline, it is a path to the folder where
+            ``workflow_settings.yaml`` or ``dataform.json`` is located.
+    """
+
+    class PipelineType(proto.Enum):
+        r"""The type of the pipeline. This may be extended in the future.
+        In case of UNSPECIFIED, the error will be thrown.
+
+        Values:
+            PIPELINE_TYPE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            DATAFORM (1):
+                Regular Dataform pipeline.
+            SQL (3):
+                SQL single file asset.
+            NOTEBOOK (4):
+                Notebook single file asset.
+        """
+
+        PIPELINE_TYPE_UNSPECIFIED = 0
+        DATAFORM = 1
+        SQL = 3
+        NOTEBOOK = 4
+
+    pipeline_type: PipelineType = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=PipelineType,
+    )
+    path: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -3737,9 +3895,9 @@ class WorkflowConfig(proto.Message):
         time_zone (str):
             Optional. Specifies the time zone to be used when
             interpreting cron_schedule. Must be a time zone name from
-            the time zone database
-            (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
-            If left unspecified, the default is UTC.
+            the `time zone
+            database <https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>`__.
+            If left unspecified, the default is ``UTC``.
         recent_scheduled_execution_records (MutableSequence[google.cloud.dataform_v1.types.WorkflowConfig.ScheduledExecutionRecord]):
             Output only. Records of the 10 most recent scheduled
             execution attempts, ordered in descending order of
@@ -4155,6 +4313,10 @@ class WorkflowInvocation(proto.Message):
             user-scoped. ``WorkflowInvocation`` resource is
             ``user_scoped`` only if it is sourced from a compilation
             result and the compilation result is user-scoped.
+        pipeline_config (google.cloud.dataform_v1.types.PipelineConfig):
+            Output only. The pipeline options which
+            defines the pipeline type and path within the
+            Git repository.
     """
 
     class State(proto.Enum):
@@ -4233,6 +4395,11 @@ class WorkflowInvocation(proto.Message):
         proto.MESSAGE,
         number=10,
         message="PrivateResourceMetadata",
+    )
+    pipeline_config: "PipelineConfig" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="PipelineConfig",
     )
 
 
@@ -4511,11 +4678,14 @@ class WorkflowInvocationAction(proto.Message):
                 Output only. The code contents of a Notebook
                 to be run.
             job_id (str):
-                Output only. The ID of the Vertex job that
-                executed the notebook in contents and also the
-                ID used for the outputs created in Google Cloud
-                Storage buckets. Only set once the job has
-                started to run.
+                Output only. The ID of the Gemini Enterprise
+                Agent Platform job that executed the notebook in
+                contents and also the ID used for the outputs
+                created in Google Cloud Storage buckets. Only
+                set once the job has started to run.
+            file_path (str):
+                Output only. The path to the notebook file in
+                the repository.
         """
 
         contents: str = proto.Field(
@@ -4525,6 +4695,10 @@ class WorkflowInvocationAction(proto.Message):
         job_id: str = proto.Field(
             proto.STRING,
             number=2,
+        )
+        file_path: str = proto.Field(
+            proto.STRING,
+            number=3,
         )
 
     class DataPreparationAction(proto.Message):
@@ -4909,9 +5083,8 @@ class Folder(proto.Message):
             name. This should take the format:
             projects/{project}/locations/{location}/folders/{folder},
             projects/{project}/locations/{location}/teamFolders/{teamFolder},
-            or just projects/{project}/locations/{location}
-            if this is a root Folder. This field can only be
-            updated through MoveFolder.
+            or just "" if this is a root Folder. This field
+            can only be updated through MoveFolder.
         team_folder_name (str):
             Output only. The resource name of the
             TeamFolder that this Folder is associated with.
@@ -5216,8 +5389,8 @@ class QueryFolderContentsRequest(proto.Message):
 
     Attributes:
         folder (str):
-            Required. Name of the folder whose contents to list. Format:
-            projects/*/locations/*/folders/\*
+            Required. Resource name of the Folder to list contents for.
+            Format: projects/*/locations/*/folders/\*
         page_size (int):
             Optional. Maximum number of paths to return.
             The server may return fewer items than
@@ -5338,8 +5511,8 @@ class QueryUserRootContentsRequest(proto.Message):
 
     Attributes:
         location (str):
-            Required. Location of the user root folder whose contents to
-            list. Format: projects/*/locations/*
+            Required. Location of the user root folder to list contents
+            for. Format: projects/*/locations/*
         page_size (int):
             Optional. Maximum number of paths to return.
             The server may return fewer items than
@@ -5599,8 +5772,8 @@ class QueryTeamFolderContentsRequest(proto.Message):
 
     Attributes:
         team_folder (str):
-            Required. Name of the team_folder whose contents to list.
-            Format: ``projects/*/locations/*/teamFolders/*``.
+            Required. Resource name of the TeamFolder to list contents
+            for. Format: ``projects/*/locations/*/teamFolders/*``.
         page_size (int):
             Optional. Maximum number of paths to return.
             The server may return fewer items than
@@ -5724,10 +5897,10 @@ class SearchTeamFoldersRequest(proto.Message):
             Required. Location in which to query TeamFolders. Format:
             ``projects/*/locations/*``.
         page_size (int):
-            Optional. Maximum number of TeamFolders to
-            return. The server may return fewer items than
-            requested. If unspecified, the server will pick
-            an appropriate default.
+            Optional. Maximum number of ``TeamFolders`` to return. The
+            server may return fewer items than requested. If
+            unspecified, the server will pick a default of ``page_size``
+            = 50.
         page_token (str):
             Optional. Page token received from a previous
             ``SearchTeamFolders`` call. Provide this to retrieve the

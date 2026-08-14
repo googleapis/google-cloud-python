@@ -7,6 +7,7 @@
     {
         "name": "person",
         "type": "RECORD",
+        "mode": "NULLABLE",
         "fields": [
             {
                 "name": "name",
@@ -21,6 +22,7 @@
             {
                 "name": "address",
                 "type": "RECORD",
+                "mode": "NULLABLE",
                 "fields": [
                     {
                         "name": "city",
@@ -35,5 +37,76 @@
                 ]
             }
         ]
+    },
+    {
+        "name": "bool_col",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "int64_col",
+        "type": "INTEGER",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "float64_col",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "string_col",
+        "type": "STRING",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "json_col",
+        "type": "JSON",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "date_col",
+        "type": "DATE",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "time_col",
+        "type": "TIME",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "datetime_col",
+        "type": "DATETIME",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "timestamp_col",
+        "type": "TIMESTAMP",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "bytes_col",
+        "type": "BYTES",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "numeric_col",
+        "type": "NUMERIC",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "bignumeric_col",
+        "type": "BIGNUMERIC",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "geography_col",
+        "type": "GEOGRAPHY",
+        "mode": "NULLABLE"
+    },
+    {
+        "name": "duration_col",
+        "type": "INTEGER",
+        "mode": "NULLABLE",
+        "description": "#microseconds"
     }
 ]

@@ -23,12 +23,40 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.support_v2.services.case_attachment_service",
+    "google.cloud.support_v2.services.case_service",
+    "google.cloud.support_v2.services.comment_service",
+    "google.cloud.support_v2.services.support_event_subscription_service",
+    "google.cloud.support_v2.types.actor",
+    "google.cloud.support_v2.types.attachment",
+    "google.cloud.support_v2.types.attachment_service",
+    "google.cloud.support_v2.types.case",
+    "google.cloud.support_v2.types.case_service",
+    "google.cloud.support_v2.types.comment",
+    "google.cloud.support_v2.types.comment_service",
+    "google.cloud.support_v2.types.escalation",
+    "google.cloud.support_v2.types.support_event_subscription",
+    "google.cloud.support_v2.types.support_event_subscription_service",
+}
+
+
 from .services.case_attachment_service import (
     CaseAttachmentServiceAsyncClient,
     CaseAttachmentServiceClient,
 )
 from .services.case_service import CaseServiceAsyncClient, CaseServiceClient
 from .services.comment_service import CommentServiceAsyncClient, CommentServiceClient
+from .services.support_event_subscription_service import (
+    SupportEventSubscriptionServiceAsyncClient,
+    SupportEventSubscriptionServiceClient,
+)
 from .types.actor import Actor
 from .types.attachment import Attachment
 from .types.attachment_service import (
@@ -58,6 +86,17 @@ from .types.comment_service import (
     ListCommentsResponse,
 )
 from .types.escalation import Escalation
+from .types.support_event_subscription import SupportEventSubscription
+from .types.support_event_subscription_service import (
+    CreateSupportEventSubscriptionRequest,
+    DeleteSupportEventSubscriptionRequest,
+    ExpungeSupportEventSubscriptionRequest,
+    GetSupportEventSubscriptionRequest,
+    ListSupportEventSubscriptionsRequest,
+    ListSupportEventSubscriptionsResponse,
+    UndeleteSupportEventSubscriptionRequest,
+    UpdateSupportEventSubscriptionRequest,
+)
 
 if hasattr(api_core, "check_python_version") and hasattr(
     api_core, "check_dependency_versions"
@@ -84,7 +123,7 @@ else:  # pragma: NO COVER
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -113,9 +152,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -146,6 +185,7 @@ __all__ = (
     "CaseAttachmentServiceAsyncClient",
     "CaseServiceAsyncClient",
     "CommentServiceAsyncClient",
+    "SupportEventSubscriptionServiceAsyncClient",
     "Actor",
     "Attachment",
     "Case",
@@ -157,20 +197,30 @@ __all__ = (
     "CommentServiceClient",
     "CreateCaseRequest",
     "CreateCommentRequest",
+    "CreateSupportEventSubscriptionRequest",
+    "DeleteSupportEventSubscriptionRequest",
     "EscalateCaseRequest",
     "Escalation",
+    "ExpungeSupportEventSubscriptionRequest",
     "GetAttachmentRequest",
     "GetCaseRequest",
     "GetCommentRequest",
+    "GetSupportEventSubscriptionRequest",
     "ListAttachmentsRequest",
     "ListAttachmentsResponse",
     "ListCasesRequest",
     "ListCasesResponse",
     "ListCommentsRequest",
     "ListCommentsResponse",
+    "ListSupportEventSubscriptionsRequest",
+    "ListSupportEventSubscriptionsResponse",
     "SearchCaseClassificationsRequest",
     "SearchCaseClassificationsResponse",
     "SearchCasesRequest",
     "SearchCasesResponse",
+    "SupportEventSubscription",
+    "SupportEventSubscriptionServiceClient",
+    "UndeleteSupportEventSubscriptionRequest",
     "UpdateCaseRequest",
+    "UpdateSupportEventSubscriptionRequest",
 )

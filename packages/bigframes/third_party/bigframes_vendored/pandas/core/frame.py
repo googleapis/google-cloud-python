@@ -4470,6 +4470,22 @@ class DataFrame(generic.NDFrame):
             <BLANKLINE>
             [7 rows x 2 columns]
 
+        With experimental Python Transpiler enabled, you can use some lambda functions without
+        deploying them as remote functions.
+
+            >>> bpd.options.experiments.enable_python_transpiler = True
+            >>> df_minutes.map(lambda hours: hours / 60)
+            system_minutes  user_minutes
+            0             0.0           0.0
+            1             0.5          0.25
+            2             1.0          1.25
+            3            <NA>           1.5
+            4             1.5           0.1
+            5             2.0          <NA>
+            6            <NA>          <NA>
+            <BLANKLINE>
+            [7 rows x 2 columns]
+
         Args:
             func (function):
                 Python function wrapped by ``remote_function`` decorator,
@@ -5049,6 +5065,15 @@ class DataFrame(generic.NDFrame):
             ...     return result
 
             >>> df.apply(foo, axis=1)  # doctest: +SKIP
+            0    2.6
+            1    3.8
+            dtype: Float64
+
+        With experimental Python Transpiler enabled, you can use some lambda functions without
+        deploying them as remote functions:
+
+            >>> bpd.options.experiments.enable_python_transpiler = True
+            >>> df.apply(lambda row: 1 + row.col1 + row.col2/row.col3, axis=1)
             0    2.6
             1    3.8
             dtype: Float64
@@ -7335,7 +7360,7 @@ class DataFrame(generic.NDFrame):
         Make plots of Dataframes.
 
         Returns:
-            bigframes.operations.plotting.PlotAccessor:
+            bigframes.pandas.api.typing.PlotAccessor:
                 An accessor making plots.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

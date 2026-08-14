@@ -936,7 +936,14 @@ def test_dataform_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -983,7 +990,14 @@ def test_dataform_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -3429,6 +3443,9 @@ def test_query_team_folder_contents_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -3526,6 +3543,8 @@ async def test_query_team_folder_contents_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3899,6 +3918,9 @@ def test_search_team_folders_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -3994,6 +4016,8 @@ async def test_search_team_folders_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6156,6 +6180,9 @@ def test_query_folder_contents_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -6251,6 +6278,8 @@ async def test_query_folder_contents_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6713,6 +6742,9 @@ def test_query_user_root_contents_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -6808,6 +6840,8 @@ async def test_query_user_root_contents_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7607,6 +7641,9 @@ def test_list_repositories_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataform.Repository) for i in results)
@@ -7699,6 +7736,8 @@ async def test_list_repositories_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -10397,6 +10436,9 @@ def test_query_repository_directory_contents_pager(transport_name: str = "grpc")
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataform.DirectoryEntry) for i in results)
@@ -10489,6 +10531,8 @@ async def test_query_repository_directory_contents_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -10860,6 +10904,9 @@ def test_fetch_repository_history_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataform.CommitLogEntry) for i in results)
@@ -10952,6 +10999,8 @@ async def test_fetch_repository_history_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -11914,6 +11963,9 @@ def test_list_workspaces_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataform.Workspace) for i in results)
@@ -12002,6 +12054,8 @@ async def test_list_workspaces_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -15367,6 +15421,9 @@ def test_query_directory_contents_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataform.DirectoryEntry) for i in results)
@@ -15459,6 +15516,8 @@ async def test_query_directory_contents_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -15809,6 +15868,9 @@ def test_search_files_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataform.SearchResult) for i in results)
@@ -15897,6 +15959,8 @@ async def test_search_files_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -18025,6 +18089,9 @@ def test_list_release_configs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataform.ReleaseConfig) for i in results)
@@ -18117,6 +18184,8 @@ async def test_list_release_configs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -20045,6 +20114,9 @@ def test_list_compilation_results_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataform.CompilationResult) for i in results)
@@ -20137,6 +20209,8 @@ async def test_list_compilation_results_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -21242,6 +21316,9 @@ def test_query_compilation_result_actions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataform.CompilationResultAction) for i in results)
@@ -21334,6 +21411,8 @@ async def test_query_compilation_result_actions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -21793,6 +21872,9 @@ def test_list_workflow_configs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataform.WorkflowConfig) for i in results)
@@ -21885,6 +21967,8 @@ async def test_list_workflow_configs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -23801,6 +23885,9 @@ def test_list_workflow_invocations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataform.WorkflowInvocation) for i in results)
@@ -23893,6 +23980,8 @@ async def test_list_workflow_invocations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -25586,6 +25675,9 @@ def test_query_workflow_invocation_actions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataform.WorkflowInvocationAction) for i in results)
@@ -25678,6 +25770,8 @@ async def test_query_workflow_invocation_actions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -28460,6 +28554,9 @@ def test_query_team_folder_contents_rest_pager(transport: str = "rest"):
 
         pager = client.query_team_folder_contents(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -28670,6 +28767,9 @@ def test_search_team_folders_rest_pager(transport: str = "rest"):
         sample_request = {"location": "projects/sample1/locations/sample2"}
 
         pager = client.search_team_folders(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -29836,6 +29936,9 @@ def test_query_folder_contents_rest_pager(transport: str = "rest"):
 
         pager = client.query_folder_contents(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -30103,6 +30206,9 @@ def test_query_user_root_contents_rest_pager(transport: str = "rest"):
         sample_request = {"location": "projects/sample1/locations/sample2"}
 
         pager = client.query_user_root_contents(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -30544,6 +30650,9 @@ def test_list_repositories_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_repositories(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -31984,6 +32093,9 @@ def test_query_repository_directory_contents_rest_pager(transport: str = "rest")
 
         pager = client.query_repository_directory_contents(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataform.DirectoryEntry) for i in results)
@@ -32190,6 +32302,9 @@ def test_fetch_repository_history_rest_pager(transport: str = "rest"):
         }
 
         pager = client.fetch_repository_history(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -32710,6 +32825,9 @@ def test_list_workspaces_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_workspaces(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -34520,6 +34638,9 @@ def test_query_directory_contents_rest_pager(transport: str = "rest"):
 
         pager = client.query_directory_contents(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataform.DirectoryEntry) for i in results)
@@ -34717,6 +34838,9 @@ def test_search_files_rest_pager(transport: str = "rest"):
         }
 
         pager = client.search_files(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -35942,6 +36066,9 @@ def test_list_release_configs_rest_pager(transport: str = "rest"):
 
         pager = client.list_release_configs(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataform.ReleaseConfig) for i in results)
@@ -36976,6 +37103,9 @@ def test_list_compilation_results_rest_pager(transport: str = "rest"):
 
         pager = client.list_compilation_results(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataform.CompilationResult) for i in results)
@@ -37572,6 +37702,9 @@ def test_query_compilation_result_actions_rest_pager(transport: str = "rest"):
 
         pager = client.query_compilation_result_actions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataform.CompilationResultAction) for i in results)
@@ -37838,6 +37971,9 @@ def test_list_workflow_configs_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_workflow_configs(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -38873,6 +39009,9 @@ def test_list_workflow_invocations_rest_pager(transport: str = "rest"):
 
         pager = client.list_workflow_invocations(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, dataform.WorkflowInvocation) for i in results)
@@ -39772,6 +39911,9 @@ def test_query_workflow_invocation_actions_rest_pager(transport: str = "rest"):
         }
 
         pager = client.query_workflow_invocation_actions(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -46844,11 +46986,13 @@ def test_create_repository_rest_call_success(request_type):
         "git_remote_settings": {
             "url": "url_value",
             "default_branch": "default_branch_value",
+            "effective_default_branch": "effective_default_branch_value",
             "authentication_token_secret_version": "authentication_token_secret_version_value",
             "ssh_authentication_config": {
                 "user_private_key_secret_version": "user_private_key_secret_version_value",
                 "host_public_key": "host_public_key_value",
             },
+            "git_repository_link": "git_repository_link_value",
             "token_status": 1,
         },
         "npmrc_environment_variables_secret_version": "npmrc_environment_variables_secret_version_value",
@@ -47095,11 +47239,13 @@ def test_update_repository_rest_call_success(request_type):
         "git_remote_settings": {
             "url": "url_value",
             "default_branch": "default_branch_value",
+            "effective_default_branch": "effective_default_branch_value",
             "authentication_token_secret_version": "authentication_token_secret_version_value",
             "ssh_authentication_config": {
                 "user_private_key_secret_version": "user_private_key_secret_version_value",
                 "host_public_key": "host_public_key_value",
             },
+            "git_repository_link": "git_repository_link_value",
             "token_status": 1,
         },
         "npmrc_environment_variables_secret_version": "npmrc_environment_variables_secret_version_value",
@@ -51455,8 +51601,12 @@ def test_create_release_config_rest_call_success(request_type):
             "builtin_assertion_name_prefix": "builtin_assertion_name_prefix_value",
             "default_notebook_runtime_options": {
                 "gcs_output_bucket": "gcs_output_bucket_value",
+                "gcs_repository_snapshot_destination": {
+                    "repository_snapshot_uri": "repository_snapshot_uri_value"
+                },
                 "ai_platform_notebook_runtime_template": "ai_platform_notebook_runtime_template_value",
             },
+            "pipeline_config": {"pipeline_type": 1, "path": "path_value"},
         },
         "cron_schedule": "cron_schedule_value",
         "time_zone": "time_zone_value",
@@ -51711,8 +51861,12 @@ def test_update_release_config_rest_call_success(request_type):
             "builtin_assertion_name_prefix": "builtin_assertion_name_prefix_value",
             "default_notebook_runtime_options": {
                 "gcs_output_bucket": "gcs_output_bucket_value",
+                "gcs_repository_snapshot_destination": {
+                    "repository_snapshot_uri": "repository_snapshot_uri_value"
+                },
                 "ai_platform_notebook_runtime_template": "ai_platform_notebook_runtime_template_value",
             },
+            "pipeline_config": {"pipeline_type": 1, "path": "path_value"},
         },
         "cron_schedule": "cron_schedule_value",
         "time_zone": "time_zone_value",
@@ -52349,8 +52503,12 @@ def test_create_compilation_result_rest_call_success(request_type):
             "builtin_assertion_name_prefix": "builtin_assertion_name_prefix_value",
             "default_notebook_runtime_options": {
                 "gcs_output_bucket": "gcs_output_bucket_value",
+                "gcs_repository_snapshot_destination": {
+                    "repository_snapshot_uri": "repository_snapshot_uri_value"
+                },
                 "ai_platform_notebook_runtime_template": "ai_platform_notebook_runtime_template_value",
             },
+            "pipeline_config": {"pipeline_type": 1, "path": "path_value"},
         },
         "resolved_git_commit_sha": "resolved_git_commit_sha_value",
         "dataform_core_version": "dataform_core_version_value",
@@ -52370,6 +52528,11 @@ def test_create_compilation_result_rest_call_success(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "internal_metadata": "internal_metadata_value",
         "private_resource_metadata": {"user_scoped": True},
+        "gcs_repository_snapshot_metadata": {
+            "repository_snapshot_uri": "repository_snapshot_uri_value",
+            "crc32c_checksum": "crc32c_checksum_value",
+            "generation": 1068,
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -53912,6 +54075,7 @@ def test_create_workflow_invocation_rest_call_success(request_type):
         "data_encryption_state": {"kms_key_version_name": "kms_key_version_name_value"},
         "internal_metadata": "internal_metadata_value",
         "private_resource_metadata": {"user_scoped": True},
+        "pipeline_config": {"pipeline_type": 1, "path": "path_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -57967,10 +58131,41 @@ def test_parse_folder_path():
     assert expected == actual
 
 
-def test_notebook_runtime_template_path():
+def test_git_repository_link_path():
     project = "squid"
     location = "clam"
-    notebook_runtime_template = "whelk"
+    connection = "whelk"
+    git_repository_link = "octopus"
+    expected = "projects/{project}/locations/{location}/connections/{connection}/gitRepositoryLinks/{git_repository_link}".format(
+        project=project,
+        location=location,
+        connection=connection,
+        git_repository_link=git_repository_link,
+    )
+    actual = DataformClient.git_repository_link_path(
+        project, location, connection, git_repository_link
+    )
+    assert expected == actual
+
+
+def test_parse_git_repository_link_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "connection": "cuttlefish",
+        "git_repository_link": "mussel",
+    }
+    path = DataformClient.git_repository_link_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataformClient.parse_git_repository_link_path(path)
+    assert expected == actual
+
+
+def test_notebook_runtime_template_path():
+    project = "winkle"
+    location = "nautilus"
+    notebook_runtime_template = "scallop"
     expected = "projects/{project}/locations/{location}/notebookRuntimeTemplates/{notebook_runtime_template}".format(
         project=project,
         location=location,
@@ -57984,9 +58179,9 @@ def test_notebook_runtime_template_path():
 
 def test_parse_notebook_runtime_template_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "notebook_runtime_template": "nudibranch",
+        "project": "abalone",
+        "location": "squid",
+        "notebook_runtime_template": "clam",
     }
     path = DataformClient.notebook_runtime_template_path(**expected)
 
@@ -57996,10 +58191,10 @@ def test_parse_notebook_runtime_template_path():
 
 
 def test_release_config_path():
-    project = "cuttlefish"
-    location = "mussel"
-    repository = "winkle"
-    release_config = "nautilus"
+    project = "whelk"
+    location = "octopus"
+    repository = "oyster"
+    release_config = "nudibranch"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/releaseConfigs/{release_config}".format(
         project=project,
         location=location,
@@ -58014,10 +58209,10 @@ def test_release_config_path():
 
 def test_parse_release_config_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "repository": "squid",
-        "release_config": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
+        "repository": "winkle",
+        "release_config": "nautilus",
     }
     path = DataformClient.release_config_path(**expected)
 
@@ -58027,9 +58222,9 @@ def test_parse_release_config_path():
 
 
 def test_repository_path():
-    project = "whelk"
-    location = "octopus"
-    repository = "oyster"
+    project = "scallop"
+    location = "abalone"
+    repository = "squid"
     expected = (
         "projects/{project}/locations/{location}/repositories/{repository}".format(
             project=project,
@@ -58043,9 +58238,9 @@ def test_repository_path():
 
 def test_parse_repository_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "repository": "mussel",
+        "project": "clam",
+        "location": "whelk",
+        "repository": "octopus",
     }
     path = DataformClient.repository_path(**expected)
 
@@ -58055,9 +58250,9 @@ def test_parse_repository_path():
 
 
 def test_secret_version_path():
-    project = "winkle"
-    secret = "nautilus"
-    version = "scallop"
+    project = "oyster"
+    secret = "nudibranch"
+    version = "cuttlefish"
     expected = "projects/{project}/secrets/{secret}/versions/{version}".format(
         project=project,
         secret=secret,
@@ -58069,9 +58264,9 @@ def test_secret_version_path():
 
 def test_parse_secret_version_path():
     expected = {
-        "project": "abalone",
-        "secret": "squid",
-        "version": "clam",
+        "project": "mussel",
+        "secret": "winkle",
+        "version": "nautilus",
     }
     path = DataformClient.secret_version_path(**expected)
 
@@ -58081,9 +58276,9 @@ def test_parse_secret_version_path():
 
 
 def test_team_folder_path():
-    project = "whelk"
-    location = "octopus"
-    team_folder = "oyster"
+    project = "scallop"
+    location = "abalone"
+    team_folder = "squid"
     expected = (
         "projects/{project}/locations/{location}/teamFolders/{team_folder}".format(
             project=project,
@@ -58097,9 +58292,9 @@ def test_team_folder_path():
 
 def test_parse_team_folder_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "team_folder": "mussel",
+        "project": "clam",
+        "location": "whelk",
+        "team_folder": "octopus",
     }
     path = DataformClient.team_folder_path(**expected)
 
@@ -58109,10 +58304,10 @@ def test_parse_team_folder_path():
 
 
 def test_workflow_config_path():
-    project = "winkle"
-    location = "nautilus"
-    repository = "scallop"
-    workflow_config = "abalone"
+    project = "oyster"
+    location = "nudibranch"
+    repository = "cuttlefish"
+    workflow_config = "mussel"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/workflowConfigs/{workflow_config}".format(
         project=project,
         location=location,
@@ -58127,10 +58322,10 @@ def test_workflow_config_path():
 
 def test_parse_workflow_config_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
-        "repository": "whelk",
-        "workflow_config": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
+        "repository": "scallop",
+        "workflow_config": "abalone",
     }
     path = DataformClient.workflow_config_path(**expected)
 
@@ -58140,10 +58335,10 @@ def test_parse_workflow_config_path():
 
 
 def test_workflow_invocation_path():
-    project = "oyster"
-    location = "nudibranch"
-    repository = "cuttlefish"
-    workflow_invocation = "mussel"
+    project = "squid"
+    location = "clam"
+    repository = "whelk"
+    workflow_invocation = "octopus"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/workflowInvocations/{workflow_invocation}".format(
         project=project,
         location=location,
@@ -58158,10 +58353,10 @@ def test_workflow_invocation_path():
 
 def test_parse_workflow_invocation_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
-        "repository": "scallop",
-        "workflow_invocation": "abalone",
+        "project": "oyster",
+        "location": "nudibranch",
+        "repository": "cuttlefish",
+        "workflow_invocation": "mussel",
     }
     path = DataformClient.workflow_invocation_path(**expected)
 
@@ -58171,10 +58366,10 @@ def test_parse_workflow_invocation_path():
 
 
 def test_workspace_path():
-    project = "squid"
-    location = "clam"
-    repository = "whelk"
-    workspace = "octopus"
+    project = "winkle"
+    location = "nautilus"
+    repository = "scallop"
+    workspace = "abalone"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/workspaces/{workspace}".format(
         project=project,
         location=location,
@@ -58187,10 +58382,10 @@ def test_workspace_path():
 
 def test_parse_workspace_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "repository": "cuttlefish",
-        "workspace": "mussel",
+        "project": "squid",
+        "location": "clam",
+        "repository": "whelk",
+        "workspace": "octopus",
     }
     path = DataformClient.workspace_path(**expected)
 
@@ -58200,7 +58395,7 @@ def test_parse_workspace_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -58210,7 +58405,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "nudibranch",
     }
     path = DataformClient.common_billing_account_path(**expected)
 
@@ -58220,7 +58415,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -58230,7 +58425,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "mussel",
     }
     path = DataformClient.common_folder_path(**expected)
 
@@ -58240,7 +58435,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -58250,7 +58445,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "nautilus",
     }
     path = DataformClient.common_organization_path(**expected)
 
@@ -58260,7 +58455,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -58270,7 +58465,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "abalone",
     }
     path = DataformClient.common_project_path(**expected)
 
@@ -58280,8 +58475,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -58292,8 +58487,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = DataformClient.common_location_path(**expected)
 

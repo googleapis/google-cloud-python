@@ -23,6 +23,53 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.retail_v2.services.analytics_service",
+    "google.cloud.retail_v2.services.catalog_service",
+    "google.cloud.retail_v2.services.completion_service",
+    "google.cloud.retail_v2.services.control_service",
+    "google.cloud.retail_v2.services.conversational_search_service",
+    "google.cloud.retail_v2.services.generative_question_service",
+    "google.cloud.retail_v2.services.model_service",
+    "google.cloud.retail_v2.services.prediction_service",
+    "google.cloud.retail_v2.services.product_service",
+    "google.cloud.retail_v2.services.search_service",
+    "google.cloud.retail_v2.services.serving_config_service",
+    "google.cloud.retail_v2.services.user_event_service",
+    "google.cloud.retail_v2.types.analytics_service",
+    "google.cloud.retail_v2.types.catalog",
+    "google.cloud.retail_v2.types.catalog_service",
+    "google.cloud.retail_v2.types.common",
+    "google.cloud.retail_v2.types.completion_service",
+    "google.cloud.retail_v2.types.control",
+    "google.cloud.retail_v2.types.control_service",
+    "google.cloud.retail_v2.types.conversational_search_service",
+    "google.cloud.retail_v2.types.export_config",
+    "google.cloud.retail_v2.types.generative_question",
+    "google.cloud.retail_v2.types.generative_question_service",
+    "google.cloud.retail_v2.types.import_config",
+    "google.cloud.retail_v2.types.model",
+    "google.cloud.retail_v2.types.model_service",
+    "google.cloud.retail_v2.types.prediction_service",
+    "google.cloud.retail_v2.types.product",
+    "google.cloud.retail_v2.types.product_service",
+    "google.cloud.retail_v2.types.promotion",
+    "google.cloud.retail_v2.types.purge_config",
+    "google.cloud.retail_v2.types.safety",
+    "google.cloud.retail_v2.types.search_service",
+    "google.cloud.retail_v2.types.serving_config",
+    "google.cloud.retail_v2.types.serving_config_service",
+    "google.cloud.retail_v2.types.user_event",
+    "google.cloud.retail_v2.types.user_event_service",
+}
+
+
 from .services.analytics_service import (
     AnalyticsServiceAsyncClient,
     AnalyticsServiceClient,
@@ -262,7 +309,7 @@ else:  # pragma: NO COVER
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -291,9 +338,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(

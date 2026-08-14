@@ -864,7 +864,14 @@ def test_routers_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -911,7 +918,14 @@ def test_routers_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1370,6 +1384,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1"}
 
         pager = client.aggregated_list(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         assert isinstance(pager.get("a"), compute.RoutersScopedList)
         assert pager.get("h") is None
@@ -3585,6 +3602,9 @@ def test_get_nat_mapping_info_rest_pager(transport: str = "rest"):
 
         pager = client.get_nat_mapping_info(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.VmEndpointNatMappings) for i in results)
@@ -4674,6 +4694,9 @@ def test_list_rest_pager(transport: str = "rest"):
 
         pager = client.list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.Router) for i in results)
@@ -4970,6 +4993,9 @@ def test_list_bgp_routes_rest_pager(transport: str = "rest"):
 
         pager = client.list_bgp_routes(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.BgpRoute) for i in results)
@@ -5255,6 +5281,9 @@ def test_list_named_sets_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_named_sets(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -5545,6 +5574,9 @@ def test_list_route_policies_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_route_policies(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -10184,6 +10216,7 @@ def test_insert_rest_call_success(request_type):
             {
                 "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
+                "effective_tcp_time_wait_timeout_sec": 3705,
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
@@ -11097,6 +11130,7 @@ def test_patch_rest_call_success(request_type):
             {
                 "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
+                "effective_tcp_time_wait_timeout_sec": 3705,
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
@@ -11976,6 +12010,7 @@ def test_preview_rest_call_success(request_type):
             {
                 "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
+                "effective_tcp_time_wait_timeout_sec": 3705,
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],
@@ -12508,6 +12543,7 @@ def test_update_rest_call_success(request_type):
             {
                 "auto_network_tier": "auto_network_tier_value",
                 "drain_nat_ips": ["drain_nat_ips_value1", "drain_nat_ips_value2"],
+                "effective_tcp_time_wait_timeout_sec": 3705,
                 "enable_dynamic_port_allocation": True,
                 "enable_endpoint_independent_mapping": True,
                 "endpoint_types": ["endpoint_types_value1", "endpoint_types_value2"],

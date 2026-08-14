@@ -18,6 +18,24 @@ from google.cloud.discoveryengine import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from google.cloud.discoveryengine_v1beta.services.acl_config_service.async_client import (
+    AclConfigServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.acl_config_service.client import (
+    AclConfigServiceClient,
+)
+from google.cloud.discoveryengine_v1beta.services.assistant_service.async_client import (
+    AssistantServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.assistant_service.client import (
+    AssistantServiceClient,
+)
+from google.cloud.discoveryengine_v1beta.services.cmek_config_service.async_client import (
+    CmekConfigServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.cmek_config_service.client import (
+    CmekConfigServiceClient,
+)
 from google.cloud.discoveryengine_v1beta.services.completion_service.async_client import (
     CompletionServiceAsyncClient,
 )
@@ -65,6 +83,18 @@ from google.cloud.discoveryengine_v1beta.services.grounded_generation_service.as
 )
 from google.cloud.discoveryengine_v1beta.services.grounded_generation_service.client import (
     GroundedGenerationServiceClient,
+)
+from google.cloud.discoveryengine_v1beta.services.identity_mapping_store_service.async_client import (
+    IdentityMappingStoreServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.identity_mapping_store_service.client import (
+    IdentityMappingStoreServiceClient,
+)
+from google.cloud.discoveryengine_v1beta.services.license_config_service.async_client import (
+    LicenseConfigServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.license_config_service.client import (
+    LicenseConfigServiceClient,
 )
 from google.cloud.discoveryengine_v1beta.services.project_service.async_client import (
     ProjectServiceAsyncClient,
@@ -138,18 +168,72 @@ from google.cloud.discoveryengine_v1beta.services.user_event_service.async_clien
 from google.cloud.discoveryengine_v1beta.services.user_event_service.client import (
     UserEventServiceClient,
 )
+from google.cloud.discoveryengine_v1beta.services.user_license_service.async_client import (
+    UserLicenseServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.user_license_service.client import (
+    UserLicenseServiceClient,
+)
+from google.cloud.discoveryengine_v1beta.services.user_store_service.async_client import (
+    UserStoreServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.user_store_service.client import (
+    UserStoreServiceClient,
+)
+from google.cloud.discoveryengine_v1beta.types.acl_config import AclConfig
+from google.cloud.discoveryengine_v1beta.types.acl_config_service import (
+    GetAclConfigRequest,
+    UpdateAclConfigRequest,
+)
+from google.cloud.discoveryengine_v1beta.types.agent_gateway_setting import (
+    AgentGatewaySetting,
+)
 from google.cloud.discoveryengine_v1beta.types.answer import Answer
+from google.cloud.discoveryengine_v1beta.types.assist_answer import (
+    AssistAnswer,
+    AssistantContent,
+    AssistantGroundedContent,
+)
+from google.cloud.discoveryengine_v1beta.types.assistant import Assistant
+from google.cloud.discoveryengine_v1beta.types.assistant_service import (
+    AssistUserMetadata,
+    CreateAssistantRequest,
+    DeleteAssistantRequest,
+    GetAssistantRequest,
+    ListAssistantsRequest,
+    ListAssistantsResponse,
+    StreamAssistRequest,
+    StreamAssistResponse,
+    UpdateAssistantRequest,
+)
 from google.cloud.discoveryengine_v1beta.types.chunk import Chunk
+from google.cloud.discoveryengine_v1beta.types.cmek_config_service import (
+    CmekConfig,
+    DeleteCmekConfigMetadata,
+    DeleteCmekConfigRequest,
+    GetCmekConfigRequest,
+    ListCmekConfigsRequest,
+    ListCmekConfigsResponse,
+    SingleRegionKey,
+    UpdateCmekConfigMetadata,
+    UpdateCmekConfigRequest,
+)
 from google.cloud.discoveryengine_v1beta.types.common import (
     CustomAttribute,
     DoubleList,
     EmbeddingConfig,
+    HealthcareFhirConfig,
+    IdpConfig,
     IndustryVertical,
     Interval,
+    Principal,
     SearchAddOn,
+    SearchLinkPromotion,
     SearchTier,
     SearchUseCase,
     SolutionType,
+    SubscriptionTerm,
+    SubscriptionTier,
     UserInfo,
 )
 from google.cloud.discoveryengine_v1beta.types.completion import (
@@ -161,6 +245,8 @@ from google.cloud.discoveryengine_v1beta.types.completion_service import (
     AdvancedCompleteQueryResponse,
     CompleteQueryRequest,
     CompleteQueryResponse,
+    RemoveSuggestionRequest,
+    RemoveSuggestionResponse,
 )
 from google.cloud.discoveryengine_v1beta.types.control import Condition, Control
 from google.cloud.discoveryengine_v1beta.types.control_service import (
@@ -201,6 +287,7 @@ from google.cloud.discoveryengine_v1beta.types.custom_tuning_model import (
     CustomTuningModel,
 )
 from google.cloud.discoveryengine_v1beta.types.data_store import (
+    AdvancedSiteSearchConfig,
     DataStore,
     LanguageInfo,
     NaturalLanguageQueryUnderstandingConfig,
@@ -259,10 +346,13 @@ from google.cloud.discoveryengine_v1beta.types.evaluation_service import (
     ListEvaluationsRequest,
     ListEvaluationsResponse,
 )
+from google.cloud.discoveryengine_v1beta.types.feedback import Feedback
 from google.cloud.discoveryengine_v1beta.types.grounded_generation_service import (
     CheckGroundingRequest,
     CheckGroundingResponse,
     CheckGroundingSpec,
+    Citation,
+    CitationMetadata,
     GenerateGroundedContentRequest,
     GenerateGroundedContentResponse,
     GroundedGenerationContent,
@@ -271,6 +361,24 @@ from google.cloud.discoveryengine_v1beta.types.grounding import (
     FactChunk,
     GroundingConfig,
     GroundingFact,
+)
+from google.cloud.discoveryengine_v1beta.types.identity_mapping_store import (
+    IdentityMappingEntry,
+    IdentityMappingStore,
+)
+from google.cloud.discoveryengine_v1beta.types.identity_mapping_store_service import (
+    CreateIdentityMappingStoreRequest,
+    DeleteIdentityMappingStoreMetadata,
+    DeleteIdentityMappingStoreRequest,
+    GetIdentityMappingStoreRequest,
+    IdentityMappingEntryOperationMetadata,
+    ImportIdentityMappingsRequest,
+    ImportIdentityMappingsResponse,
+    ListIdentityMappingsRequest,
+    ListIdentityMappingsResponse,
+    ListIdentityMappingStoresRequest,
+    ListIdentityMappingStoresResponse,
+    PurgeIdentityMappingsRequest,
 )
 from google.cloud.discoveryengine_v1beta.types.import_config import (
     AlloyDbSource,
@@ -299,6 +407,19 @@ from google.cloud.discoveryengine_v1beta.types.import_config import (
     ImportUserEventsResponse,
     SpannerSource,
 )
+from google.cloud.discoveryengine_v1beta.types.license_config import LicenseConfig
+from google.cloud.discoveryengine_v1beta.types.license_config_service import (
+    CreateLicenseConfigRequest,
+    DistributeLicenseConfigRequest,
+    DistributeLicenseConfigResponse,
+    GetLicenseConfigRequest,
+    ListLicenseConfigsRequest,
+    ListLicenseConfigsResponse,
+    RetractLicenseConfigRequest,
+    RetractLicenseConfigResponse,
+    UpdateLicenseConfigRequest,
+)
+from google.cloud.discoveryengine_v1beta.types.logging import ObservabilityConfig
 from google.cloud.discoveryengine_v1beta.types.project import Project
 from google.cloud.discoveryengine_v1beta.types.project_service import (
     ProvisionProjectMetadata,
@@ -328,6 +449,7 @@ from google.cloud.discoveryengine_v1beta.types.recommendation_service import (
     RecommendRequest,
     RecommendResponse,
 )
+from google.cloud.discoveryengine_v1beta.types.safety import HarmCategory, SafetyRating
 from google.cloud.discoveryengine_v1beta.types.sample_query import SampleQuery
 from google.cloud.discoveryengine_v1beta.types.sample_query_service import (
     CreateSampleQueryRequest,
@@ -369,8 +491,13 @@ from google.cloud.discoveryengine_v1beta.types.search_tuning_service import (
     TrainCustomModelRequest,
     TrainCustomModelResponse,
 )
-from google.cloud.discoveryengine_v1beta.types.serving_config import ServingConfig
+from google.cloud.discoveryengine_v1beta.types.serving_config import (
+    AnswerGenerationSpec,
+    ServingConfig,
+)
 from google.cloud.discoveryengine_v1beta.types.serving_config_service import (
+    CreateServingConfigRequest,
+    DeleteServingConfigRequest,
     GetServingConfigRequest,
     ListServingConfigsRequest,
     ListServingConfigsResponse,
@@ -432,8 +559,32 @@ from google.cloud.discoveryengine_v1beta.types.user_event_service import (
     CollectUserEventRequest,
     WriteUserEventRequest,
 )
+from google.cloud.discoveryengine_v1beta.types.user_license import (
+    LicenseConfigUsageStats,
+    UserLicense,
+)
+from google.cloud.discoveryengine_v1beta.types.user_license_service import (
+    BatchUpdateUserLicensesMetadata,
+    BatchUpdateUserLicensesRequest,
+    BatchUpdateUserLicensesResponse,
+    ListLicenseConfigsUsageStatsRequest,
+    ListLicenseConfigsUsageStatsResponse,
+    ListUserLicensesRequest,
+    ListUserLicensesResponse,
+)
+from google.cloud.discoveryengine_v1beta.types.user_store import UserStore
+from google.cloud.discoveryengine_v1beta.types.user_store_service import (
+    GetUserStoreRequest,
+    UpdateUserStoreRequest,
+)
 
 __all__ = (
+    "AclConfigServiceClient",
+    "AclConfigServiceAsyncClient",
+    "AssistantServiceClient",
+    "AssistantServiceAsyncClient",
+    "CmekConfigServiceClient",
+    "CmekConfigServiceAsyncClient",
     "CompletionServiceClient",
     "CompletionServiceAsyncClient",
     "ControlServiceClient",
@@ -450,6 +601,10 @@ __all__ = (
     "EvaluationServiceAsyncClient",
     "GroundedGenerationServiceClient",
     "GroundedGenerationServiceAsyncClient",
+    "IdentityMappingStoreServiceClient",
+    "IdentityMappingStoreServiceAsyncClient",
+    "LicenseConfigServiceClient",
+    "LicenseConfigServiceAsyncClient",
     "ProjectServiceClient",
     "ProjectServiceAsyncClient",
     "RankServiceClient",
@@ -474,24 +629,62 @@ __all__ = (
     "SiteSearchEngineServiceAsyncClient",
     "UserEventServiceClient",
     "UserEventServiceAsyncClient",
+    "UserLicenseServiceClient",
+    "UserLicenseServiceAsyncClient",
+    "UserStoreServiceClient",
+    "UserStoreServiceAsyncClient",
+    "AclConfig",
+    "GetAclConfigRequest",
+    "UpdateAclConfigRequest",
+    "AgentGatewaySetting",
     "Answer",
+    "AssistAnswer",
+    "AssistantContent",
+    "AssistantGroundedContent",
+    "Assistant",
+    "AssistUserMetadata",
+    "CreateAssistantRequest",
+    "DeleteAssistantRequest",
+    "GetAssistantRequest",
+    "ListAssistantsRequest",
+    "ListAssistantsResponse",
+    "StreamAssistRequest",
+    "StreamAssistResponse",
+    "UpdateAssistantRequest",
     "Chunk",
+    "CmekConfig",
+    "DeleteCmekConfigMetadata",
+    "DeleteCmekConfigRequest",
+    "GetCmekConfigRequest",
+    "ListCmekConfigsRequest",
+    "ListCmekConfigsResponse",
+    "SingleRegionKey",
+    "UpdateCmekConfigMetadata",
+    "UpdateCmekConfigRequest",
     "CustomAttribute",
     "DoubleList",
     "EmbeddingConfig",
+    "HealthcareFhirConfig",
+    "IdpConfig",
     "Interval",
+    "Principal",
+    "SearchLinkPromotion",
     "UserInfo",
     "IndustryVertical",
     "SearchAddOn",
     "SearchTier",
     "SearchUseCase",
     "SolutionType",
+    "SubscriptionTerm",
+    "SubscriptionTier",
     "CompletionSuggestion",
     "SuggestionDenyListEntry",
     "AdvancedCompleteQueryRequest",
     "AdvancedCompleteQueryResponse",
     "CompleteQueryRequest",
     "CompleteQueryResponse",
+    "RemoveSuggestionRequest",
+    "RemoveSuggestionResponse",
     "Condition",
     "Control",
     "CreateControlRequest",
@@ -523,6 +716,7 @@ __all__ = (
     "UpdateConversationRequest",
     "UpdateSessionRequest",
     "CustomTuningModel",
+    "AdvancedSiteSearchConfig",
     "DataStore",
     "LanguageInfo",
     "NaturalLanguageQueryUnderstandingConfig",
@@ -568,15 +762,32 @@ __all__ = (
     "ListEvaluationResultsResponse",
     "ListEvaluationsRequest",
     "ListEvaluationsResponse",
+    "Feedback",
     "CheckGroundingRequest",
     "CheckGroundingResponse",
     "CheckGroundingSpec",
+    "Citation",
+    "CitationMetadata",
     "GenerateGroundedContentRequest",
     "GenerateGroundedContentResponse",
     "GroundedGenerationContent",
     "FactChunk",
     "GroundingConfig",
     "GroundingFact",
+    "IdentityMappingEntry",
+    "IdentityMappingStore",
+    "CreateIdentityMappingStoreRequest",
+    "DeleteIdentityMappingStoreMetadata",
+    "DeleteIdentityMappingStoreRequest",
+    "GetIdentityMappingStoreRequest",
+    "IdentityMappingEntryOperationMetadata",
+    "ImportIdentityMappingsRequest",
+    "ImportIdentityMappingsResponse",
+    "ListIdentityMappingsRequest",
+    "ListIdentityMappingsResponse",
+    "ListIdentityMappingStoresRequest",
+    "ListIdentityMappingStoresResponse",
+    "PurgeIdentityMappingsRequest",
     "AlloyDbSource",
     "BigQuerySource",
     "BigtableOptions",
@@ -602,6 +813,17 @@ __all__ = (
     "ImportUserEventsRequest",
     "ImportUserEventsResponse",
     "SpannerSource",
+    "LicenseConfig",
+    "CreateLicenseConfigRequest",
+    "DistributeLicenseConfigRequest",
+    "DistributeLicenseConfigResponse",
+    "GetLicenseConfigRequest",
+    "ListLicenseConfigsRequest",
+    "ListLicenseConfigsResponse",
+    "RetractLicenseConfigRequest",
+    "RetractLicenseConfigResponse",
+    "UpdateLicenseConfigRequest",
+    "ObservabilityConfig",
     "Project",
     "ProvisionProjectMetadata",
     "ProvisionProjectRequest",
@@ -623,6 +845,8 @@ __all__ = (
     "RankResponse",
     "RecommendRequest",
     "RecommendResponse",
+    "SafetyRating",
+    "HarmCategory",
     "SampleQuery",
     "CreateSampleQueryRequest",
     "DeleteSampleQueryRequest",
@@ -654,7 +878,10 @@ __all__ = (
     "TrainCustomModelMetadata",
     "TrainCustomModelRequest",
     "TrainCustomModelResponse",
+    "AnswerGenerationSpec",
     "ServingConfig",
+    "CreateServingConfigRequest",
+    "DeleteServingConfigRequest",
     "GetServingConfigRequest",
     "ListServingConfigsRequest",
     "ListServingConfigsResponse",
@@ -708,4 +935,16 @@ __all__ = (
     "UserEvent",
     "CollectUserEventRequest",
     "WriteUserEventRequest",
+    "LicenseConfigUsageStats",
+    "UserLicense",
+    "BatchUpdateUserLicensesMetadata",
+    "BatchUpdateUserLicensesRequest",
+    "BatchUpdateUserLicensesResponse",
+    "ListLicenseConfigsUsageStatsRequest",
+    "ListLicenseConfigsUsageStatsResponse",
+    "ListUserLicensesRequest",
+    "ListUserLicensesResponse",
+    "UserStore",
+    "GetUserStoreRequest",
+    "UpdateUserStoreRequest",
 )

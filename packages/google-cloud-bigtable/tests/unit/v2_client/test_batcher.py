@@ -13,8 +13,6 @@
 # limitations under the License.
 
 
-import time
-
 import mock
 import pytest
 
@@ -175,22 +173,21 @@ def test_mutations_batcher_context_manager_flushed_when_closed():
     assert table.mutation_calls == 1
 
 
+@mock.patch("google.cloud.bigtable.batcher.threading.Timer")
 @mock.patch("google.cloud.bigtable.batcher.MutationsBatcher.flush")
-def test_mutations_batcher_flush_interval(mocked_flush):
+def test_mutations_batcher_flush_interval(mocked_flush, mocked_timer):
     table = _Table(TABLE_NAME)
     flush_interval = 0.5
     mutation_batcher = MutationsBatcher(table=table, flush_interval=flush_interval)
 
-    assert mutation_batcher._timer.interval == flush_interval
+    mocked_timer.assert_called_once_with(flush_interval, mutation_batcher.flush)
+    mocked_timer.return_value.start.assert_called_once_with()
     mocked_flush.assert_not_called()
 
-    time.sleep(0.4)
-    mocked_flush.assert_not_called()
-
-    time.sleep(0.1)
+    # Manually invoke the timer callback to verify it calls flush
+    timer_callback = mocked_timer.call_args[0][1]
+    timer_callback()
     mocked_flush.assert_called_once_with()
-
-    mutation_batcher.close()
 
 
 def test_mutations_batcher_response_with_error_codes():

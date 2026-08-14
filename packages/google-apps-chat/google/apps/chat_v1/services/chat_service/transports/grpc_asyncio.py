@@ -34,6 +34,7 @@ from grpc.experimental import aio  # type: ignore
 
 from google.apps.chat_v1.types import (
     attachment,
+    availability,
     membership,
     message,
     reaction,
@@ -45,6 +46,7 @@ from google.apps.chat_v1.types import (
     space_setup,
     thread_read_state,
 )
+from google.apps.chat_v1.types import availability as gc_availability
 from google.apps.chat_v1.types import membership as gc_membership
 from google.apps.chat_v1.types import message as gc_message
 from google.apps.chat_v1.types import reaction as gc_reaction
@@ -767,6 +769,62 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["delete_message"]
 
     @property
+    def search_messages(
+        self,
+    ) -> Callable[
+        [message.SearchMessagesRequest], Awaitable[message.SearchMessagesResponse]
+    ]:
+        r"""Return a callable for the search messages method over gRPC.
+
+        Searches for messages in Google Chat that the calling user has
+        access to. Returns a list of messages matching the search
+        criteria.
+
+        To search across all spaces the user has access to, set
+        ``parent`` to ``spaces/-``. Using any other value for ``parent``
+        results in an ``INVALID_ARGUMENT`` error. The returned messages
+        have their ``name`` field populated with the full resource name,
+        which includes the specific ``space`` in which the message
+        resides.
+
+        This API doesn't return all message types. The types of messages
+        listed below aren't included in the response. Use
+        [ListMessages][google.chat.v1.ChatService.ListMessages] to list
+        all messages.
+
+        - Private Messages that are visible to the authenticated user.
+        - Messages posted by Chat apps in spaces or group chats.
+        - Messages in a Chat app DM.
+        - Messages from blocked users.
+        - Messages in spaces that the caller has muted.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with one of the following `authorization
+        scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.messages.readonly``
+        - ``https://www.googleapis.com/auth/chat.messages``
+
+        Returns:
+            Callable[[~.SearchMessagesRequest],
+                    Awaitable[~.SearchMessagesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "search_messages" not in self._stubs:
+            self._stubs["search_messages"] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/SearchMessages",
+                request_serializer=message.SearchMessagesRequest.serialize,
+                response_deserializer=message.SearchMessagesResponse.deserialize,
+            )
+        return self._stubs["search_messages"]
+
+    @property
     def get_attachment(
         self,
     ) -> Callable[[attachment.GetAttachmentRequest], Awaitable[attachment.Attachment]]:
@@ -904,19 +962,32 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
     ) -> Callable[[space.SearchSpacesRequest], Awaitable[space.SearchSpacesResponse]]:
         r"""Return a callable for the search spaces method over gRPC.
 
-        Returns a list of spaces in a Google Workspace organization
-        based on an administrator's search. In the request, set
-        ``use_admin_access`` to ``true``. For an example, see `Search
-        for and manage
+        Returns a list of spaces in a Google Workspace organization. For
+        an example, see `Search for and manage
         spaces <https://developers.google.com/workspace/chat/search-manage-admin>`__.
 
-        Requires `user authentication with administrator
-        privileges <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user#admin-privileges>`__
-        and one of the following `authorization
-        scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+        When ``use_admin_access`` is set to ``false``, the results are
+        limited to spaces where the calling user is a joined member. To
+        search with administrator privileges, set ``use_admin_access``
+        to ``true``.
 
-        - ``https://www.googleapis.com/auth/chat.admin.spaces.readonly``
-        - ``https://www.googleapis.com/auth/chat.admin.spaces``
+        Supports the following types of
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
+
+        - `User
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+          with one of the following authorization scopes:
+
+          - ``https://www.googleapis.com/auth/chat.spaces.readonly``
+          - ``https://www.googleapis.com/auth/chat.spaces``
+
+        - `User authentication with administrator
+          privileges <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user#admin-privileges>`__
+          and one of the following `authorization
+          scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+          - ``https://www.googleapis.com/auth/chat.admin.spaces.readonly``
+          - ``https://www.googleapis.com/auth/chat.admin.spaces``
 
         Returns:
             Callable[[~.SearchSpacesRequest],
@@ -2030,6 +2101,210 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["get_thread_read_state"]
 
     @property
+    def get_availability(
+        self,
+    ) -> Callable[
+        [availability.GetAvailabilityRequest], Awaitable[availability.Availability]
+    ]:
+        r"""Return a callable for the get availability method over gRPC.
+
+        Returns availability information for a human user in Google
+        Chat. For example, this can be used to check if a user is online
+        or away, or to retrieve their custom status message.
+
+        This method only retrieves the authenticated user's
+        availability.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with one of the following `authorization
+        scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.availability.readonly``
+        - ``https://www.googleapis.com/auth/chat.users.availability``
+
+        Returns:
+            Callable[[~.GetAvailabilityRequest],
+                    Awaitable[~.Availability]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_availability" not in self._stubs:
+            self._stubs["get_availability"] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/GetAvailability",
+                request_serializer=availability.GetAvailabilityRequest.serialize,
+                response_deserializer=availability.Availability.deserialize,
+            )
+        return self._stubs["get_availability"]
+
+    @property
+    def mark_as_active(
+        self,
+    ) -> Callable[
+        [availability.MarkAsActiveRequest], Awaitable[availability.Availability]
+    ]:
+        r"""Return a callable for the mark as active method over gRPC.
+
+        Marks user as ``ACTIVE`` in Google Chat.
+
+        Sets the user's availability state to ``ACTIVE``. The ``ACTIVE``
+        state lasts until the specified expiration, at which point the
+        user's state becomes ``AWAY``. Note that if the user is actively
+        using Chat, the ``ACTIVE`` state duration may extend beyond the
+        provided expiration.
+
+        This method only updates the authenticated user's availability.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.availability``
+
+        Returns:
+            Callable[[~.MarkAsActiveRequest],
+                    Awaitable[~.Availability]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "mark_as_active" not in self._stubs:
+            self._stubs["mark_as_active"] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/MarkAsActive",
+                request_serializer=availability.MarkAsActiveRequest.serialize,
+                response_deserializer=availability.Availability.deserialize,
+            )
+        return self._stubs["mark_as_active"]
+
+    @property
+    def mark_as_away(
+        self,
+    ) -> Callable[
+        [availability.MarkAsAwayRequest], Awaitable[availability.Availability]
+    ]:
+        r"""Return a callable for the mark as away method over gRPC.
+
+        Marks user as ``AWAY`` in Google Chat.
+
+        Sets the user's state to away and is not affected by the user's
+        activity.
+
+        This method only updates the authenticated user's availability.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.availability``
+
+        Returns:
+            Callable[[~.MarkAsAwayRequest],
+                    Awaitable[~.Availability]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "mark_as_away" not in self._stubs:
+            self._stubs["mark_as_away"] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/MarkAsAway",
+                request_serializer=availability.MarkAsAwayRequest.serialize,
+                response_deserializer=availability.Availability.deserialize,
+            )
+        return self._stubs["mark_as_away"]
+
+    @property
+    def mark_as_do_not_disturb(
+        self,
+    ) -> Callable[
+        [availability.MarkAsDoNotDisturbRequest], Awaitable[availability.Availability]
+    ]:
+        r"""Return a callable for the mark as do not disturb method over gRPC.
+
+        Marks user as ``DO_NOT_DISTURB`` in Google Chat.
+
+        Sets a user's availability state to ``DO_NOT_DISTURB`` until a
+        specified expiration time. When in ``DO_NOT_DISTURB``, users
+        typically won't receive notifications.
+
+        This method only updates the authenticated user's availability.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.availability``
+
+        Returns:
+            Callable[[~.MarkAsDoNotDisturbRequest],
+                    Awaitable[~.Availability]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "mark_as_do_not_disturb" not in self._stubs:
+            self._stubs["mark_as_do_not_disturb"] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/MarkAsDoNotDisturb",
+                request_serializer=availability.MarkAsDoNotDisturbRequest.serialize,
+                response_deserializer=availability.Availability.deserialize,
+            )
+        return self._stubs["mark_as_do_not_disturb"]
+
+    @property
+    def update_availability(
+        self,
+    ) -> Callable[
+        [gc_availability.UpdateAvailabilityRequest],
+        Awaitable[gc_availability.Availability],
+    ]:
+        r"""Return a callable for the update availability method over gRPC.
+
+        Updates availability information for a human user. Only the
+        ``custom_status`` field can be updated through this method.
+
+        This method only updates the authenticated user's availability.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with one of the following `authorization
+        scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.availability``
+
+        Returns:
+            Callable[[~.UpdateAvailabilityRequest],
+                    Awaitable[~.Availability]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_availability" not in self._stubs:
+            self._stubs["update_availability"] = self._logged_channel.unary_unary(
+                "/google.chat.v1.ChatService/UpdateAvailability",
+                request_serializer=gc_availability.UpdateAvailabilityRequest.serialize,
+                response_deserializer=gc_availability.Availability.deserialize,
+            )
+        return self._stubs["update_availability"]
+
+    @property
     def get_space_event(
         self,
     ) -> Callable[
@@ -2627,6 +2902,20 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
+            self.search_messages: self._wrap_method(
+                self.search_messages,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
             self.get_attachment: self._wrap_method(
                 self.get_attachment,
                 default_retry=retries.AsyncRetry(
@@ -2965,6 +3254,76 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
             ),
             self.get_thread_read_state: self._wrap_method(
                 self.get_thread_read_state,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.get_availability: self._wrap_method(
+                self.get_availability,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.mark_as_active: self._wrap_method(
+                self.mark_as_active,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.mark_as_away: self._wrap_method(
+                self.mark_as_away,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.mark_as_do_not_disturb: self._wrap_method(
+                self.mark_as_do_not_disturb,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
+            self.update_availability: self._wrap_method(
+                self.update_availability,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
                     maximum=10.0,

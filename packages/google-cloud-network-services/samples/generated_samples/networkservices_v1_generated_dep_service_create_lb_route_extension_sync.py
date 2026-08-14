@@ -49,7 +49,6 @@ def sample_create_lb_route_extension():
     lb_route_extension.extension_chains.match_condition.cel_expression = (
         "cel_expression_value"
     )
-    lb_route_extension.extension_chains.extensions.name = "name_value"
     lb_route_extension.extension_chains.extensions.service = "service_value"
     lb_route_extension.load_balancing_scheme = "EXTERNAL_MANAGED"
 

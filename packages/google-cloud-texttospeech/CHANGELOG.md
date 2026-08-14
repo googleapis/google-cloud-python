@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.37.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.36.0...google-cloud-texttospeech-v2.37.0) (2026-06-22)
+
+
+### Features
+
+* regenerate google-cloud-[t-w] packages ([#17076](https://github.com/googleapis/google-cloud-python/issues/17076)) ([928a03c](https://github.com/googleapis/google-cloud-python/commit/928a03ce41fbcb82398636e89f840c00c7749cf8))
+
 ## [2.36.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.35.0...google-cloud-texttospeech-v2.36.0) (2026-04-02)
 
 

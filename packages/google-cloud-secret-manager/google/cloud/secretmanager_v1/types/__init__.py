@@ -32,6 +32,7 @@ from .service import (
     DeleteSecretRequest,
     DestroySecretVersionRequest,
     DisableSecretVersionRequest,
+    EnableManagedRotationRequest,
     EnableSecretVersionRequest,
     GetSecretRequest,
     GetSecretVersionRequest,
@@ -39,6 +40,7 @@ from .service import (
     ListSecretsResponse,
     ListSecretVersionsRequest,
     ListSecretVersionsResponse,
+    RotateSecretRequest,
     UpdateSecretRequest,
 )
 
@@ -59,6 +61,7 @@ __all__ = (
     "DeleteSecretRequest",
     "DestroySecretVersionRequest",
     "DisableSecretVersionRequest",
+    "EnableManagedRotationRequest",
     "EnableSecretVersionRequest",
     "GetSecretRequest",
     "GetSecretVersionRequest",
@@ -66,5 +69,6 @@ __all__ = (
     "ListSecretsResponse",
     "ListSecretVersionsRequest",
     "ListSecretVersionsResponse",
+    "RotateSecretRequest",
     "UpdateSecretRequest",
 )

@@ -55,11 +55,27 @@ class Database(proto.Message):
             Optional. The DB_UNIQUE_NAME of the Oracle Database being
             backed up.
         admin_password (str):
-            Required. The password for the default ADMIN
-            user.
+            Optional. The password for the default ADMIN user. Note:
+            Only one of ``admin_password_secret_version`` or
+            ``admin_password`` can be populated.
+        admin_password_secret_version (str):
+            Optional. The resource name of a secret version in Secret
+            Manager which contains the database admin user's password.
+            Format:
+            projects/{project}/secrets/{secret}/versions/{version}.
+            Note: Only one of ``admin_password_secret_version`` or
+            ``admin_password`` can be populated.
         tde_wallet_password (str):
-            Optional. The TDE wallet password for the
-            database.
+            Optional. The TDE wallet password for the database. Note:
+            Only one of ``tde_wallet_password_secret_version`` or
+            ``tde_wallet_password`` can be populated.
+        tde_wallet_password_secret_version (str):
+            Optional. The resource name of a secret version in Secret
+            Manager which contains the TDE wallet password for the
+            database. Format:
+            projects/{project}/secrets/{secret}/versions/{version}.
+            Note: Only one of ``tde_wallet_password_secret_version`` or
+            ``tde_wallet_password`` can be populated.
         character_set (str):
             Optional. The character set for the database.
             The default is AL32UTF8.
@@ -85,6 +101,15 @@ class Database(proto.Message):
         ops_insights_status (google.cloud.oracledatabase_v1.types.Database.OperationsInsightsStatus):
             Output only. The Status of Operations
             Insights for this Database.
+        pluggable_database_id (str):
+            Optional. The ID of the pluggable database
+            associated with the Database. The ID must be
+            unique within the project and location.
+        pluggable_database_name (str):
+            Optional. The pluggable database associated
+            with the Database. The name must begin with an
+            alphabetic character and can contain a maximum
+            of thirty alphanumeric characters.
     """
 
     class OperationsInsightsStatus(proto.Enum):
@@ -137,9 +162,17 @@ class Database(proto.Message):
         proto.STRING,
         number=4,
     )
+    admin_password_secret_version: str = proto.Field(
+        proto.STRING,
+        number=17,
+    )
     tde_wallet_password: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    tde_wallet_password_secret_version: str = proto.Field(
+        proto.STRING,
+        number=18,
     )
     character_set: str = proto.Field(
         proto.STRING,
@@ -179,6 +212,14 @@ class Database(proto.Message):
         proto.ENUM,
         number=14,
         enum=OperationsInsightsStatus,
+    )
+    pluggable_database_id: str = proto.Field(
+        proto.STRING,
+        number=15,
+    )
+    pluggable_database_name: str = proto.Field(
+        proto.STRING,
+        number=16,
     )
 
 

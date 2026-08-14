@@ -40,7 +40,7 @@ async def sample_update_iceberg_catalog():
 
     # Initialize request argument(s)
     iceberg_catalog = biglake_v1.IcebergCatalog()
-    iceberg_catalog.catalog_type = "CATALOG_TYPE_GCS_BUCKET"
+    iceberg_catalog.catalog_type = "CATALOG_TYPE_FEDERATED"
 
     request = biglake_v1.UpdateIcebergCatalogRequest(
         iceberg_catalog=iceberg_catalog,

@@ -785,6 +785,65 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
             )
         return self._stubs["test_iam_permissions"]
 
+    @property
+    def enable_managed_rotation(
+        self,
+    ) -> Callable[[service.EnableManagedRotationRequest], resources.SecretVersion]:
+        r"""Return a callable for the enable managed rotation method over gRPC.
+
+        Enables the managed rotation feature for a
+        [Secret][google.cloud.secretmanager.v1.Secret]. This method can
+        only be triggered once for a secret. In order to do further
+        rotations, RotateSecret should be used. This method will add a
+        secret version and update the password in Cloud SQL.
+
+        Returns:
+            Callable[[~.EnableManagedRotationRequest],
+                    ~.SecretVersion]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "enable_managed_rotation" not in self._stubs:
+            self._stubs["enable_managed_rotation"] = self._logged_channel.unary_unary(
+                "/google.cloud.secretmanager.v1.SecretManagerService/EnableManagedRotation",
+                request_serializer=service.EnableManagedRotationRequest.serialize,
+                response_deserializer=resources.SecretVersion.deserialize,
+            )
+        return self._stubs["enable_managed_rotation"]
+
+    @property
+    def rotate_secret(
+        self,
+    ) -> Callable[[service.RotateSecretRequest], resources.SecretVersion]:
+        r"""Return a callable for the rotate secret method over gRPC.
+
+        Do a managed rotation for a
+        [Secret][google.cloud.secretmanager.v1.Secret]. This can only be
+        triggered after Managed rotation has been enabled. This method
+        will add a secret version and update the password in Cloud SQL.
+
+        Returns:
+            Callable[[~.RotateSecretRequest],
+                    ~.SecretVersion]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "rotate_secret" not in self._stubs:
+            self._stubs["rotate_secret"] = self._logged_channel.unary_unary(
+                "/google.cloud.secretmanager.v1.SecretManagerService/RotateSecret",
+                request_serializer=service.RotateSecretRequest.serialize,
+                response_deserializer=resources.SecretVersion.deserialize,
+            )
+        return self._stubs["rotate_secret"]
+
     def close(self):
         self._logged_channel.close()
 

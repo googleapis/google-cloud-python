@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-telcoautomation/#history
 
+## [0.5.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-telcoautomation-v0.5.0...google-cloud-telcoautomation-v0.5.1) (2026-06-22)
+
+
+### Features
+
+* regenerate google-cloud-[t-w] packages ([#17076](https://github.com/googleapis/google-cloud-python/issues/17076)) ([928a03c](https://github.com/googleapis/google-cloud-python/commit/928a03ce41fbcb82398636e89f840c00c7749cf8))
+
 ## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-telcoautomation-v0.4.0...google-cloud-telcoautomation-v0.5.0) (2026-03-26)
 
 

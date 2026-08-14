@@ -95,10 +95,10 @@ On Debian/Ubuntu::
 ************
 Coding Style
 ************
-- We use the automatic code formatter ``black``. You can run it using
-  the nox session ``blacken``. This will eliminate many lint errors. Run via::
+- We use the automatic code formatter ``ruff``. You can run it using
+  the nox session ``format``. This will eliminate many lint errors. Run via::
 
-   $ nox -s blacken
+   $ nox -s format
 
 - PEP8 compliance is required, with exceptions defined in the linter configuration.
   If you have ``nox`` installed, you can test that you have not introduced
@@ -185,7 +185,7 @@ Code samples and snippets live in the `samples/` catalogue. Feel free to
 provide more examples, but make sure to write tests for those examples.
 Each folder containing example code requires its own `noxfile.py` script
 which automates testing. If you decide to create a new folder, you can
-base it on the `samples/snippets` folder (providing `noxfile.py` and
+base it on the `samples/data_client_async/snippets` folder (providing `noxfile.py` and
 the requirements files).
 
 The tests will run against a real Google Cloud Project, so you should
@@ -194,11 +194,11 @@ configure them just like the System Tests.
 - To run sample tests, you can execute::
 
    # Run all tests in a folder
-   $ cd samples/snippets
+   $ cd samples/data_client_async/snippets
    $ nox -s py-3.14
 
    # Run a single sample test
-   $ cd samples/snippets
+   $ cd samples/data_client_async/snippets
    $ nox -s py-3.14 -- -k <name of test>
 
 ********************************************

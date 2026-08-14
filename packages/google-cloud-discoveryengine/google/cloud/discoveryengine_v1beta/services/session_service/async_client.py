@@ -84,6 +84,10 @@ class SessionServiceAsyncClient:
 
     answer_path = staticmethod(SessionServiceClient.answer_path)
     parse_answer_path = staticmethod(SessionServiceClient.parse_answer_path)
+    assist_answer_path = staticmethod(SessionServiceClient.assist_answer_path)
+    parse_assist_answer_path = staticmethod(
+        SessionServiceClient.parse_assist_answer_path
+    )
     chunk_path = staticmethod(SessionServiceClient.chunk_path)
     parse_chunk_path = staticmethod(SessionServiceClient.parse_chunk_path)
     data_store_path = staticmethod(SessionServiceClient.data_store_path)
@@ -1091,9 +1095,7 @@ class SessionServiceAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("SessionServiceAsyncClient",)

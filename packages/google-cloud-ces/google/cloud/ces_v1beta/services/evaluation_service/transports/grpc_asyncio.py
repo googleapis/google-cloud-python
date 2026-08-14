@@ -1306,6 +1306,95 @@ class EvaluationServiceGrpcAsyncIOTransport(EvaluationServiceTransport):
             )
         return self._stubs["export_evaluations"]
 
+    @property
+    def export_evaluation_runs(
+        self,
+    ) -> Callable[
+        [evaluation_service.ExportEvaluationRunsRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the export evaluation runs method over gRPC.
+
+        Exports evaluations runs.
+
+        Returns:
+            Callable[[~.ExportEvaluationRunsRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_evaluation_runs" not in self._stubs:
+            self._stubs["export_evaluation_runs"] = self._logged_channel.unary_unary(
+                "/google.cloud.ces.v1beta.EvaluationService/ExportEvaluationRuns",
+                request_serializer=evaluation_service.ExportEvaluationRunsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["export_evaluation_runs"]
+
+    @property
+    def export_evaluation_results(
+        self,
+    ) -> Callable[
+        [evaluation_service.ExportEvaluationResultsRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the export evaluation results method over gRPC.
+
+        Exports evaluations results.
+
+        Returns:
+            Callable[[~.ExportEvaluationResultsRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_evaluation_results" not in self._stubs:
+            self._stubs["export_evaluation_results"] = self._logged_channel.unary_unary(
+                "/google.cloud.ces.v1beta.EvaluationService/ExportEvaluationResults",
+                request_serializer=evaluation_service.ExportEvaluationResultsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["export_evaluation_results"]
+
+    @property
+    def run_evaluation_result_metrics(
+        self,
+    ) -> Callable[
+        [evaluation_service.RunEvaluationResultMetricsRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the run evaluation result metrics method over gRPC.
+
+        Runs metrics on an existing evaluation result.
+
+        Returns:
+            Callable[[~.RunEvaluationResultMetricsRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "run_evaluation_result_metrics" not in self._stubs:
+            self._stubs["run_evaluation_result_metrics"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.ces.v1beta.EvaluationService/RunEvaluationResultMetrics",
+                    request_serializer=evaluation_service.RunEvaluationResultMetricsRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["run_evaluation_result_metrics"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1466,6 +1555,21 @@ class EvaluationServiceGrpcAsyncIOTransport(EvaluationServiceTransport):
             ),
             self.export_evaluations: self._wrap_method(
                 self.export_evaluations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_evaluation_runs: self._wrap_method(
+                self.export_evaluation_runs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_evaluation_results: self._wrap_method(
+                self.export_evaluation_results,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.run_evaluation_result_metrics: self._wrap_method(
+                self.run_evaluation_result_metrics,
                 default_timeout=None,
                 client_info=client_info,
             ),

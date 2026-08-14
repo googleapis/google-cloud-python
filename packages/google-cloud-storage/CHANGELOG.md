@@ -4,6 +4,38 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.13.0...google-cloud-storage-v3.13.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
+## [3.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.12.1...google-cloud-storage-v3.13.0) (2026-07-13)
+
+
+### Features
+
+* **storage:** add option to disable checksums and improve robustness of full_object_checksum validation ([#17665](https://github.com/googleapis/google-cloud-python/issues/17665)) ([a5a717d](https://github.com/googleapis/google-cloud-python/commit/a5a717df2434b756c9043cd53d7cef15c5a4b552))
+* **storage:** support full_object_checksum in AsyncAppendableObjectWriter ([#17658](https://github.com/googleapis/google-cloud-python/issues/17658)) ([e08d5ca](https://github.com/googleapis/google-cloud-python/commit/e08d5cadd14e51e79e573dc0cf083e100e08d7bf))
+
+## [3.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.12.0...google-cloud-storage-v3.12.1) (2026-07-07)
+
+
+### Bug Fixes
+
+* **storage:** log occasional (1 in 5 million) additional bytes received from GCS in read path ([#17423](https://github.com/googleapis/google-cloud-python/issues/17423)) ([335c12f](https://github.com/googleapis/google-cloud-python/commit/335c12ff4cc5e4911a005a790d14ab1e1e346197))
+
+## [3.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.11.0...google-cloud-storage-v3.12.0) (2026-06-11)
+
+
+### Features
+
+* full object checksum: integrate full-object checksum in AsyncMultiRangeDownloader (#17263) ([b6a85e49ae3873a853812e46ddf759607a01cf25](https://github.com/googleapis/google-cloud-python/commit/b6a85e49ae3873a853812e46ddf759607a01cf25))
+* full object checksum: implement rolling checksum and verification in reads resumption strategy (#17262) ([2361ba6eeb766722b9460f3eb1dc1286c6fb19f3](https://github.com/googleapis/google-cloud-python/commit/2361ba6eeb766722b9460f3eb1dc1286c6fb19f3))
+* Enable full object checksum PR 1/3 : parse finalize_time and server crc32c in async object stream (#17261) ([72c7a2728bf66d684a12fdaac59c089115a53246](https://github.com/googleapis/google-cloud-python/commit/72c7a2728bf66d684a12fdaac59c089115a53246))
+
 ## [3.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.10.1...google-cloud-storage-v3.11.0) (2026-06-02)
 
 

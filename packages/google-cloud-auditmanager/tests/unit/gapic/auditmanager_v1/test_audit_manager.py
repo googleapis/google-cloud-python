@@ -944,7 +944,14 @@ def test_audit_manager_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -991,7 +998,14 @@ def test_audit_manager_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1296,7 +1310,10 @@ def test_audit_manager_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-auditmanager",
+                "https://www.googleapis.com/auth/cloud-platform",
+            ),
             scopes=None,
             default_host="auditmanager.googleapis.com",
             ssl_credentials=None,
@@ -2811,6 +2828,9 @@ def test_list_audit_reports_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, auditmanager.AuditReport) for i in results)
@@ -2903,6 +2923,8 @@ async def test_list_audit_reports_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4077,6 +4099,9 @@ def test_list_resource_enrollment_statuses_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -4171,6 +4196,8 @@ async def test_list_resource_enrollment_statuses_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4605,6 +4632,9 @@ def test_list_controls_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, auditmanager.Control) for i in results)
@@ -4693,6 +4723,8 @@ async def test_list_controls_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4991,7 +5023,6 @@ def test_generate_audit_scope_report_rest_required_fields(
 
     request_init = {}
     request_init["scope"] = ""
-    request_init["compliance_standard"] = ""
     request_init["compliance_framework"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
@@ -5009,7 +5040,6 @@ def test_generate_audit_scope_report_rest_required_fields(
     # verify required fields with default values are now present
 
     jsonified_request["scope"] = "scope_value"
-    jsonified_request["complianceStandard"] = "compliance_standard_value"
     jsonified_request["complianceFramework"] = "compliance_framework_value"
 
     unset_fields = transport_class(
@@ -5020,8 +5050,6 @@ def test_generate_audit_scope_report_rest_required_fields(
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
     assert jsonified_request["scope"] == "scope_value"
-    assert "complianceStandard" in jsonified_request
-    assert jsonified_request["complianceStandard"] == "compliance_standard_value"
     assert "complianceFramework" in jsonified_request
     assert jsonified_request["complianceFramework"] == "compliance_framework_value"
 
@@ -5079,7 +5107,6 @@ def test_generate_audit_scope_report_rest_unset_required_fields():
         & set(
             (
                 "scope",
-                "complianceStandard",
                 "reportFormat",
                 "complianceFramework",
             )
@@ -5201,7 +5228,6 @@ def test_generate_audit_report_rest_required_fields(
 
     request_init = {}
     request_init["scope"] = ""
-    request_init["compliance_standard"] = ""
     request_init["compliance_framework"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
@@ -5219,7 +5245,6 @@ def test_generate_audit_report_rest_required_fields(
     # verify required fields with default values are now present
 
     jsonified_request["scope"] = "scope_value"
-    jsonified_request["complianceStandard"] = "compliance_standard_value"
     jsonified_request["complianceFramework"] = "compliance_framework_value"
 
     unset_fields = transport_class(
@@ -5230,8 +5255,6 @@ def test_generate_audit_report_rest_required_fields(
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
     assert jsonified_request["scope"] == "scope_value"
-    assert "complianceStandard" in jsonified_request
-    assert jsonified_request["complianceStandard"] == "compliance_standard_value"
     assert "complianceFramework" in jsonified_request
     assert jsonified_request["complianceFramework"] == "compliance_framework_value"
 
@@ -5286,7 +5309,6 @@ def test_generate_audit_report_rest_unset_required_fields():
         & set(
             (
                 "scope",
-                "complianceStandard",
                 "reportFormat",
                 "complianceFramework",
             )
@@ -5605,6 +5627,9 @@ def test_list_audit_reports_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "organizations/sample1/locations/sample2"}
 
         pager = client.list_audit_reports(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -6245,6 +6270,9 @@ def test_list_resource_enrollment_statuses_rest_pager(transport: str = "rest"):
 
         pager = client.list_resource_enrollment_statuses(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -6506,6 +6534,9 @@ def test_list_controls_rest_pager(transport: str = "rest"):
         }
 
         pager = client.list_controls(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -8782,7 +8813,10 @@ def test_audit_manager_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-auditmanager",
+                "https://www.googleapis.com/auth/cloud-platform",
+            ),
             quota_project_id="octopus",
         )
 
@@ -8808,7 +8842,10 @@ def test_audit_manager_auth_adc():
         AuditManagerClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-auditmanager",
+                "https://www.googleapis.com/auth/cloud-platform",
+            ),
             quota_project_id=None,
         )
 
@@ -8828,7 +8865,10 @@ def test_audit_manager_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-auditmanager",
+                "https://www.googleapis.com/auth/cloud-platform",
+            ),
             quota_project_id="octopus",
         )
 
@@ -8881,7 +8921,10 @@ def test_audit_manager_transport_create_channel(transport_class, grpc_helpers):
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-auditmanager",
+                "https://www.googleapis.com/auth/cloud-platform",
+            ),
             scopes=["1", "2"],
             default_host="auditmanager.googleapis.com",
             ssl_credentials=None,

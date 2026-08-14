@@ -277,7 +277,7 @@ class TestPolicy:
         assert dict(policy) == {}
 
     def test_from_api_repr_complete(self):
-        from google.api_core.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from google.api_core.iam import EDITOR_ROLE, OWNER_ROLE, VIEWER_ROLE
 
         OWNER1 = "group:cloud-logs@google.com"
         OWNER2 = "user:phred@example.com"
@@ -354,7 +354,8 @@ class TestPolicy:
 
     def test_to_api_repr_full(self):
         import operator
-        from google.api_core.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+
+        from google.api_core.iam import EDITOR_ROLE, OWNER_ROLE, VIEWER_ROLE
 
         OWNER1 = "group:cloud-logs@google.com"
         OWNER2 = "user:phred@example.com"

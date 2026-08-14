@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-modelarmor/#history
 
+## [0.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-modelarmor-v0.7.0...google-cloud-modelarmor-v0.7.1) (2026-07-07)
+
+
+### Features
+
+* update googleapis and regenerate ([#17635](https://github.com/googleapis/google-cloud-python/issues/17635)) ([9638879](https://github.com/googleapis/google-cloud-python/commit/96388796440b226440f885c04ce565782b1d9190))
+
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-modelarmor-v0.6.0...google-cloud-modelarmor-v0.7.0) (2026-06-11)
+
+
+### Features
+
+* update API sources and regenerate (#17413) ([59fe7cf83c123102baf5439af4acd6218d7ce01b](https://github.com/googleapis/google-cloud-python/commit/59fe7cf83c123102baf5439af4acd6218d7ce01b))
+
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-modelarmor-v0.5.0...google-cloud-modelarmor-v0.6.0) (2026-05-06)
 
 ## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-modelarmor-v0.4.0...google-cloud-modelarmor-v0.5.0) (2026-03-26)

@@ -23,6 +23,57 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.ads.datamanager_v1.services.ingestion_service",
+    "google.ads.datamanager_v1.services.marketing_data_insights_service",
+    "google.ads.datamanager_v1.services.partner_link_service",
+    "google.ads.datamanager_v1.services.user_list_direct_license_service",
+    "google.ads.datamanager_v1.services.user_list_global_license_service",
+    "google.ads.datamanager_v1.services.user_list_service",
+    "google.ads.datamanager_v1.types.ad_event",
+    "google.ads.datamanager_v1.types.age_range",
+    "google.ads.datamanager_v1.types.audience",
+    "google.ads.datamanager_v1.types.cart_data",
+    "google.ads.datamanager_v1.types.consent",
+    "google.ads.datamanager_v1.types.destination",
+    "google.ads.datamanager_v1.types.device_info",
+    "google.ads.datamanager_v1.types.encrypted_user_id",
+    "google.ads.datamanager_v1.types.encryption_info",
+    "google.ads.datamanager_v1.types.error",
+    "google.ads.datamanager_v1.types.event",
+    "google.ads.datamanager_v1.types.experimental_field",
+    "google.ads.datamanager_v1.types.gender",
+    "google.ads.datamanager_v1.types.ingestion_service",
+    "google.ads.datamanager_v1.types.insights_service",
+    "google.ads.datamanager_v1.types.item_parameter",
+    "google.ads.datamanager_v1.types.match_rate",
+    "google.ads.datamanager_v1.types.partner_link_service",
+    "google.ads.datamanager_v1.types.processing_errors",
+    "google.ads.datamanager_v1.types.request_status_per_destination",
+    "google.ads.datamanager_v1.types.terms_of_service",
+    "google.ads.datamanager_v1.types.user_data",
+    "google.ads.datamanager_v1.types.user_list",
+    "google.ads.datamanager_v1.types.user_list_direct_license",
+    "google.ads.datamanager_v1.types.user_list_direct_license_service",
+    "google.ads.datamanager_v1.types.user_list_global_license",
+    "google.ads.datamanager_v1.types.user_list_global_license_service",
+    "google.ads.datamanager_v1.types.user_list_global_license_type",
+    "google.ads.datamanager_v1.types.user_list_license_client_account_type",
+    "google.ads.datamanager_v1.types.user_list_license_metrics",
+    "google.ads.datamanager_v1.types.user_list_license_pricing",
+    "google.ads.datamanager_v1.types.user_list_license_status",
+    "google.ads.datamanager_v1.types.user_list_service",
+    "google.ads.datamanager_v1.types.user_properties",
+    "google.ads.datamanager_v1.types.viewability_info",
+}
+
+
 from .services.ingestion_service import (
     IngestionServiceAsyncClient,
     IngestionServiceClient,
@@ -47,13 +98,25 @@ from .services.user_list_service import (
     UserListServiceAsyncClient,
     UserListServiceClient,
 )
+from .types.ad_event import (
+    AdEvent,
+    AdFormat,
+    AdPlacement,
+    AdType,
+    AttributionHint,
+    Platform,
+    PlatformType,
+    TargetingType,
+)
 from .types.age_range import AgeRange
 from .types.audience import (
     AudienceMember,
     CompositeData,
+    GoogleUserIdData,
     IpData,
     MobileData,
     PairData,
+    PartnerProvidedIdData,
     PpidData,
     UserIdData,
 )
@@ -62,7 +125,12 @@ from .types.consent import Consent, ConsentStatus
 from .types.destination import Destination, Product, ProductAccount
 from .types.device_info import DeviceInfo
 from .types.encrypted_user_id import EncryptedUserId
-from .types.encryption_info import AwsWrappedKeyInfo, EncryptionInfo, GcpWrappedKeyInfo
+from .types.encryption_info import (
+    AwsWrappedKeyInfo,
+    CoordinatorKeyInfo,
+    EncryptionInfo,
+    GcpWrappedKeyInfo,
+)
 from .types.error import ErrorReason
 from .types.event import (
     AdIdentifiers,
@@ -76,10 +144,14 @@ from .types.experimental_field import ExperimentalField
 from .types.gender import Gender
 from .types.ingestion_service import (
     Encoding,
+    IngestAdEventsRequest,
+    IngestAdEventsResponse,
     IngestAudienceMembersRequest,
     IngestAudienceMembersResponse,
     IngestEventsRequest,
     IngestEventsResponse,
+    RemoveAllAudienceMembersRequest,
+    RemoveAllAudienceMembersResponse,
     RemoveAudienceMembersRequest,
     RemoveAudienceMembersResponse,
     RetrieveRequestStatusRequest,
@@ -95,17 +167,22 @@ from .types.match_rate import MatchRateRange
 from .types.partner_link_service import (
     CreatePartnerLinkRequest,
     DeletePartnerLinkRequest,
+    FeatureSet,
+    PartnerCustomerAccount,
     PartnerLink,
+    PartnerLinkMetadata,
     SearchPartnerLinksRequest,
     SearchPartnerLinksResponse,
 )
 from .types.processing_errors import (
     ErrorCount,
     ErrorInfo,
+    FieldWarning,
     ProcessingErrorReason,
     ProcessingWarningReason,
     WarningCount,
     WarningInfo,
+    WarningReason,
 )
 from .types.request_status_per_destination import RequestStatusPerDestination
 from .types.terms_of_service import TermsOfService, TermsOfServiceStatus
@@ -165,6 +242,7 @@ from .types.user_properties import (
     UserProperties,
     UserProperty,
 )
+from .types.viewability_info import MediaQuartile, ViewabilityInfo, ViewType
 
 if hasattr(api_core, "check_python_version") and hasattr(
     api_core, "check_dependency_versions"
@@ -191,7 +269,7 @@ else:  # pragma: NO COVER
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -220,9 +298,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -256,9 +334,14 @@ __all__ = (
     "UserListDirectLicenseServiceAsyncClient",
     "UserListGlobalLicenseServiceAsyncClient",
     "UserListServiceAsyncClient",
+    "AdEvent",
+    "AdFormat",
     "AdIdentifiers",
+    "AdPlacement",
+    "AdType",
     "AddressInfo",
     "AgeRange",
+    "AttributionHint",
     "AudienceMember",
     "AwsWrappedKeyInfo",
     "Baseline",
@@ -267,6 +350,7 @@ __all__ = (
     "Consent",
     "ConsentStatus",
     "ContactIdInfo",
+    "CoordinatorKeyInfo",
     "CreatePartnerLinkRequest",
     "CreateUserListDirectLicenseRequest",
     "CreateUserListGlobalLicenseRequest",
@@ -290,11 +374,16 @@ __all__ = (
     "EventParameter",
     "EventSource",
     "ExperimentalField",
+    "FeatureSet",
+    "FieldWarning",
     "GcpWrappedKeyInfo",
     "Gender",
     "GetUserListDirectLicenseRequest",
     "GetUserListGlobalLicenseRequest",
     "GetUserListRequest",
+    "GoogleUserIdData",
+    "IngestAdEventsRequest",
+    "IngestAdEventsResponse",
     "IngestAudienceMembersRequest",
     "IngestAudienceMembersResponse",
     "IngestEventsRequest",
@@ -315,19 +404,27 @@ __all__ = (
     "ListUserListsResponse",
     "MarketingDataInsightsServiceClient",
     "MatchRateRange",
+    "MediaQuartile",
     "MobileData",
     "MobileIdInfo",
     "PairData",
     "PairIdInfo",
     "PartnerAudienceInfo",
+    "PartnerCustomerAccount",
     "PartnerLink",
+    "PartnerLinkMetadata",
     "PartnerLinkServiceClient",
+    "PartnerProvidedIdData",
+    "Platform",
+    "PlatformType",
     "PpidData",
     "ProcessingErrorReason",
     "ProcessingWarningReason",
     "Product",
     "ProductAccount",
     "PseudonymousIdInfo",
+    "RemoveAllAudienceMembersRequest",
+    "RemoveAllAudienceMembersResponse",
     "RemoveAudienceMembersRequest",
     "RemoveAudienceMembersResponse",
     "RequestStatusPerDestination",
@@ -339,6 +436,7 @@ __all__ = (
     "SearchPartnerLinksResponse",
     "SizeInfo",
     "TargetNetworkInfo",
+    "TargetingType",
     "TermsOfService",
     "TermsOfServiceStatus",
     "UpdateUserListDirectLicenseRequest",
@@ -362,6 +460,9 @@ __all__ = (
     "UserListServiceClient",
     "UserProperties",
     "UserProperty",
+    "ViewType",
+    "ViewabilityInfo",
     "WarningCount",
     "WarningInfo",
+    "WarningReason",
 )

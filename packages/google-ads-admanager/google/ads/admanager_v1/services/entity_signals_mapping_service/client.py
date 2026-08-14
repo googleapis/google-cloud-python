@@ -766,7 +766,7 @@ class EntitySignalsMappingServiceClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> entity_signals_mapping_messages.EntitySignalsMapping:
-        r"""API to retrieve a ``EntitySignalsMapping`` object.
+        r"""Retrieves a ``EntitySignalsMapping`` object.
 
         .. code-block:: python
 
@@ -880,7 +880,7 @@ class EntitySignalsMappingServiceClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListEntitySignalsMappingsPager:
-        r"""API to retrieve a list of ``EntitySignalsMapping`` objects.
+        r"""Lists ``EntitySignalsMapping`` objects.
 
         .. code-block:: python
 
@@ -1016,7 +1016,7 @@ class EntitySignalsMappingServiceClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> entity_signals_mapping_messages.EntitySignalsMapping:
-        r"""API to create an ``EntitySignalsMapping`` object.
+        r"""Creates an ``EntitySignalsMapping`` object.
 
         .. code-block:: python
 
@@ -1149,7 +1149,7 @@ class EntitySignalsMappingServiceClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> entity_signals_mapping_messages.EntitySignalsMapping:
-        r"""API to update an ``EntitySignalsMapping`` object.
+        r"""Updates an ``EntitySignalsMapping`` object.
 
         .. code-block:: python
 
@@ -1288,7 +1288,7 @@ class EntitySignalsMappingServiceClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse:
-        r"""API to batch create ``EntitySignalsMapping`` objects.
+        r"""Creates ``EntitySignalsMapping`` objects.
 
         .. code-block:: python
 
@@ -1432,7 +1432,7 @@ class EntitySignalsMappingServiceClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse:
-        r"""API to batch update ``EntitySignalsMapping`` objects.
+        r"""Batch updates ``EntitySignalsMapping`` objects.
 
         .. code-block:: python
 
@@ -1695,8 +1695,6 @@ class EntitySignalsMappingServiceClient(
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("EntitySignalsMappingServiceClient",)

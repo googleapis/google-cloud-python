@@ -247,6 +247,11 @@ class Endpoint(proto.Message):
             A `GKE
             Pod <https://cloud.google.com/kubernetes-engine/docs/concepts/pod>`__
             URI.
+        dms_private_connection (str):
+            A `DMS Private
+            Connection <https://docs.cloud.google.com/database-migration/docs/reference/rest/v1/projects.locations.privateConnections>`__
+            name format:
+            projects/{project}/locations/{location}/privateConnections/{privateConnection}.
         cloud_function (google.cloud.network_management_v1.types.Endpoint.CloudFunctionEndpoint):
             A `Cloud Function <https://cloud.google.com/functions>`__.
             Applicable only to source endpoint.
@@ -259,6 +264,11 @@ class Endpoint(proto.Message):
             A `Cloud Run <https://cloud.google.com/run>`__
             `revision <https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get>`__
             Applicable only to source endpoint.
+        cloud_run_job (str):
+            A `Cloud Run <https://cloud.google.com/run>`__
+            `job <https://docs.cloud.google.com/run/docs/reference/rest/v2/projects.locations.jobs#Job>`__
+            URI. Applicable only to source endpoint. The format is:
+            projects/{project}/locations/{location}/jobs/{job}
         network (str):
             A VPC network URI. For source endpoints, used according to
             the ``network_type``. For destination endpoints, used only
@@ -453,6 +463,10 @@ class Endpoint(proto.Message):
         proto.STRING,
         number=21,
     )
+    dms_private_connection: str = proto.Field(
+        proto.STRING,
+        number=22,
+    )
     cloud_function: CloudFunctionEndpoint = proto.Field(
         proto.MESSAGE,
         number=10,
@@ -467,6 +481,10 @@ class Endpoint(proto.Message):
         proto.MESSAGE,
         number=12,
         message=CloudRunRevisionEndpoint,
+    )
+    cloud_run_job: str = proto.Field(
+        proto.STRING,
+        number=24,
     )
     network: str = proto.Field(
         proto.STRING,

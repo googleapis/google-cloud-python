@@ -1013,7 +1013,14 @@ def test_node_group_controller_client_get_mtls_endpoint_and_cert_source(client_c
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1060,7 +1067,14 @@ def test_node_group_controller_client_get_mtls_endpoint_and_cert_source(client_c
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -3354,6 +3368,14 @@ def test_create_node_group_rest_call_success(request_type):
                 "local_ssd_interface": "local_ssd_interface_value",
                 "boot_disk_provisioned_iops": 2793,
                 "boot_disk_provisioned_throughput": 3464,
+                "attached_disk_configs": [
+                    {
+                        "disk_type": 1,
+                        "disk_size_gb": 1261,
+                        "provisioned_iops": 1740,
+                        "provisioned_throughput": 2411,
+                    }
+                ],
             },
             "is_preemptible": True,
             "preemptibility": 1,
@@ -3382,6 +3404,7 @@ def test_create_node_group_rest_call_success(request_type):
                             "machine_types_value2",
                         ],
                         "rank": 428,
+                        "disk_config": {},
                     }
                 ],
                 "instance_selection_results": [

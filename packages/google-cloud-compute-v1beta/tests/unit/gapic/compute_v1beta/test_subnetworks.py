@@ -886,7 +886,14 @@ def test_subnetworks_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -933,7 +940,14 @@ def test_subnetworks_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1394,6 +1408,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1"}
 
         pager = client.aggregated_list(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         assert isinstance(pager.get("a"), compute.SubnetworksScopedList)
         assert pager.get("h") is None
@@ -3354,6 +3371,9 @@ def test_list_rest_pager(transport: str = "rest"):
 
         pager = client.list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.Subnetwork) for i in results)
@@ -3617,6 +3637,9 @@ def test_list_usable_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1"}
 
         pager = client.list_usable(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -5653,6 +5676,7 @@ def test_get_rest_call_success(request_type):
             ipv6_access_type="ipv6_access_type_value",
             ipv6_cidr_range="ipv6_cidr_range_value",
             ipv6_gce_endpoint="ipv6_gce_endpoint_value",
+            ipv6_network_tier="ipv6_network_tier_value",
             kind="kind_value",
             name="name_value",
             network="network_value",
@@ -5702,6 +5726,7 @@ def test_get_rest_call_success(request_type):
     assert response.ipv6_access_type == "ipv6_access_type_value"
     assert response.ipv6_cidr_range == "ipv6_cidr_range_value"
     assert response.ipv6_gce_endpoint == "ipv6_gce_endpoint_value"
+    assert response.ipv6_network_tier == "ipv6_network_tier_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
     assert response.network == "network_value"
@@ -5968,6 +5993,7 @@ def test_insert_rest_call_success(request_type):
         "ipv6_access_type": "ipv6_access_type_value",
         "ipv6_cidr_range": "ipv6_cidr_range_value",
         "ipv6_gce_endpoint": "ipv6_gce_endpoint_value",
+        "ipv6_network_tier": "ipv6_network_tier_value",
         "kind": "kind_value",
         "log_config": {
             "aggregation_interval": "aggregation_interval_value",
@@ -6542,6 +6568,7 @@ def test_patch_rest_call_success(request_type):
         "ipv6_access_type": "ipv6_access_type_value",
         "ipv6_cidr_range": "ipv6_cidr_range_value",
         "ipv6_gce_endpoint": "ipv6_gce_endpoint_value",
+        "ipv6_network_tier": "ipv6_network_tier_value",
         "kind": "kind_value",
         "log_config": {
             "aggregation_interval": "aggregation_interval_value",

@@ -219,7 +219,7 @@ class Credentials(
                 return None
 
         if not _metadata._is_service_account_email(self.service_account_email):
-            _LOGGER.info(
+            _LOGGER.debug(
                 "Service account email '%s' is not a valid email. Skipping Regional Access Boundary lookup.",
                 self.service_account_email,
             )

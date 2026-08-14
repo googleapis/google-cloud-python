@@ -249,12 +249,13 @@ class SQLGlotIR:
         # TODO: Explicitly insert CTEs into plan
         if len(selections) > 0:
             to_select = [
-                sge.Alias(
-                    this=expr,
+                expr
+                if (isinstance(expr, sge.Alias) and expr.alias == id)
+                or (isinstance(expr, sge.Column) and expr.name == id)
+                else sge.Alias(
+                    this=expr.this if isinstance(expr, sge.Alias) else expr,
                     alias=sql.identifier(id),
                 )
-                if expr.alias_or_name != id
-                else expr
                 for id, expr in selections
             ]
             new_expr = self.expr.select(*to_select)

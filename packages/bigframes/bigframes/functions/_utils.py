@@ -13,13 +13,14 @@
 # limitations under the License.
 
 
+import collections
 import hashlib
 import inspect
 import json
 import sys
 import typing
 import warnings
-from typing import Any, Optional, Sequence, Set, cast
+from typing import Any, Mapping, Optional, Sequence, Set, cast
 
 import cloudpickle
 import google.api_core.exceptions
@@ -31,7 +32,7 @@ from packaging.requirements import Requirement
 
 import bigframes.exceptions as bfe
 import bigframes.formatting_helpers as bf_formatting
-from bigframes.functions import function_typing
+from bigframes.functions import function_typing, udf_def
 
 # Naming convention for the function artifacts
 _BIGFRAMES_FUNCTION_PREFIX = "bigframes"
@@ -304,3 +305,54 @@ def has_conflict_output_type(
         return False
 
     return return_annotation != output_type
+
+
+def get_func_signature(
+    func,
+    input_types: type | Sequence[type] | None = None,
+    output_type: type | None = None,
+) -> udf_def.UdfSignature:
+    if sys.version_info >= (3, 10):
+        # Add `eval_str = True` so that deferred annotations are turned into their
+        # corresponding type objects. Need Python 3.10 for eval_str parameter.
+        # https://docs.python.org/3/library/inspect.html#inspect.signature
+        signature_kwargs: Mapping[str, Any] = {"eval_str": True}
+    else:
+        signature_kwargs = {}  # type: ignore
+
+    py_sig = resolve_signature(
+        inspect.signature(func, **signature_kwargs),
+        input_types,
+        output_type,
+    )
+    return udf_def.UdfSignature.from_py_signature(py_sig)
+
+
+def resolve_signature(
+    py_sig: inspect.Signature,
+    input_types: type | Sequence[type] | None = None,
+    output_type: type | None = None,
+) -> inspect.Signature:
+    if input_types is not None:
+        if not isinstance(input_types, collections.abc.Sequence):
+            input_types = [input_types]
+        if has_conflict_input_type(py_sig, input_types):
+            msg = bfe.format_message(
+                "Conflicting input types detected, using the one from the decorator."
+            )
+            warnings.warn(msg, category=bfe.FunctionConflictTypeHintWarning)
+        py_sig = py_sig.replace(
+            parameters=[
+                par.replace(annotation=itype)
+                for par, itype in zip(py_sig.parameters.values(), input_types)
+            ]
+        )
+    if output_type:
+        if has_conflict_output_type(py_sig, output_type):
+            msg = bfe.format_message(
+                "Conflicting return type detected, using the one from the decorator."
+            )
+            warnings.warn(msg, category=bfe.FunctionConflictTypeHintWarning)
+        py_sig = py_sig.replace(return_annotation=output_type)
+
+    return py_sig

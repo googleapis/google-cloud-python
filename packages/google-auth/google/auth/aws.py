@@ -841,11 +841,9 @@ class Credentials(external_account.Credentials):
         Raises:
             ValueError: For invalid parameters.
         """
-        aws_security_credentials_supplier = info.get(
-            "aws_security_credentials_supplier"
-        )
-        kwargs.update(
-            {"aws_security_credentials_supplier": aws_security_credentials_supplier}
+        kwargs.setdefault(
+            "aws_security_credentials_supplier",
+            info.get("aws_security_credentials_supplier"),
         )
         return super(Credentials, cls).from_info(info, **kwargs)
 
