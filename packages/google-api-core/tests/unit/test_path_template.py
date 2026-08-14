@@ -880,6 +880,10 @@ def test_build_capture_pattern(template_str, expected_pattern, expected_wildcard
         ("a/b.c/d", True),
         ("a/.../b", True),
         ("a/.b/c", True),
+        (".hidden", True),
+        ("..hidden", True),
+        ("file.txt", True),
+        ("...", True),
         ("", True),
         ("a/b", True),
         ("a/../b", False),
@@ -892,6 +896,17 @@ def test_build_capture_pattern(template_str, expected_pattern, expected_wildcard
         ("//", True),
         ("a/../../b", False),
         ("../..", False),
+        ("./.", False),
+        ("./foo", False),
+        ("../foo", False),
+        ("foo/.", False),
+        ("foo/..", False),
+        ("foo/./bar", False),
+        ("foo/../bar", False),
+        ("foo//./bar", False),
+        ("foo//../bar", False),
+        ("//.", False),
+        ("//..", False),
         ("instance//..", False),
         ("instance/my-instance///../..", False),
     ],
@@ -990,3 +1005,102 @@ def test_extract_and_validate_wildcards(
     else:
         # Should not raise any exception
         path_template._extract_and_validate_wildcards(val, template_str)
+
+
+@pytest.mark.parametrize(
+    "name_val, expected_err_match",
+    [
+        (
+            "projects/../locations/us-central1/buckets/my-bucket",
+            r"^Invalid value \.\. for name\.$",
+        ),
+        (
+            "projects/my-project/locations/./buckets/my-bucket",
+            r"^Invalid value \. for name\.$",
+        ),
+        (
+            "projects/my-project/locations/us-central1/buckets/foo/../bar",
+            r"^Value for name must not contain segments that are exactly \. or \.\. \.$",
+        ),
+        (
+            "projects/my-project/locations/us-central1/buckets/.",
+            r"^Value for name must not contain segments that are exactly \. or \.\. \.$",
+        ),
+        (
+            "projects/my-project/locations/us-central1/buckets/..",
+            r"^Value for name must not contain segments that are exactly \. or \.\. \.$",
+        ),
+    ],
+)
+def test_path_traversal_mixed_subtemplate(name_val, expected_err_match):
+    tmpl = "/v1/{name=projects/*/locations/*/buckets/**}"
+    with pytest.raises(ValueError, match=expected_err_match):
+        path_template.expand(tmpl, name=name_val)
+
+
+@pytest.mark.parametrize(
+    "tmpl, args, kwargs, expected_err_match",
+    [
+        (
+            "/v1/*/**",
+            [".", "a/b"],
+            {},
+            r"^Invalid value \. for positional variable\.$",
+        ),
+        (
+            "/v1/*/**",
+            ["..", "a/b"],
+            {},
+            r"^Invalid value \.\. for positional variable\.$",
+        ),
+        (
+            "/v1/*/**",
+            ["a", "b/../c"],
+            {},
+            r"^Value for positional variable must not contain segments that are exactly \. or \.\. \.$",
+        ),
+        (
+            "/v1/*/**",
+            ["a", "b/./c"],
+            {},
+            r"^Value for positional variable must not contain segments that are exactly \. or \.\. \.$",
+        ),
+    ],
+)
+def test_path_traversal_multiple_positional_wildcards(
+    tmpl, args, kwargs, expected_err_match
+):
+    with pytest.raises(ValueError, match=expected_err_match):
+        path_template.expand(tmpl, *args, **kwargs)
+
+
+@pytest.mark.parametrize(
+    "tmpl, kwargs, expected_result",
+    [
+        ("/v1/{name}", {"name": ".hidden"}, "/v1/.hidden"),
+        ("/v1/{name}", {"name": "..hidden"}, "/v1/..hidden"),
+        ("/v1/{name}", {"name": "file.txt"}, "/v1/file.txt"),
+        ("/v1/{name=**}", {"name": "a/.hidden/b"}, "/v1/a/.hidden/b"),
+        ("/v1/{name=**}", {"name": "a/..hidden/b"}, "/v1/a/..hidden/b"),
+        ("/v1/{name=**}", {"name": "a/file.tar.gz/b"}, "/v1/a/file.tar.gz/b"),
+    ],
+)
+def test_valid_dot_containing_names(tmpl, kwargs, expected_result):
+    assert path_template.expand(tmpl, **kwargs) == expected_result
+
+
+def test_transcode_routing_with_path_traversal_fallback():
+    http_options = [
+        {"method": "get", "uri": "/v1/{name=projects/*/locations/*}"},
+        {"method": "get", "uri": "/v1/{name=projects/*}"},
+    ]
+
+    # Non-matching subtemplate structure falls through to secondary binding
+    result = path_template.transcode(http_options, None, name="projects/my-project")
+    assert result["uri"] == "/v1/projects/my-project"
+
+    # Structurally matching subtemplate with invalid dot segment raises immediately
+    with pytest.raises(ValueError, match=r"^Invalid value \. for name\.$"):
+        path_template.transcode(
+            http_options, None, name="projects/my-project/locations/."
+        )
