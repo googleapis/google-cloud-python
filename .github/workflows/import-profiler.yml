@@ -50,7 +50,7 @@ jobs:
         MAX_SHARDS: ${{ env.MAX_SHARDS }}
       run: |
         if [ -n "$TARGET_BRANCH" ]; then
-          git fetch origin "$TARGET_BRANCH" --depth=1 || true
+          git fetch --no-tags --quiet origin "$TARGET_BRANCH" --depth=1 || true
         fi
         python3 ci/get_package_shards.py
 
