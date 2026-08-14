@@ -44,9 +44,6 @@ from .types.common import SignBlobResponse
 from .types.common import SignJwtRequest
 from .types.common import SignJwtResponse
 
-api_core.check_python_version("google.iam.credentials_v1")
-api_core.check_dependency_versions("google.iam.credentials_v1")
-
 __all__ = (
     'IAMCredentialsAsyncClient',
 'GenerateAccessTokenRequest',
@@ -59,3 +56,6 @@ __all__ = (
 'SignJwtRequest',
 'SignJwtResponse',
 )
+
+api_core.check_python_version("google.iam.credentials_v1")
+api_core.check_dependency_versions("google.iam.credentials_v1")

@@ -30,6 +30,8 @@ The main concepts with this API are:
 import sys
 import warnings
 
+import google.api_core as api_core
+
 from google.cloud.bigquery import version as bigquery_version
 
 __version__ = bigquery_version.__version__
@@ -57,6 +59,8 @@ from google.cloud.bigquery.external_config import ExternalSourceFormat
 from google.cloud.bigquery.external_config import HivePartitioningOptions
 from google.cloud.bigquery.format_options import AvroOptions
 from google.cloud.bigquery.format_options import ParquetOptions
+from google.cloud.bigquery.enums import QueryResultsCompressionCodec
+from google.cloud.bigquery.enums import QueryResultsFormat
 from google.cloud.bigquery.job.base import SessionInfo
 from google.cloud.bigquery.job import Compression
 from google.cloud.bigquery.job import CopyJob
@@ -131,6 +135,9 @@ if sys.version_info < (3, 10):  # pragma: NO COVER
         "more details, see: [Google Cloud Client Libraries Supported Python Versions policy](https://cloud.google.com/python/docs/supported-python-versions)",
         FutureWarning,
     )
+
+api_core.check_python_version(__name__)
+api_core.check_dependency_versions(__name__)
 
 __all__ = [
     "__version__",
@@ -216,6 +223,8 @@ __all__ = [
     "KeyResultStatementKind",
     "OperationType",
     "QueryPriority",
+    "QueryResultsCompressionCodec",
+    "QueryResultsFormat",
     "RoutineType",
     "SchemaUpdateOption",
     "SourceFormat",

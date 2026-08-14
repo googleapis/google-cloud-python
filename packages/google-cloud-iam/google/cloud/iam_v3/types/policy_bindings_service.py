@@ -197,9 +197,8 @@ class ListPolicyBindingsRequest(proto.Message):
             bindings to return. The service may return fewer
             than this value.
 
-            If unspecified, at most 50 policy bindings will
-            be returned. The maximum value is 1000; values
-            above 1000 will be coerced to 1000.
+            The default value is 50. The maximum value is
+            1000.
         page_token (str):
             Optional. A page token, received from a previous
             ``ListPolicyBindings`` call. Provide this to retrieve the
@@ -211,7 +210,7 @@ class ListPolicyBindingsRequest(proto.Message):
         filter (str):
             Optional. An expression for filtering the results of the
             request. Filter rules are case insensitive. Some eligible
-            fields for filtering are:
+            fields for filtering are the following:
 
             - ``target``
             - ``policy``
@@ -295,9 +294,8 @@ class SearchTargetPolicyBindingsRequest(proto.Message):
             bindings to return. The service may return fewer
             than this value.
 
-            If unspecified, at most 50 policy bindings will
-            be returned. The maximum value is 1000; values
-            above 1000 will be coerced to 1000.
+            The default value is 50. The maximum value is
+            1000.
         page_token (str):
             Optional. A page token, received from a previous
             ``SearchTargetPolicyBindingsRequest`` call. Provide this to
@@ -317,6 +315,18 @@ class SearchTargetPolicyBindingsRequest(proto.Message):
             - ``projects/{project_number}/locations/{location}``
             - ``folders/{folder_id}/locations/{location}``
             - ``organizations/{organization_id}/locations/{location}``
+        filter (str):
+            Optional. Filtering currently only supports the kind of
+            policies to return, and must be in the format
+            "policy_kind={policy_kind}".
+
+            If String is empty, bindings bound to all kinds of policies
+            would be returned.
+
+            The only supported values are the following:
+
+            - "policy_kind=PRINCIPAL_ACCESS_BOUNDARY",
+            - "policy_kind=ACCESS".
     """
 
     target: str = proto.Field(
@@ -334,6 +344,10 @@ class SearchTargetPolicyBindingsRequest(proto.Message):
     parent: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 

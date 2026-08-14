@@ -26,6 +26,7 @@ __protobuf__ = proto.module(
         "DocumentMask",
         "Precondition",
         "TransactionOptions",
+        "RequestOptions",
     },
 )
 
@@ -197,6 +198,20 @@ class TransactionOptions(proto.Message):
         number=3,
         oneof="mode",
         message=ReadWrite,
+    )
+
+
+class RequestOptions(proto.Message):
+    r"""Options for a server request.
+
+    Attributes:
+        request_tags (MutableSequence[str]):
+            The request tags for the request.
+    """
+
+    request_tags: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
     )
 
 

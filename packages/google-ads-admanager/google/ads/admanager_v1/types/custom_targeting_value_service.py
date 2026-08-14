@@ -82,19 +82,18 @@ class ListCustomTargetingValuesRequest(proto.Message):
             ``ListCustomTargetingValues`` must match the call that
             provided the page token.
         filter (str):
-            Optional. Expression to filter the response.
-            See syntax details at
+            Optional. Expression to filter the response. See syntax
+            details at
             https://developers.google.com/ad-manager/api/beta/filters
 
-            <b>Filterable fields:</b>
-            <ul style="list-style-type:none">
-              <li><code>adTagName</code></li>
-              <li><code>customTargetingKey</code></li>
-              <li><code>displayName</code></li>
-              <li><code>matchType</code></li>
-              <li><code>name</code></li>
-              <li><code>status</code></li>
-            </ul>
+            **Filterable fields:**
+
+            - ``adTagName``
+            - ``customTargetingKey``
+            - ``displayName``
+            - ``matchType``
+            - ``name``
+            - ``status``
         order_by (str):
             Optional. Expression to specify sorting
             order. See syntax details at

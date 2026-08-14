@@ -440,7 +440,7 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
         gemini-1.5-X are going to be deprecated. Use gemini-2.5-X (https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.llm.GeminiTextGenerator) instead.
 
     Args:
-        model_name (str, Default to "gemini-2.0-flash-001"):
+        model_name (str, Default to "gemini-2.5-flash"):
             The model for natural language tasks. Accepted values are
             "gemini-1.5-pro-preview-0514", "gemini-1.5-flash-preview-0514",
             "gemini-1.5-pro-001", "gemini-1.5-pro-002", "gemini-1.5-flash-001",
@@ -448,7 +448,7 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
             "gemini-2.0-flash-lite-001", "gemini-2.0-flash-001",
             "gemini-2.5-pro", "gemini-2.5-flash", "gemini-2.5-flash-lite",
             "gemini-3.1-flash-lite" and "gemini-3.5-flash".
-            If no setting is provided, "gemini-2.0-flash-001" will be used by
+            If no setting is provided, "gemini-2.5-flash" will be used by
             default and a warning will be issued.
 
         .. note::
@@ -505,7 +505,7 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
             warnings.warn(msg, category=exceptions.PreviewWarning)
 
         if model_name is None:
-            model_name = "gemini-2.0-flash-001"
+            model_name = "gemini-2.5-flash"
             msg = exceptions.format_message(_REMOVE_DEFAULT_MODEL_WARNING)
             warnings.warn(msg, category=FutureWarning, stacklevel=2)
 
