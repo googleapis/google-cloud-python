@@ -63,61 +63,6 @@ _SINGLE_SEGMENT_PATTERN = r"([^/]+)"
 _MULTI_SEGMENT_PATTERN = r"(.+)"
 
 
-def _validate_multi_segment_value(val: str) -> bool:
-    """Validate that a multi-segment wildcard value does not contain '.' or '..' segments.
-
-    Args:
-        val (str): The value matched to the '**' wildcard to validate.
-
-    Returns:
-        bool: True if the value does not contain any '.' or '..' segments, False otherwise.
-    """
-    segments = val.split("/")
-    return not any(segment in (".", "..") for segment in segments)
-
-
-@functools.lru_cache(maxsize=1024)
-def _build_capture_pattern(template_str: str) -> tuple[re.Pattern, tuple[str, ...]]:
-    """Build a regex pattern to capture wildcard matches from a template.
-
-    This function parses a template string containing positional/named
-    wildcards ('*' or '**'), compiles it into a regular expression, and
-    records the order and types of all wildcards to allow extracting
-    sub-segments for individual validation.
-
-    Args:
-        template_str (str): The template string (e.g. "projects/*/locations/*").
-
-    Returns:
-        tuple[re.Pattern, tuple[str, ...]]: A tuple containing:
-            - The compiled regex pattern string with capture groups.
-            - A list of wildcard type strings ('*' or '**') in matching order.
-    """
-    wildcard_types = []
-    parts = []
-    last_idx = 0
-    for match in _VARIABLE_RE.finditer(template_str):
-        parts.append(re.escape(template_str[last_idx : match.start()]))
-        positional = match.group("positional")
-        template = match.group("template")
-
-        if positional == "**" or template == "**":
-            wildcard_types.append("**")
-            parts.append(_MULTI_SEGMENT_PATTERN)
-        elif positional == "*" or not template or template == "*":
-            wildcard_types.append("*")
-            parts.append(_SINGLE_SEGMENT_PATTERN)
-        else:
-            sub_pattern, sub_types = _build_capture_pattern(template)
-            wildcard_types.extend(sub_types)
-            parts.append(sub_pattern.pattern)
-
-        last_idx = match.end()
-    parts.append(re.escape(template_str[last_idx:]))
-
-    return re.compile("".join(parts)), tuple(wildcard_types)
-
-
 def _extract_and_validate_wildcards(
     val: str, template_str: str | None, property_name: str | None = None
 ) -> None:
@@ -139,17 +84,19 @@ def _extract_and_validate_wildcards(
     Raises:
         ValueError: If a wildcard value contains invalid dot segments.
     """
-    pattern, wildcard_types = _build_capture_pattern(template_str or "*")
-    m = pattern.fullmatch(val)
+    tmpl = template_str or "*"
+    m = re.fullmatch(_generate_pattern_for_template(tmpl), val)
     if m is not None:
         target = property_name or "positional variable"
-        for w_type, captured_val in zip(wildcard_types, m.groups()):
-            if w_type == "*" and captured_val in (".", ".."):
-                raise ValueError(f"Invalid value {captured_val} for {target}.")
-            elif w_type == "**" and not _validate_multi_segment_value(captured_val):
-                raise ValueError(
-                    f"Value for {target} must not contain segments that are exactly . or .. ."
-                )
+        groups = m.groups()
+        for g in groups:
+            if g in (".", ".."):
+                raise ValueError(f"Invalid value {g} for {target}.")
+        # ** can only appear as the final segment of a path template per AIP-127.
+        if "**" in tmpl and any(seg in (".", "..") for seg in groups[-1].split("/")):
+            raise ValueError(
+                f"Value for {target} must not contain segments that are exactly . or .. ."
+            )
 
 
 def _expand_variable_match(positional_vars, named_vars, match):

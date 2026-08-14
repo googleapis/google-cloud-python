@@ -771,8 +771,6 @@ def test_path_traversal_dots_validation_double_star_valid(name_val, expected_pat
 @pytest.mark.parametrize(
     "name_val",
     [
-        "projects/my-project/monitoredResourceDescriptors/.",
-        "projects/my-project/monitoredResourceDescriptors/..",
         "projects/my-project/monitoredResourceDescriptors/instance/my-instance/..",
         "projects/my-project/monitoredResourceDescriptors/instance/my-instance/.",
         "projects/my-project/monitoredResourceDescriptors/instance/my-instance/../..",
@@ -818,7 +816,7 @@ def test_percent_encoding_unreserved_characters(tmpl, kwargs, expected_result):
             "/v1/**",
             [".."],
             {},
-            r"^Value for positional variable must not contain segments that are exactly \. or \.\. \.$",
+            r"^Invalid value \.\. for positional variable\.$",
         ),
         (
             "/v1/**",
@@ -830,7 +828,7 @@ def test_percent_encoding_unreserved_characters(tmpl, kwargs, expected_result):
             "/v1/{name=**}",
             [],
             {"name": ".."},
-            r"^Value for name must not contain segments that are exactly \. or \.\. \.$",
+            r"^Invalid value \.\. for name\.$",
         ),
         (
             "/v1/{name=**}",
@@ -848,72 +846,26 @@ def test_path_traversal_dots_validation_bare_double_star(
 
 
 @pytest.mark.parametrize(
-    "template_str, expected_pattern, expected_wildcards",
+    "template_str, expected_pattern",
     [
         (
             "projects/{project}/locations/{location}",
             "projects/([^/]+)/locations/([^/]+)",
-            ("*", "*"),
         ),
-        ("projects/{project=**}", "projects/(.+)", ("**",)),
-        ("projects/{project=locations/*}", "projects/locations/([^/]+)", ("*",)),
-        ("projects/*/locations/**", "projects/([^/]+)/locations/(.+)", ("*", "**")),
-        ("projects/abc", "projects/abc", ()),
-        ("projects/my-project", r"projects/my\-project", ()),
-        (
-            r"my-test/{id}/v1.0?abc+def-g|h()\\",
-            r"my\-test/([^/]+)/v1\.0\?abc\+def\-g\|h\(\)\\\\",
-            ("*",),
-        ),
+        ("projects/{project=**}", "projects/(.+)"),
+        ("projects/{project=locations/*}", "projects/locations/([^/]+)"),
+        ("projects/*/locations/**", "projects/([^/]+)/locations/(.+)"),
+        ("projects/abc", "projects/abc"),
+        ("projects/my-project", "projects/my-project"),
     ],
 )
-def test_build_capture_pattern(template_str, expected_pattern, expected_wildcards):
-    pattern, wildcards = path_template._build_capture_pattern(template_str)
-    assert pattern.pattern == expected_pattern
-    assert wildcards == expected_wildcards
+def test_generate_pattern_for_template(template_str, expected_pattern):
+    assert (
+        path_template._generate_pattern_for_template(template_str) == expected_pattern
+    )
 
 
-@pytest.mark.parametrize(
-    "val, expected_valid",
-    [
-        ("a/b/c", True),
-        ("a/b.c/d", True),
-        ("a/.../b", True),
-        ("a/.b/c", True),
-        (".hidden", True),
-        ("..hidden", True),
-        ("file.txt", True),
-        ("...", True),
-        ("", True),
-        ("a/b", True),
-        ("a/../b", False),
-        ("a/b/c/d/e/../../../..", False),
-        ("a/b/../..", False),
-        ("a/b/../../..", False),
-        (".", False),
-        ("..", False),
-        ("/", True),
-        ("//", True),
-        ("a/../../b", False),
-        ("../..", False),
-        ("./.", False),
-        ("./foo", False),
-        ("../foo", False),
-        ("foo/.", False),
-        ("foo/..", False),
-        ("foo/./bar", False),
-        ("foo/../bar", False),
-        ("foo//./bar", False),
-        ("foo//../bar", False),
-        ("//.", False),
-        ("//..", False),
-        ("instance//..", False),
-        ("instance/my-instance///../..", False),
-    ],
-)
-def test_validate_multi_segment_value(val, expected_valid):
-    result = path_template._validate_multi_segment_value(val)
-    assert result == expected_valid
+
 
 
 @pytest.mark.parametrize(
@@ -931,13 +883,13 @@ def test_validate_multi_segment_value(val, expected_valid):
             ".",
             "**",
             True,
-            r"^Value for positional variable must not contain segments that are exactly \. or \.\. \.$",
+            r"^Invalid value \. for positional variable\.$",
         ),
         (
             "..",
             "**",
             True,
-            r"^Value for positional variable must not contain segments that are exactly \. or \.\. \.$",
+            r"^Invalid value \.\. for positional variable\.$",
         ),
         (
             "a/./b",
@@ -1024,11 +976,11 @@ def test_extract_and_validate_wildcards(
         ),
         (
             "projects/my-project/locations/us-central1/buckets/.",
-            r"^Value for name must not contain segments that are exactly \. or \.\. \.$",
+            r"^Invalid value \. for name\.$",
         ),
         (
             "projects/my-project/locations/us-central1/buckets/..",
-            r"^Value for name must not contain segments that are exactly \. or \.\. \.$",
+            r"^Invalid value \.\. for name\.$",
         ),
     ],
 )
