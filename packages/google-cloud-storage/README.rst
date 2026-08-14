@@ -145,7 +145,7 @@ Tracing With OpenTelemetry
 This is a PREVIEW FEATURE: Coverage and functionality are still in development and subject to change.
 
 This library can be configured to use `OpenTelemetry`_ to generate traces on calls to Google Cloud Storage.
-For information on the benefits and utility of tracing, read the Cloud Trace Overview <https://cloud.google.com/trace/docs/overview>_.
+For information on the benefits and utility of tracing, read the `Cloud Trace Overview <https://cloud.google.com/trace/docs/overview>`_.
 
 To enable OpenTelemetry tracing in the Cloud Storage client, first install OpenTelemetry:
 
@@ -238,7 +238,8 @@ In Python Storage 3.0, uploads and downloads now have a default of "auto" where
 applicable. "Auto" will use crc32c checksums, except for unusual cases where the
 fast (C extension) crc32c implementation is not available, in which case it will
 use md5 instead. Before Python Storage 3.0, the default was md5 for most
-downloads and None for most uploads. Note that ranged downloads ("start" or "end" set) still do not support any checksumming, and some features in
+downloads and None for most uploads. Note that ranged downloads ("start" or
+"end" set) still do not support any checksumming, and some features in
 ``transfer_manager.py`` still support crc32c only.
 
 Note: The method ``Blob.upload_from_file()`` requires a file in bytes mode, but
@@ -253,12 +254,13 @@ Miscellaneous
 - The ``BlobWriter`` class now attempts to terminate an ongoing resumable upload if
   the writer exits with an exception.
 - Retry behavior is now identical between media operations (uploads and
-  downloads) and other operations, and custom predicates are now supported
-  for media operations as well.
+  downloads) and other operations, and custom predicates are now supported for
+  media operations as well.
 - ``Blob.download_as_filename()`` will now delete the empty file if it results in a
   google.cloud.exceptions.NotFound exception (HTTP 404).
 - Previously, object upload, metadata update, and delete methods had retries
-  disabled by default unless the generation or metageneration was specified in the request. This has now changed so that retries are enabled by default.
+  disabled by default unless the generation or metageneration was specified in
+  the request. This has now changed so that retries are enabled by default.
 
 
 Next Steps
