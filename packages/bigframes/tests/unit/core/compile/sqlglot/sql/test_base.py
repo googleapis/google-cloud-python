@@ -127,11 +127,28 @@ def test_literal_for_geo():
             "PARSE_JSON('{\\'a\\': 10}')",
             id="json",
         ),
+        pytest.param(
+            2019,
+            sql.dtypes.STRING_DTYPE,
+            "'2019'",
+            id="string_from_int",
+        ),
+        pytest.param(
+            pa.scalar(2019),
+            sql.dtypes.STRING_DTYPE,
+            "'2019'",
+            id="string_from_pyarrow_scalar",
+        ),
+        pytest.param(
+            True,
+            sql.dtypes.STRING_DTYPE,
+            "'True'",
+            id="string_from_bool",
+        ),
     ),
 )
 def test_literal_explicit_dtype(value, dtype, expected):
-    got = sql.to_sql(sql.literal(value, dtype=dtype))
-    assert got == expected
+    assert sql.to_sql(sql.literal(value, dtype=dtype)) == expected
 
 
 @pytest.mark.parametrize(
