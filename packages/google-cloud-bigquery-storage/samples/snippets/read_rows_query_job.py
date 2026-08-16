@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # [START bigquerystorage_read_rows_query_job]
-from typing import Iterable, List, Optional
+from typing import Iterable, Optional
 
 from google.cloud import bigquery
 from google.cloud import bigquery_storage_v1
@@ -23,14 +23,14 @@ import pyarrow
 def read_rows_query_job(
     project_id: Optional[str] = None,
 ) -> Iterable[pyarrow.RecordBatch]:
-    """Queries BigQuery and reads results directly via BigQueryReadClient using a job stream.
+    """Queries BigQuery and yields batches directly via BigQueryReadClient using a job stream.
 
     Args:
         project_id (Optional[str]): The Google Cloud project ID to bill for the query.
             If not specified, the project is inferred from the environment.
 
-    Returns:
-        Iterable[pyarrow.RecordBatch]: An iterable of Apache Arrow RecordBatch objects.
+    Yields:
+        pyarrow.RecordBatch: Apache Arrow RecordBatch objects streamed from BigQuery.
     """
     # Initialize BigQuery and BigQuery Storage clients.
     client = bigquery.Client(project=project_id) if project_id else bigquery.Client()
@@ -39,7 +39,7 @@ def read_rows_query_job(
     query = """
         SELECT name, number, state
         FROM `bigquery-public-data.usa_names.usa_1910_current`
-        LIMIT 100
+        LIMIT 20000
     """
 
     # Start the query job.
@@ -51,7 +51,6 @@ def read_rows_query_job(
 
     # Read rows directly from the stream using the Storage Read API.
     schema: Optional[pyarrow.Schema] = None
-    batches: List[pyarrow.RecordBatch] = []
 
     for chunk in read_client.read_rows(name=stream, offset=0):
         # Extract the schema from the first chunk that provides it.
@@ -64,19 +63,15 @@ def read_rows_query_job(
                 pyarrow.py_buffer(chunk.arrow_schema.serialized_schema)
             )
 
-        # Deserialize each record batch using the schema.
+        # Deserialize and yield each record batch using the schema.
         if (
             chunk.arrow_record_batch
             and chunk.arrow_record_batch.serialized_record_batch
         ):
-            batches.append(
-                pyarrow.ipc.read_record_batch(
-                    pyarrow.py_buffer(chunk.arrow_record_batch.serialized_record_batch),
-                    schema,
-                )
+            yield pyarrow.ipc.read_record_batch(
+                pyarrow.py_buffer(chunk.arrow_record_batch.serialized_record_batch),
+                schema,
             )
-
-    return batches
 
 
 # [END bigquerystorage_read_rows_query_job]
