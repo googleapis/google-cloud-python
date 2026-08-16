@@ -31,5 +31,5 @@ def test_read_rows_query_job(project_id: str):
         total_rows += batch.num_rows
         batch_count += 1
 
-    assert total_rows == 100
+    assert total_rows == 20000
     assert batch_count > 0
