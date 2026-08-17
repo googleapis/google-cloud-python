@@ -158,6 +158,7 @@ class PqcVerifier(base.Verifier):
 
         Raises:
             RuntimeError: If ``cryptography`` is less than version 47.0.0.
+            ValueError: If ``public_key`` cannot be parsed.
             TypeError: If ``public_key`` is not an ML-DSA public key.
         """
         if mldsa is None:
