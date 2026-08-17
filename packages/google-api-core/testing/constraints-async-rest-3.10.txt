@@ -13,3 +13,4 @@ grpcio==1.59.0
 grpcio-status==1.59.0
 proto-plus==1.26.1
 aiohttp==3.13.4
+opentelemetry-api==1.27.0

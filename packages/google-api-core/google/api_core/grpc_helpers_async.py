@@ -24,9 +24,8 @@ import warnings
 from typing import AsyncGenerator, Generic, Iterator, Optional, TypeVar
 
 import grpc
-from grpc import aio
-
 from google.api_core import exceptions, general_helpers, grpc_helpers
+from grpc import aio
 
 # denotes the proto response type for grpc calls
 P = TypeVar("P")
@@ -302,6 +301,15 @@ def create_channel(
 
     if attempt_direct_path:
         target = grpc_helpers._modify_target_for_direct_path(target)
+
+    # NOTE: 'configuration' is popped to prevent a TypeError.
+    # Generated async transports (like those in google-cloud-* libs) pass 'configuration'
+    # down to this helper via **kwargs to support tracing in sync transports.
+    # However, 'aio.secure_channel' does not recognize this parameter yet and will
+    # crash if it is passed through.
+    # Async gRPC tracing is deferred to a future phase/PR, so we simply discard
+    # this parameter for now to ensure generated async code doesn't fail at runtime.
+    kwargs.pop("configuration", None)
 
     return aio.secure_channel(
         target, composite_credentials, compression=compression, **kwargs

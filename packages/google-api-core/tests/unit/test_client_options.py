@@ -13,9 +13,9 @@
 # limitations under the License.
 
 from re import match
+from unittest import mock
 
 import pytest
-
 from google.api_core import client_options
 
 from ..helpers import warn_deprecated_credentials_file
@@ -42,6 +42,7 @@ def test_constructor():
             ],
             api_audience="foo2.googleapis.com",
             universe_domain="googleapis.com",
+            tracer_provider=mock.Mock(),
         )
 
     assert options.api_endpoint == "foo.googleapis.com"
@@ -54,6 +55,7 @@ def test_constructor():
     ]
     assert options.api_audience == "foo2.googleapis.com"
     assert options.universe_domain == "googleapis.com"
+    assert options.tracer_provider is not None
 
 
 def test_constructor_with_encrypted_cert_source():
@@ -123,6 +125,7 @@ def test_from_dict():
                 "https://www.googleapis.com/auth/cloud-platform.read-only",
             ],
             "api_audience": "foo2.googleapis.com",
+            "tracer_provider": mock.Mock(),
         }
     )
 
@@ -136,6 +139,7 @@ def test_from_dict():
         "https://www.googleapis.com/auth/cloud-platform.read-only",
     ]
     assert options.api_key is None
+    assert options.tracer_provider is not None
     assert options.api_audience == "foo2.googleapis.com"
 
 
@@ -162,6 +166,7 @@ def test_repr():
             "scopes",
             "api_key",
             "api_audience",
+            "tracer_provider",
         ]
     )
     options = client_options.ClientOptions(api_endpoint="foo.googleapis.com")
