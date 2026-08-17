@@ -407,7 +407,7 @@ def create_channel(
                     tracer_provider = getattr(configuration, "tracer_provider", None)
 
             interceptor = otel_grpc.client_interceptor(tracer_provider=tracer_provider)
-            channel = grpc.intercept_channel(channel, interceptor)
+            channel = otel_grpc.intercept_channel(channel, interceptor)
         except ImportError:
             # If OpenTelemetry gRPC instrumentation is missing, this should simply NOOP and fail open rather than failing import.
             pass
