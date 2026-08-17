@@ -57,7 +57,7 @@ class GenericEchoHandler(grpc.GenericRpcHandler):
 
 
 @pytest.fixture(scope="module")
-def local_grpc_server():
+def fake_grpc_endpoint_server():
     """Starts a local generic gRPC server on an open port."""
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     server.add_generic_rpc_handlers((GenericEchoHandler(),))
@@ -72,7 +72,7 @@ def local_grpc_server():
 
 
 @pytest.fixture
-def mock_otel_grpc(monkeypatch):
+def mock_otel_package_imports(monkeypatch):
     """Fixture to mock OpenTelemetry gRPC hierarchy."""
     mock_otel = mock.Mock()
     mock_otel_grpc = mock_otel.instrumentation.grpc
@@ -92,7 +92,7 @@ def mock_otel_grpc(monkeypatch):
 
 
 @pytest.fixture
-def otel_setup_in_memory():
+def real_otel_sdk_in_memory():
     """Fixture to set up in-memory OTel exporting. Skips test if SDK is missing."""
     try:
         from opentelemetry.sdk.trace import TracerProvider
@@ -131,7 +131,7 @@ def insecure_channel_patch(monkeypatch):
 )
 def test_create_channel_otel_combos(
     monkeypatch,
-    mock_otel_grpc,
+    mock_otel_package_imports,
     is_otel_installed,
     tracing_env_var_value,
     expect_otel_interceptor,
@@ -144,7 +144,7 @@ def test_create_channel_otel_combos(
         monkeypatch.setitem(sys.modules, "opentelemetry.instrumentation.grpc", None)
 
     mock_channel = "raw_channel"
-    mock_otel_grpc.intercept_channel.side_effect = lambda ch, inc: f"wrapped_{ch}"
+    mock_otel_package_imports.intercept_channel.side_effect = lambda ch, inc: f"wrapped_{ch}"
 
     with (
         mock.patch(
@@ -161,14 +161,14 @@ def test_create_channel_otel_combos(
             mock_secure_channel.assert_called_once()
 
             if expect_otel_interceptor:
-                mock_otel_grpc.client_interceptor.assert_called_once()
-                mock_otel_grpc.intercept_channel.assert_called_once_with(
-                    mock_channel, mock_otel_grpc.client_interceptor.return_value
+                mock_otel_package_imports.client_interceptor.assert_called_once()
+                mock_otel_package_imports.intercept_channel.assert_called_once_with(
+                    mock_channel, mock_otel_package_imports.client_interceptor.return_value
                 )
                 assert channel == f"wrapped_{mock_channel}"
             else:
                 # OTel should NOT have been called
-                mock_otel_grpc.intercept_channel.assert_not_called()
+                mock_otel_package_imports.intercept_channel.assert_not_called()
                 assert channel == mock_channel
 
 
@@ -181,7 +181,7 @@ def test_create_channel_otel_combos(
     ids=["dict", "object"],
 )
 def test_create_channel_with_custom_tracer_provider(
-    monkeypatch, mock_otel_grpc, config_factory
+    monkeypatch, mock_otel_package_imports, config_factory
 ):
     """Verify that create_channel passes custom tracer_provider to OTel interceptor."""
 
@@ -198,7 +198,7 @@ def test_create_channel_with_custom_tracer_provider(
         ):
             grpc_helpers.create_channel("localhost:1234", configuration=config)
 
-            mock_otel_grpc.client_interceptor.assert_called_once_with(
+            mock_otel_package_imports.client_interceptor.assert_called_once_with(
                 tracer_provider=mock_tracer_provider
             )
 
@@ -212,10 +212,10 @@ def test_create_channel_with_custom_tracer_provider(
     ids=["dict", "object"],
 )
 def test_otel_integration_with_fake_endpoint(
-    local_grpc_server, monkeypatch, config_factory, otel_setup_in_memory, insecure_channel_patch
+    fake_grpc_endpoint_server, monkeypatch, config_factory, real_otel_sdk_in_memory, insecure_channel_patch
 ):
     """Verify OpenTelemetry integration with a real local gRPC server."""
-    provider, exporter = otel_setup_in_memory
+    provider, exporter = real_otel_sdk_in_memory
     config = config_factory(provider)
 
     # B) Enable tracing via environment variable
@@ -223,7 +223,7 @@ def test_otel_integration_with_fake_endpoint(
 
     # D) Call the code under test
     channel = grpc_helpers.create_channel(
-        local_grpc_server, configuration=config
+        fake_grpc_endpoint_server, configuration=config
     )
 
     # E) Make a low-level generic call
@@ -255,21 +255,21 @@ def test_otel_integration_with_fake_endpoint(
     ids=["dict", "object"],
 )
 def test_otel_integration_with_fake_endpoint_error(
-    local_grpc_server, monkeypatch, config_factory, otel_setup_in_memory, insecure_channel_patch
+    fake_grpc_endpoint_server, monkeypatch, config_factory, real_otel_sdk_in_memory, insecure_channel_patch
 ):
     """Verify OpenTelemetry integration records errors correctly."""
-    provider, exporter = otel_setup_in_memory
+    provider, exporter = real_otel_sdk_in_memory
     config = config_factory(provider)
 
-    # B) Enable tracing via environment variable
+    # Enable tracing via environment variable
     monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "True")
 
-    # D) Call the code under test
+    # Call the code under test
     channel = grpc_helpers.create_channel(
-        local_grpc_server, configuration=config
+        fake_grpc_endpoint_server, configuration=config
     )
 
-    # E) Make a low-level generic call that triggers an error
+    # Make a low-level generic call that triggers an error
     method_callable = channel.unary_unary(
         "/DummyService/Error",
         request_serializer=lambda x: x,
@@ -282,7 +282,7 @@ def test_otel_integration_with_fake_endpoint_error(
     with pytest.raises(grpc.RpcError) as excinfo:
         method_callable(payload)
 
-    # F) Assertions
+    # Assertions
     spans = exporter.get_finished_spans()
     assert len(spans) > 0, "No spans were recorded by OpenTelemetry!"
 
