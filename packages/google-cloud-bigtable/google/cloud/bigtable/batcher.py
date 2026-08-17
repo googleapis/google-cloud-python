@@ -350,6 +350,26 @@ class MutationsBatcher(object):
         processed_rows = self.futures_mapping[future]
         self.flow_control.release(processed_rows)
         del self.futures_mapping[future]
+        # Surface any exception raised inside the async flush. Without this, an
+        # exception raised by ``_flush_rows`` (e.g. a non-retryable RPC error, a
+        # retry deadline, or a response-count mismatch) would be stored on the
+        # future and silently discarded, so the failed mutations would never be
+        # reported to the user -- effectively silent data loss. Per-row errors
+        # from a successful RPC are already recorded in ``self.exceptions`` by
+        # ``_flush_rows``; here the whole batch failed with a single exception,
+        # so record it once per row in the batch to keep the reported error
+        # count aligned with the number of affected mutations.
+        #
+        # A cancelled future is "done", so this callback still runs for it, but
+        # ``future.exception()`` would raise ``CancelledError``. Nothing here
+        # cancels futures today, but guard against it so the callback stays
+        # correct if cancellation is ever introduced.
+        if future.cancelled():
+            return
+        exc = future.exception()
+        if exc is not None:
+            for _ in range(processed_rows.rows_count):
+                self.exceptions.put(exc)
 
     def _row_fits_in_batch(self, row, batch_info):
         """Checks if a row can fit in the current batch.

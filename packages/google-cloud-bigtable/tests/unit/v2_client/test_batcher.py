@@ -213,6 +213,60 @@ def test_mutations_batcher_response_with_error_codes():
         assert exc.value.exc[1].message == mocked_response[1].message
 
 
+def test_mutations_batcher_asynchronous_flush_exception_is_surfaced():
+    """An exception raised by the underlying ``mutate_rows`` call (e.g. a
+    non-retryable RPC error or a response-count mismatch) is raised inside the
+    async flush task. It must be captured and re-raised at ``close()`` rather
+    than being silently swallowed by the executor -- otherwise the failed
+    mutations are never reported to the user (silent data loss)."""
+    from google.api_core.exceptions import PermissionDenied
+
+    with mock.patch("tests.unit.v2_client.test_batcher._Table") as mocked_table:
+        table = mocked_table.return_value
+        # flush_count=2 forces the batch to flush asynchronously (through the
+        # executor) as soon as the second row is added
+        mutation_batcher = MutationsBatcher(table=table, flush_count=2)
+
+        row1 = DirectRow(row_key=b"row_key")
+        row1.set_cell("cf1", b"c1", b"1")
+        row2 = DirectRow(row_key=b"row_key")
+        row2.set_cell("cf1", b"c1", b"2")
+        table.mutate_rows.side_effect = PermissionDenied("denied")
+
+        mutation_batcher.mutate_rows([row1, row2])
+        with pytest.raises(MutationsBatchError) as exc:
+            mutation_batcher.close()
+        assert exc.value.message == "Errors in batch mutations."
+        # the whole batch (both rows) failed, so both are reported -- the error
+        # count stays aligned with the number of affected mutations
+        assert len(exc.value.exc) == 2
+        assert all(isinstance(e, PermissionDenied) for e in exc.value.exc)
+
+
+def test_batch_completed_callback_ignores_cancelled_future():
+    """A cancelled future is still "done", so the completion callback runs for
+    it, but ``future.exception()`` would raise ``CancelledError``. The callback
+    must short-circuit on a cancelled future instead of letting that propagate."""
+    from google.cloud.bigtable.batcher import _BatchInfo
+
+    table = _Table(TABLE_NAME)
+    with MutationsBatcher(table=table) as mutation_batcher:
+        batch_info = _BatchInfo(rows_count=2, mutations_count=2, mutations_size=0)
+
+        cancelled_future = mock.Mock()
+        cancelled_future.cancelled.return_value = True
+        cancelled_future.exception.side_effect = AssertionError(
+            "exception() must not be called on a cancelled future"
+        )
+        mutation_batcher.futures_mapping[cancelled_future] = batch_info
+
+        # Should not raise, should not record any exceptions
+        mutation_batcher._batch_completed_callback(cancelled_future)
+
+        assert cancelled_future not in mutation_batcher.futures_mapping
+        assert mutation_batcher.exceptions.qsize() == 0
+
+
 def test_flow_control_event_is_set_when_not_blocked():
     flow_control = _FlowControl()
 
