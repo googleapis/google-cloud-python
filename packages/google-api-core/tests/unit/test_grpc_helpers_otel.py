@@ -43,6 +43,16 @@ class GenericEchoHandler(grpc.GenericRpcHandler):
                 request_deserializer=lambda x: x,  # Pass raw bytes through
                 response_serializer=lambda x: x,  # Pass raw bytes through
             )
+        elif handler_call_details.method == "/DummyService/Error":
+            def error_behavior(request, context):
+                context.set_code(grpc.StatusCode.INTERNAL)
+                context.set_details("Intentional test error")
+                return b""
+            return grpc.unary_unary_rpc_method_handler(
+                error_behavior,
+                request_deserializer=lambda x: x,
+                response_serializer=lambda x: x,
+            )
         return None
 
 
@@ -163,7 +173,15 @@ def test_create_channel_with_custom_tracer_provider(
             )
 
 
-def test_otel_integration_with_fake_endpoint(local_grpc_server, monkeypatch):
+@pytest.mark.parametrize(
+    "config_factory",
+    [
+        lambda tp: {"tracer_provider": tp},
+        lambda tp: types.SimpleNamespace(tracer_provider=tp),
+    ],
+    ids=["dict", "object"],
+)
+def test_otel_integration_with_fake_endpoint(local_grpc_server, monkeypatch, config_factory):
     """Verify OpenTelemetry integration with a real local gRPC server."""
     try:
         from opentelemetry.sdk.trace import TracerProvider
@@ -179,6 +197,8 @@ def test_otel_integration_with_fake_endpoint(local_grpc_server, monkeypatch):
     provider = TracerProvider()
     provider.add_span_processor(SimpleSpanProcessor(exporter))
 
+    config = config_factory(provider)
+
     # B) Enable tracing via environment variable
     monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "True")
 
@@ -191,7 +211,7 @@ def test_otel_integration_with_fake_endpoint(local_grpc_server, monkeypatch):
 
     # D) Call the code under test
     channel = grpc_helpers.create_channel(
-        local_grpc_server, configuration={"tracer_provider": provider}
+        local_grpc_server, configuration=config
     )
 
     # E) Make a low-level generic call
@@ -212,3 +232,60 @@ def test_otel_integration_with_fake_endpoint(local_grpc_server, monkeypatch):
 
     span_names = [s.name for s in spans]
     assert any("DummyService" in name for name in span_names)
+
+
+def test_otel_integration_with_fake_endpoint_error(local_grpc_server, monkeypatch):
+    """Verify OpenTelemetry integration records errors correctly."""
+    try:
+        from opentelemetry.sdk.trace import TracerProvider
+        from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+        from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
+            InMemorySpanExporter,
+        )
+    except ImportError as e:
+        pytest.skip(f"opentelemetry-sdk not installed or import failed: {e}")
+
+    # A) Setup OpenTelemetry with an In-Memory Exporter
+    exporter = InMemorySpanExporter()
+    provider = TracerProvider()
+    provider.add_span_processor(SimpleSpanProcessor(exporter))
+
+    # B) Enable tracing via environment variable
+    monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "True")
+
+    # C) Mock secure_channel to return an insecure channel
+    def mock_secure(*args, **kwargs):
+        return grpc.insecure_channel(args[0])
+
+    monkeypatch.setattr(grpc, "secure_channel", mock_secure)
+
+    # D) Call the code under test
+    channel = grpc_helpers.create_channel(
+        local_grpc_server, configuration={"tracer_provider": provider}
+    )
+
+    # E) Make a low-level generic call that triggers an error
+    method_callable = channel.unary_unary(
+        "/DummyService/Error",
+        request_serializer=lambda x: x,
+        response_deserializer=lambda x: x,
+    )
+
+    payload = b"ping-test"
+
+    # Expect a gRPC error
+    with pytest.raises(grpc.RpcError) as excinfo:
+        method_callable(payload)
+
+    # F) Assertions
+    spans = exporter.get_finished_spans()
+    assert len(spans) > 0, "No spans were recorded by OpenTelemetry!"
+
+    # Verify that the span recorded the error
+    # The exact way OTel records errors might vary by version, but status should be ERROR
+    # or it should have error attributes.
+    error_spans = [s for s in spans if not s.status.is_ok]
+    assert len(error_spans) > 0, "No error spans recorded!"
+
+    span = error_spans[0]
+    assert "DummyService" in span.name
