@@ -41,7 +41,7 @@ ALL_PYTHON = [
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-PREVIEW_PYTHON_VERSION = "3.15"
+PREVIEW_PYTHON_VERSION = "3.14"
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 # Path to the centralized mypy configuration file at the repository root.
@@ -69,6 +69,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest",
     "pytest-cov",
     "pytest-asyncio",
+    "opentelemetry-sdk",
 ]
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
@@ -642,6 +643,7 @@ def core_deps_from_source(session, protobuf_implementation):
     session.run(
         "py.test",
         "tests/unit",
+        *session.posargs,
         env={
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
         },

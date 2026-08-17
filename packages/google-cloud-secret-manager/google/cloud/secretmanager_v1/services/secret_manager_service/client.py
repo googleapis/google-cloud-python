@@ -39,13 +39,24 @@ from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+
+try:
+    from google.api_core import _feature_gating_helpers
+    HAS_FEATURE_GATING = True
+except ImportError:
+    HAS_FEATURE_GATING = False
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.secretmanager_v1 import gapic_version as package_version
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.secretmanager_v1 import gapic_version as package_version
+try:
+    from opentelemetry import trace
+    HAS_OTEL = True
+except ImportError:
+    HAS_OTEL = False
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -59,6 +70,11 @@ try:
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
+if HAS_OTEL:
+    tracer = trace.get_tracer(__name__)
+else:
+    tracer = None  # type: ignore[assignment]
+
 _LOGGER = std_logging.getLogger(__name__)
 
 import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
@@ -68,7 +84,6 @@ import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-
 from google.cloud.secretmanager_v1.services.secret_manager_service import pagers
 from google.cloud.secretmanager_v1.types import resources, service
 
@@ -756,6 +771,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 client_info=client_info,
                 always_use_jwt_access=True,
                 api_audience=self._client_options.api_audience,
+                configuration=self._client_options,
             )
 
         if "async" not in str(self._transport):
@@ -1871,13 +1887,44 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # Validate the universe domain.
         self._validate_universe_domain()
 
+        if HAS_FEATURE_GATING:
+            is_tracing_enabled = _feature_gating_helpers.resolve_feature_flags(
+                env_var="GOOGLE_CLOUD_PYTHON_TRACING_ENABLED",
+                feature_key="tracer_provider",
+                configuration=self._client_options,
+            )
+        else:
+            is_tracing_enabled = False
+
         # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+        if is_tracing_enabled and HAS_OTEL and tracer:
+            with tracer.start_as_current_span(
+                "SecretManagerServiceClient.access_secret_version"
+            ) as span:
+                span.set_attribute("gcp.secretmanager.secret.name", request.name)
+                span.set_attribute("gcp.client.service", "secretmanager")
+                span.set_attribute("gcp.client.version", package_version.__version__)
+                span.set_attribute("gcp.client.repo", "googleapis/google-cloud-python")
+                span.set_attribute("gcp.client.artifact", "google-cloud-secret-manager")
+                try:
+                    response = rpc(
+                        request,
+                        retry=retry,
+                        timeout=timeout,
+                        metadata=metadata,
+                    )
+                except Exception as e:
+                    span.set_attribute("exception.type", type(e).__name__)
+                    span.set_attribute("status.message", str(e))
+                    span.set_status(trace.Status(trace.StatusCode.ERROR))
+                    raise
+        else:
+            response = rpc(
+                request,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata,
+            )
 
         # Done; return the response.
         return response
