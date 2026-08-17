@@ -165,7 +165,7 @@ def lint(session):
     session.run(
         "ruff", "check",
         "--select", "I",
-        f"--target-version=py{ALL_PYTHON[0].replace(".", "")}",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
         "--line-length=88",
         *LINT_PATHS,
     )
