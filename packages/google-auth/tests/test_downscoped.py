@@ -15,13 +15,19 @@
 import datetime
 import http.client as http_client
 import json
-import urllib
 from unittest import mock
+import urllib
 
 import pytest  # type: ignore
 
-from google.auth import _helpers, credentials, downscoped, exceptions, transport
-from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN, TokenState
+from google.auth import _helpers
+from google.auth import credentials
+from google.auth import downscoped
+from google.auth import exceptions
+from google.auth import transport
+from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN
+from google.auth.credentials import TokenState
+
 
 EXPRESSION = (
     "resource.name.startsWith('projects/_/buckets/example-bucket/objects/customer-a')"

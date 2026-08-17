@@ -19,7 +19,8 @@ from unittest import mock
 import pytest  # type: ignore
 
 from google.auth import exceptions
-from google.auth.transport import _mtls_helper, mtls
+from google.auth.transport import _mtls_helper
+from google.auth.transport import mtls
 
 
 @mock.patch("google.auth.transport._mtls_helper._get_cert_config_path")

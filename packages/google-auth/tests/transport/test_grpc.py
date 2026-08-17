@@ -16,18 +16,21 @@ import datetime
 import importlib
 import os
 import time
-import warnings
 from unittest import mock
+import warnings
 
 import pytest  # type: ignore
 
-from google.auth import _helpers, credentials, environment_vars, exceptions, transport
+from google.auth import _helpers
+from google.auth import credentials
+from google.auth import environment_vars
+from google.auth import exceptions
+from google.auth import transport
 from google.oauth2 import service_account
 
 try:
     # pylint: disable=ungrouped-imports
     import grpc  # type: ignore
-
     import google.auth.transport.grpc
 
     HAS_GRPC = True
@@ -654,15 +657,15 @@ class TestSslCredentials(object):
             None,
         )
 
-        with (
-            mock.patch.dict(
-                os.environ,
-                {
-                    environment_vars.GOOGLE_API_CERTIFICATE_CONFIG: "fake_config_path.json",
-                },
-            ),
-            mock.patch("builtins.open", mock.mock_open(read_data=fake_config_content)),
-            mock.patch("os.path.exists", return_value=True),
+        with mock.patch.dict(
+            os.environ,
+            {
+                environment_vars.GOOGLE_API_CERTIFICATE_CONFIG: "fake_config_path.json",
+            },
+        ), mock.patch(
+            "builtins.open", mock.mock_open(read_data=fake_config_content)
+        ), mock.patch(
+            "os.path.exists", return_value=True
         ):
             # Ensure mTLS explicit flags are not present in the environment
             os.environ.pop(environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE, None)

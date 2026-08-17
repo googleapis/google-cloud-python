@@ -17,7 +17,9 @@ import os
 
 import pytest  # type: ignore
 
-from google.auth import _service_account_info, crypt
+from google.auth import _service_account_info
+from google.auth import crypt
+
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 SERVICE_ACCOUNT_JSON_FILE = os.path.join(DATA_DIR, "service_account.json")

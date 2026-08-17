@@ -39,6 +39,7 @@ via the GCP STS endpoint.
 """
 
 import abc
+from dataclasses import dataclass
 import hashlib
 import hmac
 import http.client as http_client
@@ -46,12 +47,14 @@ import json
 import os
 import posixpath
 import re
-import urllib
-from dataclasses import dataclass
 from typing import Optional
+import urllib
 from urllib.parse import urljoin
 
-from google.auth import _helpers, environment_vars, exceptions, external_account
+from google.auth import _helpers
+from google.auth import environment_vars
+from google.auth import exceptions
+from google.auth import external_account
 
 # AWS Signature Version 4 signing algorithm identifier.
 _AWS_ALGORITHM = "AWS4-HMAC-SHA256"
@@ -270,9 +273,9 @@ def _generate_authentication_header_map(
         full_headers[key.lower()] = additional_headers[key]
     # Add AWS session token if available.
     if aws_security_credentials.session_token is not None:
-        full_headers[_AWS_SECURITY_TOKEN_HEADER] = (
-            aws_security_credentials.session_token
-        )
+        full_headers[
+            _AWS_SECURITY_TOKEN_HEADER
+        ] = aws_security_credentials.session_token
 
     # Required headers
     full_headers["host"] = host
@@ -615,7 +618,7 @@ class Credentials(external_account.Credentials):
         credential_source=None,
         aws_security_credentials_supplier=None,
         *args,
-        **kwargs,
+        **kwargs
     ):
         """Instantiates an AWS workload external account credentials object.
 
@@ -663,7 +666,7 @@ class Credentials(external_account.Credentials):
             token_url=token_url,
             credential_source=credential_source,
             *args,
-            **kwargs,
+            **kwargs
         )
         if credential_source is None and aws_security_credentials_supplier is None:
             raise exceptions.InvalidValue(

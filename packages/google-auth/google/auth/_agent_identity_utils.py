@@ -20,8 +20,8 @@ import os
 import re
 import stat
 import time
-import warnings
 from urllib.parse import quote, urlparse
+import warnings
 
 from google.auth import environment_vars, exceptions
 

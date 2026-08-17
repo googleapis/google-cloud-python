@@ -17,7 +17,8 @@ from unittest import mock
 
 import pytest
 
-from google.auth import metrics, version
+from google.auth import metrics
+from google.auth import version
 
 
 def test_add_metric_header():

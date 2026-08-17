@@ -29,15 +29,13 @@ import json
 import logging
 import urllib
 
-from google.auth import (
-    _exponential_backoff,
-    _helpers,
-    credentials,
-    exceptions,
-    jwt,
-    metrics,
-    transport,
-)
+from google.auth import _exponential_backoff
+from google.auth import _helpers
+from google.auth import credentials
+from google.auth import exceptions
+from google.auth import jwt
+from google.auth import metrics
+from google.auth import transport
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -147,7 +145,7 @@ def _token_endpoint_request_no_throw(
     use_json=False,
     can_retry=True,
     headers=None,
-    **kwargs,
+    **kwargs
 ):
     """Makes a request to the OAuth 2.0 authorization server's token endpoint.
     This function doesn't throw on response errors.
@@ -231,7 +229,7 @@ def _token_endpoint_request(
     use_json=False,
     can_retry=True,
     headers=None,
-    **kwargs,
+    **kwargs
 ):
     """Makes a request to the OAuth 2.0 authorization server's token endpoint.
 
@@ -274,7 +272,7 @@ def _token_endpoint_request(
         use_json=use_json,
         can_retry=can_retry,
         headers=headers,
-        **kwargs,
+        **kwargs
     )
     if not response_status_ok:
         _handle_error_response(response_data, retryable_error)

@@ -15,8 +15,8 @@
 import datetime
 import json
 import logging
-import urllib
 from unittest import mock
+import urllib
 
 import pytest  # type: ignore
 

@@ -2,7 +2,8 @@ from unittest import mock
 
 import pytest  # type: ignore
 
-from google.oauth2 import webauthn_handler, webauthn_handler_factory
+from google.oauth2 import webauthn_handler
+from google.oauth2 import webauthn_handler_factory
 
 
 @pytest.fixture

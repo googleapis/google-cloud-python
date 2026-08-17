@@ -16,6 +16,7 @@ import os
 
 from google.auth import crypt
 
+
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 
 # To generate privatekey.pem, privatekey.pub, and public_cert.pem:

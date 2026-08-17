@@ -17,15 +17,16 @@
 import base64
 import calendar
 import datetime
+from email.message import Message
 import hashlib
 import json
 import logging
 import sys
-import urllib
-from email.message import Message
 from typing import Any, Dict, Mapping, Optional, Union
+import urllib
 
 from google.auth import exceptions
+
 
 DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
 

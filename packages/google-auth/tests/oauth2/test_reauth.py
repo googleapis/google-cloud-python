@@ -20,6 +20,7 @@ import pytest  # type: ignore
 from google.auth import exceptions
 from google.oauth2 import reauth
 
+
 MOCK_REQUEST = mock.Mock()
 CHALLENGES_RESPONSE_TEMPLATE = {
     "status": "CHALLENGE_REQUIRED",

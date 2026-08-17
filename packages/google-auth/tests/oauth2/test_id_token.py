@@ -18,13 +18,12 @@ from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import (
-    environment_vars,
-    exceptions,
-    impersonated_credentials,
-    transport,
-)
-from google.oauth2 import id_token, service_account
+from google.auth import environment_vars
+from google.auth import exceptions
+from google.auth import impersonated_credentials
+from google.auth import transport
+from google.oauth2 import id_token
+from google.oauth2 import service_account
 
 SERVICE_ACCOUNT_FILE = os.path.join(
     os.path.dirname(__file__), "../data/service_account.json"

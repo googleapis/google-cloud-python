@@ -17,7 +17,8 @@ from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import _helpers, credentials
+from google.auth import _helpers
+from google.auth import credentials
 
 
 class CredentialsImpl(credentials.CredentialsWithRegionalAccessBoundary):

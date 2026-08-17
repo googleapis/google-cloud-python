@@ -18,9 +18,9 @@ import sys
 import tempfile
 from unittest import mock
 
-import pytest  # type: ignore
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import ec
+import pytest  # type: ignore
 
 from google.auth import environment_vars, exceptions
 from google.auth.transport import _mtls_helper
@@ -548,7 +548,9 @@ class TestGetWorkloadCertAndKey(object):
         assert actual_cert is None
         assert actual_key is None
 
-    @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)  # noqa: E501
+    @mock.patch(
+        "google.auth.transport._mtls_helper._load_json_file", autospec=True
+    )  # noqa: E501
     @mock.patch(
         "google.auth.transport._mtls_helper._get_cert_config_path",
         autospec=True,
@@ -557,7 +559,9 @@ class TestGetWorkloadCertAndKey(object):
         "google.auth.transport._mtls_helper._read_cert_and_key_files",
         autospec=True,
     )  # noqa: E501
-    @mock.patch("google.auth.transport._mtls_helper.path.exists", autospec=True)  # noqa: E501
+    @mock.patch(
+        "google.auth.transport._mtls_helper.path.exists", autospec=True
+    )  # noqa: E501
     def test_no_workload_fallback_to_home(
         self,
         mock_path_exists,
@@ -607,9 +611,13 @@ class TestGetWorkloadCertAndKey(object):
         mock_load_json_file.assert_has_calls(
             [mock.call(ecp_path), mock.call(home_path)]
         )
-        mock_read_cert_and_key_files.assert_called_once_with("cert/path", "key/path")  # noqa: E501
+        mock_read_cert_and_key_files.assert_called_once_with(
+            "cert/path", "key/path"
+        )  # noqa: E501
 
-    @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)  # noqa: E501
+    @mock.patch(
+        "google.auth.transport._mtls_helper._load_json_file", autospec=True
+    )  # noqa: E501
     @mock.patch(
         "google.auth.transport._mtls_helper._get_cert_config_path",
         autospec=True,
@@ -618,7 +626,9 @@ class TestGetWorkloadCertAndKey(object):
         "google.auth.transport._mtls_helper._read_cert_and_key_files",
         autospec=True,
     )  # noqa: E501
-    @mock.patch("google.auth.transport._mtls_helper.path.exists", autospec=True)  # noqa: E501
+    @mock.patch(
+        "google.auth.transport._mtls_helper.path.exists", autospec=True
+    )  # noqa: E501
     def test_no_workload_fallback_to_home_error(
         self,
         mock_path_exists,
@@ -659,12 +669,16 @@ class TestGetWorkloadCertAndKey(object):
         )
         mock_read_cert_and_key_files.assert_not_called()
 
-    @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)  # noqa: E501
+    @mock.patch(
+        "google.auth.transport._mtls_helper._load_json_file", autospec=True
+    )  # noqa: E501
     @mock.patch(
         "google.auth.transport._mtls_helper._get_cert_config_path",
         autospec=True,
     )
-    @mock.patch("google.auth.transport._mtls_helper.path.exists", autospec=True)  # noqa: E501
+    @mock.patch(
+        "google.auth.transport._mtls_helper.path.exists", autospec=True
+    )  # noqa: E501
     @mock.patch("os.path.normpath", autospec=True)
     def test_no_workload_fallback_avoided_same_path_normalization(
         self,
@@ -698,7 +712,9 @@ class TestGetWorkloadCertAndKey(object):
             "google.auth._cloud_sdk.get_config_path",
             return_value="C:\\Users\\User\\.config\\gcloud",
         ):
-            actual_cert, actual_key = _mtls_helper._get_workload_cert_and_key(None)  # noqa: E501
+            actual_cert, actual_key = _mtls_helper._get_workload_cert_and_key(
+                None
+            )  # noqa: E501
 
         assert actual_cert is None
         assert actual_key is None
@@ -1286,9 +1302,8 @@ class TestSecureCertKeyPaths(object):
         )
         mock_memfd_cm.return_value = mock_memfd_ctx
 
-        with (
-            mock.patch.object(os.path, "exists", return_value=True),
-            mock.patch("builtins.open", mock.mock_open()),
+        with mock.patch.object(os.path, "exists", return_value=True), mock.patch(
+            "builtins.open", mock.mock_open()
         ):
             with _mtls_helper.secure_cert_key_paths(
                 pytest.public_cert_bytes,
@@ -1353,10 +1368,9 @@ class TestSecureCertKeyPaths(object):
         )
         mock_tempfile_cm.return_value = mock_tempfile_ctx
 
-        with (
-            mock.patch.object(os.path, "exists", return_value=True),
-            mock.patch("builtins.open", mock.mock_open()) as mock_open,
-        ):
+        with mock.patch.object(os.path, "exists", return_value=True), mock.patch(
+            "builtins.open", mock.mock_open()
+        ) as mock_open:
             mock_open.side_effect = PermissionError("Permission denied")
 
             with _mtls_helper.secure_cert_key_paths(

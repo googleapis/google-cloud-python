@@ -50,7 +50,9 @@ except ImportError as caught_exc:  # pragma: NO COVER
     ) from caught_exc
 
 
-from google.auth import _helpers, exceptions, transport
+from google.auth import _helpers
+from google.auth import exceptions
+from google.auth import transport
 from google.auth.transport import _mtls_helper
 from google.oauth2 import service_account
 
@@ -174,9 +176,8 @@ def _make_mutual_tls_http(cert, key):
     Raises:
         google.auth.exceptions.MutualTLSChannelError: If the cert or key is invalid.
     """
-    import ssl
-
     import certifi
+    import ssl
 
     ctx = urllib3.util.ssl_.create_urllib3_context()
     ctx.load_verify_locations(cafile=certifi.where())

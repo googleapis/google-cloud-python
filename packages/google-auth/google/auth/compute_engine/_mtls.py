@@ -16,18 +16,19 @@
 #
 """Mutual TLS for Google Compute Engine metadata server."""
 
+from dataclasses import dataclass, field
 import enum
 import logging
 import os
-import ssl
-from dataclasses import dataclass, field
 from pathlib import Path
+import ssl
 from urllib.parse import urlparse, urlunparse
 
 import requests
 from requests.adapters import HTTPAdapter
 
 from google.auth import environment_vars, exceptions
+
 
 _LOGGER = logging.getLogger(__name__)
 

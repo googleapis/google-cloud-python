@@ -16,11 +16,12 @@
 
 import enum
 import logging
-import ssl
 from os import getenv
+import ssl
 from typing import Optional
 
-from google.auth import environment_vars, exceptions
+from google.auth import environment_vars
+from google.auth import exceptions
 from google.auth.transport import _mtls_helper
 
 _LOGGER = logging.getLogger(__name__)

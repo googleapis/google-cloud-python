@@ -23,6 +23,7 @@ from google.auth._default import (
     load_credentials_from_file,
 )
 
+
 __version__ = google_auth_version.__version__
 
 

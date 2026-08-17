@@ -20,7 +20,8 @@ from unittest import mock
 import pytest
 
 from google.auth import exceptions
-from google.auth.aio import credentials, transport
+from google.auth.aio import credentials
+from google.auth.aio import transport
 from google.auth.aio.transport import sessions
 
 # This is the valid "workload" format the library expects
@@ -39,22 +40,19 @@ class TestSessionsMtls:
         Tests that the mTLS channel configures correctly when a
         valid workload config is mocked.
         """
-        with (
-            mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}),
-            mock.patch("os.path.exists") as mock_exists,
-            mock.patch(
-                "builtins.open",
-                mock.mock_open(read_data=json.dumps(VALID_WORKLOAD_CONFIG)),
-            ),
-            mock.patch(
-                "google.auth.aio.transport.mtls.get_client_cert_and_key"
-            ) as mock_helper,
-            mock.patch(
-                "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
-            ) as mock_make_context,
-            mock.patch("aiohttp.TCPConnector") as mock_connector,
-            mock.patch("aiohttp.ClientSession") as mock_session,
-        ):
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}
+        ), mock.patch("os.path.exists") as mock_exists, mock.patch(
+            "builtins.open", mock.mock_open(read_data=json.dumps(VALID_WORKLOAD_CONFIG))
+        ), mock.patch(
+            "google.auth.aio.transport.mtls.get_client_cert_and_key"
+        ) as mock_helper, mock.patch(
+            "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
+        ) as mock_make_context, mock.patch(
+            "aiohttp.TCPConnector"
+        ) as mock_connector, mock.patch(
+            "aiohttp.ClientSession"
+        ) as mock_session:
             mock_session.return_value.close = mock.AsyncMock()
             mock_exists.return_value = True
             mock_helper.return_value = (True, b"fake_cert_data", b"fake_key_data")
@@ -80,10 +78,9 @@ class TestSessionsMtls:
         """
         Tests behavior when the config file does not exist.
         """
-        with (
-            mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}),
-            mock.patch("os.path.exists") as mock_exists,
-        ):
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}
+        ), mock.patch("os.path.exists") as mock_exists:
             mock_exists.return_value = False
             mock_creds = mock.AsyncMock(spec=credentials.Credentials)
             session = sessions.AsyncAuthorizedSession(mock_creds)
@@ -96,12 +93,10 @@ class TestSessionsMtls:
         """
         Verifies that the MutualTLSChannelError is raised for bad formats.
         """
-        with (
-            mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}),
-            mock.patch("os.path.exists") as mock_exists,
-            mock.patch(
-                "builtins.open", mock.mock_open(read_data='{"invalid": "format"}')
-            ),
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}
+        ), mock.patch("os.path.exists") as mock_exists, mock.patch(
+            "builtins.open", mock.mock_open(read_data='{"invalid": "format"}')
         ):
             mock_exists.return_value = True
             mock_creds = mock.AsyncMock(spec=credentials.Credentials)
@@ -116,12 +111,10 @@ class TestSessionsMtls:
         """
         If cert is missing expected keys, it should fail gracefully
         """
-        with (
-            mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}),
-            mock.patch("os.path.exists") as mock_exists,
-            mock.patch(
-                "builtins.open", mock.mock_open(read_data='{"cert_configs": {}}')
-            ),
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}
+        ), mock.patch("os.path.exists") as mock_exists, mock.patch(
+            "builtins.open", mock.mock_open(read_data='{"cert_configs": {}}')
         ):
             mock_exists.return_value = True
             mock_creds = mock.AsyncMock(spec=credentials.Credentials)
@@ -139,18 +132,18 @@ class TestSessionsMtls:
         def mock_callback():
             return (b"fake_cert_bytes", b"fake_key_bytes")
 
-        with (
-            mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}),
-            mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ),
-            mock.patch(
-                "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
-            ) as mock_make_context,
-            mock.patch("aiohttp.TCPConnector") as mock_connector,
-            mock.patch("aiohttp.ClientSession") as mock_session,
-        ):
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}
+        ), mock.patch(
+            "google.auth.transport.mtls.has_default_client_cert_source",
+            return_value=True,
+        ), mock.patch(
+            "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
+        ) as mock_make_context, mock.patch(
+            "aiohttp.TCPConnector"
+        ) as mock_connector, mock.patch(
+            "aiohttp.ClientSession"
+        ) as mock_session:
             mock_session.return_value.close = mock.AsyncMock()
             mock_context = mock.Mock(spec=ssl.SSLContext)
             mock_make_context.return_value = mock_context
@@ -173,20 +166,15 @@ class TestSessionsMtls:
         """Tests that if _auth_request is not an AiohttpRequest, _is_mtls is set to False
         because we can't configure the custom request with mTLS.
         """
-        with (
-            mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}),
-            mock.patch("os.path.exists") as mock_exists,
-            mock.patch(
-                "builtins.open",
-                mock.mock_open(read_data=json.dumps(VALID_WORKLOAD_CONFIG)),
-            ),
-            mock.patch(
-                "google.auth.aio.transport.mtls.get_client_cert_and_key"
-            ) as mock_helper,
-            mock.patch(
-                "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
-            ) as mock_make_context,
-        ):
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}
+        ), mock.patch("os.path.exists") as mock_exists, mock.patch(
+            "builtins.open", mock.mock_open(read_data=json.dumps(VALID_WORKLOAD_CONFIG))
+        ), mock.patch(
+            "google.auth.aio.transport.mtls.get_client_cert_and_key"
+        ) as mock_helper, mock.patch(
+            "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
+        ) as mock_make_context:
             mock_exists.return_value = True
             mock_helper.return_value = (True, b"fake_cert_data", b"fake_key_data")
 
@@ -214,20 +202,15 @@ class TestSessionsMtls:
         Tests that self._is_mtls is reset to False if an exception is raised
         during configuration.
         """
-        with (
-            mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}),
-            mock.patch("os.path.exists") as mock_exists,
-            mock.patch(
-                "builtins.open",
-                mock.mock_open(read_data=json.dumps(VALID_WORKLOAD_CONFIG)),
-            ),
-            mock.patch(
-                "google.auth.aio.transport.mtls.get_client_cert_and_key"
-            ) as mock_helper,
-            mock.patch(
-                "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
-            ) as mock_make_context,
-        ):
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}
+        ), mock.patch("os.path.exists") as mock_exists, mock.patch(
+            "builtins.open", mock.mock_open(read_data=json.dumps(VALID_WORKLOAD_CONFIG))
+        ), mock.patch(
+            "google.auth.aio.transport.mtls.get_client_cert_and_key"
+        ) as mock_helper, mock.patch(
+            "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
+        ) as mock_make_context:
             mock_exists.return_value = True
             mock_helper.return_value = (True, b"fake_cert_data", b"fake_key_data")
             mock_make_context.side_effect = exceptions.ClientCertError("Mock error")
@@ -247,20 +230,15 @@ class TestSessionsMtls:
         Tests that self._is_mtls is reset to False if a TransportError is raised
         during configuration.
         """
-        with (
-            mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}),
-            mock.patch("os.path.exists") as mock_exists,
-            mock.patch(
-                "builtins.open",
-                mock.mock_open(read_data=json.dumps(VALID_WORKLOAD_CONFIG)),
-            ),
-            mock.patch(
-                "google.auth.aio.transport.mtls.get_client_cert_and_key"
-            ) as mock_helper,
-            mock.patch(
-                "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
-            ) as mock_make_context,
-        ):
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}
+        ), mock.patch("os.path.exists") as mock_exists, mock.patch(
+            "builtins.open", mock.mock_open(read_data=json.dumps(VALID_WORKLOAD_CONFIG))
+        ), mock.patch(
+            "google.auth.aio.transport.mtls.get_client_cert_and_key"
+        ) as mock_helper, mock.patch(
+            "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
+        ) as mock_make_context:
             mock_exists.return_value = True
             mock_helper.return_value = (True, b"fake_cert_data", b"fake_key_data")
             mock_make_context.side_effect = exceptions.TransportError("Mock error")
@@ -281,22 +259,19 @@ class TestSessionsMtls:
         a subsequent attempt that raises an exception will preserve the original mTLS state.
         """
         # Step 1: Successful configuration
-        with (
-            mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}),
-            mock.patch("os.path.exists") as mock_exists,
-            mock.patch(
-                "builtins.open",
-                mock.mock_open(read_data=json.dumps(VALID_WORKLOAD_CONFIG)),
-            ),
-            mock.patch(
-                "google.auth.aio.transport.mtls.get_client_cert_and_key"
-            ) as mock_helper,
-            mock.patch(
-                "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
-            ) as mock_make_context,
-            mock.patch("aiohttp.TCPConnector"),
-            mock.patch("aiohttp.ClientSession") as mock_session,
-        ):
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}
+        ), mock.patch("os.path.exists") as mock_exists, mock.patch(
+            "builtins.open", mock.mock_open(read_data=json.dumps(VALID_WORKLOAD_CONFIG))
+        ), mock.patch(
+            "google.auth.aio.transport.mtls.get_client_cert_and_key"
+        ) as mock_helper, mock.patch(
+            "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
+        ) as mock_make_context, mock.patch(
+            "aiohttp.TCPConnector"
+        ), mock.patch(
+            "aiohttp.ClientSession"
+        ) as mock_session:
             mock_session.return_value.close = mock.AsyncMock()
             mock_exists.return_value = True
             mock_helper.return_value = (True, b"fake_cert_data_1", b"fake_key_data_1")
@@ -335,22 +310,19 @@ class TestSessionsMtls:
         configuration is still considered successful, and is_mtls remains True
         without raising MutualTLSChannelError.
         """
-        with (
-            mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}),
-            mock.patch("os.path.exists") as mock_exists,
-            mock.patch(
-                "builtins.open",
-                mock.mock_open(read_data=json.dumps(VALID_WORKLOAD_CONFIG)),
-            ),
-            mock.patch(
-                "google.auth.aio.transport.mtls.get_client_cert_and_key"
-            ) as mock_helper,
-            mock.patch(
-                "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
-            ) as mock_make_context,
-            mock.patch("aiohttp.TCPConnector"),
-            mock.patch("aiohttp.ClientSession") as mock_session,
-        ):
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}
+        ), mock.patch("os.path.exists") as mock_exists, mock.patch(
+            "builtins.open", mock.mock_open(read_data=json.dumps(VALID_WORKLOAD_CONFIG))
+        ), mock.patch(
+            "google.auth.aio.transport.mtls.get_client_cert_and_key"
+        ) as mock_helper, mock.patch(
+            "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
+        ) as mock_make_context, mock.patch(
+            "aiohttp.TCPConnector"
+        ), mock.patch(
+            "aiohttp.ClientSession"
+        ) as mock_session:
             mock_session.return_value.close = mock.AsyncMock()
             mock_exists.return_value = True
             mock_helper.return_value = (True, b"fake_cert_data", b"fake_key_data")

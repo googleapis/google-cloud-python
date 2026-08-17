@@ -14,6 +14,7 @@
 
 """Environment variables used by :mod:`google.auth`."""
 
+
 PROJECT = "GOOGLE_CLOUD_PROJECT"
 """Environment variable defining default project.
 

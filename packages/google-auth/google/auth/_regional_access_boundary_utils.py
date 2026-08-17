@@ -21,7 +21,7 @@ import functools
 import inspect
 import logging
 import threading
-from typing import TYPE_CHECKING, NamedTuple, Optional
+from typing import NamedTuple, Optional, TYPE_CHECKING
 
 from google.auth import _helpers
 

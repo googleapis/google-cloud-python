@@ -16,7 +16,8 @@ from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import _exponential_backoff, exceptions
+from google.auth import _exponential_backoff
+from google.auth import exceptions
 
 
 @mock.patch("time.sleep", return_value=None)

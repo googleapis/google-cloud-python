@@ -16,11 +16,13 @@ import json
 import os
 import pickle
 
-import pytest  # type: ignore
 from cryptography.hazmat.primitives.asymmetric import rsa
+import pytest  # type: ignore
 
 from google.auth import _helpers
-from google.auth.crypt import _cryptography_rsa, base
+from google.auth.crypt import _cryptography_rsa
+from google.auth.crypt import base
+
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 

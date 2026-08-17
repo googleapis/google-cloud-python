@@ -18,7 +18,9 @@ from unittest import mock
 import pytest  # type: ignore
 
 from google.auth import exceptions
-from google.oauth2 import _reauth_async, reauth
+from google.oauth2 import _reauth_async
+from google.oauth2 import reauth
+
 
 MOCK_REQUEST = mock.AsyncMock(spec=["transport.Request"])
 CHALLENGES_RESPONSE_TEMPLATE = {

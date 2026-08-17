@@ -28,7 +28,10 @@ import http.client as http_client
 import json
 import urllib
 
-from google.auth import _exponential_backoff, _helpers, exceptions, jwt
+from google.auth import _exponential_backoff
+from google.auth import _helpers
+from google.auth import exceptions
+from google.auth import jwt
 from google.oauth2 import _client as client
 
 

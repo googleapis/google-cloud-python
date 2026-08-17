@@ -17,21 +17,18 @@ import datetime
 import http.client as http_client
 import json
 import os
-import urllib
 from unittest import mock
+import urllib
 
-import pytest  # type: ignore
 from cryptography import x509
 from cryptography.hazmat.primitives import serialization
+import pytest  # type: ignore
 
-from google.auth import (
-    _helpers,
-    exceptions,
-    external_account,
-    identity_pool,
-    metrics,
-    transport,
-)
+from google.auth import _helpers, external_account
+from google.auth import exceptions
+from google.auth import identity_pool
+from google.auth import metrics
+from google.auth import transport
 from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN
 
 CLIENT_ID = "username"
