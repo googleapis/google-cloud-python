@@ -110,6 +110,16 @@ def otel_setup_in_memory():
     return provider, exporter
 
 
+@pytest.fixture
+def insecure_channel_patch(monkeypatch):
+    """Mocks grpc.secure_channel to return an insecure channel for testing."""
+    def mock_secure(*args, **kwargs):
+        return grpc.insecure_channel(args[0])
+
+    monkeypatch.setattr(grpc, "secure_channel", mock_secure)
+
+
+
 
 @pytest.mark.parametrize(
     "is_otel_installed, tracing_env_var_value, expect_otel_interceptor",
@@ -201,21 +211,15 @@ def test_create_channel_with_custom_tracer_provider(
     ],
     ids=["dict", "object"],
 )
-def test_otel_integration_with_fake_endpoint(local_grpc_server, monkeypatch, config_factory, otel_setup_in_memory):
+def test_otel_integration_with_fake_endpoint(
+    local_grpc_server, monkeypatch, config_factory, otel_setup_in_memory, insecure_channel_patch
+):
     """Verify OpenTelemetry integration with a real local gRPC server."""
     provider, exporter = otel_setup_in_memory
-
     config = config_factory(provider)
 
     # B) Enable tracing via environment variable
     monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "True")
-
-    # C) Mock secure_channel to return an insecure channel
-    # This is needed because local_grpc_server is insecure but create_channel defaults to secure.
-    def mock_secure(*args, **kwargs):
-        return grpc.insecure_channel(args[0])
-
-    monkeypatch.setattr(grpc, "secure_channel", mock_secure)
 
     # D) Call the code under test
     channel = grpc_helpers.create_channel(
@@ -242,22 +246,27 @@ def test_otel_integration_with_fake_endpoint(local_grpc_server, monkeypatch, con
     assert any("DummyService" in name for name in span_names)
 
 
-def test_otel_integration_with_fake_endpoint_error(local_grpc_server, monkeypatch, otel_setup_in_memory):
+@pytest.mark.parametrize(
+    "config_factory",
+    [
+        lambda tp: {"tracer_provider": tp},
+        lambda tp: types.SimpleNamespace(tracer_provider=tp),
+    ],
+    ids=["dict", "object"],
+)
+def test_otel_integration_with_fake_endpoint_error(
+    local_grpc_server, monkeypatch, config_factory, otel_setup_in_memory, insecure_channel_patch
+):
     """Verify OpenTelemetry integration records errors correctly."""
     provider, exporter = otel_setup_in_memory
+    config = config_factory(provider)
 
     # B) Enable tracing via environment variable
     monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "True")
 
-    # C) Mock secure_channel to return an insecure channel
-    def mock_secure(*args, **kwargs):
-        return grpc.insecure_channel(args[0])
-
-    monkeypatch.setattr(grpc, "secure_channel", mock_secure)
-
     # D) Call the code under test
     channel = grpc_helpers.create_channel(
-        local_grpc_server, configuration={"tracer_provider": provider}
+        local_grpc_server, configuration=config
     )
 
     # E) Make a low-level generic call that triggers an error
