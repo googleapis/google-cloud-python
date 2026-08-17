@@ -84,10 +84,28 @@ nox.options.sessions = [
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):
     session.install(
-        "flake8", "flake8-import-order", "docutils", CLICK_VERSION, BLACK_VERSION
+        "flake8", "flake8-import-order", "docutils", CLICK_VERSION, RUFF_VERSION
     )
     session.install("-e", ".")
-    session.run("black", "--check", *BLACK_PATHS)
+    # 1. Check imports
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *BLACK_PATHS,
+    )
+    # 2. Check formatting
+    session.run(
+        "ruff",
+        "format",
+        "--check",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *BLACK_PATHS,
+    )
     session.run(
         "flake8",
         "--import-order-style=google",
