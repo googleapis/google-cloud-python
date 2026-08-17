@@ -98,3 +98,35 @@ def test_create_channel_otel_combos(
                 # OTel should NOT have been called
                 mock_otel_grpc.intercept_channel.assert_not_called()
                 assert channel == mock_channel
+
+
+@pytest.mark.parametrize(
+    "config_factory",
+    [
+        lambda tp: {"tracer_provider": tp},
+        lambda tp: types.SimpleNamespace(tracer_provider=tp),
+    ],
+    ids=["dict", "object"],
+)
+@pytest.mark.skipif(not HAS_GRPC_HELPERS, reason="Requires google-api-core[grpc]")
+def test_create_channel_with_custom_tracer_provider(
+    monkeypatch, mock_otel_grpc, config_factory
+):
+    """Verify that create_channel passes custom tracer_provider to OTel interceptor."""
+
+    mock_tracer_provider = mock.Mock()
+    config = config_factory(mock_tracer_provider)
+
+    mock_channel = "raw_channel"
+    with (
+        mock.patch("grpc.secure_channel", return_value=mock_channel),
+    ):
+        with mock.patch(
+            "google.api_core.grpc_helpers._create_composite_credentials",
+            return_value=mock.Mock(),
+        ):
+            grpc_helpers.create_channel("localhost:1234", configuration=config)
+
+            mock_otel_grpc.client_interceptor.assert_called_once_with(
+                tracer_provider=mock_tracer_provider
+            )
