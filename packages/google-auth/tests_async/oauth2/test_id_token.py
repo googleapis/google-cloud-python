@@ -18,9 +18,8 @@ from unittest import mock
 
 import pytest  # type: ignore
 
-from google.auth import environment_vars
-from google.auth import exceptions
 import google.auth.compute_engine._metadata
+from google.auth import environment_vars, exceptions
 from google.oauth2 import _id_token_async as id_token
 from google.oauth2 import _service_account_async
 from google.oauth2 import id_token as sync_id_token
