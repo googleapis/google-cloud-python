@@ -133,9 +133,7 @@ def test_from_dict_mldsa_signer_auto_detect_success(monkeypatch):
     mock_mldsa = mock.Mock()
     mock_mldsa.MLDSA65PrivateKey = MockMLDSA65PrivateKey
 
-    mldsa_pem = (
-        "-----BEGIN PRIVATE KEY-----\ndGVzdA==\n-----END PRIVATE KEY-----"
-    )
+    mldsa_pem = "-----BEGIN PRIVATE KEY-----\ndGVzdA==\n-----END PRIVATE KEY-----"
     info = {
         "private_key": mldsa_pem,
         "private_key_id": "test_mldsa_key_id",
