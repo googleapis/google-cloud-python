@@ -46,9 +46,7 @@ import json
 import os
 from typing import NamedTuple
 
-from google.auth import _helpers
-from google.auth import exceptions
-from google.auth import external_account
+from google.auth import _helpers, exceptions, external_account
 from google.auth.transport import _mtls_helper
 
 
@@ -277,7 +275,7 @@ class Credentials(external_account.Credentials):
         credential_source=None,
         subject_token_supplier=None,
         *args,
-        **kwargs
+        **kwargs,
     ):
         """Instantiates an external account credentials object from a file/URL.
 
@@ -335,7 +333,7 @@ class Credentials(external_account.Credentials):
             token_url=token_url,
             credential_source=credential_source,
             *args,
-            **kwargs
+            **kwargs,
         )
         if credential_source is None and subject_token_supplier is None:
             raise exceptions.InvalidValue(
