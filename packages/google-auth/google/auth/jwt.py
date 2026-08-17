@@ -80,6 +80,7 @@ if es is not None:  # pragma: NO COVER
     _ALGORITHM_TO_VERIFIER_CLASS["ES384"] = es.EsVerifier  # type: ignore
 
 if pqc is not None:  # pragma: NO COVER
+    _ALGORITHM_TO_VERIFIER_CLASS["ML-DSA-44"] = pqc.PqcVerifier  # type: ignore
     _ALGORITHM_TO_VERIFIER_CLASS["ML-DSA-65"] = pqc.PqcVerifier  # type: ignore
     _ALGORITHM_TO_VERIFIER_CLASS["ML-DSA-87"] = pqc.PqcVerifier  # type: ignore
 
