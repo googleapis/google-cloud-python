@@ -148,7 +148,6 @@ class TestMutateRowsOperation:
             instance = self._make_one(
                 client, table, entries, operation_timeout, operation_timeout, metric
             )
-            instance._acknowledged_indices = set(range(len(entries)))
             instance.start()
             assert attempt_mock.call_count == 1
 
@@ -234,37 +233,8 @@ class TestMutateRowsOperation:
                 metric,
                 retryable_exceptions=(exc_type,),
             )
-            instance._acknowledged_indices = set(range(len(entries)))
             instance.start()
             assert attempt_mock.call_count == num_retries + 1
-
-    def test_mutate_rows_unacknowledged_entries_fail(self):
-        """If the server closes the stream without returning a response entry for
-        every request entry, the unacknowledged entries must be surfaced as
-        failures instead of being silently treated as successful."""
-        from google.cloud.bigtable.data.exceptions import (
-            FailedMutationEntryError,
-            MutationsExceptionGroup,
-        )
-
-        mutations = [
-            self._make_mutation(),
-            self._make_mutation(),
-            self._make_mutation(),
-        ]
-        mock_gapic_fn = self._make_mock_gapic(mutations, omit_indices={1})
-        instance = self._make_one(mutation_entries=mutations)
-        with mock.patch.object(instance, "_gapic_fn", mock_gapic_fn):
-            with pytest.raises(MutationsExceptionGroup) as exc_info:
-                instance.start()
-        assert len(exc_info.value.exceptions) == 1
-        failed = exc_info.value.exceptions[0]
-        assert isinstance(failed, FailedMutationEntryError)
-        assert failed.index == 1
-        assert "fewer" in str(failed.__cause__)
-        assert mock_gapic_fn.call_count == 1
-        assert 0 not in instance.errors
-        assert 2 not in instance.errors
 
     def test_mutate_rows_incomplete_ignored(self):
         """MutateRowsIncomplete exceptions should not be added to error list"""
@@ -356,3 +326,43 @@ class TestMutateRowsOperation:
         assert len(instance.errors[1]) == 1
         assert instance.errors[1][0].grpc_status_code == 300
         assert 2 not in instance.errors
+
+    def test_run_attempt_missing_entry_retryable(self):
+        """If the server closes the stream successfully but omits a response
+        entry, the unanswered mutation must not be treated as successful. It
+        should be recorded as a retryable _MutateRowsIncomplete error so
+        idempotent entries are retried."""
+        from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
+
+        mutations = [
+            self._make_mutation(),
+            self._make_mutation(),
+            self._make_mutation(),
+        ]
+        mock_gapic_fn = self._make_mock_gapic(mutations, omit_indices={1})
+        instance = self._make_one(mutation_entries=mutations)
+        instance.is_retryable = lambda x: True
+        with mock.patch.object(instance, "_gapic_fn", mock_gapic_fn):
+            with pytest.raises(_MutateRowsIncomplete):
+                instance._run_attempt()
+        assert instance.remaining_indices == [1]
+        assert 0 not in instance.errors
+        assert len(instance.errors[1]) == 1
+        assert isinstance(instance.errors[1][0], _MutateRowsIncomplete)
+        assert 2 not in instance.errors
+
+    def test_run_attempt_missing_entry_non_retryable(self):
+        """A missing response entry for a non-retryable mutation is surfaced as
+        a failure rather than being silently dropped."""
+        from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
+
+        mutations = [self._make_mutation(), self._make_mutation()]
+        mock_gapic_fn = self._make_mock_gapic(mutations, omit_indices={0})
+        instance = self._make_one(mutation_entries=mutations)
+        instance.is_retryable = lambda x: False
+        with mock.patch.object(instance, "_gapic_fn", mock_gapic_fn):
+            instance._run_attempt()
+        assert instance.remaining_indices == []
+        assert len(instance.errors[0]) == 1
+        assert isinstance(instance.errors[0][0], _MutateRowsIncomplete)
+        assert 1 not in instance.errors

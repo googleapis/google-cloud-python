@@ -1505,6 +1505,25 @@ class TestTableAsync:
         transport_mock = mock.MagicMock()
         rpc_mock = CrossSync.Mock()
         transport_mock._wrapped_methods.__getitem__.return_value = rpc_mock
+        if gapic_fn == "mutate_rows":
+            # An unacknowledged MutateRows entry is now treated as a retryable
+            # incomplete mutation, so an empty mock stream would retry until the
+            # operation timeout. Return a success entry for the single mutation
+            # so the operation completes after a single attempt.
+            from google.cloud.bigtable_v2.types import MutateRowsResponse
+            from google.rpc import status_pb2
+
+            @CrossSync.convert
+            async def mutate_rows_stream(*args, **kwargs):
+                yield MutateRowsResponse(
+                    entries=[
+                        MutateRowsResponse.Entry(
+                            index=0, status=status_pb2.Status(code=0)
+                        )
+                    ]
+                )
+
+            rpc_mock.side_effect = mutate_rows_stream
         gapic_client = client._gapic_client
         if CrossSync.is_async:
             # inner BigtableClient is held as ._client for BigtableAsyncClient
@@ -3349,8 +3368,8 @@ class TestBulkMutateRowsAsync:
         async with self._make_client(project="project") as client:
             table = client.get_table("instance", "table")
             with mock.patch.object(client._gapic_client, "mutate_rows") as mock_gapic:
-                # first entry fails with a retryable error, the others succeed;
-                # the retry then resolves the first entry
+                # first entry fails with a retryable error (other two succeed),
+                # then the retried entry succeeds
                 mock_gapic.side_effect = [
                     self._mock_response([DeadlineExceeded("mock"), None, None]),
                     self._mock_response([None]),

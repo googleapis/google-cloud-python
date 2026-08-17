@@ -1222,6 +1222,21 @@ class TestTable:
         transport_mock = mock.MagicMock()
         rpc_mock = CrossSync._Sync_Impl.Mock()
         transport_mock._wrapped_methods.__getitem__.return_value = rpc_mock
+        if gapic_fn == "mutate_rows":
+            from google.rpc import status_pb2
+
+            from google.cloud.bigtable_v2.types import MutateRowsResponse
+
+            def mutate_rows_stream(*args, **kwargs):
+                yield MutateRowsResponse(
+                    entries=[
+                        MutateRowsResponse.Entry(
+                            index=0, status=status_pb2.Status(code=0)
+                        )
+                    ]
+                )
+
+            rpc_mock.side_effect = mutate_rows_stream
         gapic_client = client._gapic_client
         gapic_client._transport = transport_mock
         gapic_client._is_universe_domain_valid = True

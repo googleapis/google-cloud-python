@@ -57,8 +57,8 @@ class TestMutateRowsOperationAsync:
         omit_indices = omit_indices or set()
         for idx, entry in enumerate(mutation_list):
             if idx in omit_indices:
-                # simulate a server that closes the stream without returning a
-                # response entry for this mutation
+                # simulate a server that closes the stream OK without returning
+                # a response entry for this mutation
                 continue
             code = error_dict.get(idx, 0)
             yield MutateRowsResponse(
@@ -168,9 +168,6 @@ class TestMutateRowsOperationAsync:
             instance = self._make_one(
                 client, table, entries, operation_timeout, operation_timeout, metric
             )
-            # _run_attempt is mocked out, so simulate it acknowledging every
-            # entry to satisfy the response-completeness check in start()
-            instance._acknowledged_indices = set(range(len(entries)))
             await instance.start()
             assert attempt_mock.call_count == 1
 
@@ -273,48 +270,8 @@ class TestMutateRowsOperationAsync:
                 metric,
                 retryable_exceptions=(exc_type,),
             )
-            # _run_attempt is mocked out, so simulate it acknowledging every
-            # entry to satisfy the response-completeness check in start()
-            instance._acknowledged_indices = set(range(len(entries)))
             await instance.start()
             assert attempt_mock.call_count == num_retries + 1
-
-    @CrossSync.pytest
-    async def test_mutate_rows_unacknowledged_entries_fail(self):
-        """
-        If the server closes the stream without returning a response entry for
-        every request entry, the unacknowledged entries must be surfaced as
-        failures instead of being silently treated as successful.
-        """
-        from google.cloud.bigtable.data.exceptions import (
-            FailedMutationEntryError,
-            MutationsExceptionGroup,
-        )
-
-        mutations = [
-            self._make_mutation(),
-            self._make_mutation(),
-            self._make_mutation(),
-        ]
-        # server returns responses for indices 0 and 2, but omits index 1
-        mock_gapic_fn = self._make_mock_gapic(mutations, omit_indices={1})
-        instance = self._make_one(
-            mutation_entries=mutations,
-        )
-        with mock.patch.object(instance, "_gapic_fn", mock_gapic_fn):
-            with pytest.raises(MutationsExceptionGroup) as exc_info:
-                await instance.start()
-        # only the omitted entry should be reported as failed
-        assert len(exc_info.value.exceptions) == 1
-        failed = exc_info.value.exceptions[0]
-        assert isinstance(failed, FailedMutationEntryError)
-        assert failed.index == 1
-        assert "fewer" in str(failed.__cause__)
-        # a single attempt is enough; omitted entries are not retried
-        assert mock_gapic_fn.call_count == 1
-        # acknowledged entries should not be reported as failures
-        assert 0 not in instance.errors
-        assert 2 not in instance.errors
 
     @CrossSync.pytest
     async def test_mutate_rows_incomplete_ignored(self):
@@ -422,3 +379,47 @@ class TestMutateRowsOperationAsync:
         assert len(instance.errors[1]) == 1
         assert instance.errors[1][0].grpc_status_code == 300
         assert 2 not in instance.errors
+
+    @CrossSync.pytest
+    async def test_run_attempt_missing_entry_retryable(self):
+        """If the server closes the stream successfully but omits a response
+        entry, the unanswered mutation must not be treated as successful. It
+        should be recorded as a retryable _MutateRowsIncomplete error so
+        idempotent entries are retried."""
+        from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
+
+        mutations = [
+            self._make_mutation(),
+            self._make_mutation(),
+            self._make_mutation(),
+        ]
+        # server omits the response entry for index 1
+        mock_gapic_fn = self._make_mock_gapic(mutations, omit_indices={1})
+        instance = self._make_one(mutation_entries=mutations)
+        instance.is_retryable = lambda x: True
+        with mock.patch.object(instance, "_gapic_fn", mock_gapic_fn):
+            with pytest.raises(_MutateRowsIncomplete):
+                await instance._run_attempt()
+        assert instance.remaining_indices == [1]
+        assert 0 not in instance.errors
+        assert len(instance.errors[1]) == 1
+        assert isinstance(instance.errors[1][0], _MutateRowsIncomplete)
+        assert 2 not in instance.errors
+
+    @CrossSync.pytest
+    async def test_run_attempt_missing_entry_non_retryable(self):
+        """A missing response entry for a non-retryable mutation is surfaced as
+        a failure rather than being silently dropped."""
+        from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
+
+        mutations = [self._make_mutation(), self._make_mutation()]
+        # server omits the response entry for index 0
+        mock_gapic_fn = self._make_mock_gapic(mutations, omit_indices={0})
+        instance = self._make_one(mutation_entries=mutations)
+        instance.is_retryable = lambda x: False
+        with mock.patch.object(instance, "_gapic_fn", mock_gapic_fn):
+            await instance._run_attempt()
+        assert instance.remaining_indices == []
+        assert len(instance.errors[0]) == 1
+        assert isinstance(instance.errors[0][0], _MutateRowsIncomplete)
+        assert 1 not in instance.errors
