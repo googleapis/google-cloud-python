@@ -99,7 +99,7 @@ def lint(session):
         "check",
         "--select",
         "I",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
         "--line-length=88",
         *LINT_PATHS,
     )
@@ -108,7 +108,7 @@ def lint(session):
         "ruff",
         "format",
         "--check",
-        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
         "--line-length=88",
         *LINT_PATHS,
     )
