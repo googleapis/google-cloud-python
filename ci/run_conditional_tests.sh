@@ -78,34 +78,47 @@ run_test_in_dir() {
     local log_file="/tmp/test_log_${PY_VERSION}_${pkg_name_clean}.log"
     export COVERAGE_FILE="${PROJECT_ROOT}/.coverage.${PY_VERSION}.${pkg_name_clean}"
 
-    echo "============================================================"
-    echo "Starting tests in ${d}"
-    echo "============================================================"
+    local header="
+    ============================================================
+    Running tests in ${d}
+    ============================================================"
+    local footer
 
     pushd ${d} > /dev/null
     set +e
     if [ "${PARALLEL_WORKERS}" = "1" ]; then
         # When running with a single worker, stream output in real-time while capturing to log file
+        echo "${header}"
         ${test_script} 2>&1 | tee "${log_file}"
         local ret=${PIPESTATUS[0]}
     else
         # When running multiple workers in parallel, buffer output to prevent interleaved log lines
         ${test_script} > "${log_file}" 2>&1
         local ret=$?
-        echo "============================================================"
-        echo "Finished tests in ${d} (exit code: ${ret})"
-        echo "============================================================"
-        cat "${log_file}"
     fi
     set -e
     popd > /dev/null
-    rm -f "${log_file}"
 
     if [ ${ret} -ne 0 ]; then
-        echo "❌ Tests failed in ${d} with exit code ${ret}"
-        exit 255  # Cancel xargs parallel jobs
+        footer="❌ Tests failed in ${d} with exit code ${ret}"
     else
-        echo "✅ Tests passed in ${d}"
+        footer="✅ Tests passed in ${d}"
+    fi
+
+    if [ "${PARALLEL_WORKERS}" != "1" ]; then
+        (
+            flock -x 9
+            echo "${header}"
+            cat "${log_file}"
+            echo "${footer}"
+        ) 9> "/tmp/ci_output_${PY_VERSION}.lock"
+    else
+        echo "${footer}"
+    fi
+
+    rm -f "${log_file}"
+    if [ ${ret} -ne 0 ]; then
+        exit 255  # Cancel xargs parallel jobs
     fi
 }
 export -f run_test_in_dir
