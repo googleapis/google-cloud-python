@@ -91,6 +91,26 @@ def mock_otel_grpc(monkeypatch):
     return mock_otel_grpc
 
 
+@pytest.fixture
+def otel_setup_in_memory():
+    """Fixture to set up in-memory OTel exporting. Skips test if SDK is missing."""
+    try:
+        from opentelemetry.sdk.trace import TracerProvider
+        from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+        from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
+            InMemorySpanExporter,
+        )
+    except ImportError as e:
+        pytest.skip(f"opentelemetry-sdk not installed or import failed: {e}")
+
+    exporter = InMemorySpanExporter()
+    provider = TracerProvider()
+    provider.add_span_processor(SimpleSpanProcessor(exporter))
+
+    return provider, exporter
+
+
+
 @pytest.mark.parametrize(
     "is_otel_installed, tracing_env_var_value, expect_otel_interceptor",
     [
@@ -181,21 +201,9 @@ def test_create_channel_with_custom_tracer_provider(
     ],
     ids=["dict", "object"],
 )
-def test_otel_integration_with_fake_endpoint(local_grpc_server, monkeypatch, config_factory):
+def test_otel_integration_with_fake_endpoint(local_grpc_server, monkeypatch, config_factory, otel_setup_in_memory):
     """Verify OpenTelemetry integration with a real local gRPC server."""
-    try:
-        from opentelemetry.sdk.trace import TracerProvider
-        from opentelemetry.sdk.trace.export import SimpleSpanProcessor
-        from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
-            InMemorySpanExporter,
-        )
-    except ImportError as e:
-        pytest.skip(f"opentelemetry-sdk not installed or import failed: {e}")
-
-    # A) Setup OpenTelemetry with an In-Memory Exporter
-    exporter = InMemorySpanExporter()
-    provider = TracerProvider()
-    provider.add_span_processor(SimpleSpanProcessor(exporter))
+    provider, exporter = otel_setup_in_memory
 
     config = config_factory(provider)
 
@@ -234,21 +242,9 @@ def test_otel_integration_with_fake_endpoint(local_grpc_server, monkeypatch, con
     assert any("DummyService" in name for name in span_names)
 
 
-def test_otel_integration_with_fake_endpoint_error(local_grpc_server, monkeypatch):
+def test_otel_integration_with_fake_endpoint_error(local_grpc_server, monkeypatch, otel_setup_in_memory):
     """Verify OpenTelemetry integration records errors correctly."""
-    try:
-        from opentelemetry.sdk.trace import TracerProvider
-        from opentelemetry.sdk.trace.export import SimpleSpanProcessor
-        from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
-            InMemorySpanExporter,
-        )
-    except ImportError as e:
-        pytest.skip(f"opentelemetry-sdk not installed or import failed: {e}")
-
-    # A) Setup OpenTelemetry with an In-Memory Exporter
-    exporter = InMemorySpanExporter()
-    provider = TracerProvider()
-    provider.add_span_processor(SimpleSpanProcessor(exporter))
+    provider, exporter = otel_setup_in_memory
 
     # B) Enable tracing via environment variable
     monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "True")
