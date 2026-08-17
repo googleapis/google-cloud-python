@@ -218,15 +218,15 @@ def test_otel_integration_with_fake_endpoint(
     provider, exporter = real_otel_sdk_in_memory
     config = config_factory(provider)
 
-    # B) Enable tracing via environment variable
+    # Enable tracing via environment variable
     monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "True")
 
-    # D) Call the code under test
+    # Call the code under test
     channel = grpc_helpers.create_channel(
         fake_grpc_endpoint_server, configuration=config
     )
 
-    # E) Make a low-level generic call
+    # Make a low-level generic call
     method_callable = channel.unary_unary(
         "/DummyService/Echo",
         request_serializer=lambda x: x,
@@ -236,7 +236,7 @@ def test_otel_integration_with_fake_endpoint(
     payload = b"ping-test"
     response = method_callable(payload)
 
-    # F) Assertions
+    # Assertions
     assert response == payload  # Server responded correctly
 
     spans = exporter.get_finished_spans()
