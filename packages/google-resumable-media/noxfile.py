@@ -211,20 +211,6 @@ def lint(session):
         "tests_async",
     )
 
-    # 1. Check imports
-    session.run(
-        "ruff",
-        "check",
-        "--select",
-        "I",
-        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
-        "--line-length=88",
-        os.path.join("google", "resumable_media"),
-        "tests",
-        os.path.join("google", "_async_resumable_media"),
-        "tests_async",
-    )
-
     # 2. Check formatting
     session.run(
         "ruff",
