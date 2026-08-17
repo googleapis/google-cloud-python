@@ -83,9 +83,7 @@ nox.options.sessions = [
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):
-    session.install(
-        "flake8", "flake8-import-order", "docutils", CLICK_VERSION, RUFF_VERSION
-    )
+    session.install("setuptools", "flake8", "docutils", CLICK_VERSION, RUFF_VERSION)
     session.install("-e", ".")
     # 1. Check imports
     session.run(
@@ -108,8 +106,6 @@ def lint(session):
     )
     session.run(
         "flake8",
-        "--import-order-style=google",
-        "--application-import-names=google,tests,system_tests",
         "google",
         "tests",
         "tests_async",
