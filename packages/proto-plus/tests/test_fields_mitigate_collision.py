@@ -12,9 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
-
 import proto
+import pytest
 
 
 # Underscores may be appended to field names

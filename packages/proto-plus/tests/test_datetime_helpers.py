@@ -17,9 +17,10 @@ import datetime
 
 import pytest
 import pytz
-from google.protobuf import timestamp_pb2
 
 from proto import datetime_helpers
+from google.protobuf import timestamp_pb2
+
 
 ONE_MINUTE_IN_MICROSECONDS = 60 * 1e6
 

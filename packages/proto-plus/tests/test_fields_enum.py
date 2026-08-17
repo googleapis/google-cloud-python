@@ -12,9 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-
 import proto
+import sys
 
 
 def test_outer_enum_init():

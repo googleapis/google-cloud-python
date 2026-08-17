@@ -19,9 +19,9 @@
 
 import geoalchemy2
 import geoalchemy2.functions
-import sqlalchemy.ext.compiler
 from geoalchemy2.shape import to_shape
 from shapely import wkb, wkt
+import sqlalchemy.ext.compiler
 from sqlalchemy.sql.elements import BindParameter
 
 SRID = 4326  # WGS84, https://spatialreference.org/ref/epsg/wgs-84/

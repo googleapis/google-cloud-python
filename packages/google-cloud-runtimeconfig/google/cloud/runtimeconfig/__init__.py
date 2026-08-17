@@ -14,6 +14,7 @@
 
 """Google Cloud Runtime Configurator API package."""
 
+
 from google.cloud.runtimeconfig import version as runtimeconfig_version
 
 __version__ = runtimeconfig_version.__version__

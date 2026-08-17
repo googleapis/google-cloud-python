@@ -20,7 +20,6 @@
 SQLAlchemy dialect for Google BigQuery
 """
 
-import sys
 import warnings
 
 from ._types import (
@@ -44,6 +43,7 @@ from ._types import (
 )
 from .base import BigQueryDialect, dialect
 from .version import __version__
+import sys
 
 # Now that support for Python 3.7, 3.8 and 3.9 has been removed, we don't expect the
 # following check to succeed. The warning is only included for robustness.

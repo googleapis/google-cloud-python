@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import warnings
 from unittest import mock
+import warnings
 
 import proto
 from proto.marshal.rules.enums import EnumRule

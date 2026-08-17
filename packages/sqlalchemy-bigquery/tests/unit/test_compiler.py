@@ -58,7 +58,7 @@ def test_constraints_are_ignored(faux_conn, metadata):
     )
     metadata.create_all(faux_conn.engine)
     assert " ".join(faux_conn.test_data["execute"][-1][0].strip().split()) == (
-        "CREATE TABLE `some_table` ( `id` INT64 NOT NULL, `ref_id` INT64 )"
+        "CREATE TABLE `some_table`" " ( `id` INT64 NOT NULL, `ref_id` INT64 )"
     )
 
 
@@ -111,7 +111,8 @@ def test_no_alias_for_known_tables_cte(faux_conn, metadata):
     q = sqlalchemy.select(table.c.foo, F.unnest(table.c.bars).column_valued("bar"))
 
     expected_initial_sql = (
-        "SELECT `table1`.`foo`, `bar` \nFROM `table1`, unnest(`table1`.`bars`) AS `bar`"
+        "SELECT `table1`.`foo`, `bar` \n"
+        "FROM `table1`, unnest(`table1`.`bars`) AS `bar`"
     )
     found_initial_sql = q.compile(faux_conn).string
     assert found_initial_sql == expected_initial_sql
@@ -337,7 +338,8 @@ def test_grouping_ops_vs_single_column(faux_conn, table, grouping_op, grouping_o
     found_sql = q.compile(faux_conn).string
 
     expected_sql = (
-        f"SELECT `table1`.`foo` \nFROM `table1` GROUP BY {grouping_op}(`table1`.`foo`)"
+        f"SELECT `table1`.`foo` \n"
+        f"FROM `table1` GROUP BY {grouping_op}(`table1`.`foo`)"
     )
 
     assert found_sql == expected_sql

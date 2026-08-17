@@ -12,13 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
+from datetime import timedelta
+from datetime import timezone
 
-from google.protobuf import duration_pb2, timestamp_pb2
+from google.protobuf import duration_pb2
+from google.protobuf import timestamp_pb2
 
 import proto
-from proto.datetime_helpers import DatetimeWithNanoseconds
 from proto.marshal.marshal import BaseMarshal
+from proto.datetime_helpers import DatetimeWithNanoseconds
 
 
 def test_timestamp_read():

@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import collections
 from typing import Set
+import collections
+
 
 _ProtoModule = collections.namedtuple(
     "ProtoModule",

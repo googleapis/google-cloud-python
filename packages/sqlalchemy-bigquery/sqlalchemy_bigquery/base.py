@@ -20,21 +20,14 @@
 """Integration between SQLAlchemy and BigQuery."""
 
 import datetime
+from decimal import Decimal
 import operator
 import random
 import re
 import uuid
-from decimal import Decimal
 
-import google.api_core.exceptions
-import packaging.version
-import sqlalchemy
-import sqlalchemy.sql.expression
-import sqlalchemy.sql.functions
-import sqlalchemy.sql.sqltypes
-import sqlalchemy.sql.type_api
-import sqlalchemy_bigquery_vendored.sqlalchemy.postgresql.base as vendored_postgresql
 from google import auth
+import google.api_core.exceptions
 from google.api_core.exceptions import NotFound
 from google.cloud.bigquery import ConnectionProperty, QueryJobConfig, dbapi
 from google.cloud.bigquery.table import (
@@ -42,6 +35,8 @@ from google.cloud.bigquery.table import (
     TableReference,
     TimePartitioning,
 )
+import packaging.version
+import sqlalchemy
 from sqlalchemy import util
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.engine.default import DefaultDialect, DefaultExecutionContext
@@ -54,9 +49,14 @@ from sqlalchemy.sql.compiler import (
     IdentifierPreparer,
     SQLCompiler,
 )
+import sqlalchemy.sql.expression
+import sqlalchemy.sql.functions
 from sqlalchemy.sql.schema import Column, Table
 from sqlalchemy.sql.selectable import CTE
+import sqlalchemy.sql.sqltypes
 from sqlalchemy.sql.sqltypes import Integer, NullType, Numeric, String
+import sqlalchemy.sql.type_api
+import sqlalchemy_bigquery_vendored.sqlalchemy.postgresql.base as vendored_postgresql
 
 from . import _helpers, _types
 from .parse_url import parse_url

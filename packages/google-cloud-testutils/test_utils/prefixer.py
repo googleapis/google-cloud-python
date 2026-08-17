@@ -15,6 +15,7 @@
 import datetime
 import random
 import re
+
 from typing import Union
 
 _RESOURCE_DATE_FORMAT = "%Y%m%d%H%M%S"

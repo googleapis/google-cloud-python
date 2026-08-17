@@ -1,9 +1,8 @@
 from unittest import mock
 
+import pandas_gbq.arrow
 import pyarrow as pa
 import pytest
-
-import pandas_gbq.arrow
 
 
 def test_from_read_rows_response_valid_message_returns_record_batch():

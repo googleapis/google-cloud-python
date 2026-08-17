@@ -15,10 +15,14 @@
 import importlib
 from unittest import mock
 
-from google.protobuf import descriptor_pool, message, reflection, symbol_database
+from google.protobuf import descriptor_pool
+from google.protobuf import message
+from google.protobuf import reflection
+from google.protobuf import symbol_database
 
 from proto._file_info import _FileInfo
-from proto.marshal import Marshal, rules
+from proto.marshal import Marshal
+from proto.marshal import rules
 from proto.utils import has_upb
 
 

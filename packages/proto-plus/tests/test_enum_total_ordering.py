@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import enums_test
 import pytest
+
+import enums_test
 
 
 def test_total_ordering_w_same_enum_type():

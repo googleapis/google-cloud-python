@@ -12,12 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
 import re
 
-import pytest
-from google.protobuf.json_format import ParseError
-
 import proto
+from google.protobuf.json_format import ParseError
 
 
 def test_message_to_json():
@@ -258,8 +257,8 @@ def test_json_sort_keys():
     "expect_proto_7_plus", [True, False], ids=["proto >= 7", "proto <= 6"]
 )
 def test_json_float_precision(expect_proto_7_plus):
-    if (expect_proto_7_plus and int(proto.message._PROTOBUF_MAJOR_VERSION) < 7) or (
-        not expect_proto_7_plus and int(proto.message._PROTOBUF_MAJOR_VERSION) >= 7
+    if ((expect_proto_7_plus and int(proto.message._PROTOBUF_MAJOR_VERSION) < 7)) or (
+        (not expect_proto_7_plus and int(proto.message._PROTOBUF_MAJOR_VERSION) >= 7)
     ):
         pytest.skip("installed proto version does not match test")
 

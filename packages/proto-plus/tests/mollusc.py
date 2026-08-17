@@ -12,9 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import zone
-
 import proto
+import zone
 
 __protobuf__ = proto.module(
     package="ocean.mollusc.v1",
