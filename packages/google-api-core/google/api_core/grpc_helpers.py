@@ -394,7 +394,6 @@ def create_channel(
         feature_key="tracer_provider",
         configuration=configuration,
     )
-
     if is_tracing_enabled:
         try:
             import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
