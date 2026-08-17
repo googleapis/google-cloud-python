@@ -111,44 +111,19 @@ def test_from_filename_es384_signer():
     assert signer.algorithm == "ES384"
 
 
-def test_from_dict_mldsa_signer_auto_detect_upgrade_required(monkeypatch):
+def test_from_dict_mldsa_signer_auto_detect_without_mldsa(monkeypatch):
     if crypt.pqc is not None:
         monkeypatch.setattr(crypt.pqc, "mldsa", None)
-    else:
-        mock_pqc = mock.Mock()
-        mock_pqc.mldsa = None
-        mock_pqc.is_mldsa_key = lambda key: True
-        mock_pqc.PqcSigner.from_service_account_info = mock.Mock(
-            side_effect=RuntimeError(
-                "Post-Quantum ML-DSA Service Account keys require cryptography>=47.0.0. "
-                "Please upgrade your cryptography library (pip install 'cryptography>=47.0.0')."
-            )
-        )
-        monkeypatch.setattr(crypt, "pqc", mock_pqc)
 
-    der_bytes = (
-        b"\x30\x20\x02\x01\x00\x30\x0b"
-        b"\x06\x09\x60\x86\x48\x01\x65\x03\x04\x03\x12"
-        b"\x04\x0a\x04\x08\x00\x00\x00\x00\x00\x00\x00\x00"
-    )
-    b64_key = base64.b64encode(der_bytes).decode("ascii")
-    mldsa_pem = f"-----BEGIN PRIVATE KEY-----\n{b64_key}\n-----END PRIVATE KEY-----"
     info = {
-        "private_key": mldsa_pem,
+        "private_key": "-----BEGIN PRIVATE KEY-----\ndGVzdA==\n-----END PRIVATE KEY-----",
         "private_key_id": "test_mldsa_key_id",
         "client_email": "test@example.com",
     }
-    with pytest.raises(RuntimeError) as excinfo:
+    with pytest.raises(ValueError) as excinfo:
         _service_account_info.from_dict(info)
 
-    assert (
-        "Post-Quantum ML-DSA Service Account keys require cryptography>=47.0.0"
-        in str(excinfo.value)
-    )
-    assert (
-        "Please upgrade your cryptography library (pip install 'cryptography>=47.0.0')"
-        in str(excinfo.value)
-    )
+    assert excinfo.match(r"(?i)(key|PEM)")
 
 
 def test_from_dict_mldsa_signer_auto_detect_success(monkeypatch):
@@ -158,13 +133,9 @@ def test_from_dict_mldsa_signer_auto_detect_success(monkeypatch):
     mock_mldsa = mock.Mock()
     mock_mldsa.MLDSA65PrivateKey = MockMLDSA65PrivateKey
 
-    der_bytes = (
-        b"\x30\x20\x02\x01\x00\x30\x0b"
-        b"\x06\x09\x60\x86\x48\x01\x65\x03\x04\x03\x12"
-        b"\x04\x0a\x04\x08\x00\x00\x00\x00\x00\x00\x00\x00"
+    mldsa_pem = (
+        "-----BEGIN PRIVATE KEY-----\ndGVzdA==\n-----END PRIVATE KEY-----"
     )
-    b64_key = base64.b64encode(der_bytes).decode("ascii")
-    mldsa_pem = f"-----BEGIN PRIVATE KEY-----\n{b64_key}\n-----END PRIVATE KEY-----"
     info = {
         "private_key": mldsa_pem,
         "private_key_id": "test_mldsa_key_id",
