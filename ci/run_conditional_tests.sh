@@ -78,17 +78,15 @@ run_test_in_dir() {
     local log_file="/tmp/test_log_${PY_VERSION}_${pkg_name_clean}.log"
     export COVERAGE_FILE="${PROJECT_ROOT}/.coverage.${PY_VERSION}.${pkg_name_clean}"
 
-    local header="
-    ============================================================
-    Running tests in ${d}
-    ============================================================"
+    local div="============================================================"
+    local header="\n${div}\nRunning tests in ${d}\n${div}"
     local footer
 
     pushd ${d} > /dev/null
     set +e
     if [ "${PARALLEL_WORKERS}" = "1" ]; then
         # When running with a single worker, stream output in real-time while capturing to log file
-        echo "${header}"
+        echo -e "${header}"
         ${test_script} 2>&1 | tee "${log_file}"
         local ret=${PIPESTATUS[0]}
     else
@@ -108,7 +106,7 @@ run_test_in_dir() {
     if [ "${PARALLEL_WORKERS}" != "1" ]; then
         (
             flock -x 9
-            echo "${header}"
+            echo -e "${header}"
             cat "${log_file}"
             echo "${footer}"
         ) 9> "/tmp/ci_output_${PY_VERSION}.lock"
