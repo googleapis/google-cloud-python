@@ -90,6 +90,18 @@ CRED_INFO_JSON = {
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
 
 
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
+
+
 async def mock_async_gen(data, chunk_size=1):
     for i in range(0, len(data)):  # pragma: NO COVER
         chunk = data[i : i + chunk_size]
@@ -145,182 +157,6 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
-def test__get_default_mtls_endpoint():
-    api_endpoint = "example.googleapis.com"
-    api_mtls_endpoint = "example.mtls.googleapis.com"
-    sandbox_endpoint = "example.sandbox.googleapis.com"
-    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
-    non_googleapi = "api.example.com"
-    custom_endpoint = ".custom"
-
-    assert DataformClient._get_default_mtls_endpoint(None) is None
-    assert DataformClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    assert (
-        DataformClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        DataformClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        DataformClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert DataformClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
-    assert DataformClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
-
-
-def test__read_environment_variables():
-    assert DataformClient._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert DataformClient._read_environment_variables() == (True, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert DataformClient._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-            with pytest.raises(ValueError) as excinfo:
-                DataformClient._read_environment_variables()
-            assert (
-                str(excinfo.value)
-                == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        else:
-            assert DataformClient._read_environment_variables() == (
-                False,
-                "auto",
-                None,
-            )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert DataformClient._read_environment_variables() == (False, "never", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert DataformClient._read_environment_variables() == (False, "always", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert DataformClient._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError) as excinfo:
-            DataformClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert DataformClient._read_environment_variables() == (
-            False,
-            "auto",
-            "foo.com",
-        )
-
-
-def test_use_client_cert_effective():
-    # Test case 1: Test when `should_use_client_cert` returns True.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=True
-        ):
-            assert DataformClient._use_client_cert_effective() is True
-
-    # Test case 2: Test when `should_use_client_cert` returns False.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should NOT be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=False
-        ):
-            assert DataformClient._use_client_cert_effective() is False
-
-    # Test case 3: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-            assert DataformClient._use_client_cert_effective() is True
-
-    # Test case 4: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}
-        ):
-            assert DataformClient._use_client_cert_effective() is False
-
-    # Test case 5: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
-            assert DataformClient._use_client_cert_effective() is True
-
-    # Test case 6: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}
-        ):
-            assert DataformClient._use_client_cert_effective() is False
-
-    # Test case 7: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
-            assert DataformClient._use_client_cert_effective() is True
-
-    # Test case 8: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}
-        ):
-            assert DataformClient._use_client_cert_effective() is False
-
-    # Test case 9: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
-    # In this case, the method should return False, which is the default value.
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, clear=True):
-            assert DataformClient._use_client_cert_effective() is False
-
-    # Test case 10: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should raise a ValueError as the environment variable must be either
-    # "true" or "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            with pytest.raises(ValueError):
-                DataformClient._use_client_cert_effective()
-
-    # Test case 11: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should return False as the environment variable is set to an invalid value.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            assert DataformClient._use_client_cert_effective() is False
-
-    # Test case 12: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
-    # the GOOGLE_API_CONFIG environment variable is unset.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
-            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
-                assert DataformClient._use_client_cert_effective() is False
-
-
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
@@ -351,95 +187,6 @@ def test__get_client_cert_source():
                 )
                 is mock_provided_cert_source
             )
-
-
-@mock.patch.object(
-    DataformClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(DataformClient),
-)
-@mock.patch.object(
-    DataformAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(DataformAsyncClient),
-)
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = DataformClient._DEFAULT_UNIVERSE
-    default_endpoint = DataformClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
-    mock_universe = "bar.com"
-    mock_endpoint = DataformClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
-
-    assert (
-        DataformClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        DataformClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
-        == DataformClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        DataformClient._get_api_endpoint(None, None, default_universe, "auto")
-        == default_endpoint
-    )
-    assert (
-        DataformClient._get_api_endpoint(None, None, default_universe, "always")
-        == DataformClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        DataformClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == DataformClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        DataformClient._get_api_endpoint(None, None, mock_universe, "never")
-        == mock_endpoint
-    )
-    assert (
-        DataformClient._get_api_endpoint(None, None, default_universe, "never")
-        == default_endpoint
-    )
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        DataformClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert (
-        DataformClient._get_universe_domain(client_universe_domain, universe_domain_env)
-        == client_universe_domain
-    )
-    assert (
-        DataformClient._get_universe_domain(None, universe_domain_env)
-        == universe_domain_env
-    )
-    assert (
-        DataformClient._get_universe_domain(None, None)
-        == DataformClient._DEFAULT_UNIVERSE
-    )
-
-    with pytest.raises(ValueError) as excinfo:
-        DataformClient._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 
 @pytest.mark.parametrize(
@@ -933,6 +680,7 @@ def test_dataform_client_get_mtls_endpoint_and_cert_source(client_class):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
@@ -987,6 +735,7 @@ def test_dataform_client_get_mtls_endpoint_and_cert_source(client_class):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
@@ -27784,19 +27533,19 @@ def test_get_team_folder_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_team_folder._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetTeamFolder,
+        "_BaseGetTeamFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_team_folder._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -27842,15 +27591,6 @@ def test_get_team_folder_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_team_folder_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_team_folder._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_team_folder_rest_flattened():
@@ -27968,21 +27708,22 @@ def test_create_team_folder_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_team_folder._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateTeamFolder,
+        "_BaseCreateTeamFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_team_folder._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("team_folder_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("teamFolderId",))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -28029,23 +27770,6 @@ def test_create_team_folder_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_team_folder_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_team_folder._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("teamFolderId",))
-        & set(
-            (
-                "parent",
-                "teamFolder",
-            )
-        )
-    )
 
 
 def test_create_team_folder_rest_flattened():
@@ -28162,19 +27886,20 @@ def test_update_team_folder_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_team_folder._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateTeamFolder,
+        "_BaseUpdateTeamFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_team_folder._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -28219,15 +27944,6 @@ def test_update_team_folder_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_team_folder_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_team_folder._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask",)) & set(("teamFolder",)))
 
 
 def test_update_team_folder_rest_flattened():
@@ -28349,19 +28065,19 @@ def test_delete_team_folder_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_team_folder._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteTeamFolder,
+        "_BaseDeleteTeamFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_team_folder._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -28404,15 +28120,6 @@ def test_delete_team_folder_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_team_folder_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_team_folder._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_delete_team_folder_rest_flattened():
@@ -28533,19 +28240,19 @@ def test_delete_team_folder_tree_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_team_folder_tree._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteTeamFolderTree,
+        "_BaseDeleteTeamFolderTree__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_team_folder_tree._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -28589,15 +28296,6 @@ def test_delete_team_folder_tree_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_team_folder_tree_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_team_folder_tree._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_delete_team_folder_tree_rest_flattened():
@@ -28716,28 +28414,29 @@ def test_query_team_folder_contents_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).query_team_folder_contents._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseQueryTeamFolderContents,
+        "_BaseQueryTeamFolderContents__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["teamFolder"] = "team_folder_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).query_team_folder_contents._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "teamFolder" in jsonified_request
@@ -28783,25 +28482,6 @@ def test_query_team_folder_contents_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_query_team_folder_contents_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.query_team_folder_contents._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("teamFolder",))
-    )
 
 
 def test_query_team_folder_contents_rest_flattened():
@@ -28992,28 +28672,29 @@ def test_search_team_folders_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).search_team_folders._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseSearchTeamFolders,
+        "_BaseSearchTeamFolders__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["location"] = "location_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).search_team_folders._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "location" in jsonified_request
@@ -29059,25 +28740,6 @@ def test_search_team_folders_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_search_team_folders_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.search_team_folders._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("location",))
-    )
 
 
 def test_search_team_folders_rest_pager(transport: str = "rest"):
@@ -29198,19 +28860,19 @@ def test_get_folder_rest_required_fields(request_type=dataform.GetFolderRequest)
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_folder._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetFolder,
+        "_BaseGetFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_folder._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -29256,15 +28918,6 @@ def test_get_folder_rest_required_fields(request_type=dataform.GetFolderRequest)
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_folder_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_folder._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_folder_rest_flattened():
@@ -29374,21 +29027,22 @@ def test_create_folder_rest_required_fields(request_type=dataform.CreateFolderRe
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_folder._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateFolder,
+        "_BaseCreateFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_folder._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("folder_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("folderId",))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -29435,23 +29089,6 @@ def test_create_folder_rest_required_fields(request_type=dataform.CreateFolderRe
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_folder_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_folder._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("folderId",))
-        & set(
-            (
-                "parent",
-                "folder",
-            )
-        )
-    )
 
 
 def test_create_folder_rest_flattened():
@@ -29562,19 +29199,20 @@ def test_update_folder_rest_required_fields(request_type=dataform.UpdateFolderRe
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_folder._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateFolder,
+        "_BaseUpdateFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_folder._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -29619,15 +29257,6 @@ def test_update_folder_rest_required_fields(request_type=dataform.UpdateFolderRe
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_folder_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_folder._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask",)) & set(("folder",)))
 
 
 def test_update_folder_rest_flattened():
@@ -29741,19 +29370,19 @@ def test_delete_folder_rest_required_fields(request_type=dataform.DeleteFolderRe
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_folder._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteFolder,
+        "_BaseDeleteFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_folder._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -29796,15 +29425,6 @@ def test_delete_folder_rest_required_fields(request_type=dataform.DeleteFolderRe
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_folder_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_folder._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_delete_folder_rest_flattened():
@@ -29922,19 +29542,19 @@ def test_delete_folder_tree_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_folder_tree._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteFolderTree,
+        "_BaseDeleteFolderTree__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_folder_tree._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -29978,15 +29598,6 @@ def test_delete_folder_tree_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_folder_tree_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_folder_tree._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_delete_folder_tree_rest_flattened():
@@ -30103,28 +29714,29 @@ def test_query_folder_contents_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).query_folder_contents._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseQueryFolderContents,
+        "_BaseQueryFolderContents__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["folder"] = "folder_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).query_folder_contents._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "folder" in jsonified_request
@@ -30170,25 +29782,6 @@ def test_query_folder_contents_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_query_folder_contents_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.query_folder_contents._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("folder",))
-    )
 
 
 def test_query_folder_contents_rest_flattened():
@@ -30378,28 +29971,29 @@ def test_query_user_root_contents_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).query_user_root_contents._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseQueryUserRootContents,
+        "_BaseQueryUserRootContents__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["location"] = "location_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).query_user_root_contents._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "location" in jsonified_request
@@ -30445,25 +30039,6 @@ def test_query_user_root_contents_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_query_user_root_contents_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.query_user_root_contents._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("location",))
-    )
 
 
 def test_query_user_root_contents_rest_flattened():
@@ -30646,19 +30221,19 @@ def test_move_folder_rest_required_fields(request_type=dataform.MoveFolderReques
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).move_folder._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseMoveFolder,
+        "_BaseMoveFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).move_folder._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -30702,15 +30277,6 @@ def test_move_folder_rest_required_fields(request_type=dataform.MoveFolderReques
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_move_folder_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.move_folder._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_move_folder_rest_flattened():
@@ -30824,28 +30390,29 @@ def test_list_repositories_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_repositories._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListRepositories,
+        "_BaseListRepositories__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_repositories._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -30891,25 +30458,6 @@ def test_list_repositories_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_repositories_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_repositories._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_repositories_rest_flattened():
@@ -31085,19 +30633,19 @@ def test_get_repository_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_repository._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetRepository,
+        "_BaseGetRepository__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_repository._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -31143,15 +30691,6 @@ def test_get_repository_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_repository_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_repository._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_repository_rest_flattened():
@@ -31269,9 +30808,14 @@ def test_create_repository_rest_required_fields(
     # verify fields with default values are dropped
     assert "repositoryId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_repository._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateRepository,
+        "_BaseCreateRepository__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -31281,12 +30825,8 @@ def test_create_repository_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["repositoryId"] = "repository_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_repository._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("repository_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("repositoryId",))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -31341,24 +30881,6 @@ def test_create_repository_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_repository_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_repository._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("repositoryId",))
-        & set(
-            (
-                "parent",
-                "repository",
-                "repositoryId",
-            )
-        )
-    )
 
 
 def test_create_repository_rest_flattened():
@@ -31475,19 +30997,20 @@ def test_update_repository_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_repository._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateRepository,
+        "_BaseUpdateRepository__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_repository._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -31532,15 +31055,6 @@ def test_update_repository_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_repository_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_repository._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask",)) & set(("repository",)))
 
 
 def test_update_repository_rest_flattened():
@@ -31660,21 +31174,22 @@ def test_delete_repository_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_repository._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteRepository,
+        "_BaseDeleteRepository__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_repository._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("force",))
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -31717,15 +31232,6 @@ def test_delete_repository_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_repository_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_repository._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("force",)) & set(("name",)))
 
 
 def test_delete_repository_rest_flattened():
@@ -31846,19 +31352,19 @@ def test_delete_repository_long_running_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_repository_long_running._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteRepositoryLongRunning,
+        "_BaseDeleteRepositoryLongRunning__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_repository_long_running._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -31902,17 +31408,6 @@ def test_delete_repository_long_running_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_repository_long_running_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_repository_long_running._get_unset_required_fields(
-        {}
-    )
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_delete_repository_long_running_rest_flattened():
@@ -32030,19 +31525,19 @@ def test_move_repository_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).move_repository._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseMoveRepository,
+        "_BaseMoveRepository__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).move_repository._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -32086,15 +31581,6 @@ def test_move_repository_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_move_repository_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.move_repository._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_move_repository_rest_flattened():
@@ -32213,19 +31699,19 @@ def test_commit_repository_changes_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).commit_repository_changes._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCommitRepositoryChanges,
+        "_BaseCommitRepositoryChanges__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).commit_repository_changes._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -32272,23 +31758,6 @@ def test_commit_repository_changes_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_commit_repository_changes_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.commit_repository_changes._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "name",
-                "commitMetadata",
-            )
-        )
-    )
 
 
 def test_read_repository_file_rest_use_cached_wrapped_rpc():
@@ -32348,9 +31817,14 @@ def test_read_repository_file_rest_required_fields(
     # verify fields with default values are dropped
     assert "path" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).read_repository_file._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseReadRepositoryFile,
+        "_BaseReadRepositoryFile__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -32360,17 +31834,13 @@ def test_read_repository_file_rest_required_fields(
     jsonified_request["name"] = "name_value"
     jsonified_request["path"] = "path_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).read_repository_file._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "commit_sha",
+            "commitSha",
             "path",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -32424,28 +31894,6 @@ def test_read_repository_file_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_read_repository_file_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.read_repository_file._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "commitSha",
-                "path",
-            )
-        )
-        & set(
-            (
-                "name",
-                "path",
-            )
-        )
-    )
 
 
 def test_query_repository_directory_contents_rest_use_cached_wrapped_rpc():
@@ -32504,28 +31952,29 @@ def test_query_repository_directory_contents_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).query_repository_directory_contents._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseQueryRepositoryDirectoryContents,
+        "_BaseQueryRepositoryDirectoryContents__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).query_repository_directory_contents._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "commit_sha",
-            "page_size",
-            "page_token",
+            "commitSha",
+            "pageSize",
+            "pageToken",
             "path",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -32573,27 +32022,6 @@ def test_query_repository_directory_contents_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_query_repository_directory_contents_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.query_repository_directory_contents._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "commitSha",
-                "pageSize",
-                "pageToken",
-                "path",
-            )
-        )
-        & set(("name",))
-    )
 
 
 def test_query_repository_directory_contents_rest_pager(transport: str = "rest"):
@@ -32723,26 +32151,27 @@ def test_fetch_repository_history_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).fetch_repository_history._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseFetchRepositoryHistory,
+        "_BaseFetchRepositoryHistory__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).fetch_repository_history._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -32788,23 +32217,6 @@ def test_fetch_repository_history_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_fetch_repository_history_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.fetch_repository_history._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("name",))
-    )
 
 
 def test_fetch_repository_history_rest_pager(transport: str = "rest"):
@@ -32931,23 +32343,19 @@ def test_compute_repository_access_token_status_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).compute_repository_access_token_status._get_unset_required_fields(
-        jsonified_request
+    default_values = getattr(
+        transport_class._BaseComputeRepositoryAccessTokenStatus,
+        "_BaseComputeRepositoryAccessTokenStatus__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
     )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).compute_repository_access_token_status._get_unset_required_fields(
-        jsonified_request
-    )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -32995,17 +32403,6 @@ def test_compute_repository_access_token_status_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_compute_repository_access_token_status_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.compute_repository_access_token_status._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_fetch_remote_branches_rest_use_cached_wrapped_rpc():
@@ -33064,19 +32461,19 @@ def test_fetch_remote_branches_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).fetch_remote_branches._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseFetchRemoteBranches,
+        "_BaseFetchRemoteBranches__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).fetch_remote_branches._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -33122,15 +32519,6 @@ def test_fetch_remote_branches_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_fetch_remote_branches_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.fetch_remote_branches._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_list_workspaces_rest_use_cached_wrapped_rpc():
@@ -33184,28 +32572,29 @@ def test_list_workspaces_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_workspaces._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListWorkspaces,
+        "_BaseListWorkspaces__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_workspaces._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -33251,25 +32640,6 @@ def test_list_workspaces_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_workspaces_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_workspaces._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_workspaces_rest_flattened():
@@ -33447,19 +32817,19 @@ def test_get_workspace_rest_required_fields(request_type=dataform.GetWorkspaceRe
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_workspace._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetWorkspace,
+        "_BaseGetWorkspace__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_workspace._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -33505,15 +32875,6 @@ def test_get_workspace_rest_required_fields(request_type=dataform.GetWorkspaceRe
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_workspace_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_workspace._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_workspace_rest_flattened():
@@ -33631,9 +32992,14 @@ def test_create_workspace_rest_required_fields(
     # verify fields with default values are dropped
     assert "workspaceId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_workspace._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateWorkspace,
+        "_BaseCreateWorkspace__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -33643,12 +33009,8 @@ def test_create_workspace_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["workspaceId"] = "workspace_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_workspace._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("workspace_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("workspaceId",))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -33703,24 +33065,6 @@ def test_create_workspace_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_workspace_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_workspace._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("workspaceId",))
-        & set(
-            (
-                "parent",
-                "workspace",
-                "workspaceId",
-            )
-        )
-    )
 
 
 def test_create_workspace_rest_flattened():
@@ -33840,19 +33184,19 @@ def test_delete_workspace_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_workspace._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteWorkspace,
+        "_BaseDeleteWorkspace__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_workspace._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -33895,15 +33239,6 @@ def test_delete_workspace_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_workspace_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_workspace._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_delete_workspace_rest_flattened():
@@ -34019,19 +33354,19 @@ def test_install_npm_packages_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).install_npm_packages._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseInstallNpmPackages,
+        "_BaseInstallNpmPackages__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["workspace"] = "workspace_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).install_npm_packages._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "workspace" in jsonified_request
@@ -34078,15 +33413,6 @@ def test_install_npm_packages_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_install_npm_packages_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.install_npm_packages._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("workspace",)))
 
 
 def test_pull_git_commits_rest_use_cached_wrapped_rpc():
@@ -34142,19 +33468,19 @@ def test_pull_git_commits_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).pull_git_commits._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BasePullGitCommits,
+        "_BasePullGitCommits__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).pull_git_commits._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -34201,23 +33527,6 @@ def test_pull_git_commits_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_pull_git_commits_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.pull_git_commits._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "name",
-                "author",
-            )
-        )
-    )
 
 
 def test_push_git_commits_rest_use_cached_wrapped_rpc():
@@ -34273,19 +33582,19 @@ def test_push_git_commits_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).push_git_commits._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BasePushGitCommits,
+        "_BasePushGitCommits__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).push_git_commits._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -34332,15 +33641,6 @@ def test_push_git_commits_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_push_git_commits_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.push_git_commits._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_fetch_file_git_statuses_rest_use_cached_wrapped_rpc():
@@ -34399,19 +33699,19 @@ def test_fetch_file_git_statuses_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).fetch_file_git_statuses._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseFetchFileGitStatuses,
+        "_BaseFetchFileGitStatuses__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).fetch_file_git_statuses._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -34457,15 +33757,6 @@ def test_fetch_file_git_statuses_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_fetch_file_git_statuses_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.fetch_file_git_statuses._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_fetch_git_ahead_behind_rest_use_cached_wrapped_rpc():
@@ -34524,21 +33815,22 @@ def test_fetch_git_ahead_behind_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).fetch_git_ahead_behind._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseFetchGitAheadBehind,
+        "_BaseFetchGitAheadBehind__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).fetch_git_ahead_behind._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("remote_branch",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("remoteBranch",))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -34584,15 +33876,6 @@ def test_fetch_git_ahead_behind_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_fetch_git_ahead_behind_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.fetch_git_ahead_behind._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("remoteBranch",)) & set(("name",)))
 
 
 def test_commit_workspace_changes_rest_use_cached_wrapped_rpc():
@@ -34651,19 +33934,19 @@ def test_commit_workspace_changes_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).commit_workspace_changes._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCommitWorkspaceChanges,
+        "_BaseCommitWorkspaceChanges__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).commit_workspace_changes._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -34710,23 +33993,6 @@ def test_commit_workspace_changes_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_commit_workspace_changes_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.commit_workspace_changes._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "name",
-                "author",
-            )
-        )
-    )
 
 
 def test_reset_workspace_changes_rest_use_cached_wrapped_rpc():
@@ -34785,19 +34051,19 @@ def test_reset_workspace_changes_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).reset_workspace_changes._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseResetWorkspaceChanges,
+        "_BaseResetWorkspaceChanges__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).reset_workspace_changes._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -34844,15 +34110,6 @@ def test_reset_workspace_changes_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_reset_workspace_changes_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.reset_workspace_changes._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_fetch_file_diff_rest_use_cached_wrapped_rpc():
@@ -34908,9 +34165,14 @@ def test_fetch_file_diff_rest_required_fields(
     # verify fields with default values are dropped
     assert "path" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).fetch_file_diff._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseFetchFileDiff,
+        "_BaseFetchFileDiff__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -34920,12 +34182,8 @@ def test_fetch_file_diff_rest_required_fields(
     jsonified_request["workspace"] = "workspace_value"
     jsonified_request["path"] = "path_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).fetch_file_diff._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("path",))
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "workspace" in jsonified_request
@@ -34979,23 +34237,6 @@ def test_fetch_file_diff_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_fetch_file_diff_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.fetch_file_diff._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("path",))
-        & set(
-            (
-                "workspace",
-                "path",
-            )
-        )
-    )
 
 
 def test_query_directory_contents_rest_use_cached_wrapped_rpc():
@@ -35054,28 +34295,29 @@ def test_query_directory_contents_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).query_directory_contents._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseQueryDirectoryContents,
+        "_BaseQueryDirectoryContents__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["workspace"] = "workspace_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).query_directory_contents._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
             "path",
             "view",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "workspace" in jsonified_request
@@ -35121,25 +34363,6 @@ def test_query_directory_contents_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_query_directory_contents_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.query_directory_contents._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-                "path",
-                "view",
-            )
-        )
-        & set(("workspace",))
-    )
 
 
 def test_query_directory_contents_rest_pager(transport: str = "rest"):
@@ -35259,27 +34482,28 @@ def test_search_files_rest_required_fields(request_type=dataform.SearchFilesRequ
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).search_files._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseSearchFiles,
+        "_BaseSearchFiles__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["workspace"] = "workspace_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).search_files._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "workspace" in jsonified_request
@@ -35325,24 +34549,6 @@ def test_search_files_rest_required_fields(request_type=dataform.SearchFilesRequ
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_search_files_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.search_files._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("workspace",))
-    )
 
 
 def test_search_files_rest_pager(transport: str = "rest"):
@@ -35463,20 +34669,20 @@ def test_make_directory_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).make_directory._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseMakeDirectory,
+        "_BaseMakeDirectory__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["workspace"] = "workspace_value"
     jsonified_request["path"] = "path_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).make_directory._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "workspace" in jsonified_request
@@ -35525,23 +34731,6 @@ def test_make_directory_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_make_directory_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.make_directory._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "workspace",
-                "path",
-            )
-        )
-    )
 
 
 def test_remove_directory_rest_use_cached_wrapped_rpc():
@@ -35598,20 +34787,20 @@ def test_remove_directory_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).remove_directory._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseRemoveDirectory,
+        "_BaseRemoveDirectory__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["workspace"] = "workspace_value"
     jsonified_request["path"] = "path_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).remove_directory._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "workspace" in jsonified_request
@@ -35660,23 +34849,6 @@ def test_remove_directory_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_remove_directory_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.remove_directory._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "workspace",
-                "path",
-            )
-        )
-    )
 
 
 def test_move_directory_rest_use_cached_wrapped_rpc():
@@ -35732,9 +34904,14 @@ def test_move_directory_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).move_directory._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseMoveDirectory,
+        "_BaseMoveDirectory__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -35742,11 +34919,6 @@ def test_move_directory_rest_required_fields(
     jsonified_request["workspace"] = "workspace_value"
     jsonified_request["path"] = "path_value"
     jsonified_request["newPath"] = "new_path_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).move_directory._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "workspace" in jsonified_request
@@ -35797,24 +34969,6 @@ def test_move_directory_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_move_directory_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.move_directory._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "workspace",
-                "path",
-                "newPath",
-            )
-        )
-    )
 
 
 def test_read_file_rest_use_cached_wrapped_rpc():
@@ -35868,9 +35022,14 @@ def test_read_file_rest_required_fields(request_type=dataform.ReadFileRequest):
     # verify fields with default values are dropped
     assert "path" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).read_file._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseReadFile,
+        "_BaseReadFile__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -35880,9 +35039,6 @@ def test_read_file_rest_required_fields(request_type=dataform.ReadFileRequest):
     jsonified_request["workspace"] = "workspace_value"
     jsonified_request["path"] = "path_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).read_file._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -35890,7 +35046,6 @@ def test_read_file_rest_required_fields(request_type=dataform.ReadFileRequest):
             "revision",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "workspace" in jsonified_request
@@ -35946,28 +35101,6 @@ def test_read_file_rest_required_fields(request_type=dataform.ReadFileRequest):
             assert sorted(expected_params) == sorted(actual_params)
 
 
-def test_read_file_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.read_file._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "path",
-                "revision",
-            )
-        )
-        & set(
-            (
-                "workspace",
-                "path",
-            )
-        )
-    )
-
-
 def test_remove_file_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -36018,20 +35151,20 @@ def test_remove_file_rest_required_fields(request_type=dataform.RemoveFileReques
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).remove_file._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseRemoveFile,
+        "_BaseRemoveFile__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["workspace"] = "workspace_value"
     jsonified_request["path"] = "path_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).remove_file._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "workspace" in jsonified_request
@@ -36080,23 +35213,6 @@ def test_remove_file_rest_required_fields(request_type=dataform.RemoveFileReques
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_remove_file_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.remove_file._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "workspace",
-                "path",
-            )
-        )
-    )
 
 
 def test_move_file_rest_use_cached_wrapped_rpc():
@@ -36150,9 +35266,14 @@ def test_move_file_rest_required_fields(request_type=dataform.MoveFileRequest):
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).move_file._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseMoveFile,
+        "_BaseMoveFile__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -36160,11 +35281,6 @@ def test_move_file_rest_required_fields(request_type=dataform.MoveFileRequest):
     jsonified_request["workspace"] = "workspace_value"
     jsonified_request["path"] = "path_value"
     jsonified_request["newPath"] = "new_path_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).move_file._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "workspace" in jsonified_request
@@ -36215,24 +35331,6 @@ def test_move_file_rest_required_fields(request_type=dataform.MoveFileRequest):
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_move_file_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.move_file._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "workspace",
-                "path",
-                "newPath",
-            )
-        )
-    )
 
 
 def test_write_file_rest_use_cached_wrapped_rpc():
@@ -36286,9 +35384,14 @@ def test_write_file_rest_required_fields(request_type=dataform.WriteFileRequest)
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).write_file._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseWriteFile,
+        "_BaseWriteFile__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -36296,11 +35399,6 @@ def test_write_file_rest_required_fields(request_type=dataform.WriteFileRequest)
     jsonified_request["workspace"] = "workspace_value"
     jsonified_request["path"] = "path_value"
     jsonified_request["contents"] = b"contents_blob"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).write_file._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "workspace" in jsonified_request
@@ -36351,24 +35449,6 @@ def test_write_file_rest_required_fields(request_type=dataform.WriteFileRequest)
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_write_file_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.write_file._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "workspace",
-                "path",
-                "contents",
-            )
-        )
-    )
 
 
 def test_list_release_configs_rest_use_cached_wrapped_rpc():
@@ -36426,26 +35506,27 @@ def test_list_release_configs_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_release_configs._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListReleaseConfigs,
+        "_BaseListReleaseConfigs__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_release_configs._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -36491,23 +35572,6 @@ def test_list_release_configs_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_release_configs_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_release_configs._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_release_configs_rest_flattened():
@@ -36693,19 +35757,19 @@ def test_get_release_config_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_release_config._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetReleaseConfig,
+        "_BaseGetReleaseConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_release_config._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -36751,15 +35815,6 @@ def test_get_release_config_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_release_config_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_release_config._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_release_config_rest_flattened():
@@ -36880,9 +35935,14 @@ def test_create_release_config_rest_required_fields(
     # verify fields with default values are dropped
     assert "releaseConfigId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_release_config._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateReleaseConfig,
+        "_BaseCreateReleaseConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -36892,12 +35952,8 @@ def test_create_release_config_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["releaseConfigId"] = "release_config_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_release_config._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("release_config_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("releaseConfigId",))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -36952,24 +36008,6 @@ def test_create_release_config_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_release_config_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_release_config._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("releaseConfigId",))
-        & set(
-            (
-                "parent",
-                "releaseConfig",
-                "releaseConfigId",
-            )
-        )
-    )
 
 
 def test_create_release_config_rest_flattened():
@@ -37091,19 +36129,20 @@ def test_update_release_config_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_release_config._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateReleaseConfig,
+        "_BaseUpdateReleaseConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_release_config._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -37148,15 +36187,6 @@ def test_update_release_config_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_release_config_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_release_config._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask",)) & set(("releaseConfig",)))
 
 
 def test_update_release_config_rest_flattened():
@@ -37279,19 +36309,19 @@ def test_delete_release_config_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_release_config._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteReleaseConfig,
+        "_BaseDeleteReleaseConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_release_config._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -37334,15 +36364,6 @@ def test_delete_release_config_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_release_config_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_release_config._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_delete_release_config_rest_flattened():
@@ -37459,28 +36480,29 @@ def test_list_compilation_results_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_compilation_results._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListCompilationResults,
+        "_BaseListCompilationResults__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_compilation_results._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -37526,25 +36548,6 @@ def test_list_compilation_results_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_compilation_results_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_compilation_results._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_compilation_results_rest_flattened():
@@ -37731,19 +36734,19 @@ def test_get_compilation_result_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_compilation_result._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetCompilationResult,
+        "_BaseGetCompilationResult__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_compilation_result._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -37789,15 +36792,6 @@ def test_get_compilation_result_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_compilation_result_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_compilation_result._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_compilation_result_rest_flattened():
@@ -37916,19 +36910,19 @@ def test_create_compilation_result_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_compilation_result._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateCompilationResult,
+        "_BaseCreateCompilationResult__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_compilation_result._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -37975,23 +36969,6 @@ def test_create_compilation_result_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_compilation_result_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_compilation_result._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "parent",
-                "compilationResult",
-            )
-        )
-    )
 
 
 def test_create_compilation_result_rest_flattened():
@@ -38116,27 +37093,28 @@ def test_query_compilation_result_actions_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).query_compilation_result_actions._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseQueryCompilationResultActions,
+        "_BaseQueryCompilationResultActions__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).query_compilation_result_actions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -38184,26 +37162,6 @@ def test_query_compilation_result_actions_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_query_compilation_result_actions_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.query_compilation_result_actions._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("name",))
-    )
 
 
 def test_query_compilation_result_actions_rest_pager(transport: str = "rest"):
@@ -38332,26 +37290,27 @@ def test_list_workflow_configs_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_workflow_configs._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListWorkflowConfigs,
+        "_BaseListWorkflowConfigs__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_workflow_configs._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -38397,23 +37356,6 @@ def test_list_workflow_configs_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_workflow_configs_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_workflow_configs._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_workflow_configs_rest_flattened():
@@ -38599,19 +37541,19 @@ def test_get_workflow_config_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_workflow_config._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetWorkflowConfig,
+        "_BaseGetWorkflowConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_workflow_config._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -38657,15 +37599,6 @@ def test_get_workflow_config_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_workflow_config_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_workflow_config._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_workflow_config_rest_flattened():
@@ -38786,9 +37719,14 @@ def test_create_workflow_config_rest_required_fields(
     # verify fields with default values are dropped
     assert "workflowConfigId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_workflow_config._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateWorkflowConfig,
+        "_BaseCreateWorkflowConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -38798,12 +37736,8 @@ def test_create_workflow_config_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["workflowConfigId"] = "workflow_config_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_workflow_config._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("workflow_config_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("workflowConfigId",))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -38858,24 +37792,6 @@ def test_create_workflow_config_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_workflow_config_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_workflow_config._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("workflowConfigId",))
-        & set(
-            (
-                "parent",
-                "workflowConfig",
-                "workflowConfigId",
-            )
-        )
-    )
 
 
 def test_create_workflow_config_rest_flattened():
@@ -38997,19 +37913,20 @@ def test_update_workflow_config_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_workflow_config._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateWorkflowConfig,
+        "_BaseUpdateWorkflowConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_workflow_config._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -39054,15 +37971,6 @@ def test_update_workflow_config_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_workflow_config_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_workflow_config._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask",)) & set(("workflowConfig",)))
 
 
 def test_update_workflow_config_rest_flattened():
@@ -39185,19 +38093,19 @@ def test_delete_workflow_config_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_workflow_config._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteWorkflowConfig,
+        "_BaseDeleteWorkflowConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_workflow_config._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -39240,15 +38148,6 @@ def test_delete_workflow_config_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_workflow_config_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_workflow_config._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_delete_workflow_config_rest_flattened():
@@ -39365,28 +38264,29 @@ def test_list_workflow_invocations_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_workflow_invocations._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListWorkflowInvocations,
+        "_BaseListWorkflowInvocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_workflow_invocations._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -39432,25 +38332,6 @@ def test_list_workflow_invocations_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_workflow_invocations_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_workflow_invocations._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_workflow_invocations_rest_flattened():
@@ -39637,19 +38518,19 @@ def test_get_workflow_invocation_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_workflow_invocation._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetWorkflowInvocation,
+        "_BaseGetWorkflowInvocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_workflow_invocation._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -39695,15 +38576,6 @@ def test_get_workflow_invocation_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_workflow_invocation_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_workflow_invocation._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_workflow_invocation_rest_flattened():
@@ -39822,19 +38694,19 @@ def test_create_workflow_invocation_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_workflow_invocation._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateWorkflowInvocation,
+        "_BaseCreateWorkflowInvocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_workflow_invocation._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -39881,23 +38753,6 @@ def test_create_workflow_invocation_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_workflow_invocation_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_workflow_invocation._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "parent",
-                "workflowInvocation",
-            )
-        )
-    )
 
 
 def test_create_workflow_invocation_rest_flattened():
@@ -40022,19 +38877,19 @@ def test_delete_workflow_invocation_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_workflow_invocation._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteWorkflowInvocation,
+        "_BaseDeleteWorkflowInvocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_workflow_invocation._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -40077,15 +38932,6 @@ def test_delete_workflow_invocation_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_workflow_invocation_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_workflow_invocation._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_delete_workflow_invocation_rest_flattened():
@@ -40202,19 +39048,19 @@ def test_cancel_workflow_invocation_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).cancel_workflow_invocation._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCancelWorkflowInvocation,
+        "_BaseCancelWorkflowInvocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).cancel_workflow_invocation._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -40261,15 +39107,6 @@ def test_cancel_workflow_invocation_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_cancel_workflow_invocation_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.cancel_workflow_invocation._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_query_workflow_invocation_actions_rest_use_cached_wrapped_rpc():
@@ -40328,26 +39165,27 @@ def test_query_workflow_invocation_actions_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).query_workflow_invocation_actions._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseQueryWorkflowInvocationActions,
+        "_BaseQueryWorkflowInvocationActions__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).query_workflow_invocation_actions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -40395,25 +39233,6 @@ def test_query_workflow_invocation_actions_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_query_workflow_invocation_actions_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.query_workflow_invocation_actions._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("name",))
-    )
 
 
 def test_query_workflow_invocation_actions_rest_pager(transport: str = "rest"):
@@ -40535,19 +39354,19 @@ def test_get_config_rest_required_fields(request_type=dataform.GetConfigRequest)
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_config._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetConfig,
+        "_BaseGetConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_config._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -40593,15 +39412,6 @@ def test_get_config_rest_required_fields(request_type=dataform.GetConfigRequest)
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_config_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_config._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_config_rest_flattened():
@@ -40709,19 +39519,20 @@ def test_update_config_rest_required_fields(request_type=dataform.UpdateConfigRe
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_config._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateConfig,
+        "_BaseUpdateConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_config._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -40766,15 +39577,6 @@ def test_update_config_rest_required_fields(request_type=dataform.UpdateConfigRe
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_config_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_config._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask",)) & set(("config",)))
 
 
 def test_update_config_rest_flattened():
@@ -40890,21 +39692,22 @@ def test_get_iam_policy_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_iam_policy._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetIamPolicy,
+        "_BaseGetIamPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["resource"] = "resource_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_iam_policy._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("options",))
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "resource" in jsonified_request
@@ -40948,15 +39751,6 @@ def test_get_iam_policy_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_iam_policy_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_iam_policy._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("options",)) & set(("resource",)))
 
 
 def test_get_iam_policy_rest_flattened():
@@ -41068,19 +39862,19 @@ def test_set_iam_policy_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_iam_policy._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseSetIamPolicy,
+        "_BaseSetIamPolicy__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["resource"] = "resource_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_iam_policy._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "resource" in jsonified_request
@@ -41125,23 +39919,6 @@ def test_set_iam_policy_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_set_iam_policy_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.set_iam_policy._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "resource",
-                "policy",
-            )
-        )
-    )
 
 
 def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
@@ -41200,20 +39977,20 @@ def test_test_iam_permissions_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseTestIamPermissions,
+        "_BaseTestIamPermissions__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["resource"] = "resource_value"
     jsonified_request["permissions"] = "permissions_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "resource" in jsonified_request
@@ -41260,23 +40037,6 @@ def test_test_iam_permissions_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_test_iam_permissions_rest_unset_required_fields():
-    transport = transports.DataformRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.test_iam_permissions._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "resource",
-                "permissions",
-            )
-        )
-    )
 
 
 def test_credentials_transport_error():

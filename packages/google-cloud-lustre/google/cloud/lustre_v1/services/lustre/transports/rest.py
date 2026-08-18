@@ -30,6 +30,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.lustre_v1._compat import transcode_request
 from google.cloud.lustre_v1.types import instance, transfer
 from google.cloud.lustre_v1.types import instance as gcl_instance
 
@@ -812,23 +813,16 @@ class LustreRestTransport(_BaseLustreRestTransport):
             http_options = (
                 _BaseLustreRestTransport._BaseCreateInstance._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
-            transcoded_request = (
-                _BaseLustreRestTransport._BaseCreateInstance._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseLustreRestTransport._BaseCreateInstance._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseLustreRestTransport._BaseCreateInstance._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLustreRestTransport._BaseCreateInstance,
+                    "_BaseCreateInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -964,19 +958,16 @@ class LustreRestTransport(_BaseLustreRestTransport):
             http_options = (
                 _BaseLustreRestTransport._BaseDeleteInstance._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
-            transcoded_request = (
-                _BaseLustreRestTransport._BaseDeleteInstance._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseLustreRestTransport._BaseDeleteInstance._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLustreRestTransport._BaseDeleteInstance,
+                    "_BaseDeleteInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1111,23 +1102,16 @@ class LustreRestTransport(_BaseLustreRestTransport):
             """
 
             http_options = _BaseLustreRestTransport._BaseExportData._get_http_options()
-
             request, metadata = self._interceptor.pre_export_data(request, metadata)
-            transcoded_request = (
-                _BaseLustreRestTransport._BaseExportData._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseLustreRestTransport._BaseExportData._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseLustreRestTransport._BaseExportData._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLustreRestTransport._BaseExportData,
+                    "_BaseExportData__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1258,19 +1242,16 @@ class LustreRestTransport(_BaseLustreRestTransport):
             """
 
             http_options = _BaseLustreRestTransport._BaseGetInstance._get_http_options()
-
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
-            transcoded_request = (
-                _BaseLustreRestTransport._BaseGetInstance._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseLustreRestTransport._BaseGetInstance._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLustreRestTransport._BaseGetInstance,
+                    "_BaseGetInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1406,23 +1387,16 @@ class LustreRestTransport(_BaseLustreRestTransport):
             """
 
             http_options = _BaseLustreRestTransport._BaseImportData._get_http_options()
-
             request, metadata = self._interceptor.pre_import_data(request, metadata)
-            transcoded_request = (
-                _BaseLustreRestTransport._BaseImportData._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseLustreRestTransport._BaseImportData._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseLustreRestTransport._BaseImportData._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLustreRestTransport._BaseImportData,
+                    "_BaseImportData__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1558,19 +1532,16 @@ class LustreRestTransport(_BaseLustreRestTransport):
             http_options = (
                 _BaseLustreRestTransport._BaseListInstances._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
-            transcoded_request = (
-                _BaseLustreRestTransport._BaseListInstances._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseLustreRestTransport._BaseListInstances._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLustreRestTransport._BaseListInstances,
+                    "_BaseListInstances__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1708,23 +1679,16 @@ class LustreRestTransport(_BaseLustreRestTransport):
             http_options = (
                 _BaseLustreRestTransport._BaseUpdateInstance._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_update_instance(request, metadata)
-            transcoded_request = (
-                _BaseLustreRestTransport._BaseUpdateInstance._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            body = _BaseLustreRestTransport._BaseUpdateInstance._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseLustreRestTransport._BaseUpdateInstance._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLustreRestTransport._BaseUpdateInstance,
+                    "_BaseUpdateInstance__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1914,19 +1878,16 @@ class LustreRestTransport(_BaseLustreRestTransport):
             """
 
             http_options = _BaseLustreRestTransport._BaseGetLocation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseLustreRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseLustreRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLustreRestTransport._BaseGetLocation,
+                    "_BaseGetLocation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2056,19 +2017,16 @@ class LustreRestTransport(_BaseLustreRestTransport):
             http_options = (
                 _BaseLustreRestTransport._BaseListLocations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseLustreRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseLustreRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLustreRestTransport._BaseListLocations,
+                    "_BaseListLocations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2197,21 +2155,18 @@ class LustreRestTransport(_BaseLustreRestTransport):
             http_options = (
                 _BaseLustreRestTransport._BaseCancelOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseLustreRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseLustreRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLustreRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2315,21 +2270,18 @@ class LustreRestTransport(_BaseLustreRestTransport):
             http_options = (
                 _BaseLustreRestTransport._BaseDeleteOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            transcoded_request = (
-                _BaseLustreRestTransport._BaseDeleteOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseLustreRestTransport._BaseDeleteOperation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLustreRestTransport._BaseDeleteOperation,
+                    "_BaseDeleteOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2434,19 +2386,16 @@ class LustreRestTransport(_BaseLustreRestTransport):
             http_options = (
                 _BaseLustreRestTransport._BaseGetOperation._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseLustreRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseLustreRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLustreRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2576,19 +2525,16 @@ class LustreRestTransport(_BaseLustreRestTransport):
             http_options = (
                 _BaseLustreRestTransport._BaseListOperations._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseLustreRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseLustreRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseLustreRestTransport._BaseListOperations,
+                    "_BaseListOperations__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

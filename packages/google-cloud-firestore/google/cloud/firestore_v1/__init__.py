@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import google.api_core as api_core
+
 """Python idiomatic client for Google Cloud Firestore."""
 
 from google.cloud.firestore_v1 import gapic_version as package_version
@@ -188,3 +190,6 @@ __all__: List[str] = [
     "WriteBatch",
     "WriteOption",
 ]
+
+api_core.check_python_version("google.cloud.firestore_v1")
+api_core.check_dependency_versions("google.cloud.firestore_v1")

@@ -32,6 +32,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.storage_control_v2._compat import transcode_request
 from google.cloud.storage_control_v2.types import storage_control
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -1503,19 +1504,16 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             http_options = (
                 _BaseStorageControlRestTransport._BaseCreateFolder._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_create_folder(request, metadata)
-            transcoded_request = _BaseStorageControlRestTransport._BaseCreateFolder._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseStorageControlRestTransport._BaseCreateFolder._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseCreateFolder._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageControlRestTransport._BaseCreateFolder,
+                    "_BaseCreateFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1687,15 +1685,16 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             http_options = (
                 _BaseStorageControlRestTransport._BaseDeleteFolder._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_delete_folder(request, metadata)
-            transcoded_request = _BaseStorageControlRestTransport._BaseDeleteFolder._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseDeleteFolder._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageControlRestTransport._BaseDeleteFolder,
+                    "_BaseDeleteFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1801,21 +1800,18 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             """
 
             http_options = _BaseStorageControlRestTransport._BaseDeleteFolderRecursive._get_http_options()
-
             request, metadata = self._interceptor.pre_delete_folder_recursive(
                 request, metadata
             )
-            transcoded_request = _BaseStorageControlRestTransport._BaseDeleteFolderRecursive._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseStorageControlRestTransport._BaseDeleteFolderRecursive._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseDeleteFolderRecursive._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageControlRestTransport._BaseDeleteFolderRecursive,
+                    "_BaseDeleteFolderRecursive__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2011,19 +2007,16 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             http_options = (
                 _BaseStorageControlRestTransport._BaseGetFolder._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_get_folder(request, metadata)
-            transcoded_request = (
-                _BaseStorageControlRestTransport._BaseGetFolder._get_transcoded_request(
-                    http_options, request
-                )
-            )
-
-            # Jsonify the query params
-            query_params = (
-                _BaseStorageControlRestTransport._BaseGetFolder._get_query_params_json(
-                    transcoded_request
-                )
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageControlRestTransport._BaseGetFolder,
+                    "_BaseGetFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2162,17 +2155,18 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             """
 
             http_options = _BaseStorageControlRestTransport._BaseGetFolderIntelligenceConfig._get_http_options()
-
             request, metadata = self._interceptor.pre_get_folder_intelligence_config(
                 request, metadata
             )
-            transcoded_request = _BaseStorageControlRestTransport._BaseGetFolderIntelligenceConfig._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseGetFolderIntelligenceConfig._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageControlRestTransport._BaseGetFolderIntelligenceConfig,
+                    "_BaseGetFolderIntelligenceConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2335,17 +2329,18 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             """
 
             http_options = _BaseStorageControlRestTransport._BaseGetIntelligenceFinding._get_http_options()
-
             request, metadata = self._interceptor.pre_get_intelligence_finding(
                 request, metadata
             )
-            transcoded_request = _BaseStorageControlRestTransport._BaseGetIntelligenceFinding._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseGetIntelligenceFinding._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageControlRestTransport._BaseGetIntelligenceFinding,
+                    "_BaseGetIntelligenceFinding__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2489,17 +2484,18 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             """
 
             http_options = _BaseStorageControlRestTransport._BaseGetIntelligenceFindingRevision._get_http_options()
-
             request, metadata = self._interceptor.pre_get_intelligence_finding_revision(
                 request, metadata
             )
-            transcoded_request = _BaseStorageControlRestTransport._BaseGetIntelligenceFindingRevision._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseGetIntelligenceFindingRevision._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageControlRestTransport._BaseGetIntelligenceFindingRevision,
+                    "_BaseGetIntelligenceFindingRevision__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2660,19 +2656,20 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             """
 
             http_options = _BaseStorageControlRestTransport._BaseGetOrganizationIntelligenceConfig._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_get_organization_intelligence_config(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseStorageControlRestTransport._BaseGetOrganizationIntelligenceConfig._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseGetOrganizationIntelligenceConfig._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageControlRestTransport._BaseGetOrganizationIntelligenceConfig,
+                    "_BaseGetOrganizationIntelligenceConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2815,17 +2812,18 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             """
 
             http_options = _BaseStorageControlRestTransport._BaseGetProjectIntelligenceConfig._get_http_options()
-
             request, metadata = self._interceptor.pre_get_project_intelligence_config(
                 request, metadata
             )
-            transcoded_request = _BaseStorageControlRestTransport._BaseGetProjectIntelligenceConfig._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseGetProjectIntelligenceConfig._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageControlRestTransport._BaseGetProjectIntelligenceConfig,
+                    "_BaseGetProjectIntelligenceConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -2985,17 +2983,18 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             """
 
             http_options = _BaseStorageControlRestTransport._BaseGetStorageLayout._get_http_options()
-
             request, metadata = self._interceptor.pre_get_storage_layout(
                 request, metadata
             )
-            transcoded_request = _BaseStorageControlRestTransport._BaseGetStorageLayout._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseGetStorageLayout._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageControlRestTransport._BaseGetStorageLayout,
+                    "_BaseGetStorageLayout__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3151,15 +3150,16 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             http_options = (
                 _BaseStorageControlRestTransport._BaseListFolders._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_list_folders(request, metadata)
-            transcoded_request = _BaseStorageControlRestTransport._BaseListFolders._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseListFolders._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageControlRestTransport._BaseListFolders,
+                    "_BaseListFolders__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3300,19 +3300,20 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             """
 
             http_options = _BaseStorageControlRestTransport._BaseListIntelligenceFindingRevisions._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_list_intelligence_finding_revisions(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseStorageControlRestTransport._BaseListIntelligenceFindingRevisions._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseListIntelligenceFindingRevisions._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageControlRestTransport._BaseListIntelligenceFindingRevisions,
+                    "_BaseListIntelligenceFindingRevisions__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3455,17 +3456,18 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             """
 
             http_options = _BaseStorageControlRestTransport._BaseListIntelligenceFindings._get_http_options()
-
             request, metadata = self._interceptor.pre_list_intelligence_findings(
                 request, metadata
             )
-            transcoded_request = _BaseStorageControlRestTransport._BaseListIntelligenceFindings._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseListIntelligenceFindings._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageControlRestTransport._BaseListIntelligenceFindings,
+                    "_BaseListIntelligenceFindings__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3667,19 +3669,16 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             http_options = (
                 _BaseStorageControlRestTransport._BaseRenameFolder._get_http_options()
             )
-
             request, metadata = self._interceptor.pre_rename_folder(request, metadata)
-            transcoded_request = _BaseStorageControlRestTransport._BaseRenameFolder._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseStorageControlRestTransport._BaseRenameFolder._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseRenameFolder._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageControlRestTransport._BaseRenameFolder,
+                    "_BaseRenameFolder__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -3856,17 +3855,18 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             """
 
             http_options = _BaseStorageControlRestTransport._BaseSummarizeIntelligenceFindings._get_http_options()
-
             request, metadata = self._interceptor.pre_summarize_intelligence_findings(
                 request, metadata
             )
-            transcoded_request = _BaseStorageControlRestTransport._BaseSummarizeIntelligenceFindings._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseSummarizeIntelligenceFindings._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageControlRestTransport._BaseSummarizeIntelligenceFindings,
+                    "_BaseSummarizeIntelligenceFindings__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4049,21 +4049,18 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             """
 
             http_options = _BaseStorageControlRestTransport._BaseUpdateFolderIntelligenceConfig._get_http_options()
-
             request, metadata = self._interceptor.pre_update_folder_intelligence_config(
                 request, metadata
             )
-            transcoded_request = _BaseStorageControlRestTransport._BaseUpdateFolderIntelligenceConfig._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseStorageControlRestTransport._BaseUpdateFolderIntelligenceConfig._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseUpdateFolderIntelligenceConfig._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageControlRestTransport._BaseUpdateFolderIntelligenceConfig,
+                    "_BaseUpdateFolderIntelligenceConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4229,23 +4226,20 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             """
 
             http_options = _BaseStorageControlRestTransport._BaseUpdateOrganizationIntelligenceConfig._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_update_organization_intelligence_config(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseStorageControlRestTransport._BaseUpdateOrganizationIntelligenceConfig._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseStorageControlRestTransport._BaseUpdateOrganizationIntelligenceConfig._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseUpdateOrganizationIntelligenceConfig._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageControlRestTransport._BaseUpdateOrganizationIntelligenceConfig,
+                    "_BaseUpdateOrganizationIntelligenceConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4390,23 +4384,20 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             """
 
             http_options = _BaseStorageControlRestTransport._BaseUpdateProjectIntelligenceConfig._get_http_options()
-
             request, metadata = (
                 self._interceptor.pre_update_project_intelligence_config(
                     request, metadata
                 )
             )
-            transcoded_request = _BaseStorageControlRestTransport._BaseUpdateProjectIntelligenceConfig._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseStorageControlRestTransport._BaseUpdateProjectIntelligenceConfig._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseUpdateProjectIntelligenceConfig._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageControlRestTransport._BaseUpdateProjectIntelligenceConfig,
+                    "_BaseUpdateProjectIntelligenceConfig__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -4567,17 +4558,18 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
             """
 
             http_options = _BaseStorageControlRestTransport._BaseViewObjectFullContext._get_http_options()
-
             request, metadata = self._interceptor.pre_view_object_full_context(
                 request, metadata
             )
-            transcoded_request = _BaseStorageControlRestTransport._BaseViewObjectFullContext._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseStorageControlRestTransport._BaseViewObjectFullContext._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseStorageControlRestTransport._BaseViewObjectFullContext,
+                    "_BaseViewObjectFullContext__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
