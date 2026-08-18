@@ -437,11 +437,14 @@ class MutationsBatcher(object):
         """
         try:
             self.flush()
+        except MutationsBatchError as exc:
+            for e in exc.exc:
+                self.exceptions.put(e)
         except Exception as exc:
             # A failure in this final synchronous flush must not abort cleanup.
             # If it propagated here it would skip the executor shutdown (leaving
             # in-flight async flushes un-awaited) and skip draining
-            # ``self.exceptions``, masking every error already captured from
+            # self.exceptions, masking every error already captured from
             # earlier async flushes -- silently discarding those failures.
             # Record it like any other batch failure and continue.
             self.exceptions.put(exc)
