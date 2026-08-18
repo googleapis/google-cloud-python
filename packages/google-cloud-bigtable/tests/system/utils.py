@@ -76,6 +76,8 @@ def clear_stale_instances(
                                         "skipping remainder to conserve API write request quota."
                                     )
                                     return
+                            except NotFound:
+                                pass
                             except Exception as e:
                                 print(f"Failed to delete stale instance {instance.name}: {e}")
                     except Exception as e:
