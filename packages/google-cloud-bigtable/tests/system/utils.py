@@ -15,6 +15,7 @@
 from datetime import datetime, timedelta, timezone
 
 from google.api_core.exceptions import NotFound
+from google.cloud.environment_vars import BIGTABLE_EMULATOR
 
 from google.cloud import bigtable_admin_v2 as admin_v2
 
@@ -24,6 +25,8 @@ def clear_stale_instances(project_id: str, prefix: str, older_than_days: int = 1
     Synchronously deletes any instances in the given project that are older
     than older_than_days and whose name or display name matches the given prefix.
     """
+    if os.getenv(BIGTABLE_EMULATOR):
+        return
     client = admin_v2.BigtableInstanceAdminClient(
         client_options={"quota_project_id": project_id}
     )
