@@ -15,7 +15,6 @@
 import sys
 from unittest import mock
 
-import pytest
 from google.api_core import _otel_helpers
 from google.api_core.client_options import ClientOptions
 
