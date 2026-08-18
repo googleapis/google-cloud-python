@@ -76,28 +76,51 @@ import multiprocessing, os, time
 from google.cloud import storage
 
 bucket_name = '${TARGET_BUCKET}'
-client = storage.Client()
-bucket = client.bucket(bucket_name)
-
+file_size_mib = int('${FILE_SIZE_MIB}')
+num_processes = int('${PROCESSES}')
+expected_size = file_size_mib * 1024 * 1024
 local_file = '/tmp/benchmark_test_payload'
-expected_size = ${FILE_SIZE_MIB} * 1024 * 1024
 
-def ensure_object(idx):
+def check_object(idx):
+    client = storage.Client()
+    bucket = client.bucket(bucket_name)
     obj_name = f'fio-go_storage_fio.0.{idx}'
-    blob = bucket.get_blob(obj_name)
-    if not blob or blob.size != expected_size:
-        if not os.path.exists(local_file):
-            print(f'Generating {expected_size} bytes payload locally...')
-            os.system(f'dd if=/dev/urandom of={local_file} bs=1M count=${FILE_SIZE_MIB} status=none')
+    try:
+        blob = bucket.get_blob(obj_name)
+        if not blob or blob.size != expected_size:
+            return idx
+    except Exception as e:
+        print(f'Error checking {obj_name}: {e}')
+        return idx
+    return None
+
+def upload_object(idx):
+    client = storage.Client()
+    bucket = client.bucket(bucket_name)
+    obj_name = f'fio-go_storage_fio.0.{idx}'
+    try:
         t0 = time.time()
-        print(f'Uploading {obj_name} ({FILE_SIZE_MIB} MiB)...')
+        print(f'Uploading {obj_name} ({file_size_mib} MiB)...')
         blob_new = bucket.blob(obj_name)
         blob_new.upload_from_filename(local_file)
         print(f'Uploaded {obj_name} in {time.time()-t0:.1f}s')
+    except Exception as e:
+        print(f'Error uploading {obj_name}: {e}')
 
-print(f'Verifying {${PROCESSES}} objects in bucket {bucket_name}...')
-with multiprocessing.Pool(min(16, ${PROCESSES})) as pool:
-    pool.map(ensure_object, range(${PROCESSES}))
+if __name__ == '__main__':
+    print(f'Verifying {num_processes} objects in bucket {bucket_name}...')
+    with multiprocessing.Pool(min(16, num_processes)) as pool:
+        results = pool.map(check_object, range(num_processes))
+
+    missing_indices = [r for r in results if r is not None]
+    if missing_indices:
+        print(f'Found {len(missing_indices)} missing/incomplete objects.')
+        if not os.path.exists(local_file):
+            print(f'Generating {expected_size} bytes payload locally...')
+            os.system(f'dd if=/dev/urandom of={local_file} bs=1M count={file_size_mib} status=none')
+
+        with multiprocessing.Pool(min(16, len(missing_indices))) as pool:
+            pool.map(upload_object, missing_indices)
 "
 
 echo "--- 4. Executing pytest benchmark suite ---"
