@@ -123,6 +123,64 @@ class TestCursor(unittest.TestCase):
         self.assertEqual(cursor._result_set, result_set)
         self.assertEqual(cursor.rowcount, 1234)
 
+    def test_do_execute_update_with_timeout(self):
+        connection = self._make_connection(self.INSTANCE, self.DATABASE)
+        connection._timeout = 30
+        cursor = self._make_one(connection)
+        transaction = mock.MagicMock()
+
+        cursor._do_execute_update_in_autocommit(
+            transaction=transaction,
+            sql="UPDATE t SET x=1 WHERE true",
+            params={},
+        )
+
+        transaction.execute_sql.assert_called_once_with(
+            "UPDATE t SET x=1 WHERE true",
+            params={},
+            param_types={},
+            last_statement=True,
+            timeout=30,
+        )
+
+    def test_handle_DQL_with_snapshot_timeout(self):
+        connection = self._make_connection(self.INSTANCE, self.DATABASE)
+        connection._timeout = 45
+        cursor = self._make_one(connection)
+
+        snapshot = mock.MagicMock()
+        result_set = mock.MagicMock()
+        result_set.metadata.transaction.read_timestamp = None
+        snapshot.execute_sql.return_value = result_set
+
+        cursor._handle_DQL_with_snapshot(snapshot, "SELECT 1", None)
+
+        snapshot.execute_sql.assert_called_once_with(
+            "SELECT 1",
+            None,
+            param_types=None,
+            request_options=None,
+            timeout=45,
+        )
+
+    def test_handle_DQL_with_snapshot_no_timeout(self):
+        connection = self._make_connection(self.INSTANCE, self.DATABASE)
+        cursor = self._make_one(connection)
+
+        snapshot = mock.MagicMock()
+        result_set = mock.MagicMock()
+        result_set.metadata.transaction.read_timestamp = None
+        snapshot.execute_sql.return_value = result_set
+
+        cursor._handle_DQL_with_snapshot(snapshot, "SELECT 1", None)
+
+        snapshot.execute_sql.assert_called_once_with(
+            "SELECT 1",
+            None,
+            param_types=None,
+            request_options=None,
+        )
+
     def test_do_batch_update(self):
         from google.cloud.spanner_dbapi import connect
         from google.cloud.spanner_v1.param_types import INT64
@@ -953,7 +1011,7 @@ class TestCursor(unittest.TestCase):
         self.assertEqual(cursor._itr, MockedPeekIterator())
         self.assertEqual(cursor._row_count, None)
         mock_snapshot.execute_sql.assert_called_with(
-            sql, None, None, request_options=RequestOptions(priority=1)
+            sql, None, param_types=None, request_options=RequestOptions(priority=1)
         )
 
     def test_handle_dql_database_error(self):
