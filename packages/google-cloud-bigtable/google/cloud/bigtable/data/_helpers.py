@@ -47,6 +47,9 @@ ShardedQuery = List[ReadRowsQuery]
 # used by read_rows_sharded to limit how many requests are attempted in parallel
 _CONCURRENCY_LIMIT = 10
 
+# used by every data client as a default project name for testing on Bigtable emulator.
+_DEFAULT_BIGTABLE_EMULATOR_CLIENT = "google-cloud-bigtable-emulator"
+
 # used to identify an active bigtable resource that needs to be warmed through PingAndWarm
 # each instance/app_profile_id pair needs to be individually tracked
 _WarmedInstanceKey = namedtuple(

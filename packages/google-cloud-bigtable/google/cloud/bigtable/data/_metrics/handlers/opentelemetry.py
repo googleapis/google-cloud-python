@@ -17,7 +17,7 @@ import os
 import socket
 import uuid
 
-from google.cloud.bigtable import __version__ as bigtable_version
+from google.cloud.bigtable.gapic_version import __version__ as bigtable_version
 from google.cloud.bigtable.data._metrics.data_model import (
     DEFAULT_CLUSTER_ID,
     DEFAULT_ZONE,

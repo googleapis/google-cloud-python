@@ -449,7 +449,8 @@ def test_conditional_row_commit():
 
     # Patch the stub used by the API method.
     api.check_and_mutate_row.side_effect = [response_pb]
-    client._table_data_client = api
+    client.table_data_client
+    client._table_data_client._gapic_client = api
 
     # Create expected_result.
     expected_result = predicate_matched
@@ -594,7 +595,8 @@ def test_append_row_commit():
     expected_result = object()
 
     # Patch API calls
-    client._table_data_client = api
+    client.table_data_client
+    client._table_data_client._gapic_client = api
 
     def mock_parse_rmw_row_response(row_response):
         row_responses.append(row_response)
@@ -602,7 +604,7 @@ def test_append_row_commit():
 
     # Perform the method and check the result.
     with _Monkey(MUT, _parse_rmw_row_response=mock_parse_rmw_row_response):
-        row._table._instance._client._table_data_client = api
+        row._table._instance._client._table_data_client._gapic_client = api
         row.append_cell_value(column_family_id, column, value)
         result = row.commit()
     call_args = api.read_modify_write_row.call_args_list[0]

@@ -162,8 +162,15 @@ class TestBigtableDataClientAsync:
 
     @CrossSync.pytest
     async def test_ctor_super_inits(self):
+        import copy
+
         from google.api_core import client_options as client_options_lib
         from google.cloud.client import ClientWithProject
+
+        from google.cloud.bigtable import __version__ as bigtable_version
+        from google.cloud.bigtable_v2.services.bigtable.transports.base import (
+            DEFAULT_CLIENT_INFO,
+        )
 
         project = "project-id"
         credentials = AnonymousCredentials()
@@ -191,12 +198,62 @@ class TestBigtableDataClientAsync:
                 kwargs = bigtable_client_init.call_args[1]
                 assert kwargs["credentials"] == credentials
                 assert kwargs["client_options"] == options_parsed
+
+                expected_client_info = copy.copy(DEFAULT_CLIENT_INFO)
+                expected_client_info.client_library_version = (
+                    f"{bigtable_version}-data"
+                    if not CrossSync.is_async
+                    else f"{bigtable_version}-data-async"
+                )
+                assert (
+                    kwargs["client_info"].to_user_agent()
+                    == expected_client_info.to_user_agent()
+                )
+                assert (
+                    kwargs["client_info"].to_grpc_metadata()
+                    == expected_client_info.to_grpc_metadata()
+                )
+
                 # test mixin superclass init was called
                 assert client_project_init.call_count == 1
                 kwargs = client_project_init.call_args[1]
                 assert kwargs["project"] == project
                 assert kwargs["credentials"] == credentials
                 assert kwargs["client_options"] == options_parsed
+
+    @CrossSync.pytest
+    async def test_ctor_legacy_client(self):
+        from google.api_core import client_options as client_options_lib
+        from google.api_core.gapic_v1.client_info import ClientInfo
+
+        project = "project-id"
+        credentials = AnonymousCredentials()
+        client_info = ClientInfo(gapic_version="1.2.3", user_agent="test-client-")
+        client_options = {"api_endpoint": "foo.bar:1234"}
+        options_parsed = client_options_lib.from_dict(client_options)
+        with mock.patch.object(
+            CrossSync.GapicClient, "__init__"
+        ) as bigtable_client_init:
+            try:
+                client = self._make_client(
+                    project=project,
+                    credentials=credentials,
+                    client_options=options_parsed,
+                    use_emulator=False,
+                    _client_info=client_info,
+                    _disable_background_refresh=True,
+                )
+
+                assert client._disable_background_refresh
+                assert client.client_info is client_info
+            except TypeError:
+                pass
+
+            # test gapic superclass init was called with the right arguments
+            assert bigtable_client_init.call_count == 1
+            kwargs = bigtable_client_init.call_args[1]
+            assert kwargs["credentials"] == credentials
+            assert kwargs["client_options"] == options_parsed
 
     @CrossSync.pytest
     async def test_ctor_dict_options(self):
@@ -330,6 +387,22 @@ class TestBigtableDataClientAsync:
             await CrossSync.sleep(0.1)
             assert ping_and_warm.call_count == 1
             await client.close()
+
+    @CrossSync.pytest
+    async def test__start_background_channel_refresh_disable_background_refresh(self):
+        client = self._make_client(
+            project="project-id",
+            _disable_background_refresh=True,
+        )
+        # should create background tasks for each channel
+        with mock.patch.object(
+            client, "_ping_and_warm_instances", CrossSync.Mock()
+        ) as ping_and_warm:
+            client._emulator_host = None
+            client.transport._grpc_channel = CrossSync.SwappableChannel(mock.Mock)
+            client._start_background_channel_refresh()
+            assert client._channel_refresh_task is None
+            ping_and_warm.assert_not_called()
 
     @CrossSync.drop
     @CrossSync.pytest

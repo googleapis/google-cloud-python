@@ -29,7 +29,10 @@ from google.api_core.retry import RetryFailureReason
 from grpc import StatusCode
 
 from google.cloud.bigtable.data._helpers import _retry_exception_factory
-from google.cloud.bigtable.data._metrics import ActiveOperationMetric, OperationState
+from google.cloud.bigtable.data._metrics.data_model import (
+    ActiveOperationMetric,
+    OperationState,
+)
 from google.cloud.bigtable.data.exceptions import _MutateRowsIncomplete
 
 T = TypeVar("T")
