@@ -56,12 +56,18 @@ import yaml
 path = '${CONFIG_PATH}'
 with open(path) as f:
     d = yaml.safe_load(f)
-d['common']['file_sizes_mib'] = [${FILE_SIZE_MIB}]
-d['common']['chunk_sizes_kib'] = [${CHUNK_SIZE_KIB}]
-d['common']['bucket_types'] = ['${BUCKET_TYPE}']
-for w in d['workload']:
-    w['processes'] = [${PROCESSES}]
-    w['coros'] = [${COROS}]
+if isinstance(d, dict):
+    common = d.get('common')
+    if isinstance(common, dict):
+        common['file_sizes_mib'] = [${FILE_SIZE_MIB}]
+        common['chunk_sizes_kib'] = [${CHUNK_SIZE_KIB}]
+        common['bucket_types'] = ['${BUCKET_TYPE}']
+    workloads = d.get('workload')
+    if isinstance(workloads, list):
+        for w in workloads:
+            if isinstance(w, dict):
+                w['processes'] = [${PROCESSES}]
+                w['coros'] = [${COROS}]
 with open(path, 'w') as f:
     yaml.dump(d, f)
 "
