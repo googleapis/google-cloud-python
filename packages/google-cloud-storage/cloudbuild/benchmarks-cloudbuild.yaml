@@ -1,0 +1,116 @@
+substitutions:
+  _ZONE: "us-central1-b"
+  _MACHINE_TYPE: "c4-standard-192"
+  _SHORT_BUILD_ID: ${BUILD_ID:0:8}
+  _VM_NAME: "read-bench-${_SHORT_BUILD_ID}"
+  _ULIMIT: "65536"
+  _PROCESSES: "48"
+  _COROS: "1"
+  _FILE_SIZE_MIB: "10240"
+  _CHUNK_SIZE_KIB: "102400"
+  _ZONAL_BUCKET: "shradhakatyal-read-bench-zb"
+  _ZONAL_VM_SERVICE_ACCOUNT: ""
+
+steps:
+  # Step 0: Generate a persistent SSH key for this build run.
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "generate-ssh-key"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        mkdir -p /workspace/.ssh
+        ssh-keygen -t rsa -f /workspace/.ssh/google_compute_engine -N '' -C gcb
+        cat /workspace/.ssh/google_compute_engine.pub > /workspace/gcb_ssh_key.pub
+        gcloud compute os-login ssh-keys add \
+          --key-file=/workspace/.ssh/google_compute_engine.pub \
+          --ttl=1h
+    waitFor: ["-"]
+
+  # Step 1: Package google-cloud-storage directory for direct transfer to VM
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "package-code"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        tar --exclude='.nox' --exclude='venv_*' --exclude='.pytest_cache' --exclude='__pycache__' --exclude='.git' -czf /workspace/google-cloud-storage.tar.gz -C /workspace/packages google-cloud-storage
+    waitFor: ["-"]
+
+  # Step 2: Create a high-bandwidth GCE Tier-1 VM to run the read microbenchmarks.
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "create-vm"
+    entrypoint: "gcloud"
+    args:
+      - "compute"
+      - "instances"
+      - "create"
+      - "${_VM_NAME}"
+      - "--project=${PROJECT_ID}"
+      - "--zone=${_ZONE}"
+      - "--machine-type=${_MACHINE_TYPE}"
+      - "--image-family=debian-12"
+      - "--image-project=debian-cloud"
+      - "--network-interface=nic-type=GVNIC"
+      - "--network-performance-configs=total-egress-bandwidth-tier=TIER_1"
+      - "--service-account=${_ZONAL_VM_SERVICE_ACCOUNT}"
+      - "--scopes=https://www.googleapis.com/auth/devstorage.full_control,https://www.googleapis.com/auth/cloudkms"
+      - "--metadata=enable-oslogin=TRUE"
+    waitFor: ["-"]
+
+  # Step 3: Run the read microbenchmark suite inside the VM and cleanup cleanly.
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "run-tests-and-delete-vm"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        set -e
+        # Wait for the VM to be fully initialized and SSH to be ready
+        for i in {1..12}; do
+          if gcloud compute ssh "${_VM_NAME}" --zone=${_ZONE} --internal-ip --ssh-key-file=/workspace/.ssh/google_compute_engine --command="echo VM is ready"; then
+            break
+          fi
+          echo "Waiting for VM to become available... (attempt $i/12)"
+          sleep 15
+        done
+
+        # Copy runner script and tarball to the VM
+        gcloud compute scp packages/google-cloud-storage/cloudbuild/run_benchmark_tests.sh /workspace/google-cloud-storage.tar.gz "${_VM_NAME}":~ --zone=${_ZONE} --internal-ip --ssh-key-file=/workspace/.ssh/google_compute_engine
+
+        # Execute run_benchmark_tests.sh on the VM via SSH
+        set +e
+        gcloud compute ssh "${_VM_NAME}" --zone=${_ZONE} --internal-ip --ssh-key-file=/workspace/.ssh/google_compute_engine \
+          --command="ulimit -n ${_ULIMIT}; tar -xzf google-cloud-storage.tar.gz && cp run_benchmark_tests.sh google-cloud-storage/ && cd google-cloud-storage && PROCESSES=${_PROCESSES} COROS=${_COROS} FILE_SIZE_MIB=${_FILE_SIZE_MIB} CHUNK_SIZE_KIB=${_CHUNK_SIZE_KIB} TARGET_BUCKET=${_ZONAL_BUCKET} bash run_benchmark_tests.sh"
+        EXIT_CODE=$?
+        set -e
+
+        echo "--- Deleting GCE VM ---"
+        gcloud compute instances delete "${_VM_NAME}" --zone=${_ZONE} --quiet
+
+        exit $$EXIT_CODE
+    waitFor:
+      - "create-vm"
+      - "generate-ssh-key"
+      - "package-code"
+
+  # Step 4: Cleanup temporary OS Login SSH key
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "cleanup-ssh-key"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        echo "--- Removing SSH key from OS Login profile ---"
+        gcloud compute os-login ssh-keys remove \
+          --key-file=/workspace/gcb_ssh_key.pub || true
+    waitFor:
+      - "run-tests-and-delete-vm"
+
+timeout: "3600s" # 60 minutes
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+  dynamicSubstitutions: true
+  pool:
+    name: "projects/${PROJECT_ID}/locations/us-central1/workerPools/cloud-build-worker-pool"
