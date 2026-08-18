@@ -1596,8 +1596,9 @@ class TestTableAsync:
             # incomplete mutation, so an empty mock stream would retry until the
             # operation timeout. Return a success entry for the single mutation
             # so the operation completes after a single attempt.
-            from google.cloud.bigtable_v2.types import MutateRowsResponse
             from google.rpc import status_pb2
+
+            from google.cloud.bigtable_v2.types import MutateRowsResponse
 
             @CrossSync.convert
             async def mutate_rows_stream(*args, **kwargs):
