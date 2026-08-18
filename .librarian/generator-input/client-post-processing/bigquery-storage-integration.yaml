@@ -341,7 +341,7 @@ replacements:
       packages/google-cloud-bigquery-storage/google/cloud/bigquery_storage_v1beta/__init__.py,
     ]
     before: |
-      \)\n
+      \}\n\n
       __all__ = \(
           "MetastorePartitionServiceAsyncClient",
           "BatchCreateMetastorePartitionsRequest",
@@ -367,7 +367,7 @@ replacements:
           "UpdateMetastorePartitionRequest",
       \)
     after: |
-      )
+      }
     count: 2
     # Given that this file is mostly handwritten, we could omit the file during code generation
     # This will require a change to gapic-generator-python to provide the ability to omit files
