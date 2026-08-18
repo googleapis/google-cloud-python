@@ -79,3 +79,28 @@ def test_get_otel_grpc_interceptor_enabled_via_config(monkeypatch):
     mock_otel_grpc.client_interceptor.assert_called_once_with(
         tracer_provider=mock_tracer_provider
     )
+
+
+def test_get_otel_grpc_interceptor_enabled_via_dict_config(monkeypatch):
+    # Tracing enabled via dict config
+    mock_tracer_provider = object()
+    options = {"tracer_provider": mock_tracer_provider}
+
+    mock_otel = mock.Mock()
+    mock_otel_grpc = mock_otel.instrumentation.grpc
+    mock_interceptor = mock.Mock()
+    mock_otel_grpc.client_interceptor.return_value = mock_interceptor
+
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(
+        sys.modules, "opentelemetry.instrumentation", mock_otel.instrumentation
+    )
+    monkeypatch.setitem(
+        sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
+    )
+
+    interceptor = _otel_helpers.get_otel_grpc_interceptor(client_options=options)
+    assert interceptor is mock_interceptor
+    mock_otel_grpc.client_interceptor.assert_called_once_with(
+        tracer_provider=mock_tracer_provider
+    )

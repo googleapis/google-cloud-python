@@ -23,17 +23,17 @@ from google.api_core.client_options import ClientOptions
 
 
 def get_otel_grpc_interceptor(
-    client_options: Optional[ClientOptions] = None,
+    client_options: Optional[ClientOptions | dict[str, Any]] = None,
     env_var: str = "GOOGLE_CLOUD_PYTHON_TRACING_ENABLED",
 ) -> Optional[Any]:
     """Checks feature flags, attempts to import OTel, and returns the interceptor.
 
     This helper centralizes the logic for checking environment variables,
-    programmatic configuration (via ClientOptions), and soft-importing
+    programmatic configuration (via ClientOptions or dict), and soft-importing
     the `opentelemetry-instrumentation-grpc` package.
 
     Args:
-        client_options: The client options object, potentially holding a tracer_provider.
+        client_options: The client options object or dictionary, potentially holding a tracer_provider.
         env_var: The environment variable to check for enablement.
 
     Returns:
@@ -50,7 +50,11 @@ def get_otel_grpc_interceptor(
         try:
             import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
 
-            tracer_provider = getattr(client_options, "tracer_provider", None)
+            if isinstance(client_options, dict):
+                tracer_provider = client_options.get("tracer_provider")
+            else:
+                tracer_provider = getattr(client_options, "tracer_provider", None)
+
             return otel_grpc.client_interceptor(tracer_provider=tracer_provider)
         except ImportError:
             # Failed open if OTel is not installed but feature was requested.
