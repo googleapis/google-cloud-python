@@ -1191,3 +1191,38 @@ def _ValueBitmaskPB(*args, **kw):
     from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
     return data_v2_pb2.ValueBitmask(*args, **kw)
+
+
+def test_row_filter_to_pb_backwards_compatibility():
+    from google.cloud.bigtable.row_filters import (
+        PassAllFilter,
+        RowKeyRegexFilter,
+        ValueBitmaskFilter,
+    )
+
+    pass_filter = PassAllFilter(True)
+    assert hasattr(pass_filter, "to_pb")
+    with pytest.deprecated_call():
+        assert pass_filter.to_pb() == pass_filter._to_pb()
+
+    regex_filter = RowKeyRegexFilter(b"row-.*")
+    assert hasattr(regex_filter, "to_pb")
+    with pytest.deprecated_call():
+        assert regex_filter.to_pb() == regex_filter._to_pb()
+
+    bitmask_filter = ValueBitmaskFilter(b"mask")
+    assert hasattr(bitmask_filter, "to_pb")
+    with pytest.deprecated_call():
+        assert bitmask_filter.to_pb() == bitmask_filter._to_pb()
+
+
+def test_timestamp_range_to_pb_backwards_compatibility():
+    from datetime import datetime, timezone
+    from google.cloud.bigtable.row_filters import TimestampRange
+
+    start = datetime(2023, 1, 1, tzinfo=timezone.utc)
+    end = datetime(2023, 1, 2, tzinfo=timezone.utc)
+    tr = TimestampRange(start=start, end=end)
+    assert hasattr(tr, "to_pb")
+    with pytest.deprecated_call():
+        assert tr.to_pb() == tr._to_pb()

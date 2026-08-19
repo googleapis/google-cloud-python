@@ -48,6 +48,24 @@ from google.cloud.bigtable.data.row_filters import (  # noqa: F401
 _PACK_I64 = struct.Struct(">q").pack
 
 
+def _deprecated_to_pb(self):
+    import warnings
+
+    warnings.warn(
+        "`to_pb()` is deprecated and will be removed in a future release. "
+        "Filter objects should be passed directly to Bigtable client read and query "
+        "methods without manual protobuf conversion.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+    return self._to_pb()
+
+
+# Provide to_pb alias with DeprecationWarning for backwards compatibility with legacy client code
+RowFilter.to_pb = _deprecated_to_pb  # type: ignore[attr-defined]
+TimestampRange.to_pb = _deprecated_to_pb  # type: ignore[attr-defined]
+
+
 class _MappableAttributesMixin:
     """
     Mixin for classes that need some of their attribute names remapped.
