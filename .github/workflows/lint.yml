@@ -35,11 +35,9 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
-      # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
-      # See https://github.com/googleapis/google-cloud-python/issues/12013
-      # and https://github.com/actions/checkout#checkout-head.
       with:
-        fetch-depth: 2
+        fetch-depth: 0
+        filter: blob:none
         persist-credentials: false
     - name: Check for unit_test:all_packages label
       id: check-label
@@ -61,7 +59,7 @@ jobs:
         TEST_ALL_PACKAGES: ${{ steps.check-label.outputs.is_full_run }}
       run: |
         if [ -n "$TARGET_BRANCH" ]; then
-          git fetch origin "$TARGET_BRANCH" --deepen=200 || true
+          git fetch origin "$TARGET_BRANCH" || true
         fi
         python3 ci/get_package_shards.py
 
