@@ -55,7 +55,10 @@ def format_duration(seconds):
 def delete_test_database():
     """Delete the currently configured test database."""
     config = configparser.ConfigParser()
-    if os.path.exists("test.cfg"):
+    config_filename = os.getenv("SQLALCHEMY_SPANNER_CONFIG", "test.cfg")
+    if os.path.exists(config_filename):
+        config.read(config_filename)
+    elif os.path.exists("test.cfg"):
         config.read("test.cfg")
     else:
         config.read("setup.cfg")
@@ -86,6 +89,13 @@ def delete_test_database():
         finally:
             if os.path.exists(meta_path):
                 os.remove(meta_path)
+
+    # Clean up session-specific config file
+    if os.path.exists(config_filename) and config_filename != "setup.cfg":
+        try:
+            os.remove(config_filename)
+        except Exception:
+            pass
 
 
 delete_test_database()

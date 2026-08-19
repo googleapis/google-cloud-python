@@ -179,6 +179,8 @@ def lint_setup_py(session):
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS[0])
 def compliance_test_14(session):
     """Run SQLAlchemy dialect compliance test suite."""
+    config_file = f"test_compliance_test_14_{session.python}.cfg"
+    os.environ["SQLALCHEMY_SPANNER_CONFIG"] = config_file
 
     # Check the value of `RUN_COMPLIANCE_TESTS` env var. It defaults to true.
     if os.environ.get("RUN_COMPLIANCE_TESTS", "true") == "false":
@@ -191,34 +193,42 @@ def compliance_test_14(session):
             "Credentials or emulator host must be set via environment variable"
         )
 
-    session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES)
-    session.install(".[tracing]")
-    session.run(
-        "pip",
-        "install",
-        *SQLALCHEMY_14_DEPENDENCIES,
-        "--force-reinstall",
-    )
-    session.run("python", "create_test_database.py")
-    session.run(
-        "py.test",
-        "--cov=google.cloud.sqlalchemy_spanner",
-        "--cov=tests",
-        "--cov-append",
-        "--cov-config=.coveragerc",
-        "--cov-report=",
-        "--cov-fail-under=0",
-        "--asyncio-mode=auto",
-        "tests/test_suite_14.py",
-        *session.posargs,
-        # Silence SQLAlchemy 2.0 transition warnings for this 1.4 compatibility session.
-        env={"SQLALCHEMY_SILENCE_UBER_WARNING": "1"},
-    )
+    try:
+        session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES)
+        session.install(".[tracing]")
+        session.run(
+            "pip",
+            "install",
+            *SQLALCHEMY_14_DEPENDENCIES,
+            "--force-reinstall",
+        )
+        session.run("python", "create_test_database.py")
+        session.run(
+            "py.test",
+            "--cov=google.cloud.sqlalchemy_spanner",
+            "--cov=tests",
+            "--cov-append",
+            "--cov-config=.coveragerc",
+            "--cov-report=",
+            "--cov-fail-under=0",
+            "--asyncio-mode=auto",
+            "tests/test_suite_14.py",
+            *session.posargs,
+            # Silence SQLAlchemy 2.0 transition warnings for this 1.4 compatibility session.
+            env={"SQLALCHEMY_SILENCE_UBER_WARNING": "1"},
+        )
+    finally:
+        if os.path.exists(config_file):
+            session.run("python", "drop_test_database.py", success_codes=[0, 1])
+        elif os.path.exists("test.cfg"):
+            session.run("python", "drop_test_database.py", success_codes=[0, 1])
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20)
 def compliance_test_20(session):
     """Run SQLAlchemy dialect compliance test suite."""
+    config_file = f"test_compliance_test_20_{session.python}.cfg"
+    os.environ["SQLALCHEMY_SPANNER_CONFIG"] = config_file
 
     # Check the value of `RUN_COMPLIANCE_TESTS` env var. It defaults to true.
     if os.environ.get("RUN_COMPLIANCE_TESTS", "true") == "false":
@@ -232,24 +242,30 @@ def compliance_test_20(session):
             "Credentials or emulator host must be set via environment variable"
         )
 
-    session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES)
-    session.install("-e", ".", "--force-reinstall")
-    session.run("python", "create_test_database.py")
+    try:
+        session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES)
+        session.install("-e", ".", "--force-reinstall")
+        session.run("python", "create_test_database.py")
 
-    session.install(*SQLALCHEMY_20_DEPENDENCIES)
+        session.install(*SQLALCHEMY_20_DEPENDENCIES)
 
-    session.run(
-        "py.test",
-        "--cov=google.cloud.sqlalchemy_spanner",
-        "--cov=tests",
-        "--cov-append",
-        "--cov-config=.coveragerc",
-        "--cov-report=",
-        "--cov-fail-under=0",
-        "--asyncio-mode=auto",
-        "tests/test_suite_20.py",
-        *session.posargs,
-    )
+        session.run(
+            "py.test",
+            "--cov=google.cloud.sqlalchemy_spanner",
+            "--cov=tests",
+            "--cov-append",
+            "--cov-config=.coveragerc",
+            "--cov-report=",
+            "--cov-fail-under=0",
+            "--asyncio-mode=auto",
+            "tests/test_suite_20.py",
+            *session.posargs,
+        )
+    finally:
+        if os.path.exists(config_file):
+            session.run("python", "drop_test_database.py", success_codes=[0, 1])
+        elif os.path.exists("test.cfg"):
+            session.run("python", "drop_test_database.py", success_codes=[0, 1])
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20)
