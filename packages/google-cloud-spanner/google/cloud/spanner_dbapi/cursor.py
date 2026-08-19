@@ -49,7 +49,11 @@ from google.cloud.spanner_dbapi.parsed_statement import (
     StatementType,
 )
 from google.cloud.spanner_dbapi.transaction_helper import CursorStatementType
-from google.cloud.spanner_dbapi.utils import PeekIterator, StreamedManyResultSets
+from google.cloud.spanner_dbapi.utils import (
+    BufferedIterator,
+    PeekIterator,
+    StreamedManyResultSets,
+)
 from google.cloud.spanner_v1 import RequestOptions
 from google.cloud.spanner_v1.merged_result_set import MergedResultSet
 
@@ -234,7 +238,7 @@ class Cursor(object):
             param_types=get_param_types(params),
             last_statement=True,
         )
-        self._itr = PeekIterator(self._result_set)
+        self._itr = BufferedIterator(self._result_set)
         self._row_count = None
 
     def _batch_DDLs(self, sql):
