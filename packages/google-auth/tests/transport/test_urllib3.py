@@ -14,6 +14,7 @@
 
 import http.client as http_client
 import os
+import threading
 from unittest import mock
 
 import pytest  # type: ignore
@@ -26,6 +27,7 @@ import google.auth.transport._mtls_helper
 import google.auth.transport.urllib3
 from google.oauth2 import service_account
 from tests.transport import compliance
+import http.client as http_client
 
 CERT_MOCK_VAL = b"-----BEGIN CERTIFICATE-----\nMIIDIzCCAgugAwIBAgIJAMfISuBQ5m+5MA0GCSqGSIb3DQEBBQUAMBUxEzARBgNV\nBAMTCnVuaXQtdGVzdHMwHhcNMTExMjA2MTYyNjAyWhcNMjExMjAzMTYyNjAyWjAV\nMRMwEQYDVQQDEwp1bml0LXRlc3RzMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB\nCgKCAQEA4ej0p7bQ7L/r4rVGUz9RN4VQWoej1Bg1mYWIDYslvKrk1gpj7wZgkdmM\n7oVK2OfgrSj/FCTkInKPqaCR0gD7K80q+mLBrN3PUkDrJQZpvRZIff3/xmVU1Wer\nuQLFJjnFb2dqu0s/FY/2kWiJtBCakXvXEOb7zfbINuayL+MSsCGSdVYsSliS5qQp\ngyDap+8b5fpXZVJkq92hrcNtbkg7hCYUJczt8n9hcCTJCfUpApvaFQ18pe+zpyl4\n+WzkP66I28hniMQyUlA1hBiskT7qiouq0m8IOodhv2fagSZKjOTTU2xkSBc//fy3\nZpsL7WqgsZS7Q+0VRK8gKfqkxg5OYQIDAQABo3YwdDAdBgNVHQ4EFgQU2RQ8yO+O\ngN8oVW2SW7RLrfYd9jEwRQYDVR0jBD4wPIAU2RQ8yO+OgN8oVW2SW7RLrfYd9jGh\nGaQXMBUxEzARBgNVBAMTCnVuaXQtdGVzdHOCCQDHyErgUOZvuTAMBgNVHRMEBTAD\nAQH/MA0GCSqGSIb3DQEBBQUAA4IBAQBRv+M/6+FiVu7KXNjFI5pSN17OcW5QUtPr\nodJMlWrJBtynn/TA1oJlYu3yV5clc/71Vr/AxuX5xGP+IXL32YDF9lTUJXG/uUGk\n+JETpKmQviPbRsvzYhz4pf6ZIOZMc3/GIcNq92ECbseGO+yAgyWUVKMmZM0HqXC9\novNslqe0M8C1sLm1zAR5z/h/litE7/8O2ietija3Q/qtl2TOXJdCA6sgjJX2WUql\nybrC55ct18NKf3qhpcEkGQvFU40rVYApJpi98DiZPYFdx1oBDp/f4uZ3ojpxRVFT\ncDwcJLfNRCPUhormsY7fDS9xSyThiHsW9mjJYdcaKQkwYZ0F11yB\n-----END CERTIFICATE-----\n"
 KEY_MOCK_VAL = b"-----BEGIN ENCRYPTED PRIVATE KEY-----\nMIHeMEkGCSqGSIb3DQEFDTA8MBsGCSqGSIb3DQEFDDAOBAj9XnJ2h78QVAICCAAw\nHQYJYIZIAWUDBAECBBBeiiOF2LnLzq/wjb/viwMwBIGQk28Zkfj2EIk42bgc7UzC\nSf98qssCVhsIYz0Xa3eSATg8Cpn83YieaBeyxdk/tXTnrOhxMV/vt7T98kWhaGbH\n5Z9CdGVLfes0UFvVJqrlk6vcf2sOnLCGbrn78HS+ayrGOCRSCd/7+dnEiB/7Um1B\nMk6BBJHsLEnZZSHyfrw8jvYgVmcSBy/WdY0pqldD/+4D\n-----END ENCRYPTED PRIVATE KEY-----\n"
@@ -723,3 +725,37 @@ class TestAuthorizedHttp(object):
         assert not is_mtls
         assert not authed_http._is_mtls
         assert isinstance(authed_http.http, urllib3.PoolManager)
+
+class TestAuthorizedHttpMTLSReauth:
+
+    @mock.patch("google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response")
+    def test_reauth_lock_acquired_on_unauthorized(self, mock_check_params):
+        credentials = mock.Mock()
+        http_obj = urllib3.AuthorizedHttp(credentials)
+        
+        http_obj._is_mtls = True
+        
+        mock_response = mock.Mock()
+        mock_response.status = http_client.UNAUTHORIZED
+        http_obj.http.request = mock.Mock(return_value=mock_response)
+        
+        mock_lock = mock.MagicMock()
+        http_obj._reauth_lock = mock_lock
+        
+        mock_check_params.return_value = (
+            b"new_cert_bytes",
+            b"new_key_bytes",
+            "old_fingerprint",
+            "new_fingerprint",
+        )
+        http_obj.configure_mtls_channel = mock.Mock()
+        
+        try:
+            http_obj.urlopen("GET", "https://example.mtls.googleapis.com/some/endpoint")
+        except Exception:
+            pass
+            
+        mock_lock.__enter__.assert_called_once()
+        mock_lock.__exit__.assert_called_once()
+        mock_check_params.assert_called_once_with(http_obj._cached_cert)
+        http_obj.configure_mtls_channel.assert_called_once()
