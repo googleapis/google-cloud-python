@@ -14,24 +14,14 @@
 
 """User-friendly container for Google Cloud Bigtable Row."""
 
-<<<<<<< HEAD
-import struct
-
 from google.cloud._helpers import (
     _datetime_from_microseconds,  # type: ignore
     _microseconds_from_datetime,  # type: ignore
     _to_bytes,  # type: ignore
 )
 
-from google.cloud.bigtable_v2.types import data as data_v2_pb2
-=======
-from google.cloud._helpers import _datetime_from_microseconds  # type: ignore
-from google.cloud._helpers import _microseconds_from_datetime  # type: ignore
-from google.cloud._helpers import _to_bytes  # type: ignore
-
 from google.cloud.bigtable.data import mutations
 from google.cloud.bigtable.data import read_modify_write_rules as rmw_rules
->>>>>>> af49a628442 (feat: Rerouted CheckAndMutateRows and ReadModifyWriteRows (#1257))
 
 
 MAX_MUTATIONS = 100000

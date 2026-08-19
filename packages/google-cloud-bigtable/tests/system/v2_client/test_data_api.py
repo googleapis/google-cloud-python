@@ -13,11 +13,7 @@
 # limitations under the License.
 
 import operator
-<<<<<<< HEAD
-import struct
 from datetime import datetime, timedelta, timezone
-=======
->>>>>>> af49a628442 (feat: Rerouted CheckAndMutateRows and ReadModifyWriteRows (#1257))
 
 import pytest
 from grpc import RpcError, StatusCode, UnaryStreamClientInterceptor, intercept_channel
@@ -267,12 +263,8 @@ def _add_test_error_handler(retry):
                 retry._initial * retry._multiplier**times_triggered,
                 retry._maximum,
             )
-<<<<<<< HEAD
             # Allow a small tolerance margin (1.0s) for OS sleep scheduling latency
             assert gap <= max_gap + 1.0
-=======
-            assert gap <= max_gap + GAP_MARGIN_OF_ERROR
->>>>>>> af49a628442 (feat: Rerouted CheckAndMutateRows and ReadModifyWriteRows (#1257))
         times_triggered += 1
         curr_time = next_time
 

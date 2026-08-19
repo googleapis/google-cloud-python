@@ -736,47 +736,7 @@ def test__parse_rmw_row_response():
     assert expected_output == _parse_rmw_row_response(sample_input)
 
 
-<<<<<<< HEAD
-def test__parse_family_pb():
-    from google.cloud._helpers import _datetime_from_microseconds
 
-    from google.cloud.bigtable.row import _parse_family_pb
-
-    col_fam1 = "col-fam-id"
-    col_name1 = b"col-name1"
-    col_name2 = b"col-name2"
-    cell_val1 = b"cell-val"
-    cell_val2 = b"cell-val-newer"
-    cell_val3 = b"altcol-cell-val"
-
-    microseconds = 5554441037
-    timestamp = _datetime_from_microseconds(microseconds)
-    expected_dict = {
-        col_name1: [(cell_val1, timestamp), (cell_val2, timestamp)],
-        col_name2: [(cell_val3, timestamp)],
-    }
-    expected_output = (col_fam1, expected_dict)
-    sample_input = _FamilyPB(
-        name=col_fam1,
-        columns=[
-            _ColumnPB(
-                qualifier=col_name1,
-                cells=[
-                    _CellPB(value=cell_val1, timestamp_micros=microseconds),
-                    _CellPB(value=cell_val2, timestamp_micros=microseconds),
-                ],
-            ),
-            _ColumnPB(
-                qualifier=col_name2,
-                cells=[_CellPB(value=cell_val3, timestamp_micros=microseconds)],
-            ),
-        ],
-    )
-    assert expected_output == _parse_family_pb(sample_input)
-
-
-=======
->>>>>>> af49a628442 (feat: Rerouted CheckAndMutateRows and ReadModifyWriteRows (#1257))
 def _CheckAndMutateRowResponsePB(*args, **kw):
     from google.cloud.bigtable_v2.types import bigtable as messages_v2_pb2
 
