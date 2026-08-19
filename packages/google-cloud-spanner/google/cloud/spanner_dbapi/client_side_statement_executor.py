@@ -15,8 +15,9 @@ from typing import TYPE_CHECKING, Union
 
 from google.cloud.spanner_v1 import TransactionOptions
 
+from google.cloud.spanner_dbapi.exceptions import ProgrammingError
+
 if TYPE_CHECKING:
-    from google.cloud.spanner_dbapi import ProgrammingError
     from google.cloud.spanner_dbapi.cursor import Cursor
 
 from google.cloud.spanner_dbapi.parsed_statement import (
@@ -108,6 +109,27 @@ def execute(cursor: "Cursor", parsed_statement: ParsedStatement):
         return connection.run_partitioned_query(parsed_statement)
     if statement_type == ClientSideStatementType.SET_AUTOCOMMIT_DML_MODE:
         return connection._set_autocommit_dml_mode(parsed_statement)
+    if statement_type == ClientSideStatementType.SET_DATA_BOOST_ENABLED:
+        val_str = (
+            parsed_statement.client_side_statement_params[0]
+            .strip()
+            .strip("'\"")
+            .lower()
+        )
+        if val_str not in ("true", "false"):
+            raise ProgrammingError(
+                f"Invalid value for DATA_BOOST_ENABLED: '{parsed_statement.client_side_statement_params[0]}'. Expected TRUE or FALSE."
+            )
+        connection.data_boost_enabled = val_str == "true"
+        return None
+    if statement_type == ClientSideStatementType.SHOW_DATA_BOOST_ENABLED:
+        column_values.append(connection.data_boost_enabled)
+        return _get_streamed_result_set(
+            "DATA_BOOST_ENABLED",
+            TypeCode.BOOL,
+            column_values,
+        )
+    return None
 
 
 def _get_streamed_result_set(column_name, type_code, column_values):

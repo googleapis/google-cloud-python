@@ -89,6 +89,8 @@ class TestParseUtils(unittest.TestCase):
             (" rollback TRANSACTION ", StatementType.CLIENT_SIDE),
             ("  SHOW   VARIABLE COMMIT_TIMESTAMP  ", StatementType.CLIENT_SIDE),
             ("SHOW VARIABLE READ_TIMESTAMP", StatementType.CLIENT_SIDE),
+            ("SET DATA_BOOST_ENABLED = TRUE", StatementType.CLIENT_SIDE),
+            ("SHOW VARIABLE DATA_BOOST_ENABLED", StatementType.CLIENT_SIDE),
             ("GRANT SELECT ON TABLE Singers TO ROLE parent", StatementType.DDL),
             ("REVOKE SELECT ON TABLE Singers TO ROLE parent", StatementType.DDL),
             ("GRANT ROLE parent TO ROLE child", StatementType.DDL),
@@ -247,6 +249,40 @@ class TestParseUtils(unittest.TestCase):
                 Statement("set autocommit_dml_mode = PARTITIONED_NON_ATOMIC"),
                 ClientSideStatementType.SET_AUTOCOMMIT_DML_MODE,
                 ["PARTITIONED_NON_ATOMIC"],
+            ),
+        )
+
+    def test_set_data_boost_enabled_stmt(self):
+        parsed_statement = classify_statement("  set data_boost_enabled = true  ")
+        self.assertEqual(
+            parsed_statement,
+            ParsedStatement(
+                StatementType.CLIENT_SIDE,
+                Statement("set data_boost_enabled = true"),
+                ClientSideStatementType.SET_DATA_BOOST_ENABLED,
+                ["true"],
+            ),
+        )
+        parsed_statement = classify_statement("SET DATA_BOOST_ENABLED = FALSE")
+        self.assertEqual(
+            parsed_statement,
+            ParsedStatement(
+                StatementType.CLIENT_SIDE,
+                Statement("SET DATA_BOOST_ENABLED = FALSE"),
+                ClientSideStatementType.SET_DATA_BOOST_ENABLED,
+                ["FALSE"],
+            ),
+        )
+
+    def test_show_data_boost_enabled_stmt(self):
+        parsed_statement = classify_statement("  show  variable data_boost_enabled  ")
+        self.assertEqual(
+            parsed_statement,
+            ParsedStatement(
+                StatementType.CLIENT_SIDE,
+                Statement("show  variable data_boost_enabled"),
+                ClientSideStatementType.SHOW_DATA_BOOST_ENABLED,
+                [],
             ),
         )
 
