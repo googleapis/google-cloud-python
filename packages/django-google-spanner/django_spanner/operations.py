@@ -46,7 +46,9 @@ class DatabaseOperations(BaseDatabaseOperations):
     def returning_columns(self, fields):
         if not fields:
             return "", ()
-        columns = [self.quote_name(field.column) for field in fields]
+        columns = [
+            self.quote_name(getattr(field, "column", str(field))) for field in fields
+        ]
         return "THEN RETURN %s" % ", ".join(columns), ()
 
     # In Django <= 5.2, this method was named return_insert_columns

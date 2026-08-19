@@ -47,14 +47,15 @@ def contains(self, compiler, connection):
     params = list(lhs_params)
     params.extend(rhs_params)
     is_icontains = self.lookup_name.startswith("i")
-    if self.rhs_is_direct_value() and params and not self.bilateral_transforms:
+    if self.rhs_is_direct_value() and rhs_params and not self.bilateral_transforms:
         rhs_sql = self.get_rhs_op(connection, rhs_sql)
+        rhs_idx = len(lhs_params)
         # Chop the leading and trailing percent signs that Django adds to the
         # param since this isn't a LIKE query as Django expects.
-        params[0] = params[0][1:-1]
+        params[rhs_idx] = params[rhs_idx][1:-1]
         # Add the case insensitive flag for icontains.
         if is_icontains:
-            params[0] = "(?i)" + params[0]
+            params[rhs_idx] = "(?i)" + params[rhs_idx]
         # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
         return rhs_sql % lhs_sql, tuple(params)
     else:
@@ -96,8 +97,9 @@ def iexact(self, compiler, connection):
     params.extend(rhs_params)
     rhs_sql = self.get_rhs_op(connection, rhs_sql)
     # Wrap the parameter in ^ and $ to restrict the regex to an exact match.
-    if self.rhs_is_direct_value() and params and not self.bilateral_transforms:
-        params[0] = "^(?i)%s$" % params[0]
+    if self.rhs_is_direct_value() and rhs_params and not self.bilateral_transforms:
+        rhs_idx = len(lhs_params)
+        params[rhs_idx] = "^(?i)%s$" % params[rhs_idx]
     else:
         # lhs_sql is the expression/column to use as the regular expression.
         # Use concat to make the value case-insensitive.
@@ -143,12 +145,13 @@ def regex(self, compiler, connection):
     params = list(lhs_params)
     params.extend(rhs_params)
     is_iregex = self.lookup_name.startswith("i")
-    if self.rhs_is_direct_value() and params and not self.bilateral_transforms:
+    if self.rhs_is_direct_value() and rhs_params and not self.bilateral_transforms:
         rhs_sql = self.get_rhs_op(connection, rhs_sql)
+        rhs_idx = len(lhs_params)
         if is_iregex:
-            params[0] = "(?i)%s" % params[0]
+            params[rhs_idx] = "(?i)%s" % params[rhs_idx]
         else:
-            params[0] = str(params[0])
+            params[rhs_idx] = str(params[rhs_idx])
         # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
         return rhs_sql % lhs_sql, tuple(params)
     else:
@@ -191,15 +194,16 @@ def startswith_endswith(self, compiler, connection):
     is_insensitive = self.lookup_name.startswith("i")
     # Chop the leading (endswith) or trailing (startswith) percent sign that
     # Django adds to the param since this isn't a LIKE query as Django expects.
-    if self.rhs_is_direct_value() and params and not self.bilateral_transforms:
+    if self.rhs_is_direct_value() and rhs_params and not self.bilateral_transforms:
         rhs_sql = self.get_rhs_op(connection, rhs_sql)
+        rhs_idx = len(lhs_params)
         if is_endswith:
-            params[0] = str(params[0][1:]) + "$"
+            params[rhs_idx] = str(params[rhs_idx][1:]) + "$"
         else:
-            params[0] = "^" + str(params[0][:-1])
+            params[rhs_idx] = "^" + str(params[rhs_idx][:-1])
         # Add the case insensitive flag for istartswith or iendswith.
         if is_insensitive:
-            params[0] = "(?i)" + params[0]
+            params[rhs_idx] = "(?i)" + params[rhs_idx]
         # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
         return rhs_sql % lhs_sql, tuple(params)
     else:

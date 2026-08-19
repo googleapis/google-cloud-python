@@ -275,6 +275,11 @@ class TestOperations(SpannerSimpleTestClass):
         self.assertEqual(sql, "THEN RETURN id, name")
         self.assertEqual(params, ())
 
+    def test_returning_columns_with_strings(self):
+        sql, params = self.db_operations.returning_columns(["id", "created_at"])
+        self.assertEqual(sql, "THEN RETURN id, created_at")
+        self.assertEqual(params, ())
+
     def test_returning_columns_empty(self):
         sql, params = self.db_operations.returning_columns([])
         self.assertEqual(sql, "")
