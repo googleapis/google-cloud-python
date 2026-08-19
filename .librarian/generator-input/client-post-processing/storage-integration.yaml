@@ -649,7 +649,7 @@ replacements:
       google-auth==2.26.1
       # cryptography is a direct dependency of google-auth
       cryptography==38.0.0
-      google-api-core==2.27.0
+      google-api-core==2.28.0
       google-cloud-core==2.4.2
       google-resumable-media==2.7.2
       grpcio==1.59.0
