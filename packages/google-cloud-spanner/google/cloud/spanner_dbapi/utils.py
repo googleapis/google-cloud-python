@@ -17,6 +17,41 @@ import re
 re_UNICODE_POINTS = re.compile(r"([^\s]*[\u0080-\uFFFF]+[^\s]*)")
 
 
+class BufferedIterator:
+    """
+    An eager, in-memory iterator that consumes and buffers all rows from a
+    source stream upon instantiation.
+
+    Used when the underlying database transaction is committed and closed before
+    the caller fetches results (e.g. autocommit DML with THEN RETURN / RETURNING).
+    If a row is an instance of list, it is converted to a tuple to conform
+    with DBAPI v2's sequence expectations.
+
+    :type source: iterable
+    :param source: A source iterable/stream of rows.
+    """
+
+    def __init__(self, source):
+        self._rows = [
+            tuple(row) if isinstance(row, list) else row
+            for row in (source or ())
+        ]
+        self._index = 0
+
+    def __next__(self):
+        if self._index >= len(self._rows):
+            raise StopIteration
+        row = self._rows[self._index]
+        self._index += 1
+        return row
+
+    def __iter__(self):
+        return self
+
+    def __len__(self):
+        return len(self._rows)
+
+
 class PeekIterator:
     """
     Peek at the first element out of an iterator for the sake of operations

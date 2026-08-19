@@ -100,3 +100,48 @@ class TestUtils(unittest.TestCase):
                 stream_result._iterators.append(data_in)
                 actual = list(stream_result)
                 self.assertEqual(actual, expected)
+
+    @unittest.skipIf(skip_condition, skip_message)
+    def test_BufferedIterator(self):
+        from google.cloud.spanner_dbapi.utils import BufferedIterator
+
+        cases = [
+            ("list_of_lists", [["a", 1], ["b", 2]], [("a", 1), ("b", 2)]),
+            ("iter_of_lists", iter([["a", 1], ["b", 2]]), [("a", 1), ("b", 2)]),
+            ("list_of_tuples", [("a", 1), ("b", 2)], [("a", 1), ("b", 2)]),
+            ("iter_of_tuples", iter([("a", 1), ("b", 2)]), [("a", 1), ("b", 2)]),
+            ("empty_list", [], []),
+            ("empty_tuple", (), []),
+            ("none_source", None, []),
+        ]
+
+        for name, data_in, expected in cases:
+            with self.subTest(name=name):
+                bitr = BufferedIterator(data_in)
+                self.assertEqual(len(bitr), len(expected))
+                actual = list(bitr)
+                self.assertEqual(actual, expected)
+                with self.assertRaises(StopIteration):
+                    next(bitr)
+
+    @unittest.skipIf(skip_condition, skip_message)
+    def test_BufferedIterator_eagerly_drains_stream(self):
+        from google.cloud.spanner_dbapi.utils import BufferedIterator
+
+        drained = False
+
+        def generator():
+            nonlocal drained
+            yield ["first", 1]
+            yield ["second", 2]
+            drained = True
+
+        bitr = BufferedIterator(generator())
+        # The generator must be completely drained during __init__
+        self.assertTrue(drained)
+        self.assertEqual(len(bitr), 2)
+        self.assertEqual(next(bitr), ("first", 1))
+        self.assertEqual(next(bitr), ("second", 2))
+        with self.assertRaises(StopIteration):
+            next(bitr)
+
