@@ -9,72 +9,97 @@ substitutions:
   _ZONAL_BUCKET: "shradhakatyal-read-bench-zb-us-west4-a"
 
 steps:
-  # Step 0: Generate a persistent SSH key for this build run.
+  # Step 0: Package code and upload archive to Cloud Build storage bucket
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
-    id: "generate-ssh-key"
+    id: "package-and-upload-source"
     entrypoint: "bash"
     args:
       - "-c"
       - |
-        mkdir -p /workspace/.ssh
-        ssh-keygen -t rsa -f /workspace/.ssh/google_compute_engine -N '' -C gcb
-        cat /workspace/.ssh/google_compute_engine.pub > /workspace/gcb_ssh_key.pub
-        gcloud compute os-login ssh-keys add \
-          --key-file=/workspace/.ssh/google_compute_engine.pub \
-          --ttl=1h
-    waitFor: ["-"]
+        tar --exclude='.nox' --exclude='venv_*' --exclude='.pytest_cache' --exclude='__pycache__' --exclude='.git' \
+          -czf /workspace/source.tar.gz -C /workspace/packages google-cloud-storage
+        gcloud storage cp /workspace/source.tar.gz "gs://${PROJECT_ID}_cloudbuild/build_source/source_${BUILD_ID}.tar.gz"
 
-  # Step 1: Package google-cloud-storage directory for direct transfer to VM
+  # Step 1: Set startup-script metadata on the standing VM and trigger reset
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
-    id: "package-code"
+    id: "trigger-vm-benchmark"
     entrypoint: "bash"
     args:
       - "-c"
       - |
-        tar --exclude='.nox' --exclude='venv_*' --exclude='.pytest_cache' --exclude='__pycache__' --exclude='.git' -czf /workspace/google-cloud-storage.tar.gz -C /workspace/packages google-cloud-storage
-    waitFor: ["-"]
+        cat << 'EOF' > /workspace/startup.sh
+        #!/bin/bash
+        set -x
+        echo "=== [Cloud Build] Starting GCS Read Benchmark on Standing VM ==="
+        cd /root
 
-  # Step 2: Run the read microbenchmark suite inside the standing GCE VM via SSH.
+        # Download and extract source archive from Cloud Build bucket
+        rm -rf /root/google-cloud-storage /root/source.tar.gz
+        gcloud storage cp "gs://${PROJECT_ID}_cloudbuild/build_source/source_${BUILD_ID}.tar.gz" /root/source.tar.gz
+        tar -xzf /root/source.tar.gz
+        cd google-cloud-storage
+
+        # Run benchmark runner script
+        ulimit -n ${_ULIMIT}
+        PROCESSES=${_PROCESSES} COROS=${_COROS} FILE_SIZE_MIB=${_FILE_SIZE_MIB} CHUNK_SIZE_KIB=${_CHUNK_SIZE_KIB} \
+          TARGET_BUCKET=${_ZONAL_BUCKET} \
+          bash cloudbuild/run_benchmark_tests.sh
+
+        echo "=== [Cloud Build] Benchmark Complete ==="
+        EOF
+
+        # Attach startup script to the standing VM
+        gcloud compute instances add-metadata "${_VM_NAME}" \
+          --zone="${_ZONE}" \
+          --metadata-from-file="startup-script=/workspace/startup.sh"
+
+        # Trigger run by resetting the VM
+        gcloud compute instances reset "${_VM_NAME}" --zone="${_ZONE}"
+    waitFor:
+      - "package-and-upload-source"
+
+  # Step 2: Stream VM serial port console output until benchmark completes
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
-    id: "run-tests-on-vm"
+    id: "monitor-benchmark-execution"
     entrypoint: "bash"
     args:
       - "-c"
       - |
-        set -e
-        # Verify SSH connectivity to existing standing VM
-        for i in {1..6}; do
-          if gcloud compute ssh "${_VM_NAME}" --zone=${_ZONE} --internal-ip --ssh-key-file=/workspace/.ssh/google_compute_engine --command="echo VM is ready"; then
-            break
+        echo "Streaming logs from VM ${_VM_NAME}..."
+        START=0
+        for i in {1..90}; do
+          OUTPUT=$(gcloud compute instances get-serial-port-output "${_VM_NAME}" --zone="${_ZONE}" --start="${START}" 2>/dev/null || true)
+          if [ -n "$OUTPUT" ]; then
+            echo "$OUTPUT"
+            NEXT_START=$(echo "$OUTPUT" | grep -o 'Specify --start=[0-9]*' | tail -n 1 | cut -d'=' -f2 || true)
+            if [ -n "$NEXT_START" ]; then
+              START="$NEXT_START"
+            fi
+            if echo "$OUTPUT" | grep -q "=== \[Cloud Build\] Benchmark Complete ==="; then
+              echo "Benchmark run finished successfully!"
+              exit 0
+            fi
           fi
-          echo "Waiting for VM connectivity... (attempt $i/6)"
           sleep 10
         done
-
-        # Copy runner script and tarball to the standing VM
-        gcloud compute scp packages/google-cloud-storage/cloudbuild/run_benchmark_tests.sh /workspace/google-cloud-storage.tar.gz "${_VM_NAME}":~ --zone=${_ZONE} --internal-ip --ssh-key-file=/workspace/.ssh/google_compute_engine
-
-        # Execute run_benchmark_tests.sh on the VM via SSH
-        gcloud compute ssh "${_VM_NAME}" --zone=${_ZONE} --internal-ip --ssh-key-file=/workspace/.ssh/google_compute_engine \
-          --command="ulimit -n ${_ULIMIT}; tar -xzf google-cloud-storage.tar.gz && cp run_benchmark_tests.sh google-cloud-storage/ && cd google-cloud-storage && PROCESSES=${_PROCESSES} COROS=${_COROS} FILE_SIZE_MIB=${_FILE_SIZE_MIB} CHUNK_SIZE_KIB=${_CHUNK_SIZE_KIB} TARGET_BUCKET=${_ZONAL_BUCKET} bash run_benchmark_tests.sh"
+        echo "Timeout waiting for benchmark completion on VM"
+        exit 1
     waitFor:
-      - "generate-ssh-key"
-      - "package-code"
+      - "trigger-vm-benchmark"
 
-  # Step 3: Cleanup temporary OS Login SSH key
+  # Step 3: Cleanup startup script metadata and temporary build source archive
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
-    id: "cleanup-ssh-key"
+    id: "cleanup-metadata"
     entrypoint: "bash"
     args:
       - "-c"
       - |
-        echo "--- Removing SSH key from OS Login profile ---"
-        gcloud compute os-login ssh-keys remove \
-          --key-file=/workspace/gcb_ssh_key.pub || true
+        gcloud compute instances remove-metadata "${_VM_NAME}" --zone="${_ZONE}" --keys=startup-script || true
+        gcloud storage rm "gs://${PROJECT_ID}_cloudbuild/build_source/source_${BUILD_ID}.tar.gz" || true
     waitFor:
-      - "run-tests-on-vm"
+      - "monitor-benchmark-execution"
 
-timeout: "3600s" # 60 minutes
+timeout: "3600s"
 
 options:
   logging: CLOUD_LOGGING_ONLY
