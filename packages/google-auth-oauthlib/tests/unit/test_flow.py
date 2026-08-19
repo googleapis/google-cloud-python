@@ -20,6 +20,7 @@ import logging
 import os
 import re
 import socket
+import time
 from unittest import mock
 import urllib
 import webbrowser
@@ -448,6 +449,47 @@ class TestInstalledAppFlow(object):
         with pytest.raises(OSError) as exc:
             instance.run_local_server(port=port)
             assert "address already in use" in exc.strerror.lower()
+
+    @pytest.mark.webtest
+    @mock.patch("google_auth_oauthlib.flow.webbrowser", autospec=True)
+    def test_run_local_server_exclusive_port_binding(
+        self, webbrowser_mock, instance, mock_fetch_token, port
+    ):
+        """Verify that while run_local_server is active, no other process or socket can bind to the port."""
+        auth_redirect_url = urllib.parse.urljoin(
+            f"http://localhost:{port}", self.REDIRECT_REQUEST_PATH
+        )
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
+            future = pool.submit(partial(instance.run_local_server, port=port))
+
+            # Wait until the server is listening
+            server_listening = False
+            for _ in range(50):
+                try:
+                    probe = socket.create_connection(("localhost", port), timeout=0.1)
+                    probe.close()
+                    server_listening = True
+                    break
+                except OSError:
+                    time.sleep(0.05)
+
+            assert server_listening, "OAuth server failed to start and listen"
+
+            # Attempt to bind a second socket with SO_REUSEADDR to the same port
+            hijack_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            hijack_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+            try:
+                with pytest.raises(OSError):
+                    hijack_socket.bind(("localhost", port))
+            finally:
+                hijack_socket.close()
+
+            # Complete the auth flow so the server thread finishes cleanly
+            requests.get(auth_redirect_url)
+            credentials = future.result()
+            assert credentials.token == mock.sentinel.access_token
 
     @mock.patch("google_auth_oauthlib.flow.webbrowser.get", autospec=True)
     @mock.patch("wsgiref.simple_server.make_server", autospec=True)
