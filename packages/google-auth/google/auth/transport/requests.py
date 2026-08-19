@@ -19,8 +19,8 @@ from __future__ import absolute_import
 import functools
 import http.client as http_client
 import logging
-import threading
 import numbers
+import threading
 import time
 from typing import Optional
 
