@@ -840,6 +840,20 @@ class SupportEventSubscriptionServiceClient(
         Returns:
             google.cloud.support_v2.types.SupportEventSubscription:
                 A support event subscription.
+
+                   You can also manage support event subscriptions using
+                   other tools:
+
+                   \* [gcloud support
+                   support-event-subscriptions](/sdk/gcloud/reference/support/support-event-subscriptions)
+                   (or [gcloud
+                   beta](/sdk/gcloud/reference/beta/support/support-event-subscriptions)
+                   for beta) \* [Terraform
+                   google_cloud_support_support_event_subscription](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription)
+                   (or [google-beta
+                   provider](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription)
+                   for beta)
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -961,6 +975,20 @@ class SupportEventSubscriptionServiceClient(
         Returns:
             google.cloud.support_v2.types.SupportEventSubscription:
                 A support event subscription.
+
+                   You can also manage support event subscriptions using
+                   other tools:
+
+                   \* [gcloud support
+                   support-event-subscriptions](/sdk/gcloud/reference/support/support-event-subscriptions)
+                   (or [gcloud
+                   beta](/sdk/gcloud/reference/beta/support/support-event-subscriptions)
+                   for beta) \* [Terraform
+                   google_cloud_support_support_event_subscription](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription)
+                   (or [google-beta
+                   provider](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription)
+                   for beta)
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1234,6 +1262,20 @@ class SupportEventSubscriptionServiceClient(
         Returns:
             google.cloud.support_v2.types.SupportEventSubscription:
                 A support event subscription.
+
+                   You can also manage support event subscriptions using
+                   other tools:
+
+                   \* [gcloud support
+                   support-event-subscriptions](/sdk/gcloud/reference/support/support-event-subscriptions)
+                   (or [gcloud
+                   beta](/sdk/gcloud/reference/beta/support/support-event-subscriptions)
+                   for beta) \* [Terraform
+                   google_cloud_support_support_event_subscription](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription)
+                   (or [google-beta
+                   provider](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription)
+                   for beta)
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1362,6 +1404,20 @@ class SupportEventSubscriptionServiceClient(
         Returns:
             google.cloud.support_v2.types.SupportEventSubscription:
                 A support event subscription.
+
+                   You can also manage support event subscriptions using
+                   other tools:
+
+                   \* [gcloud support
+                   support-event-subscriptions](/sdk/gcloud/reference/support/support-event-subscriptions)
+                   (or [gcloud
+                   beta](/sdk/gcloud/reference/beta/support/support-event-subscriptions)
+                   for beta) \* [Terraform
+                   google_cloud_support_support_event_subscription](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription)
+                   (or [google-beta
+                   provider](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription)
+                   for beta)
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1472,6 +1528,20 @@ class SupportEventSubscriptionServiceClient(
         Returns:
             google.cloud.support_v2.types.SupportEventSubscription:
                 A support event subscription.
+
+                   You can also manage support event subscriptions using
+                   other tools:
+
+                   \* [gcloud support
+                   support-event-subscriptions](/sdk/gcloud/reference/support/support-event-subscriptions)
+                   (or [gcloud
+                   beta](/sdk/gcloud/reference/beta/support/support-event-subscriptions)
+                   for beta) \* [Terraform
+                   google_cloud_support_support_event_subscription](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription)
+                   (or [google-beta
+                   provider](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription)
+                   for beta)
+
         """
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as

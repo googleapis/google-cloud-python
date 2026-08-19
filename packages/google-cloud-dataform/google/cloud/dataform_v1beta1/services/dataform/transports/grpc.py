@@ -1305,6 +1305,146 @@ class DataformGrpcTransport(DataformTransport):
         return self._stubs["pull_git_commits"]
 
     @property
+    def sync_workspace_refs(
+        self,
+    ) -> Callable[
+        [dataform.SyncWorkspaceRefsRequest], dataform.SyncWorkspaceRefsResponse
+    ]:
+        r"""Return a callable for the sync workspace refs method over gRPC.
+
+        Syncs the refs of a Workspace.
+
+        Returns:
+            Callable[[~.SyncWorkspaceRefsRequest],
+                    ~.SyncWorkspaceRefsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "sync_workspace_refs" not in self._stubs:
+            self._stubs["sync_workspace_refs"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/SyncWorkspaceRefs",
+                request_serializer=dataform.SyncWorkspaceRefsRequest.serialize,
+                response_deserializer=dataform.SyncWorkspaceRefsResponse.deserialize,
+            )
+        return self._stubs["sync_workspace_refs"]
+
+    @property
+    def fetch_workspace_branches(
+        self,
+    ) -> Callable[
+        [dataform.FetchWorkspaceBranchesRequest],
+        dataform.FetchWorkspaceBranchesResponse,
+    ]:
+        r"""Return a callable for the fetch workspace branches method over gRPC.
+
+        Fetches branches in a Workspace.
+
+        Returns:
+            Callable[[~.FetchWorkspaceBranchesRequest],
+                    ~.FetchWorkspaceBranchesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_workspace_branches" not in self._stubs:
+            self._stubs["fetch_workspace_branches"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/FetchWorkspaceBranches",
+                request_serializer=dataform.FetchWorkspaceBranchesRequest.serialize,
+                response_deserializer=dataform.FetchWorkspaceBranchesResponse.deserialize,
+            )
+        return self._stubs["fetch_workspace_branches"]
+
+    @property
+    def delete_branch(
+        self,
+    ) -> Callable[[dataform.DeleteBranchRequest], dataform.DeleteBranchResponse]:
+        r"""Return a callable for the delete branch method over gRPC.
+
+        Deletes a branch in a Workspace.
+
+        Returns:
+            Callable[[~.DeleteBranchRequest],
+                    ~.DeleteBranchResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_branch" not in self._stubs:
+            self._stubs["delete_branch"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/DeleteBranch",
+                request_serializer=dataform.DeleteBranchRequest.serialize,
+                response_deserializer=dataform.DeleteBranchResponse.deserialize,
+            )
+        return self._stubs["delete_branch"]
+
+    @property
+    def checkout_workspace_branch(
+        self,
+    ) -> Callable[[dataform.CheckoutWorkspaceBranchRequest], empty_pb2.Empty]:
+        r"""Return a callable for the checkout workspace branch method over gRPC.
+
+        Checkout a branch in a Workspace.
+
+        Returns:
+            Callable[[~.CheckoutWorkspaceBranchRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "checkout_workspace_branch" not in self._stubs:
+            self._stubs["checkout_workspace_branch"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/CheckoutWorkspaceBranch",
+                request_serializer=dataform.CheckoutWorkspaceBranchRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["checkout_workspace_branch"]
+
+    @property
+    def fetch_current_workspace_branch(
+        self,
+    ) -> Callable[
+        [dataform.FetchCurrentWorkspaceBranchRequest],
+        dataform.FetchCurrentWorkspaceBranchResponse,
+    ]:
+        r"""Return a callable for the fetch current workspace branch method over gRPC.
+
+        Fetches the current branch of a Workspace.
+
+        Returns:
+            Callable[[~.FetchCurrentWorkspaceBranchRequest],
+                    ~.FetchCurrentWorkspaceBranchResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_current_workspace_branch" not in self._stubs:
+            self._stubs["fetch_current_workspace_branch"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dataform.v1beta1.Dataform/FetchCurrentWorkspaceBranch",
+                    request_serializer=dataform.FetchCurrentWorkspaceBranchRequest.serialize,
+                    response_deserializer=dataform.FetchCurrentWorkspaceBranchResponse.deserialize,
+                )
+            )
+        return self._stubs["fetch_current_workspace_branch"]
+
+    @property
     def push_git_commits(
         self,
     ) -> Callable[[dataform.PushGitCommitsRequest], dataform.PushGitCommitsResponse]:

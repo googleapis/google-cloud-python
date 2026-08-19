@@ -76,6 +76,7 @@ from google.apps.chat_v1.types import (
     event_payload,
     group,
     history_state,
+    markup_syntax,
     matched_url,
     membership,
     message,
@@ -1336,6 +1337,9 @@ def test_chat_service_client_create_channel_credentials_file(
                 "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
                 "https://www.googleapis.com/auth/chat.admin.spaces",
                 "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.memberships.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.messages.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.spaces.readonly",
                 "https://www.googleapis.com/auth/chat.app.delete",
                 "https://www.googleapis.com/auth/chat.app.memberships",
                 "https://www.googleapis.com/auth/chat.app.memberships.readonly",
@@ -1407,6 +1411,7 @@ def test_create_message(request_type, transport: str = "grpc"):
             thread_reply=True,
             silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
+            markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
         )
         response = client.create_message(request)
 
@@ -1426,6 +1431,7 @@ def test_create_message(request_type, transport: str = "grpc"):
     assert response.thread_reply is True
     assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
+    assert response.markup_syntax == markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT
 
 
 def test_create_message_non_empty_request_with_auto_populated_field():
@@ -1571,6 +1577,7 @@ async def test_create_message_async(request_type, transport: str = "grpc_asyncio
                 thread_reply=True,
                 silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
+                markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
             )
         )
         response = await client.create_message(request)
@@ -1591,6 +1598,7 @@ async def test_create_message_async(request_type, transport: str = "grpc_asyncio
     assert response.thread_reply is True
     assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
+    assert response.markup_syntax == markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT
 
 
 def test_create_message_field_headers():
@@ -3167,6 +3175,7 @@ def test_get_message(request_type, transport: str = "grpc"):
             thread_reply=True,
             silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
+            markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
         )
         response = client.get_message(request)
 
@@ -3186,6 +3195,7 @@ def test_get_message(request_type, transport: str = "grpc"):
     assert response.thread_reply is True
     assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
+    assert response.markup_syntax == markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT
 
 
 def test_get_message_non_empty_request_with_auto_populated_field():
@@ -3325,6 +3335,7 @@ async def test_get_message_async(request_type, transport: str = "grpc_asyncio"):
                 thread_reply=True,
                 silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
+                markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
             )
         )
         response = await client.get_message(request)
@@ -3345,6 +3356,7 @@ async def test_get_message_async(request_type, transport: str = "grpc_asyncio"):
     assert response.thread_reply is True
     assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
+    assert response.markup_syntax == markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT
 
 
 def test_get_message_field_headers():
@@ -3515,6 +3527,7 @@ def test_update_message(request_type, transport: str = "grpc"):
             thread_reply=True,
             silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
+            markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
         )
         response = client.update_message(request)
 
@@ -3534,6 +3547,7 @@ def test_update_message(request_type, transport: str = "grpc"):
     assert response.thread_reply is True
     assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
+    assert response.markup_syntax == markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT
 
 
 def test_update_message_non_empty_request_with_auto_populated_field():
@@ -3669,6 +3683,7 @@ async def test_update_message_async(request_type, transport: str = "grpc_asyncio
                 thread_reply=True,
                 silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
+                markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
             )
         )
         response = await client.update_message(request)
@@ -3689,6 +3704,7 @@ async def test_update_message_async(request_type, transport: str = "grpc_asyncio
     assert response.thread_reply is True
     assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
+    assert response.markup_syntax == markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT
 
 
 def test_update_message_field_headers():
@@ -19146,6 +19162,7 @@ def test_list_messages_rest_required_fields(request_type=message.ListMessagesReq
     assert not set(unset_fields) - set(
         (
             "filter",
+            "markup_syntax",
             "order_by",
             "page_size",
             "page_token",
@@ -19210,6 +19227,7 @@ def test_list_messages_rest_unset_required_fields():
         set(
             (
                 "filter",
+                "markupSyntax",
                 "orderBy",
                 "pageSize",
                 "pageToken",
@@ -19846,6 +19864,8 @@ def test_get_message_rest_required_fields(request_type=message.GetMessageRequest
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).get_message._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("markup_syntax",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -19900,7 +19920,7 @@ def test_get_message_rest_unset_required_fields():
     )
 
     unset_fields = transport.get_message._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
+    assert set(unset_fields) == (set(("markupSyntax",)) & set(("name",)))
 
 
 def test_get_message_rest_flattened():
@@ -28888,6 +28908,7 @@ async def test_create_message_empty_call_grpc_asyncio():
                 thread_reply=True,
                 silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
+                markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
             )
         )
         await client.create_message(request=None)
@@ -29002,6 +29023,7 @@ async def test_get_message_empty_call_grpc_asyncio():
                 thread_reply=True,
                 silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
+                markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
             )
         )
         await client.get_message(request=None)
@@ -29035,6 +29057,7 @@ async def test_update_message_empty_call_grpc_asyncio():
                 thread_reply=True,
                 silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
+                markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
             )
         )
         await client.update_message(request=None)
@@ -30808,6 +30831,7 @@ def test_create_message_rest_call_success(request_type):
         },
         "attached_gifs": [{"uri": "uri_value"}],
         "accessory_widgets": [{"button_list": {}}],
+        "markup_syntax": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -30890,6 +30914,7 @@ def test_create_message_rest_call_success(request_type):
             thread_reply=True,
             silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
+            markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
         )
 
         # Wrap the value into a proper Response obj
@@ -30914,6 +30939,7 @@ def test_create_message_rest_call_success(request_type):
     assert response.thread_reply is True
     assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
+    assert response.markup_syntax == markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -31426,6 +31452,7 @@ def test_get_message_rest_call_success(request_type):
             thread_reply=True,
             silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
+            markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
         )
 
         # Wrap the value into a proper Response obj
@@ -31450,6 +31477,7 @@ def test_get_message_rest_call_success(request_type):
     assert response.thread_reply is True
     assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
+    assert response.markup_syntax == markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -32042,6 +32070,7 @@ def test_update_message_rest_call_success(request_type):
         },
         "attached_gifs": [{"uri": "uri_value"}],
         "accessory_widgets": [{"button_list": {}}],
+        "markup_syntax": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -32124,6 +32153,7 @@ def test_update_message_rest_call_success(request_type):
             thread_reply=True,
             silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
+            markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
         )
 
         # Wrap the value into a proper Response obj
@@ -32148,6 +32178,7 @@ def test_update_message_rest_call_success(request_type):
     assert response.thread_reply is True
     assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
+    assert response.markup_syntax == markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -39983,6 +40014,9 @@ def test_chat_service_base_transport_with_credentials_file():
                 "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
                 "https://www.googleapis.com/auth/chat.admin.spaces",
                 "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.memberships.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.messages.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.spaces.readonly",
                 "https://www.googleapis.com/auth/chat.app.delete",
                 "https://www.googleapis.com/auth/chat.app.memberships",
                 "https://www.googleapis.com/auth/chat.app.memberships.readonly",
@@ -40046,6 +40080,9 @@ def test_chat_service_auth_adc():
                 "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
                 "https://www.googleapis.com/auth/chat.admin.spaces",
                 "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.memberships.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.messages.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.spaces.readonly",
                 "https://www.googleapis.com/auth/chat.app.delete",
                 "https://www.googleapis.com/auth/chat.app.memberships",
                 "https://www.googleapis.com/auth/chat.app.memberships.readonly",
@@ -40103,6 +40140,9 @@ def test_chat_service_transport_auth_adc(transport_class):
                 "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
                 "https://www.googleapis.com/auth/chat.admin.spaces",
                 "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.memberships.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.messages.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.spaces.readonly",
                 "https://www.googleapis.com/auth/chat.app.delete",
                 "https://www.googleapis.com/auth/chat.app.memberships",
                 "https://www.googleapis.com/auth/chat.app.memberships.readonly",
@@ -40193,6 +40233,9 @@ def test_chat_service_transport_create_channel(transport_class, grpc_helpers):
                 "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
                 "https://www.googleapis.com/auth/chat.admin.spaces",
                 "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.memberships.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.messages.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.spaces.readonly",
                 "https://www.googleapis.com/auth/chat.app.delete",
                 "https://www.googleapis.com/auth/chat.app.memberships",
                 "https://www.googleapis.com/auth/chat.app.memberships.readonly",

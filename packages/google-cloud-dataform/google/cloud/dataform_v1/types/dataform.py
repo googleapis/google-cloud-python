@@ -2666,6 +2666,8 @@ class CompilationResult(proto.Message):
 class CodeCompilationConfig(proto.Message):
     r"""Configures various aspects of Dataform code compilation.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         default_database (str):
             Optional. The default database (Google Cloud
@@ -2705,6 +2707,12 @@ class CodeCompilationConfig(proto.Message):
             Optional. The pipeline options which defines
             the pipeline type and path within the Git
             repository.
+        lineage_enabled (bool):
+            Output only. Whether OpenLineage events are emitted for
+            actions in this workflow. Reflects the ``lineage.enabled``
+            setting from ``workflow_settings.yaml``.
+
+            This field is a member of `oneof`_ ``_lineage_enabled``.
     """
 
     default_database: str = proto.Field(
@@ -2753,6 +2761,11 @@ class CodeCompilationConfig(proto.Message):
         proto.MESSAGE,
         number=12,
         message="PipelineConfig",
+    )
+    lineage_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=14,
+        optional=True,
     )
 
 

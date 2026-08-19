@@ -42,8 +42,13 @@ class HealthProfileServiceTransport(abc.ABC):
         "https://www.googleapis.com/auth/googlehealth.ecg.readonly",
         "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.readonly",
         "https://www.googleapis.com/auth/googlehealth.irn.readonly",
+        "https://www.googleapis.com/auth/googlehealth.logged_symptoms.readonly",
+        "https://www.googleapis.com/auth/googlehealth.mindfulness.readonly",
         "https://www.googleapis.com/auth/googlehealth.profile.readonly",
+        "https://www.googleapis.com/auth/googlehealth.profile.writeonly",
+        "https://www.googleapis.com/auth/googlehealth.reproductive_health.readonly",
         "https://www.googleapis.com/auth/googlehealth.settings.readonly",
+        "https://www.googleapis.com/auth/googlehealth.settings.writeonly",
         "https://www.googleapis.com/auth/googlehealth.sleep.readonly",
     )
 

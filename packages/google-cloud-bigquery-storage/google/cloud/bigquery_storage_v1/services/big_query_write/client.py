@@ -974,7 +974,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
                 within the same connection for the default stream.
 
                 The size of a single AppendRowsRequest must be less than
-                10 MB in size. Requests larger than this return an
+                20 MB in size. Requests larger than this return an
                 error, typically ``INVALID_ARGUMENT``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.

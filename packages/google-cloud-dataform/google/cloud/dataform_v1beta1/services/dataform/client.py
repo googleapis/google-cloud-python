@@ -4868,6 +4868,426 @@ class DataformClient(metaclass=DataformClientMeta):
         # Done; return the response.
         return response
 
+    def sync_workspace_refs(
+        self,
+        request: Optional[Union[dataform.SyncWorkspaceRefsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> dataform.SyncWorkspaceRefsResponse:
+        r"""Syncs the refs of a Workspace.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            def sample_sync_workspace_refs():
+                # Create a client
+                client = dataform_v1beta1.DataformClient()
+
+                # Initialize request argument(s)
+                request = dataform_v1beta1.SyncWorkspaceRefsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.sync_workspace_refs(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataform_v1beta1.types.SyncWorkspaceRefsRequest, dict]):
+                The request object. ``SyncWorkspaceRefs`` request message.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataform_v1beta1.types.SyncWorkspaceRefsResponse:
+                SyncWorkspaceRefs response message.
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.SyncWorkspaceRefsRequest):
+            request = dataform.SyncWorkspaceRefsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.sync_workspace_refs]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def fetch_workspace_branches(
+        self,
+        request: Optional[Union[dataform.FetchWorkspaceBranchesRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.FetchWorkspaceBranchesPager:
+        r"""Fetches branches in a Workspace.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            def sample_fetch_workspace_branches():
+                # Create a client
+                client = dataform_v1beta1.DataformClient()
+
+                # Initialize request argument(s)
+                request = dataform_v1beta1.FetchWorkspaceBranchesRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                page_result = client.fetch_workspace_branches(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.dataform_v1beta1.types.FetchWorkspaceBranchesRequest, dict]):
+                The request object. Request message for ``FetchWorkspaceBranches`` method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataform_v1beta1.services.dataform.pagers.FetchWorkspaceBranchesPager:
+                Response message for FetchWorkspaceBranches method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.FetchWorkspaceBranchesRequest):
+            request = dataform.FetchWorkspaceBranchesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.fetch_workspace_branches]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.FetchWorkspaceBranchesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_branch(
+        self,
+        request: Optional[Union[dataform.DeleteBranchRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> dataform.DeleteBranchResponse:
+        r"""Deletes a branch in a Workspace.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            def sample_delete_branch():
+                # Create a client
+                client = dataform_v1beta1.DataformClient()
+
+                # Initialize request argument(s)
+                request = dataform_v1beta1.DeleteBranchRequest(
+                    name="name_value",
+                    branch="branch_value",
+                )
+
+                # Make the request
+                response = client.delete_branch(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataform_v1beta1.types.DeleteBranchRequest, dict]):
+                The request object. ``DeleteBranch`` request message.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataform_v1beta1.types.DeleteBranchResponse:
+                DeleteBranch response message.
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.DeleteBranchRequest):
+            request = dataform.DeleteBranchRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_branch]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def checkout_workspace_branch(
+        self,
+        request: Optional[Union[dataform.CheckoutWorkspaceBranchRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
+        r"""Checkout a branch in a Workspace.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            def sample_checkout_workspace_branch():
+                # Create a client
+                client = dataform_v1beta1.DataformClient()
+
+                # Initialize request argument(s)
+                request = dataform_v1beta1.CheckoutWorkspaceBranchRequest(
+                    name="name_value",
+                    branch="branch_value",
+                )
+
+                # Make the request
+                client.checkout_workspace_branch(request=request)
+
+        Args:
+            request (Union[google.cloud.dataform_v1beta1.types.CheckoutWorkspaceBranchRequest, dict]):
+                The request object. ``CheckoutWorkspaceBranch`` request message.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.CheckoutWorkspaceBranchRequest):
+            request = dataform.CheckoutWorkspaceBranchRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.checkout_workspace_branch
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def fetch_current_workspace_branch(
+        self,
+        request: Optional[
+            Union[dataform.FetchCurrentWorkspaceBranchRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> dataform.FetchCurrentWorkspaceBranchResponse:
+        r"""Fetches the current branch of a Workspace.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dataform_v1beta1
+
+            def sample_fetch_current_workspace_branch():
+                # Create a client
+                client = dataform_v1beta1.DataformClient()
+
+                # Initialize request argument(s)
+                request = dataform_v1beta1.FetchCurrentWorkspaceBranchRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.fetch_current_workspace_branch(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dataform_v1beta1.types.FetchCurrentWorkspaceBranchRequest, dict]):
+                The request object. Request message for ``FetchCurrentWorkspaceBranch``
+                method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.dataform_v1beta1.types.FetchCurrentWorkspaceBranchResponse:
+                Response message for FetchCurrentWorkspaceBranch method.
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, dataform.FetchCurrentWorkspaceBranchRequest):
+            request = dataform.FetchCurrentWorkspaceBranchRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.fetch_current_workspace_branch
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def push_git_commits(
         self,
         request: Optional[Union[dataform.PushGitCommitsRequest, dict]] = None,

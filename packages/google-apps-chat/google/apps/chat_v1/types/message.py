@@ -32,6 +32,7 @@ from google.apps.chat_v1.types import (
 )
 from google.apps.chat_v1.types import attachment as gc_attachment
 from google.apps.chat_v1.types import deletion_metadata as gc_deletion_metadata
+from google.apps.chat_v1.types import markup_syntax as gc_markup_syntax
 from google.apps.chat_v1.types import matched_url as gc_matched_url
 from google.apps.chat_v1.types import slash_command as gc_slash_command
 from google.apps.chat_v1.types import space as gc_space
@@ -161,10 +162,15 @@ class Message(proto.Message):
             Optional. An array of
             `cards <https://developers.google.com/workspace/chat/api/reference/rest/v1/cards>`__.
 
-            Only Chat apps can create cards. If your Chat app
-            `authenticates as a
+            Chat apps can create cards with `app
+            authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__.
+            As part of the `Developer Preview
+            Program <https://developers.google.com/workspace/preview>`__,
+            if your Chat app `authenticates as a
             user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
-            the messages can't contain cards.
+            it can create card messages. If your Chat app is not part of
+            Developer Preview Program, it can't create cards with user
+            authentication.
 
             To learn how to create a message that contains cards, see
             `Send a
@@ -274,6 +280,9 @@ class Message(proto.Message):
             Creating a message with accessory widgets requires [app
             authentication]
             (https://developers.google.com/workspace/chat/authenticate-authorize-chat-app).
+        markup_syntax (google.apps.chat_v1.types.MarkupSyntax):
+            Optional. Specifies how the server interprets the message
+            ``text`` field content.
     """
 
     name: str = proto.Field(
@@ -406,6 +415,11 @@ class Message(proto.Message):
         proto.MESSAGE,
         number=44,
         message="AccessoryWidget",
+    )
+    markup_syntax: gc_markup_syntax.MarkupSyntax = proto.Field(
+        proto.ENUM,
+        number=47,
+        enum=gc_markup_syntax.MarkupSyntax,
     )
 
 
@@ -785,11 +799,19 @@ class GetMessageRequest(proto.Message):
             value from the ``clientAssignedMessageId`` field for
             ``{message}``. For details, see [Name a message]
             (https://developers.google.com/workspace/chat/create-messages#name_a_created_message).
+        markup_syntax (google.apps.chat_v1.types.MarkupSyntax):
+            Optional. Specifies the desired output syntax for the Chat
+            message ``formatted_text`` field.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    markup_syntax: gc_markup_syntax.MarkupSyntax = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=gc_markup_syntax.MarkupSyntax,
     )
 
 
@@ -1135,6 +1157,9 @@ class ListMessagesRequest(proto.Message):
             messages. Deleted messages include deleted time
             and metadata about their deletion, but message
             content is unavailable.
+        markup_syntax (google.apps.chat_v1.types.MarkupSyntax):
+            Optional. Specifies the desired output syntax for the Chat
+            message ``formatted_text`` field.
     """
 
     parent: str = proto.Field(
@@ -1160,6 +1185,11 @@ class ListMessagesRequest(proto.Message):
     show_deleted: bool = proto.Field(
         proto.BOOL,
         number=6,
+    )
+    markup_syntax: gc_markup_syntax.MarkupSyntax = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=gc_markup_syntax.MarkupSyntax,
     )
 
 
@@ -1247,10 +1277,18 @@ class CardWithId(proto.Message):
     `card <https://developers.google.com/workspace/chat/api/reference/rest/v1/cards>`__
     in a Google Chat message.
 
-    Only Chat apps can create cards. If your Chat app `authenticates as
-    a
+    Chat apps can create cards with `app
+    authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__.
+    As part of the `Developer Preview
+    Program <https://developers.google.com/workspace/preview>`__, if
+    your Chat app `authenticates as a
     user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
-    the message can't contain cards.
+    it can create card messages. If your Chat app is not part of
+    Developer Preview Program, it can't create cards with user
+    authentication.
+
+    To learn how to create a message that contains cards, see `Send a
+    message <https://developers.google.com/workspace/chat/create-messages>`__.
 
     `Card builder <https://addons.gsuite.google.com/uikit/builder>`__
 
@@ -1460,6 +1498,9 @@ class SearchMessagesRequest(proto.Message):
             order per query (``create_time`` or ``relevance``) is
             supported. Only descending order (``desc``) is supported,
             and it must be specified after the order attribute.
+        markup_syntax (google.apps.chat_v1.types.MarkupSyntax):
+            Optional. Specifies the desired output syntax for the Chat
+            message ``formatted_text`` field.
         view (google.apps.chat_v1.types.SearchMessagesRequest.SearchMessagesView):
             Optional. Specifies what kind of search results view to
             return. The default is ``SEARCH_MESSAGES_VIEW_BASIC``.
@@ -1505,6 +1546,11 @@ class SearchMessagesRequest(proto.Message):
     order_by: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    markup_syntax: gc_markup_syntax.MarkupSyntax = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=gc_markup_syntax.MarkupSyntax,
     )
     view: SearchMessagesView = proto.Field(
         proto.ENUM,
