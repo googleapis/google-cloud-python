@@ -17,7 +17,6 @@ import os
 import socket
 import uuid
 
-from google.cloud.bigtable.gapic_version import __version__ as bigtable_version
 from google.cloud.bigtable.data._metrics.data_model import (
     DEFAULT_CLUSTER_ID,
     DEFAULT_ZONE,
@@ -27,6 +26,7 @@ from google.cloud.bigtable.data._metrics.data_model import (
     OperationType,
 )
 from google.cloud.bigtable.data._metrics.handlers._base import MetricsHandler
+from google.cloud.bigtable.gapic_version import __version__ as bigtable_version
 
 # conversion factor for converting from nanoseconds to milliseconds
 NS_TO_MS = 1e6
