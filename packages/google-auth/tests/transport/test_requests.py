@@ -32,7 +32,6 @@ import google.auth.transport._mtls_helper
 import google.auth.transport.requests
 from google.oauth2 import service_account
 from tests.transport import compliance
-import http.client as http_client
 
 
 @pytest.fixture
@@ -1137,7 +1136,7 @@ class TestAuthorizedSessionMTLSReauth:
         session.configure_mtls_channel = mock.Mock()
         
         try:
-            session.request("GET", "https://example.mtls.googleapis.com/some/endpoint")
+            session.request("GET", "https://example.mtls.googleapis.com")
         except Exception:
             pass
             
