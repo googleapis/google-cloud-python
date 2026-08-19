@@ -94,9 +94,9 @@ def delete_stale_test_databases():
     for database_pb in database_pbs:
         database = Database.from_pb(database_pb, instance)
 
-        # Parse creation time from database ID first (e.g. "sqlalchemy-test-1787069488-a3f")
+        # Parse creation time from database ID first (e.g. "sp_test_1787069488_a3f")
         create_time = None
-        match = re.match(r"sqlalchemy-test-(\d+)", database.database_id)
+        match = re.match(r"sp_test_(\d+)", database.database_id)
         if match:
             ts_str = match.group(1)
             ts_val = int(ts_str)
@@ -139,11 +139,11 @@ def create_test_instance():
             pass  # instance was already created
 
     # Generate a session-isolated unique database ID within Spanner 30-char limit
-    # Format: sqlalchemy-test-{timestamp_in_seconds}-{rand_hex3} (exactly 30 characters total)
+    # Format: sp_test_{timestamp_in_seconds}_{rand_hex3} (compliant with Spanner naming: ^[a-z][a-z0-9_]{1,29}$)
     creation_timestamp = time.time()
     timestamp_part = str(int(creation_timestamp))
     rand_part = uuid.uuid4().hex[:3]
-    database_id = f"sqlalchemy-test-{timestamp_part}-{rand_part}"
+    database_id = f"sp_test_{timestamp_part}_{rand_part}"
 
     try:
         database = instance.database(database_id)
