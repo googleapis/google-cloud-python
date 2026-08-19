@@ -53,6 +53,14 @@ def parse_table_id(table_id: str) -> Union[BigLakeTableId, BigQueryTableId]:
     if any(part == "" for part in inner_parts):
         raise ValueError(f"Invalid table ID: {table_id}")
 
+    # The parsed parts are interpolated into backtick-quoted table references in
+    # generated SQL (see core/biglake.py and core/sample.py). A backtick can't
+    # appear in a real project/dataset/table name, and one here would close the
+    # identifier quoting and let the rest of the string run as SQL, so reject it
+    # while we're validating the table ID rather than downstream.
+    if "`" in table_id:
+        raise ValueError(f"Invalid table ID: {table_id}")
+
     if len(inner_parts) == 1:
         return BigQueryTableId(
             project_id=regex_match.group("project"),
