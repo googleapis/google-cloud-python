@@ -665,6 +665,9 @@ class TestAuthorizedSession(object):
             assert not auth_session.is_mtls
 
     @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path", return_value=None
+    )
+    @mock.patch(
         "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
     )
     @mock.patch.dict(
@@ -677,7 +680,7 @@ class TestAuthorizedSession(object):
         },
     )
     def test_configure_mtls_channel_without_client_cert_env(
-        self, get_client_cert_and_key
+        self, get_client_cert_and_key, mock_get_cert_config_path
     ):
         env_to_patch = {
             environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "",
@@ -937,9 +940,19 @@ class TestAuthorizedSession(object):
             # Assert mTLS check logic was SKIPPED (Inner Check was False)
             assert not mock_helper.check_parameters_for_unauthorized_response.called
 
-    def test_cert_rotation_skipped_on_non_mtls_url(self):
+    @pytest.mark.parametrize(
+        "non_mtls_url",
+        [
+            "http://example.com/",
+            "https://storage.googleapis.com/bucket/mtls.googleapis.com",
+            "https://logging.googleapis.com/v2/entries?filter=mtls.googleapis.com",
+            "https://example.com/mtls.sandbox.googleapis.com",
+        ],
+    )
+    def test_cert_rotation_skipped_on_non_mtls_url(self, non_mtls_url):
         """
-        Tests that mTLS cert rotation is skipped on a non-mTLS URL even if
+        Tests that mTLS cert rotation is skipped on non-mTLS URLs (including
+        those containing mTLS substrings in paths/query parameters) even if
         mTLS is enabled and an UNAUTHORIZED (401) response is received.
         """
         credentials = mock.Mock(wraps=CredentialsStub())
@@ -953,19 +966,53 @@ class TestAuthorizedSession(object):
         authed_session = google.auth.transport.requests.AuthorizedSession(
             credentials, refresh_timeout=60
         )
-        authed_session.mount(self.TEST_URL, adapter)
+        authed_session.mount("https://", adapter)
+        authed_session.mount("http://", adapter)
         authed_session._is_mtls = True
+        authed_session._cached_cert = b"cached_cert"
 
-        with mock.patch(
-            "google.auth.transport.requests._mtls_helper", autospec=True
-        ) as mock_helper:
-            authed_session.request("GET", self.TEST_URL)
+        with mock.patch.object(
+            google.auth.transport._mtls_helper,
+            "check_parameters_for_unauthorized_response",
+        ) as mock_check_params:
+            authed_session.request("GET", non_mtls_url)
 
             # Assert refresh happened
             assert credentials.refresh.called
 
             # Assert mTLS check logic was SKIPPED
-            assert not mock_helper.check_parameters_for_unauthorized_response.called
+            assert not mock_check_params.called
+
+    def test_cert_rotation_triggered_on_psc_url(self):
+        """
+        Tests that mTLS cert rotation IS triggered on a Private Service Connect
+        (PSC) mTLS endpoint when an UNAUTHORIZED (401) response is received.
+        """
+        credentials = mock.Mock(wraps=CredentialsStub())
+        adapter = AdapterStub(
+            [
+                make_response(status=http_client.UNAUTHORIZED),
+                make_response(status=http_client.OK),
+            ]
+        )
+        psc_url = "https://storage.p.googleapis.com/b/my-bucket"
+        authed_session = google.auth.transport.requests.AuthorizedSession(
+            credentials, refresh_timeout=60
+        )
+        authed_session.mount(psc_url, adapter)
+        authed_session._is_mtls = True
+        authed_session._cached_cert = b"cached_cert"
+
+        with mock.patch.object(
+            google.auth.transport._mtls_helper,
+            "check_parameters_for_unauthorized_response",
+            return_value=(b"new_cert", b"new_key", "old_fp", "old_fp"),
+        ) as mock_check_params:
+            authed_session.request("GET", psc_url)
+
+            # Assert mTLS check logic was called on PSC endpoint
+            mock_check_params.assert_called_once()
+            assert credentials.refresh.called
 
     def test_configure_mtls_channel_subsequent_failure(self):
         # 1. Setup successful mTLS configuration
