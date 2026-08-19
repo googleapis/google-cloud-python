@@ -18,13 +18,12 @@ import os
 import re
 import time
 
+from create_test_config import set_test_config
 from google.api_core import datetime_helpers
 from google.api_core.exceptions import AlreadyExists, ResourceExhausted
 from google.cloud.spanner_v1 import Client
 from google.cloud.spanner_v1.database import Database
 from google.cloud.spanner_v1.instance import Instance
-
-from create_test_config import set_test_config
 
 USE_EMULATOR = os.getenv("SPANNER_EMULATOR_HOST") is not None
 
@@ -69,14 +68,13 @@ def delete_stale_test_instances():
 
 
 def delete_stale_test_databases():
-    """Delete test databases that are older than 10 minutes.
-    
-    In this test suite, active databases typically finish running in ~5 minutes.
-    To prevent concurrent Kokoro runs from accidentally deleting each other's
-    active databases we use a 10-minute safety threshold. Without an aggressive
-    cutoff we quickly bump up against Cloud Spanner's limit of 100 databases per instance.
+    """Delete test databases that are older than 2 hours.
+
+    In this test suite, compliance and system test sessions can run longer than 10 minutes.
+    To prevent active test suites from deleting their own or concurrent test databases
+    mid-run, we use a 2-hour safety threshold.
     """
-    cutoff = (int(time.time()) - 10 * 60) * 1000
+    cutoff = (int(time.time()) - 2 * 60 * 60) * 1000
     instance = CLIENT.instance("sqlalchemy-dialect-test")
     if not instance.exists():
         return
