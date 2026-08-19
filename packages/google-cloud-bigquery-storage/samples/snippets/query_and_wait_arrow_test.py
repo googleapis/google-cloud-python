@@ -17,8 +17,8 @@ import pyarrow
 from . import query_and_wait_arrow
 
 
-def test_query_and_wait_arrow(project_id: str):
-    batches = query_and_wait_arrow.query_and_wait_arrow(project_id=project_id)
+def test_query_and_wait_arrow():
+    batches = query_and_wait_arrow.query_and_wait_arrow()
 
     total_rows = 0
     batch_count = 0

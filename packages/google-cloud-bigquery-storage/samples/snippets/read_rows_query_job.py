@@ -13,27 +13,21 @@
 # limitations under the License.
 
 # [START bigquerystorage_read_rows_query_job]
-from typing import Iterable, Optional
+from typing import Iterable
 
 from google.cloud import bigquery
 from google.cloud import bigquery_storage_v1
 import pyarrow
 
 
-def read_rows_query_job(
-    project_id: Optional[str] = None,
-) -> Iterable[pyarrow.RecordBatch]:
+def read_rows_query_job() -> Iterable[pyarrow.RecordBatch]:
     """Queries BigQuery and yields batches directly via BigQueryReadClient using a job stream.
-
-    Args:
-        project_id (Optional[str]): The Google Cloud project ID to bill for the query.
-            If not specified, the project is inferred from the environment.
 
     Yields:
         pyarrow.RecordBatch: Apache Arrow RecordBatch objects streamed from BigQuery.
     """
     # Initialize BigQuery and BigQuery Storage clients.
-    client = bigquery.Client(project=project_id) if project_id else bigquery.Client()
+    client = bigquery.Client()
     read_client = bigquery_storage_v1.BigQueryReadClient()
 
     query = """

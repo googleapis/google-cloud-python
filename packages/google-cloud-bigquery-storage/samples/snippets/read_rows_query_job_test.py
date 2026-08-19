@@ -17,8 +17,8 @@ import pyarrow
 from . import read_rows_query_job
 
 
-def test_read_rows_query_job(project_id: str):
-    batches = read_rows_query_job.read_rows_query_job(project_id=project_id)
+def test_read_rows_query_job():
+    batches = read_rows_query_job.read_rows_query_job()
 
     total_rows = 0
     batch_count = 0

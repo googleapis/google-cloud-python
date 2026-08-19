@@ -13,27 +13,21 @@
 # limitations under the License.
 
 # [START bigquerystorage_query_and_wait_arrow]
-from typing import Iterable, Optional
+from typing import Iterable
 
 from google.cloud import bigquery
 from google.cloud.bigquery import enums
 import pyarrow
 
 
-def query_and_wait_arrow(
-    project_id: Optional[str] = None,
-) -> Iterable[pyarrow.RecordBatch]:
+def query_and_wait_arrow() -> Iterable[pyarrow.RecordBatch]:
     """Queries BigQuery and returns results as an iterable of Apache Arrow RecordBatches.
-
-    Args:
-        project_id (Optional[str]): The Google Cloud project ID to bill for the query.
-            If not specified, the project is inferred from the environment.
 
     Returns:
         Iterable[pyarrow.RecordBatch]: An iterable of Apache Arrow RecordBatch objects.
     """
     # Initialize a BigQuery client.
-    client = bigquery.Client(project=project_id) if project_id else bigquery.Client()
+    client = bigquery.Client()
 
     query = """
         SELECT name, number, state
