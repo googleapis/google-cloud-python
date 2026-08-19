@@ -70,15 +70,16 @@ def delete_stale_test_instances():
 
 
 def delete_stale_test_databases():
-    """Delete test databases that are older than 1 hour.
+    """Delete test databases that are older than 4 hours.
 
-    Since each test run creates a 100% session-isolated database with a unique
-    timestamp in its name (`sqlalchemy-test-{timestamp}-{rand}`), concurrent runs
-    never collide. We use a generous 1-hour safety cutoff to clean up orphaned
-    databases from crashed/abandoned runs while ensuring active test runs
-    (even long compliance suites) are naturally protected by their recent timestamps.
+    Compliance test suites can take up to 2 hours to run fully. To prevent long-running
+    compliance test sessions from hitting their own cleanup threshold mid-test, we align
+    the database cleanup cutoff with test instances at 4 hours. Combined with
+    session-isolated names (`sqlalchemy-test-{timestamp}-{rand}`), active test runs
+    are completely safe while abandoned databases are still cleaned up well before
+    reaching Spanner's 100-database limit.
     """
-    cutoff = (int(time.time()) - 60 * 60) * 1000
+    cutoff = (int(time.time()) - 4 * 60 * 60) * 1000
     instance = CLIENT.instance("sqlalchemy-dialect-test")
     if not instance.exists():
         return
