@@ -480,6 +480,23 @@ class TestInstalledAppFlow(object):
 
         assert credentials.token == mock.sentinel.access_token
 
+    @mock.patch("google_auth_oauthlib.flow.webbrowser", autospec=True)
+    @mock.patch("wsgiref.simple_server.make_server", autospec=True)
+    def test_run_local_server_uses_exclusive_server_class(
+        self, make_server_mock, webbrowser_mock, instance
+    ):
+        server_mock = mock.MagicMock()
+        make_server_mock.return_value = server_mock
+
+        with pytest.raises(Exception):
+            instance.run_local_server(port=0)
+
+        make_server_mock.assert_called_once()
+        assert (
+            make_server_mock.call_args.kwargs.get("server_class")
+            is flow._ExclusiveWSGIServer
+        )
+
     @mock.patch("google_auth_oauthlib.flow.webbrowser.get", autospec=True)
     @mock.patch("wsgiref.simple_server.make_server", autospec=True)
     def test_local_server_socket_cleanup(
