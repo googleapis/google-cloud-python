@@ -16,12 +16,16 @@
 
 import json
 import os
+import pathlib
+import re
 import time
 import uuid
 
 from create_test_config import set_test_config
+from google.api_core import datetime_helpers
 from google.api_core.exceptions import AlreadyExists, ResourceExhausted
 from google.cloud.spanner_v1 import Client
+from google.cloud.spanner_v1.database import Database
 from google.cloud.spanner_v1.instance import Instance
 
 USE_EMULATOR = os.getenv("SPANNER_EMULATOR_HOST") is not None
@@ -62,6 +66,55 @@ def delete_stale_test_instances():
             print(
                 "Unable to drop stale instance '{}'. May need manual delete.".format(
                     instance.instance_id
+                )
+            )
+
+
+def delete_stale_test_databases():
+    """Delete test databases that are older than 4 hours.
+
+    Uses a .stale_cleanup_done sentinel file gate to ensure this global sweep
+    runs exactly once at the start of a test run across parallel/parametrized sessions,
+    preventing concurrent sessions from interfering with each other.
+    """
+    marker = ".stale_cleanup_done"
+    if os.path.exists(marker):
+        return
+
+    try:
+        pathlib.Path(marker).touch(exist_ok=False)
+    except FileExistsError:
+        return  # Another parallel process already performed cleanup
+
+    cutoff = (int(time.time()) - 4 * 60 * 60) * 1000
+    instance = CLIENT.instance("sqlalchemy-dialect-test")
+    if not instance.exists():
+        return
+    database_pbs = instance.list_databases()
+    for database_pb in database_pbs:
+        database = Database.from_pb(database_pb, instance)
+
+        # Parse creation time from database ID first (e.g. "sqlalchemy-test-1787069488-a3f")
+        create_time = None
+        match = re.match(r"sqlalchemy-test-(\d+)", database.database_id)
+        if match:
+            ts_str = match.group(1)
+            ts_val = int(ts_str)
+            if len(ts_str) == 10:
+                create_time = ts_val * 1000
+            else:
+                create_time = ts_val
+        elif database_pb.create_time is not None:
+            create_time = datetime_helpers.to_milliseconds(database_pb.create_time)
+
+        if create_time is None or create_time > cutoff:
+            continue
+        try:
+            database.drop()
+        except ResourceExhausted:
+            print(
+                "Unable to drop stale database '{}'. May need manual delete.".format(
+                    database.database_id
                 )
             )
 
@@ -107,4 +160,5 @@ def create_test_instance():
         json.dump({"database_id": database_id, "creation_time": creation_timestamp}, f)
 
 
+delete_stale_test_databases()
 create_test_instance()
