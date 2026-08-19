@@ -20,6 +20,7 @@ import logging
 import os
 import re
 import socket
+import time
 from unittest import mock
 import urllib
 import webbrowser
@@ -446,6 +447,37 @@ class TestInstalledAppFlow(object):
         # socket fixture is already bound to http://localhost:port
         with pytest.raises(OSError):
             instance.run_local_server(port=port, timeout_seconds=1)
+
+    @pytest.mark.webtest
+    @mock.patch("google_auth_oauthlib.flow.webbrowser", autospec=True)
+    def test_run_local_server_exclusive_port(
+        self, webbrowser_mock, instance, mock_fetch_token, port
+    ):
+        """Verify that while run_local_server is running, another socket cannot bind to its port."""
+        auth_redirect_url = urllib.parse.urljoin(
+            f"http://localhost:{port}", self.REDIRECT_REQUEST_PATH
+        )
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
+            future = pool.submit(partial(instance.run_local_server, port=port))
+            time.sleep(0.2)
+
+            hijack_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            hijack_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            try:
+                with pytest.raises(OSError):
+                    hijack_socket.bind(("localhost", port))
+            finally:
+                hijack_socket.close()
+                while not future.done():
+                    try:
+                        requests.get(auth_redirect_url)
+                    except requests.ConnectionError:  # pragma: NO COVER
+                        pass
+
+            credentials = future.result()
+
+        assert credentials.token == mock.sentinel.access_token
 
     @mock.patch("google_auth_oauthlib.flow.webbrowser.get", autospec=True)
     @mock.patch("wsgiref.simple_server.make_server", autospec=True)
