@@ -69,17 +69,18 @@ def delete_test_database():
     database = instance.database(database_id_str)
     database.drop()
 
-    # Calculate and report active duration
+    # Calculate and report active duration with type-validation for compliance
     meta_path = os.path.join(os.path.dirname(__file__), ".db_session_info.json")
     if os.path.exists(meta_path):
         try:
             with open(meta_path, "r") as f:
                 meta = json.load(f)
-            creation_time = meta.get("creation_time", time.time())
-            db_name = meta.get("database_id", database_id_str)
-            elapsed_seconds = time.time() - creation_time
-            duration_str = format_duration(elapsed_seconds)
-            print(f"[Spanner DB] Database {db_name} was active for {duration_str} before teardown.")
+            if isinstance(meta, dict):
+                creation_time = meta.get("creation_time", time.time())
+                db_name = meta.get("database_id", database_id_str)
+                elapsed_seconds = time.time() - creation_time
+                duration_str = format_duration(elapsed_seconds)
+                print(f"[Spanner DB] Database {db_name} was active for {duration_str} before teardown.")
         except Exception:
             pass
         finally:

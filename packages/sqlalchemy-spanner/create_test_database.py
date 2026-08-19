@@ -84,12 +84,17 @@ def delete_stale_test_databases():
     database_pbs = instance.list_databases()
     for database_pb in database_pbs:
         database = Database.from_pb(database_pb, instance)
-        # Parse creation time from database ID first (e.g. "sqlalchemy-test-177998949-a1b2")
-        # to be 100% independent of emulator metadata or GCP Client API create_time gaps!
+        # Parse creation time from database ID first (e.g. "sqlalchemy-test-1787069488-a3f")
+        # handling both 10-digit (seconds) and 13-digit (milliseconds) timestamps robustly.
         create_time = None
         match = re.match(r"sqlalchemy-test-(\d+)", database.database_id)
         if match:
-            create_time = int(match.group(1)) * 1000
+            ts_str = match.group(1)
+            ts_val = int(ts_str)
+            if len(ts_str) == 10:
+                create_time = ts_val * 1000
+            else:
+                create_time = ts_val
         elif database_pb.create_time is not None:
             create_time = datetime_helpers.to_milliseconds(database_pb.create_time)
 
@@ -125,9 +130,10 @@ def create_test_instance():
             pass  # instance was already created
 
     # Generate a session-isolated unique database ID within Spanner 30-char limit
+    # Format: sqlalchemy-test-{timestamp_in_seconds}-{rand_hex3} (exactly 30 characters total)
     creation_timestamp = time.time()
-    timestamp_part = str(int(creation_timestamp))[-9:]
-    rand_part = uuid.uuid4().hex[:4]
+    timestamp_part = str(int(creation_timestamp))
+    rand_part = uuid.uuid4().hex[:3]
     database_id = f"sqlalchemy-test-{timestamp_part}-{rand_part}"
 
     try:
