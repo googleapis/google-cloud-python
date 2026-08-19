@@ -360,21 +360,38 @@ class GraphServerHandler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
 
-    def _host_is_loopback(self):
-        """Return True if the request targets the loopback interface.
+    def _is_request_safe(self):
+        """Return True if the request targets and originates from loopback.
 
-        Origin cannot be used here because the notebook page and this server
-        live on different ports, so legitimate widget traffic is cross-origin.
-        The Host header, however, is always a loopback name for that traffic.
+        The Host header guards against DNS rebinding: legitimate widget traffic
+        always carries a loopback name even though the notebook page and this
+        server live on different ports. Origin and Referer, when present, are
+        checked too so a page on a non-loopback site cannot drive the server
+        with a direct cross-site request; their port differs from ours but the
+        hostname is still loopback for real traffic.
         """
         host = self.headers.get("Host")
         if not host:
             return False
         try:
-            hostname = urllib.parse.urlsplit(f"//{host}").hostname
+            hostname = urllib.parse.urlsplit(f"//{host.strip()}").hostname
         except ValueError:
             return False
-        return hostname in _LOOPBACK_HOSTS
+        if hostname not in _LOOPBACK_HOSTS:
+            return False
+
+        for header_name in ("Origin", "Referer"):
+            value = self.headers.get(header_name)
+            if not value:
+                continue
+            try:
+                origin_hostname = urllib.parse.urlsplit(value.strip()).hostname
+            except ValueError:
+                return False
+            if origin_hostname and origin_hostname not in _LOOPBACK_HOSTS:
+                return False
+
+        return True
 
     def do_json_response(self, data):
         self.send_response(200)
@@ -428,14 +445,14 @@ class GraphServerHandler(http.server.SimpleHTTPRequestHandler):
         )
 
     def do_GET(self):
-        if not self._host_is_loopback():
+        if not self._is_request_safe():
             self.send_error(403, "Forbidden")
             return
         assert self.path == GraphServer.endpoints["get_ping"]
         self.handle_get_ping()
 
     def do_POST(self):
-        if not self._host_is_loopback():
+        if not self._is_request_safe():
             self.send_error(403, "Forbidden")
             return
         if self.path == GraphServer.endpoints["post_ping"]:

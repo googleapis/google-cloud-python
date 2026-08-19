@@ -793,7 +793,7 @@ class TestGraphServerHostHeader(unittest.TestCase):
     def test_missing_host_rejected(self):
         handler = mock.Mock(spec=graph_server.GraphServerHandler)
         handler.headers = {}
-        self.assertFalse(graph_server.GraphServerHandler._host_is_loopback(handler))
+        self.assertFalse(graph_server.GraphServerHandler._is_request_safe(handler))
 
     @pytest.mark.skipif(
         graph_visualization is None, reason="Requires `spanner-graph-notebook`"
@@ -802,4 +802,32 @@ class TestGraphServerHostHeader(unittest.TestCase):
         # An unterminated IPv6 literal makes urlsplit raise ValueError.
         handler = mock.Mock(spec=graph_server.GraphServerHandler)
         handler.headers = {"Host": "[::1"}
-        self.assertFalse(graph_server.GraphServerHandler._host_is_loopback(handler))
+        self.assertFalse(graph_server.GraphServerHandler._is_request_safe(handler))
+
+    @pytest.mark.skipif(
+        graph_visualization is None, reason="Requires `spanner-graph-notebook`"
+    )
+    def test_non_loopback_origin_rejected(self):
+        # Host header is valid (loopback), but Origin is a malicious third-party site.
+        # Without Origin checks, the host-only check is bypassed and CORS wildcard headers are returned.
+        response = requests.get(
+            self._route(),
+            headers={"Host": "localhost", "Origin": "http://attacker.example.com"},
+        )
+        # Without the fix, this evaluates to 200 OK. We want it to be rejected.
+        self.assertEqual(response.status_code, 403)
+
+    @pytest.mark.skipif(
+        graph_visualization is None, reason="Requires `spanner-graph-notebook`"
+    )
+    def test_non_loopback_referer_rejected(self):
+        # Host header is valid (loopback), but Referer reveals a malicious third-party origin.
+        response = requests.get(
+            self._route(),
+            headers={
+                "Host": "127.0.0.1",
+                "Referer": "http://attacker.example.com/exploit-page",
+            },
+        )
+        # Without the fix, this evaluates to 200 OK. We want it to be rejected.
+        self.assertEqual(response.status_code, 403)
