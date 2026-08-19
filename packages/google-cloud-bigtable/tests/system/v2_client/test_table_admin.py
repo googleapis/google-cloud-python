@@ -336,7 +336,9 @@ def test_table_backup(
 
     # Testing `Backup.restore()`:
     restored_table_id_2 = "test-backup-table-restored-2"
-    restore_op = temp_backup.restore(restored_table_id_2, data_instance_populated.instance_id)
+    restore_op = temp_backup.restore(
+        restored_table_id_2, data_instance_populated.instance_id
+    )
     restore_op.result(timeout=240)
     restored_table_2 = data_instance_populated.table(restored_table_id_2)
     assert restored_table_2 in data_instance_populated.list_tables()

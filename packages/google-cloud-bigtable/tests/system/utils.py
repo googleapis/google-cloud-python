@@ -25,7 +25,11 @@ from google.cloud import bigtable_admin_v2 as admin_v2
 
 def clear_stale_instances(
     project_id: str,
-    prefix: Union[str, Tuple[str, ...]] = ("python-bigtable-tests", "g-c-p", "admin-overlay-instance"),
+    prefix: Union[str, Tuple[str, ...]] = (
+        "python-bigtable-tests",
+        "g-c-p",
+        "admin-overlay-instance",
+    ),
     older_than_days: int = 1,
     max_deletions: int = 5,
 ):
@@ -35,6 +39,7 @@ def clear_stale_instances(
     """
     if os.getenv(BIGTABLE_EMULATOR):
         return
+    print(f"Clearing stale instances in project {project_id}...")
     client = admin_v2.BigtableInstanceAdminClient(
         client_options={"quota_project_id": project_id}
     )
@@ -72,14 +77,15 @@ def clear_stale_instances(
                                 deleted_count += 1
                                 if deleted_count >= max_deletions:
                                     print(
-                                        f"Reached cap of {max_deletions} stale instance deletions; "
-                                        "skipping remainder to conserve API write request quota."
+                                        f"Reached cap of {max_deletions} stale instance deletions"
                                     )
                                     return
                             except NotFound:
                                 pass
                             except Exception as e:
-                                print(f"Failed to delete stale instance {instance.name}: {e}")
+                                print(
+                                    f"Failed to delete stale instance {instance.name}: {e}"
+                                )
                     except Exception as e:
                         print(f"Failed to check age for instance {instance.name}: {e}")
 
