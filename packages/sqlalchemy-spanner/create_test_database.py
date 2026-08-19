@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import configparser
 import json
 import os
 import re
@@ -71,33 +70,21 @@ def delete_stale_test_instances():
 
 
 def delete_stale_test_databases():
-    """Delete test databases that are older than 30 minutes,
-    excluding the currently active test database.
-    """
-    # Read currently configured active database from test.cfg if it exists
-    active_db_id = None
-    config_path = os.path.join(os.path.dirname(__file__), "test.cfg")
-    if os.path.exists(config_path):
-        try:
-            cfg = configparser.ConfigParser()
-            cfg.read(config_path)
-            db_url = cfg.get("db", "default", fallback="")
-            if "databases/" in db_url:
-                active_db_id = db_url.split("databases/")[-1].split("?")[0]
-        except Exception:
-            pass
+    """Delete test databases that are older than 1 hour.
 
-    cutoff = (int(time.time()) - 30 * 60) * 1000
+    Since each test run creates a 100% session-isolated database with a unique
+    timestamp in its name (`sqlalchemy-test-{timestamp}-{rand}`), concurrent runs
+    never collide. We use a generous 1-hour safety cutoff to clean up orphaned
+    databases from crashed/abandoned runs while ensuring active test runs
+    (even long compliance suites) are naturally protected by their recent timestamps.
+    """
+    cutoff = (int(time.time()) - 60 * 60) * 1000
     instance = CLIENT.instance("sqlalchemy-dialect-test")
     if not instance.exists():
         return
     database_pbs = instance.list_databases()
     for database_pb in database_pbs:
         database = Database.from_pb(database_pb, instance)
-
-        # NEVER drop the currently active database configured in test.cfg
-        if active_db_id and database.database_id == active_db_id:
-            continue
 
         # Parse creation time from database ID first (e.g. "sqlalchemy-test-1787069488-a3f")
         # handling both 10-digit (seconds) and 13-digit (milliseconds) timestamps robustly.
