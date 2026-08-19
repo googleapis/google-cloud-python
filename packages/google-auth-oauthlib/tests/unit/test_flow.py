@@ -461,7 +461,7 @@ class TestInstalledAppFlow(object):
         )
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
-            future = pool.submit(partial(instance.run_local_server, port=port))
+            future = pool.submit(lambda: instance.run_local_server(port=port))
 
             # Wait until the server is listening
             server_listening = False
@@ -474,20 +474,25 @@ class TestInstalledAppFlow(object):
                 except OSError:
                     time.sleep(0.05)
 
-            assert server_listening, "OAuth server failed to start and listen"
-
-            # Attempt to bind a second socket with SO_REUSEADDR to the same port
-            hijack_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            hijack_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
             try:
-                with pytest.raises(OSError):
-                    hijack_socket.bind(("localhost", port))
-            finally:
-                hijack_socket.close()
+                assert server_listening, "OAuth server failed to start and listen"
 
-            # Complete the auth flow so the server thread finishes cleanly
-            requests.get(auth_redirect_url)
+                # Attempt to bind a second socket with SO_REUSEADDR to the same port
+                hijack_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                hijack_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+                try:
+                    with pytest.raises(OSError):
+                        hijack_socket.bind(("localhost", port))
+                finally:
+                    hijack_socket.close()
+            finally:
+                if server_listening:
+                    try:
+                        requests.get(auth_redirect_url, timeout=1)
+                    except requests.RequestException:
+                        pass
+
             credentials = future.result()
             assert credentials.token == mock.sentinel.access_token
 
