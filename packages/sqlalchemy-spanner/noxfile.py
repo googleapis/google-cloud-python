@@ -203,8 +203,12 @@ def compliance_test_14(session):
             "--force-reinstall",
         )
         session.run("python", "create_test_database.py")
+        config = configparser.ConfigParser()
+        config.read(config_file)
+        db_url = config.get("db", "default")
         session.run(
             "py.test",
+            f"--dburi={db_url}",
             "--cov=google.cloud.sqlalchemy_spanner",
             "--cov=tests",
             "--cov-append",
@@ -246,11 +250,15 @@ def compliance_test_20(session):
         session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES)
         session.install("-e", ".", "--force-reinstall")
         session.run("python", "create_test_database.py")
+        config = configparser.ConfigParser()
+        config.read(config_file)
+        db_url = config.get("db", "default")
 
         session.install(*SQLALCHEMY_20_DEPENDENCIES)
 
         session.run(
             "py.test",
+            f"--dburi={db_url}",
             "--cov=google.cloud.sqlalchemy_spanner",
             "--cov=tests",
             "--cov-append",
@@ -440,9 +448,12 @@ def system(session, test_type):
             session.install(".[tracing]")
             session.install(*SYSTEM_TEST_EXTERNAL_DEPENDENCIES)
             session.run("python", "create_test_database.py")
+            config = configparser.ConfigParser()
+            config.read(config_file)
+            db_url = config.get("db", "default")
             session.install(*SQLALCHEMY_20_DEPENDENCIES)
             session.run(
-                "py.test", "--quiet", os.path.join("tests", "system"), *session.posargs
+                "py.test", f"--dburi={db_url}", "--quiet", os.path.join("tests", "system"), *session.posargs
             )
         elif test_type == "compliance_14":
             compliance_test_14(session)
@@ -453,7 +464,9 @@ def system(session, test_type):
         elif test_type == "migration_20":
             _migration_test(session)
     finally:
-        if os.path.exists("test.cfg"):
+        if os.path.exists(config_file):
+            session.run("python", "drop_test_database.py", success_codes=[0, 1])
+        elif os.path.exists("test.cfg"):
             session.run("python", "drop_test_database.py", success_codes=[0, 1])
 
 
