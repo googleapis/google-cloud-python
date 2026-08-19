@@ -14,17 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 import os
 import re
 import time
+import uuid
 
+from create_test_config import set_test_config
 from google.api_core import datetime_helpers
 from google.api_core.exceptions import AlreadyExists, ResourceExhausted
 from google.cloud.spanner_v1 import Client
 from google.cloud.spanner_v1.database import Database
 from google.cloud.spanner_v1.instance import Instance
-
-from create_test_config import set_test_config
 
 USE_EMULATOR = os.getenv("SPANNER_EMULATOR_HOST") is not None
 
@@ -69,26 +70,26 @@ def delete_stale_test_instances():
 
 
 def delete_stale_test_databases():
-    """Delete test databases that are older than 10 minutes.
-    
-    In this test suite, active databases typically finish running in ~5 minutes.
-    To prevent concurrent Kokoro runs from accidentally deleting each other's
-    active databases we use a 10-minute safety threshold. Without an aggressive
-    cutoff we quickly bump up against Cloud Spanner's limit of 100 databases per instance.
+    """Delete test databases that are older than 30 minutes.
+
+    In this test suite, compliance and system test sessions can run for 15-20 minutes.
+    To prevent concurrent Kokoro runs or long compliance test suites from accidentally
+    deleting each other's active databases while still cleaning up orphaned databases
+    to respect Spanner's 100-database limit, we use a 30-minute safety threshold.
     """
-    cutoff = (int(time.time()) - 10 * 60) * 1000
+    cutoff = (int(time.time()) - 30 * 60) * 1000
     instance = CLIENT.instance("sqlalchemy-dialect-test")
     if not instance.exists():
         return
     database_pbs = instance.list_databases()
     for database_pb in database_pbs:
         database = Database.from_pb(database_pb, instance)
-        # Parse creation time from database ID first (e.g. "sqlalchemy-test-1779989493809")
+        # Parse creation time from database ID first (e.g. "sqlalchemy-test-177998949-a1b2")
         # to be 100% independent of emulator metadata or GCP Client API create_time gaps!
         create_time = None
         match = re.match(r"sqlalchemy-test-(\d+)", database.database_id)
         if match:
-            create_time = int(match.group(1))
+            create_time = int(match.group(1)) * 1000
         elif database_pb.create_time is not None:
             create_time = datetime_helpers.to_milliseconds(database_pb.create_time)
 
@@ -123,8 +124,11 @@ def create_test_instance():
         except AlreadyExists:
             pass  # instance was already created
 
-    unique_resource_id = "%s%d" % ("-", 1000 * time.time())
-    database_id = "sqlalchemy-test" + unique_resource_id
+    # Generate a session-isolated unique database ID within Spanner 30-char limit
+    creation_timestamp = time.time()
+    timestamp_part = str(int(creation_timestamp))[-9:]
+    rand_part = uuid.uuid4().hex[:4]
+    database_id = f"sqlalchemy-test-{timestamp_part}-{rand_part}"
 
     try:
         database = instance.database(database_id)
@@ -134,6 +138,11 @@ def create_test_instance():
         pass  # database was already created
 
     set_test_config(PROJECT, instance_id, database_id)
+
+    # Record metadata for duration tracking on teardown
+    meta_path = os.path.join(os.path.dirname(__file__), ".db_session_info.json")
+    with open(meta_path, "w") as f:
+        json.dump({"database_id": database_id, "creation_time": creation_timestamp}, f)
 
 
 delete_stale_test_databases()
