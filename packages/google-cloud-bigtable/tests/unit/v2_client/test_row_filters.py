@@ -529,7 +529,7 @@ def test_value_bitmask_filter_to_pb_w_bytes():
 
     mask = b"value-mask"
     row_filter = ValueBitmaskFilter(mask)
-    pb_val = row_filter.to_pb()
+    pb_val = row_filter._to_pb()
     expected_pb = _RowFilterPB(value_bitmask_filter=_ValueBitmaskPB(mask=mask))
     assert pb_val == expected_pb
 
@@ -540,7 +540,7 @@ def test_value_bitmask_filter_to_pb_w_str():
     mask = "value-mask"
     mask_bytes = mask.encode("ascii")
     row_filter = ValueBitmaskFilter(mask)
-    pb_val = row_filter.to_pb()
+    pb_val = row_filter._to_pb()
     expected_pb = _RowFilterPB(value_bitmask_filter=_ValueBitmaskPB(mask=mask_bytes))
     assert pb_val == expected_pb
 
