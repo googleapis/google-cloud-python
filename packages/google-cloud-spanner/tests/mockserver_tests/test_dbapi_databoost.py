@@ -24,6 +24,7 @@ from google.cloud.spanner_v1 import (
     TypeCode,
 )
 from google.cloud.spanner_v1.types import spanner as spanner_types
+
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_single_result,
@@ -192,3 +193,75 @@ class TestDbapiDataBoost(MockServerTestBase):
         )
         self.assertEqual(1, len(execute_requests))
         self.assertTrue(execute_requests[0].data_boost_enabled)
+
+    def test_auto_partition_mode_with_data_boost_enabled(self):
+        sql = "SELECT name FROM users WHERE active = true"
+
+        partition_response = spanner_types.PartitionResponse()
+        partition_response.partitions.extend(
+            [
+                spanner_types.Partition(partition_token=b"mock-token-auto-1"),
+            ]
+        )
+        self.spanner_service.mock_spanner.add_partition_result(sql, partition_response)
+        add_single_result(sql, "name", TypeCode.STRING, [("Alice",)])
+
+        connection = Connection(
+            self.instance,
+            self.database,
+            read_only=True,
+            auto_partition_mode=True,
+            data_boost_enabled=True,
+        )
+
+        with connection.cursor() as cursor:
+            # Plain cursor.execute automatically runs as partitioned query with DataBoost
+            cursor.execute(sql)
+            rows = cursor.fetchall()
+            self.assertEqual(1, len(rows))
+            self.assertEqual("Alice", rows[0][0])
+
+        execute_requests = list(
+            filter(
+                lambda msg: isinstance(msg, ExecuteSqlRequest),
+                self.spanner_service.requests,
+            )
+        )
+        self.assertEqual(1, len(execute_requests))
+        self.assertTrue(execute_requests[0].data_boost_enabled)
+        self.assertEqual(b"mock-token-auto-1", execute_requests[0].partition_token)
+
+    def test_auto_partition_mode_via_statement(self):
+        sql = "SELECT name FROM users WHERE active = true"
+
+        partition_response = spanner_types.PartitionResponse()
+        partition_response.partitions.extend(
+            [
+                spanner_types.Partition(partition_token=b"mock-token-auto-2"),
+            ]
+        )
+        self.spanner_service.mock_spanner.add_partition_result(sql, partition_response)
+        add_single_result(sql, "name", TypeCode.STRING, [("Bob",)])
+
+        connection = Connection(self.instance, self.database, read_only=True)
+
+        with connection.cursor() as cursor:
+            cursor.execute("SET AUTO_PARTITION_MODE = TRUE")
+            cursor.execute("SET DATA_BOOST_ENABLED = TRUE")
+            self.assertTrue(cursor.connection.auto_partition_mode)
+            self.assertTrue(cursor.connection.data_boost_enabled)
+
+            cursor.execute(sql)
+            rows = cursor.fetchall()
+            self.assertEqual(1, len(rows))
+            self.assertEqual("Bob", rows[0][0])
+
+        execute_requests = list(
+            filter(
+                lambda msg: isinstance(msg, ExecuteSqlRequest),
+                self.spanner_service.requests,
+            )
+        )
+        self.assertEqual(1, len(execute_requests))
+        self.assertTrue(execute_requests[0].data_boost_enabled)
+        self.assertEqual(b"mock-token-auto-2", execute_requests[0].partition_token)

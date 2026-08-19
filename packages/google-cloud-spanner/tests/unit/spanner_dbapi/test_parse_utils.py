@@ -91,6 +91,8 @@ class TestParseUtils(unittest.TestCase):
             ("SHOW VARIABLE READ_TIMESTAMP", StatementType.CLIENT_SIDE),
             ("SET DATA_BOOST_ENABLED = TRUE", StatementType.CLIENT_SIDE),
             ("SHOW VARIABLE DATA_BOOST_ENABLED", StatementType.CLIENT_SIDE),
+            ("SET AUTO_PARTITION_MODE = TRUE", StatementType.CLIENT_SIDE),
+            ("SHOW VARIABLE AUTO_PARTITION_MODE", StatementType.CLIENT_SIDE),
             ("GRANT SELECT ON TABLE Singers TO ROLE parent", StatementType.DDL),
             ("REVOKE SELECT ON TABLE Singers TO ROLE parent", StatementType.DDL),
             ("GRANT ROLE parent TO ROLE child", StatementType.DDL),
@@ -282,6 +284,41 @@ class TestParseUtils(unittest.TestCase):
                 StatementType.CLIENT_SIDE,
                 Statement("show  variable data_boost_enabled"),
                 ClientSideStatementType.SHOW_DATA_BOOST_ENABLED,
+                [],
+            ),
+        )
+
+    def test_set_auto_partition_mode_stmt(self):
+        parsed_statement = classify_statement("SET AUTO_PARTITION_MODE = TRUE")
+        self.assertEqual(
+            parsed_statement,
+            ParsedStatement(
+                StatementType.CLIENT_SIDE,
+                Statement("SET AUTO_PARTITION_MODE = TRUE"),
+                ClientSideStatementType.SET_AUTO_PARTITION_MODE,
+                ["TRUE"],
+            ),
+        )
+
+        parsed_statement = classify_statement("set auto_partition_mode = false")
+        self.assertEqual(
+            parsed_statement,
+            ParsedStatement(
+                StatementType.CLIENT_SIDE,
+                Statement("set auto_partition_mode = false"),
+                ClientSideStatementType.SET_AUTO_PARTITION_MODE,
+                ["false"],
+            ),
+        )
+
+    def test_show_auto_partition_mode_stmt(self):
+        parsed_statement = classify_statement("  show  variable auto_partition_mode  ")
+        self.assertEqual(
+            parsed_statement,
+            ParsedStatement(
+                StatementType.CLIENT_SIDE,
+                Statement("show  variable auto_partition_mode"),
+                ClientSideStatementType.SHOW_AUTO_PARTITION_MODE,
                 [],
             ),
         )

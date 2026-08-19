@@ -20,7 +20,6 @@ from google.api_core.client_options import ClientOptions
 from google.api_core.exceptions import Aborted
 from google.api_core.gapic_v1.client_info import ClientInfo
 from google.auth.credentials import AnonymousCredentials
-
 from google.cloud import spanner_v1 as spanner
 from google.cloud.spanner_dbapi import partition_helper
 from google.cloud.spanner_dbapi.batch_dml_executor import BatchDmlExecutor, BatchMode
@@ -100,6 +99,7 @@ class Connection:
         database=None,
         read_only=False,
         data_boost_enabled=False,
+        auto_partition_mode=False,
         **kwargs,
     ):
         self._instance = instance
@@ -118,6 +118,7 @@ class Connection:
         self._own_pool = True
         self._read_only = read_only
         self._data_boost_enabled = bool(data_boost_enabled)
+        self._auto_partition_mode = bool(auto_partition_mode)
         self._staleness = None
         self.request_priority = None
         self._transaction_begin_marked = False
@@ -150,6 +151,27 @@ class Connection:
         :param value: New data_boost_enabled state.
         """
         self._data_boost_enabled = bool(value)
+
+    @property
+    def auto_partition_mode(self):
+        """Flag: whether auto partition mode is enabled for queries on this connection.
+
+        When enabled, standard queries executed on read-only or autocommit connections
+        are automatically partitioned and executed in parallel via run_partitioned_query.
+
+        Returns:
+            bool: True if auto partition mode is enabled, False otherwise.
+        """
+        return self._auto_partition_mode
+
+    @auto_partition_mode.setter
+    def auto_partition_mode(self, value):
+        """Change the auto partition mode enablement state for this connection.
+
+        :type value: bool
+        :param value: New auto_partition_mode state.
+        """
+        self._auto_partition_mode = bool(value)
 
     @property
     def spanner_client(self):
@@ -785,6 +807,7 @@ def connect(
     client_key=None,
     instance_type=None,
     data_boost_enabled=False,
+    auto_partition_mode=False,
     **kwargs,
 ):
     """Creates a connection to a Google Cloud Spanner database.
@@ -836,6 +859,12 @@ def connect(
     :param data_boost_enabled: (Optional) Whether to enable DataBoost for
         partitioned queries executed via this connection. Defaults to False.
         Note that DataBoost is only supported for partitioned query execution.
+
+    :type auto_partition_mode: bool
+    :param auto_partition_mode: (Optional) Whether to enable auto partition mode
+        for queries executed via this connection. When True, queries on read-only
+        or autocommit connections are automatically partitioned and executed in parallel.
+        Defaults to False.
 
     **kwargs: Initial value for connection variables.
 
@@ -952,7 +981,11 @@ def connect(
             database_id, pool=pool, database_role=database_role, logger=logger
         )
     conn = Connection(
-        instance, database, data_boost_enabled=data_boost_enabled, **kwargs
+        instance,
+        database,
+        data_boost_enabled=data_boost_enabled,
+        auto_partition_mode=auto_partition_mode,
+        **kwargs,
     )
     if pool is not None:
         conn._own_pool = False

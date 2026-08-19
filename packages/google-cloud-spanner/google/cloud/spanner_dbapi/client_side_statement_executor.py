@@ -13,9 +13,8 @@
 # limitations under the License.
 from typing import TYPE_CHECKING, Union
 
-from google.cloud.spanner_v1 import TransactionOptions
-
 from google.cloud.spanner_dbapi.exceptions import ProgrammingError
+from google.cloud.spanner_v1 import TransactionOptions
 
 if TYPE_CHECKING:
     from google.cloud.spanner_dbapi.cursor import Cursor
@@ -110,17 +109,10 @@ def execute(cursor: "Cursor", parsed_statement: ParsedStatement):
     if statement_type == ClientSideStatementType.SET_AUTOCOMMIT_DML_MODE:
         return connection._set_autocommit_dml_mode(parsed_statement)
     if statement_type == ClientSideStatementType.SET_DATA_BOOST_ENABLED:
-        val_str = (
-            parsed_statement.client_side_statement_params[0]
-            .strip()
-            .strip("'\"")
-            .lower()
+        connection.data_boost_enabled = _parse_bool(
+            parsed_statement.client_side_statement_params[0],
+            "DATA_BOOST_ENABLED",
         )
-        if val_str not in ("true", "false"):
-            raise ProgrammingError(
-                f"Invalid value for DATA_BOOST_ENABLED: '{parsed_statement.client_side_statement_params[0]}'. Expected TRUE or FALSE."
-            )
-        connection.data_boost_enabled = val_str == "true"
         return None
     if statement_type == ClientSideStatementType.SHOW_DATA_BOOST_ENABLED:
         column_values.append(connection.data_boost_enabled)
@@ -129,7 +121,32 @@ def execute(cursor: "Cursor", parsed_statement: ParsedStatement):
             TypeCode.BOOL,
             column_values,
         )
+    if statement_type == ClientSideStatementType.SET_AUTO_PARTITION_MODE:
+        connection.auto_partition_mode = _parse_bool(
+            parsed_statement.client_side_statement_params[0],
+            "AUTO_PARTITION_MODE",
+        )
+        return None
+    if statement_type == ClientSideStatementType.SHOW_AUTO_PARTITION_MODE:
+        column_values.append(connection.auto_partition_mode)
+        return _get_streamed_result_set(
+            "AUTO_PARTITION_MODE",
+            TypeCode.BOOL,
+            column_values,
+        )
     return None
+
+
+_BOOL_MAP = {"true": True, "false": False}
+
+
+def _parse_bool(raw_val: str, var_name: str) -> bool:
+    cleaned = raw_val.strip().strip("'\"").lower()
+    if cleaned not in _BOOL_MAP:
+        raise ProgrammingError(
+            f"Invalid value for {var_name}: '{raw_val}'. Expected TRUE or FALSE."
+        )
+    return _BOOL_MAP[cleaned]
 
 
 def _get_streamed_result_set(column_name, type_code, column_values):

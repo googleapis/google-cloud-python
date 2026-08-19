@@ -40,6 +40,8 @@ class ClientSideStatementType(Enum):
     SET_AUTOCOMMIT_DML_MODE = 12
     SET_DATA_BOOST_ENABLED = 13
     SHOW_DATA_BOOST_ENABLED = 14
+    SET_AUTO_PARTITION_MODE = 15
+    SHOW_AUTO_PARTITION_MODE = 16
 
 
 class AutocommitDmlMode(Enum):

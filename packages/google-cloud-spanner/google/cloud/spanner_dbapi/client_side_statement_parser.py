@@ -50,6 +50,12 @@ RE_SET_DATA_BOOST_ENABLED = re.compile(
 RE_SHOW_DATA_BOOST_ENABLED = re.compile(
     r"^\s*(SHOW)\s+(VARIABLE)\s+(DATA_BOOST_ENABLED)\s*$", re.IGNORECASE
 )
+RE_SET_AUTO_PARTITION_MODE = re.compile(
+    r"^\s*(SET)\s+(AUTO_PARTITION_MODE)\s+(=)\s+(.+)", re.IGNORECASE
+)
+RE_SHOW_AUTO_PARTITION_MODE = re.compile(
+    r"^\s*(SHOW)\s+(VARIABLE)\s+(AUTO_PARTITION_MODE)\s*$", re.IGNORECASE
+)
 
 
 def parse_stmt(query):
@@ -76,6 +82,8 @@ def parse_stmt(query):
         client_side_statement_type = ClientSideStatementType.SHOW_READ_TIMESTAMP
     elif RE_SHOW_DATA_BOOST_ENABLED.match(query):
         client_side_statement_type = ClientSideStatementType.SHOW_DATA_BOOST_ENABLED
+    elif RE_SHOW_AUTO_PARTITION_MODE.match(query):
+        client_side_statement_type = ClientSideStatementType.SHOW_AUTO_PARTITION_MODE
     elif RE_START_BATCH_DML.match(query):
         client_side_statement_type = ClientSideStatementType.START_BATCH_DML
     elif RE_BEGIN.match(query):
@@ -108,6 +116,10 @@ def parse_stmt(query):
         match = re.search(RE_SET_DATA_BOOST_ENABLED, query)
         client_side_statement_params.append(match.group(4))
         client_side_statement_type = ClientSideStatementType.SET_DATA_BOOST_ENABLED
+    elif RE_SET_AUTO_PARTITION_MODE.match(query):
+        match = re.search(RE_SET_AUTO_PARTITION_MODE, query)
+        client_side_statement_params.append(match.group(4))
+        client_side_statement_type = ClientSideStatementType.SET_AUTO_PARTITION_MODE
     if client_side_statement_type is not None:
         return ParsedStatement(
             StatementType.CLIENT_SIDE,

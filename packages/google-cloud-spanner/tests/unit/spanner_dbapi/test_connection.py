@@ -21,7 +21,6 @@ import warnings
 import mock
 import pytest
 from google.auth.credentials import AnonymousCredentials
-
 from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 from google.cloud.spanner_dbapi import Connection
 from google.cloud.spanner_dbapi.batch_dml_executor import BatchMode
@@ -39,6 +38,7 @@ from google.cloud.spanner_dbapi.parsed_statement import (
     StatementType,
 )
 from google.cloud.spanner_v1.database_sessions_manager import TransactionType
+
 from tests._builders import build_connection, build_session
 
 PROJECT = "test-project"
@@ -154,6 +154,16 @@ class TestConnection(unittest.TestCase):
 
         connection.data_boost_enabled = False
         self.assertFalse(connection.data_boost_enabled)
+
+    def test_property_auto_partition_mode(self):
+        connection = self._make_connection()
+        self.assertFalse(connection.auto_partition_mode)
+
+        connection.auto_partition_mode = True
+        self.assertTrue(connection.auto_partition_mode)
+
+        connection.auto_partition_mode = False
+        self.assertFalse(connection.auto_partition_mode)
 
     def test__session_checkout_read_only(self):
         connection = build_connection(read_only=True)

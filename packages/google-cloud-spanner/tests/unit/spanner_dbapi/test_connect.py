@@ -170,3 +170,16 @@ class Test_connect(unittest.TestCase):
 
         self.assertIsInstance(connection, Connection)
         self.assertTrue(connection.data_boost_enabled)
+
+    def test_w_auto_partition_mode(self, mock_client):
+        from google.cloud.spanner_dbapi import Connection, connect
+
+        client = mock_client.return_value
+        instance = client.instance.return_value
+        database = instance.database.return_value
+        self.assertIsNotNone(database)
+
+        connection = connect(INSTANCE, DATABASE, auto_partition_mode=True)
+
+        self.assertIsInstance(connection, Connection)
+        self.assertTrue(connection.auto_partition_mode)
