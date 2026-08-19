@@ -413,6 +413,9 @@ def unit(session, test_type):
 def system(session, test_type):
     """Run SQLAlchemy dialect system test suite."""
 
+    config_file = f"test_{test_type}_{session.python}.cfg"
+    os.environ["SQLALCHEMY_SPANNER_CONFIG"] = config_file
+
     if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "") and not os.environ.get(
         "SPANNER_EMULATOR_HOST", ""
     ):
