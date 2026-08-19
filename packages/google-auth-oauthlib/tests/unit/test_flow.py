@@ -24,6 +24,7 @@ import time
 from unittest import mock
 import urllib
 import webbrowser
+import wsgiref.simple_server
 
 import pytest
 import requests
@@ -466,7 +467,7 @@ class TestInstalledAppFlow(object):
             hijack_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             try:
                 with pytest.raises(OSError):
-                    hijack_socket.bind(("", port))
+                    hijack_socket.bind(("localhost", port))
             finally:
                 hijack_socket.close()
                 while not future.done():
