@@ -21,7 +21,11 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.ads.admanager_v1.types import report_definition as gaa_report_definition
-from google.ads.admanager_v1.types import report_delivery, report_value
+from google.ads.admanager_v1.types import (
+    report_delivery,
+    report_value,
+    report_visibility_enum,
+)
 
 __protobuf__ = proto.module(
     package="google.ads.admanager.v1",
@@ -42,7 +46,7 @@ class Report(proto.Message):
             ``networks/{network_code}/reports/{report_id}``
         report_id (int):
             Output only. Report ID.
-        visibility (google.ads.admanager_v1.types.Report.Visibility):
+        visibility (google.ads.admanager_v1.types.ReportVisibilityEnum.ReportVisibility):
             Optional. The visibility of a report.
         report_definition (google.ads.admanager_v1.types.ReportDefinition):
             Required. The report definition of the
@@ -64,32 +68,6 @@ class Report(proto.Message):
             report.
     """
 
-    class Visibility(proto.Enum):
-        r"""The visibility of a report.
-
-        Values:
-            HIDDEN (0):
-                Default value. Reports with hidden visibility
-                won't appear in the Ad Manager UI.
-            DRAFT (1):
-                Reports with draft visibility will appear in
-                the Ad Manager UI only if the user has
-                configured the UI to show them.
-            VISIBLE (2):
-                Reports with this visibility will appear in
-                the Ad Manager UI.
-            SAVED (2):
-                Deprecated: Use ``VISIBLE``. Reports with saved visibility
-                will appear in the Ad Manager UI by default. This is an
-                alias for ``VISIBLE`` and will be removed in the future.
-        """
-
-        _pb_options = {"allow_alias": True}
-        HIDDEN = 0
-        DRAFT = 1
-        VISIBLE = 2
-        SAVED = 2
-
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -98,10 +76,12 @@ class Report(proto.Message):
         proto.INT64,
         number=3,
     )
-    visibility: Visibility = proto.Field(
-        proto.ENUM,
-        number=2,
-        enum=Visibility,
+    visibility: report_visibility_enum.ReportVisibilityEnum.ReportVisibility = (
+        proto.Field(
+            proto.ENUM,
+            number=2,
+            enum=report_visibility_enum.ReportVisibilityEnum.ReportVisibility,
+        )
     )
     report_definition: gaa_report_definition.ReportDefinition = proto.Field(
         proto.MESSAGE,

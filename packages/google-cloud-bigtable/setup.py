@@ -43,7 +43,6 @@ else:
 
 dependencies = [
     "google-api-core[grpc] >= 2.25.0, <3.0.0",
-    "google-cloud-monitoring >= 2.0.0, <3.0.0dev",
     # Exclude incompatible versions of `google-auth`
     # See https://github.com/googleapis/google-cloud-python/issues/12364
     "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
@@ -51,6 +50,7 @@ dependencies = [
     "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     "proto-plus >= 1.26.1, <2.0.0",
     "protobuf >= 6.33.5, < 8.0.0",
+    "google-cloud-monitoring >= 2.0.0, <3.0.0dev",
     "google-cloud-core >= 2.0.0, <3.0.0",
     "grpc-google-iam-v1 >= 0.14.2, <1.0.0",
     "google-crc32c>=1.6.0, <2.0.0",

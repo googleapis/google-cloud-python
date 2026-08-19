@@ -154,6 +154,26 @@ class CompanyServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_company: gapic_v1.method.wrap_method(
+                self.create_company,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_create_companies: gapic_v1.method.wrap_method(
+                self.batch_create_companies,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_company: gapic_v1.method.wrap_method(
+                self.update_company,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_update_companies: gapic_v1.method.wrap_method(
+                self.batch_update_companies,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.cancel_operation: gapic_v1.method.wrap_method(
                 self.cancel_operation,
                 default_timeout=None,
@@ -192,6 +212,48 @@ class CompanyServiceTransport(abc.ABC):
         Union[
             company_service.ListCompaniesResponse,
             Awaitable[company_service.ListCompaniesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_company(
+        self,
+    ) -> Callable[
+        [company_service.CreateCompanyRequest],
+        Union[company_messages.Company, Awaitable[company_messages.Company]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_create_companies(
+        self,
+    ) -> Callable[
+        [company_service.BatchCreateCompaniesRequest],
+        Union[
+            company_service.BatchCreateCompaniesResponse,
+            Awaitable[company_service.BatchCreateCompaniesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_company(
+        self,
+    ) -> Callable[
+        [company_service.UpdateCompanyRequest],
+        Union[company_messages.Company, Awaitable[company_messages.Company]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_update_companies(
+        self,
+    ) -> Callable[
+        [company_service.BatchUpdateCompaniesRequest],
+        Union[
+            company_service.BatchUpdateCompaniesResponse,
+            Awaitable[company_service.BatchUpdateCompaniesResponse],
         ],
     ]:
         raise NotImplementedError()

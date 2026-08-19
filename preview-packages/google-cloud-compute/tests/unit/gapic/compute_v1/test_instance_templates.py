@@ -4194,9 +4194,13 @@ def test_insert_rest_call_success(request_type):
             "scheduling": {
                 "automatic_restart": True,
                 "availability_domain": 2002,
+                "graceful_shutdown": {
+                    "enabled": True,
+                    "max_duration": {"nanos": 543, "seconds": 751},
+                },
                 "host_error_timeout_seconds": 2811,
                 "instance_termination_action": "instance_termination_action_value",
-                "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
+                "local_ssd_recovery_timeout": {},
                 "location_hint": "location_hint_value",
                 "max_run_duration": {},
                 "min_node_cpus": 1379,
@@ -4210,6 +4214,7 @@ def test_insert_rest_call_success(request_type):
                 "on_host_maintenance": "on_host_maintenance_value",
                 "on_instance_stop_action": {"discard_local_ssd": True},
                 "preemptible": True,
+                "preemption_notice_duration": {},
                 "provisioning_model": "provisioning_model_value",
                 "skip_guest_os_shutdown": True,
                 "termination_time": "termination_time_value",

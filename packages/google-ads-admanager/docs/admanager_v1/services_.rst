@@ -14,6 +14,7 @@ Services for Google Ads Admanager v1 API
     browser_language_service
     browser_service
     cdn_config_service
+    child_publisher_service
     cms_metadata_key_service
     cms_metadata_value_service
     company_service
@@ -23,9 +24,12 @@ Services for Google Ads Admanager v1 API
     content_service
     creative_set_service
     creative_template_service
+    creative_wrapper_service
     custom_field_service
     custom_targeting_key_service
     custom_targeting_value_service
+    dai_authentication_key_service
+    dai_encoding_profile_service
     device_capability_service
     device_category_service
     device_manufacturer_service
@@ -43,6 +47,7 @@ Services for Google Ads Admanager v1 API
     operating_system_service
     operating_system_version_service
     order_service
+    partner_service
     placement_service
     private_auction_deal_service
     private_auction_service
@@ -58,3 +63,4 @@ Services for Google Ads Admanager v1 API
     team_service
     third_party_company_service
     user_service
+    viewability_provider_service

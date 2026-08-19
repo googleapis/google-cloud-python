@@ -50,6 +50,7 @@ import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
 
 from google.cloud.bigquery_reservation_v1.services.reservation_service import pagers
 from google.cloud.bigquery_reservation_v1.types import reservation

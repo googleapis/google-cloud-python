@@ -6529,6 +6529,7 @@ def test_create_assignment(request_type, transport: str = "grpc"):
             state=reservation.Assignment.State.PENDING,
             enable_gemini_in_bigquery=True,
             principal="principal_value",
+            precedence=1038,
         )
         response = client.create_assignment(request)
 
@@ -6546,6 +6547,7 @@ def test_create_assignment(request_type, transport: str = "grpc"):
     assert response.state == reservation.Assignment.State.PENDING
     assert response.enable_gemini_in_bigquery is True
     assert response.principal == "principal_value"
+    assert response.precedence == 1038
 
 
 def test_create_assignment_non_empty_request_with_auto_populated_field():
@@ -6691,6 +6693,7 @@ async def test_create_assignment_async(request_type, transport: str = "grpc_asyn
                 state=reservation.Assignment.State.PENDING,
                 enable_gemini_in_bigquery=True,
                 principal="principal_value",
+                precedence=1038,
             )
         )
         response = await client.create_assignment(request)
@@ -6709,6 +6712,7 @@ async def test_create_assignment_async(request_type, transport: str = "grpc_asyn
     assert response.state == reservation.Assignment.State.PENDING
     assert response.enable_gemini_in_bigquery is True
     assert response.principal == "principal_value"
+    assert response.precedence == 1038
 
 
 def test_create_assignment_field_headers():
@@ -8871,6 +8875,7 @@ def test_move_assignment(request_type, transport: str = "grpc"):
             state=reservation.Assignment.State.PENDING,
             enable_gemini_in_bigquery=True,
             principal="principal_value",
+            precedence=1038,
         )
         response = client.move_assignment(request)
 
@@ -8888,6 +8893,7 @@ def test_move_assignment(request_type, transport: str = "grpc"):
     assert response.state == reservation.Assignment.State.PENDING
     assert response.enable_gemini_in_bigquery is True
     assert response.principal == "principal_value"
+    assert response.precedence == 1038
 
 
 def test_move_assignment_non_empty_request_with_auto_populated_field():
@@ -9029,6 +9035,7 @@ async def test_move_assignment_async(request_type, transport: str = "grpc_asynci
                 state=reservation.Assignment.State.PENDING,
                 enable_gemini_in_bigquery=True,
                 principal="principal_value",
+                precedence=1038,
             )
         )
         response = await client.move_assignment(request)
@@ -9047,6 +9054,7 @@ async def test_move_assignment_async(request_type, transport: str = "grpc_asynci
     assert response.state == reservation.Assignment.State.PENDING
     assert response.enable_gemini_in_bigquery is True
     assert response.principal == "principal_value"
+    assert response.precedence == 1038
 
 
 def test_move_assignment_field_headers():
@@ -9231,6 +9239,7 @@ def test_update_assignment(request_type, transport: str = "grpc"):
             state=reservation.Assignment.State.PENDING,
             enable_gemini_in_bigquery=True,
             principal="principal_value",
+            precedence=1038,
         )
         response = client.update_assignment(request)
 
@@ -9248,6 +9257,7 @@ def test_update_assignment(request_type, transport: str = "grpc"):
     assert response.state == reservation.Assignment.State.PENDING
     assert response.enable_gemini_in_bigquery is True
     assert response.principal == "principal_value"
+    assert response.precedence == 1038
 
 
 def test_update_assignment_non_empty_request_with_auto_populated_field():
@@ -9387,6 +9397,7 @@ async def test_update_assignment_async(request_type, transport: str = "grpc_asyn
                 state=reservation.Assignment.State.PENDING,
                 enable_gemini_in_bigquery=True,
                 principal="principal_value",
+                precedence=1038,
             )
         )
         response = await client.update_assignment(request)
@@ -9405,6 +9416,7 @@ async def test_update_assignment_async(request_type, transport: str = "grpc_asyn
     assert response.state == reservation.Assignment.State.PENDING
     assert response.enable_gemini_in_bigquery is True
     assert response.principal == "principal_value"
+    assert response.precedence == 1038
 
 
 def test_update_assignment_field_headers():
@@ -19191,6 +19203,7 @@ async def test_create_assignment_empty_call_grpc_asyncio():
                 state=reservation.Assignment.State.PENDING,
                 enable_gemini_in_bigquery=True,
                 principal="principal_value",
+                precedence=1038,
             )
         )
         await client.create_assignment(request=None)
@@ -19328,6 +19341,7 @@ async def test_move_assignment_empty_call_grpc_asyncio():
                 state=reservation.Assignment.State.PENDING,
                 enable_gemini_in_bigquery=True,
                 principal="principal_value",
+                precedence=1038,
             )
         )
         await client.move_assignment(request=None)
@@ -19361,6 +19375,7 @@ async def test_update_assignment_empty_call_grpc_asyncio():
                 state=reservation.Assignment.State.PENDING,
                 enable_gemini_in_bigquery=True,
                 principal="principal_value",
+                precedence=1038,
             )
         )
         await client.update_assignment(request=None)
@@ -21931,6 +21946,13 @@ def test_create_assignment_rest_call_success(request_type):
         "enable_gemini_in_bigquery": True,
         "scheduling_policy": {"concurrency": 1195, "max_slots": 986},
         "principal": "principal_value",
+        "precedence": 1038,
+        "condition": {
+            "expression": "expression_value",
+            "title": "title_value",
+            "description": "description_value",
+            "location": "location_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -22011,6 +22033,7 @@ def test_create_assignment_rest_call_success(request_type):
             state=reservation.Assignment.State.PENDING,
             enable_gemini_in_bigquery=True,
             principal="principal_value",
+            precedence=1038,
         )
 
         # Wrap the value into a proper Response obj
@@ -22033,6 +22056,7 @@ def test_create_assignment_rest_call_success(request_type):
     assert response.state == reservation.Assignment.State.PENDING
     assert response.enable_gemini_in_bigquery is True
     assert response.principal == "principal_value"
+    assert response.precedence == 1038
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -22678,6 +22702,7 @@ def test_move_assignment_rest_call_success(request_type):
             state=reservation.Assignment.State.PENDING,
             enable_gemini_in_bigquery=True,
             principal="principal_value",
+            precedence=1038,
         )
 
         # Wrap the value into a proper Response obj
@@ -22700,6 +22725,7 @@ def test_move_assignment_rest_call_success(request_type):
     assert response.state == reservation.Assignment.State.PENDING
     assert response.enable_gemini_in_bigquery is True
     assert response.principal == "principal_value"
+    assert response.precedence == 1038
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -22823,6 +22849,13 @@ def test_update_assignment_rest_call_success(request_type):
         "enable_gemini_in_bigquery": True,
         "scheduling_policy": {"concurrency": 1195, "max_slots": 986},
         "principal": "principal_value",
+        "precedence": 1038,
+        "condition": {
+            "expression": "expression_value",
+            "title": "title_value",
+            "description": "description_value",
+            "location": "location_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -22903,6 +22936,7 @@ def test_update_assignment_rest_call_success(request_type):
             state=reservation.Assignment.State.PENDING,
             enable_gemini_in_bigquery=True,
             principal="principal_value",
+            precedence=1038,
         )
 
         # Wrap the value into a proper Response obj
@@ -22925,6 +22959,7 @@ def test_update_assignment_rest_call_success(request_type):
     assert response.state == reservation.Assignment.State.PENDING
     assert response.enable_gemini_in_bigquery is True
     assert response.principal == "principal_value"
+    assert response.precedence == 1038
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

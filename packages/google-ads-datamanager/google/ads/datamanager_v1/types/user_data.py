@@ -117,6 +117,34 @@ class AddressInfo(proto.Message):
         postal_code (str):
             Required. The postal code of the user's
             address.
+        address_line (str):
+            Optional. The street and number of the user's
+            address. Used only for Google Analytics. This
+            field is hashed and possibly encrypted.
+
+            Normalize the value before hashing:
+
+            - Remove symbol characters
+            - Convert to lowercase
+            - Remove leading and trailing whitespace
+        city (str):
+            Optional. The city of the user's address.
+            Used only for Google Analytics.
+            The value should be normalized as such:
+
+            - Remove symbol characters
+            - Convert to lowercase
+            - Remove leading and trailing whitespace
+        administrative_area (str):
+            Optional. The administrative area
+            (state/province) of the user's address. Used
+            only for Google Analytics.
+
+            The value should be normalized as such:
+
+            - Remove symbol characters
+            - Convert to lowercase
+            - Remove leading and trailing whitespace
     """
 
     given_name: str = proto.Field(
@@ -134,6 +162,18 @@ class AddressInfo(proto.Message):
     postal_code: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    address_line: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    city: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    administrative_area: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 

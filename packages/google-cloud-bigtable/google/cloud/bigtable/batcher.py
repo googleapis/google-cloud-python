@@ -174,10 +174,15 @@ class MutationsBatcher(object):
     request.
 
     This class is not suited for usage in systems where each mutation
-    must be guaranteed to be sent, since calling mutate may only result in an
-    in-memory change. In a case of a system crash, any :class:`DirectRow` remaining in
-    memory will not necessarily be sent to the service, even after the
-    completion of the :func:`mutate()` method.
+    must be guaranteed to be sent, since calling :func:`mutate()` may only
+    result in an in-memory change. Rows are only sent to the service when a size
+    limit is reached, when :func:`flush()` is called explicitly, or when the
+    batcher is closed (:func:`close()` is also registered to run at interpreter
+    exit). There is no time-based background flush. As a result, if the process
+    terminates abruptly -- e.g. a crash, ``SIGKILL``, or ``os._exit`` where the
+    ``atexit`` handler never runs -- any :class:`DirectRow` still buffered in
+    memory is silently dropped and never sent, even after :func:`mutate()`
+    returned.
 
     Note on thread safety: The same :class:`MutationBatcher` cannot be shared by multiple end-user threads.
 
@@ -196,8 +201,9 @@ class MutationsBatcher(object):
         (5 MB).
 
     :type flush_interval: float
-    :param flush_interval: (Optional) The interval (in seconds) between asynchronous flush.
-        Default is 1 second.
+    :param flush_interval: (Deprecated) No longer used. Retained only for
+        backwards compatibility. There is no time-based background flush; see the
+        class docstring for when rows are sent.
 
     :type batch_completed_callback: Callable[list:[`~google.rpc.status_pb2.Status`]] = None
     :param batch_completed_callback: (Optional) A callable for handling responses
@@ -219,8 +225,12 @@ class MutationsBatcher(object):
         self.table = table
         self._executor = concurrent.futures.ThreadPoolExecutor()
         atexit.register(self.close)
-        self._timer = threading.Timer(flush_interval, self.flush)
-        self._timer.start()
+        # ``flush_interval`` is retained for backwards compatibility but is no
+        # longer used: the previous background ``threading.Timer`` was one-shot
+        # (never re-armed), so it fired at most once and could silently drop the
+        # rows it dequeued if that single flush raised on the timer thread.
+        # Flushing now happens only on size thresholds, explicit ``flush()``,
+        # or ``close()`` (also registered via ``atexit``).
         self.flow_control = _FlowControl(
             max_mutations=MAX_OUTSTANDING_ELEMENTS,
             max_mutation_bytes=MAX_OUTSTANDING_BYTES,
@@ -350,6 +360,26 @@ class MutationsBatcher(object):
         processed_rows = self.futures_mapping[future]
         self.flow_control.release(processed_rows)
         del self.futures_mapping[future]
+        # Surface any exception raised inside the async flush. Without this, an
+        # exception raised by ``_flush_rows`` (e.g. a non-retryable RPC error, a
+        # retry deadline, or a response-count mismatch) would be stored on the
+        # future and silently discarded, so the failed mutations would never be
+        # reported to the user -- effectively silent data loss. Per-row errors
+        # from a successful RPC are already recorded in ``self.exceptions`` by
+        # ``_flush_rows``; here the whole batch failed with a single exception,
+        # so record it once per row in the batch to keep the reported error
+        # count aligned with the number of affected mutations.
+        #
+        # A cancelled future is "done", so this callback still runs for it, but
+        # ``future.exception()`` would raise ``CancelledError``. Nothing here
+        # cancels futures today, but guard against it so the callback stays
+        # correct if cancellation is ever introduced.
+        if future.cancelled():
+            return
+        exc = future.exception()
+        if exc is not None:
+            for _ in range(processed_rows.rows_count):
+                self.exceptions.put(exc)
 
     def _row_fits_in_batch(self, row, batch_info):
         """Checks if a row can fit in the current batch.
@@ -405,7 +435,19 @@ class MutationsBatcher(object):
         :raises:
             * :exc:`.batcherMutationsBatchError` if there's any error in the mutations.
         """
-        self.flush()
+        try:
+            self.flush()
+        except MutationsBatchError as exc:
+            for e in exc.exc:
+                self.exceptions.put(e)
+        except Exception as exc:
+            # A failure in this final synchronous flush must not abort cleanup.
+            # If it propagated here it would skip the executor shutdown (leaving
+            # in-flight async flushes un-awaited) and skip draining
+            # self.exceptions, masking every error already captured from
+            # earlier async flushes -- silently discarding those failures.
+            # Record it like any other batch failure and continue.
+            self.exceptions.put(exc)
         self._executor.shutdown(wait=True)
         atexit.unregister(self.close)
         if self.exceptions.qsize() > 0:

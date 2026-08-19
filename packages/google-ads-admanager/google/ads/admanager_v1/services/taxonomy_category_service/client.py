@@ -762,7 +762,7 @@ class TaxonomyCategoryServiceClient(metaclass=TaxonomyCategoryServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> taxonomy_category_messages.TaxonomyCategory:
-        r"""API to retrieve a ``TaxonomyCategory`` object.
+        r"""Retrieves a ``TaxonomyCategory`` object.
 
         .. code-block:: python
 
@@ -872,7 +872,7 @@ class TaxonomyCategoryServiceClient(metaclass=TaxonomyCategoryServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListTaxonomyCategoriesPager:
-        r"""API to retrieve a list of ``TaxonomyCategory`` objects.
+        r"""Lists ``TaxonomyCategory`` objects.
 
         .. code-block:: python
 

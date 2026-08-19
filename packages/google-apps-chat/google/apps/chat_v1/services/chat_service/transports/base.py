@@ -299,6 +299,20 @@ class ChatServiceTransport(abc.ABC):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
+            self.search_messages: gapic_v1.method.wrap_method(
+                self.search_messages,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=30.0,
+                ),
+                default_timeout=30.0,
+                client_info=client_info,
+            ),
             self.get_attachment: gapic_v1.method.wrap_method(
                 self.get_attachment,
                 default_retry=retries.Retry(
@@ -946,6 +960,17 @@ class ChatServiceTransport(abc.ABC):
     ) -> Callable[
         [message.DeleteMessageRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def search_messages(
+        self,
+    ) -> Callable[
+        [message.SearchMessagesRequest],
+        Union[
+            message.SearchMessagesResponse, Awaitable[message.SearchMessagesResponse]
+        ],
     ]:
         raise NotImplementedError()
 

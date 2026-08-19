@@ -110,7 +110,7 @@ class _BaseSuggestedAdUnitServiceRestTransport(SuggestedAdUnitServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1/{parent=networks/*}/suggestedAdUnit:batchApprove",
+                    "uri": "/v1/{parent=networks/*}/suggestedAdUnits:batchApprove",
                     "body": "*",
                 },
             ]

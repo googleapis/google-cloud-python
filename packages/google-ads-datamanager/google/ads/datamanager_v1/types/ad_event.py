@@ -316,7 +316,7 @@ class AdEvent(proto.Message):
             more data provided, the more likely a match will
             be found.
         device_info (google.ads.datamanager_v1.types.DeviceInfo):
-            Optional. Information gathered about the
+            Required. Information gathered about the
             device being used when the ad event happened.
         mobile_device_id (str):
             Optional. The device ID of the device that
@@ -360,7 +360,7 @@ class AdEvent(proto.Message):
         ad_width (int):
             Optional. The width of the ad in pixels.
         region_code (str):
-            Required. The ISO 3166-2 country plus
+            Optional. The ISO 3166-2 country plus
             subdivision.
         source (str):
             Required. The platform source of the ad, akin

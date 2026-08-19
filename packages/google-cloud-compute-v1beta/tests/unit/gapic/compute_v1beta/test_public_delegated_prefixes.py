@@ -4733,6 +4733,7 @@ def test_get_rest_call_success(request_type):
             kind="kind_value",
             mode="mode_value",
             name="name_value",
+            network_tier="network_tier_value",
             parent_prefix="parent_prefix_value",
             purpose="purpose_value",
             region="region_value",
@@ -4767,6 +4768,7 @@ def test_get_rest_call_success(request_type):
     assert response.kind == "kind_value"
     assert response.mode == "mode_value"
     assert response.name == "name_value"
+    assert response.network_tier == "network_tier_value"
     assert response.parent_prefix == "parent_prefix_value"
     assert response.purpose == "purpose_value"
     assert response.region == "region_value"
@@ -4894,6 +4896,7 @@ def test_insert_rest_call_success(request_type):
         "kind": "kind_value",
         "mode": "mode_value",
         "name": "name_value",
+        "network_tier": "network_tier_value",
         "parent_prefix": "parent_prefix_value",
         "public_delegated_sub_prefixs": [
             {
@@ -5322,6 +5325,7 @@ def test_patch_rest_call_success(request_type):
         "kind": "kind_value",
         "mode": "mode_value",
         "name": "name_value",
+        "network_tier": "network_tier_value",
         "parent_prefix": "parent_prefix_value",
         "public_delegated_sub_prefixs": [
             {

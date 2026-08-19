@@ -26816,7 +26816,10 @@ def test_insert_rest_call_success(request_type):
             },
             "physical_host": "physical_host_value",
             "physical_host_topology": {
-                "additional_attributes": {"accelerator_topology_ids": {}},
+                "additional_attributes": {
+                    "accelerator_topology_ids": {},
+                    "network_topology_ids": {},
+                },
                 "block": "block_value",
                 "cluster": "cluster_value",
                 "host": "host_value",
@@ -26829,6 +26832,7 @@ def test_insert_rest_call_success(request_type):
             },
             "scheduling": {
                 "availability_domain": 2002,
+                "graceful_shutdown_timestamp": "graceful_shutdown_timestamp_value",
                 "termination_timestamp": "termination_timestamp_value",
             },
             "shutdown_details": {
@@ -33808,7 +33812,10 @@ def test_update_rest_call_success(request_type):
             },
             "physical_host": "physical_host_value",
             "physical_host_topology": {
-                "additional_attributes": {"accelerator_topology_ids": {}},
+                "additional_attributes": {
+                    "accelerator_topology_ids": {},
+                    "network_topology_ids": {},
+                },
                 "block": "block_value",
                 "cluster": "cluster_value",
                 "host": "host_value",
@@ -33821,6 +33828,7 @@ def test_update_rest_call_success(request_type):
             },
             "scheduling": {
                 "availability_domain": 2002,
+                "graceful_shutdown_timestamp": "graceful_shutdown_timestamp_value",
                 "termination_timestamp": "termination_timestamp_value",
             },
             "shutdown_details": {

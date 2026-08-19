@@ -112,9 +112,11 @@ from .types.age_range import AgeRange
 from .types.audience import (
     AudienceMember,
     CompositeData,
+    GoogleUserIdData,
     IpData,
     MobileData,
     PairData,
+    PartnerProvidedIdData,
     PpidData,
     UserIdData,
 )
@@ -148,6 +150,8 @@ from .types.ingestion_service import (
     IngestAudienceMembersResponse,
     IngestEventsRequest,
     IngestEventsResponse,
+    RemoveAllAudienceMembersRequest,
+    RemoveAllAudienceMembersResponse,
     RemoveAudienceMembersRequest,
     RemoveAudienceMembersResponse,
     RetrieveRequestStatusRequest,
@@ -173,10 +177,12 @@ from .types.partner_link_service import (
 from .types.processing_errors import (
     ErrorCount,
     ErrorInfo,
+    FieldWarning,
     ProcessingErrorReason,
     ProcessingWarningReason,
     WarningCount,
     WarningInfo,
+    WarningReason,
 )
 from .types.request_status_per_destination import RequestStatusPerDestination
 from .types.terms_of_service import TermsOfService, TermsOfServiceStatus
@@ -369,11 +375,13 @@ __all__ = (
     "EventSource",
     "ExperimentalField",
     "FeatureSet",
+    "FieldWarning",
     "GcpWrappedKeyInfo",
     "Gender",
     "GetUserListDirectLicenseRequest",
     "GetUserListGlobalLicenseRequest",
     "GetUserListRequest",
+    "GoogleUserIdData",
     "IngestAdEventsRequest",
     "IngestAdEventsResponse",
     "IngestAudienceMembersRequest",
@@ -406,6 +414,7 @@ __all__ = (
     "PartnerLink",
     "PartnerLinkMetadata",
     "PartnerLinkServiceClient",
+    "PartnerProvidedIdData",
     "Platform",
     "PlatformType",
     "PpidData",
@@ -414,6 +423,8 @@ __all__ = (
     "Product",
     "ProductAccount",
     "PseudonymousIdInfo",
+    "RemoveAllAudienceMembersRequest",
+    "RemoveAllAudienceMembersResponse",
     "RemoveAudienceMembersRequest",
     "RemoveAudienceMembersResponse",
     "RequestStatusPerDestination",
@@ -453,4 +464,5 @@ __all__ = (
     "ViewabilityInfo",
     "WarningCount",
     "WarningInfo",
+    "WarningReason",
 )

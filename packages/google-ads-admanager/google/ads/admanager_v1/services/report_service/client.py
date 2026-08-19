@@ -73,6 +73,7 @@ from google.ads.admanager_v1.types import (
     report_delivery,
     report_messages,
     report_service,
+    report_visibility_enum,
 )
 
 from .transports.base import DEFAULT_CLIENT_INFO, ReportServiceTransport

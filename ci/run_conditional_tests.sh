@@ -54,7 +54,11 @@ elif [[ ${BUILD_TYPE} == "presubmit" ]]; then
     # For presubmit build, we want to know the difference from the
     # common commit in the target branch.
     if [ -n "${TARGET_BRANCH}" ]; then
-        git fetch origin "${TARGET_BRANCH}" --depth=200 || true
+        if [[ "${TEST_TYPE}" == "import_profile" ]]; then
+            git fetch origin "${TARGET_BRANCH}:refs/remotes/origin/${TARGET_BRANCH}" || true
+        else
+            git fetch origin "${TARGET_BRANCH}:refs/remotes/origin/${TARGET_BRANCH}" --depth=200 || true
+        fi
     fi
     GIT_DIFF_ARG="origin/${TARGET_BRANCH}..."
 

@@ -251,6 +251,48 @@ class LiveStreamServiceClient(metaclass=LiveStreamServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def dai_authentication_key_path(
+        network_code: str,
+        dai_authentication_key: str,
+    ) -> str:
+        """Returns a fully-qualified dai_authentication_key string."""
+        return "networks/{network_code}/daiAuthenticationKeys/{dai_authentication_key}".format(
+            network_code=network_code,
+            dai_authentication_key=dai_authentication_key,
+        )
+
+    @staticmethod
+    def parse_dai_authentication_key_path(path: str) -> Dict[str, str]:
+        """Parses a dai_authentication_key path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/daiAuthenticationKeys/(?P<dai_authentication_key>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def dai_encoding_profile_path(
+        network_code: str,
+        dai_encoding_profile: str,
+    ) -> str:
+        """Returns a fully-qualified dai_encoding_profile string."""
+        return (
+            "networks/{network_code}/daiEncodingProfiles/{dai_encoding_profile}".format(
+                network_code=network_code,
+                dai_encoding_profile=dai_encoding_profile,
+            )
+        )
+
+    @staticmethod
+    def parse_dai_encoding_profile_path(path: str) -> Dict[str, str]:
+        """Parses a dai_encoding_profile path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/daiEncodingProfiles/(?P<dai_encoding_profile>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def live_stream_path(
         network_code: str,
         live_stream: str,
@@ -282,6 +324,23 @@ class LiveStreamServiceClient(metaclass=LiveStreamServiceClientMeta):
     def parse_network_path(path: str) -> Dict[str, str]:
         """Parses a network path into its component segments."""
         m = re.match(r"^networks/(?P<network_code>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def slate_path(
+        network_code: str,
+        slate: str,
+    ) -> str:
+        """Returns a fully-qualified slate string."""
+        return "networks/{network_code}/slates/{slate}".format(
+            network_code=network_code,
+            slate=slate,
+        )
+
+    @staticmethod
+    def parse_slate_path(path: str) -> Dict[str, str]:
+        """Parses a slate path into its component segments."""
+        m = re.match(r"^networks/(?P<network_code>.+?)/slates/(?P<slate>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod

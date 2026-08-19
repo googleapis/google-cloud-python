@@ -16,8 +16,8 @@ version: v0.36.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: b8486a2f44f15dc578a9dc1e17b144253079d5c1
-    sha256: 12411ca5cb6c70d7c873d7058c5182a8d23fa88af8d984b0e73b1c3ad1d83766
+    commit: 240b58fe7058f6fff77cba02f51d600170b6c421
+    sha256: ca03f2c93b8f1e92fd75c87b2568992c96a2ecc37fde750c5bf83129fa17b407
 tools:
   pip:
     - name: black
@@ -34,6 +34,9 @@ tools:
     - name: synthtool
       version: e643ce8e20f8fe237a31a1754524ba987de72875
       package: gcp-synthtool@git+https://github.com/googleapis/synthtool@e643ce8e20f8fe237a31a1754524ba987de72875
+  protoc:
+    version: "33.5"
+    sha256: 24e58fb231d50306ee28491f33a170301e99540f7e29ca461e0e80fd1239f8d1
 default:
   output: packages
   tag_format: '{name}-v{version}'
@@ -1195,6 +1198,13 @@ libraries:
           - python-gapic-name=firestore
       metadata_name_override: firestore
       default_version: v1
+  - name: google-cloud-ftp
+    version: 0.1.0
+    apis:
+      - path: google/cloud/ftp/v1
+    copyright_year: "2026"
+    python:
+      default_version: v1
   - name: google-cloud-functions
     version: 1.24.0
     apis:
@@ -2241,6 +2251,13 @@ libraries:
           - python-gapic-namespace=google.cloud.workflows
           - python-gapic-name=executions
       metadata_name_override: workflows
+      default_version: v1
+  - name: google-cloud-workloadidentity
+    version: 0.1.0
+    apis:
+      - path: google/cloud/workloadidentity/v1
+    copyright_year: "2026"
+    python:
       default_version: v1
   - name: google-cloud-workloadmanager
     version: 0.2.1

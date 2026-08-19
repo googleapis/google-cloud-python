@@ -140,6 +140,11 @@
                 "get_autonomous_database"
               ]
             },
+            "GetAutonomousDatabaseRefreshableClones": {
+              "methods": [
+                "get_autonomous_database_refreshable_clones"
+              ]
+            },
             "GetCloudExadataInfrastructure": {
               "methods": [
                 "get_cloud_exadata_infrastructure"
@@ -343,6 +348,11 @@
             "ListPluggableDatabases": {
               "methods": [
                 "list_pluggable_databases"
+              ]
+            },
+            "RefreshAutonomousDatabase": {
+              "methods": [
+                "refresh_autonomous_database"
               ]
             },
             "RemoveVirtualMachineExadbVmCluster": {
@@ -535,6 +545,11 @@
                 "get_autonomous_database"
               ]
             },
+            "GetAutonomousDatabaseRefreshableClones": {
+              "methods": [
+                "get_autonomous_database_refreshable_clones"
+              ]
+            },
             "GetCloudExadataInfrastructure": {
               "methods": [
                 "get_cloud_exadata_infrastructure"
@@ -738,6 +753,11 @@
             "ListPluggableDatabases": {
               "methods": [
                 "list_pluggable_databases"
+              ]
+            },
+            "RefreshAutonomousDatabase": {
+              "methods": [
+                "refresh_autonomous_database"
               ]
             },
             "RemoveVirtualMachineExadbVmCluster": {
@@ -930,6 +950,11 @@
                 "get_autonomous_database"
               ]
             },
+            "GetAutonomousDatabaseRefreshableClones": {
+              "methods": [
+                "get_autonomous_database_refreshable_clones"
+              ]
+            },
             "GetCloudExadataInfrastructure": {
               "methods": [
                 "get_cloud_exadata_infrastructure"
@@ -1133,6 +1158,11 @@
             "ListPluggableDatabases": {
               "methods": [
                 "list_pluggable_databases"
+              ]
+            },
+            "RefreshAutonomousDatabase": {
+              "methods": [
+                "refresh_autonomous_database"
               ]
             },
             "RemoveVirtualMachineExadbVmCluster": {

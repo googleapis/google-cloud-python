@@ -251,6 +251,14 @@ class CloudVmClusterProperties(proto.Message):
         storage_management_type (google.cloud.oracledatabase_v1.types.CloudVmClusterProperties.StorageManagementType):
             Output only. The storage management type of
             the VM Cluster.
+        vm_file_system_storage_type (google.cloud.oracledatabase_v1.types.CloudVmClusterProperties.VmFileSystemStorageType):
+            Optional. Specifies whether VM file system
+            storage / VM images are stored on local DB
+            server storage or Exascale storage.
+        vm_backup_storage_type (google.cloud.oracledatabase_v1.types.CloudVmClusterProperties.VmBackupStorageType):
+            Optional. Specifies whether VM backups are
+            stored on local DB server storage or Exascale
+            storage.
     """
 
     class LicenseType(proto.Enum):
@@ -338,6 +346,38 @@ class CloudVmClusterProperties(proto.Message):
         STORAGE_MANAGEMENT_TYPE_UNSPECIFIED = 0
         ASM = 1
         EXASCALE = 2
+
+    class VmFileSystemStorageType(proto.Enum):
+        r"""Storage types for VM File System.
+
+        Values:
+            VM_FILE_SYSTEM_STORAGE_TYPE_UNSPECIFIED (0):
+                Unspecified storage type.
+            VM_FILE_SYSTEM_STORAGE_TYPE_LOCAL (1):
+                Local DB server storage.
+            VM_FILE_SYSTEM_STORAGE_TYPE_EXASCALE (2):
+                Exascale storage.
+        """
+
+        VM_FILE_SYSTEM_STORAGE_TYPE_UNSPECIFIED = 0
+        VM_FILE_SYSTEM_STORAGE_TYPE_LOCAL = 1
+        VM_FILE_SYSTEM_STORAGE_TYPE_EXASCALE = 2
+
+    class VmBackupStorageType(proto.Enum):
+        r"""Storage types for VM Backup.
+
+        Values:
+            VM_BACKUP_STORAGE_TYPE_UNSPECIFIED (0):
+                Unspecified storage type.
+            VM_BACKUP_STORAGE_TYPE_LOCAL (1):
+                Local DB server storage.
+            VM_BACKUP_STORAGE_TYPE_EXASCALE (2):
+                Exascale storage.
+        """
+
+        VM_BACKUP_STORAGE_TYPE_UNSPECIFIED = 0
+        VM_BACKUP_STORAGE_TYPE_LOCAL = 1
+        VM_BACKUP_STORAGE_TYPE_EXASCALE = 2
 
     ocid: str = proto.Field(
         proto.STRING,
@@ -481,6 +521,16 @@ class CloudVmClusterProperties(proto.Message):
         proto.ENUM,
         number=38,
         enum=StorageManagementType,
+    )
+    vm_file_system_storage_type: VmFileSystemStorageType = proto.Field(
+        proto.ENUM,
+        number=39,
+        enum=VmFileSystemStorageType,
+    )
+    vm_backup_storage_type: VmBackupStorageType = proto.Field(
+        proto.ENUM,
+        number=40,
+        enum=VmBackupStorageType,
     )
 
 

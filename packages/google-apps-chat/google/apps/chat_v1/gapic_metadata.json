@@ -200,6 +200,11 @@
                 "position_section"
               ]
             },
+            "SearchMessages": {
+              "methods": [
+                "search_messages"
+              ]
+            },
             "SearchSpaces": {
               "methods": [
                 "search_spaces"
@@ -445,6 +450,11 @@
                 "position_section"
               ]
             },
+            "SearchMessages": {
+              "methods": [
+                "search_messages"
+              ]
+            },
             "SearchSpaces": {
               "methods": [
                 "search_spaces"
@@ -688,6 +698,11 @@
             "PositionSection": {
               "methods": [
                 "position_section"
+              ]
+            },
+            "SearchMessages": {
+              "methods": [
+                "search_messages"
               ]
             },
             "SearchSpaces": {

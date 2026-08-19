@@ -1448,6 +1448,45 @@ class StorageControlGrpcTransport(StorageControlTransport):
             )
         return self._stubs["list_intelligence_finding_revisions"]
 
+    @property
+    def view_object_full_context(
+        self,
+    ) -> Callable[
+        [storage_control.ViewObjectFullContextRequest],
+        storage_control.ObjectFullContext,
+    ]:
+        r"""Return a callable for the view object full context method over gRPC.
+
+        Retrieves the full content of an object context, including its
+        key, value, and any associated extended data for a given context
+        key.
+
+        Object contexts can optionally contain extended data. If an
+        object context contains extended data, the metadata payload
+        structure will contain only its type URL. To retrieve the full
+        extended data, call this method.
+
+        Returns the complete representation of the context as an
+        [``ObjectFullContext``][google.storage.control.v2.ObjectFullContext].
+
+        Returns:
+            Callable[[~.ViewObjectFullContextRequest],
+                    ~.ObjectFullContext]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "view_object_full_context" not in self._stubs:
+            self._stubs["view_object_full_context"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/ViewObjectFullContext",
+                request_serializer=storage_control.ViewObjectFullContextRequest.serialize,
+                response_deserializer=storage_control.ObjectFullContext.deserialize,
+            )
+        return self._stubs["view_object_full_context"]
+
     def close(self):
         self._logged_channel.close()
 

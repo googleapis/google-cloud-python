@@ -61,6 +61,7 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
@@ -110,7 +111,9 @@ class CompanyServiceClientMeta(type):
 
 
 class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
-    """Provides methods for handling ``Company`` objects."""
+    """Provides methods for handling
+    [Company][google.ads.admanager.v1.Company] objects.
+    """
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint) -> Optional[str]:
@@ -805,7 +808,7 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> company_messages.Company:
-        r"""Retrieves a ``Company`` object.
+        r"""Retrieves a [Company][google.ads.admanager.v1.Company] object.
 
         .. code-block:: python
 
@@ -835,7 +838,7 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
 
         Args:
             request (Union[google.ads.admanager_v1.types.GetCompanyRequest, dict]):
-                The request object. Request object for ``GetCompany`` method.
+                The request object. Request object for [GetCompany][] method.
             name (str):
                 Required. The resource name of the Company. Format:
                 ``networks/{network_code}/companies/{company_id}``
@@ -910,7 +913,7 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListCompaniesPager:
-        r"""Lists ``Company`` objects.
+        r"""Lists [Company][google.ads.admanager.v1.Company] objects.
 
         .. code-block:: python
 
@@ -941,10 +944,10 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
 
         Args:
             request (Union[google.ads.admanager_v1.types.ListCompaniesRequest, dict]):
-                The request object. Request object for ``ListCompanies`` method.
+                The request object. Request object for [ListCompanies][] method.
             parent (str):
                 Required. The parent, which owns this collection of
-                Companies. Format: ``networks/{network_code}``
+                [Companies][]. Format: ``networks/{network_code}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -959,8 +962,10 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
 
         Returns:
             google.ads.admanager_v1.services.company_service.pagers.ListCompaniesPager:
-                Response object for ListCompaniesRequest containing matching Company
-                   objects.
+                Response object for
+                   [ListCompaniesRequest][google.ads.admanager.v1.ListCompaniesRequest]
+                   containing matching
+                   [Company][google.ads.admanager.v1.Company] objects.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1015,6 +1020,491 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_company(
+        self,
+        request: Optional[Union[company_service.CreateCompanyRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        company: Optional[company_messages.Company] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> company_messages.Company:
+        r"""Creates a [Company][google.ads.admanager.v1.Company] object.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ads import admanager_v1
+
+            def sample_create_company():
+                # Create a client
+                client = admanager_v1.CompanyServiceClient()
+
+                # Initialize request argument(s)
+                request = admanager_v1.CreateCompanyRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_company(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.ads.admanager_v1.types.CreateCompanyRequest, dict]):
+                The request object. Request object for [CreateCompany][] method.
+            parent (str):
+                Required. The parent resource where this
+                [Company][google.ads.admanager.v1.Company] will be
+                created. Format: ``networks/{network_code}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            company (google.ads.admanager_v1.types.Company):
+                Required. The [Company][google.ads.admanager.v1.Company]
+                to create.
+
+                This corresponds to the ``company`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.ads.admanager_v1.types.Company:
+                The [Company][google.ads.admanager.v1.Company] resource.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, company]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, company_service.CreateCompanyRequest):
+            request = company_service.CreateCompanyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if company is not None:
+                request.company = company
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_company]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def batch_create_companies(
+        self,
+        request: Optional[
+            Union[company_service.BatchCreateCompaniesRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        requests: Optional[
+            MutableSequence[company_service.CreateCompanyRequest]
+        ] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> company_service.BatchCreateCompaniesResponse:
+        r"""Creates [Company][google.ads.admanager.v1.Company] objects.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ads import admanager_v1
+
+            def sample_batch_create_companies():
+                # Create a client
+                client = admanager_v1.CompanyServiceClient()
+
+                # Initialize request argument(s)
+                requests = admanager_v1.CreateCompanyRequest()
+                requests.parent = "parent_value"
+
+                request = admanager_v1.BatchCreateCompaniesRequest(
+                    parent="parent_value",
+                    requests=requests,
+                )
+
+                # Make the request
+                response = client.batch_create_companies(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.ads.admanager_v1.types.BatchCreateCompaniesRequest, dict]):
+                The request object. Request object for [BatchCreateCompanies][] method.
+            parent (str):
+                Required. The parent resource where [Companies][] will
+                be created. Format: ``networks/{network_code}`` The
+                parent field in the CreateCompanyRequest must match this
+                field.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            requests (MutableSequence[google.ads.admanager_v1.types.CreateCompanyRequest]):
+                Required. The [Company][google.ads.admanager.v1.Company]
+                objects to create. A maximum of 100 objects can be
+                created in a batch.
+
+                This corresponds to the ``requests`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.ads.admanager_v1.types.BatchCreateCompaniesResponse:
+                Response object for [BatchCreateCompanies][] method.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, requests]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, company_service.BatchCreateCompaniesRequest):
+            request = company_service.BatchCreateCompaniesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if requests is not None:
+                request.requests = requests
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.batch_create_companies]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_company(
+        self,
+        request: Optional[Union[company_service.UpdateCompanyRequest, dict]] = None,
+        *,
+        company: Optional[company_messages.Company] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> company_messages.Company:
+        r"""Updates a [Company][google.ads.admanager.v1.Company] object.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ads import admanager_v1
+
+            def sample_update_company():
+                # Create a client
+                client = admanager_v1.CompanyServiceClient()
+
+                # Initialize request argument(s)
+                request = admanager_v1.UpdateCompanyRequest(
+                )
+
+                # Make the request
+                response = client.update_company(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.ads.admanager_v1.types.UpdateCompanyRequest, dict]):
+                The request object. Request object for [UpdateCompany][] method.
+            company (google.ads.admanager_v1.types.Company):
+                Required. The [Company][google.ads.admanager.v1.Company]
+                to update.
+
+                The [Company][google.ads.admanager.v1.Company]'s
+                ``name`` is used to identify the
+                [Company][google.ads.admanager.v1.Company] to update.
+
+                This corresponds to the ``company`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Optional. The list of fields to
+                update.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.ads.admanager_v1.types.Company:
+                The [Company][google.ads.admanager.v1.Company] resource.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [company, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, company_service.UpdateCompanyRequest):
+            request = company_service.UpdateCompanyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if company is not None:
+                request.company = company
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_company]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("company.name", request.company.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def batch_update_companies(
+        self,
+        request: Optional[
+            Union[company_service.BatchUpdateCompaniesRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        requests: Optional[
+            MutableSequence[company_service.UpdateCompanyRequest]
+        ] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> company_service.BatchUpdateCompaniesResponse:
+        r"""Batch updates [Company][google.ads.admanager.v1.Company]
+        objects.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ads import admanager_v1
+
+            def sample_batch_update_companies():
+                # Create a client
+                client = admanager_v1.CompanyServiceClient()
+
+                # Initialize request argument(s)
+                request = admanager_v1.BatchUpdateCompaniesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.batch_update_companies(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.ads.admanager_v1.types.BatchUpdateCompaniesRequest, dict]):
+                The request object. Request object for [BatchUpdateCompanies][] method.
+            parent (str):
+                Required. The parent resource where [Companies][] will
+                be updated. Format: ``networks/{network_code}`` The
+                parent field in the UpdateCompanyRequest must match this
+                field.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            requests (MutableSequence[google.ads.admanager_v1.types.UpdateCompanyRequest]):
+                Required. The [Company][google.ads.admanager.v1.Company]
+                objects to update. A maximum of 100 objects can be
+                updated in a batch.
+
+                This corresponds to the ``requests`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.ads.admanager_v1.types.BatchUpdateCompaniesResponse:
+                Response object for [BatchUpdateCompanies][] method.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, requests]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, company_service.BatchUpdateCompaniesRequest):
+            request = company_service.BatchUpdateCompaniesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if requests is not None:
+                request.requests = requests
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.batch_update_companies]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,

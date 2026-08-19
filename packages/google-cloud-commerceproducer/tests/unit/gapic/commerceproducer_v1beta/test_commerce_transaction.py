@@ -16109,6 +16109,10 @@ def test_create_private_offer_rest_call_success(request_type):
                 "current_term_vendor_net_revenue_percent": {},
                 "renewal_term_vendor_net_revenue_percent": {},
             },
+            "additional_contract_value": {
+                "contract_value": {},
+                "eligible_skus": ["eligible_skus_value1", "eligible_skus_value2"],
+            },
         },
         "name": "name_value",
         "state": 1,
@@ -16431,6 +16435,10 @@ def test_update_private_offer_rest_call_success(request_type):
             "revenue_share": {
                 "current_term_vendor_net_revenue_percent": {},
                 "renewal_term_vendor_net_revenue_percent": {},
+            },
+            "additional_contract_value": {
+                "contract_value": {},
+                "eligible_skus": ["eligible_skus_value1", "eligible_skus_value2"],
             },
         },
         "name": "projects/sample1/locations/sample2/privateOffers/sample3",

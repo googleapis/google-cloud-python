@@ -162,7 +162,14 @@ def _make_table(*args, **kwargs):
 
 
 def test_table_constructor_defaults():
-    instance = mock.Mock(spec=[])
+    from google.cloud.bigtable.client import Client
+
+    client = mock.create_autospec(Client)
+    instance = mock.Mock(
+        _client=client,
+        instance_id=INSTANCE_ID,
+        spec=["_client", "instance_id"],
+    )
 
     table = _make_table(TABLE_ID, instance)
 
@@ -170,10 +177,24 @@ def test_table_constructor_defaults():
     assert table._instance is instance
     assert table.mutation_timeout is None
     assert table._app_profile_id is None
+    assert table._table_impl is client._veneer_data_client.get_table.return_value
+    client._veneer_data_client.get_table.assert_called_once_with(
+        INSTANCE_ID,
+        TABLE_ID,
+        app_profile_id=None,
+    )
 
 
 def test_table_constructor_explicit():
-    instance = mock.Mock(spec=[])
+    from google.cloud.bigtable.client import Client
+
+    client = mock.create_autospec(Client)
+    instance = mock.Mock(
+        _client=client,
+        instance_id=INSTANCE_ID,
+        spec=["_client", "instance_id"],
+    )
+
     mutation_timeout = 123
     app_profile_id = "profile-123"
 
@@ -188,14 +209,22 @@ def test_table_constructor_explicit():
     assert table._instance is instance
     assert table.mutation_timeout == mutation_timeout
     assert table._app_profile_id == app_profile_id
+    assert table._table_impl is client._veneer_data_client.get_table.return_value
+    client._veneer_data_client.get_table.assert_called_once_with(
+        INSTANCE_ID,
+        TABLE_ID,
+        app_profile_id=app_profile_id,
+    )
 
 
 def test_table_name():
     table_data_client = mock.Mock(spec=["table_path"])
+    _veneer_data_client = mock.Mock()
     client = mock.Mock(
         project=PROJECT_ID,
         table_data_client=table_data_client,
-        spec=["project", "table_data_client"],
+        _veneer_data_client=_veneer_data_client,
+        spec=["project", "table_data_client", "_veneer_data_client"],
     )
     instance = mock.Mock(
         _client=client,
@@ -339,8 +368,9 @@ def test_table___ne__same_value():
 
 
 def test_table___ne__():
-    table1 = _make_table("table_id1", None)
-    table2 = _make_table("table_id2", None)
+    mock_instance = mock.Mock()
+    table1 = _make_table("table_id1", mock_instance)
+    table2 = _make_table("table_id2", mock_instance)
     assert table1 != table2
 
 
@@ -634,10 +664,23 @@ def test_table_get_encryption_info():
     table_api.get_table.assert_called_once_with(request=expected_request)
 
 
-def _make_data_api():
+def _make_data_api(client):
+    from google.cloud.bigtable.data import BigtableDataClient
+
+    data_client_mock = mock.create_autospec(BigtableDataClient)
+    client._table_data_client = data_client_mock
+
+    return data_client_mock
+
+
+def _make_gapic_api(client):
     from google.cloud.bigtable_v2.services.bigtable import BigtableClient
 
-    return mock.create_autospec(BigtableClient)
+    data_client_mock = _make_data_api(client)
+    gapic_client_mock = mock.create_autospec(BigtableClient)
+    data_client_mock._gapic_client = gapic_client_mock
+
+    return gapic_client_mock
 
 
 def _table_read_row_helper(chunks, expected_result, app_profile_id=None):
@@ -668,8 +711,8 @@ def _table_read_row_helper(chunks, expected_result, app_profile_id=None):
         response_pb = _ReadRowsResponsePB(chunks=chunks)
         response_iterator = iter([response_pb])
 
-    data_api = client._table_data_client = _make_data_api()
-    data_api.read_rows.return_value = response_iterator
+    gapic_api = _make_gapic_api(client)
+    gapic_api.read_rows.return_value = response_iterator
 
     filter_obj = RowSampleFilter(0.33)
 
@@ -695,7 +738,7 @@ def _table_read_row_helper(chunks, expected_result, app_profile_id=None):
     assert result == expected_result
     assert mock_created == expected_request
 
-    data_api.read_rows.assert_called_once_with(
+    gapic_api.read_rows.assert_called_once_with(
         request_pb, timeout=61.0, retry=DEFAULT_RETRY_READ_ROWS
     )
 
@@ -866,7 +909,7 @@ def test_table_read_rows():
 
     credentials = _make_credentials()
     client = _make_client(project="project-id", credentials=credentials, admin=True)
-    data_api = client._table_data_client = _make_data_api()
+    gapic_api = _make_gapic_api(client)
     instance = client.instance(instance_id=INSTANCE_ID)
     app_profile_id = "app-profile-id"
     table = _make_table(TABLE_ID, instance, app_profile_id=app_profile_id)
@@ -882,7 +925,7 @@ def test_table_read_rows():
 
     # Create expected_result.
     expected_result = PartialRowsData(
-        client._table_data_client.transport.read_rows, request_pb, retry
+        client._table_data_client._gapic_client.transport.read_rows, request_pb, retry
     )
 
     # Perform the method and check the result.
@@ -912,7 +955,7 @@ def test_table_read_rows():
     }
     assert mock_created == [(table.name, created_kwargs)]
 
-    data_api.read_rows.assert_called_once_with(request_pb, timeout=61.0, retry=retry)
+    gapic_api.read_rows.assert_called_once_with(request_pb, timeout=61.0, retry=retry)
 
 
 def test_table_read_retry_rows():
@@ -920,7 +963,7 @@ def test_table_read_retry_rows():
 
     credentials = _make_credentials()
     client = _make_client(project="project-id", credentials=credentials, admin=True)
-    data_api = client._table_data_client = _make_data_api()
+    gapic_api = _make_gapic_api(client)
     instance = client.instance(instance_id=INSTANCE_ID)
     table = _make_table(TABLE_ID, instance)
 
@@ -951,11 +994,11 @@ def test_table_read_retry_rows():
     response_failure_iterator_2 = _MockFailureIterator_2([response_1])
     response_iterator = _MockReadRowsIterator(response_2)
 
-    data_api.table_path.return_value = (
+    gapic_api.table_path.return_value = (
         f"projects/{PROJECT_ID}/instances/{INSTANCE_ID}/tables/{TABLE_ID}"
     )
 
-    data_api.read_rows.side_effect = [
+    gapic_api.read_rows.side_effect = [
         response_failure_iterator_1,
         response_failure_iterator_2,
         response_iterator,
@@ -971,7 +1014,7 @@ def test_table_read_retry_rows():
     result = rows[1]
     assert result.row_key == ROW_KEY_2
 
-    assert len(data_api.read_rows.mock_calls) == 3
+    assert len(gapic_api.read_rows.mock_calls) == 3
 
 
 def test_table_read_retry_rows_no_full_table_scan():
@@ -979,7 +1022,7 @@ def test_table_read_retry_rows_no_full_table_scan():
 
     credentials = _make_credentials()
     client = _make_client(project="project-id", credentials=credentials, admin=True)
-    data_api = client._table_data_client = _make_data_api()
+    gapic_api = _make_gapic_api(client)
     instance = client.instance(instance_id=INSTANCE_ID)
     table = _make_table(TABLE_ID, instance)
 
@@ -998,11 +1041,11 @@ def test_table_read_retry_rows_no_full_table_scan():
     response_1 = _ReadRowsResponseV2([chunk_1])
     response_failure_iterator_2 = _MockFailureIterator_2([response_1])
 
-    data_api.table_path.return_value = (
+    gapic_api.table_path.return_value = (
         f"projects/{PROJECT_ID}/instances/{INSTANCE_ID}/tables/{TABLE_ID}"
     )
 
-    data_api.read_rows.side_effect = [
+    gapic_api.read_rows.side_effect = [
         response_failure_iterator_2,
     ]
 
@@ -1016,9 +1059,9 @@ def test_table_read_retry_rows_no_full_table_scan():
     result = rows[0]
     assert result.row_key == ROW_KEY_2
 
-    assert len(data_api.read_rows.mock_calls) == 1
+    assert len(gapic_api.read_rows.mock_calls) == 1
     assert (
-        len(data_api.read_rows.mock_calls[0].args[0].rows.row_ranges) > 0
+        len(gapic_api.read_rows.mock_calls[0].args[0].rows.row_ranges) > 0
     )  # not empty row_ranges
 
 
@@ -1055,11 +1098,11 @@ def test_table_yield_retry_rows():
     response_failure_iterator_2 = _MockFailureIterator_2([response_1])
     response_iterator = _MockReadRowsIterator(response_2)
 
-    data_api = client._table_data_client = _make_data_api()
-    data_api.table_path.return_value = (
+    gapic_api = _make_gapic_api(client)
+    gapic_api.table_path.return_value = (
         f"projects/{PROJECT_ID}/instances/{INSTANCE_ID}/tables/{TABLE_ID}"
     )
-    data_api.read_rows.side_effect = [
+    gapic_api.read_rows.side_effect = [
         response_failure_iterator_1,
         response_failure_iterator_2,
         response_iterator,
@@ -1081,7 +1124,7 @@ def test_table_yield_retry_rows():
         start_key=ROW_KEY_1,
         end_key=ROW_KEY_2,
     )
-    data_api.read_rows.mock_calls = [expected_request] * 3
+    gapic_api.read_rows.mock_calls = [expected_request] * 3
 
 
 def test_table_yield_rows_with_row_set():
@@ -1127,11 +1170,11 @@ def test_table_yield_rows_with_row_set():
     response_3 = _ReadRowsResponseV2([chunk_3])
     response_iterator = _MockReadRowsIterator(response_1, response_2, response_3)
 
-    data_api = client._table_data_client = _make_data_api()
-    data_api.table_path.return_value = (
+    gapic_api = _make_gapic_api(client)
+    gapic_api.table_path.return_value = (
         f"projects/{PROJECT_ID}/instances/{INSTANCE_ID}/tables/{TABLE_ID}"
     )
-    data_api.read_rows.side_effect = [response_iterator]
+    gapic_api.read_rows.side_effect = [response_iterator]
 
     rows = []
     row_set = RowSet()
@@ -1155,7 +1198,7 @@ def test_table_yield_rows_with_row_set():
         end_key=ROW_KEY_2,
     )
     expected_request.rows.row_keys.append(ROW_KEY_3)
-    data_api.read_rows.assert_called_once_with(
+    gapic_api.read_rows.assert_called_once_with(
         expected_request, timeout=61.0, retry=DEFAULT_RETRY_READ_ROWS
     )
 
@@ -1167,8 +1210,8 @@ def test_table_sample_row_keys():
     table = _make_table(TABLE_ID, instance)
     response_iterator = object()
 
-    data_api = client._table_data_client = _make_data_api()
-    data_api.sample_row_keys.return_value = [response_iterator]
+    gapic_api = _make_gapic_api(client)
+    gapic_api.sample_row_keys.return_value = [response_iterator]
 
     result = table.sample_row_keys()
 
@@ -1251,7 +1294,7 @@ def test_table_drop_by_prefix_w_timeout():
 def test_table_mutations_batcher_factory():
     flush_count = 100
     max_row_bytes = 1000
-    table = _make_table(TABLE_ID, None)
+    table = _make_table(TABLE_ID, mock.Mock())
     mutation_batcher = table.mutations_batcher(
         flush_count=flush_count, max_row_bytes=max_row_bytes
     )
@@ -1359,8 +1402,10 @@ def test_table_test_iam_permissions():
 
 def test_table_backup_factory_defaults():
     from google.cloud.bigtable.backup import Backup
+    from google.cloud.bigtable.client import Client
+    from google.cloud.bigtable.instance import Instance
 
-    instance = _make_table(INSTANCE_ID, None)
+    instance = Instance(INSTANCE_ID, mock.create_autospec(Client))
     table = _make_table(TABLE_ID, instance)
     backup = table.backup(BACKUP_ID)
 
@@ -1383,9 +1428,10 @@ def test_table_backup_factory_non_defaults():
     import datetime
 
     from google.cloud.bigtable.backup import Backup
+    from google.cloud.bigtable.client import Client
     from google.cloud.bigtable.instance import Instance
 
-    instance = Instance(INSTANCE_ID, None)
+    instance = Instance(INSTANCE_ID, mock.create_autospec(Client))
     table = _make_table(TABLE_ID, instance)
     timestamp = datetime.datetime.now(datetime.timezone.utc)
     backup = table.backup(
@@ -1542,9 +1588,9 @@ def test_rmrw_callable_empty_rows():
     client = _make_client(project="project-id", credentials=credentials, admin=True)
     instance = client.instance(instance_id=INSTANCE_ID)
     table = _make_table(TABLE_ID, instance)
-    data_api = client._table_data_client = _make_data_api()
-    data_api.mutate_rows.return_value = []
-    data_api.table_path.return_value = (
+    gapic_api = _make_gapic_api(client)
+    gapic_api.mutate_rows.return_value = []
+    gapic_api.table_path.return_value = (
         f"projects/{PROJECT_ID}/instances/{INSTANCE_ID}/tables/{TABLE_ID}"
     )
 
@@ -1581,9 +1627,9 @@ def test_rmrw_callable_no_retry_strategy():
     response_codes = [SUCCESS, RETRYABLE_1, NON_RETRYABLE]
     response = _make_responses(response_codes)
 
-    data_api = client._table_data_client = _make_data_api()
-    data_api.mutate_rows.return_value = [response]
-    data_api.table_path.return_value = (
+    gapic_api = _make_gapic_api(client)
+    gapic_api.mutate_rows.return_value = [response]
+    gapic_api.table_path.return_value = (
         f"projects/{PROJECT_ID}/instances/{INSTANCE_ID}/tables/{TABLE_ID}"
     )
     worker = _make_worker(client, table.name, [row_1, row_2, row_3])
@@ -1593,7 +1639,7 @@ def test_rmrw_callable_no_retry_strategy():
     result = [status.code for status in statuses]
     assert result == response_codes
 
-    data_api.mutate_rows.assert_called_once()
+    gapic_api.mutate_rows.assert_called_once()
 
 
 def test_rmrw_callable_retry():
@@ -1624,9 +1670,9 @@ def test_rmrw_callable_retry():
 
     response_1 = _make_responses([SUCCESS, RETRYABLE_1, NON_RETRYABLE])
     response_2 = _make_responses([SUCCESS])
-    data_api = client._table_data_client = _make_data_api()
-    data_api.mutate_rows.side_effect = [[response_1], [response_2]]
-    data_api.table_path.return_value = (
+    gapic_api = _make_gapic_api(client)
+    gapic_api.mutate_rows.side_effect = [[response_1], [response_2]]
+    gapic_api.table_path.return_value = (
         f"projects/{PROJECT_ID}/instances/{INSTANCE_ID}/tables/{TABLE_ID}"
     )
     worker = _make_worker(client, table.name, [row_1, row_2, row_3])
@@ -1638,7 +1684,7 @@ def test_rmrw_callable_retry():
 
     assert result == [SUCCESS, SUCCESS, NON_RETRYABLE]
 
-    assert client._table_data_client.mutate_rows.call_count == 2
+    assert client._table_data_client._gapic_client.mutate_rows.call_count == 2
 
 
 def _do_mutate_retryable_rows_helper(
@@ -1677,16 +1723,16 @@ def _do_mutate_retryable_rows_helper(
 
     response = _make_responses(responses)
 
-    data_api = client._table_data_client = _make_data_api()
+    gapic_api = _make_gapic_api(client)
     if retryable_error:
         if mutate_rows_side_effect is not None:
-            data_api.mutate_rows.side_effect = mutate_rows_side_effect
+            gapic_api.mutate_rows.side_effect = mutate_rows_side_effect
         else:
-            data_api.mutate_rows.side_effect = ServiceUnavailable("testing")
+            gapic_api.mutate_rows.side_effect = ServiceUnavailable("testing")
     else:
         if mutate_rows_side_effect is not None:
-            data_api.mutate_rows.side_effect = mutate_rows_side_effect
-        data_api.mutate_rows.return_value = [response]
+            gapic_api.mutate_rows.side_effect = mutate_rows_side_effect
+        gapic_api.mutate_rows.return_value = [response]
 
     worker = _make_worker(client, table.name, rows=rows)
 
@@ -1725,9 +1771,9 @@ def _do_mutate_retryable_rows_helper(
         assert result == expected_result
 
     if len(responses) == 0 and not retryable_error:
-        data_api.mutate_rows.assert_not_called()
+        gapic_api.mutate_rows.assert_not_called()
     else:
-        data_api.mutate_rows.assert_called_once_with(
+        gapic_api.mutate_rows.assert_called_once_with(
             table_name=table.name,
             entries=expected_entries,
             app_profile_id=None,
@@ -1735,7 +1781,7 @@ def _do_mutate_retryable_rows_helper(
             **expected_kwargs,
         )
         if timeout is not None:
-            called = data_api.mutate_rows.mock_calls[0]
+            called = gapic_api.mutate_rows.mock_calls[0]
             assert called.kwargs["timeout"]._deadline == timeout
 
 

@@ -647,6 +647,11 @@ class StorageControlTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.view_object_full_context: gapic_v1.method.wrap_method(
+                self.view_object_full_context,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -1040,6 +1045,18 @@ class StorageControlTransport(abc.ABC):
         Union[
             storage_control.ListIntelligenceFindingRevisionsResponse,
             Awaitable[storage_control.ListIntelligenceFindingRevisionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def view_object_full_context(
+        self,
+    ) -> Callable[
+        [storage_control.ViewObjectFullContextRequest],
+        Union[
+            storage_control.ObjectFullContext,
+            Awaitable[storage_control.ObjectFullContext],
         ],
     ]:
         raise NotImplementedError()

@@ -206,6 +206,16 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_policy: gapic_v1.method.wrap_method(
+                self.get_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_policy: gapic_v1.method.wrap_method(
+                self.update_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.create_firewall_policy: gapic_v1.method.wrap_method(
                 self.create_firewall_policy,
                 default_timeout=None,
@@ -396,6 +406,24 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
     ) -> Callable[
         [recaptchaenterprise.GetMetricsRequest],
         Union[recaptchaenterprise.Metrics, Awaitable[recaptchaenterprise.Metrics]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_policy(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.GetPolicyRequest],
+        Union[recaptchaenterprise.Policy, Awaitable[recaptchaenterprise.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_policy(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.UpdatePolicyRequest],
+        Union[recaptchaenterprise.Policy, Awaitable[recaptchaenterprise.Policy]],
     ]:
         raise NotImplementedError()
 

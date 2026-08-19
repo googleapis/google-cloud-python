@@ -1482,6 +1482,45 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
             )
         return self._stubs["list_intelligence_finding_revisions"]
 
+    @property
+    def view_object_full_context(
+        self,
+    ) -> Callable[
+        [storage_control.ViewObjectFullContextRequest],
+        Awaitable[storage_control.ObjectFullContext],
+    ]:
+        r"""Return a callable for the view object full context method over gRPC.
+
+        Retrieves the full content of an object context, including its
+        key, value, and any associated extended data for a given context
+        key.
+
+        Object contexts can optionally contain extended data. If an
+        object context contains extended data, the metadata payload
+        structure will contain only its type URL. To retrieve the full
+        extended data, call this method.
+
+        Returns the complete representation of the context as an
+        [``ObjectFullContext``][google.storage.control.v2.ObjectFullContext].
+
+        Returns:
+            Callable[[~.ViewObjectFullContextRequest],
+                    Awaitable[~.ObjectFullContext]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "view_object_full_context" not in self._stubs:
+            self._stubs["view_object_full_context"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/ViewObjectFullContext",
+                request_serializer=storage_control.ViewObjectFullContextRequest.serialize,
+                response_deserializer=storage_control.ObjectFullContext.deserialize,
+            )
+        return self._stubs["view_object_full_context"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1980,6 +2019,11 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.view_object_full_context: self._wrap_method(
+                self.view_object_full_context,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }

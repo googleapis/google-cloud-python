@@ -81,6 +81,7 @@ from .types.storage_control import (
     ListRapidCachesRequest,
     ListRapidCachesResponse,
     ManagedFolder,
+    ObjectFullContext,
     PauseAnywhereCacheRequest,
     PendingRenameInfo,
     RapidCache,
@@ -98,6 +99,7 @@ from .types.storage_control import (
     UpdateProjectIntelligenceConfigRequest,
     UpdateRapidCacheMetadata,
     UpdateRapidCacheRequest,
+    ViewObjectFullContextRequest,
 )
 
 if hasattr(api_core, "check_python_version") and hasattr(
@@ -229,6 +231,7 @@ __all__ = (
     "ListRapidCachesRequest",
     "ListRapidCachesResponse",
     "ManagedFolder",
+    "ObjectFullContext",
     "PauseAnywhereCacheRequest",
     "PendingRenameInfo",
     "RapidCache",
@@ -247,4 +250,5 @@ __all__ = (
     "UpdateProjectIntelligenceConfigRequest",
     "UpdateRapidCacheMetadata",
     "UpdateRapidCacheRequest",
+    "ViewObjectFullContextRequest",
 )

@@ -79,18 +79,17 @@ class ListCdnConfigsRequest(proto.Message):
             ``ListCdnConfigs`` must match the call that provided the
             page token.
         filter (str):
-            Optional. Expression to filter the response.
-            See syntax details at
+            Optional. Expression to filter the response. See syntax
+            details at
             https://developers.google.com/ad-manager/api/beta/filters
 
-            <b>Filterable fields:</b>
-            <ul style="list-style-type:none">
-              <li><code>cdnConfigStatus</code></li>
-              <li><code>cdnConfigType</code></li>
-              <li><code>displayName</code></li>
-              <li><code>name</code></li>
-            <li><code>sourceContentConfig.ingestSettings.urlPrefix</code></li>
-            </ul>
+            **Filterable fields:**
+
+            - ``cdnConfigStatus``
+            - ``cdnConfigType``
+            - ``displayName``
+            - ``name``
+            - ``sourceContentConfig.ingestSettings.urlPrefix``
         order_by (str):
             Optional. Expression to specify sorting
             order. See syntax details at

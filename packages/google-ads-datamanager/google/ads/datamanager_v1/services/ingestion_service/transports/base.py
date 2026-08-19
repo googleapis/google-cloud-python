@@ -150,6 +150,11 @@ class IngestionServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.remove_all_audience_members: gapic_v1.method.wrap_method(
+                self.remove_all_audience_members,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.ingest_events: gapic_v1.method.wrap_method(
                 self.ingest_events,
                 default_timeout=None,
@@ -196,6 +201,18 @@ class IngestionServiceTransport(abc.ABC):
         Union[
             ingestion_service.RemoveAudienceMembersResponse,
             Awaitable[ingestion_service.RemoveAudienceMembersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def remove_all_audience_members(
+        self,
+    ) -> Callable[
+        [ingestion_service.RemoveAllAudienceMembersRequest],
+        Union[
+            ingestion_service.RemoveAllAudienceMembersResponse,
+            Awaitable[ingestion_service.RemoveAllAudienceMembersResponse],
         ],
     ]:
         raise NotImplementedError()

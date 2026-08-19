@@ -58,6 +58,7 @@ from .storage_control import (
     ListRapidCachesRequest,
     ListRapidCachesResponse,
     ManagedFolder,
+    ObjectFullContext,
     PauseAnywhereCacheRequest,
     PendingRenameInfo,
     RapidCache,
@@ -75,6 +76,7 @@ from .storage_control import (
     UpdateProjectIntelligenceConfigRequest,
     UpdateRapidCacheMetadata,
     UpdateRapidCacheRequest,
+    ViewObjectFullContextRequest,
 )
 
 __all__ = (
@@ -119,6 +121,7 @@ __all__ = (
     "ListRapidCachesRequest",
     "ListRapidCachesResponse",
     "ManagedFolder",
+    "ObjectFullContext",
     "PauseAnywhereCacheRequest",
     "PendingRenameInfo",
     "RapidCache",
@@ -136,6 +139,7 @@ __all__ = (
     "UpdateProjectIntelligenceConfigRequest",
     "UpdateRapidCacheMetadata",
     "UpdateRapidCacheRequest",
+    "ViewObjectFullContextRequest",
     "FindingCategory",
     "FindingSeverity",
     "FindingType",

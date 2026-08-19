@@ -3578,11 +3578,13 @@ def test_get_live_stream_rest_call_success(request_type):
             content_urls=["content_urls_value"],
             ad_tags=["ad_tags_value"],
             asset_key="asset_key_value",
+            slate="slate_value",
             enable_dai_authentication_keys=True,
             ad_break_fill_type=live_stream_event_enums.AdBreakFillTypeEnum.AdBreakFillType.MINIMIZE_SLATE,
             underfill_ad_break_fill_type=live_stream_event_enums.AdBreakFillTypeEnum.AdBreakFillType.MINIMIZE_SLATE,
             enable_max_filler_duration=True,
             enable_durationless_ad_breaks=True,
+            dai_authentication_keys=["dai_authentication_keys_value"],
             source_content_configurations=["source_content_configurations_value"],
             ad_media_delivery_config="ad_media_delivery_config_value",
             allowlisted_ips_enabled=True,
@@ -3593,6 +3595,8 @@ def test_get_live_stream_rest_call_success(request_type):
             forced_cue_in_enabled=True,
             short_segment_dropping_enabled=True,
             custom_asset_key="custom_asset_key_value",
+            dai_encoding_profiles=["dai_encoding_profiles_value"],
+            segment_url_authentication_keys=["segment_url_authentication_keys_value"],
             ad_break_markups=[
                 live_stream_event_enums.AdBreakMarkupTypeEnum.AdBreakMarkupType.HLS_DATERANGE_SPLICE
             ],
@@ -3625,6 +3629,7 @@ def test_get_live_stream_rest_call_success(request_type):
     assert response.content_urls == ["content_urls_value"]
     assert response.ad_tags == ["ad_tags_value"]
     assert response.asset_key == "asset_key_value"
+    assert response.slate == "slate_value"
     assert response.enable_dai_authentication_keys is True
     assert (
         response.ad_break_fill_type
@@ -3636,6 +3641,7 @@ def test_get_live_stream_rest_call_success(request_type):
     )
     assert response.enable_max_filler_duration is True
     assert response.enable_durationless_ad_breaks is True
+    assert response.dai_authentication_keys == ["dai_authentication_keys_value"]
     assert response.source_content_configurations == [
         "source_content_configurations_value"
     ]
@@ -3654,6 +3660,10 @@ def test_get_live_stream_rest_call_success(request_type):
     assert response.forced_cue_in_enabled is True
     assert response.short_segment_dropping_enabled is True
     assert response.custom_asset_key == "custom_asset_key_value"
+    assert response.dai_encoding_profiles == ["dai_encoding_profiles_value"]
+    assert response.segment_url_authentication_keys == [
+        "segment_url_authentication_keys_value"
+    ]
     assert response.ad_break_markups == [
         live_stream_event_enums.AdBreakMarkupTypeEnum.AdBreakMarkupType.HLS_DATERANGE_SPLICE
     ]
@@ -3919,15 +3929,21 @@ def test_create_live_stream_rest_call_success(request_type):
         "content_urls": ["content_urls_value1", "content_urls_value2"],
         "ad_tags": ["ad_tags_value1", "ad_tags_value2"],
         "asset_key": "asset_key_value",
+        "slate": "slate_value",
+        "dvr_window_duration": {"seconds": 751, "nanos": 543},
         "enable_dai_authentication_keys": True,
         "ad_break_fill_type": 1,
         "underfill_ad_break_fill_type": 1,
-        "ad_holiday_duration": {"seconds": 751, "nanos": 543},
+        "ad_holiday_duration": {},
         "enable_max_filler_duration": True,
         "max_filler_duration": {},
         "pod_serving_segment_duration": {},
         "enable_durationless_ad_breaks": True,
         "default_ad_break_duration": {},
+        "dai_authentication_keys": [
+            "dai_authentication_keys_value1",
+            "dai_authentication_keys_value2",
+        ],
         "source_content_configurations": [
             "source_content_configurations_value1",
             "source_content_configurations_value2",
@@ -3947,6 +3963,14 @@ def test_create_live_stream_rest_call_success(request_type):
         "forced_cue_in_enabled": True,
         "short_segment_dropping_enabled": True,
         "custom_asset_key": "custom_asset_key_value",
+        "dai_encoding_profiles": [
+            "dai_encoding_profiles_value1",
+            "dai_encoding_profiles_value2",
+        ],
+        "segment_url_authentication_keys": [
+            "segment_url_authentication_keys_value1",
+            "segment_url_authentication_keys_value2",
+        ],
         "ad_break_markups": [1],
         "ad_break_markup_types_enabled": True,
         "live_stream_conditioning": {"dash_bridge": {"enabled": True}},
@@ -4035,11 +4059,13 @@ def test_create_live_stream_rest_call_success(request_type):
             content_urls=["content_urls_value"],
             ad_tags=["ad_tags_value"],
             asset_key="asset_key_value",
+            slate="slate_value",
             enable_dai_authentication_keys=True,
             ad_break_fill_type=live_stream_event_enums.AdBreakFillTypeEnum.AdBreakFillType.MINIMIZE_SLATE,
             underfill_ad_break_fill_type=live_stream_event_enums.AdBreakFillTypeEnum.AdBreakFillType.MINIMIZE_SLATE,
             enable_max_filler_duration=True,
             enable_durationless_ad_breaks=True,
+            dai_authentication_keys=["dai_authentication_keys_value"],
             source_content_configurations=["source_content_configurations_value"],
             ad_media_delivery_config="ad_media_delivery_config_value",
             allowlisted_ips_enabled=True,
@@ -4050,6 +4076,8 @@ def test_create_live_stream_rest_call_success(request_type):
             forced_cue_in_enabled=True,
             short_segment_dropping_enabled=True,
             custom_asset_key="custom_asset_key_value",
+            dai_encoding_profiles=["dai_encoding_profiles_value"],
+            segment_url_authentication_keys=["segment_url_authentication_keys_value"],
             ad_break_markups=[
                 live_stream_event_enums.AdBreakMarkupTypeEnum.AdBreakMarkupType.HLS_DATERANGE_SPLICE
             ],
@@ -4082,6 +4110,7 @@ def test_create_live_stream_rest_call_success(request_type):
     assert response.content_urls == ["content_urls_value"]
     assert response.ad_tags == ["ad_tags_value"]
     assert response.asset_key == "asset_key_value"
+    assert response.slate == "slate_value"
     assert response.enable_dai_authentication_keys is True
     assert (
         response.ad_break_fill_type
@@ -4093,6 +4122,7 @@ def test_create_live_stream_rest_call_success(request_type):
     )
     assert response.enable_max_filler_duration is True
     assert response.enable_durationless_ad_breaks is True
+    assert response.dai_authentication_keys == ["dai_authentication_keys_value"]
     assert response.source_content_configurations == [
         "source_content_configurations_value"
     ]
@@ -4111,6 +4141,10 @@ def test_create_live_stream_rest_call_success(request_type):
     assert response.forced_cue_in_enabled is True
     assert response.short_segment_dropping_enabled is True
     assert response.custom_asset_key == "custom_asset_key_value"
+    assert response.dai_encoding_profiles == ["dai_encoding_profiles_value"]
+    assert response.segment_url_authentication_keys == [
+        "segment_url_authentication_keys_value"
+    ]
     assert response.ad_break_markups == [
         live_stream_event_enums.AdBreakMarkupTypeEnum.AdBreakMarkupType.HLS_DATERANGE_SPLICE
     ]
@@ -4374,15 +4408,21 @@ def test_update_live_stream_rest_call_success(request_type):
         "content_urls": ["content_urls_value1", "content_urls_value2"],
         "ad_tags": ["ad_tags_value1", "ad_tags_value2"],
         "asset_key": "asset_key_value",
+        "slate": "slate_value",
+        "dvr_window_duration": {"seconds": 751, "nanos": 543},
         "enable_dai_authentication_keys": True,
         "ad_break_fill_type": 1,
         "underfill_ad_break_fill_type": 1,
-        "ad_holiday_duration": {"seconds": 751, "nanos": 543},
+        "ad_holiday_duration": {},
         "enable_max_filler_duration": True,
         "max_filler_duration": {},
         "pod_serving_segment_duration": {},
         "enable_durationless_ad_breaks": True,
         "default_ad_break_duration": {},
+        "dai_authentication_keys": [
+            "dai_authentication_keys_value1",
+            "dai_authentication_keys_value2",
+        ],
         "source_content_configurations": [
             "source_content_configurations_value1",
             "source_content_configurations_value2",
@@ -4402,6 +4442,14 @@ def test_update_live_stream_rest_call_success(request_type):
         "forced_cue_in_enabled": True,
         "short_segment_dropping_enabled": True,
         "custom_asset_key": "custom_asset_key_value",
+        "dai_encoding_profiles": [
+            "dai_encoding_profiles_value1",
+            "dai_encoding_profiles_value2",
+        ],
+        "segment_url_authentication_keys": [
+            "segment_url_authentication_keys_value1",
+            "segment_url_authentication_keys_value2",
+        ],
         "ad_break_markups": [1],
         "ad_break_markup_types_enabled": True,
         "live_stream_conditioning": {"dash_bridge": {"enabled": True}},
@@ -4490,11 +4538,13 @@ def test_update_live_stream_rest_call_success(request_type):
             content_urls=["content_urls_value"],
             ad_tags=["ad_tags_value"],
             asset_key="asset_key_value",
+            slate="slate_value",
             enable_dai_authentication_keys=True,
             ad_break_fill_type=live_stream_event_enums.AdBreakFillTypeEnum.AdBreakFillType.MINIMIZE_SLATE,
             underfill_ad_break_fill_type=live_stream_event_enums.AdBreakFillTypeEnum.AdBreakFillType.MINIMIZE_SLATE,
             enable_max_filler_duration=True,
             enable_durationless_ad_breaks=True,
+            dai_authentication_keys=["dai_authentication_keys_value"],
             source_content_configurations=["source_content_configurations_value"],
             ad_media_delivery_config="ad_media_delivery_config_value",
             allowlisted_ips_enabled=True,
@@ -4505,6 +4555,8 @@ def test_update_live_stream_rest_call_success(request_type):
             forced_cue_in_enabled=True,
             short_segment_dropping_enabled=True,
             custom_asset_key="custom_asset_key_value",
+            dai_encoding_profiles=["dai_encoding_profiles_value"],
+            segment_url_authentication_keys=["segment_url_authentication_keys_value"],
             ad_break_markups=[
                 live_stream_event_enums.AdBreakMarkupTypeEnum.AdBreakMarkupType.HLS_DATERANGE_SPLICE
             ],
@@ -4537,6 +4589,7 @@ def test_update_live_stream_rest_call_success(request_type):
     assert response.content_urls == ["content_urls_value"]
     assert response.ad_tags == ["ad_tags_value"]
     assert response.asset_key == "asset_key_value"
+    assert response.slate == "slate_value"
     assert response.enable_dai_authentication_keys is True
     assert (
         response.ad_break_fill_type
@@ -4548,6 +4601,7 @@ def test_update_live_stream_rest_call_success(request_type):
     )
     assert response.enable_max_filler_duration is True
     assert response.enable_durationless_ad_breaks is True
+    assert response.dai_authentication_keys == ["dai_authentication_keys_value"]
     assert response.source_content_configurations == [
         "source_content_configurations_value"
     ]
@@ -4566,6 +4620,10 @@ def test_update_live_stream_rest_call_success(request_type):
     assert response.forced_cue_in_enabled is True
     assert response.short_segment_dropping_enabled is True
     assert response.custom_asset_key == "custom_asset_key_value"
+    assert response.dai_encoding_profiles == ["dai_encoding_profiles_value"]
+    assert response.segment_url_authentication_keys == [
+        "segment_url_authentication_keys_value"
+    ]
     assert response.ad_break_markups == [
         live_stream_event_enums.AdBreakMarkupTypeEnum.AdBreakMarkupType.HLS_DATERANGE_SPLICE
     ]
@@ -6058,9 +6116,63 @@ def test_parse_cdn_config_path():
     assert expected == actual
 
 
-def test_live_stream_path():
+def test_dai_authentication_key_path():
     network_code = "oyster"
-    live_stream = "nudibranch"
+    dai_authentication_key = "nudibranch"
+    expected = (
+        "networks/{network_code}/daiAuthenticationKeys/{dai_authentication_key}".format(
+            network_code=network_code,
+            dai_authentication_key=dai_authentication_key,
+        )
+    )
+    actual = LiveStreamServiceClient.dai_authentication_key_path(
+        network_code, dai_authentication_key
+    )
+    assert expected == actual
+
+
+def test_parse_dai_authentication_key_path():
+    expected = {
+        "network_code": "cuttlefish",
+        "dai_authentication_key": "mussel",
+    }
+    path = LiveStreamServiceClient.dai_authentication_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LiveStreamServiceClient.parse_dai_authentication_key_path(path)
+    assert expected == actual
+
+
+def test_dai_encoding_profile_path():
+    network_code = "winkle"
+    dai_encoding_profile = "nautilus"
+    expected = (
+        "networks/{network_code}/daiEncodingProfiles/{dai_encoding_profile}".format(
+            network_code=network_code,
+            dai_encoding_profile=dai_encoding_profile,
+        )
+    )
+    actual = LiveStreamServiceClient.dai_encoding_profile_path(
+        network_code, dai_encoding_profile
+    )
+    assert expected == actual
+
+
+def test_parse_dai_encoding_profile_path():
+    expected = {
+        "network_code": "scallop",
+        "dai_encoding_profile": "abalone",
+    }
+    path = LiveStreamServiceClient.dai_encoding_profile_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LiveStreamServiceClient.parse_dai_encoding_profile_path(path)
+    assert expected == actual
+
+
+def test_live_stream_path():
+    network_code = "squid"
+    live_stream = "clam"
     expected = "networks/{network_code}/liveStreams/{live_stream}".format(
         network_code=network_code,
         live_stream=live_stream,
@@ -6071,8 +6183,8 @@ def test_live_stream_path():
 
 def test_parse_live_stream_path():
     expected = {
-        "network_code": "cuttlefish",
-        "live_stream": "mussel",
+        "network_code": "whelk",
+        "live_stream": "octopus",
     }
     path = LiveStreamServiceClient.live_stream_path(**expected)
 
@@ -6082,7 +6194,7 @@ def test_parse_live_stream_path():
 
 
 def test_network_path():
-    network_code = "winkle"
+    network_code = "oyster"
     expected = "networks/{network_code}".format(
         network_code=network_code,
     )
@@ -6092,12 +6204,35 @@ def test_network_path():
 
 def test_parse_network_path():
     expected = {
-        "network_code": "nautilus",
+        "network_code": "nudibranch",
     }
     path = LiveStreamServiceClient.network_path(**expected)
 
     # Check that the path construction is reversible.
     actual = LiveStreamServiceClient.parse_network_path(path)
+    assert expected == actual
+
+
+def test_slate_path():
+    network_code = "cuttlefish"
+    slate = "mussel"
+    expected = "networks/{network_code}/slates/{slate}".format(
+        network_code=network_code,
+        slate=slate,
+    )
+    actual = LiveStreamServiceClient.slate_path(network_code, slate)
+    assert expected == actual
+
+
+def test_parse_slate_path():
+    expected = {
+        "network_code": "winkle",
+        "slate": "nautilus",
+    }
+    path = LiveStreamServiceClient.slate_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = LiveStreamServiceClient.parse_slate_path(path)
     assert expected == actual
 
 

@@ -44,6 +44,7 @@ import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 import google.iam.v1.options_pb2 as options_pb2  # type: ignore
 import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
@@ -52332,8 +52333,12 @@ def test_create_release_config_rest_call_success(request_type):
             "builtin_assertion_name_prefix": "builtin_assertion_name_prefix_value",
             "default_notebook_runtime_options": {
                 "gcs_output_bucket": "gcs_output_bucket_value",
+                "gcs_repository_snapshot_destination": {
+                    "repository_snapshot_uri": "repository_snapshot_uri_value"
+                },
                 "ai_platform_notebook_runtime_template": "ai_platform_notebook_runtime_template_value",
             },
+            "pipeline_config": {"pipeline_type": 1, "path": "path_value"},
         },
         "cron_schedule": "cron_schedule_value",
         "time_zone": "time_zone_value",
@@ -52588,8 +52593,12 @@ def test_update_release_config_rest_call_success(request_type):
             "builtin_assertion_name_prefix": "builtin_assertion_name_prefix_value",
             "default_notebook_runtime_options": {
                 "gcs_output_bucket": "gcs_output_bucket_value",
+                "gcs_repository_snapshot_destination": {
+                    "repository_snapshot_uri": "repository_snapshot_uri_value"
+                },
                 "ai_platform_notebook_runtime_template": "ai_platform_notebook_runtime_template_value",
             },
+            "pipeline_config": {"pipeline_type": 1, "path": "path_value"},
         },
         "cron_schedule": "cron_schedule_value",
         "time_zone": "time_zone_value",
@@ -53226,8 +53235,12 @@ def test_create_compilation_result_rest_call_success(request_type):
             "builtin_assertion_name_prefix": "builtin_assertion_name_prefix_value",
             "default_notebook_runtime_options": {
                 "gcs_output_bucket": "gcs_output_bucket_value",
+                "gcs_repository_snapshot_destination": {
+                    "repository_snapshot_uri": "repository_snapshot_uri_value"
+                },
                 "ai_platform_notebook_runtime_template": "ai_platform_notebook_runtime_template_value",
             },
+            "pipeline_config": {"pipeline_type": 1, "path": "path_value"},
         },
         "resolved_git_commit_sha": "resolved_git_commit_sha_value",
         "dataform_core_version": "dataform_core_version_value",
@@ -53247,6 +53260,11 @@ def test_create_compilation_result_rest_call_success(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "internal_metadata": "internal_metadata_value",
         "private_resource_metadata": {"user_scoped": True},
+        "gcs_repository_snapshot_metadata": {
+            "repository_snapshot_uri": "repository_snapshot_uri_value",
+            "crc32c_checksum": "crc32c_checksum_value",
+            "generation": 1068,
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -53909,6 +53927,18 @@ def test_create_workflow_config_rest_call_success(request_type):
         "create_time": {},
         "update_time": {},
         "internal_metadata": "internal_metadata_value",
+        "workflow_trigger_config": {
+            "condition": 1,
+            "workflow_triggers": [
+                {"table_update_trigger": {"table": {}, "trigger_update_time": {}}}
+            ],
+            "min_execution_duration": {"seconds": 751, "nanos": 543},
+            "max_wait_duration": {},
+            "recent_trigger_evaluation_records": [
+                {"evaluation_time": {}, "status": {}}
+            ],
+            "last_successful_evaluation_time": {},
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -54164,6 +54194,18 @@ def test_update_workflow_config_rest_call_success(request_type):
         "create_time": {},
         "update_time": {},
         "internal_metadata": "internal_metadata_value",
+        "workflow_trigger_config": {
+            "condition": 1,
+            "workflow_triggers": [
+                {"table_update_trigger": {"table": {}, "trigger_update_time": {}}}
+            ],
+            "min_execution_duration": {"seconds": 751, "nanos": 543},
+            "max_wait_duration": {},
+            "recent_trigger_evaluation_records": [
+                {"evaluation_time": {}, "status": {}}
+            ],
+            "last_successful_evaluation_time": {},
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -54789,6 +54831,7 @@ def test_create_workflow_invocation_rest_call_success(request_type):
         "data_encryption_state": {"kms_key_version_name": "kms_key_version_name_value"},
         "internal_metadata": "internal_metadata_value",
         "private_resource_metadata": {"user_scoped": True},
+        "pipeline_config": {"pipeline_type": 1, "path": "path_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

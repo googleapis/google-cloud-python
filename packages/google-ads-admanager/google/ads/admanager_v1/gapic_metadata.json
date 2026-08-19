@@ -389,6 +389,45 @@
         }
       }
     },
+    "ChildPublisherService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ChildPublisherServiceClient",
+          "rpcs": {
+            "BatchCreateChildPublishers": {
+              "methods": [
+                "batch_create_child_publishers"
+              ]
+            },
+            "BatchUpdateChildPublishers": {
+              "methods": [
+                "batch_update_child_publishers"
+              ]
+            },
+            "CreateChildPublisher": {
+              "methods": [
+                "create_child_publisher"
+              ]
+            },
+            "GetChildPublisher": {
+              "methods": [
+                "get_child_publisher"
+              ]
+            },
+            "ListChildPublishers": {
+              "methods": [
+                "list_child_publishers"
+              ]
+            },
+            "UpdateChildPublisher": {
+              "methods": [
+                "update_child_publisher"
+              ]
+            }
+          }
+        }
+      }
+    },
     "CmsMetadataKeyService": {
       "clients": {
         "rest": {
@@ -452,6 +491,21 @@
         "rest": {
           "libraryClient": "CompanyServiceClient",
           "rpcs": {
+            "BatchCreateCompanies": {
+              "methods": [
+                "batch_create_companies"
+              ]
+            },
+            "BatchUpdateCompanies": {
+              "methods": [
+                "batch_update_companies"
+              ]
+            },
+            "CreateCompany": {
+              "methods": [
+                "create_company"
+              ]
+            },
             "GetCompany": {
               "methods": [
                 "get_company"
@@ -460,6 +514,11 @@
             "ListCompanies": {
               "methods": [
                 "list_companies"
+              ]
+            },
+            "UpdateCompany": {
+              "methods": [
+                "update_company"
               ]
             }
           }
@@ -620,6 +679,55 @@
         }
       }
     },
+    "CreativeWrapperService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "CreativeWrapperServiceClient",
+          "rpcs": {
+            "BatchActivateCreativeWrappers": {
+              "methods": [
+                "batch_activate_creative_wrappers"
+              ]
+            },
+            "BatchCreateCreativeWrappers": {
+              "methods": [
+                "batch_create_creative_wrappers"
+              ]
+            },
+            "BatchDeactivateCreativeWrappers": {
+              "methods": [
+                "batch_deactivate_creative_wrappers"
+              ]
+            },
+            "BatchUpdateCreativeWrappers": {
+              "methods": [
+                "batch_update_creative_wrappers"
+              ]
+            },
+            "CreateCreativeWrapper": {
+              "methods": [
+                "create_creative_wrapper"
+              ]
+            },
+            "GetCreativeWrapper": {
+              "methods": [
+                "get_creative_wrapper"
+              ]
+            },
+            "ListCreativeWrappers": {
+              "methods": [
+                "list_creative_wrappers"
+              ]
+            },
+            "UpdateCreativeWrapper": {
+              "methods": [
+                "update_creative_wrapper"
+              ]
+            }
+          }
+        }
+      }
+    },
     "CustomFieldService": {
       "clients": {
         "rest": {
@@ -761,6 +869,104 @@
             "UpdateCustomTargetingValue": {
               "methods": [
                 "update_custom_targeting_value"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "DaiAuthenticationKeyService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "DaiAuthenticationKeyServiceClient",
+          "rpcs": {
+            "BatchActivateDaiAuthenticationKeys": {
+              "methods": [
+                "batch_activate_dai_authentication_keys"
+              ]
+            },
+            "BatchCreateDaiAuthenticationKeys": {
+              "methods": [
+                "batch_create_dai_authentication_keys"
+              ]
+            },
+            "BatchDeactivateDaiAuthenticationKeys": {
+              "methods": [
+                "batch_deactivate_dai_authentication_keys"
+              ]
+            },
+            "BatchUpdateDaiAuthenticationKeys": {
+              "methods": [
+                "batch_update_dai_authentication_keys"
+              ]
+            },
+            "CreateDaiAuthenticationKey": {
+              "methods": [
+                "create_dai_authentication_key"
+              ]
+            },
+            "GetDaiAuthenticationKey": {
+              "methods": [
+                "get_dai_authentication_key"
+              ]
+            },
+            "ListDaiAuthenticationKeys": {
+              "methods": [
+                "list_dai_authentication_keys"
+              ]
+            },
+            "UpdateDaiAuthenticationKey": {
+              "methods": [
+                "update_dai_authentication_key"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "DaiEncodingProfileService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "DaiEncodingProfileServiceClient",
+          "rpcs": {
+            "BatchActivateDaiEncodingProfiles": {
+              "methods": [
+                "batch_activate_dai_encoding_profiles"
+              ]
+            },
+            "BatchArchiveDaiEncodingProfiles": {
+              "methods": [
+                "batch_archive_dai_encoding_profiles"
+              ]
+            },
+            "BatchCreateDaiEncodingProfiles": {
+              "methods": [
+                "batch_create_dai_encoding_profiles"
+              ]
+            },
+            "BatchUpdateDaiEncodingProfiles": {
+              "methods": [
+                "batch_update_dai_encoding_profiles"
+              ]
+            },
+            "CreateDaiEncodingProfile": {
+              "methods": [
+                "create_dai_encoding_profile"
+              ]
+            },
+            "GetDaiEncodingProfile": {
+              "methods": [
+                "get_dai_encoding_profile"
+              ]
+            },
+            "ListDaiEncodingProfiles": {
+              "methods": [
+                "list_dai_encoding_profiles"
+              ]
+            },
+            "UpdateDaiEncodingProfile": {
+              "methods": [
+                "update_dai_encoding_profile"
               ]
             }
           }
@@ -1270,6 +1476,35 @@
         }
       }
     },
+    "PartnerService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "PartnerServiceClient",
+          "rpcs": {
+            "BatchUpdatePartners": {
+              "methods": [
+                "batch_update_partners"
+              ]
+            },
+            "GetPartner": {
+              "methods": [
+                "get_partner"
+              ]
+            },
+            "ListPartners": {
+              "methods": [
+                "list_partners"
+              ]
+            },
+            "UpdatePartner": {
+              "methods": [
+                "update_partner"
+              ]
+            }
+          }
+        }
+      }
+    },
     "PlacementService": {
       "clients": {
         "rest": {
@@ -1739,6 +1974,45 @@
             "GetUser": {
               "methods": [
                 "get_user"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ViewabilityProviderService": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ViewabilityProviderServiceClient",
+          "rpcs": {
+            "BatchCreateViewabilityProviders": {
+              "methods": [
+                "batch_create_viewability_providers"
+              ]
+            },
+            "BatchUpdateViewabilityProviders": {
+              "methods": [
+                "batch_update_viewability_providers"
+              ]
+            },
+            "CreateViewabilityProvider": {
+              "methods": [
+                "create_viewability_provider"
+              ]
+            },
+            "GetViewabilityProvider": {
+              "methods": [
+                "get_viewability_provider"
+              ]
+            },
+            "ListViewabilityProviders": {
+              "methods": [
+                "list_viewability_providers"
+              ]
+            },
+            "UpdateViewabilityProvider": {
+              "methods": [
+                "update_viewability_provider"
               ]
             }
           }

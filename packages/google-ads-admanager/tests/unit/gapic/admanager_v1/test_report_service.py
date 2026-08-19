@@ -73,6 +73,7 @@ from google.ads.admanager_v1.types import (
     report_messages,
     report_service,
     report_value,
+    report_visibility_enum,
 )
 
 CRED_INFO_JSON = {
@@ -2451,7 +2452,7 @@ def test_get_report_rest_call_success(request_type):
         return_value = report_messages.Report(
             name="name_value",
             report_id=968,
-            visibility=report_messages.Report.Visibility.DRAFT,
+            visibility=report_visibility_enum.ReportVisibilityEnum.ReportVisibility.VISIBLE,
             display_name="display_name_value",
             locale="locale_value",
         )
@@ -2472,7 +2473,10 @@ def test_get_report_rest_call_success(request_type):
     assert isinstance(response, report_messages.Report)
     assert response.name == "name_value"
     assert response.report_id == 968
-    assert response.visibility == report_messages.Report.Visibility.DRAFT
+    assert (
+        response.visibility
+        == report_visibility_enum.ReportVisibilityEnum.ReportVisibility.VISIBLE
+    )
     assert response.display_name == "display_name_value"
     assert response.locale == "locale_value"
 
@@ -2716,7 +2720,7 @@ def test_create_report_rest_call_success(request_type):
     request_init["report"] = {
         "name": "name_value",
         "report_id": 968,
-        "visibility": 1,
+        "visibility": 2,
         "report_definition": {
             "dimensions": [575],
             "metrics": [223],
@@ -2876,7 +2880,7 @@ def test_create_report_rest_call_success(request_type):
         return_value = report_messages.Report(
             name="name_value",
             report_id=968,
-            visibility=report_messages.Report.Visibility.DRAFT,
+            visibility=report_visibility_enum.ReportVisibilityEnum.ReportVisibility.VISIBLE,
             display_name="display_name_value",
             locale="locale_value",
         )
@@ -2897,7 +2901,10 @@ def test_create_report_rest_call_success(request_type):
     assert isinstance(response, report_messages.Report)
     assert response.name == "name_value"
     assert response.report_id == 968
-    assert response.visibility == report_messages.Report.Visibility.DRAFT
+    assert (
+        response.visibility
+        == report_visibility_enum.ReportVisibilityEnum.ReportVisibility.VISIBLE
+    )
     assert response.display_name == "display_name_value"
     assert response.locale == "locale_value"
 
@@ -3009,7 +3016,7 @@ def test_update_report_rest_call_success(request_type):
     request_init["report"] = {
         "name": "networks/sample1/reports/sample2",
         "report_id": 968,
-        "visibility": 1,
+        "visibility": 2,
         "report_definition": {
             "dimensions": [575],
             "metrics": [223],
@@ -3169,7 +3176,7 @@ def test_update_report_rest_call_success(request_type):
         return_value = report_messages.Report(
             name="name_value",
             report_id=968,
-            visibility=report_messages.Report.Visibility.DRAFT,
+            visibility=report_visibility_enum.ReportVisibilityEnum.ReportVisibility.VISIBLE,
             display_name="display_name_value",
             locale="locale_value",
         )
@@ -3190,7 +3197,10 @@ def test_update_report_rest_call_success(request_type):
     assert isinstance(response, report_messages.Report)
     assert response.name == "name_value"
     assert response.report_id == 968
-    assert response.visibility == report_messages.Report.Visibility.DRAFT
+    assert (
+        response.visibility
+        == report_visibility_enum.ReportVisibilityEnum.ReportVisibility.VISIBLE
+    )
     assert response.display_name == "display_name_value"
     assert response.locale == "locale_value"
 

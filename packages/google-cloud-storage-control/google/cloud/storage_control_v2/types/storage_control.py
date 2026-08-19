@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
@@ -88,6 +89,8 @@ __protobuf__ = proto.module(
         "ListIntelligenceFindingRevisionsRequest",
         "ListIntelligenceFindingRevisionsResponse",
         "FindingSummary",
+        "ObjectFullContext",
+        "ViewObjectFullContextRequest",
     },
 )
 
@@ -711,6 +714,9 @@ class StorageLayout(proto.Message):
             namespace configuration. If there is no
             configuration, the hierarchical namespace is
             disabled.
+        rapid_cache_info (google.cloud.storage_control_v2.types.StorageLayout.RapidCacheInfo):
+            Output only. The Rapid Cache configuration
+            for the bucket.
     """
 
     class CustomPlacementConfig(proto.Message):
@@ -742,6 +748,21 @@ class StorageLayout(proto.Message):
             number=1,
         )
 
+    class RapidCacheInfo(proto.Message):
+        r"""The Rapid Cache configuration for the bucket.
+
+        Attributes:
+            cache_type (str):
+                Output only. The type of cache in the bucket. Set to
+                ``rapid-cache`` or ``rapid-cache-ultra``, only if there is a
+                cache present.
+        """
+
+        cache_type: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -763,6 +784,11 @@ class StorageLayout(proto.Message):
         proto.MESSAGE,
         number=5,
         message=HierarchicalNamespace,
+    )
+    rapid_cache_info: RapidCacheInfo = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=RapidCacheInfo,
     )
 
 
@@ -3568,6 +3594,103 @@ class FindingSummary(proto.Message):
         proto.MESSAGE,
         number=8,
         message=SummaryDetails,
+    )
+
+
+class ObjectFullContext(proto.Message):
+    r"""A full representation of an object context.
+
+    Attributes:
+        type_ (google.cloud.storage_control_v2.types.ObjectFullContext.Type):
+            The type of the object context.
+        key (str):
+            The key of the object context, which is
+            unique among contexts of an object.
+        value (str):
+            The value of the object context.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which the object context was
+            created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which the object context was
+            updated.
+        extended_data (google.protobuf.any_pb2.Any):
+            The extended data of the object context.
+    """
+
+    class Type(proto.Enum):
+        r"""Types of object contexts.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                The type is not specified.
+            CUSTOM (1):
+                Custom context.
+            GOOGLE (2):
+                Google context.
+        """
+
+        TYPE_UNSPECIFIED = 0
+        CUSTOM = 1
+        GOOGLE = 2
+
+    type_: Type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Type,
+    )
+    key: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    value: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    extended_data: any_pb2.Any = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=any_pb2.Any,
+    )
+
+
+class ViewObjectFullContextRequest(proto.Message):
+    r"""Request message for ViewObjectFullContext.
+
+    Attributes:
+        generation (int):
+            Optional. If present, selects a specific
+            revision of this object (as opposed to the
+            latest version, the default).
+        context_key (str):
+            Required. The key of the object context to
+            retrieve.
+        name (str):
+            Required. The name of the object. Format:
+            ``projects/{project}/buckets/{bucket}/objects/{object}``
+    """
+
+    generation: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    context_key: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
