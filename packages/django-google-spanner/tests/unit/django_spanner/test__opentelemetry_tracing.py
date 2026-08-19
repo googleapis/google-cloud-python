@@ -100,6 +100,12 @@ if HAS_OPENTELEMETRY_INSTALLED:
             self.assertEqual(span.name, "CloudSpannerDjango.Test")
             self.assertEqual(span.status.status_code, StatusCode.OK)
 
+        def test_trace_call_no_extra_attributes(self):
+            with _opentelemetry_tracing.trace_call(
+                "CloudSpannerDjango.TestNoExtra", _make_connection()
+            ) as span:
+                self.assertIsNotNone(span)
+
         def test_trace_error(self):
             extra_attributes = {"db.instance": "database_name"}
 
