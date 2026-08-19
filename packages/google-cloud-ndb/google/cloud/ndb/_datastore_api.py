@@ -14,25 +14,27 @@
 
 """Functions that interact with Datastore backend."""
 
-import grpc
 import itertools
 import logging
 
+import grpc
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.cloud.datastore import helpers
 from google.cloud.datastore_v1.types import datastore as datastore_pb2
 from google.cloud.datastore_v1.types import entity as entity_pb2
 
+from google.cloud.ndb import (
+    _batch,
+    _cache,
+    _eventloop,
+    _options,
+    _remote,
+    _retry,
+    tasklets,
+    utils,
+)
 from google.cloud.ndb import context as context_module
-from google.cloud.ndb import _batch
-from google.cloud.ndb import _cache
-from google.cloud.ndb import _eventloop
-from google.cloud.ndb import _options
-from google.cloud.ndb import _remote
-from google.cloud.ndb import _retry
-from google.cloud.ndb import tasklets
-from google.cloud.ndb import utils
 
 EVENTUAL = datastore_pb2.ReadOptions.ReadConsistency.EVENTUAL
 EVENTUAL_CONSISTENCY = EVENTUAL  # Legacy NDB
@@ -168,7 +170,7 @@ def lookup(key, options):
         if use_global_cache and not key_locked:
             if entity_pb is not _NOT_FOUND:
                 expires = context._global_cache_timeout(key, options)
-                serialized = entity_pb._pb.SerializeToString()
+                serialized = entity_pb._pb.SerializeToString()  # type: ignore[attr-defined]
                 yield _cache.global_compare_and_swap(
                     cache_key, serialized, expires=expires
                 )
@@ -432,6 +434,7 @@ def delete(key, options):
     use_global_cache = context._use_global_cache(key, options)
     use_datastore = context._use_datastore(key, options)
     transaction = context.transaction
+    lock = None
 
     if use_global_cache:
         cache_key = _cache.global_cache_key(key)
@@ -448,17 +451,18 @@ def delete(key, options):
         yield batch.delete(key)
 
     if use_global_cache:
-        if transaction:
+        if lock is not None:
+            if transaction:
 
-            def callback():
-                _cache.global_unlock_for_write(cache_key, lock).result()
+                def callback():
+                    _cache.global_unlock_for_write(cache_key, lock).result()
 
-            context.call_on_transaction_complete(callback)
+                context.call_on_transaction_complete(callback)
 
-        elif use_datastore:
-            yield _cache.global_unlock_for_write(cache_key, lock)
+            else:
+                yield _cache.global_unlock_for_write(cache_key, lock)
 
-        else:
+        elif not use_datastore:
             yield _cache.global_delete(cache_key)
 
 

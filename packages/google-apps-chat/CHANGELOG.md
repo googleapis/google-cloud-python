@@ -4,6 +4,71 @@
 
 [1]: https://pypi.org/project/google-apps-chat/#history
 
+## [0.10.4](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.10.3...google-apps-chat-v0.10.4) (2026-08-06)
+
+
+### Features
+
+* update googleapis and regenerate ([#17893](https://github.com/googleapis/google-cloud-python/issues/17893)) ([e70ab6f](https://github.com/googleapis/google-cloud-python/commit/e70ab6fd45edfec5ca0c865e01876f0ea4f09cae))
+
+## [0.10.3](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.10.2...google-apps-chat-v0.10.3) (2026-07-16)
+
+
+### Features
+
+* update googleapis and regenerate ([#17725](https://github.com/googleapis/google-cloud-python/issues/17725)) ([35e16da](https://github.com/googleapis/google-cloud-python/commit/35e16daf25480d66e9fc3443fe485ae2b0241ae3))
+
+## [0.10.2](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.10.1...google-apps-chat-v0.10.2) (2026-07-13)
+
+
+### Features
+
+* update googleapis and regenerate ([#17678](https://github.com/googleapis/google-cloud-python/issues/17678)) ([670917c](https://github.com/googleapis/google-cloud-python/commit/670917c9cff5b93983bb75790170716e917b72bb))
+
+## [0.10.1](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.10.0...google-apps-chat-v0.10.1) (2026-06-25)
+
+
+### Features
+
+* update googleapis and regenerate ([#17554](https://github.com/googleapis/google-cloud-python/issues/17554)) ([03d0574](https://github.com/googleapis/google-cloud-python/commit/03d0574da8485e918f16e90666928f5c7b7f1c92))
+
+## [0.10.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.9.0...google-apps-chat-v0.10.0) (2026-06-02)
+
+
+### Features
+
+* regenerate remaining packages (#17078) ([cc4f36f65e8b29d28f636e082435801b899cbca0](https://github.com/googleapis/google-cloud-python/commit/cc4f36f65e8b29d28f636e082435801b899cbca0))
+
+## [0.9.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.8.0...google-apps-chat-v0.9.0) (2026-05-06)
+
+## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.7.0...google-apps-chat-v0.8.0) (2026-04-09)
+
+
+### Documentation
+
+* Update reference documentation for Chat API ListMessages, GetMessage, GetSpaceEvent and ListSpaceEvents. ([56ccbd8612b6790b0477bf8d777080061072e745](https://github.com/googleapis/google-cloud-python/commit/56ccbd8612b6790b0477bf8d777080061072e745))
+
+
+### Features
+
+* Support app authentication with admin-consent scopes for Chat API ListMessages, GetMessage, GetSpaceEvent and ListSpaceEvents ([56ccbd8612b6790b0477bf8d777080061072e745](https://github.com/googleapis/google-cloud-python/commit/56ccbd8612b6790b0477bf8d777080061072e745))
+* Addition of Section and SectionItem APIs ([56ccbd8612b6790b0477bf8d777080061072e745](https://github.com/googleapis/google-cloud-python/commit/56ccbd8612b6790b0477bf8d777080061072e745))
+
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.6.0...google-apps-chat-v0.7.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* update image to us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:f5426423676c75008c2135037e7b98f78cbb99f78b3c46fe043b6897be92d836 ([3654fe76d755dd8db62ece81d5770ec58b3624df](https://github.com/googleapis/google-cloud-python/commit/3654fe76d755dd8db62ece81d5770ec58b3624df))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.5.0...google-apps-chat-v0.6.0) (2026-02-05)
 
 

@@ -8,9 +8,428 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-memorystore",
-    "version": "0.3.0"
+    "version": "0.5.4"
   },
   "snippets": [
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.add_auth_token",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.AddAuthToken",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "AddAuthToken"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.AddAuthTokenRequest"
+          },
+          {
+            "name": "token_auth_user",
+            "type": "str"
+          },
+          {
+            "name": "auth_token",
+            "type": "google.cloud.memorystore_v1.types.AuthToken"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "add_auth_token"
+      },
+      "description": "Sample for AddAuthToken",
+      "file": "memorystore_v1_generated_memorystore_add_auth_token_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_AddAuthToken_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_add_auth_token_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreClient",
+          "shortName": "MemorystoreClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreClient.add_auth_token",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.AddAuthToken",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "AddAuthToken"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.AddAuthTokenRequest"
+          },
+          {
+            "name": "token_auth_user",
+            "type": "str"
+          },
+          {
+            "name": "auth_token",
+            "type": "google.cloud.memorystore_v1.types.AuthToken"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "add_auth_token"
+      },
+      "description": "Sample for AddAuthToken",
+      "file": "memorystore_v1_generated_memorystore_add_auth_token_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_AddAuthToken_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_add_auth_token_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.add_token_auth_user",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.AddTokenAuthUser",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "AddTokenAuthUser"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.AddTokenAuthUserRequest"
+          },
+          {
+            "name": "instance",
+            "type": "str"
+          },
+          {
+            "name": "token_auth_user",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "add_token_auth_user"
+      },
+      "description": "Sample for AddTokenAuthUser",
+      "file": "memorystore_v1_generated_memorystore_add_token_auth_user_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_AddTokenAuthUser_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_add_token_auth_user_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreClient",
+          "shortName": "MemorystoreClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreClient.add_token_auth_user",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.AddTokenAuthUser",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "AddTokenAuthUser"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.AddTokenAuthUserRequest"
+          },
+          {
+            "name": "instance",
+            "type": "str"
+          },
+          {
+            "name": "token_auth_user",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "add_token_auth_user"
+      },
+      "description": "Sample for AddTokenAuthUser",
+      "file": "memorystore_v1_generated_memorystore_add_token_auth_user_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_AddTokenAuthUser_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_add_token_auth_user_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.backup_instance",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.BackupInstance",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "BackupInstance"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.BackupInstanceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "backup_instance"
+      },
+      "description": "Sample for BackupInstance",
+      "file": "memorystore_v1_generated_memorystore_backup_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_BackupInstance_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_backup_instance_async.py"
+    },
     {
       "canonical": true,
       "clientMethod": {
@@ -90,6 +509,95 @@
         }
       ],
       "title": "memorystore_v1_generated_memorystore_backup_instance_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.create_instance",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.CreateInstance",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "CreateInstance"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.CreateInstanceRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "instance",
+            "type": "google.cloud.memorystore_v1.types.Instance"
+          },
+          {
+            "name": "instance_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_instance"
+      },
+      "description": "Sample for CreateInstance",
+      "file": "memorystore_v1_generated_memorystore_create_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_CreateInstance_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_create_instance_async.py"
     },
     {
       "canonical": true,
@@ -182,6 +690,248 @@
     {
       "canonical": true,
       "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.delete_auth_token",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.DeleteAuthToken",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "DeleteAuthToken"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.DeleteAuthTokenRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_auth_token"
+      },
+      "description": "Sample for DeleteAuthToken",
+      "file": "memorystore_v1_generated_memorystore_delete_auth_token_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_DeleteAuthToken_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_delete_auth_token_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreClient",
+          "shortName": "MemorystoreClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreClient.delete_auth_token",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.DeleteAuthToken",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "DeleteAuthToken"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.DeleteAuthTokenRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_auth_token"
+      },
+      "description": "Sample for DeleteAuthToken",
+      "file": "memorystore_v1_generated_memorystore_delete_auth_token_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_DeleteAuthToken_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_delete_auth_token_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.delete_backup",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.DeleteBackup",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "DeleteBackup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.DeleteBackupRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_backup"
+      },
+      "description": "Sample for DeleteBackup",
+      "file": "memorystore_v1_generated_memorystore_delete_backup_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_DeleteBackup_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_delete_backup_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
         "client": {
           "fullName": "google.cloud.memorystore_v1.MemorystoreClient",
           "shortName": "MemorystoreClient"
@@ -258,6 +1008,87 @@
         }
       ],
       "title": "memorystore_v1_generated_memorystore_delete_backup_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.delete_instance",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.DeleteInstance",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "DeleteInstance"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.DeleteInstanceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_instance"
+      },
+      "description": "Sample for DeleteInstance",
+      "file": "memorystore_v1_generated_memorystore_delete_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_DeleteInstance_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_delete_instance_async.py"
     },
     {
       "canonical": true,
@@ -342,6 +1173,244 @@
     {
       "canonical": true,
       "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.delete_token_auth_user",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.DeleteTokenAuthUser",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "DeleteTokenAuthUser"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.DeleteTokenAuthUserRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_token_auth_user"
+      },
+      "description": "Sample for DeleteTokenAuthUser",
+      "file": "memorystore_v1_generated_memorystore_delete_token_auth_user_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_DeleteTokenAuthUser_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_delete_token_auth_user_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreClient",
+          "shortName": "MemorystoreClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreClient.delete_token_auth_user",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.DeleteTokenAuthUser",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "DeleteTokenAuthUser"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.DeleteTokenAuthUserRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_token_auth_user"
+      },
+      "description": "Sample for DeleteTokenAuthUser",
+      "file": "memorystore_v1_generated_memorystore_delete_token_auth_user_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_DeleteTokenAuthUser_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_delete_token_auth_user_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.export_backup",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.ExportBackup",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "ExportBackup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.ExportBackupRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "export_backup"
+      },
+      "description": "Sample for ExportBackup",
+      "file": "memorystore_v1_generated_memorystore_export_backup_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_ExportBackup_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_export_backup_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
         "client": {
           "fullName": "google.cloud.memorystore_v1.MemorystoreClient",
           "shortName": "MemorystoreClient"
@@ -414,6 +1483,417 @@
         }
       ],
       "title": "memorystore_v1_generated_memorystore_export_backup_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.finish_migration",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.FinishMigration",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "FinishMigration"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.FinishMigrationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "force",
+            "type": "bool"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "finish_migration"
+      },
+      "description": "Sample for FinishMigration",
+      "file": "memorystore_v1_generated_memorystore_finish_migration_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_FinishMigration_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_finish_migration_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreClient",
+          "shortName": "MemorystoreClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreClient.finish_migration",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.FinishMigration",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "FinishMigration"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.FinishMigrationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "force",
+            "type": "bool"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "finish_migration"
+      },
+      "description": "Sample for FinishMigration",
+      "file": "memorystore_v1_generated_memorystore_finish_migration_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_FinishMigration_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_finish_migration_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.get_auth_token",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.GetAuthToken",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "GetAuthToken"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.GetAuthTokenRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.memorystore_v1.types.AuthToken",
+        "shortName": "get_auth_token"
+      },
+      "description": "Sample for GetAuthToken",
+      "file": "memorystore_v1_generated_memorystore_get_auth_token_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_GetAuthToken_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_get_auth_token_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreClient",
+          "shortName": "MemorystoreClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreClient.get_auth_token",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.GetAuthToken",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "GetAuthToken"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.GetAuthTokenRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.memorystore_v1.types.AuthToken",
+        "shortName": "get_auth_token"
+      },
+      "description": "Sample for GetAuthToken",
+      "file": "memorystore_v1_generated_memorystore_get_auth_token_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_GetAuthToken_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_get_auth_token_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.get_backup_collection",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.GetBackupCollection",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "GetBackupCollection"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.GetBackupCollectionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.memorystore_v1.types.BackupCollection",
+        "shortName": "get_backup_collection"
+      },
+      "description": "Sample for GetBackupCollection",
+      "file": "memorystore_v1_generated_memorystore_get_backup_collection_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_GetBackupCollection_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_get_backup_collection_async.py"
     },
     {
       "canonical": true,
@@ -498,6 +1978,87 @@
     {
       "canonical": true,
       "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.get_backup",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.GetBackup",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "GetBackup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.GetBackupRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.memorystore_v1.types.Backup",
+        "shortName": "get_backup"
+      },
+      "description": "Sample for GetBackup",
+      "file": "memorystore_v1_generated_memorystore_get_backup_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_GetBackup_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_get_backup_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
         "client": {
           "fullName": "google.cloud.memorystore_v1.MemorystoreClient",
           "shortName": "MemorystoreClient"
@@ -574,6 +2135,87 @@
         }
       ],
       "title": "memorystore_v1_generated_memorystore_get_backup_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.get_certificate_authority",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.GetCertificateAuthority",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "GetCertificateAuthority"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.GetCertificateAuthorityRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.memorystore_v1.types.CertificateAuthority",
+        "shortName": "get_certificate_authority"
+      },
+      "description": "Sample for GetCertificateAuthority",
+      "file": "memorystore_v1_generated_memorystore_get_certificate_authority_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_GetCertificateAuthority_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_get_certificate_authority_async.py"
     },
     {
       "canonical": true,
@@ -658,6 +2300,87 @@
     {
       "canonical": true,
       "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.get_instance",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.GetInstance",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "GetInstance"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.GetInstanceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.memorystore_v1.types.Instance",
+        "shortName": "get_instance"
+      },
+      "description": "Sample for GetInstance",
+      "file": "memorystore_v1_generated_memorystore_get_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_GetInstance_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_get_instance_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
         "client": {
           "fullName": "google.cloud.memorystore_v1.MemorystoreClient",
           "shortName": "MemorystoreClient"
@@ -734,6 +2457,570 @@
         }
       ],
       "title": "memorystore_v1_generated_memorystore_get_instance_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.get_shared_regional_certificate_authority",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.GetSharedRegionalCertificateAuthority",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "GetSharedRegionalCertificateAuthority"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.GetSharedRegionalCertificateAuthorityRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.memorystore_v1.types.SharedRegionalCertificateAuthority",
+        "shortName": "get_shared_regional_certificate_authority"
+      },
+      "description": "Sample for GetSharedRegionalCertificateAuthority",
+      "file": "memorystore_v1_generated_memorystore_get_shared_regional_certificate_authority_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_GetSharedRegionalCertificateAuthority_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_get_shared_regional_certificate_authority_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreClient",
+          "shortName": "MemorystoreClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreClient.get_shared_regional_certificate_authority",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.GetSharedRegionalCertificateAuthority",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "GetSharedRegionalCertificateAuthority"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.GetSharedRegionalCertificateAuthorityRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.memorystore_v1.types.SharedRegionalCertificateAuthority",
+        "shortName": "get_shared_regional_certificate_authority"
+      },
+      "description": "Sample for GetSharedRegionalCertificateAuthority",
+      "file": "memorystore_v1_generated_memorystore_get_shared_regional_certificate_authority_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_GetSharedRegionalCertificateAuthority_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_get_shared_regional_certificate_authority_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.get_token_auth_user",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.GetTokenAuthUser",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "GetTokenAuthUser"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.GetTokenAuthUserRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.memorystore_v1.types.TokenAuthUser",
+        "shortName": "get_token_auth_user"
+      },
+      "description": "Sample for GetTokenAuthUser",
+      "file": "memorystore_v1_generated_memorystore_get_token_auth_user_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_GetTokenAuthUser_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_get_token_auth_user_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreClient",
+          "shortName": "MemorystoreClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreClient.get_token_auth_user",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.GetTokenAuthUser",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "GetTokenAuthUser"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.GetTokenAuthUserRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.memorystore_v1.types.TokenAuthUser",
+        "shortName": "get_token_auth_user"
+      },
+      "description": "Sample for GetTokenAuthUser",
+      "file": "memorystore_v1_generated_memorystore_get_token_auth_user_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_GetTokenAuthUser_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_get_token_auth_user_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.list_auth_tokens",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.ListAuthTokens",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "ListAuthTokens"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.ListAuthTokensRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.memorystore_v1.services.memorystore.pagers.ListAuthTokensAsyncPager",
+        "shortName": "list_auth_tokens"
+      },
+      "description": "Sample for ListAuthTokens",
+      "file": "memorystore_v1_generated_memorystore_list_auth_tokens_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_ListAuthTokens_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_list_auth_tokens_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreClient",
+          "shortName": "MemorystoreClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreClient.list_auth_tokens",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.ListAuthTokens",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "ListAuthTokens"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.ListAuthTokensRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.memorystore_v1.services.memorystore.pagers.ListAuthTokensPager",
+        "shortName": "list_auth_tokens"
+      },
+      "description": "Sample for ListAuthTokens",
+      "file": "memorystore_v1_generated_memorystore_list_auth_tokens_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_ListAuthTokens_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_list_auth_tokens_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.list_backup_collections",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.ListBackupCollections",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "ListBackupCollections"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.ListBackupCollectionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.memorystore_v1.services.memorystore.pagers.ListBackupCollectionsAsyncPager",
+        "shortName": "list_backup_collections"
+      },
+      "description": "Sample for ListBackupCollections",
+      "file": "memorystore_v1_generated_memorystore_list_backup_collections_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_ListBackupCollections_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_list_backup_collections_async.py"
     },
     {
       "canonical": true,
@@ -818,6 +3105,87 @@
     {
       "canonical": true,
       "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.list_backups",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.ListBackups",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "ListBackups"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.ListBackupsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.memorystore_v1.services.memorystore.pagers.ListBackupsAsyncPager",
+        "shortName": "list_backups"
+      },
+      "description": "Sample for ListBackups",
+      "file": "memorystore_v1_generated_memorystore_list_backups_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_ListBackups_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_list_backups_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
         "client": {
           "fullName": "google.cloud.memorystore_v1.MemorystoreClient",
           "shortName": "MemorystoreClient"
@@ -898,6 +3266,87 @@
     {
       "canonical": true,
       "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.list_instances",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.ListInstances",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "ListInstances"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.ListInstancesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.memorystore_v1.services.memorystore.pagers.ListInstancesAsyncPager",
+        "shortName": "list_instances"
+      },
+      "description": "Sample for ListInstances",
+      "file": "memorystore_v1_generated_memorystore_list_instances_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_ListInstances_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_list_instances_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
         "client": {
           "fullName": "google.cloud.memorystore_v1.MemorystoreClient",
           "shortName": "MemorystoreClient"
@@ -974,6 +3423,256 @@
         }
       ],
       "title": "memorystore_v1_generated_memorystore_list_instances_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.list_token_auth_users",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.ListTokenAuthUsers",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "ListTokenAuthUsers"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.ListTokenAuthUsersRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.memorystore_v1.services.memorystore.pagers.ListTokenAuthUsersAsyncPager",
+        "shortName": "list_token_auth_users"
+      },
+      "description": "Sample for ListTokenAuthUsers",
+      "file": "memorystore_v1_generated_memorystore_list_token_auth_users_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_ListTokenAuthUsers_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_list_token_auth_users_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreClient",
+          "shortName": "MemorystoreClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreClient.list_token_auth_users",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.ListTokenAuthUsers",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "ListTokenAuthUsers"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.ListTokenAuthUsersRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.memorystore_v1.services.memorystore.pagers.ListTokenAuthUsersPager",
+        "shortName": "list_token_auth_users"
+      },
+      "description": "Sample for ListTokenAuthUsers",
+      "file": "memorystore_v1_generated_memorystore_list_token_auth_users_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_ListTokenAuthUsers_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_list_token_auth_users_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.reschedule_maintenance",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.RescheduleMaintenance",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "RescheduleMaintenance"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.RescheduleMaintenanceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "reschedule_type",
+            "type": "google.cloud.memorystore_v1.types.RescheduleMaintenanceRequest.RescheduleType"
+          },
+          {
+            "name": "schedule_time",
+            "type": "google.protobuf.timestamp_pb2.Timestamp"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "reschedule_maintenance"
+      },
+      "description": "Sample for RescheduleMaintenance",
+      "file": "memorystore_v1_generated_memorystore_reschedule_maintenance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_RescheduleMaintenance_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_reschedule_maintenance_async.py"
     },
     {
       "canonical": true,
@@ -1062,6 +3761,244 @@
         }
       ],
       "title": "memorystore_v1_generated_memorystore_reschedule_maintenance_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.start_migration",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.StartMigration",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "StartMigration"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.StartMigrationRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "start_migration"
+      },
+      "description": "Sample for StartMigration",
+      "file": "memorystore_v1_generated_memorystore_start_migration_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_StartMigration_async",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 58,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 59,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_start_migration_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreClient",
+          "shortName": "MemorystoreClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreClient.start_migration",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.StartMigration",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "StartMigration"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.StartMigrationRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "start_migration"
+      },
+      "description": "Sample for StartMigration",
+      "file": "memorystore_v1_generated_memorystore_start_migration_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_StartMigration_sync",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 58,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 59,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_start_migration_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient",
+          "shortName": "MemorystoreAsyncClient"
+        },
+        "fullName": "google.cloud.memorystore_v1.MemorystoreAsyncClient.update_instance",
+        "method": {
+          "fullName": "google.cloud.memorystore.v1.Memorystore.UpdateInstance",
+          "service": {
+            "fullName": "google.cloud.memorystore.v1.Memorystore",
+            "shortName": "Memorystore"
+          },
+          "shortName": "UpdateInstance"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.memorystore_v1.types.UpdateInstanceRequest"
+          },
+          {
+            "name": "instance",
+            "type": "google.cloud.memorystore_v1.types.Instance"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_instance"
+      },
+      "description": "Sample for UpdateInstance",
+      "file": "memorystore_v1_generated_memorystore_update_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "memorystore_v1_generated_Memorystore_UpdateInstance_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "memorystore_v1_generated_memorystore_update_instance_async.py"
     },
     {
       "canonical": true,

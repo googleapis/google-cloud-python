@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,19 +22,10 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.securitycenter_v1.types import access as gcs_access
-from google.cloud.securitycenter_v1.types import application as gcs_application
-from google.cloud.securitycenter_v1.types import attack_exposure as gcs_attack_exposure
+from google.cloud.securitycenter_v1.types import agent as gcs_agent
+from google.cloud.securitycenter_v1.types import agent_anomaly as gcs_agent_anomaly
 from google.cloud.securitycenter_v1.types import (
-    backup_disaster_recovery as gcs_backup_disaster_recovery,
-)
-from google.cloud.securitycenter_v1.types import cloud_armor as gcs_cloud_armor
-from google.cloud.securitycenter_v1.types import (
-    cloud_dlp_data_profile as gcs_cloud_dlp_data_profile,
-)
-from google.cloud.securitycenter_v1.types import (
-    cloud_dlp_inspection as gcs_cloud_dlp_inspection,
-)
-from google.cloud.securitycenter_v1.types import (
+    agent_session,
     compliance,
     connection,
     contact_details,
@@ -48,8 +39,24 @@ from google.cloud.securitycenter_v1.types import (
     org_policy,
     process,
 )
+from google.cloud.securitycenter_v1.types import application as gcs_application
+from google.cloud.securitycenter_v1.types import attack_exposure as gcs_attack_exposure
+from google.cloud.securitycenter_v1.types import (
+    backup_disaster_recovery as gcs_backup_disaster_recovery,
+)
+from google.cloud.securitycenter_v1.types import chokepoint as gcs_chokepoint
+from google.cloud.securitycenter_v1.types import cloud_armor as gcs_cloud_armor
+from google.cloud.securitycenter_v1.types import (
+    cloud_dlp_data_profile as gcs_cloud_dlp_data_profile,
+)
+from google.cloud.securitycenter_v1.types import (
+    cloud_dlp_inspection as gcs_cloud_dlp_inspection,
+)
 from google.cloud.securitycenter_v1.types import database as gcs_database
 from google.cloud.securitycenter_v1.types import exfiltration as gcs_exfiltration
+from google.cloud.securitycenter_v1.types import (
+    external_exposure as gcs_external_exposure,
+)
 from google.cloud.securitycenter_v1.types import indicator as gcs_indicator
 from google.cloud.securitycenter_v1.types import kernel_rootkit as gcs_kernel_rootkit
 from google.cloud.securitycenter_v1.types import kubernetes as gcs_kubernetes
@@ -297,6 +304,25 @@ class Finding(proto.Message):
             findings that are related in some way. This
             field cannot be updated. Its value is ignored in
             all update requests.
+        chokepoint (google.cloud.securitycenter_v1.types.Chokepoint):
+            Contains details about a chokepoint, which is a resource or
+            resource group where high-risk attack paths converge, based
+            on [attack path simulations]
+            (https://cloud.google.com/security-command-center/docs/attack-exposure-learn#attack_path_simulations).
+            This field cannot be updated. Its value is ignored in all
+            update requests.
+        external_exposure (google.cloud.securitycenter_v1.types.ExternalExposure):
+            External exposure associated with the
+            finding.
+        agent (google.cloud.securitycenter_v1.types.Agent):
+            Primary Agent that the specified finding was
+            flagged for
+        agent_sessions (MutableSequence[google.cloud.securitycenter_v1.types.AgentSession]):
+            Conversational session(s) where the finding
+            occurred.
+        agent_anomaly (google.cloud.securitycenter_v1.types.AgentAnomaly):
+            Details about behavior anomalies detected in
+            AI agents.
     """
 
     class State(proto.Enum):
@@ -457,6 +483,16 @@ class Finding(proto.Message):
                 greater risk than when the issues occur
                 independently. A group of such issues is
                 referred to as a toxic combination.
+            SENSITIVE_DATA_RISK (8):
+                Describes a potential security risk to data
+                assets that contain sensitive data.
+            CHOKEPOINT (9):
+                Describes a resource or resource group where
+                high risk attack paths converge, based on attack
+                path simulations (APS).
+            EXTERNAL_EXPOSURE (10):
+                Describes a potential security risk due to
+                the resource being exposed to the internet.
         """
 
         FINDING_CLASS_UNSPECIFIED = 0
@@ -467,6 +503,9 @@ class Finding(proto.Message):
         SCC_ERROR = 5
         POSTURE_VIOLATION = 6
         TOXIC_COMBINATION = 7
+        SENSITIVE_DATA_RISK = 8
+        CHOKEPOINT = 9
+        EXTERNAL_EXPOSURE = 10
 
     class MuteInfo(proto.Message):
         r"""Mute information about the finding, including whether the
@@ -794,6 +833,31 @@ class Finding(proto.Message):
             number=65,
             message=group_membership.GroupMembership,
         )
+    )
+    chokepoint: gcs_chokepoint.Chokepoint = proto.Field(
+        proto.MESSAGE,
+        number=77,
+        message=gcs_chokepoint.Chokepoint,
+    )
+    external_exposure: gcs_external_exposure.ExternalExposure = proto.Field(
+        proto.MESSAGE,
+        number=84,
+        message=gcs_external_exposure.ExternalExposure,
+    )
+    agent: gcs_agent.Agent = proto.Field(
+        proto.MESSAGE,
+        number=88,
+        message=gcs_agent.Agent,
+    )
+    agent_sessions: MutableSequence[agent_session.AgentSession] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=89,
+        message=agent_session.AgentSession,
+    )
+    agent_anomaly: gcs_agent_anomaly.AgentAnomaly = proto.Field(
+        proto.MESSAGE,
+        number=90,
+        message=gcs_agent_anomaly.AgentAnomaly,
     )
 
 

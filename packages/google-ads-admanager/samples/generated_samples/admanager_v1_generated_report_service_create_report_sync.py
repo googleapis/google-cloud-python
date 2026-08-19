@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,9 +40,9 @@ def sample_create_report():
 
     # Initialize request argument(s)
     report = admanager_v1.Report()
-    report.report_definition.dimensions = ["CUSTOM_DIMENSION_9_VALUE"]
+    report.report_definition.dimensions = ["EKV_DIMENSION_9_VALUE"]
     report.report_definition.metrics = ["YIELD_GROUP_SUCCESSFUL_RESPONSES"]
-    report.report_definition.report_type = "AD_SPEED"
+    report.report_definition.report_type = "ON_PLATFORM_MULTICALL"
 
     request = admanager_v1.CreateReportRequest(
         parent="parent_value",

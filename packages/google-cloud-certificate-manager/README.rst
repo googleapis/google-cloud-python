@@ -3,7 +3,7 @@ Python Client for Certificate Manager
 
 |stable| |pypi| |versions|
 
-`Certificate Manager`_: lets you acquire and manage TLS (SSL) certificates for use with Cloud Load Balancing.
+`Certificate Manager`_: Certificate Manager simplifies the acquisition, deployment, and management of Transport Layer Security (TLS) certificates.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for Certificate Manager
    :target: https://pypi.org/project/google-cloud-certificate-manager/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-certificate-manager.svg
    :target: https://pypi.org/project/google-cloud-certificate-manager/
-.. _Certificate Manager: https://cloud.google.com/python/docs/reference/certificatemanager/latest
+.. _Certificate Manager: https://docs.cloud.google.com/certificate-manager/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/certificatemanager/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/python/docs/reference/certificatemanager/latest
+.. _Product Documentation:  https://docs.cloud.google.com/certificate-manager/
 
 Quick Start
 -----------
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Certificate Manager.:  https://cloud.google.com/python/docs/reference/certificatemanager/latest
+.. _Enable the Certificate Manager.:  https://docs.cloud.google.com/certificate-manager/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +61,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -104,7 +105,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Certificate Manager Product documentation:  https://cloud.google.com/python/docs/reference/certificatemanager/latest
+.. _Certificate Manager Product documentation:  https://docs.cloud.google.com/certificate-manager/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

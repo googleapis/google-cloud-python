@@ -30,18 +30,18 @@ EXTRAS_REQUIRE = {
     'requests': [
         'requests >= 2.18.0, < 3.0.0',
     ],
-    'aiohttp': ['aiohttp >= 3.6.2, < 4.0.0', 'google-auth >= 1.22.0, < 2.0.0']
+    'aiohttp': ['aiohttp >= 3.6.2, < 4.0.0', 'google-auth >= 2.14.1, < 3.0.0']
 }
 
 setuptools.setup(
     name='google-resumable-media',
-    version = "2.8.1",
+    version = "2.10.1",
     description='Utilities for Google Media Downloads and Resumable Uploads',
     author='Google Cloud Platform',
     author_email='googleapis-publisher@google.com',
     long_description=README,
     scripts=[],
-    url='https://github.com/googleapis/google-resumable-media-python',
+    url="https://github.com/googleapis/google-cloud-python/tree/main/packages/google-resumable-media",
     packages=setuptools.find_namespace_packages(
         exclude=("tests*", "docs*")
     ),
@@ -51,16 +51,13 @@ setuptools.setup(
     zip_safe=False,
     install_requires=REQUIREMENTS,
     extras_require=EXTRAS_REQUIRE,
-    python_requires='>= 3.7',
+    python_requires='>= 3.10',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',

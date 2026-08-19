@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,16 +34,19 @@ class CVSSVersion(proto.Enum):
 
     Values:
         CVSS_VERSION_UNSPECIFIED (0):
-            No description available.
+            Unspecified.
         CVSS_VERSION_2 (1):
-            No description available.
+            CVSS v2.
         CVSS_VERSION_3 (2):
-            No description available.
+            CVSS v3.
+        CVSS_VERSION_4 (3):
+            CVSS v4.
     """
 
     CVSS_VERSION_UNSPECIFIED = 0
     CVSS_VERSION_2 = 1
     CVSS_VERSION_3 = 2
+    CVSS_VERSION_4 = 3
 
 
 class CVSSv3(proto.Message):
@@ -259,42 +262,71 @@ class CVSS(proto.Message):
         impact_score (float):
 
         attack_vector (grafeas.grafeas_v1.types.CVSS.AttackVector):
-            Base Metrics
-            Represents the intrinsic characteristics of a
-            vulnerability that are constant over time and
-            across user environments.
+            Attack Vector (AV). Defined in CVSS v2, v3,
+            v4.
         attack_complexity (grafeas.grafeas_v1.types.CVSS.AttackComplexity):
-
+            Attack Complexity (AC). Defined in CVSS v2,
+            v3, v4.
         authentication (grafeas.grafeas_v1.types.CVSS.Authentication):
-
+            Authentication (Au). Defined in CVSS v2.
         privileges_required (grafeas.grafeas_v1.types.CVSS.PrivilegesRequired):
-
+            Privileges Required (PR). Defined in CVSS v3,
+            v4.
         user_interaction (grafeas.grafeas_v1.types.CVSS.UserInteraction):
-
+            User Interaction (UI). Defined in CVSS v3,
+            v4.
         scope (grafeas.grafeas_v1.types.CVSS.Scope):
-
+            Scope (S). Defined in CVSS v3.
         confidentiality_impact (grafeas.grafeas_v1.types.CVSS.Impact):
-
+            Confidentiality Impact (C). Defined in CVSS
+            v2, v3.
         integrity_impact (grafeas.grafeas_v1.types.CVSS.Impact):
-
+            Integrity Impact (I). Defined in CVSS v2, v3.
         availability_impact (grafeas.grafeas_v1.types.CVSS.Impact):
-
+            Availability Impact (A). Defined in CVSS v2,
+            v3.
+        attack_requirements (grafeas.grafeas_v1.types.CVSS.AttackRequirements):
+            Attack Requirements (AT). Defined in CVSS v4.
+        vulnerable_system_confidentiality_impact (grafeas.grafeas_v1.types.CVSS.Impact):
+            Vulnerable System Confidentiality Impact
+            (VC). Defined in CVSS v4.
+        vulnerable_system_integrity_impact (grafeas.grafeas_v1.types.CVSS.Impact):
+            Vulnerable System Integrity Impact (VI).
+            Defined in CVSS v4.
+        vulnerable_system_availability_impact (grafeas.grafeas_v1.types.CVSS.Impact):
+            Vulnerable System Availability Impact (VA).
+            Defined in CVSS v4.
+        subsequent_system_confidentiality_impact (grafeas.grafeas_v1.types.CVSS.Impact):
+            Subsequent System Confidentiality Impact
+            (SC). Defined in CVSS v4.
+        subsequent_system_integrity_impact (grafeas.grafeas_v1.types.CVSS.Impact):
+            Subsequent System Integrity Impact (SI).
+            Defined in CVSS v4.
+        subsequent_system_availability_impact (grafeas.grafeas_v1.types.CVSS.Impact):
+            Subsequent System Availability Impact (SA).
+            Defined in CVSS v4.
+        exploit_maturity (grafeas.grafeas_v1.types.CVSS.ExploitMaturity):
+            Exploit Maturity (E). Defined in CVSS v4.
     """
 
     class AttackVector(proto.Enum):
-        r"""
+        r"""Attack Vector.
 
         Values:
             ATTACK_VECTOR_UNSPECIFIED (0):
-                No description available.
+                Unspecified.
             ATTACK_VECTOR_NETWORK (1):
-                No description available.
+                Attack Vector: Network (AV:N). Defined in
+                CVSS v2, v3, v4.
             ATTACK_VECTOR_ADJACENT (2):
-                No description available.
+                Attack Vector: Adjacent (AV:A). Defined in
+                CVSS v2, v3, v4.
             ATTACK_VECTOR_LOCAL (3):
-                No description available.
+                Attack Vector: Local (AV:L). Defined in CVSS
+                v2, v3, v4.
             ATTACK_VECTOR_PHYSICAL (4):
-                No description available.
+                Attack Vector: Physical (AV:P). Defined in
+                CVSS v3, v4.
         """
 
         ATTACK_VECTOR_UNSPECIFIED = 0
@@ -304,17 +336,20 @@ class CVSS(proto.Message):
         ATTACK_VECTOR_PHYSICAL = 4
 
     class AttackComplexity(proto.Enum):
-        r"""
+        r"""Attack Complexity.
 
         Values:
             ATTACK_COMPLEXITY_UNSPECIFIED (0):
-                No description available.
+                Unspecified.
             ATTACK_COMPLEXITY_LOW (1):
-                No description available.
+                Low attack complexity (AC:L). Defined in CVSS
+                v2, v3, v4.
             ATTACK_COMPLEXITY_HIGH (2):
-                No description available.
+                High attack complexity (AC:H). Defined in
+                CVSS v2, v3, v4.
             ATTACK_COMPLEXITY_MEDIUM (3):
-                No description available.
+                Medium attack complexity (AC:M). Defined in
+                CVSS v2.
         """
 
         ATTACK_COMPLEXITY_UNSPECIFIED = 0
@@ -323,17 +358,20 @@ class CVSS(proto.Message):
         ATTACK_COMPLEXITY_MEDIUM = 3
 
     class Authentication(proto.Enum):
-        r"""
+        r"""Authentication.
 
         Values:
             AUTHENTICATION_UNSPECIFIED (0):
-                No description available.
+                Unspecified.
             AUTHENTICATION_MULTIPLE (1):
-                No description available.
+                Multiple authentication required (Au:M).
+                Defined in CVSS v2.
             AUTHENTICATION_SINGLE (2):
-                No description available.
+                Single authentication required (Au:S).
+                Defined in CVSS v2.
             AUTHENTICATION_NONE (3):
-                No description available.
+                No authentication required (Au:N). Defined in
+                CVSS v2.
         """
 
         AUTHENTICATION_UNSPECIFIED = 0
@@ -342,17 +380,20 @@ class CVSS(proto.Message):
         AUTHENTICATION_NONE = 3
 
     class PrivilegesRequired(proto.Enum):
-        r"""
+        r"""Privileges Required.
 
         Values:
             PRIVILEGES_REQUIRED_UNSPECIFIED (0):
-                No description available.
+                Unspecified.
             PRIVILEGES_REQUIRED_NONE (1):
-                No description available.
+                No privileges required (PR:N). Defined in
+                CVSS v3, v4.
             PRIVILEGES_REQUIRED_LOW (2):
-                No description available.
+                Low privileges required (PR:L). Defined in
+                CVSS v3, v4.
             PRIVILEGES_REQUIRED_HIGH (3):
-                No description available.
+                High privileges required (PR:H). Defined in
+                CVSS v3, v4.
         """
 
         PRIVILEGES_REQUIRED_UNSPECIFIED = 0
@@ -361,31 +402,41 @@ class CVSS(proto.Message):
         PRIVILEGES_REQUIRED_HIGH = 3
 
     class UserInteraction(proto.Enum):
-        r"""
+        r"""User Interaction.
 
         Values:
             USER_INTERACTION_UNSPECIFIED (0):
-                No description available.
+                Unspecified.
             USER_INTERACTION_NONE (1):
-                No description available.
+                No user interaction required (UI:N). Defined
+                in CVSS v3, v4.
             USER_INTERACTION_REQUIRED (2):
-                No description available.
+                User interaction required (UI:R). Defined in
+                CVSS v3.
+            USER_INTERACTION_PASSIVE (3):
+                Passive user interaction required (UI:P).
+                Defined in CVSS v4.
+            USER_INTERACTION_ACTIVE (4):
+                Active user interaction required (UI:A).
+                Defined in CVSS v4.
         """
 
         USER_INTERACTION_UNSPECIFIED = 0
         USER_INTERACTION_NONE = 1
         USER_INTERACTION_REQUIRED = 2
+        USER_INTERACTION_PASSIVE = 3
+        USER_INTERACTION_ACTIVE = 4
 
     class Scope(proto.Enum):
-        r"""
+        r"""Scope.
 
         Values:
             SCOPE_UNSPECIFIED (0):
-                No description available.
+                Unspecified.
             SCOPE_UNCHANGED (1):
-                No description available.
+                Scope: Unchanged (S:U). Defined in CVSS v3.
             SCOPE_CHANGED (2):
-                No description available.
+                Scope: Changed (S:C). Defined in CVSS v3.
         """
 
         SCOPE_UNSPECIFIED = 0
@@ -393,21 +444,21 @@ class CVSS(proto.Message):
         SCOPE_CHANGED = 2
 
     class Impact(proto.Enum):
-        r"""
+        r"""Impact.
 
         Values:
             IMPACT_UNSPECIFIED (0):
-                No description available.
+                Unspecified.
             IMPACT_HIGH (1):
-                No description available.
+                High impact (H). Defined in CVSS v3, v4.
             IMPACT_LOW (2):
-                No description available.
+                Low impact (L). Defined in CVSS v3, v4.
             IMPACT_NONE (3):
-                No description available.
+                No impact (N). Defined in CVSS v2, v3, v4.
             IMPACT_PARTIAL (4):
-                No description available.
+                Partial impact (P). Defined in CVSS v2.
             IMPACT_COMPLETE (5):
-                No description available.
+                Complete impact (C). Defined in CVSS v2.
         """
 
         IMPACT_UNSPECIFIED = 0
@@ -416,6 +467,50 @@ class CVSS(proto.Message):
         IMPACT_NONE = 3
         IMPACT_PARTIAL = 4
         IMPACT_COMPLETE = 5
+
+    class AttackRequirements(proto.Enum):
+        r"""Attack Requirements.
+
+        Values:
+            ATTACK_REQUIREMENTS_UNSPECIFIED (0):
+                Unspecified.
+            ATTACK_REQUIREMENTS_NONE (1):
+                No attack requirements (AT:N). Defined in
+                CVSS v4.
+            ATTACK_REQUIREMENTS_PRESENT (2):
+                Attack requirements: Present (AT:P). Defined
+                in CVSS v4.
+        """
+
+        ATTACK_REQUIREMENTS_UNSPECIFIED = 0
+        ATTACK_REQUIREMENTS_NONE = 1
+        ATTACK_REQUIREMENTS_PRESENT = 2
+
+    class ExploitMaturity(proto.Enum):
+        r"""Exploit Maturity (E). Defined in CVSS v4.
+
+        Values:
+            EXPLOIT_MATURITY_UNSPECIFIED (0):
+                Unspecified.
+            EXPLOIT_MATURITY_NOT_DEFINED (1):
+                Exploit maturity: Not defined (E:X). Defined
+                in CVSS v4.
+            EXPLOIT_MATURITY_ATTACKED (2):
+                Exploit maturity: Attacked (E:A). Defined in
+                CVSS v4.
+            EXPLOIT_MATURITY_POC (3):
+                Exploit maturity: Proof-of-concept (E:P).
+                Defined in CVSS v4.
+            EXPLOIT_MATURITY_UNREPORTED (4):
+                Exploit maturity: Unreported (E:U). Defined
+                in CVSS v4.
+        """
+
+        EXPLOIT_MATURITY_UNSPECIFIED = 0
+        EXPLOIT_MATURITY_NOT_DEFINED = 1
+        EXPLOIT_MATURITY_ATTACKED = 2
+        EXPLOIT_MATURITY_POC = 3
+        EXPLOIT_MATURITY_UNREPORTED = 4
 
     base_score: float = proto.Field(
         proto.FLOAT,
@@ -473,6 +568,46 @@ class CVSS(proto.Message):
         proto.ENUM,
         number=12,
         enum=Impact,
+    )
+    attack_requirements: AttackRequirements = proto.Field(
+        proto.ENUM,
+        number=13,
+        enum=AttackRequirements,
+    )
+    vulnerable_system_confidentiality_impact: Impact = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum=Impact,
+    )
+    vulnerable_system_integrity_impact: Impact = proto.Field(
+        proto.ENUM,
+        number=15,
+        enum=Impact,
+    )
+    vulnerable_system_availability_impact: Impact = proto.Field(
+        proto.ENUM,
+        number=16,
+        enum=Impact,
+    )
+    subsequent_system_confidentiality_impact: Impact = proto.Field(
+        proto.ENUM,
+        number=17,
+        enum=Impact,
+    )
+    subsequent_system_integrity_impact: Impact = proto.Field(
+        proto.ENUM,
+        number=18,
+        enum=Impact,
+    )
+    subsequent_system_availability_impact: Impact = proto.Field(
+        proto.ENUM,
+        number=19,
+        enum=Impact,
+    )
+    exploit_maturity: ExploitMaturity = proto.Field(
+        proto.ENUM,
+        number=20,
+        enum=ExploitMaturity,
     )
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,6 +34,10 @@ class ToolCall(proto.Message):
     r"""Represents a call of a specific tool's action with the
     specified inputs.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -42,6 +46,21 @@ class ToolCall(proto.Message):
             Optional. The [tool][google.cloud.dialogflow.v2beta1.Tool]
             associated with this call. Format:
             ``projects/<ProjectID>/locations/<LocationID>/tools/<ToolID>``.
+
+            This field is a member of `oneof`_ ``source``.
+        ces_tool (str):
+            Optional. CES tool name for this call. Format:
+            ``projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/tools/<ToolID>``.
+
+            This field is a member of `oneof`_ ``source``.
+        ces_toolset (str):
+            Optional. CES toolset name for this call. Format:
+            ``projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/toolsets/ToolsetID>``.
+
+            This field is a member of `oneof`_ ``source``.
+        ces_app (str):
+            Optional. CES app name for this call. Format:
+            ``projects/<ProjectID>/locations/<LocationID>/apps/<AppID>``.
 
             This field is a member of `oneof`_ ``source``.
         tool_display_name (str):
@@ -84,6 +103,21 @@ class ToolCall(proto.Message):
     tool: str = proto.Field(
         proto.STRING,
         number=1,
+        oneof="source",
+    )
+    ces_tool: str = proto.Field(
+        proto.STRING,
+        number=11,
+        oneof="source",
+    )
+    ces_toolset: str = proto.Field(
+        proto.STRING,
+        number=12,
+        oneof="source",
+    )
+    ces_app: str = proto.Field(
+        proto.STRING,
+        number=8,
         oneof="source",
     )
     tool_display_name: str = proto.Field(
@@ -136,22 +170,37 @@ class ToolCallResult(proto.Message):
             ``projects/<ProjectID>/locations/<LocationID>/tools/<ToolID>``.
 
             This field is a member of `oneof`_ ``source``.
+        ces_tool (str):
+            Optional. CES tool name for this call. Format:
+            ``projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/tools/<ToolID>``.
+
+            This field is a member of `oneof`_ ``source``.
+        ces_toolset (str):
+            Optional. CES toolset name for this call. Format:
+            ``projects/<ProjectID>/locations/<LocationID>/apps/<AppID>/toolsets/ToolsetID>``.
+
+            This field is a member of `oneof`_ ``source``.
+        ces_app (str):
+            Optional. CES app name for this call. Format:
+            ``projects/<ProjectID>/locations/<LocationID>/apps/<AppID>``.
+
+            This field is a member of `oneof`_ ``source``.
         action (str):
             Optional. The name of the tool's action
             associated with this call.
         error (google.cloud.dialogflow_v2beta1.types.ToolCallResult.Error):
-            The tool call's error.
+            Optional. The tool call's error.
 
             This field is a member of `oneof`_ ``result``.
         raw_content (bytes):
-            Only populated if the response content is not
-            utf-8 encoded. (by definition byte fields are
-            base64 encoded).
+            Optional. Only populated if the response
+            content is not utf-8 encoded. (by definition
+            byte fields are base64 encoded).
 
             This field is a member of `oneof`_ ``result``.
         content (str):
-            Only populated if the response content is
-            utf-8 encoded.
+            Optional. Only populated if the response
+            content is utf-8 encoded.
 
             This field is a member of `oneof`_ ``result``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -178,6 +227,21 @@ class ToolCallResult(proto.Message):
     tool: str = proto.Field(
         proto.STRING,
         number=1,
+        oneof="source",
+    )
+    ces_tool: str = proto.Field(
+        proto.STRING,
+        number=12,
+        oneof="source",
+    )
+    ces_toolset: str = proto.Field(
+        proto.STRING,
+        number=13,
+        oneof="source",
+    )
+    ces_app: str = proto.Field(
+        proto.STRING,
+        number=11,
         oneof="source",
     )
     action: str = proto.Field(

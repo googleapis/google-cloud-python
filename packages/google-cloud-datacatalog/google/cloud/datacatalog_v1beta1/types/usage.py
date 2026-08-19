@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ class UsageStats(proto.Message):
     - The usage stats only include BigQuery query jobs
     - The usage stats might be underestimated, e.g. wildcard table
       references are not yet counted in usage computation
-      https://cloud.google.com/bigquery/docs/querying-wildcard-tables
+    https://cloud.google.com/bigquery/docs/querying-wildcard-tables
 
     Attributes:
         total_completions (float):

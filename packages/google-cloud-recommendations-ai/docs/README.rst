@@ -3,7 +3,9 @@ Python Client for Recommendations AI
 
 |preview| |pypi| |versions|
 
-`Recommendations AI`_: delivers highly personalized product recommendations at scale.
+`Recommendations AI`_: Recommendations AI service enables customers to build end-to-end
+personalized recommendation systems without requiring a high level of
+expertise in machine learning, recommendation system, or Google Cloud.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -61,14 +63,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.

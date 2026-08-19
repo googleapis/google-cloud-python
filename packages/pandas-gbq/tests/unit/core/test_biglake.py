@@ -7,8 +7,7 @@ from unittest import mock
 
 import google.cloud.bigquery
 
-from pandas_gbq.core import biglake
-from pandas_gbq.core import resource_references
+from pandas_gbq.core import biglake, resource_references
 
 
 def test_get_table_metadata(mock_bigquery_client):

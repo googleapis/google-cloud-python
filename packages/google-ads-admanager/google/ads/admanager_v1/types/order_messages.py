@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ class Order(proto.Message):
             Identifier. The resource name of the ``Order``. Format:
             ``networks/{network_code}/orders/{order_id}``
         order_id (int):
-            Output only. Order ID.
+            Output only. Deprecated: Order ID.
 
             This field is a member of `oneof`_ ``_order_id``.
         display_name (str):
@@ -132,8 +132,7 @@ class Order(proto.Message):
             This field is a member of `oneof`_ ``_archived``.
         last_modified_by_app (str):
             Output only. The application which modified
-            this order. This attribute is assigned by
-            Google.
+            this order.
 
             This field is a member of `oneof`_ ``_last_modified_by_app``.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -184,6 +183,23 @@ class Order(proto.Message):
         custom_field_values (MutableSequence[google.ads.admanager_v1.types.CustomFieldValue]):
             Optional. The set of custom field values to
             this order.
+        impressions_delivered (int):
+            Output only. The total number of impressions
+            delivered for Line items in this order.
+
+            This field is a member of `oneof`_ ``_impressions_delivered``.
+        total_clicks_delivered (int):
+            Output only. Total clicks delivered for all Line items of
+            this ``Order``. This value is calculated from the associated
+            ``LineItem`` values.
+
+            This field is a member of `oneof`_ ``_total_clicks_delivered``.
+        total_viewable_impressions_delivered (int):
+            Output only. Total viewable impressions delivered for all
+            Line items of this ``Order``. This value is calculated from
+            the associated ``LineItem`` values.
+
+            This field is a member of `oneof`_ ``_total_viewable_impressions_delivered``.
     """
 
     name: str = proto.Field(
@@ -331,6 +347,21 @@ class Order(proto.Message):
             number=38,
             message=custom_field_value.CustomFieldValue,
         )
+    )
+    impressions_delivered: int = proto.Field(
+        proto.INT64,
+        number=41,
+        optional=True,
+    )
+    total_clicks_delivered: int = proto.Field(
+        proto.INT64,
+        number=53,
+        optional=True,
+    )
+    total_viewable_impressions_delivered: int = proto.Field(
+        proto.INT64,
+        number=54,
+        optional=True,
     )
 
 

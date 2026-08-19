@@ -13,8 +13,8 @@
 # limitations under the License.
 
 from sqlalchemy.testing import exclusions
-from sqlalchemy.testing.requirements import SuiteRequirements
 from sqlalchemy.testing.exclusions import against, only_on
+from sqlalchemy.testing.requirements import SuiteRequirements
 
 
 class Requirements(SuiteRequirements):  # pragma: no cover

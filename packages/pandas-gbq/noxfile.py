@@ -18,26 +18,31 @@
 
 from __future__ import absolute_import
 
-from functools import wraps
 import os
 import pathlib
 import re
 import shutil
 import time
 import warnings
+from functools import wraps
 
 import nox
 
 BLACK_VERSION = "black==23.7.0"
 ISORT_VERSION = "isort==5.10.1"
+RUFF_VERSION = "ruff==0.14.14"
 LINT_PATHS = ["docs", "pandas_gbq", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
-UNIT_TEST_PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
-
-ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
-ALL_PYTHON.extend(["3.7"])
+UNIT_TEST_PYTHON_VERSIONS = [
+    "3.10",
+    "3.11",
+    "3.12",
+    "3.13",
+    "3.14",
+    "3.15",
+]
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
@@ -57,7 +62,7 @@ UNIT_TEST_EXTRAS = [
     "geopandas",
 ]
 UNIT_TEST_EXTRAS_BY_PYTHON = {
-    "3.9": [],
+    "3.10": [],
 }
 
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.12"]
@@ -75,6 +80,17 @@ SYSTEM_TEST_EXTRAS = [
 SYSTEM_TEST_EXTRAS_BY_PYTHON = {}
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 
 # Error if a python version is missing
 nox.options.error_on_missing_interpreters = True
@@ -144,19 +160,29 @@ def blacken(session):
 @_calculate_duration
 def format(session):
     """
-    Run isort to sort imports. Then run black
-    to format code to uniform standard.
+    Run ruff to sort imports and format code.
     """
-    session.install(BLACK_VERSION, ISORT_VERSION)
-    # Use the --fss option to sort imports using strict alphabetical order.
-    # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
     session.run(
-        "isort",
-        "--fss",
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
         *LINT_PATHS,
     )
+
+    # 3. Run Ruff to format code
     session.run(
-        "black",
+        "ruff",
+        "format",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
         *LINT_PATHS,
     )
 
@@ -224,12 +250,15 @@ def default(session):
     )
 
 
-@nox.session(python=ALL_PYTHON)
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 @_calculate_duration
 def unit(session):
     """Run the unit test suite."""
-    if session.python in ("3.7",):
-        session.skip("Python 3.7 is no longer supported")
+    if session.python == "3.15":
+        session.skip(
+            "Skipping 3.15 until wheels are available for pyarrow. Also pyproj wheels are needed for dependency geopandas."
+        )
+
     default(session)
 
 
@@ -355,8 +384,8 @@ def prerelease_deps(session):
     # any potential breaking changes. For context, see:
     # https://github.com/googleapis/google-cloud-python/issues/854
     session.install(
-        "git+https://github.com/googleapis/google-cloud-python.git@main#subdirectory=packages/google-cloud-bigquery",
-        "git+https://github.com/googleapis/google-cloud-python.git@main#subdirectory=packages/google-cloud-bigquery-storage",
+        "../google-cloud-bigquery",
+        "../google-cloud-bigquery-storage",
     )
 
     # Because we test minimum dependency versions on the minimum Python
@@ -518,18 +547,69 @@ def docfx(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
+@_calculate_duration
 def mypy(session):
     """Run the type checker."""
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Add mypy tests
-    session.skip("mypy tests are not yet supported")
+    session.install(
+        "mypy<1.16.0",
+        "types-requests",
+        "types-protobuf",
+        "pandas-stubs",
+        "types-tqdm",
+        "types-psutil",
+    )
+    session.install(".")
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "pandas_gbq",
+        "--check-untyped-defs",
+        *session.posargs,
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
-def core_deps_from_source(session):
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb"],
+)
+@_calculate_duration
+def core_deps_from_source(session, protobuf_implementation):
     """Run all tests with core dependencies installed from source
     rather than pulling the dependencies from PyPI.
     """
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Add core deps from source tests
-    session.skip("Core deps from source tests are not yet supported")
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    install_unittest_dependencies(session, "-c", constraints_path)
+
+    core_dependencies_from_source = [
+        "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
+        "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
+        "google-auth @ git+https://github.com/googleapis/google-cloud-python#egg=google-auth&subdirectory=packages/google-auth",
+        "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
+        "proto-plus @ git+https://github.com/googleapis/google-cloud-python#egg=proto-plus&subdirectory=packages/proto-plus",
+    ]
+
+    for dep in core_dependencies_from_source:
+        session.install(dep, "--no-deps", "--ignore-installed")
+        print(f"Installed {dep}")
+
+    tests_path = os.path.join("tests", "unit")
+    session.run(
+        "py.test",
+        "--quiet",
+        "-W default::PendingDeprecationWarning",
+        f"--junitxml=unit_{session.python}_sponge_log.xml",
+        "--cov=pandas_gbq",
+        "--cov=tests/unit",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
+        tests_path,
+        *session.posargs,
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+        },
+    )

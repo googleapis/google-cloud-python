@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Analytics Data.
+This package includes clients for multiple versions of Google Analytics Data.
 By default, you will get version ``data_v1beta``.
 
 

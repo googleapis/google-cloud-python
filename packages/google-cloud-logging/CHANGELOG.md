@@ -4,6 +4,42 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.16.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-logging-v3.16.1...google-cloud-logging-v3.16.2) (2026-08-06)
+
+
+### Bug Fixes
+
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
+## [3.16.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-logging-v3.16.0...google-cloud-logging-v3.16.1) (2026-07-07)
+
+
+### Documentation
+
+* **logging:** fix StructuredLogHandler docstring parameter name ([#17625](https://github.com/googleapis/google-cloud-python/issues/17625)) ([32862f0](https://github.com/googleapis/google-cloud-python/commit/32862f0a2c1c9570cc8e96f371c3188800c7d307)), closes [#17604](https://github.com/googleapis/google-cloud-python/issues/17604)
+
+## [3.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-logging-v3.15.0...google-cloud-logging-v3.16.0) (2026-06-02)
+
+
+### Features
+
+* drop support for Python 3.7, 3.8, and 3.9 runtimes (#17276) ([014e951b6a1a07cb25baf4286e433a0c28783314](https://github.com/googleapis/google-cloud-python/commit/014e951b6a1a07cb25baf4286e433a0c28783314))
+
+## [3.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-logging-v3.14.0...google-cloud-logging-v3.15.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
 ## [3.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-logging-v3.13.0...google-cloud-logging-v3.14.0) (2026-03-05)
 
 

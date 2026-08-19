@@ -1,9 +1,10 @@
-Python Client for Talent Solution
-=================================
+Python Client for Cloud Talent Solution
+=======================================
 
 |stable| |pypi| |versions|
 
-`Talent Solution`_: Cloud Talent Solution provides the capability to create, read, update, and delete job postings, as well as search jobs based on keywords and filters.
+`Cloud Talent Solution`_: Cloud Talent Solution provides the capability to create, read, update, and
+delete job postings, as well as search jobs based on keywords and filters.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +15,7 @@ Python Client for Talent Solution
    :target: https://pypi.org/project/google-cloud-talent/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-talent.svg
    :target: https://pypi.org/project/google-cloud-talent/
-.. _Talent Solution: https://cloud.google.com/solutions/talent-solution/
+.. _Cloud Talent Solution: https://cloud.google.com/solutions/talent-solution/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/talent/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/solutions/talent-solution/
 
@@ -25,12 +26,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Talent Solution.`_
+3. `Enable the Cloud Talent Solution.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Talent Solution.:  https://cloud.google.com/solutions/talent-solution/
+.. _Enable the Cloud Talent Solution.:  https://cloud.google.com/solutions/talent-solution/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +62,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -97,14 +99,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Talent Solution
+-  Read the `Client Library Documentation`_ for Cloud Talent Solution
    to see other available methods on the client.
--  Read the `Talent Solution Product documentation`_ to learn
+-  Read the `Cloud Talent Solution Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Talent Solution Product documentation:  https://cloud.google.com/solutions/talent-solution/
+.. _Cloud Talent Solution Product documentation:  https://cloud.google.com/solutions/talent-solution/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

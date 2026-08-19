@@ -20,22 +20,14 @@ import random
 import threading
 import time
 import typing
+from collections.abc import KeysView
 from typing import Dict, Iterable, Optional, Union
 
 from google.cloud.pubsub_v1.open_telemetry.subscribe_opentelemetry import (
     SubscribeOpenTelemetry,
 )
-from google.cloud.pubsub_v1.subscriber._protocol.dispatcher import _MAX_BATCH_LATENCY
-
-try:
-    from collections.abc import KeysView
-
-    KeysView[None]  # KeysView is only subscriptable in Python 3.9+
-except TypeError:
-    # Deprecated since Python 3.9, thus only use as a fallback in older Python versions
-    from typing import KeysView
-
 from google.cloud.pubsub_v1.subscriber._protocol import requests
+from google.cloud.pubsub_v1.subscriber._protocol.dispatcher import _MAX_BATCH_LATENCY
 
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.pubsub_v1.subscriber._protocol.streaming_pull_manager import (

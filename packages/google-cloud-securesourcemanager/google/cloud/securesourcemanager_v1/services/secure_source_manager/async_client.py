@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -103,6 +103,12 @@ class SecureSourceManagerAsyncClient:
     )
     hook_path = staticmethod(SecureSourceManagerClient.hook_path)
     parse_hook_path = staticmethod(SecureSourceManagerClient.parse_hook_path)
+    inspect_template_path = staticmethod(
+        SecureSourceManagerClient.inspect_template_path
+    )
+    parse_inspect_template_path = staticmethod(
+        SecureSourceManagerClient.parse_inspect_template_path
+    )
     instance_path = staticmethod(SecureSourceManagerClient.instance_path)
     parse_instance_path = staticmethod(SecureSourceManagerClient.parse_instance_path)
     issue_path = staticmethod(SecureSourceManagerClient.issue_path)
@@ -124,6 +130,10 @@ class SecureSourceManagerAsyncClient:
     repository_path = staticmethod(SecureSourceManagerClient.repository_path)
     parse_repository_path = staticmethod(
         SecureSourceManagerClient.parse_repository_path
+    )
+    service_account_path = staticmethod(SecureSourceManagerClient.service_account_path)
+    parse_service_account_path = staticmethod(
+        SecureSourceManagerClient.parse_service_account_path
     )
     service_attachment_path = staticmethod(
         SecureSourceManagerClient.service_attachment_path
@@ -243,7 +253,7 @@ class SecureSourceManagerAsyncClient:
         return self._client.transport
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -628,11 +638,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_instance(request=request)
+                operation = await client.create_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -771,11 +781,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_instance(request=request)
+                operation = await client.delete_instance(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1155,11 +1165,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_repository(request=request)
+                operation = await client.create_repository(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1302,11 +1312,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_repository(request=request)
+                operation = await client.update_repository(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1445,11 +1455,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_repository(request=request)
+                operation = await client.delete_repository(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1821,11 +1831,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_hook(request=request)
+                operation = await client.create_hook(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1973,11 +1983,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_hook(request=request)
+                operation = await client.update_hook(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1992,7 +2002,7 @@ class SecureSourceManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. Field mask is used to specify the fields to be
+                Optional. Field mask is used to specify the fields to be
                 overwritten in the hook resource by the update. The
                 fields specified in the update_mask are relative to the
                 resource, not the full request. A field will be
@@ -2112,11 +2122,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_hook(request=request)
+                operation = await client.delete_hook(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2637,11 +2647,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_branch_rule(request=request)
+                operation = await client.create_branch_rule(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3020,11 +3030,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_branch_rule(request=request)
+                operation = await client.update_branch_rule(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3039,7 +3049,7 @@ class SecureSourceManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. Field mask is used to specify the fields to be
+                Optional. Field mask is used to specify the fields to be
                 overwritten in the branchRule resource by the update.
                 The fields specified in the update_mask are relative to
                 the resource, not the full request. A field will be
@@ -3161,11 +3171,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_branch_rule(request=request)
+                operation = await client.delete_branch_rule(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3300,11 +3310,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_pull_request(request=request)
+                operation = await client.create_pull_request(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3686,11 +3696,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_pull_request(request=request)
+                operation = await client.update_pull_request(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3827,11 +3837,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.merge_pull_request(request=request)
+                operation = await client.merge_pull_request(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3955,11 +3965,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.open_pull_request(request=request)
+                operation = await client.open_pull_request(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4083,11 +4093,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.close_pull_request(request=request)
+                operation = await client.close_pull_request(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4540,11 +4550,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_issue(request=request)
+                operation = await client.create_issue(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4911,11 +4921,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_issue(request=request)
+                operation = await client.update_issue(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5049,11 +5059,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_issue(request=request)
+                operation = await client.delete_issue(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5181,11 +5191,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.open_issue(request=request)
+                operation = await client.open_issue(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5306,11 +5316,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.close_issue(request=request)
+                operation = await client.close_issue(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5688,11 +5698,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_pull_request_comment(request=request)
+                operation = await client.create_pull_request_comment(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5833,11 +5843,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_pull_request_comment(request=request)
+                operation = await client.update_pull_request_comment(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5976,11 +5986,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_pull_request_comment(request=request)
+                operation = await client.delete_pull_request_comment(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6099,8 +6109,8 @@ class SecureSourceManagerAsyncClient:
         used to create multiple PullRequestComments for code
         review. There needs to be exactly one PullRequestComment
         of type Review, and at most 100 PullRequestComments of
-        type Code per request. The Postition of the code
-        comments must be unique within the request.
+        type Code per request. The Position of the code comments
+        must be unique within the request.
 
         .. code-block:: python
 
@@ -6128,11 +6138,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.batch_create_pull_request_comments(request=request)
+                operation = await client.batch_create_pull_request_comments(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6281,11 +6291,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.resolve_pull_request_comments(request=request)
+                operation = await client.resolve_pull_request_comments(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6429,11 +6439,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.unresolve_pull_request_comments(request=request)
+                operation = await client.unresolve_pull_request_comments(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6578,11 +6588,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_issue_comment(request=request)
+                operation = await client.create_issue_comment(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6961,11 +6971,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_issue_comment(request=request)
+                operation = await client.update_issue_comment(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7104,11 +7114,11 @@ class SecureSourceManagerAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_issue_comment(request=request)
+                operation = await client.delete_issue_comment(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7208,7 +7218,7 @@ class SecureSourceManagerAsyncClient:
 
     async def list_operations(
         self,
-        request: Optional[operations_pb2.ListOperationsRequest] = None,
+        request: Optional[Union[operations_pb2.ListOperationsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -7234,8 +7244,12 @@ class SecureSourceManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.ListOperationsRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.ListOperationsRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.ListOperationsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -7244,7 +7258,7 @@ class SecureSourceManagerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -7252,7 +7266,7 @@ class SecureSourceManagerAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -7263,7 +7277,7 @@ class SecureSourceManagerAsyncClient:
 
     async def get_operation(
         self,
-        request: Optional[operations_pb2.GetOperationRequest] = None,
+        request: Optional[Union[operations_pb2.GetOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -7289,8 +7303,12 @@ class SecureSourceManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.GetOperationRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.GetOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.GetOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -7299,7 +7317,7 @@ class SecureSourceManagerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -7307,7 +7325,7 @@ class SecureSourceManagerAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -7318,7 +7336,7 @@ class SecureSourceManagerAsyncClient:
 
     async def delete_operation(
         self,
-        request: Optional[operations_pb2.DeleteOperationRequest] = None,
+        request: Optional[Union[operations_pb2.DeleteOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -7348,8 +7366,12 @@ class SecureSourceManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.DeleteOperationRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.DeleteOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.DeleteOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -7358,7 +7380,7 @@ class SecureSourceManagerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -7366,7 +7388,7 @@ class SecureSourceManagerAsyncClient:
 
         # Send the request.
         await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -7374,7 +7396,7 @@ class SecureSourceManagerAsyncClient:
 
     async def cancel_operation(
         self,
-        request: Optional[operations_pb2.CancelOperationRequest] = None,
+        request: Optional[Union[operations_pb2.CancelOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -7403,8 +7425,12 @@ class SecureSourceManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.CancelOperationRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.CancelOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.CancelOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -7413,7 +7439,7 @@ class SecureSourceManagerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -7421,7 +7447,7 @@ class SecureSourceManagerAsyncClient:
 
         # Send the request.
         await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -7429,7 +7455,7 @@ class SecureSourceManagerAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -7521,8 +7547,12 @@ class SecureSourceManagerAsyncClient:
 
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = iam_policy_pb2.SetIamPolicyRequest(**request)
+        if request is None:
+            request_pb = iam_policy_pb2.SetIamPolicyRequest()
+        elif isinstance(request, dict):
+            request_pb = iam_policy_pb2.SetIamPolicyRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -7531,7 +7561,9 @@ class SecureSourceManagerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("resource", request_pb.resource),)
+            ),
         )
 
         # Validate the universe domain.
@@ -7539,7 +7571,7 @@ class SecureSourceManagerAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -7550,7 +7582,7 @@ class SecureSourceManagerAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -7643,8 +7675,12 @@ class SecureSourceManagerAsyncClient:
 
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = iam_policy_pb2.GetIamPolicyRequest(**request)
+        if request is None:
+            request_pb = iam_policy_pb2.GetIamPolicyRequest()
+        elif isinstance(request, dict):
+            request_pb = iam_policy_pb2.GetIamPolicyRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -7653,7 +7689,9 @@ class SecureSourceManagerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("resource", request_pb.resource),)
+            ),
         )
 
         # Validate the universe domain.
@@ -7661,7 +7699,7 @@ class SecureSourceManagerAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -7672,7 +7710,7 @@ class SecureSourceManagerAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -7703,8 +7741,12 @@ class SecureSourceManagerAsyncClient:
 
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = iam_policy_pb2.TestIamPermissionsRequest(**request)
+        if request is None:
+            request_pb = iam_policy_pb2.TestIamPermissionsRequest()
+        elif isinstance(request, dict):
+            request_pb = iam_policy_pb2.TestIamPermissionsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -7715,7 +7757,9 @@ class SecureSourceManagerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("resource", request_pb.resource),)
+            ),
         )
 
         # Validate the universe domain.
@@ -7723,7 +7767,7 @@ class SecureSourceManagerAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -7734,7 +7778,7 @@ class SecureSourceManagerAsyncClient:
 
     async def get_location(
         self,
-        request: Optional[locations_pb2.GetLocationRequest] = None,
+        request: Optional[Union[locations_pb2.GetLocationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -7760,8 +7804,12 @@ class SecureSourceManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = locations_pb2.GetLocationRequest(**request)
+        if request is None:
+            request_pb = locations_pb2.GetLocationRequest()
+        elif isinstance(request, dict):
+            request_pb = locations_pb2.GetLocationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -7770,7 +7818,7 @@ class SecureSourceManagerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -7778,7 +7826,7 @@ class SecureSourceManagerAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -7789,7 +7837,7 @@ class SecureSourceManagerAsyncClient:
 
     async def list_locations(
         self,
-        request: Optional[locations_pb2.ListLocationsRequest] = None,
+        request: Optional[Union[locations_pb2.ListLocationsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -7815,8 +7863,12 @@ class SecureSourceManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = locations_pb2.ListLocationsRequest(**request)
+        if request is None:
+            request_pb = locations_pb2.ListLocationsRequest()
+        elif isinstance(request, dict):
+            request_pb = locations_pb2.ListLocationsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -7825,7 +7877,7 @@ class SecureSourceManagerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -7833,7 +7885,7 @@ class SecureSourceManagerAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -7852,9 +7904,7 @@ class SecureSourceManagerAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("SecureSourceManagerAsyncClient",)

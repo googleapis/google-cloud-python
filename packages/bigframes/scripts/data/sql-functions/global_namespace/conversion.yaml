@@ -1,0 +1,119 @@
+urn: extension:google:bq_scalar_functions
+scalar_functions:
+  - name: "bool"
+    description: "Converts a JSON boolean to a SQL BOOL value."
+    series_accessor_arg: json_string_expression
+    impls:
+      # Signature: bool:str
+      - args:
+          - name: "json_string_expression"
+            value: string
+            optional: false
+            keyword_only: false
+        return: boolean
+  - name: "double"
+    description: "Converts a JSON number to a SQL FLOAT64 value."
+    series_accessor_arg: json_string_expression
+    impls:
+      # Signature: double:str_str
+      - args:
+          - name: "json_string_expression"
+            value: string
+            optional: false
+            keyword_only: false
+          - name: "wide_number_mode"
+            value: string
+            optional: true
+            keyword_only: true
+        return: fp64
+  - name: "float64"
+    description: "Converts a JSON number to a SQL FLOAT64 value."
+    series_accessor_arg: json_string_expression
+    impls:
+      # Signature: float64:str_str
+      - args:
+          - name: "json_string_expression"
+            value: string
+            optional: false
+            keyword_only: false
+          - name: "wide_number_mode"
+            value: string
+            optional: true
+            keyword_only: true
+        return: fp64
+  - name: "int64"
+    description: "Converts a JSON number to a SQL INT64 value."
+    series_accessor_arg: json_string_expression
+    impls:
+      # Signature: int64:str
+      - args:
+          - name: "json_string_expression"
+            value: string
+            optional: false
+            keyword_only: false
+        return: i64
+  - name: "parse_bignumeric"
+    description: "Converts a STRING to a BIGNUMERIC value."
+    series_accessor_arg: string_expression
+    impls:
+      # Signature: parse_bignumeric:str
+      - args:
+          - name: "string_expression"
+            value: string
+            optional: false
+            keyword_only: false
+        return: decimal<76,38>
+  - name: "parse_numeric"
+    description: "Converts a STRING to a NUMERIC value."
+    series_accessor_arg: string_expression
+    impls:
+      # Signature: parse_numeric:str
+      - args:
+          - name: "string_expression"
+            value: string
+            optional: false
+            keyword_only: false
+        return: decimal<38,9>
+  - name: "string"
+    description: "Converts a value to a STRING value."
+    series_accessor_arg: expression
+    impls:
+      # Signature: string:pts_str
+      - args:
+          - name: "expression"
+            value: timestamp
+            optional: false
+            keyword_only: false
+          - name: "timezone"
+            value: string
+            optional: true
+            keyword_only: false
+        return: string
+      # Signature: string:date
+      - args:
+          - name: "expression"
+            value: date
+            optional: false
+            keyword_only: false
+        return: string
+      # Signature: string:pt
+      - args:
+          - name: "expression"
+            value: time
+            optional: false
+            keyword_only: false
+        return: string
+      # Signature: string:pts
+      - args:
+          - name: "expression"
+            value: timestamp
+            optional: false
+            keyword_only: false
+        return: string
+      # Signature: string:str
+      - args:
+          - name: "expression"
+            value: string
+            optional: false
+            keyword_only: false
+        return: string

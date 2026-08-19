@@ -19,9 +19,7 @@ from unittest import mock
 
 import pytest
 
-from google.api_core import exceptions
-from google.api_core import extended_operation
-from google.api_core import retry
+from google.api_core import exceptions, extended_operation, retry
 
 TEST_OPERATION_NAME = "test/extended_operation"
 

@@ -15,10 +15,7 @@
 import functools
 import logging
 
-from google.cloud.ndb import exceptions
-from google.cloud.ndb import _retry
-from google.cloud.ndb import tasklets
-from google.cloud.ndb import utils
+from google.cloud.ndb import _retry, exceptions, tasklets, utils
 
 log = logging.getLogger(__name__)
 
@@ -50,8 +47,9 @@ class _Propagation(object):
             self.propagation = propagation
         else:
             raise ValueError(
-                "Unexpected value for propagation. Got: {}. Expected one of: "
-                "{}".format(propagation, propagation_options)
+                "Unexpected value for propagation. Got: {}. Expected one of: {}".format(
+                    propagation, propagation_options
+                )
             )
 
         propagation_names = context_module.TransactionOptions._INT_TO_NAME
@@ -257,8 +255,8 @@ def _transaction_async(context, callback, read_only=False):
     transaction_id = yield _datastore_api.begin_transaction(read_only, retries=0)
     utils.logging_debug(log, "Transaction Id: {}", transaction_id)
 
-    on_commit_callbacks = []
-    transaction_complete_callbacks = []
+    on_commit_callbacks: list = []
+    transaction_complete_callbacks: list = []
     tx_context = context.new(
         transaction=transaction_id,
         on_commit_callbacks=on_commit_callbacks,

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -57,7 +57,9 @@ class CheckError(proto.Message):
 
         Values:
             ERROR_CODE_UNSPECIFIED (0):
-                This is never used in ``CheckResponse``.
+                This is the default value if error code is
+                not explicitly set. It should not be used
+                directly.
             NOT_FOUND (5):
                 The consumer's project id, network container, or resource
                 container was not found. Same as

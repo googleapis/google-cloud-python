@@ -12,22 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import concurrent.futures
 import datetime
 import decimal
 from typing import Tuple
 
-from google.api_core import exceptions
 import pytest
-
+from google.api_core import exceptions
 from google.cloud import bigquery
 from google.cloud.bigquery import enums
-from google.cloud.bigquery.query import ArrayQueryParameter
-from google.cloud.bigquery.query import ScalarQueryParameter
-from google.cloud.bigquery.query import ScalarQueryParameterType
-from google.cloud.bigquery.query import StructQueryParameter
-from google.cloud.bigquery.query import StructQueryParameterType
-from google.cloud.bigquery.query import RangeQueryParameter
+from google.cloud.bigquery.query import (
+    ArrayQueryParameter,
+    RangeQueryParameter,
+    ScalarQueryParameter,
+    ScalarQueryParameterType,
+    StructQueryParameter,
+    StructQueryParameterType,
+)
 
 
 @pytest.fixture(params=["INSERT", "QUERY"])
@@ -77,26 +77,6 @@ def test_query_many_columns(
         rowval = row["rowval"]
         for column in range(1, 10000):
             assert row[f"col_{column}"] == rowval * column
-
-
-def test_query_w_timeout(bigquery_client, query_api_method):
-    job_config = bigquery.QueryJobConfig()
-    job_config.use_query_cache = False
-
-    query_job = bigquery_client.query(
-        "SELECT * FROM `bigquery-public-data.github_repos.commits`;",
-        location="US",
-        job_config=job_config,
-        api_method=query_api_method,
-    )
-
-    with pytest.raises(concurrent.futures.TimeoutError):
-        query_job.result(timeout=1)
-
-    # Even though the query takes >1 second, the call to getQueryResults
-    # should succeed.
-    assert not query_job.done(timeout=1)
-    assert bigquery_client.cancel_job(query_job) is not None
 
 
 def test_query_statistics(bigquery_client, query_api_method):

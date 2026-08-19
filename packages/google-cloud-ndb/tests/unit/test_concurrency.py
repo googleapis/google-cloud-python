@@ -17,9 +17,8 @@ import os
 
 import pytest
 
-from google.cloud.ndb import _cache
+from google.cloud.ndb import _cache, tasklets
 from google.cloud.ndb import global_cache as global_cache_module
-from google.cloud.ndb import tasklets
 
 try:
     from test_utils import orchestrate

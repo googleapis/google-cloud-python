@@ -18,7 +18,13 @@ description = "Bridge to enable using Django with Spanner."
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
-dependencies = ["sqlparse >= 0.3.0", "google-cloud-spanner >= 3.13.0"]
+# TODO(https://github.com/googleapis/google-cloud-python/issues/18053): Update upper bound when adding support for Django 6.0+
+# (django_spanner/__init__.py currently enforces SUPPORTED_DJANGO_VERSIONS = [(5, 2)])
+dependencies = [
+    "sqlparse >= 0.3.0",
+    "google-cloud-spanner >= 3.13.0",
+    "django >= 5.2, < 6.0",
+]
 extras = {
     "tracing": [
         "opentelemetry-api >= 1.1.0",
@@ -61,9 +67,6 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
@@ -71,9 +74,8 @@ setup(
         "Programming Language :: Python :: 3.14",
         "Topic :: Utilities",
         "Framework :: Django",
-        "Framework :: Django :: 3.2",
-        "Framework :: Django :: 4.2",
+        "Framework :: Django :: 5.2",
     ],
     extras_require=extras,
-    python_requires=">=3.8",
+    python_requires=">=3.10",
 )

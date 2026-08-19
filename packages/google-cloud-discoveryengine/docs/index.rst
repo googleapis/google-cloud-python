@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Discovery Engine API.
+This package includes clients for multiple versions of Discovery Engine.
 By default, you will get version ``discoveryengine_v1beta``.
 
 

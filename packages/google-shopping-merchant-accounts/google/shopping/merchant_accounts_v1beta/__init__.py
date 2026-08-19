@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,12 +21,63 @@ from google.shopping.merchant_accounts_v1beta import gapic_version as package_ve
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER
-    from importlib import metadata
-else:  # pragma: NO COVER
-    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
-    # this code path once we drop support for Python 3.7
-    import importlib_metadata as metadata
+from importlib import metadata
+
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.shopping.merchant_accounts_v1beta.services.account_issue_service",
+    "google.shopping.merchant_accounts_v1beta.services.account_tax_service",
+    "google.shopping.merchant_accounts_v1beta.services.accounts_service",
+    "google.shopping.merchant_accounts_v1beta.services.autofeed_settings_service",
+    "google.shopping.merchant_accounts_v1beta.services.automatic_improvements_service",
+    "google.shopping.merchant_accounts_v1beta.services.business_identity_service",
+    "google.shopping.merchant_accounts_v1beta.services.business_info_service",
+    "google.shopping.merchant_accounts_v1beta.services.checkout_settings_service",
+    "google.shopping.merchant_accounts_v1beta.services.email_preferences_service",
+    "google.shopping.merchant_accounts_v1beta.services.gbp_accounts_service",
+    "google.shopping.merchant_accounts_v1beta.services.homepage_service",
+    "google.shopping.merchant_accounts_v1beta.services.lfp_providers_service",
+    "google.shopping.merchant_accounts_v1beta.services.omnichannel_settings_service",
+    "google.shopping.merchant_accounts_v1beta.services.online_return_policy_service",
+    "google.shopping.merchant_accounts_v1beta.services.programs_service",
+    "google.shopping.merchant_accounts_v1beta.services.regions_service",
+    "google.shopping.merchant_accounts_v1beta.services.shipping_settings_service",
+    "google.shopping.merchant_accounts_v1beta.services.terms_of_service_agreement_state_service",
+    "google.shopping.merchant_accounts_v1beta.services.terms_of_service_service",
+    "google.shopping.merchant_accounts_v1beta.services.user_service",
+    "google.shopping.merchant_accounts_v1beta.types.accessright",
+    "google.shopping.merchant_accounts_v1beta.types.account_tax",
+    "google.shopping.merchant_accounts_v1beta.types.accountissue",
+    "google.shopping.merchant_accounts_v1beta.types.accounts",
+    "google.shopping.merchant_accounts_v1beta.types.accountservices",
+    "google.shopping.merchant_accounts_v1beta.types.autofeedsettings",
+    "google.shopping.merchant_accounts_v1beta.types.automaticimprovements",
+    "google.shopping.merchant_accounts_v1beta.types.businessidentity",
+    "google.shopping.merchant_accounts_v1beta.types.businessinfo",
+    "google.shopping.merchant_accounts_v1beta.types.checkoutsettings",
+    "google.shopping.merchant_accounts_v1beta.types.customerservice",
+    "google.shopping.merchant_accounts_v1beta.types.emailpreferences",
+    "google.shopping.merchant_accounts_v1beta.types.gbpaccounts",
+    "google.shopping.merchant_accounts_v1beta.types.homepage",
+    "google.shopping.merchant_accounts_v1beta.types.lfpproviders",
+    "google.shopping.merchant_accounts_v1beta.types.omnichannelsettings",
+    "google.shopping.merchant_accounts_v1beta.types.online_return_policy",
+    "google.shopping.merchant_accounts_v1beta.types.phoneverificationstate",
+    "google.shopping.merchant_accounts_v1beta.types.programs",
+    "google.shopping.merchant_accounts_v1beta.types.regions",
+    "google.shopping.merchant_accounts_v1beta.types.shippingsettings",
+    "google.shopping.merchant_accounts_v1beta.types.tax_rule",
+    "google.shopping.merchant_accounts_v1beta.types.termsofservice",
+    "google.shopping.merchant_accounts_v1beta.types.termsofserviceagreementstate",
+    "google.shopping.merchant_accounts_v1beta.types.termsofservicekind",
+    "google.shopping.merchant_accounts_v1beta.types.user",
+    "google.shopping.merchant_accounts_v1beta.types.verificationmailsettings",
+}
 
 
 from .services.account_issue_service import (
@@ -279,34 +330,23 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import sys
         import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.shopping.merchant_accounts_v1beta"
-        if sys.version_info < (3, 9):
+        if sys.version_info < (3, 10):
             warnings.warn(
                 "You are using a non-supported Python version "
                 + f"({_py_version_str}).  Google will not post any further "
                 + f"updates to {_package_label} supporting this Python version. "
                 + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.9, and then update {_package_label}.",
-                FutureWarning,
-            )
-        if sys.version_info[:2] == (3, 9):
-            warnings.warn(
-                f"You are using a Python version ({_py_version_str}) "
-                + f"which Google will stop supporting in {_package_label} in "
-                + "January 2026. Please "
-                + "upgrade to the latest Python version, or at "
-                + "least to Python 3.10, before then, and "
-                + f"then update {_package_label}.",
+                + f"least to Python 3.10, and then update {_package_label}.",
                 FutureWarning,
             )
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -335,9 +375,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(

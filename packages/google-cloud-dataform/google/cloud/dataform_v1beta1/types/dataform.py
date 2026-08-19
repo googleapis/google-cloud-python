@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
@@ -26,6 +27,7 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.dataform.v1beta1",
     manifest={
+        "DirectoryContentsView",
         "DataEncryptionState",
         "Repository",
         "PrivateResourceMetadata",
@@ -36,6 +38,8 @@ __protobuf__ = proto.module(
         "CreateRepositoryRequest",
         "UpdateRepositoryRequest",
         "DeleteRepositoryRequest",
+        "DeleteRepositoryLongRunningResponse",
+        "DeleteRepositoryLongRunningRequest",
         "CommitRepositoryChangesRequest",
         "CommitRepositoryChangesResponse",
         "ReadRepositoryFileRequest",
@@ -74,6 +78,7 @@ __protobuf__ = proto.module(
         "QueryDirectoryContentsRequest",
         "QueryDirectoryContentsResponse",
         "DirectoryEntry",
+        "FilesystemEntryMetadata",
         "SearchFilesRequest",
         "SearchFilesResponse",
         "SearchResult",
@@ -103,8 +108,15 @@ __protobuf__ = proto.module(
         "UpdateReleaseConfigRequest",
         "DeleteReleaseConfigRequest",
         "CompilationResult",
+        "WorkflowTriggerConfig",
+        "TriggerEvaluationRecord",
+        "WorkflowTrigger",
+        "TableUpdateTrigger",
         "CodeCompilationConfig",
+        "GcsRepositorySnapshotMetadata",
+        "GcsRepositorySnapshotDestination",
         "NotebookRuntimeOptions",
+        "PipelineConfig",
         "ListCompilationResultsRequest",
         "ListCompilationResultsResponse",
         "GetCompilationResultRequest",
@@ -142,6 +154,9 @@ __protobuf__ = proto.module(
         "GetFolderRequest",
         "UpdateFolderRequest",
         "DeleteFolderRequest",
+        "DeleteFolderTreeRequest",
+        "DeleteTeamFolderTreeRequest",
+        "DeleteFolderTreeMetadata",
         "QueryFolderContentsRequest",
         "QueryFolderContentsResponse",
         "QueryUserRootContentsRequest",
@@ -157,8 +172,31 @@ __protobuf__ = proto.module(
         "SearchTeamFoldersResponse",
         "MoveFolderMetadata",
         "MoveRepositoryMetadata",
+        "DeleteRepositoryLongRunningMetadata",
     },
 )
+
+
+class DirectoryContentsView(proto.Enum):
+    r"""Represents the level of detail to return for directory
+    contents.
+
+    Values:
+        DIRECTORY_CONTENTS_VIEW_UNSPECIFIED (0):
+            The default unset value. Defaults to
+            DIRECTORY_CONTENTS_VIEW_BASIC.
+        DIRECTORY_CONTENTS_VIEW_BASIC (1):
+            Includes only the file or directory name.
+            This is the default behavior.
+        DIRECTORY_CONTENTS_VIEW_METADATA (2):
+            Includes all metadata for each file or
+            directory. Currently not supported by
+            CMEK-protected workspaces.
+    """
+
+    DIRECTORY_CONTENTS_VIEW_UNSPECIFIED = 0
+    DIRECTORY_CONTENTS_VIEW_BASIC = 1
+    DIRECTORY_CONTENTS_VIEW_METADATA = 2
 
 
 class DataEncryptionState(proto.Message):
@@ -259,12 +297,18 @@ class Repository(proto.Message):
     class GitRemoteSettings(proto.Message):
         r"""Controls Git remote configuration for a repository.
 
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
         Attributes:
             url (str):
                 Required. The Git remote's URL.
             default_branch (str):
-                Required. The Git remote's default branch
-                name.
+                Optional. The Git remote's default branch name. If not set,
+                ``main`` will be used.
+            effective_default_branch (str):
+                Output only. The Git remote's effective default branch name.
+                This is the default branch name of the Git remote if it is
+                set, otherwise it is ``main``.
             authentication_token_secret_version (str):
                 Optional. The name of the Secret Manager secret version to
                 use as an authentication token for Git operations. Must be
@@ -272,6 +316,12 @@ class Repository(proto.Message):
             ssh_authentication_config (google.cloud.dataform_v1beta1.types.Repository.GitRemoteSettings.SshAuthenticationConfig):
                 Optional. Authentication fields for remote
                 uris using SSH protocol.
+            git_repository_link (str):
+                Optional. Resource name for the ``GitRepositoryLink`` used
+                for machine credentials. Must be in the format
+                ``projects/*/locations/*/connections/*/gitRepositoryLinks/*``
+
+                This field is a member of `oneof`_ ``_git_repository_link``.
             token_status (google.cloud.dataform_v1beta1.types.Repository.GitRemoteSettings.TokenStatus):
                 Output only. Deprecated: The field does not
                 contain any token status information. Instead
@@ -332,6 +382,10 @@ class Repository(proto.Message):
             proto.STRING,
             number=2,
         )
+        effective_default_branch: str = proto.Field(
+            proto.STRING,
+            number=9,
+        )
         authentication_token_secret_version: str = proto.Field(
             proto.STRING,
             number=3,
@@ -340,6 +394,11 @@ class Repository(proto.Message):
             proto.MESSAGE,
             number=5,
             message="Repository.GitRemoteSettings.SshAuthenticationConfig",
+        )
+        git_repository_link: str = proto.Field(
+            proto.STRING,
+            number=7,
+            optional=True,
         )
         token_status: "Repository.GitRemoteSettings.TokenStatus" = proto.Field(
             proto.ENUM,
@@ -662,6 +721,37 @@ class DeleteRepositoryRequest(proto.Message):
             **Note:** *This flag doesn't support deletion of workspaces,
             release configs or workflow configs. If any of such
             resources exists in the repository, the request will fail.*.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+
+
+class DeleteRepositoryLongRunningResponse(proto.Message):
+    r"""``DeleteRepositoryLongRunning`` response message."""
+
+
+class DeleteRepositoryLongRunningRequest(proto.Message):
+    r"""``DeleteRepositoryLongRunning`` request message.
+
+    Attributes:
+        name (str):
+            Required. The repository's name.
+        force (bool):
+            Optional. If set to true, child resources of this repository
+            (compilation results and workflow invocations) will also be
+            deleted. Otherwise, the request will only succeed if the
+            repository has no child resources.
+
+            **Note:** *This flag doesn't support deletion of workspaces,
+            release configs or workflow configs. If any of such
+            resources exists in the repository, the request will fail.*
     """
 
     name: str = proto.Field(
@@ -1064,12 +1154,16 @@ class ComputeRepositoryAccessTokenStatusResponse(proto.Message):
             VALID (3):
                 The token was used successfully to
                 authenticate against the Git remote.
+            PERMISSION_DENIED (4):
+                The token is not accessible due to permission
+                issues.
         """
 
         TOKEN_STATUS_UNSPECIFIED = 0
         NOT_FOUND = 1
         INVALID = 2
         VALID = 3
+        PERMISSION_DENIED = 4
 
     token_status: TokenStatus = proto.Field(
         proto.ENUM,
@@ -1651,6 +1745,12 @@ class QueryDirectoryContentsRequest(proto.Message):
             ``QueryDirectoryContents``, with the exception of
             ``page_size``, must match the call that provided the page
             token.
+        view (google.cloud.dataform_v1beta1.types.DirectoryContentsView):
+            Optional. Specifies the metadata to return for each
+            directory entry. If unspecified, the default is
+            ``DIRECTORY_CONTENTS_VIEW_BASIC``. Currently the
+            ``DIRECTORY_CONTENTS_VIEW_METADATA`` view is not supported
+            by CMEK-protected workspaces.
     """
 
     workspace: str = proto.Field(
@@ -1668,6 +1768,11 @@ class QueryDirectoryContentsRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    view: "DirectoryContentsView" = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum="DirectoryContentsView",
     )
 
 
@@ -1710,13 +1815,19 @@ class DirectoryEntry(proto.Message):
 
     Attributes:
         file (str):
-            A file in the directory.
+            A file in the directory. The path is returned
+            including the full folder structure from the
+            root.
 
             This field is a member of `oneof`_ ``entry``.
         directory (str):
-            A child directory in the directory.
+            A child directory in the directory. The path
+            is returned including the full folder structure
+            from the root.
 
             This field is a member of `oneof`_ ``entry``.
+        metadata (google.cloud.dataform_v1beta1.types.FilesystemEntryMetadata):
+            Entry with metadata.
     """
 
     file: str = proto.Field(
@@ -1728,6 +1839,34 @@ class DirectoryEntry(proto.Message):
         proto.STRING,
         number=2,
         oneof="entry",
+    )
+    metadata: "FilesystemEntryMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="FilesystemEntryMetadata",
+    )
+
+
+class FilesystemEntryMetadata(proto.Message):
+    r"""Represents metadata for a single entry in a filesystem.
+
+    Attributes:
+        size_bytes (int):
+            Output only. Provides the size of the entry
+            in bytes. For directories, this will be 0.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Represents the time of the last
+            modification of the entry.
+    """
+
+    size_bytes: int = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -2086,11 +2225,20 @@ class InstallNpmPackagesRequest(proto.Message):
     Attributes:
         workspace (str):
             Required. The workspace's name.
+        pipeline_config (google.cloud.dataform_v1beta1.types.PipelineConfig):
+            Optional. The pipeline options which defines
+            the pipeline type and path within the Git
+            repository.
     """
 
     workspace: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    pipeline_config: "PipelineConfig" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="PipelineConfig",
     )
 
 
@@ -2124,9 +2272,9 @@ class ReleaseConfig(proto.Message):
         time_zone (str):
             Optional. Specifies the time zone to be used when
             interpreting cron_schedule. Must be a time zone name from
-            the time zone database
-            (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
-            If left unspecified, the default is UTC.
+            the `time zone
+            database <https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>`__.
+            If left unspecified, the default is ``UTC``.
         recent_scheduled_release_records (MutableSequence[google.cloud.dataform_v1beta1.types.ReleaseConfig.ScheduledReleaseRecord]):
             Output only. Records of the 10 most recent scheduled release
             attempts, ordered in descending order of ``release_time``.
@@ -2461,6 +2609,9 @@ class CompilationResult(proto.Message):
             Output only. Metadata indicating whether this resource is
             user-scoped. ``CompilationResult`` resource is
             ``user_scoped`` only if it is sourced from a workspace.
+        gcs_repository_snapshot_metadata (google.cloud.dataform_v1beta1.types.GcsRepositorySnapshotMetadata):
+            Output only. Metadata about the repository
+            snapshot used by scheduled notebooks.
     """
 
     class CompilationError(proto.Message):
@@ -2556,6 +2707,168 @@ class CompilationResult(proto.Message):
         number=12,
         message="PrivateResourceMetadata",
     )
+    gcs_repository_snapshot_metadata: "GcsRepositorySnapshotMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message="GcsRepositorySnapshotMetadata",
+    )
+
+
+class WorkflowTriggerConfig(proto.Message):
+    r"""Represents a trigger configuration for a workflow.
+
+    Attributes:
+        condition (google.cloud.dataform_v1beta1.types.WorkflowTriggerConfig.Condition):
+            Optional. The condition to use when
+            triggering the workflow.
+        workflow_triggers (MutableSequence[google.cloud.dataform_v1beta1.types.WorkflowTrigger]):
+            Required. The trigger definitions to invoke a
+            workflow.
+        min_execution_duration (google.protobuf.duration_pb2.Duration):
+            Optional. Minimum duration between two
+            consecutive executions. If not specified, the
+            workflow will be executed every time trigger
+            conditions are met and there is no ongoing
+            workflow execution.
+        max_wait_duration (google.protobuf.duration_pb2.Duration):
+            Optional. The effective maximum wait time
+            duration for the trigger condition to be met. If
+            not specified, the workflow won't be triggered
+            until conditions are met.
+        recent_trigger_evaluation_records (MutableSequence[google.cloud.dataform_v1beta1.types.TriggerEvaluationRecord]):
+            Output only. Records of the 10 most recent trigger
+            evaluations, ordered in descending order of
+            ``evaluation_time``. Updated whenever the service evaluates
+            the trigger conditions (via polling or upon receiving a push
+            event).
+        last_successful_evaluation_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp of the last
+            successful trigger evaluation.
+    """
+
+    class Condition(proto.Enum):
+        r"""The condition to use when triggering the workflow.
+
+        Values:
+            CONDITION_UNSPECIFIED (0):
+                If CONDITION_UNSPECIFIED, the default value is ANY.
+            ALL (1):
+                If ALL, all the trigger config conditions
+                must be met before a workflow is invoked.
+            ANY (2):
+                If ANY, at least one of the trigger config
+                conditions must be met before a workflow is
+                invoked.
+        """
+
+        CONDITION_UNSPECIFIED = 0
+        ALL = 1
+        ANY = 2
+
+    condition: Condition = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Condition,
+    )
+    workflow_triggers: MutableSequence["WorkflowTrigger"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="WorkflowTrigger",
+    )
+    min_execution_duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=duration_pb2.Duration,
+    )
+    max_wait_duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=duration_pb2.Duration,
+    )
+    recent_trigger_evaluation_records: MutableSequence["TriggerEvaluationRecord"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message="TriggerEvaluationRecord",
+        )
+    )
+    last_successful_evaluation_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class TriggerEvaluationRecord(proto.Message):
+    r"""A record of an attempt to evaluate trigger conditions.
+
+    Attributes:
+        evaluation_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp of this trigger
+            evaluation attempt.
+        status (google.rpc.status_pb2.Status):
+            Output only. The status of the trigger
+            evaluation. Success is indicated by a code of 0
+            (OK). Message will only be present if the status
+            code is non-zero.
+    """
+
+    evaluation_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    status: status_pb2.Status = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
+    )
+
+
+class WorkflowTrigger(proto.Message):
+    r"""The trigger definition to invoke a workflow.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        table_update_trigger (google.cloud.dataform_v1beta1.types.TableUpdateTrigger):
+            The table update trigger configuration.
+
+            This field is a member of `oneof`_ ``trigger``.
+    """
+
+    table_update_trigger: "TableUpdateTrigger" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="trigger",
+        message="TableUpdateTrigger",
+    )
+
+
+class TableUpdateTrigger(proto.Message):
+    r"""Represents a table update trigger configuration.
+
+    Attributes:
+        table (google.cloud.dataform_v1beta1.types.Target):
+            The target table to trigger the workflow.
+        trigger_update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The modification time of this
+            table that resulted in an invocation of the
+            workflow. This would be updated by the
+            triggering service after a successful workflow
+            invocation.
+    """
+
+    table: "Target" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Target",
+    )
+    trigger_update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class CodeCompilationConfig(proto.Message):
@@ -2596,6 +2909,10 @@ class CodeCompilationConfig(proto.Message):
         default_notebook_runtime_options (google.cloud.dataform_v1beta1.types.NotebookRuntimeOptions):
             Optional. The default notebook runtime
             options.
+        pipeline_config (google.cloud.dataform_v1beta1.types.PipelineConfig):
+            Optional. The pipeline options which defines
+            the pipeline type and path within the Git
+            repository.
     """
 
     default_database: str = proto.Field(
@@ -2640,6 +2957,57 @@ class CodeCompilationConfig(proto.Message):
         number=9,
         message="NotebookRuntimeOptions",
     )
+    pipeline_config: "PipelineConfig" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message="PipelineConfig",
+    )
+
+
+class GcsRepositorySnapshotMetadata(proto.Message):
+    r"""Metadata about a repository snapshot stored in Google Cloud
+    Storage.
+
+    Attributes:
+        repository_snapshot_uri (str):
+            Output only. The Google Cloud Storage URI of
+            the repository snapshot.
+        crc32c_checksum (str):
+            Output only. The crc32c checksum of the
+            repository snapshot, big-endian base64 encoded.
+        generation (int):
+            Output only. The generation number of the
+            Cloud Storage object. See
+            https://cloud.google.com/storage/docs/metadata#generation-number.
+    """
+
+    repository_snapshot_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    crc32c_checksum: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    generation: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+
+
+class GcsRepositorySnapshotDestination(proto.Message):
+    r"""Configures the destination for a repository snapshot.
+
+    Attributes:
+        repository_snapshot_uri (str):
+            Optional. The Google Cloud Storage destination to upload the
+            repository snapshot to. Format: ``gs://bucket-name/path/``.
+    """
+
+    repository_snapshot_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class NotebookRuntimeOptions(proto.Message):
@@ -2653,6 +3021,12 @@ class NotebookRuntimeOptions(proto.Message):
             result to. Format: ``gs://bucket-name``.
 
             This field is a member of `oneof`_ ``execution_sink``.
+        gcs_repository_snapshot_destination (google.cloud.dataform_v1beta1.types.GcsRepositorySnapshotDestination):
+            Optional. The Google Cloud Storage destination to upload the
+            snapshot to. For empty URI it defaults to the provided
+            gcs_output_bucket. Format: ``gs://bucket-name/path/``.
+
+            This field is a member of `oneof`_ ``repository_snapshot_storage``.
         ai_platform_notebook_runtime_template (str):
             Optional. The resource name of the [Colab runtime template]
             (https://cloud.google.com/colab/docs/runtimes), from which a
@@ -2666,7 +3040,59 @@ class NotebookRuntimeOptions(proto.Message):
         number=1,
         oneof="execution_sink",
     )
+    gcs_repository_snapshot_destination: "GcsRepositorySnapshotDestination" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="repository_snapshot_storage",
+            message="GcsRepositorySnapshotDestination",
+        )
+    )
     ai_platform_notebook_runtime_template: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class PipelineConfig(proto.Message):
+    r"""Defines the pipeline type and path within the Git repository.
+
+    Attributes:
+        pipeline_type (google.cloud.dataform_v1beta1.types.PipelineConfig.PipelineType):
+            Required. The type of the pipeline.
+        path (str):
+            Required. The relative path within the Git repository where
+            the pipeline is defined. For example, for a Dataform
+            pipeline, it is a path to the folder where
+            ``workflow_settings.yaml`` or ``dataform.json`` is located.
+    """
+
+    class PipelineType(proto.Enum):
+        r"""The type of the pipeline. This may be extended in the future.
+        In case of UNSPECIFIED, the error will be thrown.
+
+        Values:
+            PIPELINE_TYPE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            DATAFORM (1):
+                Regular Dataform pipeline.
+            SQL (3):
+                SQL single file asset.
+            NOTEBOOK (4):
+                Notebook single file asset.
+        """
+
+        PIPELINE_TYPE_UNSPECIFIED = 0
+        DATAFORM = 1
+        SQL = 3
+        NOTEBOOK = 4
+
+    pipeline_type: PipelineType = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=PipelineType,
+    )
+    path: str = proto.Field(
         proto.STRING,
         number=2,
     )
@@ -3677,9 +4103,9 @@ class WorkflowConfig(proto.Message):
         time_zone (str):
             Optional. Specifies the time zone to be used when
             interpreting cron_schedule. Must be a time zone name from
-            the time zone database
-            (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
-            If left unspecified, the default is UTC.
+            the `time zone
+            database <https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>`__.
+            If left unspecified, the default is ``UTC``.
         recent_scheduled_execution_records (MutableSequence[google.cloud.dataform_v1beta1.types.WorkflowConfig.ScheduledExecutionRecord]):
             Output only. Records of the 10 most recent scheduled
             execution attempts, ordered in descending order of
@@ -3701,6 +4127,10 @@ class WorkflowConfig(proto.Message):
             etc. The format of this field is a JSON string.
 
             This field is a member of `oneof`_ ``_internal_metadata``.
+        workflow_trigger_config (google.cloud.dataform_v1beta1.types.WorkflowTriggerConfig):
+            Optional. Trigger configuration for this
+            workflow. If present, the workflow will be
+            triggered based on the specified triggers.
     """
 
     class ScheduledExecutionRecord(proto.Message):
@@ -3795,6 +4225,11 @@ class WorkflowConfig(proto.Message):
         proto.STRING,
         number=11,
         optional=True,
+    )
+    workflow_trigger_config: "WorkflowTriggerConfig" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message="WorkflowTriggerConfig",
     )
 
 
@@ -4095,6 +4530,10 @@ class WorkflowInvocation(proto.Message):
             user-scoped. ``WorkflowInvocation`` resource is
             ``user_scoped`` only if it is sourced from a compilation
             result and the compilation result is user-scoped.
+        pipeline_config (google.cloud.dataform_v1beta1.types.PipelineConfig):
+            Output only. The pipeline options which
+            defines the pipeline type and path within the
+            Git repository.
     """
 
     class State(proto.Enum):
@@ -4173,6 +4612,11 @@ class WorkflowInvocation(proto.Message):
         proto.MESSAGE,
         number=10,
         message="PrivateResourceMetadata",
+    )
+    pipeline_config: "PipelineConfig" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="PipelineConfig",
     )
 
 
@@ -4451,11 +4895,14 @@ class WorkflowInvocationAction(proto.Message):
                 Output only. The code contents of a Notebook
                 to be run.
             job_id (str):
-                Output only. The ID of the Vertex job that
-                executed the notebook in contents and also the
-                ID used for the outputs created in Google Cloud
-                Storage buckets. Only set once the job has
-                started to run.
+                Output only. The ID of the Gemini Enterprise
+                Agent Platform job that executed the notebook in
+                contents and also the ID used for the outputs
+                created in Google Cloud Storage buckets. Only
+                set once the job has started to run.
+            file_path (str):
+                Output only. The path to the notebook file in
+                the repository.
         """
 
         contents: str = proto.Field(
@@ -4465,6 +4912,10 @@ class WorkflowInvocationAction(proto.Message):
         job_id: str = proto.Field(
             proto.STRING,
             number=2,
+        )
+        file_path: str = proto.Field(
+            proto.STRING,
+            number=3,
         )
 
     class DataPreparationAction(proto.Message):
@@ -4849,9 +5300,8 @@ class Folder(proto.Message):
             name. This should take the format:
             projects/{project}/locations/{location}/folders/{folder},
             projects/{project}/locations/{location}/teamFolders/{teamFolder},
-            or just projects/{project}/locations/{location}
-            if this is a root Folder. This field can only be
-            updated through MoveFolder.
+            or just "" if this is a root Folder. This field
+            can only be updated through MoveFolder.
         team_folder_name (str):
             Output only. The resource name of the
             TeamFolder that this Folder is associated with.
@@ -4928,9 +5378,11 @@ class CreateFolderRequest(proto.Message):
         folder (google.cloud.dataform_v1beta1.types.Folder):
             Required. The Folder to create.
         folder_id (str):
-            The ID to use for the Folder, which will
-            become the final component of the Folder's
-            resource name.
+            Deprecated: This field is not used. The
+            resource name is generated automatically.
+            The ID to use for the Folder, which will become
+            the final component of the Folder's resource
+            name.
     """
 
     parent: str = proto.Field(
@@ -5032,13 +5484,140 @@ class DeleteFolderRequest(proto.Message):
     )
 
 
+class DeleteFolderTreeRequest(proto.Message):
+    r"""``DeleteFolderTree`` request message.
+
+    Attributes:
+        name (str):
+            Required. The Folder's name.
+            Format:
+            projects/{project}/locations/{location}/folders/{folder}
+        force (bool):
+            Optional. If ``false`` (default): The operation will fail if
+            any Repository within the folder hierarchy has associated
+            Release Configs or Workflow Configs.
+
+            If ``true``: The operation will attempt to delete
+            everything, including any Release Configs and Workflow
+            Configs linked to Repositories within the folder hierarchy.
+            This permanently removes schedules and resources.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+
+
+class DeleteTeamFolderTreeRequest(proto.Message):
+    r"""``DeleteTeamFolderTree`` request message.
+
+    Attributes:
+        name (str):
+            Required. The TeamFolder's name. Format:
+            projects/{project}/locations/{location}/teamFolders/{team_folder}
+        force (bool):
+            Optional. If ``false`` (default): The operation will fail if
+            any Repository within the folder hierarchy has associated
+            Release Configs or Workflow Configs.
+
+            If ``true``: The operation will attempt to delete
+            everything, including any Release Configs and Workflow
+            Configs linked to Repositories within the folder hierarchy.
+            This permanently removes schedules and resources.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+
+
+class DeleteFolderTreeMetadata(proto.Message):
+    r"""Contains metadata about the progress of the DeleteFolderTree
+    Long-running operations.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation was
+            created.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation finished
+            running.
+        target (str):
+            Output only. Resource name of the target of the operation.
+            Format:
+            projects/{project}/locations/{location}/folders/{folder} or
+            projects/{project}/locations/{location}/teamFolders/{team_folder}
+        state (google.cloud.dataform_v1beta1.types.DeleteFolderTreeMetadata.State):
+            Output only. The state of the operation.
+        percent_complete (int):
+            Output only. Percent complete of the operation [0, 100].
+    """
+
+    class State(proto.Enum):
+        r"""Different states of the DeleteFolderTree operation.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state is unspecified.
+            INITIALIZED (1):
+                The operation was initialized and recorded by
+                the server, but not yet started.
+            IN_PROGRESS (2):
+                The operation is in progress.
+            SUCCEEDED (3):
+                The operation has completed successfully.
+            FAILED (4):
+                The operation has failed.
+        """
+
+        STATE_UNSPECIFIED = 0
+        INITIALIZED = 1
+        IN_PROGRESS = 2
+        SUCCEEDED = 3
+        FAILED = 4
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    target: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+    percent_complete: int = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+
+
 class QueryFolderContentsRequest(proto.Message):
     r"""``QueryFolderContents`` request message.
 
     Attributes:
         folder (str):
-            Required. Name of the folder whose contents to list. Format:
-            projects/*/locations/*/folders/\*
+            Required. Resource name of the Folder to list contents for.
+            Format: projects/*/locations/*/folders/\*
         page_size (int):
             Optional. Maximum number of paths to return.
             The server may return fewer items than
@@ -5159,8 +5738,8 @@ class QueryUserRootContentsRequest(proto.Message):
 
     Attributes:
         location (str):
-            Required. Location of the user root folder whose contents to
-            list. Format: projects/*/locations/*
+            Required. Location of the user root folder to list contents
+            for. Format: projects/*/locations/*
         page_size (int):
             Optional. Maximum number of paths to return.
             The server may return fewer items than
@@ -5351,6 +5930,8 @@ class CreateTeamFolderRequest(proto.Message):
         team_folder (google.cloud.dataform_v1beta1.types.TeamFolder):
             Required. The TeamFolder to create.
         team_folder_id (str):
+            Deprecated: This field is not used. The
+            resource name is generated automatically.
             The ID to use for the TeamFolder, which will
             become the final component of the TeamFolder's
             resource name.
@@ -5428,8 +6009,8 @@ class QueryTeamFolderContentsRequest(proto.Message):
 
     Attributes:
         team_folder (str):
-            Required. Name of the team_folder whose contents to list.
-            Format: ``projects/*/locations/*/teamFolders/*``.
+            Required. Resource name of the TeamFolder to list contents
+            for. Format: ``projects/*/locations/*/teamFolders/*``.
         page_size (int):
             Optional. Maximum number of paths to return.
             The server may return fewer items than
@@ -5553,10 +6134,10 @@ class SearchTeamFoldersRequest(proto.Message):
             Required. Location in which to query TeamFolders. Format:
             ``projects/*/locations/*``.
         page_size (int):
-            Optional. Maximum number of TeamFolders to
-            return. The server may return fewer items than
-            requested. If unspecified, the server will pick
-            an appropriate default.
+            Optional. Maximum number of ``TeamFolders`` to return. The
+            server may return fewer items than requested. If
+            unspecified, the server will pick a default of ``page_size``
+            = 50.
         page_token (str):
             Optional. Page token received from a previous
             ``SearchTeamFolders`` call. Provide this to retrieve the
@@ -5785,6 +6366,87 @@ class MoveRepositoryMetadata(proto.Message):
     percent_complete: int = proto.Field(
         proto.INT32,
         number=5,
+    )
+
+
+class DeleteRepositoryLongRunningMetadata(proto.Message):
+    r"""Represents metadata about the progress of the
+    DeleteRepository long-running operation.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation was
+            created.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation finished
+            running.
+        target (str):
+            Output only. Server-defined resource path for
+            the target of the operation. Format:
+            projects/{project}/locations/{location}/repositories/{repository}
+        state (google.cloud.dataform_v1beta1.types.DeleteRepositoryLongRunningMetadata.State):
+            Output only. The state of the operation.
+        percent_complete (int):
+            Output only. Percent complete of the operation [0, 100].
+        child_resources_count (int):
+            Output only. The total number of child
+            resources (Compilation Results, Workflow
+            Executions) that will be deleted.
+        remaining_child_resources_count (int):
+            Output only. The remaining number of child
+            resources to be deleted.
+    """
+
+    class State(proto.Enum):
+        r"""Different states of the DeleteRepositoryLongRunning
+        operation.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state is unspecified.
+            RUNNING (1):
+                The operation is running.
+            SUCCEEDED (2):
+                The operation has completed successfully.
+            FAILED (3):
+                The operation has failed.
+        """
+
+        STATE_UNSPECIFIED = 0
+        RUNNING = 1
+        SUCCEEDED = 2
+        FAILED = 3
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    target: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+    percent_complete: int = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    child_resources_count: int = proto.Field(
+        proto.INT64,
+        number=6,
+    )
+    remaining_child_resources_count: int = proto.Field(
+        proto.INT64,
+        number=7,
     )
 
 

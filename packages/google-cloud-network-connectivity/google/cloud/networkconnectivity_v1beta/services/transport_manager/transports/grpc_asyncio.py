@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -101,7 +101,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -242,6 +242,10 @@ class TransportManagerGrpcAsyncIOTransport(TransportManagerTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -415,6 +419,36 @@ class TransportManagerGrpcAsyncIOTransport(TransportManagerTransport):
                 )
             )
         return self._stubs["get_remote_transport_profile"]
+
+    @property
+    def parse_from_activation_key(
+        self,
+    ) -> Callable[
+        [transport_manager.ParseFromActivationKeyRequest],
+        Awaitable[transport_manager.ParseFromActivationKeyResponse],
+    ]:
+        r"""Return a callable for the parse from activation key method over gRPC.
+
+        Gets details of a single RemoteTransportProfile given
+        an activation key.
+
+        Returns:
+            Callable[[~.ParseFromActivationKeyRequest],
+                    Awaitable[~.ParseFromActivationKeyResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "parse_from_activation_key" not in self._stubs:
+            self._stubs["parse_from_activation_key"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1beta.TransportManager/ParseFromActivationKey",
+                request_serializer=transport_manager.ParseFromActivationKeyRequest.serialize,
+                response_deserializer=transport_manager.ParseFromActivationKeyResponse.deserialize,
+            )
+        return self._stubs["parse_from_activation_key"]
 
     @property
     def list_transports(
@@ -597,6 +631,11 @@ class TransportManagerGrpcAsyncIOTransport(TransportManagerTransport):
             ),
             self.get_remote_transport_profile: self._wrap_method(
                 self.get_remote_transport_profile,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.parse_from_activation_key: self._wrap_method(
+                self.parse_from_activation_key,
                 default_timeout=None,
                 client_info=client_info,
             ),

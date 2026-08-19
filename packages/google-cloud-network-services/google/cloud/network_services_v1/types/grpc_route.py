@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ class GrpcRoute(proto.Message):
         name (str):
             Identifier. Name of the GrpcRoute resource. It matches
             pattern
-            ``projects/*/locations/global/grpcRoutes/<grpc_route_name>``
+            ``projects/*/locations/*/grpcRoutes/<grpc_route_name>``
         self_link (str):
             Output only. Server-defined URL of this
             resource
@@ -106,14 +106,14 @@ class GrpcRoute(proto.Message):
             requests served by the mesh.
 
             Each mesh reference should match the pattern:
-            ``projects/*/locations/global/meshes/<mesh_name>``
+            ``projects/*/locations/*/meshes/<mesh_name>``
         gateways (MutableSequence[str]):
             Optional. Gateways defines a list of gateways this GrpcRoute
             is attached to, as one of the routing rules to route the
             requests served by the gateway.
 
             Each gateway reference should match the pattern:
-            ``projects/*/locations/global/gateways/<gateway_name>``
+            ``projects/*/locations/*/gateways/<gateway_name>``
         rules (MutableSequence[google.cloud.network_services_v1.types.GrpcRoute.RouteRule]):
             Required. A list of detailed rules defining
             how to route traffic.
@@ -633,7 +633,7 @@ class ListGrpcRoutesRequest(proto.Message):
         parent (str):
             Required. The project and location from which the GrpcRoutes
             should be listed, specified in the format
-            ``projects/*/locations/global``.
+            ``projects/*/locations/*``.
         page_size (int):
             Maximum number of GrpcRoutes to return per
             call.
@@ -711,7 +711,7 @@ class GetGrpcRouteRequest(proto.Message):
     Attributes:
         name (str):
             Required. A name of the GrpcRoute to get. Must be in the
-            format ``projects/*/locations/global/grpcRoutes/*``.
+            format ``projects/*/locations/*/grpcRoutes/*``.
     """
 
     name: str = proto.Field(
@@ -726,7 +726,7 @@ class CreateGrpcRouteRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent resource of the GrpcRoute. Must be in
-            the format ``projects/*/locations/global``.
+            the format ``projects/*/locations/*``.
         grpc_route_id (str):
             Required. Short name of the GrpcRoute
             resource to be created.
@@ -782,7 +782,7 @@ class DeleteGrpcRouteRequest(proto.Message):
     Attributes:
         name (str):
             Required. A name of the GrpcRoute to delete. Must be in the
-            format ``projects/*/locations/global/grpcRoutes/*``.
+            format ``projects/*/locations/*/grpcRoutes/*``.
     """
 
     name: str = proto.Field(

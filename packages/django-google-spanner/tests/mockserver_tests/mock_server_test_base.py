@@ -157,6 +157,7 @@ class MockServerTestBase(unittest.TestCase):
 
     @classmethod
     def setup_class(cls):
+        cls._original_emulator_host = os.environ.pop("SPANNER_EMULATOR_HOST", None)
         os.environ["GOOGLE_CLOUD_PROJECT"] = "mockserver-project"
         (
             MockServerTestBase.server,
@@ -167,6 +168,8 @@ class MockServerTestBase(unittest.TestCase):
 
     @classmethod
     def teardown_class(cls):
+        if cls._original_emulator_host is not None:
+            os.environ["SPANNER_EMULATOR_HOST"] = cls._original_emulator_host
         if MockServerTestBase.server is not None:
             MockServerTestBase.server.stop(grace=None)
             MockServerTestBase.server = None

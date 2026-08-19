@@ -16,13 +16,11 @@
 
 import functools
 import logging
-import pytest  # noqa: I202
 from typing import List
 
 import proto
-
-from google.protobuf import duration_pb2
-from google.protobuf import timestamp_pb2
+import pytest  # noqa: I202
+from google.protobuf import duration_pb2, timestamp_pb2
 from google.protobuf.json_format import MessageToJson
 
 

@@ -21,11 +21,11 @@ import os
 import re
 import socket
 from unittest import mock
+import urllib
+import webbrowser
 
 import pytest
 import requests
-import urllib
-import webbrowser
 
 from google_auth_oauthlib import flow
 

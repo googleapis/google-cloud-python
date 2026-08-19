@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -53,8 +53,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class IcebergCatalogServiceRestInterceptor:
@@ -386,34 +385,15 @@ class IcebergCatalogServiceRestStub:
 class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport):
     """REST backend synchronous transport for IcebergCatalogService.
 
-    Iceberg Catalog Service API: this implements the open-source Iceberg
-    REST Catalog API. See the API definition here:
-    https://github.com/apache/iceberg/blob/main/open-api/rest-catalog-open-api.yaml
+    Lakehouse runtime catalog supports the following catalog
+    management methods:
 
-    The API is defined as OpenAPI 3.1.1 spec.
-
-    Currently we only support the following methods:
-
-    - GetConfig/GetIcebergCatalogConfig
-    - ListIcebergNamespaces
-    - CheckIcebergNamespaceExists
-    - GetIcebergNamespace
-    - CreateIcebergNamespace (only supports single level)
-    - DeleteIcebergNamespace
-    - UpdateIcebergNamespace properties
-    - ListTableIdentifiers
-    - CreateIcebergTable
-    - DeleteIcebergTable
-    - GetIcebergTable
-    - UpdateIcebergTable (CommitTable)
-    - LoadIcebergTableCredentials
-    - RegisterTable
-
-    Users are required to provided the ``X-Goog-User-Project`` header
-    with the project id or number which can be different from the bucket
-    project id. That project will be charged for the API calls and the
-    calling user must have access to that project. The caller must have
-    ``serviceusage.services.use`` permission on the project.
+    - GetIcebergCatalog
+    - ListIcebergCatalogs
+    - DeleteIcebergCatalog
+    - UpdateIcebergCatalog
+    - CreateIcebergCatalog
+    - FailoverIcebergCatalog
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -469,6 +449,12 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
             url_scheme: the protocol scheme for the API endpoint.  Normally
                 "https", but for testing or local servers,
                 "http" can be specified.
+            interceptor (Optional[IcebergCatalogServiceRestInterceptor]): Interceptor used
+                to manipulate requests, request metadata, and responses.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.

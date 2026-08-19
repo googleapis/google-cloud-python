@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -195,7 +195,7 @@ class RegionsServiceAsyncClient:
         return self._client.transport
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -364,8 +364,13 @@ class RegionsServiceAsyncClient:
                 Represents a geographic region that you can use as a target with both the
                    RegionalInventory and ShippingSettings services. You
                    can define regions as collections of either postal
-                   codes or, in some countries, using predefined
-                   geotargets. For more information, see [Set up regions
+                   codes, radius areas or, in some countries, using
+                   predefined geotargets.
+
+                   A region must be defined by specifying exactly one of
+                   postal_code_area, geotarget_area, or radius_area.
+
+                   For more information, see [Set up regions
                    ](https://support.google.com/merchants/answer/7410946#zippy=%2Ccreate-a-new-region)
                    for more information.
 
@@ -496,8 +501,13 @@ class RegionsServiceAsyncClient:
                 Represents a geographic region that you can use as a target with both the
                    RegionalInventory and ShippingSettings services. You
                    can define regions as collections of either postal
-                   codes or, in some countries, using predefined
-                   geotargets. For more information, see [Set up regions
+                   codes, radius areas or, in some countries, using
+                   predefined geotargets.
+
+                   A region must be defined by specifying exactly one of
+                   postal_code_area, geotarget_area, or radius_area.
+
+                   For more information, see [Set up regions
                    ](https://support.google.com/merchants/answer/7410946#zippy=%2Ccreate-a-new-region)
                    for more information.
 
@@ -711,8 +721,13 @@ class RegionsServiceAsyncClient:
                 Represents a geographic region that you can use as a target with both the
                    RegionalInventory and ShippingSettings services. You
                    can define regions as collections of either postal
-                   codes or, in some countries, using predefined
-                   geotargets. For more information, see [Set up regions
+                   codes, radius areas or, in some countries, using
+                   predefined geotargets.
+
+                   A region must be defined by specifying exactly one of
+                   postal_code_area, geotarget_area, or radius_area.
+
+                   For more information, see [Set up regions
                    ](https://support.google.com/merchants/answer/7410946#zippy=%2Ccreate-a-new-region)
                    for more information.
 
@@ -1166,9 +1181,7 @@ class RegionsServiceAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("RegionsServiceAsyncClient",)

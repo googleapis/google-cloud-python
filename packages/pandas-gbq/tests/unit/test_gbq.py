@@ -7,8 +7,8 @@
 import copy
 import datetime
 import re
-from unittest import mock
 import warnings
+from unittest import mock
 
 import google.api_core.exceptions
 import google.cloud.bigquery
@@ -16,14 +16,14 @@ import google.cloud.bigquery.table
 import numpy
 import packaging.version
 import pandas
-from pandas import DataFrame
 import pytest
+from pandas import DataFrame
 
-from pandas_gbq import gbq
 import pandas_gbq.constants
 import pandas_gbq.core.read
 import pandas_gbq.exceptions
 import pandas_gbq.features
+from pandas_gbq import gbq
 from pandas_gbq.features import FEATURES
 
 pytestmark = pytest.mark.filterwarnings("ignore:credentials from Google Cloud SDK")

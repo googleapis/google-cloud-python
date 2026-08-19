@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,6 +41,7 @@ from .data_object_search_service import (
     SemanticSearch,
     TextSearch,
     VectorSearch,
+    VertexRanker,
 )
 from .data_object_service import (
     BatchCreateDataObjectsRequest,
@@ -57,6 +58,9 @@ from .embedding_config import (
     EmbeddingTaskType,
     VertexEmbeddingConfig,
 )
+from .encryption_spec import (
+    EncryptionSpec,
+)
 from .vectorsearch_service import (
     Collection,
     CreateCollectionRequest,
@@ -66,6 +70,9 @@ from .vectorsearch_service import (
     DeleteIndexRequest,
     DenseScannIndex,
     DenseVectorField,
+    ExportDataObjectsMetadata,
+    ExportDataObjectsRequest,
+    ExportDataObjectsResponse,
     GetCollectionRequest,
     GetIndexRequest,
     ImportDataObjectsMetadata,
@@ -79,6 +86,7 @@ from .vectorsearch_service import (
     OperationMetadata,
     SparseVectorField,
     UpdateCollectionRequest,
+    UpdateIndexRequest,
     VectorField,
 )
 
@@ -105,6 +113,7 @@ __all__ = (
     "SemanticSearch",
     "TextSearch",
     "VectorSearch",
+    "VertexRanker",
     "AggregationMethod",
     "BatchCreateDataObjectsRequest",
     "BatchCreateDataObjectsResponse",
@@ -117,6 +126,7 @@ __all__ = (
     "UpdateDataObjectRequest",
     "VertexEmbeddingConfig",
     "EmbeddingTaskType",
+    "EncryptionSpec",
     "Collection",
     "CreateCollectionRequest",
     "CreateIndexRequest",
@@ -125,6 +135,9 @@ __all__ = (
     "DeleteIndexRequest",
     "DenseScannIndex",
     "DenseVectorField",
+    "ExportDataObjectsMetadata",
+    "ExportDataObjectsRequest",
+    "ExportDataObjectsResponse",
     "GetCollectionRequest",
     "GetIndexRequest",
     "ImportDataObjectsMetadata",
@@ -138,5 +151,6 @@ __all__ = (
     "OperationMetadata",
     "SparseVectorField",
     "UpdateCollectionRequest",
+    "UpdateIndexRequest",
     "VectorField",
 )

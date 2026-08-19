@@ -12,23 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from sqlalchemy.orm import Session
-from sqlalchemy.testing import eq_, is_instance_of
+import google.cloud.spanner_v1.types.result_set as result_set
+import google.cloud.spanner_v1.types.type as spanner_type
+from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
 from google.cloud.spanner_v1 import (
-    ResultSet,
+    CommitRequest,
     CreateSessionRequest,
     ExecuteSqlRequest,
-    CommitRequest,
-    BeginTransactionRequest,
+    ResultSet,
 )
+from sqlalchemy.orm import Session
+from sqlalchemy.testing import eq_, is_instance_of, is_not_none
+
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_result,
     add_update_count,
 )
-from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
-import google.cloud.spanner_v1.types.type as spanner_type
-import google.cloud.spanner_v1.types.result_set as result_set
 
 
 class TestAutoIncrement(MockServerTestBase):
@@ -126,11 +126,12 @@ LIMIT 1
             session.commit()
         # Verify the requests that we got.
         requests = self.spanner_service.requests
-        eq_(4, len(requests))
+        # Dialect now inlines BeginTransaction into the first statement.
+        eq_(3, len(requests))
         is_instance_of(requests[0], CreateSessionRequest)
-        is_instance_of(requests[1], BeginTransactionRequest)
-        is_instance_of(requests[2], ExecuteSqlRequest)
-        is_instance_of(requests[3], CommitRequest)
+        is_instance_of(requests[1], ExecuteSqlRequest)
+        is_instance_of(requests[2], CommitRequest)
+        is_not_none(requests[1].transaction.begin)  # First request inlines begin
 
     def test_insert_row_with_pk_value(self):
         from tests.mockserver_tests.auto_increment_model import Singer

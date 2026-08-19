@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.40.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.39.0...google-cloud-speech-v2.40.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-s packages (#17086) ([40b522a8473dec7ade45113ddd44ccd960803c45](https://github.com/googleapis/google-cloud-python/commit/40b522a8473dec7ade45113ddd44ccd960803c45))
+
+## [2.39.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.38.0...google-cloud-speech-v2.39.0) (2026-05-06)
+
+## [2.38.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.37.0...google-cloud-speech-v2.38.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
 ## [2.37.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.36.1...google-cloud-speech-v2.37.0) (2026-02-26)
 
 

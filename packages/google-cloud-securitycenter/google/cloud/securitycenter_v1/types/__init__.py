@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,17 @@ from .access import (
     Access,
     Geolocation,
     ServiceAccountDelegationInfo,
+)
+from .agent import (
+    Agent,
+)
+from .agent_anomaly import (
+    AgentAnomaly,
+    DetectorReference,
+    InvocationReference,
+)
+from .agent_session import (
+    AgentSession,
 )
 from .application import (
     Application,
@@ -36,6 +47,9 @@ from .backup_disaster_recovery import (
 from .bigquery_export import (
     BigQueryExport,
 )
+from .chokepoint import (
+    Chokepoint,
+)
 from .cloud_armor import (
     AdaptiveProtection,
     Attack,
@@ -45,6 +59,8 @@ from .cloud_armor import (
 )
 from .cloud_dlp_data_profile import (
     CloudDlpDataProfile,
+    InfoType,
+    SensitivityScore,
 )
 from .cloud_dlp_inspection import (
     CloudDlpInspection,
@@ -82,6 +98,9 @@ from .event_threat_detection_custom_module_validation_errors import (
 from .exfiltration import (
     ExfilResource,
     Exfiltration,
+)
+from .external_exposure import (
+    ExternalExposure,
 )
 from .external_system import (
     ExternalSystem,
@@ -282,18 +301,26 @@ __all__ = (
     "Access",
     "Geolocation",
     "ServiceAccountDelegationInfo",
+    "Agent",
+    "AgentAnomaly",
+    "DetectorReference",
+    "InvocationReference",
+    "AgentSession",
     "Application",
     "Asset",
     "AttackExposure",
     "AttackPath",
     "BackupDisasterRecovery",
     "BigQueryExport",
+    "Chokepoint",
     "AdaptiveProtection",
     "Attack",
     "CloudArmor",
     "Requests",
     "SecurityPolicy",
     "CloudDlpDataProfile",
+    "InfoType",
+    "SensitivityScore",
     "CloudDlpInspection",
     "Compliance",
     "Connection",
@@ -309,6 +336,7 @@ __all__ = (
     "Position",
     "ExfilResource",
     "Exfiltration",
+    "ExternalExposure",
     "ExternalSystem",
     "File",
     "Finding",

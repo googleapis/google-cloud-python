@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -953,20 +953,23 @@ class StreamingRecognitionResult(proto.Message):
     finalized transcript values received for the series of results.
 
     In the following example, single utterance is enabled. In the case
-    where single utterance is not enabled, result 7 would not occur.
+    where single utterance is not enabled, result 8 would not occur.
 
     ::
 
-       Num | transcript              | message_type            | is_final
-       --- | ----------------------- | ----------------------- | --------
-       1   | "tube"                  | TRANSCRIPT              | false
-       2   | "to be a"               | TRANSCRIPT              | false
-       3   | "to be"                 | TRANSCRIPT              | false
-       4   | "to be or not to be"    | TRANSCRIPT              | true
-       5   | "that's"                | TRANSCRIPT              | false
-       6   | "that is                | TRANSCRIPT              | false
-       7   | unset                   | END_OF_SINGLE_UTTERANCE | unset
-       8   | " that is the question" | TRANSCRIPT              | true
+       Num | transcript               | message_type            | is_final
+       --- | ------------------------ | ----------------------- | --------
+       1   | "tube"                   | TRANSCRIPT              | false
+       2   | "to be a"                | TRANSCRIPT              | false
+       3   | "to be"                  | TRANSCRIPT              | false
+       4   | "to be or not to be"     | TRANSCRIPT              | true
+       5   | "that's"                 | TRANSCRIPT              | false
+       6   | "that is                 | TRANSCRIPT              | false
+       7   | " that is the question"  | TRANSCRIPT              | true
+       8   | unset                    | END_OF_SINGLE_UTTERANCE | unset
+       9   | ". Whether 'tis nobler"  | TRANSCRIPT              | true
+       10  | " in the mind"           | TRANSCRIPT              | false
+       11  | " in the mind to suffer" | TRANSCRIPT              | true
 
     Concatenating the finalized transcripts with ``is_final`` set to
     true, the complete utterance becomes "to be or not to be that is the
@@ -1017,6 +1020,8 @@ class StreamingRecognitionResult(proto.Message):
             TRANSCRIPT (1):
                 Message contains a (possibly partial)
                 transcript.
+            DTMF_DIGITS (3):
+                Message contains DTMF digits.
             END_OF_SINGLE_UTTERANCE (2):
                 This event indicates that the server has detected the end of
                 the user's speech utterance and expects no additional
@@ -1028,11 +1033,32 @@ class StreamingRecognitionResult(proto.Message):
                 connection. This message is only sent if
                 ``single_utterance`` was set to ``true``, and is not used
                 otherwise.
+            PARTIAL_DTMF_DIGITS (4):
+                Message contains DTMF digits. Before a message with
+                DTMF_DIGITS is sent, a message with PARTIAL_DTMF_DIGITS may
+                be sent with DTMF digits collected up to the time of
+                sending, which represents an intermediate result.
+            SPEECH_ACTIVITY_BEGIN (5):
+                This event indicates that the server has
+                detected the beginning of human voice activity
+                in the stream. This event can be returned
+                multiple times if speech starts and stops
+                repeatedly throughout the stream.
+            SPEECH_ACTIVITY_END (6):
+                This event indicates that the server has
+                detected the end of human voice activity in the
+                stream. This event can be returned multiple
+                times if speech starts and stops repeatedly
+                throughout the stream.
         """
 
         MESSAGE_TYPE_UNSPECIFIED = 0
         TRANSCRIPT = 1
+        DTMF_DIGITS = 3
         END_OF_SINGLE_UTTERANCE = 2
+        PARTIAL_DTMF_DIGITS = 4
+        SPEECH_ACTIVITY_BEGIN = 5
+        SPEECH_ACTIVITY_END = 6
 
     message_type: MessageType = proto.Field(
         proto.ENUM,

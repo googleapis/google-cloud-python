@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of BigLake API.
+This package includes clients for multiple versions of BigLake.
 By default, you will get version ``bigquery_biglake_v1``.
 
 

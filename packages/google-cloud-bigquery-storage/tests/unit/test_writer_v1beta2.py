@@ -130,9 +130,15 @@ def test_initial_send_with_timeout(background_consumer, bidi_rpc, module_under_t
 
     now = time.monotonic()
     later = now + module_under_test._DEFAULT_TIMEOUT + 1
-    with mock.patch.object(module_under_test.time, "sleep"), mock.patch.object(
-        module_under_test.time, "monotonic", mock.MagicMock(side_effect=(now, later))
-    ), pytest.raises(exceptions.Unknown):
+    with (
+        mock.patch.object(module_under_test.time, "sleep"),
+        mock.patch.object(
+            module_under_test.time,
+            "monotonic",
+            mock.MagicMock(side_effect=(now, later)),
+        ),
+        pytest.raises(exceptions.Unknown),
+    ):
         manager.send(initial_request)
 
 

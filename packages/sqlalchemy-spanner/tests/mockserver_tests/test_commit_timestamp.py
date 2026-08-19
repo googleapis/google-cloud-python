@@ -12,13 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from sqlalchemy.testing import eq_, is_instance_of
+from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
 from google.cloud.spanner_v1 import ResultSet
+from sqlalchemy.testing import eq_, is_instance_of
+
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_result,
 )
-from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
 
 
 class TestCommitTimestamp(MockServerTestBase):

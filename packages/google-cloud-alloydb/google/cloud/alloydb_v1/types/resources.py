@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -123,6 +123,8 @@ class DatabaseVersion(proto.Enum):
             The database version is Postgres 16.
         POSTGRES_17 (5):
             The database version is Postgres 17.
+        POSTGRES_18 (6):
+            The database version is Postgres 18.
     """
 
     DATABASE_VERSION_UNSPECIFIED = 0
@@ -131,6 +133,7 @@ class DatabaseVersion(proto.Enum):
     POSTGRES_15 = 3
     POSTGRES_16 = 4
     POSTGRES_17 = 5
+    POSTGRES_18 = 6
 
 
 class SubscriptionType(proto.Enum):
@@ -1655,7 +1658,7 @@ class Instance(proto.Message):
             query_string_length (int):
                 Query string length. The default value is
                 1024. Any integer between 256 and 4500 is
-                considered valid.
+                    considered valid.
             query_plans_per_minute (int):
                 Number of query execution plans captured by
                 Insights per minute for all queries combined.

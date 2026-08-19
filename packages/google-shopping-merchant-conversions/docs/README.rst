@@ -1,9 +1,9 @@
-Python Client for Merchant API
-==============================
+Python Client for Shopping Merchant Conversions
+===============================================
 
 |stable| |pypi| |versions|
 
-`Merchant API`_: Programmatically manage your Merchant Center accounts.
+`Shopping Merchant Conversions`_: Programmatically manage your Merchant Center Accounts.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Merchant API
    :target: https://pypi.org/project/google-shopping-merchant-conversions/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-shopping-merchant-conversions.svg
    :target: https://pypi.org/project/google-shopping-merchant-conversions/
-.. _Merchant API: https://developers.google.com/merchant/api
+.. _Shopping Merchant Conversions: https://developers.google.com/merchant/api
 .. _Client Library Documentation: https://googleapis.dev/python/google-shopping-merchant-conversions/latest
 .. _Product Documentation:  https://developers.google.com/merchant/api
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Merchant API.`_
+3. `Enable the Shopping Merchant Conversions.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Merchant API.:  https://developers.google.com/merchant/api
+.. _Enable the Shopping Merchant Conversions.:  https://developers.google.com/merchant/api
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +61,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -97,14 +98,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Merchant API
+-  Read the `Client Library Documentation`_ for Shopping Merchant Conversions
    to see other available methods on the client.
--  Read the `Merchant API Product documentation`_ to learn
+-  Read the `Shopping Merchant Conversions Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Merchant API Product documentation:  https://developers.google.com/merchant/api
+.. _Shopping Merchant Conversions Product documentation:  https://developers.google.com/merchant/api
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

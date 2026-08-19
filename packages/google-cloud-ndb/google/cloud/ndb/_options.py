@@ -17,6 +17,7 @@
 import functools
 import itertools
 import logging
+from typing import Any
 
 from google.cloud.ndb import exceptions
 
@@ -24,6 +25,10 @@ log = logging.getLogger(__name__)
 
 
 class Options(object):
+    max_memcache_items: Any
+    force_writes: Any
+    propagation: Any
+
     __slots__ = (
         # Supported
         "retries",
@@ -130,8 +135,7 @@ class Options(object):
             global_cache_timeout = kwargs.get("global_cache_timeout")
             if global_cache_timeout is not None:
                 raise TypeError(
-                    "Can't specify both 'memcache_timeout' and "
-                    "'global_cache_timeout'"
+                    "Can't specify both 'memcache_timeout' and 'global_cache_timeout'"
                 )
             kwargs["global_cache_timeout"] = memcache_timeout
 
@@ -218,7 +222,7 @@ class ReadOptions(Options):
             )
             if kwargs.get("read_consistency"):
                 raise TypeError(
-                    "Cannot use both 'read_policy' and 'read_consistency' " "options."
+                    "Cannot use both 'read_policy' and 'read_consistency' options."
                 )
             kwargs["read_consistency"] = read_policy
 

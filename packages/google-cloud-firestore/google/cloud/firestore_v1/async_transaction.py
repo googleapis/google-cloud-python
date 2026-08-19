@@ -22,13 +22,15 @@ from typing import (
     AsyncGenerator,
     Awaitable,
     Callable,
+    Concatenate,
     Generic,
     Optional,
+    ParamSpec,
+    TypeVar,
 )
 
 from google.api_core import exceptions, gapic_v1
 from google.api_core import retry_async as retries
-from typing_extensions import Concatenate, ParamSpec, TypeVar
 
 from google.cloud.firestore_v1 import _helpers, async_batch
 from google.cloud.firestore_v1.async_document import AsyncDocumentReference

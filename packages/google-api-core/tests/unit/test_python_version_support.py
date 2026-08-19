@@ -12,20 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
 import datetime
 import textwrap
 import warnings
 from collections import namedtuple
-
 from unittest.mock import patch
+
+import pytest
 
 # Code to be tested
 from google.api_core._python_version_support import (
+    PYTHON_VERSION_INFO,
+    PythonVersionStatus,
     _flatten_message,
     check_python_version,
-    PythonVersionStatus,
-    PYTHON_VERSION_INFO,
 )
 
 # Helper object for mocking sys.version_info
@@ -65,10 +65,12 @@ def _create_failure_message(
     )
 
 
-def generate_tracked_version_test_cases():
+def get_tracked_version_test_cases():
     """
-    Yields test parameters for all tracked versions and boundary conditions.
+    Returns a list of test parameters for all tracked versions and boundary conditions.
     """
+    results = []
+
     for version_tuple, version_info in PYTHON_VERSION_INFO.items():
         py_version_str = f"{version_tuple[0]}.{version_tuple[1]}"
         gapic_dep = version_info.gapic_deprecation or (
@@ -111,20 +113,23 @@ def generate_tracked_version_test_cases():
         }
 
         for name, params in test_cases.items():
-            yield pytest.param(
-                version_tuple,
-                params["date"],
-                params["expected"],
-                gapic_dep,
-                gapic_end,
-                eol_warning_starts,
-                id=f"{py_version_str}-{name}",
+            results.append(
+                pytest.param(
+                    version_tuple,
+                    params["date"],
+                    params["expected"],
+                    gapic_dep,
+                    gapic_end,
+                    eol_warning_starts,
+                    id=f"{py_version_str}-{name}",
+                )
             )
+    return results
 
 
 @pytest.mark.parametrize(
     "version_tuple, mock_date, expected_status, gapic_dep, gapic_end, eol_warning_starts",
-    generate_tracked_version_test_cases(),
+    get_tracked_version_test_cases(),
 )
 def test_all_tracked_versions_and_date_scenarios(
     version_tuple, mock_date, expected_status, gapic_dep, gapic_end, eol_warning_starts
@@ -164,7 +169,7 @@ def test_all_tracked_versions_and_date_scenarios(
 
 def test_override_gapic_end_only():
     """Test behavior when only gapic_end is manually overridden."""
-    version_tuple = (3, 9)
+    version_tuple = (3, 10)
     original_info = PYTHON_VERSION_INFO[version_tuple]
     mock_py_version = VersionInfoMock(major=version_tuple[0], minor=version_tuple[1])
 
@@ -199,7 +204,7 @@ def test_override_gapic_end_only():
 
 def test_override_gapic_deprecation_only():
     """Test behavior when only gapic_deprecation is manually overridden."""
-    version_tuple = (3, 9)
+    version_tuple = (3, 10)
     original_info = PYTHON_VERSION_INFO[version_tuple]
     mock_py_version = VersionInfoMock(major=version_tuple[0], minor=version_tuple[1])
 

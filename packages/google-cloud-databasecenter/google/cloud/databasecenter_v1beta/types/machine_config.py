@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,6 +47,17 @@ class MachineConfig(proto.Message):
             applicable).
 
             This field is a member of `oneof`_ ``_vcpu_count``.
+        baseline_slot_count (int):
+            Optional. Baseline slots for BigQuery
+            Reservations. Baseline slots are in increments
+            of 50.
+
+            This field is a member of `oneof`_ ``_baseline_slot_count``.
+        max_reservation_slot_count (int):
+            Optional. Max slots for BigQuery
+            Reservations. Max slots are in increments of 50.
+
+            This field is a member of `oneof`_ ``_max_reservation_slot_count``.
     """
 
     memory_size_bytes: int = proto.Field(
@@ -61,6 +72,16 @@ class MachineConfig(proto.Message):
     vcpu_count: float = proto.Field(
         proto.DOUBLE,
         number=4,
+        optional=True,
+    )
+    baseline_slot_count: int = proto.Field(
+        proto.INT64,
+        number=5,
+        optional=True,
+    )
+    max_reservation_slot_count: int = proto.Field(
+        proto.INT64,
+        number=6,
         optional=True,
     )
 

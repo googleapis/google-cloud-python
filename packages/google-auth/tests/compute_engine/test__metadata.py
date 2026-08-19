@@ -63,10 +63,10 @@ NON_AGENT_IDENTITY_CERT_BYTES = (
     b"-----END CERTIFICATE-----\n"
 )
 
-ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/mds"
+ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/mds"
+MDS_PING_METRICS_HEADER_VALUE = (
+    "gl-python/<python-version> auth/<library-version> auth-request-type/mds"
 )
-MDS_PING_METRICS_HEADER_VALUE = "gl-python/3.7 auth/1.1 auth-request-type/mds"
 MDS_PING_REQUEST_HEADER = {
     "metadata-flavor": "Google",
     "x-goog-api-client": MDS_PING_METRICS_HEADER_VALUE,
@@ -639,11 +639,17 @@ def test_get_universe_domain_other_error():
 
 
 @mock.patch(
+    "google.auth._agent_identity_utils.get_and_parse_agent_identity_certificate",
+    return_value=None,
+)
+@mock.patch(
     "google.auth.metrics.token_request_access_token_mds",
     return_value=ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
 )
 @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
-def test_get_service_account_token(utcnow, mock_metrics_header_value):
+def test_get_service_account_token(
+    utcnow, mock_metrics_header_value, mock_get_agent_cert
+):
     ttl = 500
     request = make_request(
         json.dumps({"access_token": "token", "expires_in": ttl}),
@@ -666,11 +672,17 @@ def test_get_service_account_token(utcnow, mock_metrics_header_value):
 
 
 @mock.patch(
+    "google.auth._agent_identity_utils.get_and_parse_agent_identity_certificate",
+    return_value=None,
+)
+@mock.patch(
     "google.auth.metrics.token_request_access_token_mds",
     return_value=ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
 )
 @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
-def test_get_service_account_token_with_scopes_list(utcnow, mock_metrics_header_value):
+def test_get_service_account_token_with_scopes_list(
+    utcnow, mock_metrics_header_value, mock_get_agent_cert
+):
     ttl = 500
     request = make_request(
         json.dumps({"access_token": "token", "expires_in": ttl}),
@@ -696,12 +708,16 @@ def test_get_service_account_token_with_scopes_list(utcnow, mock_metrics_header_
 
 
 @mock.patch(
+    "google.auth._agent_identity_utils.get_and_parse_agent_identity_certificate",
+    return_value=None,
+)
+@mock.patch(
     "google.auth.metrics.token_request_access_token_mds",
     return_value=ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
 )
 @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
 def test_get_service_account_token_with_scopes_string(
-    utcnow, mock_metrics_header_value
+    utcnow, mock_metrics_header_value, mock_get_agent_cert
 ):
     ttl = 500
     request = make_request(
@@ -969,3 +985,32 @@ def test__prepare_request_for_mds_mtls_http_request(mock_mds_mtls_adapter):
     _metadata._prepare_request_for_mds(request, use_mtls=True)
 
     assert mock_mds_mtls_adapter.call_count == 0
+
+
+def test__is_service_account_email():
+    # Valid email formats
+    assert (
+        _metadata._is_service_account_email("my-sa@my-project.iam.gserviceaccount.com")
+        is True
+    )
+    assert (
+        _metadata._is_service_account_email("my-sa@my-project.iam.GSERVICEACCOUNT.COM")
+        is True
+    )
+
+    # Empty inputs and standard string placeholders
+    assert _metadata._is_service_account_email("test@example.com") is False
+    assert _metadata._is_service_account_email("default") is False
+    assert _metadata._is_service_account_email("") is False
+    assert _metadata._is_service_account_email(None) is False
+
+    # Workload identity principal URI formats
+    assert (
+        _metadata._is_service_account_email(
+            "principal://iam.googleapis.com/projects/1234567890/locations/global/workloadIdentityPools/my-project.svc.id.goog/subject/ns/my-namespace/sa/my-kubernetes-sa"
+        )
+        is False
+    )
+
+    # Workforce or workload pool identifier paths
+    assert _metadata._is_service_account_email("my-gcp-project.svc.id.goog") is False

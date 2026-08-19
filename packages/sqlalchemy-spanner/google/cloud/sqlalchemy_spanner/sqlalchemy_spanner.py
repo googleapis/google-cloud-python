@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import base64
-
 import re
 
+import sqlalchemy
 from alembic.ddl.base import (
     ColumnNullable,
     ColumnType,
@@ -26,32 +26,30 @@ from alembic.ddl.base import (
 from google.api_core.client_options import ClientOptions
 from google.auth.credentials import AnonymousCredentials
 from google.cloud.spanner_v1 import Client, TransactionOptions
-from sqlalchemy.exc import NoSuchTableError
-from sqlalchemy.sql import elements
-from sqlalchemy import ForeignKeyConstraint, types, TypeDecorator, PickleType
+from google.cloud.spanner_v1.data_types import JsonObject
+from sqlalchemy import ForeignKeyConstraint, PickleType, TypeDecorator, types
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.engine.default import DefaultDialect, DefaultExecutionContext
 from sqlalchemy.event import listens_for
+from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.pool import Pool
+from sqlalchemy.sql import elements, expression
 from sqlalchemy.sql.compiler import (
-    selectable,
+    OPERATORS,
+    RESERVED_WORDS,
     DDLCompiler,
     GenericTypeCompiler,
     IdentifierPreparer,
     SQLCompiler,
-    OPERATORS,
-    RESERVED_WORDS,
+    selectable,
 )
 from sqlalchemy.sql.default_comparator import operator_lookup
 from sqlalchemy.sql.operators import json_getitem_op
-from sqlalchemy.sql import expression
 
-from google.cloud.spanner_v1.data_types import JsonObject
 from google.cloud import spanner_dbapi
-from google.cloud.sqlalchemy_spanner._opentelemetry_tracing import trace_call
 from google.cloud.sqlalchemy_spanner import version as sqlalchemy_spanner_version
-import sqlalchemy
+from google.cloud.sqlalchemy_spanner._opentelemetry_tracing import trace_call
 
 USING_SQLACLCHEMY_20 = False
 if sqlalchemy.__version__.split(".")[0] == "2":
@@ -122,7 +120,11 @@ _type_map = {
     "TIMESTAMP": types.TIMESTAMP,
     "ARRAY": types.ARRAY,
     "JSON": types.JSON,
+    "TOKENLIST": types.String,
 }
+
+if hasattr(types, "UUID"):
+    _type_map["UUID"] = types.UUID
 
 
 _type_map_inv = {
@@ -142,6 +144,12 @@ _type_map_inv = {
     types.NullType: "INT64",
 }
 
+if hasattr(types, "UUID"):
+    _type_map_inv[types.UUID] = "UUID"
+
+if hasattr(types, "Uuid"):
+    _type_map_inv[types.Uuid] = "UUID"
+
 _compound_keywords = {
     selectable.CompoundSelect.UNION: "UNION DISTINCT",
     selectable.CompoundSelect.UNION_ALL: "UNION ALL",
@@ -151,7 +159,10 @@ _compound_keywords = {
     selectable.CompoundSelect.INTERSECT_ALL: "INTERSECT ALL",
 }
 
-_max_size = 2621440
+#: Maximum allowable character/byte length for Cloud Spanner STRING(MAX) and
+#: BYTES(MAX) DDL data types (2.5 MiB = 2,621,440 bytes).
+MAX_SIZE = 2621440
+_max_size = MAX_SIZE
 
 
 def int_from_size(size_str):
@@ -163,7 +174,7 @@ def int_from_size(size_str):
     Returns:
         int: The column length value.
     """
-    return _max_size if size_str == "MAX" else int(size_str)
+    return MAX_SIZE if size_str == "MAX" else int(size_str)
 
 
 def engine_to_connection(function):
@@ -223,9 +234,9 @@ class SpannerExecutionContext(DefaultExecutionContext):
         if ignore_transaction_warnings is not None:
             conn = self._dbapi_connection.connection
             if conn is not None and hasattr(conn, "_connection_variables"):
-                conn._connection_variables[
-                    "ignore_transaction_warnings"
-                ] = ignore_transaction_warnings
+                conn._connection_variables["ignore_transaction_warnings"] = (
+                    ignore_transaction_warnings
+                )
 
     def fire_sequence(self, seq, type_):
         """Builds a statement for fetching next value of the sequence."""
@@ -416,7 +427,7 @@ class SpannerSQLCompiler(SQLCompiler):
             text += "\n LIMIT " + self.process(select._limit_clause, **kw)
         if select._offset_clause is not None:
             if select._limit_clause is None:
-                text += f"\n LIMIT {9223372036854775807-select._offset}"
+                text += f"\n LIMIT {9223372036854775807 - select._offset}"
             text += " OFFSET " + self.process(select._offset_clause, **kw)
         return text
 
@@ -428,8 +439,10 @@ class SpannerSQLCompiler(SQLCompiler):
             )
             for c in expression._select_iterables(
                 filter(
-                    lambda col: not col.dialect_options.get("spanner", {}).get(
-                        "exclude_from_returning", False
+                    lambda col: (
+                        not col.dialect_options.get("spanner", {}).get(
+                            "exclude_from_returning", False
+                        )
                     ),
                     returning_cols,
                 )
@@ -764,6 +777,12 @@ class SpannerTypeCompiler(GenericTypeCompiler):
     Maps SQLAlchemy types to Spanner data types.
     """
 
+    def visit_uuid(self, type_, **kw):
+        if not type_.native_uuid or not self.dialect.supports_native_uuid:
+            return self.visit_CHAR(types.CHAR(36), **kw)
+        else:
+            return self.visit_UUID(type_, **kw)
+
     def visit_INTEGER(self, type_, **kw):
         return "INT64"
 
@@ -832,6 +851,7 @@ class SpannerDialect(DefaultDialect):
     paramstyle = "format"
     encoding = "utf-8"
     max_identifier_length = 256
+    max_size = MAX_SIZE
     _legacy_binary_type_literal_encoding = "utf-8"
     _default_isolation_level = "SERIALIZABLE"
 
@@ -846,6 +866,7 @@ class SpannerDialect(DefaultDialect):
     supports_identity_columns = True
     supports_native_boolean = True
     supports_native_decimal = True
+    supports_native_uuid = False
     supports_statement_cache = True
     # Spanner uses protos for enums. Creating a column like
     # Column("an_enum", Enum("A", "B", "C")) will result in a String
@@ -1025,9 +1046,7 @@ class SpannerDialect(DefaultDialect):
             SELECT table_name
             FROM information_schema.views
             WHERE TABLE_SCHEMA='{}'
-            """.format(
-            schema or ""
-        )
+            """.format(schema or "")
 
         all_views = []
         with connection.connection.database.snapshot() as snap:
@@ -1056,9 +1075,7 @@ class SpannerDialect(DefaultDialect):
             SELECT name
             FROM information_schema.sequences
             WHERE SCHEMA='{}'
-            """.format(
-            schema or ""
-        )
+            """.format(schema or "")
         all_sequences = []
         with connection.connection.database.snapshot() as snap:
             rows = list(snap.execute_sql(sql))
@@ -1087,9 +1104,7 @@ class SpannerDialect(DefaultDialect):
             SELECT view_definition
             FROM information_schema.views
             WHERE TABLE_SCHEMA='{schema_name}' AND TABLE_NAME='{view_name}'
-            """.format(
-            schema_name=schema or "", view_name=view_name
-        )
+            """.format(schema_name=schema or "", view_name=view_name)
 
         with connection.connection.database.snapshot() as snap:
             rows = list(snap.execute_sql(sql))
@@ -1308,6 +1323,7 @@ class SpannerDialect(DefaultDialect):
                 {table_type_query}
                 {schema_filter_query}
                 i.index_type != 'PRIMARY_KEY'
+                AND i.index_type != 'SEARCH'
                 AND i.spanner_is_managed = FALSE
             GROUP BY i.table_catalog, i.table_schema, i.table_name,
                      i.index_name, i.is_unique
@@ -1332,7 +1348,9 @@ class SpannerDialect(DefaultDialect):
                     "column_names": row[3],
                     "unique": row[4],
                     "column_sorting": {
-                        col: order.lower() for col, order in zip(row[3], row[5])
+                        col: order.lower()
+                        for col, order in zip(row[3], row[5] or [])
+                        if order
                     },
                     "include_columns": include_columns if include_columns else [],
                     "dialect_options": dialect_options,
@@ -1623,9 +1641,7 @@ class SpannerDialect(DefaultDialect):
 SELECT table_name
 FROM information_schema.tables
 WHERE table_type = 'BASE TABLE' AND table_schema = '{schema}'
-""".format(
-            schema=schema or ""
-        )
+""".format(schema=schema or "")
 
         table_names = []
         with connection.connection.database.snapshot() as snap:
@@ -1661,9 +1677,7 @@ WHERE
     AND tc.TABLE_SCHEMA="{table_schema}"
     AND tc.CONSTRAINT_TYPE = "UNIQUE"
     AND tc.CONSTRAINT_NAME IS NOT NULL
-""".format(
-            table_schema=schema or "", table_name=table_name
-        )
+""".format(table_schema=schema or "", table_name=table_name)
 
         cols = []
         with connection.connection.database.snapshot() as snap:
@@ -1696,9 +1710,7 @@ SELECT true
 FROM INFORMATION_SCHEMA.TABLES
 WHERE TABLE_SCHEMA="{table_schema}" AND TABLE_NAME="{table_name}"
 LIMIT 1
-""".format(
-                    table_schema=schema or "", table_name=table_name
-                )
+""".format(table_schema=schema or "", table_name=table_name)
             )
 
             for _ in rows:
@@ -1723,9 +1735,7 @@ LIMIT 1
                 WHERE NAME="{sequence_name}"
                 AND SCHEMA="{schema}"
                 LIMIT 1
-                """.format(
-                    sequence_name=sequence_name, schema=schema or ""
-                )
+                """.format(sequence_name=sequence_name, schema=schema or "")
             )
 
             for _ in rows:

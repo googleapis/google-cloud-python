@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.ads.datamanager_v1.types import consent as gad_consent
@@ -30,6 +31,10 @@ __protobuf__ = proto.module(
         "MobileData",
         "UserIdData",
         "PpidData",
+        "CompositeData",
+        "IpData",
+        "GoogleUserIdData",
+        "PartnerProvidedIdData",
     },
 )
 
@@ -75,6 +80,18 @@ class AudienceMember(proto.Message):
             This feature is only available to data partners.
 
             This field is a member of `oneof`_ ``data``.
+        composite_data (google.ads.datamanager_v1.types.CompositeData):
+            Group of multiple identifier types.
+
+            This field is a member of `oneof`_ ``data``.
+        google_user_id_data (google.ads.datamanager_v1.types.GoogleUserIdData):
+            Encrypted Google User IDs.
+
+            This field is a member of `oneof`_ ``data``.
+        partner_provided_id_data (google.ads.datamanager_v1.types.PartnerProvidedIdData):
+            Partner-provided identifiers.
+
+            This field is a member of `oneof`_ ``data``.
         consent (google.ads.datamanager_v1.types.Consent):
             Optional. The consent setting for the user.
     """
@@ -113,6 +130,24 @@ class AudienceMember(proto.Message):
         oneof="data",
         message="PpidData",
     )
+    composite_data: "CompositeData" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="data",
+        message="CompositeData",
+    )
+    google_user_id_data: "GoogleUserIdData" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="data",
+        message="GoogleUserIdData",
+    )
+    partner_provided_id_data: "PartnerProvidedIdData" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        oneof="data",
+        message="PartnerProvidedIdData",
+    )
     consent: gad_consent.Consent = proto.Field(
         proto.MESSAGE,
         number=3,
@@ -149,9 +184,11 @@ class MobileData(proto.Message):
 
     Attributes:
         mobile_ids (MutableSequence[str]):
-            Required. The list of mobile device IDs (advertising
-            ID/IDFA). At most 10 ``mobileIds`` can be provided in a
-            single
+            Required. The list of mobile device IDs (Android advertising
+            ID, iOS IDFA for Customer Match user lists and Android
+            advertising ID, iOS IDFA, Xbox or Microsoft ID, Amazon Fire
+            TV ID, Roku ID, Generic Device ID for basic user lists). At
+            most 10 ``mobileIds`` can be provided in a single
             [AudienceMember][google.ads.datamanager.v1.AudienceMember].
     """
 
@@ -189,6 +226,98 @@ class PpidData(proto.Message):
     """
 
     ppids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CompositeData(proto.Message):
+    r"""Composite data holding identifiers and associated data for a user.
+    At least one of ``user_data`` or ``ip_data`` is required.
+
+    Attributes:
+        user_data (google.ads.datamanager_v1.types.UserData):
+            Optional. User-provided data that identifies
+            the user.
+        ip_data (MutableSequence[google.ads.datamanager_v1.types.IpData]):
+            Optional. IP address data representing
+            customer interaction used to build the audience.
+    """
+
+    user_data: gad_user_data.UserData = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gad_user_data.UserData,
+    )
+    ip_data: MutableSequence["IpData"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="IpData",
+    )
+
+
+class IpData(proto.Message):
+    r"""IP address information for a user. We recommend including
+    observe_start_time and observe_end_time to help improve Customer
+    Match match rates.
+
+    Attributes:
+        ip_address (str):
+            Required. IP address captured at the time of
+            customer interaction. Accepts standard string
+            formats for both IPv4 and IPv6.
+        observe_start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. First recorded interaction time
+            from this IP address in a session.
+        observe_end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. Last recorded interaction time from
+            this IP address in a session.
+    """
+
+    ip_address: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    observe_start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    observe_end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class GoogleUserIdData(proto.Message):
+    r"""Google user id data holding encrypted google user IDs. At
+    least one google user ID is required.
+
+    Attributes:
+        google_user_ids (MutableSequence[str]):
+            Required. The list of encrypted google user
+            IDs.
+    """
+
+    google_user_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+
+
+class PartnerProvidedIdData(proto.Message):
+    r"""Partner-provided data holding the partner-provided
+    identifiers. At least one partner-provided identifier is
+    required.
+
+    Attributes:
+        partner_provided_ids (MutableSequence[str]):
+            Required. The list of partner-provided
+            identifiers.
+    """
+
+    partner_provided_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
     )

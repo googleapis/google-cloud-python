@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,6 +48,13 @@ from google.maps.places_v1.types.review import Review
 from google.maps.places_v1.types.route_modifiers import RouteModifiers
 from google.maps.places_v1.types.routing_preference import RoutingPreference
 from google.maps.places_v1.types.routing_summary import RoutingSummary
+from google.maps.places_v1.types.transit import (
+    TransitAgency,
+    TransitIcon,
+    TransitLine,
+    TransitStation,
+    TransitStop,
+)
 from google.maps.places_v1.types.travel_mode import TravelMode
 
 __all__ = (
@@ -81,5 +88,10 @@ __all__ = (
     "RouteModifiers",
     "RoutingPreference",
     "RoutingSummary",
+    "TransitAgency",
+    "TransitIcon",
+    "TransitLine",
+    "TransitStation",
+    "TransitStop",
     "TravelMode",
 )

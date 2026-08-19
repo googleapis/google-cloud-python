@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -70,20 +70,77 @@ class ProductInput(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the product input. Format:
+            Identifier. The name of the product. Format:
+            ``accounts/{account}/productInputs/{productinput}``
+
+            The {productinput} segment is a unique identifier for the
+            product. This identifier must be unique within a merchant
+            account and generally follows the structure:
+            ``content_language~feed_label~offer_id``. Example:
+            ``en~US~sku123`` For legacy local products, the structure
+            is: ``local~content_language~feed_label~offer_id``. Example:
+            ``local~en~US~sku123``
+
+            The format of the {productinput} segment in the URL is
+            automatically detected by the server, supporting two
+            options:
+
+            1. **Encoded Format**: The ``{productinput}`` segment is an
+               unpadded base64url encoded string (RFC 4648 Section 5).
+               The decoded string must result in the
+               ``content_language~feed_label~offer_id`` structure. This
+               encoding MUST be used if any part of the product
+               identifier (like ``offer_id``) contains characters such
+               as ``/``, ``%``, or ``~``.
+
+               - Example: To represent the product ID ``en~US~sku/123``,
+                 the ``{productinput}`` segment must be the unpadded
+                 base64url encoding of this string, which is
+                 ``ZW5-VVN-c2t1LzEyMw``. The full resource name for the
+                 product would be
+                 ``accounts/123/productInputs/ZW5-VVN-c2t1LzEyMw``.
+
+            2. **Plain Format**: The ``{productinput}`` segment is the
+               tilde-separated string
+               ``content_language~feed_label~offer_id``. This format is
+               suitable only when ``content_language``, ``feed_label``,
+               and ``offer_id`` do not contain URL-problematic
+               characters like ``/``, ``%``, or ``~``.
+
+            We recommend using the **Encoded Format** for all product
+            IDs to ensure correct parsing, especially those containing
+            special characters. The presence of tilde (``~``) characters
+            in the ``{productinput}`` segment is used to differentiate
+            between the two formats.
+        base64_encoded_name (str):
+            Output only. The **unpadded base64url encoded name** of the
+            product input. Format:
             ``accounts/{account}/productInputs/{productinput}`` where
-            the last section ``productinput`` consists of:
-            ``content_language~feed_label~offer_id`` example for product
-            input name is ``accounts/123/productInputs/en~US~sku123``. A
-            legacy local product input name would be
-            ``accounts/123/productInputs/local~en~US~sku123``. Note: For
-            calls to the v1beta version, the ``productInput`` section
-            consists of:
-            ``channel~content_language~feed_label~offer_id``, for
-            example: ``accounts/123/productInputs/online~en~US~sku123``.
+            the last section ``productinput`` is the unpadded base64url
+            encoding of the ``content_language~feed_label~offer_id``
+            name. Example:
+            ``accounts/123/productInputs/ZW5-VVN-c2t1LzEyMw`` for the
+            decoded product input name
+            ``accounts/123/productInputs/en~US~sku/123``. This field can
+            be used directly as input to the API methods that require
+            the product input name to be encoded if it contains special
+            characters, for example
+            ```GetProductInput`` <https://developers.google.com/merchant/api/reference/rest/products_v1/accounts.productInputs/get>`__.
         product (str):
             Output only. The name of the processed product. Format:
             ``accounts/{account}/products/{product}``
+        base64_encoded_product (str):
+            Output only. The **unpadded base64url encoded name** of the
+            processed product. Format:
+            ``accounts/{account}/products/{product}`` where the last
+            section ``product`` is the unpadded base64url encoding of
+            the ``content_language~feed_label~offer_id`` name. Example:
+            ``accounts/123/products/ZW5-VVN-c2t1LzEyMw`` for the decoded
+            product name ``accounts/123/products/en~US~sku/123``. This
+            field can be used directly as input to the API methods that
+            require the product name to be encoded if it contains
+            special characters, for example
+            ```GetProduct`` <https://developers.google.com/merchant/api/reference/rest/products_v1/accounts.products/get>`__.
         legacy_local (bool):
             Immutable. Determines whether the product is **only**
             targeting local destinations and whether the product name
@@ -151,9 +208,17 @@ class ProductInput(proto.Message):
         proto.STRING,
         number=1,
     )
+    base64_encoded_name: str = proto.Field(
+        proto.STRING,
+        number=12,
+    )
     product: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    base64_encoded_product: str = proto.Field(
+        proto.STRING,
+        number=13,
     )
     legacy_local: bool = proto.Field(
         proto.BOOL,
@@ -201,8 +266,8 @@ class InsertProductInputRequest(proto.Message):
             Required. The primary or supplemental product data source
             name. If the product already exists and data source provided
             is different, then the product will be moved to a new data
-            source. For more information, see `Overview of Data sources
-            sub-API </merchant/api/guides/data-sources/overview>`__.
+            source. For more information, see `Create a primary data
+            source </merchant/api/guides/data-sources/api-sources#create-primary-data-source>`__.
 
             Only API data sources are supported.
 
@@ -234,9 +299,10 @@ class UpdateProductInputRequest(proto.Message):
 
     Attributes:
         product_input (google.shopping.merchant_products_v1.types.ProductInput):
-            Required. The product input resource to
-            update. Information you submit will be applied
-            to the processed product as well.
+            Required. The product input resource to update. Information
+            you submit will be applied to the processed product as well.
+            The ``name`` field within this resource identifies the
+            product input to be updated.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. The list of product attributes to be updated.
 
@@ -287,11 +353,48 @@ class DeleteProductInputRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the product input resource to delete.
-            Format: ``accounts/{account}/productInputs/{product}`` where
-            the last section ``product`` consists of:
-            ``content_language~feed_label~offer_id`` example for product
-            name is ``accounts/123/productInputs/en~US~sku123``.
+            Required. The name of the product input to delete. Format:
+            ``accounts/{account}/productInputs/{productInput}``
+
+            The {productInput} segment is a unique identifier for the
+            product. This identifier must be unique within a merchant
+            account and generally follows the structure:
+            ``content_language~feed_label~offer_id``. Example:
+            ``en~US~sku123`` For legacy local products, the structure
+            is: ``local~content_language~feed_label~offer_id``. Example:
+            ``local~en~US~sku123``
+
+            The format of the {productInput} segment in the URL is
+            automatically detected by the server, supporting two
+            options:
+
+            1. **Encoded Format**: The ``{productInput}`` segment is an
+               unpadded base64url encoded string (RFC 4648 Section 5).
+               The decoded string must result in the
+               ``content_language~feed_label~offer_id`` structure. This
+               encoding MUST be used if any part of the product
+               identifier (like ``offer_id``) contains characters such
+               as ``/``, ``%``, or ``~``.
+
+               - Example: To represent the product ID ``en~US~sku/123``,
+                 the ``{productInput}`` segment must be the unpadded
+                 base64url encoding of this string, which is
+                 ``ZW5-VVN-c2t1LzEyMw``. The full resource name for the
+                 product would be
+                 ``accounts/123/productInputs/ZW5-VVN-c2t1LzEyMw``.
+
+            2. **Plain Format**: The ``{productInput}`` segment is the
+               tilde-separated string
+               ``content_language~feed_label~offer_id``. This format is
+               suitable only when ``content_language``, ``feed_label``,
+               and ``offer_id`` do not contain URL-problematic
+               characters like ``/``, ``%``, or ``~``.
+
+            We recommend using the **Encoded Format** for all product
+            IDs to ensure correct parsing, especially those containing
+            special characters. The presence of tilde (``~``) characters
+            in the ``{productInput}`` segment is used to differentiate
+            between the two formats.
         data_source (str):
             Required. The primary or supplemental data source from which
             the product input should be deleted. Format:

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -47,9 +42,12 @@ import google.auth
 import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 import google.iam.v1.options_pb2 as options_pb2  # type: ignore
 import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.iam.v1.resource_policy_member_pb2 as resource_policy_member_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import google.type.expr_pb2 as expr_pb2  # type: ignore
 from google.api_core import (
     client_options,
@@ -121,12 +119,28 @@ def modify_default_endpoint_template(client):
     )
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert SecretManagerServiceClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -148,6 +162,10 @@ def test__get_default_mtls_endpoint():
     assert (
         SecretManagerServiceClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        SecretManagerServiceClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -996,7 +1014,14 @@ def test_secret_manager_service_client_get_mtls_endpoint_and_cert_source(client_
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1043,7 +1068,14 @@ def test_secret_manager_service_client_get_mtls_endpoint_and_cert_source(client_
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1348,11 +1380,13 @@ def test_secret_manager_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1377,8 +1411,8 @@ def test_secret_manager_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListSecretsRequest,
-        dict,
+        service.ListSecretsRequest(),
+        {},
     ],
 )
 def test_list_secrets(request_type, transport: str = "grpc"):
@@ -1389,7 +1423,7 @@ def test_list_secrets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_secrets), "__call__") as call:
@@ -1437,11 +1471,12 @@ def test_list_secrets_non_empty_request_with_auto_populated_field():
         client.list_secrets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListSecretsRequest(
+        request_msg = service.ListSecretsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_secrets_use_cached_wrapped_rpc():
@@ -1522,9 +1557,14 @@ async def test_list_secrets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_secrets_async(
-    transport: str = "grpc_asyncio", request_type=service.ListSecretsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListSecretsRequest(),
+        {},
+    ],
+)
+async def test_list_secrets_async(request_type, transport: str = "grpc_asyncio"):
     client = SecretManagerServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1532,7 +1572,7 @@ async def test_list_secrets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_secrets), "__call__") as call:
@@ -1555,11 +1595,6 @@ async def test_list_secrets_async(
     assert isinstance(response, pagers.ListSecretsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-@pytest.mark.asyncio
-async def test_list_secrets_async_from_dict():
-    await test_list_secrets_async(request_type=dict)
 
 
 def test_list_secrets_field_headers():
@@ -1754,6 +1789,9 @@ def test_list_secrets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Secret) for i in results)
@@ -1842,6 +1880,8 @@ async def test_list_secrets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1889,11 +1929,7 @@ async def test_list_secrets_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_secrets(request={})
-        ).pages:
+        async for page_ in (await client.list_secrets(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1902,8 +1938,8 @@ async def test_list_secrets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateSecretRequest,
-        dict,
+        service.CreateSecretRequest(),
+        {},
     ],
 )
 def test_create_secret(request_type, transport: str = "grpc"):
@@ -1914,7 +1950,7 @@ def test_create_secret(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_secret), "__call__") as call:
@@ -1922,6 +1958,7 @@ def test_create_secret(request_type, transport: str = "grpc"):
         call.return_value = resources.Secret(
             name="name_value",
             etag="etag_value",
+            secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
         )
         response = client.create_secret(request)
 
@@ -1935,6 +1972,7 @@ def test_create_secret(request_type, transport: str = "grpc"):
     assert isinstance(response, resources.Secret)
     assert response.name == "name_value"
     assert response.etag == "etag_value"
+    assert response.secret_type == resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS
 
 
 def test_create_secret_non_empty_request_with_auto_populated_field():
@@ -1961,10 +1999,11 @@ def test_create_secret_non_empty_request_with_auto_populated_field():
         client.create_secret(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateSecretRequest(
+        request_msg = service.CreateSecretRequest(
             parent="parent_value",
             secret_id="secret_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_secret_use_cached_wrapped_rpc():
@@ -2045,9 +2084,14 @@ async def test_create_secret_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_secret_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateSecretRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateSecretRequest(),
+        {},
+    ],
+)
+async def test_create_secret_async(request_type, transport: str = "grpc_asyncio"):
     client = SecretManagerServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2055,7 +2099,7 @@ async def test_create_secret_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_secret), "__call__") as call:
@@ -2064,6 +2108,7 @@ async def test_create_secret_async(
             resources.Secret(
                 name="name_value",
                 etag="etag_value",
+                secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
             )
         )
         response = await client.create_secret(request)
@@ -2078,11 +2123,7 @@ async def test_create_secret_async(
     assert isinstance(response, resources.Secret)
     assert response.name == "name_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_create_secret_async_from_dict():
-    await test_create_secret_async(request_type=dict)
+    assert response.secret_type == resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS
 
 
 def test_create_secret_field_headers():
@@ -2247,8 +2288,8 @@ async def test_create_secret_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.AddSecretVersionRequest,
-        dict,
+        service.AddSecretVersionRequest(),
+        {},
     ],
 )
 def test_add_secret_version(request_type, transport: str = "grpc"):
@@ -2259,7 +2300,7 @@ def test_add_secret_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2313,9 +2354,10 @@ def test_add_secret_version_non_empty_request_with_auto_populated_field():
         client.add_secret_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.AddSecretVersionRequest(
+        request_msg = service.AddSecretVersionRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_add_secret_version_use_cached_wrapped_rpc():
@@ -2400,9 +2442,14 @@ async def test_add_secret_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_add_secret_version_async(
-    transport: str = "grpc_asyncio", request_type=service.AddSecretVersionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.AddSecretVersionRequest(),
+        {},
+    ],
+)
+async def test_add_secret_version_async(request_type, transport: str = "grpc_asyncio"):
     client = SecretManagerServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2410,7 +2457,7 @@ async def test_add_secret_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2439,11 +2486,6 @@ async def test_add_secret_version_async(
     assert response.state == resources.SecretVersion.State.ENABLED
     assert response.etag == "etag_value"
     assert response.client_specified_payload_checksum is True
-
-
-@pytest.mark.asyncio
-async def test_add_secret_version_async_from_dict():
-    await test_add_secret_version_async(request_type=dict)
 
 
 def test_add_secret_version_field_headers():
@@ -2610,8 +2652,8 @@ async def test_add_secret_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetSecretRequest,
-        dict,
+        service.GetSecretRequest(),
+        {},
     ],
 )
 def test_get_secret(request_type, transport: str = "grpc"):
@@ -2622,7 +2664,7 @@ def test_get_secret(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_secret), "__call__") as call:
@@ -2630,6 +2672,7 @@ def test_get_secret(request_type, transport: str = "grpc"):
         call.return_value = resources.Secret(
             name="name_value",
             etag="etag_value",
+            secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
         )
         response = client.get_secret(request)
 
@@ -2643,6 +2686,7 @@ def test_get_secret(request_type, transport: str = "grpc"):
     assert isinstance(response, resources.Secret)
     assert response.name == "name_value"
     assert response.etag == "etag_value"
+    assert response.secret_type == resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS
 
 
 def test_get_secret_non_empty_request_with_auto_populated_field():
@@ -2668,9 +2712,10 @@ def test_get_secret_non_empty_request_with_auto_populated_field():
         client.get_secret(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetSecretRequest(
+        request_msg = service.GetSecretRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_secret_use_cached_wrapped_rpc():
@@ -2749,9 +2794,14 @@ async def test_get_secret_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_secret_async(
-    transport: str = "grpc_asyncio", request_type=service.GetSecretRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetSecretRequest(),
+        {},
+    ],
+)
+async def test_get_secret_async(request_type, transport: str = "grpc_asyncio"):
     client = SecretManagerServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2759,7 +2809,7 @@ async def test_get_secret_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_secret), "__call__") as call:
@@ -2768,6 +2818,7 @@ async def test_get_secret_async(
             resources.Secret(
                 name="name_value",
                 etag="etag_value",
+                secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
             )
         )
         response = await client.get_secret(request)
@@ -2782,11 +2833,7 @@ async def test_get_secret_async(
     assert isinstance(response, resources.Secret)
     assert response.name == "name_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_secret_async_from_dict():
-    await test_get_secret_async(request_type=dict)
+    assert response.secret_type == resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS
 
 
 def test_get_secret_field_headers():
@@ -2931,8 +2978,8 @@ async def test_get_secret_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateSecretRequest,
-        dict,
+        service.UpdateSecretRequest(),
+        {},
     ],
 )
 def test_update_secret(request_type, transport: str = "grpc"):
@@ -2943,7 +2990,7 @@ def test_update_secret(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_secret), "__call__") as call:
@@ -2951,6 +2998,7 @@ def test_update_secret(request_type, transport: str = "grpc"):
         call.return_value = resources.Secret(
             name="name_value",
             etag="etag_value",
+            secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
         )
         response = client.update_secret(request)
 
@@ -2964,6 +3012,7 @@ def test_update_secret(request_type, transport: str = "grpc"):
     assert isinstance(response, resources.Secret)
     assert response.name == "name_value"
     assert response.etag == "etag_value"
+    assert response.secret_type == resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS
 
 
 def test_update_secret_non_empty_request_with_auto_populated_field():
@@ -2987,7 +3036,8 @@ def test_update_secret_non_empty_request_with_auto_populated_field():
         client.update_secret(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateSecretRequest()
+        request_msg = service.UpdateSecretRequest()
+        assert args[0] == request_msg
 
 
 def test_update_secret_use_cached_wrapped_rpc():
@@ -3068,9 +3118,14 @@ async def test_update_secret_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_secret_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateSecretRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateSecretRequest(),
+        {},
+    ],
+)
+async def test_update_secret_async(request_type, transport: str = "grpc_asyncio"):
     client = SecretManagerServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3078,7 +3133,7 @@ async def test_update_secret_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_secret), "__call__") as call:
@@ -3087,6 +3142,7 @@ async def test_update_secret_async(
             resources.Secret(
                 name="name_value",
                 etag="etag_value",
+                secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
             )
         )
         response = await client.update_secret(request)
@@ -3101,11 +3157,7 @@ async def test_update_secret_async(
     assert isinstance(response, resources.Secret)
     assert response.name == "name_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_update_secret_async_from_dict():
-    await test_update_secret_async(request_type=dict)
+    assert response.secret_type == resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS
 
 
 def test_update_secret_field_headers():
@@ -3260,8 +3312,8 @@ async def test_update_secret_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteSecretRequest,
-        dict,
+        service.DeleteSecretRequest(),
+        {},
     ],
 )
 def test_delete_secret(request_type, transport: str = "grpc"):
@@ -3272,7 +3324,7 @@ def test_delete_secret(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_secret), "__call__") as call:
@@ -3314,10 +3366,11 @@ def test_delete_secret_non_empty_request_with_auto_populated_field():
         client.delete_secret(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteSecretRequest(
+        request_msg = service.DeleteSecretRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_secret_use_cached_wrapped_rpc():
@@ -3398,9 +3451,14 @@ async def test_delete_secret_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_secret_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteSecretRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteSecretRequest(),
+        {},
+    ],
+)
+async def test_delete_secret_async(request_type, transport: str = "grpc_asyncio"):
     client = SecretManagerServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3408,7 +3466,7 @@ async def test_delete_secret_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_secret), "__call__") as call:
@@ -3424,11 +3482,6 @@ async def test_delete_secret_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_secret_async_from_dict():
-    await test_delete_secret_async(request_type=dict)
 
 
 def test_delete_secret_field_headers():
@@ -3573,8 +3626,8 @@ async def test_delete_secret_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListSecretVersionsRequest,
-        dict,
+        service.ListSecretVersionsRequest(),
+        {},
     ],
 )
 def test_list_secret_versions(request_type, transport: str = "grpc"):
@@ -3585,7 +3638,7 @@ def test_list_secret_versions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3637,11 +3690,12 @@ def test_list_secret_versions_non_empty_request_with_auto_populated_field():
         client.list_secret_versions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListSecretVersionsRequest(
+        request_msg = service.ListSecretVersionsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_secret_versions_use_cached_wrapped_rpc():
@@ -3726,8 +3780,15 @@ async def test_list_secret_versions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListSecretVersionsRequest(),
+        {},
+    ],
+)
 async def test_list_secret_versions_async(
-    transport: str = "grpc_asyncio", request_type=service.ListSecretVersionsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecretManagerServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3736,7 +3797,7 @@ async def test_list_secret_versions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3761,11 +3822,6 @@ async def test_list_secret_versions_async(
     assert isinstance(response, pagers.ListSecretVersionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-@pytest.mark.asyncio
-async def test_list_secret_versions_async_from_dict():
-    await test_list_secret_versions_async(request_type=dict)
 
 
 def test_list_secret_versions_field_headers():
@@ -3970,6 +4026,9 @@ def test_list_secret_versions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.SecretVersion) for i in results)
@@ -4062,6 +4121,8 @@ async def test_list_secret_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4111,11 +4172,7 @@ async def test_list_secret_versions_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_secret_versions(request={})
-        ).pages:
+        async for page_ in (await client.list_secret_versions(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4124,8 +4181,8 @@ async def test_list_secret_versions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetSecretVersionRequest,
-        dict,
+        service.GetSecretVersionRequest(),
+        {},
     ],
 )
 def test_get_secret_version(request_type, transport: str = "grpc"):
@@ -4136,7 +4193,7 @@ def test_get_secret_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4190,9 +4247,10 @@ def test_get_secret_version_non_empty_request_with_auto_populated_field():
         client.get_secret_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetSecretVersionRequest(
+        request_msg = service.GetSecretVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_secret_version_use_cached_wrapped_rpc():
@@ -4277,9 +4335,14 @@ async def test_get_secret_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_secret_version_async(
-    transport: str = "grpc_asyncio", request_type=service.GetSecretVersionRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetSecretVersionRequest(),
+        {},
+    ],
+)
+async def test_get_secret_version_async(request_type, transport: str = "grpc_asyncio"):
     client = SecretManagerServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4287,7 +4350,7 @@ async def test_get_secret_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4316,11 +4379,6 @@ async def test_get_secret_version_async(
     assert response.state == resources.SecretVersion.State.ENABLED
     assert response.etag == "etag_value"
     assert response.client_specified_payload_checksum is True
-
-
-@pytest.mark.asyncio
-async def test_get_secret_version_async_from_dict():
-    await test_get_secret_version_async(request_type=dict)
 
 
 def test_get_secret_version_field_headers():
@@ -4477,8 +4535,8 @@ async def test_get_secret_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.AccessSecretVersionRequest,
-        dict,
+        service.AccessSecretVersionRequest(),
+        {},
     ],
 )
 def test_access_secret_version(request_type, transport: str = "grpc"):
@@ -4489,7 +4547,7 @@ def test_access_secret_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4537,9 +4595,10 @@ def test_access_secret_version_non_empty_request_with_auto_populated_field():
         client.access_secret_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.AccessSecretVersionRequest(
+        request_msg = service.AccessSecretVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_access_secret_version_use_cached_wrapped_rpc():
@@ -4625,8 +4684,15 @@ async def test_access_secret_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.AccessSecretVersionRequest(),
+        {},
+    ],
+)
 async def test_access_secret_version_async(
-    transport: str = "grpc_asyncio", request_type=service.AccessSecretVersionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecretManagerServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4635,7 +4701,7 @@ async def test_access_secret_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4658,11 +4724,6 @@ async def test_access_secret_version_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.AccessSecretVersionResponse)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_access_secret_version_async_from_dict():
-    await test_access_secret_version_async(request_type=dict)
 
 
 def test_access_secret_version_field_headers():
@@ -4819,8 +4880,8 @@ async def test_access_secret_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DisableSecretVersionRequest,
-        dict,
+        service.DisableSecretVersionRequest(),
+        {},
     ],
 )
 def test_disable_secret_version(request_type, transport: str = "grpc"):
@@ -4831,7 +4892,7 @@ def test_disable_secret_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4886,10 +4947,11 @@ def test_disable_secret_version_non_empty_request_with_auto_populated_field():
         client.disable_secret_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DisableSecretVersionRequest(
+        request_msg = service.DisableSecretVersionRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_disable_secret_version_use_cached_wrapped_rpc():
@@ -4975,8 +5037,15 @@ async def test_disable_secret_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DisableSecretVersionRequest(),
+        {},
+    ],
+)
 async def test_disable_secret_version_async(
-    transport: str = "grpc_asyncio", request_type=service.DisableSecretVersionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecretManagerServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4985,7 +5054,7 @@ async def test_disable_secret_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5014,11 +5083,6 @@ async def test_disable_secret_version_async(
     assert response.state == resources.SecretVersion.State.ENABLED
     assert response.etag == "etag_value"
     assert response.client_specified_payload_checksum is True
-
-
-@pytest.mark.asyncio
-async def test_disable_secret_version_async_from_dict():
-    await test_disable_secret_version_async(request_type=dict)
 
 
 def test_disable_secret_version_field_headers():
@@ -5175,8 +5239,8 @@ async def test_disable_secret_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.EnableSecretVersionRequest,
-        dict,
+        service.EnableSecretVersionRequest(),
+        {},
     ],
 )
 def test_enable_secret_version(request_type, transport: str = "grpc"):
@@ -5187,7 +5251,7 @@ def test_enable_secret_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5242,10 +5306,11 @@ def test_enable_secret_version_non_empty_request_with_auto_populated_field():
         client.enable_secret_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.EnableSecretVersionRequest(
+        request_msg = service.EnableSecretVersionRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_enable_secret_version_use_cached_wrapped_rpc():
@@ -5331,8 +5396,15 @@ async def test_enable_secret_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.EnableSecretVersionRequest(),
+        {},
+    ],
+)
 async def test_enable_secret_version_async(
-    transport: str = "grpc_asyncio", request_type=service.EnableSecretVersionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecretManagerServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5341,7 +5413,7 @@ async def test_enable_secret_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5370,11 +5442,6 @@ async def test_enable_secret_version_async(
     assert response.state == resources.SecretVersion.State.ENABLED
     assert response.etag == "etag_value"
     assert response.client_specified_payload_checksum is True
-
-
-@pytest.mark.asyncio
-async def test_enable_secret_version_async_from_dict():
-    await test_enable_secret_version_async(request_type=dict)
 
 
 def test_enable_secret_version_field_headers():
@@ -5531,8 +5598,8 @@ async def test_enable_secret_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DestroySecretVersionRequest,
-        dict,
+        service.DestroySecretVersionRequest(),
+        {},
     ],
 )
 def test_destroy_secret_version(request_type, transport: str = "grpc"):
@@ -5543,7 +5610,7 @@ def test_destroy_secret_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5598,10 +5665,11 @@ def test_destroy_secret_version_non_empty_request_with_auto_populated_field():
         client.destroy_secret_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DestroySecretVersionRequest(
+        request_msg = service.DestroySecretVersionRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_destroy_secret_version_use_cached_wrapped_rpc():
@@ -5687,8 +5755,15 @@ async def test_destroy_secret_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DestroySecretVersionRequest(),
+        {},
+    ],
+)
 async def test_destroy_secret_version_async(
-    transport: str = "grpc_asyncio", request_type=service.DestroySecretVersionRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecretManagerServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5697,7 +5772,7 @@ async def test_destroy_secret_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5726,11 +5801,6 @@ async def test_destroy_secret_version_async(
     assert response.state == resources.SecretVersion.State.ENABLED
     assert response.etag == "etag_value"
     assert response.client_specified_payload_checksum is True
-
-
-@pytest.mark.asyncio
-async def test_destroy_secret_version_async_from_dict():
-    await test_destroy_secret_version_async(request_type=dict)
 
 
 def test_destroy_secret_version_field_headers():
@@ -5887,8 +5957,8 @@ async def test_destroy_secret_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
     ],
 )
 def test_set_iam_policy(request_type, transport: str = "grpc"):
@@ -5899,7 +5969,7 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -5945,9 +6015,10 @@ def test_set_iam_policy_non_empty_request_with_auto_populated_field():
         client.set_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+        request_msg = iam_policy_pb2.SetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_iam_policy_use_cached_wrapped_rpc():
@@ -6028,9 +6099,14 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_set_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = SecretManagerServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6038,7 +6114,7 @@ async def test_set_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -6061,11 +6137,6 @@ async def test_set_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_async_from_dict():
-    await test_set_iam_policy_async(request_type=dict)
 
 
 def test_set_iam_policy_field_headers():
@@ -6148,8 +6219,8 @@ def test_set_iam_policy_from_dict_foreign():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
     ],
 )
 def test_get_iam_policy(request_type, transport: str = "grpc"):
@@ -6160,7 +6231,7 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -6206,9 +6277,10 @@ def test_get_iam_policy_non_empty_request_with_auto_populated_field():
         client.get_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+        request_msg = iam_policy_pb2.GetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_iam_policy_use_cached_wrapped_rpc():
@@ -6289,9 +6361,14 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = SecretManagerServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6299,7 +6376,7 @@ async def test_get_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -6322,11 +6399,6 @@ async def test_get_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_async_from_dict():
-    await test_get_iam_policy_async(request_type=dict)
 
 
 def test_get_iam_policy_field_headers():
@@ -6408,8 +6480,8 @@ def test_get_iam_policy_from_dict_foreign():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
     ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
@@ -6420,7 +6492,7 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6468,9 +6540,10 @@ def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
         client.test_iam_permissions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_test_iam_permissions_use_cached_wrapped_rpc():
@@ -6555,9 +6628,15 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
+    ],
+)
 async def test_test_iam_permissions_async(
-    transport: str = "grpc_asyncio",
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecretManagerServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6566,7 +6645,7 @@ async def test_test_iam_permissions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6589,11 +6668,6 @@ async def test_test_iam_permissions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_async_from_dict():
-    await test_test_iam_permissions_async(request_type=dict)
 
 
 def test_test_iam_permissions_field_headers():
@@ -6678,6 +6752,723 @@ def test_test_iam_permissions_from_dict_foreign():
             }
         )
         call.assert_called()
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.EnableManagedRotationRequest(),
+        {},
+    ],
+)
+def test_enable_managed_rotation(request_type, transport: str = "grpc"):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_managed_rotation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.SecretVersion(
+            name="name_value",
+            state=resources.SecretVersion.State.ENABLED,
+            etag="etag_value",
+            client_specified_payload_checksum=True,
+        )
+        response = client.enable_managed_rotation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = service.EnableManagedRotationRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SecretVersion)
+    assert response.name == "name_value"
+    assert response.state == resources.SecretVersion.State.ENABLED
+    assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
+
+
+def test_enable_managed_rotation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.EnableManagedRotationRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_managed_rotation), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.enable_managed_rotation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.EnableManagedRotationRequest(
+            parent="parent_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_enable_managed_rotation_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecretManagerServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.enable_managed_rotation
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.enable_managed_rotation
+        ] = mock_rpc
+        request = {}
+        client.enable_managed_rotation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.enable_managed_rotation(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_enable_managed_rotation_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecretManagerServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.enable_managed_rotation
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.enable_managed_rotation
+        ] = mock_rpc
+
+        request = {}
+        await client.enable_managed_rotation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.enable_managed_rotation(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.EnableManagedRotationRequest(),
+        {},
+    ],
+)
+async def test_enable_managed_rotation_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_managed_rotation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SecretVersion(
+                name="name_value",
+                state=resources.SecretVersion.State.ENABLED,
+                etag="etag_value",
+                client_specified_payload_checksum=True,
+            )
+        )
+        response = await client.enable_managed_rotation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = service.EnableManagedRotationRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SecretVersion)
+    assert response.name == "name_value"
+    assert response.state == resources.SecretVersion.State.ENABLED
+    assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
+
+
+def test_enable_managed_rotation_field_headers():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.EnableManagedRotationRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_managed_rotation), "__call__"
+    ) as call:
+        call.return_value = resources.SecretVersion()
+        client.enable_managed_rotation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_enable_managed_rotation_field_headers_async():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.EnableManagedRotationRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_managed_rotation), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SecretVersion()
+        )
+        await client.enable_managed_rotation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_enable_managed_rotation_flattened():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_managed_rotation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.SecretVersion()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.enable_managed_rotation(
+            parent="parent_value",
+            cloud_sql_single_user_credentials=service.EnableManagedRotationRequest.CloudSQLSingleUserCredentials(
+                instance_id="instance_id_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        assert (
+            args[0].cloud_sql_single_user_credentials
+            == service.EnableManagedRotationRequest.CloudSQLSingleUserCredentials(
+                instance_id="instance_id_value"
+            )
+        )
+
+
+def test_enable_managed_rotation_flattened_error():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.enable_managed_rotation(
+            service.EnableManagedRotationRequest(),
+            parent="parent_value",
+            cloud_sql_single_user_credentials=service.EnableManagedRotationRequest.CloudSQLSingleUserCredentials(
+                instance_id="instance_id_value"
+            ),
+        )
+
+
+@pytest.mark.asyncio
+async def test_enable_managed_rotation_flattened_async():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_managed_rotation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.SecretVersion()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SecretVersion()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.enable_managed_rotation(
+            parent="parent_value",
+            cloud_sql_single_user_credentials=service.EnableManagedRotationRequest.CloudSQLSingleUserCredentials(
+                instance_id="instance_id_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        assert (
+            args[0].cloud_sql_single_user_credentials
+            == service.EnableManagedRotationRequest.CloudSQLSingleUserCredentials(
+                instance_id="instance_id_value"
+            )
+        )
+
+
+@pytest.mark.asyncio
+async def test_enable_managed_rotation_flattened_error_async():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.enable_managed_rotation(
+            service.EnableManagedRotationRequest(),
+            parent="parent_value",
+            cloud_sql_single_user_credentials=service.EnableManagedRotationRequest.CloudSQLSingleUserCredentials(
+                instance_id="instance_id_value"
+            ),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.RotateSecretRequest(),
+        {},
+    ],
+)
+def test_rotate_secret(request_type, transport: str = "grpc"):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rotate_secret), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.SecretVersion(
+            name="name_value",
+            state=resources.SecretVersion.State.ENABLED,
+            etag="etag_value",
+            client_specified_payload_checksum=True,
+        )
+        response = client.rotate_secret(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = service.RotateSecretRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SecretVersion)
+    assert response.name == "name_value"
+    assert response.state == resources.SecretVersion.State.ENABLED
+    assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
+
+
+def test_rotate_secret_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.RotateSecretRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rotate_secret), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.rotate_secret(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.RotateSecretRequest(
+            parent="parent_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_rotate_secret_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecretManagerServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.rotate_secret in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.rotate_secret] = mock_rpc
+        request = {}
+        client.rotate_secret(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.rotate_secret(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_rotate_secret_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = SecretManagerServiceAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.rotate_secret
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.rotate_secret
+        ] = mock_rpc
+
+        request = {}
+        await client.rotate_secret(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.rotate_secret(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.RotateSecretRequest(),
+        {},
+    ],
+)
+async def test_rotate_secret_async(request_type, transport: str = "grpc_asyncio"):
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rotate_secret), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SecretVersion(
+                name="name_value",
+                state=resources.SecretVersion.State.ENABLED,
+                etag="etag_value",
+                client_specified_payload_checksum=True,
+            )
+        )
+        response = await client.rotate_secret(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = service.RotateSecretRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SecretVersion)
+    assert response.name == "name_value"
+    assert response.state == resources.SecretVersion.State.ENABLED
+    assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
+
+
+def test_rotate_secret_field_headers():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.RotateSecretRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rotate_secret), "__call__") as call:
+        call.return_value = resources.SecretVersion()
+        client.rotate_secret(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_rotate_secret_field_headers_async():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.RotateSecretRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rotate_secret), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SecretVersion()
+        )
+        await client.rotate_secret(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_rotate_secret_flattened():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rotate_secret), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.SecretVersion()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.rotate_secret(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_rotate_secret_flattened_error():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.rotate_secret(
+            service.RotateSecretRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_rotate_secret_flattened_async():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rotate_secret), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.SecretVersion()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SecretVersion()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.rotate_secret(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_rotate_secret_flattened_error_async():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.rotate_secret(
+            service.RotateSecretRequest(),
+            parent="parent_value",
+        )
 
 
 def test_list_secrets_rest_use_cached_wrapped_rpc():
@@ -6794,7 +7585,7 @@ def test_list_secrets_rest_required_fields(request_type=service.ListSecretsReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_secrets_rest_unset_required_fields():
@@ -6922,6 +7713,9 @@ def test_list_secrets_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1"}
 
         pager = client.list_secrets(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -7054,7 +7848,7 @@ def test_create_secret_rest_required_fields(request_type=service.CreateSecretReq
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_secret_rest_unset_required_fields():
@@ -7248,7 +8042,7 @@ def test_add_secret_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_add_secret_version_rest_unset_required_fields():
@@ -7433,7 +8227,7 @@ def test_get_secret_rest_required_fields(request_type=service.GetSecretRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_secret_rest_unset_required_fields():
@@ -7605,7 +8399,7 @@ def test_update_secret_rest_required_fields(request_type=service.UpdateSecretReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_secret_rest_unset_required_fields():
@@ -7788,7 +8582,7 @@ def test_delete_secret_rest_required_fields(request_type=service.DeleteSecretReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_secret_rest_unset_required_fields():
@@ -7974,7 +8768,7 @@ def test_list_secret_versions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_secret_versions_rest_unset_required_fields():
@@ -8106,6 +8900,9 @@ def test_list_secret_versions_rest_pager(transport: str = "rest"):
 
         pager = client.list_secret_versions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.SecretVersion) for i in results)
@@ -8227,7 +9024,7 @@ def test_get_secret_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_secret_version_rest_unset_required_fields():
@@ -8409,7 +9206,7 @@ def test_access_secret_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_access_secret_version_rest_unset_required_fields():
@@ -8593,7 +9390,7 @@ def test_disable_secret_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_disable_secret_version_rest_unset_required_fields():
@@ -8777,7 +9574,7 @@ def test_enable_secret_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_enable_secret_version_rest_unset_required_fields():
@@ -8961,7 +9758,7 @@ def test_destroy_secret_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_destroy_secret_version_rest_unset_required_fields():
@@ -9138,7 +9935,7 @@ def test_set_iam_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_iam_policy_rest_unset_required_fields():
@@ -9266,7 +10063,7 @@ def test_get_iam_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_iam_policy_rest_unset_required_fields():
@@ -9393,7 +10190,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_test_iam_permissions_rest_unset_required_fields():
@@ -9411,6 +10208,369 @@ def test_test_iam_permissions_rest_unset_required_fields():
             )
         )
     )
+
+
+def test_enable_managed_rotation_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecretManagerServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.enable_managed_rotation
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.enable_managed_rotation
+        ] = mock_rpc
+
+        request = {}
+        client.enable_managed_rotation(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.enable_managed_rotation(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_enable_managed_rotation_rest_required_fields(
+    request_type=service.EnableManagedRotationRequest,
+):
+    transport_class = transports.SecretManagerServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).enable_managed_rotation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).enable_managed_rotation._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.SecretVersion()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.SecretVersion.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.enable_managed_rotation(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_enable_managed_rotation_rest_unset_required_fields():
+    transport = transports.SecretManagerServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.enable_managed_rotation._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("parent",)))
+
+
+def test_enable_managed_rotation_rest_flattened():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.SecretVersion()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/secrets/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.SecretVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.enable_managed_rotation(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/secrets/*}:enableManagedRotation"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_enable_managed_rotation_rest_flattened_error(transport: str = "rest"):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.enable_managed_rotation(
+            service.EnableManagedRotationRequest(),
+            parent="parent_value",
+            cloud_sql_single_user_credentials=service.EnableManagedRotationRequest.CloudSQLSingleUserCredentials(
+                instance_id="instance_id_value"
+            ),
+        )
+
+
+def test_rotate_secret_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = SecretManagerServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.rotate_secret in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.rotate_secret] = mock_rpc
+
+        request = {}
+        client.rotate_secret(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.rotate_secret(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_rotate_secret_rest_required_fields(request_type=service.RotateSecretRequest):
+    transport_class = transports.SecretManagerServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rotate_secret._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rotate_secret._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.SecretVersion()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = resources.SecretVersion.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.rotate_secret(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_rotate_secret_rest_unset_required_fields():
+    transport = transports.SecretManagerServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.rotate_secret._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("parent",)))
+
+
+def test_rotate_secret_rest_flattened():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.SecretVersion()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/secrets/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = resources.SecretVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.rotate_secret(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/secrets/*}:rotateSecret" % client.transport._host,
+            args[1],
+        )
+
+
+def test_rotate_secret_rest_flattened_error(transport: str = "rest"):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.rotate_secret(
+            service.RotateSecretRequest(),
+            parent="parent_value",
+        )
 
 
 def test_credentials_transport_error():
@@ -9536,7 +10696,6 @@ def test_list_secrets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListSecretsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9557,7 +10716,6 @@ def test_create_secret_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateSecretRequest()
-
         assert args[0] == request_msg
 
 
@@ -9580,7 +10738,6 @@ def test_add_secret_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AddSecretVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9601,7 +10758,6 @@ def test_get_secret_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetSecretRequest()
-
         assert args[0] == request_msg
 
 
@@ -9622,7 +10778,6 @@ def test_update_secret_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateSecretRequest()
-
         assert args[0] == request_msg
 
 
@@ -9643,7 +10798,6 @@ def test_delete_secret_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteSecretRequest()
-
         assert args[0] == request_msg
 
 
@@ -9666,7 +10820,6 @@ def test_list_secret_versions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListSecretVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9689,7 +10842,6 @@ def test_get_secret_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetSecretVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9712,7 +10864,6 @@ def test_access_secret_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AccessSecretVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9735,7 +10886,6 @@ def test_disable_secret_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DisableSecretVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9758,7 +10908,6 @@ def test_enable_secret_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.EnableSecretVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9781,7 +10930,6 @@ def test_destroy_secret_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DestroySecretVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9802,7 +10950,6 @@ def test_set_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -9823,7 +10970,6 @@ def test_get_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -9846,7 +10992,48 @@ def test_test_iam_permissions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_enable_managed_rotation_empty_call_grpc():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_managed_rotation), "__call__"
+    ) as call:
+        call.return_value = resources.SecretVersion()
+        client.enable_managed_rotation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.EnableManagedRotationRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_rotate_secret_empty_call_grpc():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.rotate_secret), "__call__") as call:
+        call.return_value = resources.SecretVersion()
+        client.rotate_secret(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.RotateSecretRequest()
         assert args[0] == request_msg
 
 
@@ -9888,7 +11075,6 @@ async def test_list_secrets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListSecretsRequest()
-
         assert args[0] == request_msg
 
 
@@ -9908,6 +11094,7 @@ async def test_create_secret_empty_call_grpc_asyncio():
             resources.Secret(
                 name="name_value",
                 etag="etag_value",
+                secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
             )
         )
         await client.create_secret(request=None)
@@ -9916,7 +11103,6 @@ async def test_create_secret_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateSecretRequest()
-
         assert args[0] == request_msg
 
 
@@ -9948,7 +11134,6 @@ async def test_add_secret_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AddSecretVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -9968,6 +11153,7 @@ async def test_get_secret_empty_call_grpc_asyncio():
             resources.Secret(
                 name="name_value",
                 etag="etag_value",
+                secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
             )
         )
         await client.get_secret(request=None)
@@ -9976,7 +11162,6 @@ async def test_get_secret_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetSecretRequest()
-
         assert args[0] == request_msg
 
 
@@ -9996,6 +11181,7 @@ async def test_update_secret_empty_call_grpc_asyncio():
             resources.Secret(
                 name="name_value",
                 etag="etag_value",
+                secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
             )
         )
         await client.update_secret(request=None)
@@ -10004,7 +11190,6 @@ async def test_update_secret_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateSecretRequest()
-
         assert args[0] == request_msg
 
 
@@ -10027,7 +11212,6 @@ async def test_delete_secret_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteSecretRequest()
-
         assert args[0] == request_msg
 
 
@@ -10057,7 +11241,6 @@ async def test_list_secret_versions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListSecretVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10089,7 +11272,6 @@ async def test_get_secret_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetSecretVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -10118,7 +11300,6 @@ async def test_access_secret_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AccessSecretVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -10150,7 +11331,6 @@ async def test_disable_secret_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DisableSecretVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -10182,7 +11362,6 @@ async def test_enable_secret_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.EnableSecretVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -10214,7 +11393,6 @@ async def test_destroy_secret_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DestroySecretVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -10242,7 +11420,6 @@ async def test_set_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -10270,7 +11447,6 @@ async def test_get_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -10299,7 +11475,66 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_enable_managed_rotation_empty_call_grpc_asyncio():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_managed_rotation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SecretVersion(
+                name="name_value",
+                state=resources.SecretVersion.State.ENABLED,
+                etag="etag_value",
+                client_specified_payload_checksum=True,
+            )
+        )
+        await client.enable_managed_rotation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.EnableManagedRotationRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_rotate_secret_empty_call_grpc_asyncio():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.rotate_secret), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SecretVersion(
+                name="name_value",
+                state=resources.SecretVersion.State.ENABLED,
+                etag="etag_value",
+                client_specified_payload_checksum=True,
+            )
+        )
+        await client.rotate_secret(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.RotateSecretRequest()
         assert args[0] == request_msg
 
 
@@ -10319,8 +11554,9 @@ def test_list_secrets_rest_bad_request(request_type=service.ListSecretsRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10385,18 +11621,20 @@ def test_list_secrets_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_list_secrets"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_list_secrets_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_list_secrets"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_list_secrets"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_list_secrets_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_list_secrets"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10447,8 +11685,9 @@ def test_create_secret_rest_bad_request(request_type=service.CreateSecretRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10493,12 +11732,33 @@ def test_create_secret_rest_call_success(request_type):
         "expire_time": {},
         "ttl": {"seconds": 751, "nanos": 543},
         "etag": "etag_value",
-        "rotation": {"next_rotation_time": {}, "rotation_period": {}},
+        "rotation": {
+            "next_rotation_time": {},
+            "rotation_period": {},
+            "managed_rotation_status": {
+                "state": 1,
+                "error": {
+                    "code": 411,
+                    "message": "message_value",
+                    "details": [
+                        {
+                            "type_url": "type.googleapis.com/google.protobuf.Duration",
+                            "value": b"\x08\x0c\x10\xdb\x07",
+                        }
+                    ],
+                },
+            },
+        },
         "version_aliases": {},
         "annotations": {},
         "version_destroy_ttl": {},
         "customer_managed_encryption": {},
         "tags": {},
+        "secret_type": 1,
+        "policy_member": {
+            "iam_policy_name_principal": "iam_policy_name_principal_value",
+            "iam_policy_uid_principal": "iam_policy_uid_principal_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -10575,6 +11835,7 @@ def test_create_secret_rest_call_success(request_type):
         return_value = resources.Secret(
             name="name_value",
             etag="etag_value",
+            secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
         )
 
         # Wrap the value into a proper Response obj
@@ -10593,6 +11854,7 @@ def test_create_secret_rest_call_success(request_type):
     assert isinstance(response, resources.Secret)
     assert response.name == "name_value"
     assert response.etag == "etag_value"
+    assert response.secret_type == resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -10605,18 +11867,20 @@ def test_create_secret_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_create_secret"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_create_secret_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_create_secret"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_create_secret"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_create_secret_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_create_secret"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10667,8 +11931,9 @@ def test_add_secret_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10737,18 +12002,20 @@ def test_add_secret_version_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_add_secret_version"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_add_secret_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_add_secret_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_add_secret_version"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_add_secret_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_add_secret_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10799,8 +12066,9 @@ def test_get_secret_rest_bad_request(request_type=service.GetSecretRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10835,6 +12103,7 @@ def test_get_secret_rest_call_success(request_type):
         return_value = resources.Secret(
             name="name_value",
             etag="etag_value",
+            secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
         )
 
         # Wrap the value into a proper Response obj
@@ -10853,6 +12122,7 @@ def test_get_secret_rest_call_success(request_type):
     assert isinstance(response, resources.Secret)
     assert response.name == "name_value"
     assert response.etag == "etag_value"
+    assert response.secret_type == resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -10865,17 +12135,20 @@ def test_get_secret_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_get_secret"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_get_secret_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_get_secret"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_get_secret"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_get_secret_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_get_secret"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10924,8 +12197,9 @@ def test_update_secret_rest_bad_request(request_type=service.UpdateSecretRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10970,12 +12244,33 @@ def test_update_secret_rest_call_success(request_type):
         "expire_time": {},
         "ttl": {"seconds": 751, "nanos": 543},
         "etag": "etag_value",
-        "rotation": {"next_rotation_time": {}, "rotation_period": {}},
+        "rotation": {
+            "next_rotation_time": {},
+            "rotation_period": {},
+            "managed_rotation_status": {
+                "state": 1,
+                "error": {
+                    "code": 411,
+                    "message": "message_value",
+                    "details": [
+                        {
+                            "type_url": "type.googleapis.com/google.protobuf.Duration",
+                            "value": b"\x08\x0c\x10\xdb\x07",
+                        }
+                    ],
+                },
+            },
+        },
         "version_aliases": {},
         "annotations": {},
         "version_destroy_ttl": {},
         "customer_managed_encryption": {},
         "tags": {},
+        "secret_type": 1,
+        "policy_member": {
+            "iam_policy_name_principal": "iam_policy_name_principal_value",
+            "iam_policy_uid_principal": "iam_policy_uid_principal_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -11052,6 +12347,7 @@ def test_update_secret_rest_call_success(request_type):
         return_value = resources.Secret(
             name="name_value",
             etag="etag_value",
+            secret_type=resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS,
         )
 
         # Wrap the value into a proper Response obj
@@ -11070,6 +12366,7 @@ def test_update_secret_rest_call_success(request_type):
     assert isinstance(response, resources.Secret)
     assert response.name == "name_value"
     assert response.etag == "etag_value"
+    assert response.secret_type == resources.Secret.SecretType.CLOUD_SQL_DB_CREDENTIALS
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -11082,18 +12379,20 @@ def test_update_secret_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_update_secret"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_update_secret_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_update_secret"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_update_secret"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_update_secret_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_update_secret"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11142,8 +12441,9 @@ def test_delete_secret_rest_bad_request(request_type=service.DeleteSecretRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11200,13 +12500,13 @@ def test_delete_secret_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_delete_secret"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_delete_secret"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = service.DeleteSecretRequest.pb(service.DeleteSecretRequest())
         transcode.return_value = {
@@ -11249,8 +12549,9 @@ def test_list_secret_versions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11315,18 +12616,20 @@ def test_list_secret_versions_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_list_secret_versions"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_list_secret_versions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_list_secret_versions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_list_secret_versions"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_list_secret_versions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_list_secret_versions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11381,8 +12684,9 @@ def test_get_secret_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11451,18 +12755,20 @@ def test_get_secret_version_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_get_secret_version"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_get_secret_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_get_secret_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_get_secret_version"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_get_secret_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_get_secret_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11515,8 +12821,9 @@ def test_access_secret_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11579,18 +12886,20 @@ def test_access_secret_version_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_access_secret_version"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_access_secret_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_access_secret_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_access_secret_version"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_access_secret_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_access_secret_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11648,8 +12957,9 @@ def test_disable_secret_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11718,18 +13028,21 @@ def test_disable_secret_version_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_disable_secret_version"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_disable_secret_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_disable_secret_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_disable_secret_version",
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_disable_secret_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_disable_secret_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11782,8 +13095,9 @@ def test_enable_secret_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11852,18 +13166,20 @@ def test_enable_secret_version_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_enable_secret_version"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_enable_secret_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_enable_secret_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_enable_secret_version"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_enable_secret_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_enable_secret_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11916,8 +13232,9 @@ def test_destroy_secret_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11986,18 +13303,21 @@ def test_destroy_secret_version_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_destroy_secret_version"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_destroy_secret_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_destroy_secret_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_destroy_secret_version",
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_destroy_secret_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_destroy_secret_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12050,8 +13370,9 @@ def test_set_iam_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12113,18 +13434,20 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_set_iam_policy"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_set_iam_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_set_iam_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_set_iam_policy"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_set_iam_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_set_iam_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12175,8 +13498,9 @@ def test_get_iam_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12238,18 +13562,20 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_get_iam_policy"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_get_iam_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_get_iam_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_get_iam_policy"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_get_iam_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_get_iam_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12300,8 +13626,9 @@ def test_test_iam_permissions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12361,18 +13688,20 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_test_iam_permissions"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_test_iam_permissions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_test_iam_permissions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_test_iam_permissions"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_test_iam_permissions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_test_iam_permissions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12417,6 +13746,278 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_enable_managed_rotation_rest_bad_request(
+    request_type=service.EnableManagedRotationRequest,
+):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.enable_managed_rotation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.EnableManagedRotationRequest,
+        dict,
+    ],
+)
+def test_enable_managed_rotation_rest_call_success(request_type):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.SecretVersion(
+            name="name_value",
+            state=resources.SecretVersion.State.ENABLED,
+            etag="etag_value",
+            client_specified_payload_checksum=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.SecretVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.enable_managed_rotation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SecretVersion)
+    assert response.name == "name_value"
+    assert response.state == resources.SecretVersion.State.ENABLED
+    assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_enable_managed_rotation_rest_interceptors(null_interceptor):
+    transport = transports.SecretManagerServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecretManagerServiceRestInterceptor(),
+    )
+    client = SecretManagerServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_enable_managed_rotation",
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_enable_managed_rotation_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "pre_enable_managed_rotation",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = service.EnableManagedRotationRequest.pb(
+            service.EnableManagedRotationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = resources.SecretVersion.to_json(resources.SecretVersion())
+        req.return_value.content = return_value
+
+        request = service.EnableManagedRotationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.SecretVersion()
+        post_with_metadata.return_value = resources.SecretVersion(), metadata
+
+        client.enable_managed_rotation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_rotate_secret_rest_bad_request(request_type=service.RotateSecretRequest):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.rotate_secret(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.RotateSecretRequest,
+        dict,
+    ],
+)
+def test_rotate_secret_rest_call_success(request_type):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.SecretVersion(
+            name="name_value",
+            state=resources.SecretVersion.State.ENABLED,
+            etag="etag_value",
+            client_specified_payload_checksum=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.SecretVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.rotate_secret(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SecretVersion)
+    assert response.name == "name_value"
+    assert response.state == resources.SecretVersion.State.ENABLED
+    assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_rotate_secret_rest_interceptors(null_interceptor):
+    transport = transports.SecretManagerServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecretManagerServiceRestInterceptor(),
+    )
+    client = SecretManagerServiceClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_rotate_secret"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_rotate_secret_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_rotate_secret"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = service.RotateSecretRequest.pb(service.RotateSecretRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = resources.SecretVersion.to_json(resources.SecretVersion())
+        req.return_value.content = return_value
+
+        request = service.RotateSecretRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.SecretVersion()
+        post_with_metadata.return_value = resources.SecretVersion(), metadata
+
+        client.rotate_secret(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
     client = SecretManagerServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12428,8 +14029,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -12488,8 +14090,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -12560,7 +14163,6 @@ def test_list_secrets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListSecretsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12580,7 +14182,6 @@ def test_create_secret_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateSecretRequest()
-
         assert args[0] == request_msg
 
 
@@ -12602,7 +14203,6 @@ def test_add_secret_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AddSecretVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -12622,7 +14222,6 @@ def test_get_secret_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetSecretRequest()
-
         assert args[0] == request_msg
 
 
@@ -12642,7 +14241,6 @@ def test_update_secret_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateSecretRequest()
-
         assert args[0] == request_msg
 
 
@@ -12662,7 +14260,6 @@ def test_delete_secret_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteSecretRequest()
-
         assert args[0] == request_msg
 
 
@@ -12684,7 +14281,6 @@ def test_list_secret_versions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListSecretVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12706,7 +14302,6 @@ def test_get_secret_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetSecretVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -12728,7 +14323,6 @@ def test_access_secret_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AccessSecretVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -12750,7 +14344,6 @@ def test_disable_secret_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DisableSecretVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -12772,7 +14365,6 @@ def test_enable_secret_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.EnableSecretVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -12794,7 +14386,6 @@ def test_destroy_secret_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DestroySecretVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -12814,7 +14405,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -12834,7 +14424,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -12856,7 +14445,46 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_enable_managed_rotation_empty_call_rest():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_managed_rotation), "__call__"
+    ) as call:
+        client.enable_managed_rotation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.EnableManagedRotationRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_rotate_secret_empty_call_rest():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.rotate_secret), "__call__") as call:
+        client.rotate_secret(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.RotateSecretRequest()
         assert args[0] == request_msg
 
 
@@ -12908,6 +14536,8 @@ def test_secret_manager_service_base_transport():
         "set_iam_policy",
         "get_iam_policy",
         "test_iam_permissions",
+        "enable_managed_rotation",
+        "rotate_secret",
         "get_location",
         "list_locations",
     )
@@ -12929,11 +14559,14 @@ def test_secret_manager_service_base_transport():
 
 def test_secret_manager_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.secretmanager_v1.services.secret_manager_service.transports.SecretManagerServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.secretmanager_v1.services.secret_manager_service.transports.SecretManagerServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SecretManagerServiceTransport(
@@ -12950,9 +14583,12 @@ def test_secret_manager_service_base_transport_with_credentials_file():
 
 def test_secret_manager_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.secretmanager_v1.services.secret_manager_service.transports.SecretManagerServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.secretmanager_v1.services.secret_manager_service.transports.SecretManagerServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SecretManagerServiceTransport()
@@ -13024,11 +14660,12 @@ def test_secret_manager_service_transport_auth_gdch_credentials(transport_class)
 def test_secret_manager_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -13214,6 +14851,12 @@ def test_secret_manager_service_client_transport_session_collision(transport_nam
     assert session1 != session2
     session1 = client1.transport.test_iam_permissions._session
     session2 = client2.transport.test_iam_permissions._session
+    assert session1 != session2
+    session1 = client1.transport.enable_managed_rotation._session
+    session2 = client2.transport.enable_managed_rotation._session
+    assert session1 != session2
+    session1 = client1.transport.rotate_secret._session
+    session2 = client2.transport.rotate_secret._session
     assert session1 != session2
 
 
@@ -13689,6 +15332,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = SecretManagerServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13830,6 +15507,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():

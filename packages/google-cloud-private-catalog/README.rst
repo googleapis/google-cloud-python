@@ -1,9 +1,10 @@
-Python Client for Private Catalog
-=================================
+Python Client for Cloud Private Catalog
+=======================================
 
 |preview| |pypi| |versions|
 
-`Private Catalog`_: allows developers and cloud admins to make their solutions discoverable to their internal enterprise users. Cloud admins can manage their solutions and ensure their users are always launching the latest versions.
+`Cloud Private Catalog`_: Enable cloud users to discover private catalogs and products in their
+organizations.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +15,7 @@ Python Client for Private Catalog
    :target: https://pypi.org/project/google-cloud-private-catalog/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-private-catalog.svg
    :target: https://pypi.org/project/google-cloud-private-catalog/
-.. _Private Catalog: https://cloud.google.com/private-catalog/
+.. _Cloud Private Catalog: https://cloud.google.com/private-catalog/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudprivatecatalog/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/private-catalog/
 
@@ -25,12 +26,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Private Catalog.`_
+3. `Enable the Cloud Private Catalog.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Private Catalog.:  https://cloud.google.com/private-catalog/
+.. _Enable the Cloud Private Catalog.:  https://cloud.google.com/private-catalog/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +62,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -97,14 +99,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Private Catalog
+-  Read the `Client Library Documentation`_ for Cloud Private Catalog
    to see other available methods on the client.
--  Read the `Private Catalog Product documentation`_ to learn
+-  Read the `Cloud Private Catalog Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Private Catalog Product documentation:  https://cloud.google.com/private-catalog/
+.. _Cloud Private Catalog Product documentation:  https://cloud.google.com/private-catalog/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

@@ -16,12 +16,13 @@
 
 import datetime
 import enum
+import functools
 import logging
-import warnings
 import sys
 import textwrap
-from typing import Any, List, NamedTuple, Optional, Dict, Tuple
-
+import warnings
+from importlib import metadata
+from typing import Any, Dict, List, NamedTuple, Optional, Tuple
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -70,25 +71,6 @@ class VersionInfo(NamedTuple):
 
 PYTHON_VERSIONS: List[VersionInfo] = [
     # Refer to https://devguide.python.org/versions/ and the PEPs linked therefrom.
-    VersionInfo(
-        version="3.7",
-        python_beta=None,
-        python_start=datetime.date(2018, 6, 27),
-        python_eol=datetime.date(2023, 6, 27),
-    ),
-    VersionInfo(
-        version="3.8",
-        python_beta=None,
-        python_start=datetime.date(2019, 10, 14),
-        python_eol=datetime.date(2024, 10, 7),
-    ),
-    VersionInfo(
-        version="3.9",
-        python_beta=datetime.date(2020, 5, 18),
-        python_start=datetime.date(2020, 10, 5),
-        python_eol=datetime.date(2025, 10, 5),
-        gapic_end=datetime.date(2025, 10, 5) + datetime.timedelta(days=90),
-    ),
     VersionInfo(
         version="3.10",
         python_beta=datetime.date(2021, 5, 3),
@@ -151,37 +133,26 @@ def _flatten_message(text: str) -> str:
     return " ".join(textwrap.dedent(text).strip().split())
 
 
-# TODO(https://github.com/googleapis/python-api-core/issues/835):
-# Remove once we no longer support Python 3.9.
-# `importlib.metadata.packages_distributions()` is only supported in Python 3.10 and newer
-# https://docs.python.org/3/library/importlib.metadata.html#importlib.metadata.packages_distributions
-if sys.version_info < (3, 10):
+@functools.cache
+def _cached_packages_distributions():
+    return metadata.packages_distributions()
 
-    def _get_pypi_package_name(module_name):  # pragma: NO COVER
-        """Determine the PyPI package name for a given module name."""
-        return None
 
-else:
-    from importlib import metadata
+def _get_pypi_package_name(module_name):
+    """Determine the PyPI package name for a given module name."""
+    try:
+        module_to_distributions = _cached_packages_distributions()
 
-    def _get_pypi_package_name(module_name):
-        """Determine the PyPI package name for a given module name."""
-        try:
-            # Get the mapping of modules to distributions
-            module_to_distributions = metadata.packages_distributions()
+        if module_name in module_to_distributions:  # pragma: NO COVER
+            return module_to_distributions[module_name][0]
+    except Exception as e:  # pragma: NO COVER
+        _LOGGER.info(
+            "An error occurred while determining PyPI package name for %s: %s",
+            module_name,
+            e,
+        )
 
-            # Check if the module is found in the mapping
-            if module_name in module_to_distributions:  # pragma: NO COVER
-                # The value is a list of distribution names, take the first one
-                return module_to_distributions[module_name][0]
-        except Exception as e:  # pragma: NO COVER
-            _LOGGER.info(
-                "An error occurred while determining PyPI package name for %s: %s",
-                module_name,
-                e,
-            )
-
-        return None
+    return None
 
 
 def _get_distribution_and_import_packages(import_package: str) -> Tuple[str, Any]:
@@ -207,7 +178,6 @@ def check_python_version(
         The support status of the current Python version.
     """
     today = today or datetime.date.today()
-    package_label, _ = _get_distribution_and_import_packages(package)
 
     python_version = sys.version_info
     version_tuple = (python_version.major, python_version.minor)
@@ -233,7 +203,14 @@ def check_python_version(
                 return f"{version[0]}.{version[1]}"
         return "at a currently supported version [https://devguide.python.org/versions]"
 
+    # Resolve the pretty package label lazily so we avoid any work on
+    # the happy path (supported Python version, no warning needed).
+    def get_package_label():
+        label, _ = _get_distribution_and_import_packages(package)
+        return label
+
     if gapic_end < today:
+        package_label = get_package_label()
         message = _flatten_message(
             f"""
             You are using a non-supported Python version ({py_version_str}).
@@ -248,6 +225,7 @@ def check_python_version(
 
     eol_date = version_info.python_eol + EOL_GRACE_PERIOD
     if eol_date <= today <= gapic_end:
+        package_label = get_package_label()
         message = _flatten_message(
             f"""
             You are using a Python version ({py_version_str})
@@ -262,6 +240,7 @@ def check_python_version(
         return PythonVersionStatus.PYTHON_VERSION_EOL
 
     if gapic_deprecation <= today <= gapic_end:
+        package_label = get_package_label()
         message = _flatten_message(
             f"""
             You are using a Python version ({py_version_str}) which Google will

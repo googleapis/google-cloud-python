@@ -22,7 +22,7 @@ In order to add a feature:
   documentation.
 
 - The feature must work fully on the following CPython versions:
-  3.9, 3.11, 3.12 and 3.13 on both UNIX and Windows.
+  3.10, 3.11, 3.12, 3.13 and 3.14 on both UNIX and Windows.
 
 - The feature must not add unnecessary dependencies (where
   "unnecessary" is of course subjective, but new dependencies should
@@ -177,29 +177,6 @@ Build the docs via:
 
    $ nox -s docs
 
-*************************
-Samples and code snippets
-*************************
-
-Code samples and snippets live in the `samples/` catalogue. Feel free to
-provide more examples, but make sure to write tests for those examples.
-Each folder containing example code requires its own `noxfile.py` script
-which automates testing. If you decide to create a new folder, you can
-base it on the `samples/snippets` folder (providing `noxfile.py` and
-the requirements files).
-
-The tests will run against a real Google Cloud Project, so you should
-configure them just like the System Tests.
-
-- To run sample tests, you can execute::
-
-   # Run all tests in a folder
-   $ cd samples/snippets
-   $ nox -s py-3.8
-
-   # Run a single sample test
-   $ cd samples/snippets
-   $ nox -s py-3.8 -- -k <name of test>
 
 ********************************************
 Note About ``README`` as it pertains to PyPI
@@ -221,12 +198,12 @@ Supported Python Versions
 
 We support:
 
--  `Python 3.9`_
+-  `Python 3.10`_
 -  `Python 3.11`_
 -  `Python 3.12`_
 -  `Python 3.13`_
 
-.. _Python 3.9: https://docs.python.org/3.9/
+.. _Python 3.10: https://docs.python.org/3.10/
 .. _Python 3.11: https://docs.python.org/3.11/
 .. _Python 3.12: https://docs.python.org/3.12/
 .. _Python 3.13: https://docs.python.org/3.13/

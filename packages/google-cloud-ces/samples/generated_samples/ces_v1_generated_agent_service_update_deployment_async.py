@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,7 +41,6 @@ async def sample_update_deployment():
     # Initialize request argument(s)
     deployment = ces_v1.Deployment()
     deployment.display_name = "display_name_value"
-    deployment.app_version = "app_version_value"
 
     request = ces_v1.UpdateDeploymentRequest(
         deployment=deployment,

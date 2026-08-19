@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -55,8 +55,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class AuditManagerRestInterceptor:
@@ -753,6 +752,12 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
             url_scheme: the protocol scheme for the API endpoint.  Normally
                 "https", but for testing or local servers,
                 "http" can be specified.
+            interceptor (Optional[AuditManagerRestInterceptor]): Interceptor used
+                to manipulate requests, request metadata, and responses.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -886,9 +891,8 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
             Args:
                 request (~.auditmanager.EnrollResourceRequest):
-                    The request object. Request message to subscribe the
-                Audit Manager service for given
-                resource.
+                    The request object. Request message for
+                [EnrollResource][google.cloud.auditmanager.v1.AuditManager.EnrollResource].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -899,7 +903,9 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
             Returns:
                 ~.auditmanager.Enrollment:
-                    The enrollment resource.
+                    Organization, folder, or project to
+                enroll for audit reports.
+
             """
 
             http_options = (
@@ -1038,8 +1044,8 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
             Args:
                 request (~.auditmanager.GenerateAuditReportRequest):
-                    The request object. Message for requesting the Audit
-                Report.
+                    The request object. Request message for
+                [GenerateAuditReport][google.cloud.auditmanager.v1.AuditManager.GenerateAuditReport].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1192,8 +1198,8 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
                 Args:
                     request (~.auditmanager.GenerateAuditScopeReportRequest):
-                        The request object. Message for requesting audit scope
-                    report.
+                        The request object. Request message for
+                    [GenerateAuditScopeReport][google.cloud.auditmanager.v1.AuditManager.GenerateAuditScopeReport].
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1204,7 +1210,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
                 Returns:
                     ~.auditmanager.AuditScopeReport:
-                        The audit scope report.
+                        Audit scope report.
             """
 
             http_options = _BaseAuditManagerRestTransport._BaseGenerateAuditScopeReport._get_http_options()
@@ -1344,8 +1350,8 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
             Args:
                 request (~.auditmanager.GetAuditReportRequest):
-                    The request object. Message for requesting the overall
-                audit report for an audit report name.
+                    The request object. Request message for
+                [GetAuditReport][google.cloud.auditmanager.v1.AuditManager.GetAuditReport].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1493,8 +1499,8 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
                 Args:
                     request (~.auditmanager.GetResourceEnrollmentStatusRequest):
-                        The request object. Message for getting the enrollment
-                    status of a resource.
+                        The request object. Request message for
+                    [GetResourceEnrollmentStatus][google.cloud.auditmanager.v1.AuditManager.GetResourceEnrollmentStatus].
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1505,8 +1511,8 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
                 Returns:
                     ~.auditmanager.ResourceEnrollmentStatus:
-                        A resource with its enrollment
-                    status.
+                        An organization, folder, or project
+                    with its enrollment status.
 
             """
 
@@ -1646,8 +1652,8 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
             Args:
                 request (~.auditmanager.ListAuditReportsRequest):
-                    The request object. Message for requesting to list the
-                audit reports.
+                    The request object. Request message for
+                [ListAuditReports][google.cloud.auditmanager.v1.AuditManager.ListAuditReports].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1658,8 +1664,8 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
             Returns:
                 ~.auditmanager.ListAuditReportsResponse:
-                    Response message with all the audit
-                reports.
+                    Response message for
+                [ListAuditReports][google.cloud.auditmanager.v1.AuditManager.ListAuditReports].
 
             """
 
@@ -1797,8 +1803,8 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
             Args:
                 request (~.auditmanager.ListControlsRequest):
-                    The request object. Message for requesting all the
-                controls for a compliance standard.
+                    The request object. Request message for
+                [ListControls][google.cloud.auditmanager.v1.AuditManager.ListControls].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1809,8 +1815,8 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
             Returns:
                 ~.auditmanager.ListControlsResponse:
-                    Response message with all the
-                controls for a compliance standard.
+                    Response message for
+                [ListControls][google.cloud.auditmanager.v1.AuditManager.ListControls].
 
             """
 
@@ -1950,9 +1956,8 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
                 Args:
                     request (~.auditmanager.ListResourceEnrollmentStatusesRequest):
-                        The request object. Message for listing all the
-                    descendent resources under parent with
-                    enrollment.
+                        The request object. Request message for
+                    [ListResourceEnrollmentStatuses][google.cloud.auditmanager.v1.AuditManager.ListResourceEnrollmentStatuses].
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1963,8 +1968,8 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
                 Returns:
                     ~.auditmanager.ListResourceEnrollmentStatusesResponse:
-                        Response message with all the
-                    descendent resources with enrollment.
+                        Response message for
+                    [ListResourceEnrollmentStatuses][google.cloud.auditmanager.v1.AuditManager.ListResourceEnrollmentStatuses].
 
             """
 

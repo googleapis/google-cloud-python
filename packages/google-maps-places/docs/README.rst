@@ -1,9 +1,10 @@
-Python Client for Places API
-============================
+Python Client for Places API (New)
+==================================
 
 |preview| |pypi| |versions|
 
-`Places API`_: The Places API allows developers to access a variety of search and retrieval endpoints for a Place.
+`Places API (New)`_: The Places API allows developers to access a variety of search and
+retrieval endpoints for a Place.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +15,7 @@ Python Client for Places API
    :target: https://pypi.org/project/google-maps-places/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-maps-places.svg
    :target: https://pypi.org/project/google-maps-places/
-.. _Places API: https://developers.google.com/maps/documentation/places/web-service/
+.. _Places API (New): https://developers.google.com/maps/documentation/places/web-service/
 .. _Client Library Documentation: https://googleapis.dev/python/places/latest
 .. _Product Documentation:  https://developers.google.com/maps/documentation/places/web-service/
 
@@ -25,12 +26,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Places API.`_
+3. `Enable the Places API (New).`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Places API.:  https://developers.google.com/maps/documentation/places/web-service/
+.. _Enable the Places API (New).:  https://developers.google.com/maps/documentation/places/web-service/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +62,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -97,14 +99,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Places API
+-  Read the `Client Library Documentation`_ for Places API (New)
    to see other available methods on the client.
--  Read the `Places API Product documentation`_ to learn
+-  Read the `Places API (New) Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Places API Product documentation:  https://developers.google.com/maps/documentation/places/web-service/
+.. _Places API (New) Product documentation:  https://developers.google.com/maps/documentation/places/web-service/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

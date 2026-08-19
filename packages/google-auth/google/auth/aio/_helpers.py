@@ -14,7 +14,6 @@
 
 """Helper functions for commonly used utilities."""
 
-
 import logging
 from typing import Any
 
@@ -60,3 +59,13 @@ async def response_log_async(logger: logging.Logger, response: Any) -> None:
         # json_response = await _parse_response_async(response)
         json_response = None
         _helpers._response_log_base(logger, json_response)
+
+
+def _get_local_addr(connector: Any) -> Any:
+    local_addr = getattr(connector, "_local_addr", None)
+    if local_addr is not None:
+        return local_addr
+    local_addr_infos = getattr(connector, "_local_addr_infos", None)
+    if local_addr_infos:
+        return local_addr_infos[0][4]
+    return None

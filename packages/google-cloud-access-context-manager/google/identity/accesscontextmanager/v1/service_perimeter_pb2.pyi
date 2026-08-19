@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -69,12 +70,16 @@ class ServicePerimeter(_message.Message):
         name: _Optional[str] = ...,
         title: _Optional[str] = ...,
         description: _Optional[str] = ...,
-        create_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
-        update_time: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...,
+        create_time: _Optional[
+            _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+        ] = ...,
+        update_time: _Optional[
+            _Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]
+        ] = ...,
         perimeter_type: _Optional[_Union[ServicePerimeter.PerimeterType, str]] = ...,
         status: _Optional[_Union[ServicePerimeterConfig, _Mapping]] = ...,
         spec: _Optional[_Union[ServicePerimeterConfig, _Mapping]] = ...,
-        use_explicit_dry_run_spec: bool = ...,
+        use_explicit_dry_run_spec: _Optional[bool] = ...,
     ) -> None: ...
 
 class ServicePerimeterConfig(_message.Message):
@@ -105,7 +110,7 @@ class ServicePerimeterConfig(_message.Message):
         allowed_services: _containers.RepeatedScalarFieldContainer[str]
         def __init__(
             self,
-            enable_restriction: bool = ...,
+            enable_restriction: _Optional[bool] = ...,
             allowed_services: _Optional[_Iterable[str]] = ...,
         ) -> None: ...
 

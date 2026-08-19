@@ -1,0 +1,50 @@
+{% include 'license.py.j2' %}
+
+#
+# DO NOT MODIFY THIS FILE DIRECTLY.
+# This file was generated from: {{ yaml_path }}
+# by the script: {{ script_path }}
+
+from __future__ import annotations
+
+import datetime
+import decimal
+from typing import Any, Literal, Optional, TypeVar, Union
+
+from bigframes import dtypes
+import bigframes.core.col
+import bigframes.core.expression as ex
+import bigframes.core.googlesql
+import bigframes.core.sentinels as sentinels
+from bigframes.operations import googlesql
+import bigframes.operations as ops
+import bigframes.series as series
+
+{% for op in ops %}
+{% if op.signature_definition %}
+{{ op.signature_definition }}
+
+
+{% endif %}
+{{ op.internal_name }} = googlesql.GoogleSqlScalarOp(
+    "{{ op.sql_name }}",
+    args=({{ op.arg_specs }}),
+    signature={{ op.signature }},
+)
+{% endfor %}
+{% for func in functions %}
+
+
+def {{ func.name }}(
+{% for arg in func.args %}
+    {{ arg.name }}: Union[series.Series, bigframes.core.col.Expression, {{ arg.type_hint }}]{% if arg.default %} = {{ arg.default }}{% endif %},
+{% endfor %}
+) -> Union[series.Series, bigframes.core.col.Expression]:
+    """{{ func.description | indent(4) }}"""
+    return bigframes.core.googlesql.apply_googlesql_scalar_op(
+        {{ func.op_name }},
+{% for arg in func.args %}
+        {{ arg.name }},
+{% endfor %}
+    )
+{% endfor %}

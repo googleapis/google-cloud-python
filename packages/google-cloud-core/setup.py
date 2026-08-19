@@ -17,7 +17,6 @@ import os
 
 import setuptools
 
-
 # Package metadata.
 
 name = "google-cloud-core"
@@ -28,15 +27,15 @@ description = "Google Cloud API client core library"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    "google-api-core >= 1.31.6, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0",
-    "google-auth >= 1.25.0, < 3.0.0",
-    "importlib-metadata > 1.0.0; python_version<'3.8'",
+    "google-api-core >= 2.28.0, <3.0.0",
+    "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
 ]
 extras = {
     "grpc": [
-        "grpcio >= 1.38.0, < 2.0.0; python_version < '3.14'",
+        "grpcio >= 1.59.0, < 2.0.0",
         "grpcio >= 1.75.1, < 2.0.0; python_version >= '3.14'",
-        "grpcio-status >= 1.38.0, < 2.0.0",
+        "grpcio-status >= 1.59.0, < 2.0.0",
+        "grpcio-status >= 1.75.1, < 2.0.0; python_version >= '3.14'",
     ],
 }
 
@@ -76,9 +75,6 @@ setuptools.setup(
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
@@ -91,7 +87,7 @@ setuptools.setup(
     packages=packages,
     install_requires=dependencies,
     extras_require=extras,
-    python_requires=">=3.7",
+    python_requires=">=3.10",
     include_package_data=True,
     zip_safe=False,
 )

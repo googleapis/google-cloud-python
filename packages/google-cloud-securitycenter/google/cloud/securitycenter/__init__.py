@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,6 +29,13 @@ from google.cloud.securitycenter_v1.types.access import (
     Geolocation,
     ServiceAccountDelegationInfo,
 )
+from google.cloud.securitycenter_v1.types.agent import Agent
+from google.cloud.securitycenter_v1.types.agent_anomaly import (
+    AgentAnomaly,
+    DetectorReference,
+    InvocationReference,
+)
+from google.cloud.securitycenter_v1.types.agent_session import AgentSession
 from google.cloud.securitycenter_v1.types.application import Application
 from google.cloud.securitycenter_v1.types.asset import Asset
 from google.cloud.securitycenter_v1.types.attack_exposure import AttackExposure
@@ -37,6 +44,7 @@ from google.cloud.securitycenter_v1.types.backup_disaster_recovery import (
     BackupDisasterRecovery,
 )
 from google.cloud.securitycenter_v1.types.bigquery_export import BigQueryExport
+from google.cloud.securitycenter_v1.types.chokepoint import Chokepoint
 from google.cloud.securitycenter_v1.types.cloud_armor import (
     AdaptiveProtection,
     Attack,
@@ -46,6 +54,8 @@ from google.cloud.securitycenter_v1.types.cloud_armor import (
 )
 from google.cloud.securitycenter_v1.types.cloud_dlp_data_profile import (
     CloudDlpDataProfile,
+    InfoType,
+    SensitivityScore,
 )
 from google.cloud.securitycenter_v1.types.cloud_dlp_inspection import CloudDlpInspection
 from google.cloud.securitycenter_v1.types.compliance import Compliance
@@ -71,6 +81,7 @@ from google.cloud.securitycenter_v1.types.exfiltration import (
     ExfilResource,
     Exfiltration,
 )
+from google.cloud.securitycenter_v1.types.external_exposure import ExternalExposure
 from google.cloud.securitycenter_v1.types.external_system import ExternalSystem
 from google.cloud.securitycenter_v1.types.file import File
 from google.cloud.securitycenter_v1.types.finding import Finding
@@ -224,18 +235,26 @@ __all__ = (
     "Access",
     "Geolocation",
     "ServiceAccountDelegationInfo",
+    "Agent",
+    "AgentAnomaly",
+    "DetectorReference",
+    "InvocationReference",
+    "AgentSession",
     "Application",
     "Asset",
     "AttackExposure",
     "AttackPath",
     "BackupDisasterRecovery",
     "BigQueryExport",
+    "Chokepoint",
     "AdaptiveProtection",
     "Attack",
     "CloudArmor",
     "Requests",
     "SecurityPolicy",
     "CloudDlpDataProfile",
+    "InfoType",
+    "SensitivityScore",
     "CloudDlpInspection",
     "Compliance",
     "Connection",
@@ -251,6 +270,7 @@ __all__ = (
     "Position",
     "ExfilResource",
     "Exfiltration",
+    "ExternalExposure",
     "ExternalSystem",
     "File",
     "Finding",

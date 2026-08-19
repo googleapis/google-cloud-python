@@ -85,6 +85,11 @@
                 "list_workstations"
               ]
             },
+            "PushCredentials": {
+              "methods": [
+                "push_credentials"
+              ]
+            },
             "StartWorkstation": {
               "methods": [
                 "start_workstation"
@@ -190,6 +195,11 @@
                 "list_workstations"
               ]
             },
+            "PushCredentials": {
+              "methods": [
+                "push_credentials"
+              ]
+            },
             "StartWorkstation": {
               "methods": [
                 "start_workstation"
@@ -293,6 +303,11 @@
             "ListWorkstations": {
               "methods": [
                 "list_workstations"
+              ]
+            },
+            "PushCredentials": {
+              "methods": [
+                "push_credentials"
               ]
             },
             "StartWorkstation": {

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -97,7 +97,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -238,6 +238,10 @@ class ReferenceListServiceGrpcAsyncIOTransport(ReferenceListServiceTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -448,6 +452,36 @@ class ReferenceListServiceGrpcAsyncIOTransport(ReferenceListServiceTransport):
             )
         return self._stubs["update_reference_list"]
 
+    @property
+    def verify_reference_list(
+        self,
+    ) -> Callable[
+        [reference_list.VerifyReferenceListRequest],
+        Awaitable[reference_list.VerifyReferenceListResponse],
+    ]:
+        r"""Return a callable for the verify reference list method over gRPC.
+
+        VerifyReferenceList validates list content and
+        returns line errors, if any.
+
+        Returns:
+            Callable[[~.VerifyReferenceListRequest],
+                    Awaitable[~.VerifyReferenceListResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "verify_reference_list" not in self._stubs:
+            self._stubs["verify_reference_list"] = self._logged_channel.unary_unary(
+                "/google.cloud.chronicle.v1.ReferenceListService/VerifyReferenceList",
+                request_serializer=reference_list.VerifyReferenceListRequest.serialize,
+                response_deserializer=reference_list.VerifyReferenceListResponse.deserialize,
+            )
+        return self._stubs["verify_reference_list"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -486,6 +520,20 @@ class ReferenceListServiceGrpcAsyncIOTransport(ReferenceListServiceTransport):
             ),
             self.update_reference_list: self._wrap_method(
                 self.update_reference_list,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.verify_reference_list: self._wrap_method(
+                self.verify_reference_list,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
                 default_timeout=60.0,
                 client_info=client_info,
             ),

@@ -139,13 +139,10 @@ tasklet, properly yielding when appropriate::
 
 import functools
 import logging
+import typing
 
+from google.cloud.ndb import _options, exceptions, tasklets, utils
 from google.cloud.ndb import context as context_module
-from google.cloud.ndb import exceptions
-from google.cloud.ndb import _options
-from google.cloud.ndb import tasklets
-from google.cloud.ndb import utils
-
 
 __all__ = [
     "QueryOptions",
@@ -287,6 +284,9 @@ class ParameterizedThing(object):
         if eq is not NotImplemented:
             eq = not eq
         return eq
+
+    def resolve(self, bindings, used):
+        raise NotImplementedError
 
 
 class Parameter(ParameterizedThing):
@@ -513,6 +513,10 @@ class ParameterNode(Node):
             :class:`.ParameterizedFunction`.
     """
 
+    _prop: typing.Any
+    _op: str
+    _param: typing.Any
+
     def __new__(cls, prop, op, param):
         # Avoid circular import in Python 2.7
         from google.cloud.ndb import model
@@ -643,8 +647,9 @@ class FilterNode(Node):
         if opsymbol == _IN_OP:
             if not isinstance(value, (list, tuple, set, frozenset)):
                 raise TypeError(
-                    "in expected a list, tuple or set of values; "
-                    "received {!r}".format(value)
+                    "in expected a list, tuple or set of values; received {!r}".format(
+                        value
+                    )
                 )
             nodes = [FilterNode(name, _EQ_OP, sub_value) for sub_value in value]
             if not nodes:
@@ -722,6 +727,8 @@ class PostFilterNode(Node):
             the given filter.
     """
 
+    predicate: typing.Any
+
     def __new__(cls, predicate):
         instance = super(PostFilterNode, cls).__new__(cls)
         instance.predicate = predicate
@@ -797,7 +804,7 @@ class _BooleanClauses(object):
         self.combine_or = combine_or
         if combine_or:
             # For ``OR()`` the parts are just nodes.
-            self.or_parts = []
+            self.or_parts: list = []
         else:
             # For ``AND()`` the parts are "segments", i.e. node lists.
             self.or_parts = [[]]
@@ -882,6 +889,8 @@ class ConjunctionNode(Node):
         RuntimeError: If the ``nodes`` combine to an "empty" boolean
             expression.
     """
+
+    _nodes: list
 
     def __new__(cls, *nodes):
         if not nodes:
@@ -1037,6 +1046,7 @@ class DisjunctionNode(Node):
     """
 
     _multiquery = True
+    _nodes: list
 
     def __new__(cls, *nodes):
         if not nodes:
@@ -1132,8 +1142,8 @@ def _query_options(wrapped):
     @functools.wraps(wrapped)
     def wrapper(self, *args, **kwargs):
         # Avoid circular import in Python 2.7
-        from google.cloud.ndb import context as context_module
         from google.cloud.ndb import _datastore_api
+        from google.cloud.ndb import context as context_module
 
         # Maybe we already did this (in the case of X calling X_async)
         if "_options" in kwargs:
@@ -1204,6 +1214,10 @@ def _query_options(wrapped):
 
 
 class QueryOptions(_options.ReadOptions):
+    namespace: typing.Optional[str]
+    project: typing.Optional[str]
+    ancestor: typing.Any
+
     __slots__ = (
         # Query options
         "kind",
@@ -1338,8 +1352,9 @@ class Query(object):
 
             if not isinstance(default_options, QueryOptions):
                 raise TypeError(
-                    "default_options must be QueryOptions or None; "
-                    "received {}".format(default_options)
+                    "default_options must be QueryOptions or None; received {}".format(
+                        default_options
+                    )
                 )
 
             # Not sure why we're doing all this checking just for this one
@@ -1375,12 +1390,12 @@ class Query(object):
                 if isinstance(ancestor, ParameterizedFunction):
                     if ancestor.func != "key":
                         raise TypeError(
-                            "ancestor cannot be a GQL function" "other than Key"
+                            "ancestor cannot be a GQL function other than Key"
                         )
             else:
                 if not isinstance(ancestor, model.Key):
                     raise TypeError(
-                        "ancestor must be a Key; " "received {}".format(ancestor)
+                        "ancestor must be a Key; received {}".format(ancestor)
                     )
                 if not ancestor.id():
                     raise ValueError("ancestor cannot be an incomplete key")
@@ -1407,8 +1422,7 @@ class Query(object):
         if filters is not None:
             if not isinstance(filters, Node):
                 raise TypeError(
-                    "filters must be a query Node or None; "
-                    "received {}".format(filters)
+                    "filters must be a query Node or None; received {}".format(filters)
                 )
         if order_by is not None and orders is not None:
             raise TypeError(
@@ -1420,8 +1434,9 @@ class Query(object):
         if order_by is not None:
             if not isinstance(order_by, (list, tuple)):
                 raise TypeError(
-                    "order must be a list, a tuple or None; "
-                    "received {}".format(order_by)
+                    "order must be a list, a tuple or None; received {}".format(
+                        order_by
+                    )
                 )
             order_by = self._to_property_orders(order_by)
 
@@ -1442,8 +1457,9 @@ class Query(object):
                 raise TypeError("projection argument cannot be empty")
             if not isinstance(projection, (tuple, list)):
                 raise TypeError(
-                    "projection must be a tuple, list or None; "
-                    "received {}".format(projection)
+                    "projection must be a tuple, list or None; received {}".format(
+                        projection
+                    )
                 )
             projection = _to_property_names(projection)
             _check_properties(self.kind, projection)
@@ -1463,8 +1479,9 @@ class Query(object):
                 raise TypeError("distinct_on argument cannot be empty")
             if not isinstance(distinct_on, (tuple, list)):
                 raise TypeError(
-                    "distinct_on must be a tuple, list or None; "
-                    "received {}".format(distinct_on)
+                    "distinct_on must be a tuple, list or None; received {}".format(
+                        distinct_on
+                    )
                 )
             distinct_on = _to_property_names(distinct_on)
             _check_properties(self.kind, distinct_on)
@@ -1535,13 +1552,13 @@ class Query(object):
                 )
             new_filters.append(filter)
         if len(new_filters) == 1:
-            new_filters = new_filters[0]
+            final_filters = new_filters[0]
         else:
-            new_filters = ConjunctionNode(*new_filters)
+            final_filters = ConjunctionNode(*new_filters)
         return self.__class__(
             kind=self.kind,
             ancestor=self.ancestor,
-            filters=new_filters,
+            filters=final_filters,
             order_by=self.order_by,
             project=self.project,
             namespace=self.namespace,
@@ -1603,7 +1620,7 @@ class Query(object):
                 return True
 
         bindings = MockBindings()
-        used = {}
+        used: dict[typing.Any, typing.Any] = {}
         ancestor = self.ancestor
         if isinstance(ancestor, ParameterizedThing):
             ancestor = ancestor.resolve(bindings, used)
@@ -1633,10 +1650,10 @@ class Query(object):
             google.cloud.ndb.exceptions.BadArgumentError: If one of
                 the positional parameters is not used in the query.
         """
-        bindings = dict(keyword)
+        bindings: dict[typing.Any, typing.Any] = dict(keyword)
         for i, arg in enumerate(positional):
             bindings[i + 1] = arg
-        used = {}
+        used: dict[typing.Any, typing.Any] = {}
         ancestor = self.ancestor
         if isinstance(ancestor, ParameterizedThing):
             ancestor = ancestor.resolve(bindings, used)
@@ -2354,7 +2371,7 @@ def _to_property_names(properties):
             fixed.append(prop._name)
         else:
             raise TypeError(
-                "Unexpected property {}; " "should be string or Property".format(prop)
+                "Unexpected property {}; should be string or Property".format(prop)
             )
     return fixed
 

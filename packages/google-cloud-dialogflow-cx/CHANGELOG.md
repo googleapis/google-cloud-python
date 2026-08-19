@@ -4,6 +4,36 @@
 
 [1]: https://pypi.org/project/google-cloud-dialogflow-cx/#history
 
+## [2.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v2.6.0...google-cloud-dialogflow-cx-v2.7.0) (2026-06-25)
+
+
+### Features
+
+* update googleapis and regenerate ([#17554](https://github.com/googleapis/google-cloud-python/issues/17554)) ([03d0574](https://github.com/googleapis/google-cloud-python/commit/03d0574da8485e918f16e90666928f5c7b7f1c92))
+
+## [2.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v2.5.0...google-cloud-dialogflow-cx-v2.6.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-d packages (#17092) ([d49a2b9412b4ee9105125db36104a3e18344e0ad](https://github.com/googleapis/google-cloud-python/commit/d49a2b9412b4ee9105125db36104a3e18344e0ad))
+
+## [2.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v2.4.0...google-cloud-dialogflow-cx-v2.5.0) (2026-03-26)
+
+
+### Features
+
+* updated v3 dialogflow client libraries with `dtmf_pattern` and `trace_blocks` ([64582e886c1ae040afa8bf23b29bd1b8e81cebbe](https://github.com/googleapis/google-cloud-python/commit/64582e886c1ae040afa8bf23b29bd1b8e81cebbe))
+* updated v3beta1 dialogflow client libraries with `dtmf_pattern` and `trace_blocks` ([64582e886c1ae040afa8bf23b29bd1b8e81cebbe](https://github.com/googleapis/google-cloud-python/commit/64582e886c1ae040afa8bf23b29bd1b8e81cebbe))
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
 ## [2.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v2.3.0...google-cloud-dialogflow-cx-v2.4.0) (2026-02-19)
 
 

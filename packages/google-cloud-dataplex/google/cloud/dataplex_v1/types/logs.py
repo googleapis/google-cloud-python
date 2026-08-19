@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -910,11 +910,14 @@ class DataScanEvent(proto.Message):
                 Data scan triggers on demand.
             SCHEDULE (2):
                 Data scan triggers as per schedule.
+            ONE_TIME (3):
+                Data scan is run one time on creation.
         """
 
         TRIGGER_UNSPECIFIED = 0
         ON_DEMAND = 1
         SCHEDULE = 2
+        ONE_TIME = 3
 
     class Scope(proto.Enum):
         r"""The scope of job for the data scan.
@@ -1287,6 +1290,9 @@ class DataQualityScanRuleResult(proto.Message):
             SQL_ASSERTION (9):
                 See
                 [DataQualityRule.SqlAssertion][google.cloud.dataplex.v1.DataQualityRule.SqlAssertion].
+            TEMPLATE_REFERENCE (10):
+                See
+                [DataQualityRule.TemplateReference][google.cloud.dataplex.v1.DataQualityRule.TemplateReference].
         """
 
         RULE_TYPE_UNSPECIFIED = 0
@@ -1299,6 +1305,7 @@ class DataQualityScanRuleResult(proto.Message):
         TABLE_CONDITION_EXPECTATION = 7
         UNIQUENESS_EXPECTATION = 8
         SQL_ASSERTION = 9
+        TEMPLATE_REFERENCE = 10
 
     class EvaluationType(proto.Enum):
         r"""The evaluation type of the data quality rule.

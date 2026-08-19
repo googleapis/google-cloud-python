@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -69,9 +69,20 @@ class ListProgrammaticBuyersRequest(proto.Message):
             ``ListProgrammaticBuyers`` must match the call that provided
             the page token.
         filter (str):
-            Optional. Expression to filter the response.
-            See syntax details at
+            Optional. Expression to filter the response. See syntax
+            details at
             https://developers.google.com/ad-manager/api/beta/filters
+
+            **Filterable fields:**
+
+            - ``agency``
+            - ``buyerAccountId``
+            - ``displayName``
+            - ``name``
+            - ``parentAccountId``
+            - ``partnerClientId``
+            - ``preferredDealsEnabled``
+            - ``programmaticGuaranteedEnabled``
         order_by (str):
             Optional. Expression to specify sorting
             order. See syntax details at

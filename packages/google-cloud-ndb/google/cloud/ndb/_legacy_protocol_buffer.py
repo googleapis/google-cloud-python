@@ -16,7 +16,6 @@
 import array
 import struct
 
-
 # Python 3 doesn't have "long" anymore
 long = int
 
@@ -31,6 +30,9 @@ class ProtocolMessage:
         a.frombytes(s)
         d = Decoder(a, 0, len(a))
         self.TryMerge(d)
+
+    def TryMerge(self, d):
+        raise NotImplementedError
 
 
 class Decoder:

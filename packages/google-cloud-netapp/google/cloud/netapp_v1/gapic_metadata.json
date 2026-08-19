@@ -130,6 +130,31 @@
                 "establish_peering"
               ]
             },
+            "EstablishVolumePeering": {
+              "methods": [
+                "establish_volume_peering"
+              ]
+            },
+            "ExecuteOntapDelete": {
+              "methods": [
+                "execute_ontap_delete"
+              ]
+            },
+            "ExecuteOntapGet": {
+              "methods": [
+                "execute_ontap_get"
+              ]
+            },
+            "ExecuteOntapPatch": {
+              "methods": [
+                "execute_ontap_patch"
+              ]
+            },
+            "ExecuteOntapPost": {
+              "methods": [
+                "execute_ontap_post"
+              ]
+            },
             "GetActiveDirectory": {
               "methods": [
                 "get_active_directory"
@@ -465,6 +490,31 @@
                 "establish_peering"
               ]
             },
+            "EstablishVolumePeering": {
+              "methods": [
+                "establish_volume_peering"
+              ]
+            },
+            "ExecuteOntapDelete": {
+              "methods": [
+                "execute_ontap_delete"
+              ]
+            },
+            "ExecuteOntapGet": {
+              "methods": [
+                "execute_ontap_get"
+              ]
+            },
+            "ExecuteOntapPatch": {
+              "methods": [
+                "execute_ontap_patch"
+              ]
+            },
+            "ExecuteOntapPost": {
+              "methods": [
+                "execute_ontap_post"
+              ]
+            },
             "GetActiveDirectory": {
               "methods": [
                 "get_active_directory"
@@ -798,6 +848,31 @@
             "EstablishPeering": {
               "methods": [
                 "establish_peering"
+              ]
+            },
+            "EstablishVolumePeering": {
+              "methods": [
+                "establish_volume_peering"
+              ]
+            },
+            "ExecuteOntapDelete": {
+              "methods": [
+                "execute_ontap_delete"
+              ]
+            },
+            "ExecuteOntapGet": {
+              "methods": [
+                "execute_ontap_get"
+              ]
+            },
+            "ExecuteOntapPatch": {
+              "methods": [
+                "execute_ontap_patch"
+              ]
+            },
+            "ExecuteOntapPost": {
+              "methods": [
+                "execute_ontap_post"
               ]
             },
             "GetActiveDirectory": {

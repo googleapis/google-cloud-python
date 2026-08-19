@@ -16,26 +16,26 @@
 A test suite to check Spanner dialect for SQLAlchemy performance
 in comparison with the original Spanner client.
 """
+
 import base64
 import datetime
 import random
-from scipy.stats import sem
 import statistics
 import time
 
-from google.api_core.exceptions import Aborted
-from google.api_core.exceptions import NotFound
-from google.cloud import spanner
-from google.cloud import spanner_dbapi
+from google.api_core.exceptions import Aborted, NotFound
 from google.cloud.spanner_v1 import Client, KeySet
+from scipy.stats import sem
 from sqlalchemy import (
+    MetaData,
+    Table,
     create_engine,
     insert,
     select,
     text,
-    MetaData,
-    Table,
 )
+
+from google.cloud import spanner, spanner_dbapi
 
 PROJECT = "project-id"
 INSTANCE = "instance-id"

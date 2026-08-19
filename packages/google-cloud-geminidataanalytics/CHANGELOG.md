@@ -4,6 +4,34 @@
 
 [1]: https://pypi.org/project/google-cloud-geminidataanalytics/#history
 
+## [0.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.13.0...google-cloud-geminidataanalytics-v0.13.1) (2026-06-22)
+
+
+### Features
+
+* update googleapis and regenerate ([33ba3af](https://github.com/googleapis/google-cloud-python/commit/33ba3afe520e2f64ac7464f1b4ee31c0624a65ac))
+
+## [0.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.12.0...google-cloud-geminidataanalytics-v0.13.0) (2026-05-28)
+
+
+### Bug Fixes
+
+* generate and default to v1 (#17007) ([3820d9d3b5c201ea9ba6ce129fd7064cba02e23c](https://github.com/googleapis/google-cloud-python/commit/3820d9d3b5c201ea9ba6ce129fd7064cba02e23c))
+
+## [0.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.11.0...google-cloud-geminidataanalytics-v0.12.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
 ## [0.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.10.0...google-cloud-geminidataanalytics-v0.11.0) (2026-03-12)
 
 

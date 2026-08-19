@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@ from .common import (
     CloudControlCategory,
     CloudControlDetails,
     CloudProvider,
+    Control,
     ControlFamily,
     EnforcementMode,
     Framework,
@@ -115,6 +116,7 @@ from .monitoring import (
     FindingSummary,
     FrameworkComplianceReport,
     FrameworkComplianceSummary,
+    FrameworkComplianceSummaryView,
     ListControlComplianceSummariesRequest,
     ListControlComplianceSummariesResponse,
     ListFindingSummariesRequest,
@@ -124,6 +126,7 @@ from .monitoring import (
     ManualCloudControlAssessmentDetails,
     SimilarControls,
     TargetResourceDetails,
+    Trend,
 )
 
 __all__ = (
@@ -153,6 +156,7 @@ __all__ = (
     "CELExpression",
     "CloudControl",
     "CloudControlDetails",
+    "Control",
     "ControlFamily",
     "Framework",
     "FrameworkReference",
@@ -225,6 +229,8 @@ __all__ = (
     "ManualCloudControlAssessmentDetails",
     "SimilarControls",
     "TargetResourceDetails",
+    "Trend",
     "EvaluationState",
     "FindingClass",
+    "FrameworkComplianceSummaryView",
 )

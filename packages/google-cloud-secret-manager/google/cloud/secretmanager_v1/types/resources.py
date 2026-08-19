@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.iam.v1.resource_policy_member_pb2 as resource_policy_member_pb2  # type: ignore
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -167,7 +169,50 @@ class Secret(proto.Message):
 
             Tags can be used to control policy evaluation
             for the resource.
+        secret_type (google.cloud.secretmanager_v1.types.Secret.SecretType):
+            Optional. Immutable. This defines the type of the secret.
+            Enforces certain structural requirements on the
+            [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
+            For secret of type UNSPECIFIED, the SecretVersions can be of
+            any type.
+        policy_member (google.iam.v1.resource_policy_member_pb2.ResourcePolicyMember):
+            Output only. Defines the policy member for
+            the secret. This will be used to check if the
+            caller has the permission to perform certain
+            operations on the typed secret.
     """
+
+    class SecretType(proto.Enum):
+        r"""This defines the various values of the type of secret can be.
+
+        Values:
+            SECRET_TYPE_UNSPECIFIED (0):
+                Applicable to all secrets which do not have
+                any restriction on the SecretVersions.
+            CLOUD_SQL_DB_CREDENTIALS (1):
+                Applicable to secrets which are used for the
+                managed rotation feature for Cloud SQL Single
+                User.
+            ACCESS_KEY (2):
+                Applicable to secrets where the payload
+                contains an access key.
+            CERTIFICATE (3):
+                Applicable to secrets where the payload
+                contains a certificate.
+            OTHER_DB_CREDENTIALS (4):
+                Applicable to secrets where the payload
+                contains database credentials.
+            OTHER (50):
+                Applicable to secrets whose type doesn't
+                belong to any of the above defined types.
+        """
+
+        SECRET_TYPE_UNSPECIFIED = 0
+        CLOUD_SQL_DB_CREDENTIALS = 1
+        ACCESS_KEY = 2
+        CERTIFICATE = 3
+        OTHER_DB_CREDENTIALS = 4
+        OTHER = 50
 
     name: str = proto.Field(
         proto.STRING,
@@ -238,6 +283,16 @@ class Secret(proto.Message):
         proto.STRING,
         proto.STRING,
         number=16,
+    )
+    secret_type: SecretType = proto.Field(
+        proto.ENUM,
+        number=17,
+        enum=SecretType,
+    )
+    policy_member: resource_policy_member_pb2.ResourcePolicyMember = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=resource_policy_member_pb2.ResourcePolicyMember,
     )
 
 
@@ -711,7 +766,61 @@ class Rotation(proto.Message):
             [next_rotation_time][google.cloud.secretmanager.v1.Rotation.next_rotation_time]
             will be advanced by this period when the service
             automatically sends rotation notifications.
+        managed_rotation_status (google.cloud.secretmanager_v1.types.Rotation.ManagedRotationStatus):
+            Output only. The current status of the
+            managed rotation. This field is only applicable
+            to Typed Secrets. This field is set by the
+            service and cannot be set by the user.
     """
+
+    class ManagedRotationStatus(proto.Message):
+        r"""Represents the status of a managed rotation.
+
+        This is applicable only to Typed Secrets. It indicates whether
+        the rotation is active and any errors that may have occurred
+        during the asynchronous managed rotation.
+
+        Attributes:
+            state (google.cloud.secretmanager_v1.types.Rotation.ManagedRotationStatus.State):
+                Output only. Indicates whether the Managed
+                Rotation is active or not.
+            error (google.rpc.status_pb2.Status):
+                Output only. Displays customer-facing issues
+                that occurred during an asynchronous managed
+                rotation. For example, if there are some
+                permission errors.
+        """
+
+        class State(proto.Enum):
+            r"""This defines the various states in which the managed rotation
+            can be.
+
+            Values:
+                STATE_UNSPECIFIED (0):
+                    Not specified. This value is unused and
+                    invalid.
+                ACTIVE (1):
+                    Indicates that the Managed rotation is
+                    ACTIVE.
+                INACTIVE (2):
+                    Indicates that the Managed rotation is
+                    INACTIVE.
+            """
+
+            STATE_UNSPECIFIED = 0
+            ACTIVE = 1
+            INACTIVE = 2
+
+        state: "Rotation.ManagedRotationStatus.State" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="Rotation.ManagedRotationStatus.State",
+        )
+        error: status_pb2.Status = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=status_pb2.Status,
+        )
 
     next_rotation_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -722,6 +831,11 @@ class Rotation(proto.Message):
         proto.MESSAGE,
         number=2,
         message=duration_pb2.Duration,
+    )
+    managed_rotation_status: ManagedRotationStatus = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=ManagedRotationStatus,
     )
 
 

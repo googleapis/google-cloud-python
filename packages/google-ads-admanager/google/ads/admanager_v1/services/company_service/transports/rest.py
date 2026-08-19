@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -54,8 +54,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class CompanyServiceRestInterceptor:
@@ -73,6 +72,30 @@ class CompanyServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomCompanyServiceInterceptor(CompanyServiceRestInterceptor):
+            def pre_batch_create_companies(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_create_companies(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_batch_update_companies(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_batch_update_companies(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_company(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_company(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_company(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -89,11 +112,171 @@ class CompanyServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_company(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_company(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = CompanyServiceRestTransport(interceptor=MyCustomCompanyServiceInterceptor())
         client = CompanyServiceClient(transport=transport)
 
 
     """
+
+    def pre_batch_create_companies(
+        self,
+        request: company_service.BatchCreateCompaniesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        company_service.BatchCreateCompaniesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_create_companies
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CompanyService server.
+        """
+        return request, metadata
+
+    def post_batch_create_companies(
+        self, response: company_service.BatchCreateCompaniesResponse
+    ) -> company_service.BatchCreateCompaniesResponse:
+        """Post-rpc interceptor for batch_create_companies
+
+        DEPRECATED. Please use the `post_batch_create_companies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CompanyService server but before
+        it is returned to user code. This `post_batch_create_companies` interceptor runs
+        before the `post_batch_create_companies_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_create_companies_with_metadata(
+        self,
+        response: company_service.BatchCreateCompaniesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        company_service.BatchCreateCompaniesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_create_companies
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CompanyService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_create_companies_with_metadata`
+        interceptor in new development instead of the `post_batch_create_companies` interceptor.
+        When both interceptors are used, this `post_batch_create_companies_with_metadata` interceptor runs after the
+        `post_batch_create_companies` interceptor. The (possibly modified) response returned by
+        `post_batch_create_companies` will be passed to
+        `post_batch_create_companies_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_batch_update_companies(
+        self,
+        request: company_service.BatchUpdateCompaniesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        company_service.BatchUpdateCompaniesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for batch_update_companies
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CompanyService server.
+        """
+        return request, metadata
+
+    def post_batch_update_companies(
+        self, response: company_service.BatchUpdateCompaniesResponse
+    ) -> company_service.BatchUpdateCompaniesResponse:
+        """Post-rpc interceptor for batch_update_companies
+
+        DEPRECATED. Please use the `post_batch_update_companies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CompanyService server but before
+        it is returned to user code. This `post_batch_update_companies` interceptor runs
+        before the `post_batch_update_companies_with_metadata` interceptor.
+        """
+        return response
+
+    def post_batch_update_companies_with_metadata(
+        self,
+        response: company_service.BatchUpdateCompaniesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        company_service.BatchUpdateCompaniesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for batch_update_companies
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CompanyService server but before it is returned to user code.
+
+        We recommend only using this `post_batch_update_companies_with_metadata`
+        interceptor in new development instead of the `post_batch_update_companies` interceptor.
+        When both interceptors are used, this `post_batch_update_companies_with_metadata` interceptor runs after the
+        `post_batch_update_companies` interceptor. The (possibly modified) response returned by
+        `post_batch_update_companies` will be passed to
+        `post_batch_update_companies_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_create_company(
+        self,
+        request: company_service.CreateCompanyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        company_service.CreateCompanyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for create_company
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CompanyService server.
+        """
+        return request, metadata
+
+    def post_create_company(
+        self, response: company_messages.Company
+    ) -> company_messages.Company:
+        """Post-rpc interceptor for create_company
+
+        DEPRECATED. Please use the `post_create_company_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CompanyService server but before
+        it is returned to user code. This `post_create_company` interceptor runs
+        before the `post_create_company_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_company_with_metadata(
+        self,
+        response: company_messages.Company,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[company_messages.Company, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_company
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CompanyService server but before it is returned to user code.
+
+        We recommend only using this `post_create_company_with_metadata`
+        interceptor in new development instead of the `post_create_company` interceptor.
+        When both interceptors are used, this `post_create_company_with_metadata` interceptor runs after the
+        `post_create_company` interceptor. The (possibly modified) response returned by
+        `post_create_company` will be passed to
+        `post_create_company_with_metadata`.
+        """
+        return response, metadata
 
     def pre_get_company(
         self,
@@ -193,6 +376,77 @@ class CompanyServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_update_company(
+        self,
+        request: company_service.UpdateCompanyRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        company_service.UpdateCompanyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for update_company
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CompanyService server.
+        """
+        return request, metadata
+
+    def post_update_company(
+        self, response: company_messages.Company
+    ) -> company_messages.Company:
+        """Post-rpc interceptor for update_company
+
+        DEPRECATED. Please use the `post_update_company_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the CompanyService server but before
+        it is returned to user code. This `post_update_company` interceptor runs
+        before the `post_update_company_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_company_with_metadata(
+        self,
+        response: company_messages.Company,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[company_messages.Company, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_company
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the CompanyService server but before it is returned to user code.
+
+        We recommend only using this `post_update_company_with_metadata`
+        interceptor in new development instead of the `post_update_company` interceptor.
+        When both interceptors are used, this `post_update_company_with_metadata` interceptor runs after the
+        `post_update_company` interceptor. The (possibly modified) response returned by
+        `post_update_company` will be passed to
+        `post_update_company_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_cancel_operation(
+        self,
+        request: operations_pb2.CancelOperationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for cancel_operation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CompanyService server.
+        """
+        return request, metadata
+
+    def post_cancel_operation(self, response: None) -> None:
+        """Post-rpc interceptor for cancel_operation
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CompanyService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
@@ -229,7 +483,8 @@ class CompanyServiceRestStub:
 class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
     """REST backend synchronous transport for CompanyService.
 
-    Provides methods for handling ``Company`` objects.
+    Provides methods for handling
+    [Company][google.ads.admanager.v1.Company] objects.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -285,6 +540,12 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             url_scheme: the protocol scheme for the API endpoint.  Normally
                 "https", but for testing or local servers,
                 "http" can be specified.
+            interceptor (Optional[CompanyServiceRestInterceptor]): Interceptor used
+                to manipulate requests, request metadata, and responses.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -305,6 +566,462 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CompanyServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    class _BatchCreateCompanies(
+        _BaseCompanyServiceRestTransport._BaseBatchCreateCompanies,
+        CompanyServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("CompanyServiceRestTransport.BatchCreateCompanies")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: company_service.BatchCreateCompaniesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> company_service.BatchCreateCompaniesResponse:
+            r"""Call the batch create companies method over HTTP.
+
+            Args:
+                request (~.company_service.BatchCreateCompaniesRequest):
+                    The request object. Request object for [BatchCreateCompanies][] method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.company_service.BatchCreateCompaniesResponse:
+                    Response object for [BatchCreateCompanies][] method.
+            """
+
+            http_options = _BaseCompanyServiceRestTransport._BaseBatchCreateCompanies._get_http_options()
+
+            request, metadata = self._interceptor.pre_batch_create_companies(
+                request, metadata
+            )
+            transcoded_request = _BaseCompanyServiceRestTransport._BaseBatchCreateCompanies._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCompanyServiceRestTransport._BaseBatchCreateCompanies._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCompanyServiceRestTransport._BaseBatchCreateCompanies._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CompanyServiceClient.BatchCreateCompanies",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CompanyService",
+                        "rpcName": "BatchCreateCompanies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CompanyServiceRestTransport._BatchCreateCompanies._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = company_service.BatchCreateCompaniesResponse()
+            pb_resp = company_service.BatchCreateCompaniesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_create_companies(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_create_companies_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        company_service.BatchCreateCompaniesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.CompanyServiceClient.batch_create_companies",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CompanyService",
+                        "rpcName": "BatchCreateCompanies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _BatchUpdateCompanies(
+        _BaseCompanyServiceRestTransport._BaseBatchUpdateCompanies,
+        CompanyServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("CompanyServiceRestTransport.BatchUpdateCompanies")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: company_service.BatchUpdateCompaniesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> company_service.BatchUpdateCompaniesResponse:
+            r"""Call the batch update companies method over HTTP.
+
+            Args:
+                request (~.company_service.BatchUpdateCompaniesRequest):
+                    The request object. Request object for [BatchUpdateCompanies][] method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.company_service.BatchUpdateCompaniesResponse:
+                    Response object for [BatchUpdateCompanies][] method.
+            """
+
+            http_options = _BaseCompanyServiceRestTransport._BaseBatchUpdateCompanies._get_http_options()
+
+            request, metadata = self._interceptor.pre_batch_update_companies(
+                request, metadata
+            )
+            transcoded_request = _BaseCompanyServiceRestTransport._BaseBatchUpdateCompanies._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCompanyServiceRestTransport._BaseBatchUpdateCompanies._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCompanyServiceRestTransport._BaseBatchUpdateCompanies._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CompanyServiceClient.BatchUpdateCompanies",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CompanyService",
+                        "rpcName": "BatchUpdateCompanies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CompanyServiceRestTransport._BatchUpdateCompanies._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = company_service.BatchUpdateCompaniesResponse()
+            pb_resp = company_service.BatchUpdateCompaniesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_batch_update_companies(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_batch_update_companies_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        company_service.BatchUpdateCompaniesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.CompanyServiceClient.batch_update_companies",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CompanyService",
+                        "rpcName": "BatchUpdateCompanies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _CreateCompany(
+        _BaseCompanyServiceRestTransport._BaseCreateCompany, CompanyServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("CompanyServiceRestTransport.CreateCompany")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: company_service.CreateCompanyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> company_messages.Company:
+            r"""Call the create company method over HTTP.
+
+            Args:
+                request (~.company_service.CreateCompanyRequest):
+                    The request object. Request object for [CreateCompany][] method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.company_messages.Company:
+                    The [Company][google.ads.admanager.v1.Company] resource.
+            """
+
+            http_options = (
+                _BaseCompanyServiceRestTransport._BaseCreateCompany._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_company(request, metadata)
+            transcoded_request = _BaseCompanyServiceRestTransport._BaseCreateCompany._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCompanyServiceRestTransport._BaseCreateCompany._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCompanyServiceRestTransport._BaseCreateCompany._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CompanyServiceClient.CreateCompany",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CompanyService",
+                        "rpcName": "CreateCompany",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CompanyServiceRestTransport._CreateCompany._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = company_messages.Company()
+            pb_resp = company_messages.Company.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_company(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_company_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = company_messages.Company.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.CompanyServiceClient.create_company",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CompanyService",
+                        "rpcName": "CreateCompany",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
 
     class _GetCompany(
         _BaseCompanyServiceRestTransport._BaseGetCompany, CompanyServiceRestStub
@@ -346,7 +1063,7 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
 
             Args:
                 request (~.company_service.GetCompanyRequest):
-                    The request object. Request object for ``GetCompany`` method.
+                    The request object. Request object for [GetCompany][] method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -357,7 +1074,7 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
 
             Returns:
                 ~.company_messages.Company:
-                    The ``Company`` resource.
+                    The [Company][google.ads.admanager.v1.Company] resource.
             """
 
             http_options = (
@@ -492,7 +1209,7 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
 
             Args:
                 request (~.company_service.ListCompaniesRequest):
-                    The request object. Request object for ``ListCompanies`` method.
+                    The request object. Request object for [ListCompanies][] method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -503,8 +1220,10 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
 
             Returns:
                 ~.company_service.ListCompaniesResponse:
-                    Response object for ``ListCompaniesRequest`` containing
-                matching ``Company`` objects.
+                    Response object for
+                [ListCompaniesRequest][google.ads.admanager.v1.ListCompaniesRequest]
+                containing matching
+                [Company][google.ads.admanager.v1.Company] objects.
 
             """
 
@@ -600,6 +1319,186 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
                 )
             return resp
 
+    class _UpdateCompany(
+        _BaseCompanyServiceRestTransport._BaseUpdateCompany, CompanyServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("CompanyServiceRestTransport.UpdateCompany")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: company_service.UpdateCompanyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> company_messages.Company:
+            r"""Call the update company method over HTTP.
+
+            Args:
+                request (~.company_service.UpdateCompanyRequest):
+                    The request object. Request object for [UpdateCompany][] method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.company_messages.Company:
+                    The [Company][google.ads.admanager.v1.Company] resource.
+            """
+
+            http_options = (
+                _BaseCompanyServiceRestTransport._BaseUpdateCompany._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_company(request, metadata)
+            transcoded_request = _BaseCompanyServiceRestTransport._BaseUpdateCompany._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseCompanyServiceRestTransport._BaseUpdateCompany._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCompanyServiceRestTransport._BaseUpdateCompany._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CompanyServiceClient.UpdateCompany",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CompanyService",
+                        "rpcName": "UpdateCompany",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CompanyServiceRestTransport._UpdateCompany._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = company_messages.Company()
+            pb_resp = company_messages.Company.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_company(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_company_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = company_messages.Company.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.CompanyServiceClient.update_company",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CompanyService",
+                        "rpcName": "UpdateCompany",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    @property
+    def batch_create_companies(
+        self,
+    ) -> Callable[
+        [company_service.BatchCreateCompaniesRequest],
+        company_service.BatchCreateCompaniesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchCreateCompanies(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def batch_update_companies(
+        self,
+    ) -> Callable[
+        [company_service.BatchUpdateCompaniesRequest],
+        company_service.BatchUpdateCompaniesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BatchUpdateCompanies(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_company(
+        self,
+    ) -> Callable[[company_service.CreateCompanyRequest], company_messages.Company]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateCompany(self._session, self._host, self._interceptor)  # type: ignore
+
     @property
     def get_company(
         self,
@@ -617,6 +1516,126 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCompanies(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_company(
+        self,
+    ) -> Callable[[company_service.UpdateCompanyRequest], company_messages.Company]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateCompany(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def cancel_operation(self):
+        return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _CancelOperation(
+        _BaseCompanyServiceRestTransport._BaseCancelOperation, CompanyServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("CompanyServiceRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: operations_pb2.CancelOperationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> None:
+            r"""Call the cancel operation method over HTTP.
+
+            Args:
+                request (operations_pb2.CancelOperationRequest):
+                    The request object for CancelOperation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = _BaseCompanyServiceRestTransport._BaseCancelOperation._get_http_options()
+
+            request, metadata = self._interceptor.pre_cancel_operation(
+                request, metadata
+            )
+            transcoded_request = _BaseCompanyServiceRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseCompanyServiceRestTransport._BaseCancelOperation._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CompanyServiceClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CompanyService",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = CompanyServiceRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            return self._interceptor.post_cancel_operation(None)
 
     @property
     def get_operation(self):

@@ -1,0 +1,37 @@
+[
+    {
+      "mode": "NULLABLE",
+      "name": "species",
+      "type": "STRING"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "island",
+      "type": "STRING"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "culmen_length_mm",
+      "type": "FLOAT"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "culmen_depth_mm",
+      "type": "FLOAT"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "flipper_length_mm",
+      "type": "FLOAT"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "body_mass_g",
+      "type": "FLOAT"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "sex",
+      "type": "STRING"
+    }
+  ]

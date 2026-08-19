@@ -4,6 +4,41 @@
 
 [1]: https://pypi.org/project/google-cloud-compute/#history
 
+## [1.50.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.49.0...google-cloud-compute-v1.50.0) (2026-07-16)
+
+
+### Features
+
+* update googleapis and regenerate ([#17725](https://github.com/googleapis/google-cloud-python/issues/17725)) ([35e16da](https://github.com/googleapis/google-cloud-python/commit/35e16daf25480d66e9fc3443fe485ae2b0241ae3))
+
+## [1.49.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.48.0...google-cloud-compute-v1.49.0) (2026-06-25)
+
+
+### Features
+
+* regenerate google-cloud-compute ([#17576](https://github.com/googleapis/google-cloud-python/issues/17576)) ([140d86f](https://github.com/googleapis/google-cloud-python/commit/140d86fe6181a4d6f831df8cdc7d86facf8ebe00))
+
+## [1.48.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.47.0...google-cloud-compute-v1.48.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-c packages (#17091) ([165839343695fc74d09fc7900d4c55ddcb31a4d8](https://github.com/googleapis/google-cloud-python/commit/165839343695fc74d09fc7900d4c55ddcb31a4d8))
+
+## [1.47.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.46.0...google-cloud-compute-v1.47.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
 ## [1.46.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.45.0...google-cloud-compute-v1.46.0) (2026-03-12)
 
 

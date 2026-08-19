@@ -13,14 +13,12 @@
 # limitations under the License.
 
 import itertools
-
 from unittest import mock
 
 import pytest
-
 from google.api_core import exceptions as core_exceptions
-from google.cloud.ndb import _retry
-from google.cloud.ndb import tasklets
+
+from google.cloud.ndb import _retry, tasklets
 
 from . import utils
 

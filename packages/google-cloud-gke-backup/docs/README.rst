@@ -3,7 +3,8 @@ Python Client for Backup for GKE
 
 |preview| |pypi| |versions|
 
-`Backup for GKE`_: An API for backing up and restoring workloads in GKE.
+`Backup for GKE`_: Backup for GKE is a managed Kubernetes workload backup and restore
+service for GKE clusters.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +15,9 @@ Python Client for Backup for GKE
    :target: https://pypi.org/project/google-cloud-gke-backup/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-gke-backup.svg
    :target: https://pypi.org/project/google-cloud-gke-backup/
-.. _Backup for GKE: https://cloud.google.com/kubernetes-engine/docs/add-on/backup-for-gke/concepts/backup-for-gke
+.. _Backup for GKE: https://cloud.google.com/kubernetes-engine/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/gkebackup/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/kubernetes-engine/docs/add-on/backup-for-gke/concepts/backup-for-gke
+.. _Product Documentation:  https://cloud.google.com/kubernetes-engine/
 
 Quick Start
 -----------
@@ -30,7 +31,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Backup for GKE.:  https://cloud.google.com/kubernetes-engine/docs/add-on/backup-for-gke/concepts/backup-for-gke
+.. _Enable the Backup for GKE.:  https://cloud.google.com/kubernetes-engine/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +62,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -104,7 +106,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Backup for GKE Product documentation:  https://cloud.google.com/kubernetes-engine/docs/add-on/backup-for-gke/concepts/backup-for-gke
+.. _Backup for GKE Product documentation:  https://cloud.google.com/kubernetes-engine/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

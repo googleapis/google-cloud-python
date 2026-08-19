@@ -22,15 +22,15 @@ from setuptools import find_namespace_packages
 
 name = "google-cloud-access-context-manager"
 description = "Google Cloud Access Context Manager Protobufs"
-version = "0.3.0"
+version = "0.6.1"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
-    "google-api-core[grpc] >= 1.34.1, <3.0.0,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
-    "protobuf>=3.20.2,<7.0.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
+    "google-api-core[grpc] >= 2.25.0, <3.0.0",
+    "protobuf >= 6.33.5, < 8.0.0",
 ]
 
 # Setup boilerplate below this line.
@@ -48,16 +48,13 @@ setuptools.setup(
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
-    url="https://github.com/googleapis/python-access-context-manager",
+    url="https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-access-context-manager",
     classifiers=[
         release_status,
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
@@ -69,7 +66,7 @@ setuptools.setup(
     platforms="Posix; MacOS X; Windows",
     packages=find_namespace_packages(exclude=("tests*", "testing*")),
     install_requires=dependencies,
-    python_requires=">=3.7",
+    python_requires=">=3.10",
     include_package_data=True,
     zip_safe=False,
 )

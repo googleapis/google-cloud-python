@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ class ClientTlsPolicy(proto.Message):
         name (str):
             Required. Name of the ClientTlsPolicy resource. It matches
             the pattern
-            ``projects/*/locations/{location}/clientTlsPolicies/{client_tls_policy}``
+            ``projects/{project}/locations/{location}/clientTlsPolicies/{client_tls_policy}``
         description (str):
             Optional. Free-text description of the
             resource.

@@ -142,3 +142,13 @@ class Request(metaclass=abc.ABCMeta):
         Close the underlying session.
         """
         raise NotImplementedError("close must be implemented.")
+
+    def _clone(self) -> "Request":
+        """Creates a copy of this request adapter.
+
+        The base implementation returns `self` (an identical shared instance).
+        Transport adapters that maintain internal connection pools or stateful
+        sessions must override this method to return an independent, detached
+        adapter instance.
+        """
+        return self

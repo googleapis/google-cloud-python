@@ -1,9 +1,10 @@
-Python Client for Cloud Controls Partner API
-============================================
+Python Client for Cloud Controls Partner
+========================================
 
 |preview| |pypi| |versions|
 
-`Cloud Controls Partner API`_: Provides insights about your customers and their Assured Workloads based on your Sovereign Controls by Partners offering.
+`Cloud Controls Partner`_: Provides insights about your customers and their Assured Workloads based on
+your Sovereign Controls by Partners offering.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +15,9 @@ Python Client for Cloud Controls Partner API
    :target: https://pypi.org/project/google-cloud-cloudcontrolspartner/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-cloudcontrolspartner.svg
    :target: https://pypi.org/project/google-cloud-cloudcontrolspartner/
-.. _Cloud Controls Partner API: https://cloud.google.com/sovereign-controls-by-partners/docs/sovereign-partners/reference/rest
+.. _Cloud Controls Partner: https://cloud.google.com/sovereign-controls-by-partners/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-cloudcontrolspartner/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/sovereign-controls-by-partners/docs/sovereign-partners/reference/rest
+.. _Product Documentation:  https://cloud.google.com/sovereign-controls-by-partners/
 
 Quick Start
 -----------
@@ -25,12 +26,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Controls Partner API.`_
+3. `Enable the Cloud Controls Partner.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Controls Partner API.:  https://cloud.google.com/sovereign-controls-by-partners/docs/sovereign-partners/reference/rest
+.. _Enable the Cloud Controls Partner.:  https://cloud.google.com/sovereign-controls-by-partners/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +62,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -97,14 +99,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Controls Partner API
+-  Read the `Client Library Documentation`_ for Cloud Controls Partner
    to see other available methods on the client.
--  Read the `Cloud Controls Partner API Product documentation`_ to learn
+-  Read the `Cloud Controls Partner Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Controls Partner API Product documentation:  https://cloud.google.com/sovereign-controls-by-partners/docs/sovereign-partners/reference/rest
+.. _Cloud Controls Partner Product documentation:  https://cloud.google.com/sovereign-controls-by-partners/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

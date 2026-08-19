@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -63,6 +63,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 from google.ads.datamanager_v1.types import (
     ingestion_service,
+    processing_errors,
     request_status_per_destination,
 )
 
@@ -111,7 +112,7 @@ class IngestionServiceClient(metaclass=IngestionServiceClientMeta):
     """Service for sending audience data to supported destinations."""
 
     @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint):
+    def _get_default_mtls_endpoint(api_endpoint) -> Optional[str]:
         """Converts api endpoint to mTLS endpoint.
 
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
@@ -119,7 +120,7 @@ class IngestionServiceClient(metaclass=IngestionServiceClientMeta):
         Args:
             api_endpoint (Optional[str]): the api endpoint to convert.
         Returns:
-            str: converted mTLS api endpoint.
+            Optional[str]: converted mTLS api endpoint.
         """
         if not api_endpoint:
             return api_endpoint
@@ -129,6 +130,10 @@ class IngestionServiceClient(metaclass=IngestionServiceClientMeta):
         )
 
         m = mtls_endpoint_re.match(api_endpoint)
+        if m is None:
+            # Could not parse api_endpoint; return as-is.
+            return api_endpoint
+
         name, mtls, sandbox, googledomain = m.groups()
         if mtls or not googledomain:
             return api_endpoint
@@ -414,7 +419,7 @@ class IngestionServiceClient(metaclass=IngestionServiceClientMeta):
     @staticmethod
     def _get_api_endpoint(
         api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ):
+    ) -> str:
         """Return the API endpoint used by the client.
 
         Args:
@@ -511,7 +516,7 @@ class IngestionServiceClient(metaclass=IngestionServiceClientMeta):
             error._details.append(json.dumps(cred_info))
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -609,7 +614,7 @@ class IngestionServiceClient(metaclass=IngestionServiceClientMeta):
         self._universe_domain = IngestionServiceClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
-        self._api_endpoint = None  # updated below, depending on `transport`
+        self._api_endpoint: str = ""  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
@@ -739,6 +744,7 @@ class IngestionServiceClient(metaclass=IngestionServiceClientMeta):
                 # Initialize request argument(s)
                 destinations = datamanager_v1.Destination()
                 destinations.operating_account.account_id = "account_id_value"
+                destinations.operating_account.account_type = "FLOODLIGHT_CONFIG"
                 destinations.product_destination_id = "product_destination_id_value"
 
                 audience_members = datamanager_v1.AudienceMember()
@@ -831,6 +837,7 @@ class IngestionServiceClient(metaclass=IngestionServiceClientMeta):
                 # Initialize request argument(s)
                 destinations = datamanager_v1.Destination()
                 destinations.operating_account.account_id = "account_id_value"
+                destinations.operating_account.account_type = "FLOODLIGHT_CONFIG"
                 destinations.product_destination_id = "product_destination_id_value"
 
                 audience_members = datamanager_v1.AudienceMember()
@@ -890,6 +897,95 @@ class IngestionServiceClient(metaclass=IngestionServiceClientMeta):
         # Done; return the response.
         return response
 
+    def remove_all_audience_members(
+        self,
+        request: Optional[
+            Union[ingestion_service.RemoveAllAudienceMembersRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> ingestion_service.RemoveAllAudienceMembersResponse:
+        r"""Removes all audience members from the provided
+        destinations.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ads import datamanager_v1
+
+            def sample_remove_all_audience_members():
+                # Create a client
+                client = datamanager_v1.IngestionServiceClient()
+
+                # Initialize request argument(s)
+                destinations = datamanager_v1.Destination()
+                destinations.operating_account.account_id = "account_id_value"
+                destinations.operating_account.account_type = "FLOODLIGHT_CONFIG"
+                destinations.product_destination_id = "product_destination_id_value"
+
+                request = datamanager_v1.RemoveAllAudienceMembersRequest(
+                    destinations=destinations,
+                )
+
+                # Make the request
+                response = client.remove_all_audience_members(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.ads.datamanager_v1.types.RemoveAllAudienceMembersRequest, dict]):
+                The request object. Request to remove all users from an audience in the
+                provided destinations. Returns a
+                [RemoveAllAudienceMembersResponse][google.ads.datamanager.v1.RemoveAllAudienceMembersResponse].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.ads.datamanager_v1.types.RemoveAllAudienceMembersResponse:
+                Response from the
+                   [RemoveAllAudienceMembersRequest][google.ads.datamanager.v1.RemoveAllAudienceMembersRequest].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, ingestion_service.RemoveAllAudienceMembersRequest):
+            request = ingestion_service.RemoveAllAudienceMembersRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.remove_all_audience_members
+        ]
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def ingest_events(
         self,
         request: Optional[Union[ingestion_service.IngestEventsRequest, dict]] = None,
@@ -920,6 +1016,7 @@ class IngestionServiceClient(metaclass=IngestionServiceClientMeta):
                 # Initialize request argument(s)
                 destinations = datamanager_v1.Destination()
                 destinations.operating_account.account_id = "account_id_value"
+                destinations.operating_account.account_type = "FLOODLIGHT_CONFIG"
                 destinations.product_destination_id = "product_destination_id_value"
 
                 request = datamanager_v1.IngestEventsRequest(
@@ -960,6 +1057,109 @@ class IngestionServiceClient(metaclass=IngestionServiceClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.ingest_events]
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def ingest_ad_events(
+        self,
+        request: Optional[Union[ingestion_service.IngestAdEventsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> ingestion_service.IngestAdEventsResponse:
+        r"""Uploads a list of [AdEvent][google.ads.datamanager.v1.AdEvent]
+        resources to Google Analytics.
+
+        This feature is only available to accounts on an allowlist.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ads import datamanager_v1
+
+            def sample_ingest_ad_events():
+                # Create a client
+                client = datamanager_v1.IngestionServiceClient()
+
+                # Initialize request argument(s)
+                ad_events = datamanager_v1.AdEvent()
+                ad_events.event_subtype = "EVENT_SUBTYPE_OUTBOUND_CLICK"
+                ad_events.ad_type = "AD_TYPE_VIDEO"
+                ad_events.ad_format = "AD_FORMAT_VIDEO"
+                ad_events.ad_placement = "AD_PLACEMENT_STORY"
+                ad_events.targeting_type = "TARGETING_TYPE_REMARKETING"
+                ad_events.platform_type = "PLATFORM_TYPE_TABLET"
+                ad_events.platform = "PLATFORM_WEB"
+                ad_events.advertiser_id = "advertiser_id_value"
+                ad_events.event_type = "EVENT_TYPE_CLICK"
+                ad_events.campaign_id = "campaign_id_value"
+                ad_events.campaign_name = "campaign_name_value"
+                ad_events.source = "source_value"
+                ad_events.medium = "medium_value"
+                ad_events.viewability_info.view_type = "VIEW_TYPE_MRC_RENDERED"
+
+                encryption_info = datamanager_v1.EncryptionInfo()
+                encryption_info.gcp_wrapped_key_info.key_type = "XCHACHA20_POLY1305"
+                encryption_info.gcp_wrapped_key_info.wip_provider = "wip_provider_value"
+                encryption_info.gcp_wrapped_key_info.kek_uri = "kek_uri_value"
+                encryption_info.gcp_wrapped_key_info.encrypted_dek = "encrypted_dek_value"
+
+                request = datamanager_v1.IngestAdEventsRequest(
+                    ad_events=ad_events,
+                    encryption_info=encryption_info,
+                )
+
+                # Make the request
+                response = client.ingest_ad_events(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.ads.datamanager_v1.types.IngestAdEventsRequest, dict]):
+                The request object. Request to upload ad events.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.ads.datamanager_v1.types.IngestAdEventsResponse:
+                Response from an ad event ingestion
+                operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, ingestion_service.IngestAdEventsRequest):
+            request = ingestion_service.IngestAdEventsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.ingest_ad_events]
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1073,8 +1273,6 @@ class IngestionServiceClient(metaclass=IngestionServiceClientMeta):
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("IngestionServiceClient",)

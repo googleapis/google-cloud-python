@@ -15,24 +15,22 @@
 """
 Difficult to classify regression tests.
 """
+
 import os
 import pickle
 import threading
 import time
 import traceback
-
-import redis
-
 from unittest import mock
 
 import pytest
-
+import redis
 import test_utils.system
-
 from google.api_core import exceptions as core_exceptions
+
 from google.cloud import ndb
 
-from . import eventually, length_equals, KIND
+from . import KIND, eventually, length_equals
 
 USE_REDIS_CACHE = bool(os.environ.get("REDIS_CACHE_URL"))
 

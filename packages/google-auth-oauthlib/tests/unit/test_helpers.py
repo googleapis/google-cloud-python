@@ -17,10 +17,10 @@ import json
 import os
 from unittest import mock
 
-import pytest
-
 from google.auth import external_account_authorized_user
 import google.oauth2.credentials
+import pytest
+
 from google_auth_oauthlib import helpers
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")

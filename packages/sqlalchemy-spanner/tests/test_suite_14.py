@@ -14,136 +14,199 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from datetime import timezone
 import decimal
 import operator
 import os
-import pytest
 import random
 import time
+from datetime import timezone
 from unittest import mock
 
-from google.cloud.spanner_v1 import RequestOptions, Client
-
+import pytest
 import sqlalchemy
-from sqlalchemy import create_engine, literal, FLOAT
-from sqlalchemy import inspect
-from sqlalchemy import testing
-from sqlalchemy import ForeignKey
-from sqlalchemy import MetaData
-from sqlalchemy.schema import DDL
-from sqlalchemy.schema import Computed
-from sqlalchemy.testing import config
-from sqlalchemy.testing import engines
-from sqlalchemy.testing import eq_
-from sqlalchemy.testing import is_instance_of
-from sqlalchemy.testing import provide_metadata, emits_warning
-from sqlalchemy.testing import fixtures
-from sqlalchemy.testing.provision import temp_table_keyword_args
-from sqlalchemy.testing.schema import Column
-from sqlalchemy.testing.schema import Table
-from sqlalchemy import literal_column
-from sqlalchemy import select
-from sqlalchemy import util
-from sqlalchemy import union
-from sqlalchemy import event
-from sqlalchemy import exists
-from sqlalchemy import Boolean
-from sqlalchemy import Float
-from sqlalchemy import LargeBinary
-from sqlalchemy import String
-from sqlalchemy.sql.expression import cast
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relation
-from sqlalchemy.orm import Session
-from sqlalchemy.types import Integer
-from sqlalchemy.types import Numeric
-from sqlalchemy.types import Text
-from sqlalchemy.testing import requires
-from sqlalchemy.testing import is_true
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+from google.cloud import spanner_dbapi
+from google.cloud.spanner_v1 import Client, RequestOptions
+from google.cloud.sqlalchemy_spanner import version as sqlalchemy_spanner_version
+from sqlalchemy import (
+    FLOAT,
+    Boolean,
+    Float,
+    ForeignKey,
+    LargeBinary,
+    MetaData,
+    String,
+    create_engine,
+    event,
+    exists,
+    inspect,
+    literal,
+    literal_column,
+    select,
+    testing,
+    union,
+    util,
+)
 from sqlalchemy import types as sql_types
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import Session, relation
+from sqlalchemy.schema import DDL, Computed
+from sqlalchemy.sql.expression import cast
+from sqlalchemy.testing import (
+    config,
+    emits_warning,
+    engines,
+    eq_,
+    fixtures,
+    is_instance_of,
+    is_true,
+    provide_metadata,
+    requires,
+)
 from sqlalchemy.testing.fixtures import (
     ComputedReflectionFixtureTest as _ComputedReflectionFixtureTest,
 )
-
-from google.api_core.datetime_helpers import DatetimeWithNanoseconds
-
-from google.cloud import spanner_dbapi
-
+from sqlalchemy.testing.provision import temp_table_keyword_args
+from sqlalchemy.testing.schema import Column, Table
 from sqlalchemy.testing.suite.test_cte import *  # noqa: F401, F403
-from sqlalchemy.testing.suite.test_ddl import *  # noqa: F401, F403
-from sqlalchemy.testing.suite.test_dialect import *  # noqa: F401, F403
-from sqlalchemy.testing.suite.test_insert import *  # noqa: F401, F403
-from sqlalchemy.testing.suite.test_reflection import *  # noqa: F401, F403
-from sqlalchemy.testing.suite.test_results import *  # noqa: F401, F403
-from sqlalchemy.testing.suite.test_select import *  # noqa: F401, F403
-from sqlalchemy.testing.suite.test_sequence import (
-    SequenceTest as _SequenceTest,
-    HasSequenceTest as _HasSequenceTest,
-    HasSequenceTestEmpty as _HasSequenceTestEmpty,
-)  # noqa: F401, F403
-from sqlalchemy.testing.suite.test_update_delete import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_cte import CTETest as _CTETest
-from sqlalchemy.testing.suite.test_ddl import TableDDLTest as _TableDDLTest
+from sqlalchemy.testing.suite.test_ddl import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_ddl import (
     FutureTableDDLTest as _FutureTableDDLTest,
+)
+from sqlalchemy.testing.suite.test_ddl import (
     LongNameBlowoutTest as _LongNameBlowoutTest,
 )
-from sqlalchemy.testing.suite.test_update_delete import (
-    SimpleUpdateDeleteTest as _SimpleUpdateDeleteTest,
-)
+from sqlalchemy.testing.suite.test_ddl import TableDDLTest as _TableDDLTest
+from sqlalchemy.testing.suite.test_dialect import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_dialect import (
     DifficultParametersTest as _DifficultParametersTest,
+)
+from sqlalchemy.testing.suite.test_dialect import (
     EscapingTest as _EscapingTest,
 )
+from sqlalchemy.testing.suite.test_insert import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_insert import (
     InsertBehaviorTest as _InsertBehaviorTest,
 )
-from sqlalchemy.testing.suite.test_select import (  # noqa: F401, F403
-    CompoundSelectTest as _CompoundSelectTest,
-    ExistsTest as _ExistsTest,
-    FetchLimitOffsetTest as _FetchLimitOffsetTest,
-    IdentityAutoincrementTest as _IdentityAutoincrementTest,
-    IsOrIsNotDistinctFromTest as _IsOrIsNotDistinctFromTest,
-    LikeFunctionsTest as _LikeFunctionsTest,
-    OrderByLabelTest as _OrderByLabelTest,
-    PostCompileParamsTest as _PostCompileParamsTest,
+from sqlalchemy.testing.suite.test_reflection import *  # noqa: F401, F403
+from sqlalchemy.testing.suite.test_reflection import (
+    ComponentReflectionTest as _ComponentReflectionTest,
 )
 from sqlalchemy.testing.suite.test_reflection import (
     ComponentReflectionTestExtra as _ComponentReflectionTestExtra,
-    QuotedNameArgumentTest as _QuotedNameArgumentTest,
-    ComponentReflectionTest as _ComponentReflectionTest,
+)
+from sqlalchemy.testing.suite.test_reflection import (
     CompositeKeyReflectionTest as _CompositeKeyReflectionTest,
+)
+from sqlalchemy.testing.suite.test_reflection import (
     ComputedReflectionTest as _ComputedReflectionTest,
+)
+from sqlalchemy.testing.suite.test_reflection import (
     HasIndexTest as _HasIndexTest,
+)
+from sqlalchemy.testing.suite.test_reflection import (
     HasTableTest as _HasTableTest,
 )
+from sqlalchemy.testing.suite.test_reflection import (
+    QuotedNameArgumentTest as _QuotedNameArgumentTest,
+)
+from sqlalchemy.testing.suite.test_results import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_results import RowFetchTest as _RowFetchTest
+from sqlalchemy.testing.suite.test_select import *  # noqa: F401, F403
+from sqlalchemy.testing.suite.test_select import (  # noqa: F401, F403
+    CompoundSelectTest as _CompoundSelectTest,
+)
+from sqlalchemy.testing.suite.test_select import (
+    ExistsTest as _ExistsTest,
+)
+from sqlalchemy.testing.suite.test_select import (
+    FetchLimitOffsetTest as _FetchLimitOffsetTest,
+)
+from sqlalchemy.testing.suite.test_select import (
+    IdentityAutoincrementTest as _IdentityAutoincrementTest,
+)
+from sqlalchemy.testing.suite.test_select import (
+    IsOrIsNotDistinctFromTest as _IsOrIsNotDistinctFromTest,
+)
+from sqlalchemy.testing.suite.test_select import (
+    LikeFunctionsTest as _LikeFunctionsTest,
+)
+from sqlalchemy.testing.suite.test_select import (
+    OrderByLabelTest as _OrderByLabelTest,
+)
+from sqlalchemy.testing.suite.test_select import (
+    PostCompileParamsTest as _PostCompileParamsTest,
+)
+from sqlalchemy.testing.suite.test_sequence import (
+    HasSequenceTest as _HasSequenceTest,
+)
+from sqlalchemy.testing.suite.test_sequence import (
+    HasSequenceTestEmpty as _HasSequenceTestEmpty,
+)
+from sqlalchemy.testing.suite.test_sequence import (
+    SequenceTest as _SequenceTest,
+)  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_types import (  # noqa: F401, F403
     BooleanTest as _BooleanTest,
+)
+from sqlalchemy.testing.suite.test_types import (
     DateTest as _DateTest,
-    _DateFixture as __DateFixture,
-    DateTimeHistoricTest,
+)
+from sqlalchemy.testing.suite.test_types import (
     DateTimeCoercedToDateTimeTest as _DateTimeCoercedToDateTimeTest,
-    DateTimeMicrosecondsTest as _DateTimeMicrosecondsTest,
-    DateTimeTest as _DateTimeTest,
-    IntegerTest as _IntegerTest,
-    JSONTest as _JSONTest,
-    _LiteralRoundTripFixture,
-    NumericTest as _NumericTest,
-    StringTest as _StringTest,
-    TextTest as _TextTest,
-    TimeTest as _TimeTest,
-    TimeMicrosecondsTest as _TimeMicrosecondsTest,
+)
+from sqlalchemy.testing.suite.test_types import (  # noqa: F401
+    DateTimeHistoricTest,
     TimestampMicrosecondsTest,
-    UnicodeVarcharTest as _UnicodeVarcharTest,
+    _LiteralRoundTripFixture,
+)
+from sqlalchemy.testing.suite.test_types import (
+    DateTimeMicrosecondsTest as _DateTimeMicrosecondsTest,
+)
+from sqlalchemy.testing.suite.test_types import (
+    DateTimeTest as _DateTimeTest,
+)
+from sqlalchemy.testing.suite.test_types import (
+    IntegerTest as _IntegerTest,
+)
+from sqlalchemy.testing.suite.test_types import (
+    JSONTest as _JSONTest,
+)
+from sqlalchemy.testing.suite.test_types import (
+    NumericTest as _NumericTest,
+)
+from sqlalchemy.testing.suite.test_types import (
+    StringTest as _StringTest,
+)
+from sqlalchemy.testing.suite.test_types import (
+    TextTest as _TextTest,
+)
+from sqlalchemy.testing.suite.test_types import (
+    TimeMicrosecondsTest as _TimeMicrosecondsTest,
+)
+from sqlalchemy.testing.suite.test_types import (
+    TimeTest as _TimeTest,
+)
+from sqlalchemy.testing.suite.test_types import (
     UnicodeTextTest as _UnicodeTextTest,
+)
+from sqlalchemy.testing.suite.test_types import (
+    UnicodeVarcharTest as _UnicodeVarcharTest,
+)
+from sqlalchemy.testing.suite.test_types import (
+    _DateFixture as __DateFixture,
+)
+from sqlalchemy.testing.suite.test_types import (
     _UnicodeFixture as __UnicodeFixture,
 )
+from sqlalchemy.testing.suite.test_update_delete import *  # noqa: F401, F403
+from sqlalchemy.testing.suite.test_update_delete import (
+    SimpleUpdateDeleteTest as _SimpleUpdateDeleteTest,
+)
+from sqlalchemy.types import Integer, Numeric, Text
+
 from tests._helpers import get_db_url, get_project
-
-from google.cloud.sqlalchemy_spanner import version as sqlalchemy_spanner_version
-
 
 config.test_schema = ""
 
@@ -187,7 +250,7 @@ class ComponentReflectionTestExtra(_ComponentReflectionTestExtra):
     @testing.requires.table_reflection
     def test_nullable_reflection(self, connection, metadata):
         t = Table(
-            "t",
+            "t_nullable_reflection",
             metadata,
             Column("a", Integer, nullable=True),
             Column("b", Integer, nullable=False),
@@ -197,19 +260,21 @@ class ComponentReflectionTestExtra(_ComponentReflectionTestExtra):
         eq_(
             dict(
                 (col["name"], col["nullable"])
-                for col in inspect(connection).get_columns("t")
+                for col in inspect(connection).get_columns("t_nullable_reflection")
             ),
             {"a": True, "b": False},
         )
 
     def _type_round_trip(self, connection, metadata, *types):
         t = Table(
-            "t", metadata, *[Column("t%d" % i, type_) for i, type_ in enumerate(types)]
+            "t_type_round_trip",
+            metadata,
+            *[Column("t%d" % i, type_) for i, type_ in enumerate(types)],
         )
         t.create(connection)
         connection.connection.commit()
 
-        return [c["type"] for c in inspect(connection).get_columns("t")]
+        return [c["type"] for c in inspect(connection).get_columns("t_type_round_trip")]
 
     @testing.requires.table_reflection
     def test_numeric_reflection(self, connection, metadata):
@@ -633,7 +698,7 @@ class ComponentReflectionTest(_ComponentReflectionTest):
             event.listen(
                 user_tmp,
                 "after_create",
-                DDL("create temporary view user_tmp_v as " "select * from user_tmp"),
+                DDL("create temporary view user_tmp_v as select * from user_tmp"),
             )
             event.listen(user_tmp, "before_drop", DDL("drop view user_tmp_v"))
 
@@ -1144,7 +1209,7 @@ class EscapingTest(_EscapingTest):
         Overriding the test to avoid the same failure.
         """
         m = self.metadata
-        t = Table("t", m, Column("data", String(50)))
+        t = Table("t_percent_signs", m, Column("data", String(50)))
         t.create(config.db)
         with config.db.begin() as conn:
             conn.execute(t.insert(), dict(data="some % value"))
@@ -1488,7 +1553,7 @@ class NumericTest(_NumericTest):
         @testing.emits_warning(r".*does \*not\* support Decimal objects natively")
         def run(type_, input_, output, filter_=None, check_scale=False):
             t = Table(
-                "t",
+                "t_do_numeric",
                 metadata,
                 Column("x", type_),
                 Column("id", Integer, primary_key=True),
@@ -1996,7 +2061,7 @@ class PostCompileParamsTest(_PostCompileParamsTest):
 
         asserter.assert_(
             sqlalchemy.testing.assertsql.CursorSQL(
-                "SELECT some_table.id \nFROM some_table " "\nWHERE some_table.x = 10",
+                "SELECT some_table.id \nFROM some_table \nWHERE some_table.x = 10",
                 [] if config.db.dialect.positional else {},
             )
         )

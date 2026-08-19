@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -54,8 +54,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class RegionsServiceRestInterceptor:
@@ -510,6 +509,12 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             url_scheme: the protocol scheme for the API endpoint.  Normally
                 "https", but for testing or local servers,
                 "http" can be specified.
+            interceptor (Optional[RegionsServiceRestInterceptor]): Interceptor used
+                to manipulate requests, request metadata, and responses.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -1002,9 +1007,14 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
                     Represents a geographic region that you can use as a
                 target with both the ``RegionalInventory`` and
                 ``ShippingSettings`` services. You can define regions as
-                collections of either postal codes or, in some
-                countries, using predefined geotargets. For more
-                information, see `Set up
+                collections of either postal codes, radius areas or, in
+                some countries, using predefined geotargets.
+
+                A region must be defined by specifying exactly one of
+                ``postal_code_area``, ``geotarget_area``, or
+                ``radius_area``.
+
+                For more information, see `Set up
                 regions <https://support.google.com/merchants/answer/7410946#zippy=%2Ccreate-a-new-region>`__
                 for more information.
 
@@ -1265,9 +1275,14 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
                     Represents a geographic region that you can use as a
                 target with both the ``RegionalInventory`` and
                 ``ShippingSettings`` services. You can define regions as
-                collections of either postal codes or, in some
-                countries, using predefined geotargets. For more
-                information, see `Set up
+                collections of either postal codes, radius areas or, in
+                some countries, using predefined geotargets.
+
+                A region must be defined by specifying exactly one of
+                ``postal_code_area``, ``geotarget_area``, or
+                ``radius_area``.
+
+                For more information, see `Set up
                 regions <https://support.google.com/merchants/answer/7410946#zippy=%2Ccreate-a-new-region>`__
                 for more information.
 
@@ -1566,9 +1581,14 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
                     Represents a geographic region that you can use as a
                 target with both the ``RegionalInventory`` and
                 ``ShippingSettings`` services. You can define regions as
-                collections of either postal codes or, in some
-                countries, using predefined geotargets. For more
-                information, see `Set up
+                collections of either postal codes, radius areas or, in
+                some countries, using predefined geotargets.
+
+                A region must be defined by specifying exactly one of
+                ``postal_code_area``, ``geotarget_area``, or
+                ``radius_area``.
+
+                For more information, see `Set up
                 regions <https://support.google.com/merchants/answer/7410946#zippy=%2Ccreate-a-new-region>`__
                 for more information.
 

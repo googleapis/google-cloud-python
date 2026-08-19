@@ -207,6 +207,11 @@
                 "create_and_configure_account"
               ]
             },
+            "CreateTestAccount": {
+              "methods": [
+                "create_test_account"
+              ]
+            },
             "DeleteAccount": {
               "methods": [
                 "delete_account"
@@ -242,6 +247,11 @@
                 "create_and_configure_account"
               ]
             },
+            "CreateTestAccount": {
+              "methods": [
+                "create_test_account"
+              ]
+            },
             "DeleteAccount": {
               "methods": [
                 "delete_account"
@@ -275,6 +285,11 @@
             "CreateAndConfigureAccount": {
               "methods": [
                 "create_and_configure_account"
+              ]
+            },
+            "CreateTestAccount": {
+              "methods": [
+                "create_test_account"
               ]
             },
             "DeleteAccount": {

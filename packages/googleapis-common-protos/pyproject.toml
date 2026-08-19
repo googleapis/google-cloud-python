@@ -18,10 +18,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "googleapis-common-protos"
-version = "1.73.0"
+version = "1.75.1"
 authors = [{ name = "Google LLC", email = "googleapis-packages@google.com" }]
 license = { text = "Apache 2.0" }
-requires-python = ">= 3.7"
+requires-python = ">= 3.10"
 readme = "README.rst"
 description = "Common protobufs used in Google APIs"
 classifiers = [
@@ -30,9 +30,6 @@ classifiers = [
   "License :: OSI Approved :: Apache Software License",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.7",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
@@ -42,14 +39,14 @@ classifiers = [
   "Topic :: Internet",
 ]
 dependencies = [
-  "protobuf >= 3.20.2, < 7.0.0, != 4.21.1, != 4.21.2, != 4.21.3, != 4.21.4, != 4.21.5",
+  "protobuf >= 6.33.5, < 8.0.0",
 ]
 
 [project.urls]
 Repository = "https://github.com/googleapis/google-cloud-python/tree/main/packages/googleapis-common-protos"
 
 [project.optional-dependencies]
-grpc = ["grpcio >= 1.44.0, < 2.0.0"]
+grpc = ["grpcio >= 1.59.0, < 2.0.0"]
 
 [tool.setuptools.packages.find]
 include = ["google*"]

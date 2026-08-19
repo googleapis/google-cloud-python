@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
     package="google.cloud.support.v2",
     manifest={
         "ListAttachmentsRequest",
+        "GetAttachmentRequest",
         "ListAttachmentsResponse",
     },
 )
@@ -65,6 +66,20 @@ class ListAttachmentsRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class GetAttachmentRequest(proto.Message):
+    r"""Request for getting an attachment.
+
+    Attributes:
+        name (str):
+            Required. The name of the attachment to get.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

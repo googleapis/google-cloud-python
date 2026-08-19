@@ -1,9 +1,10 @@
-Python Client for Resource Manager
-==================================
+Python Client for Cloud Resource Manager
+========================================
 
 |stable| |pypi| |versions|
 
-`Resource Manager`_: provides methods that you can use to programmatically manage your projects in the Google Cloud Platform.
+`Cloud Resource Manager`_: Creates, reads, and updates metadata for Google Cloud Platform resource
+containers.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +15,7 @@ Python Client for Resource Manager
    :target: https://pypi.org/project/google-cloud-resource-manager/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-resource-manager.svg
    :target: https://pypi.org/project/google-cloud-resource-manager/
-.. _Resource Manager: https://cloud.google.com/resource-manager
+.. _Cloud Resource Manager: https://cloud.google.com/resource-manager
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/cloudresourcemanager/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/resource-manager
 
@@ -25,12 +26,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Resource Manager.`_
+3. `Enable the Cloud Resource Manager.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Resource Manager.:  https://cloud.google.com/resource-manager
+.. _Enable the Cloud Resource Manager.:  https://cloud.google.com/resource-manager
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +62,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -97,14 +99,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Resource Manager
+-  Read the `Client Library Documentation`_ for Cloud Resource Manager
    to see other available methods on the client.
--  Read the `Resource Manager Product documentation`_ to learn
+-  Read the `Cloud Resource Manager Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Resource Manager Product documentation:  https://cloud.google.com/resource-manager
+.. _Cloud Resource Manager Product documentation:  https://cloud.google.com/resource-manager
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

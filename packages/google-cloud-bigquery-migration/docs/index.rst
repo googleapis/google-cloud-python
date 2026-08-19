@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Google BigQuery Migration.
+This package includes clients for multiple versions of BigQuery Migration.
 By default, you will get version ``bigquery_migration_v2``.
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -125,12 +120,28 @@ def modify_default_endpoint_template(client):
     )
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert BatchControllerClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -151,6 +162,10 @@ def test__get_default_mtls_endpoint():
     )
     assert (
         BatchControllerClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    )
+    assert (
+        BatchControllerClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -977,7 +992,14 @@ def test_batch_controller_client_get_mtls_endpoint_and_cert_source(client_class)
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1024,7 +1046,14 @@ def test_batch_controller_client_get_mtls_endpoint_and_cert_source(client_class)
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1316,11 +1345,13 @@ def test_batch_controller_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1331,7 +1362,11 @@ def test_batch_controller_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dataproc",
+                "https://www.googleapis.com/auth/dataproc.read-only",
+            ),
             scopes=None,
             default_host="dataproc.googleapis.com",
             ssl_credentials=None,
@@ -1345,8 +1380,8 @@ def test_batch_controller_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        batches.CreateBatchRequest,
-        dict,
+        batches.CreateBatchRequest(),
+        {},
     ],
 )
 def test_create_batch(request_type, transport: str = "grpc"):
@@ -1357,7 +1392,7 @@ def test_create_batch(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_batch), "__call__") as call:
@@ -1400,11 +1435,12 @@ def test_create_batch_non_empty_request_with_auto_populated_field():
         client.create_batch(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batches.CreateBatchRequest(
+        request_msg = batches.CreateBatchRequest(
             parent="parent_value",
             batch_id="batch_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_batch_use_cached_wrapped_rpc():
@@ -1495,9 +1531,14 @@ async def test_create_batch_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_batch_async(
-    transport: str = "grpc_asyncio", request_type=batches.CreateBatchRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        batches.CreateBatchRequest(),
+        {},
+    ],
+)
+async def test_create_batch_async(request_type, transport: str = "grpc_asyncio"):
     client = BatchControllerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1505,7 +1546,7 @@ async def test_create_batch_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_batch), "__call__") as call:
@@ -1523,11 +1564,6 @@ async def test_create_batch_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_batch_async_from_dict():
-    await test_create_batch_async(request_type=dict)
 
 
 def test_create_batch_field_headers():
@@ -1696,8 +1732,8 @@ async def test_create_batch_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        batches.GetBatchRequest,
-        dict,
+        batches.GetBatchRequest(),
+        {},
     ],
 )
 def test_get_batch(request_type, transport: str = "grpc"):
@@ -1708,7 +1744,7 @@ def test_get_batch(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_batch), "__call__") as call:
@@ -1762,9 +1798,10 @@ def test_get_batch_non_empty_request_with_auto_populated_field():
         client.get_batch(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batches.GetBatchRequest(
+        request_msg = batches.GetBatchRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_batch_use_cached_wrapped_rpc():
@@ -1843,9 +1880,14 @@ async def test_get_batch_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_batch_async(
-    transport: str = "grpc_asyncio", request_type=batches.GetBatchRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        batches.GetBatchRequest(),
+        {},
+    ],
+)
+async def test_get_batch_async(request_type, transport: str = "grpc_asyncio"):
     client = BatchControllerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1853,7 +1895,7 @@ async def test_get_batch_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_batch), "__call__") as call:
@@ -1884,11 +1926,6 @@ async def test_get_batch_async(
     assert response.state_message == "state_message_value"
     assert response.creator == "creator_value"
     assert response.operation == "operation_value"
-
-
-@pytest.mark.asyncio
-async def test_get_batch_async_from_dict():
-    await test_get_batch_async(request_type=dict)
 
 
 def test_get_batch_field_headers():
@@ -2033,8 +2070,8 @@ async def test_get_batch_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        batches.ListBatchesRequest,
-        dict,
+        batches.ListBatchesRequest(),
+        {},
     ],
 )
 def test_list_batches(request_type, transport: str = "grpc"):
@@ -2045,7 +2082,7 @@ def test_list_batches(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_batches), "__call__") as call:
@@ -2094,12 +2131,13 @@ def test_list_batches_non_empty_request_with_auto_populated_field():
         client.list_batches(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batches.ListBatchesRequest(
+        request_msg = batches.ListBatchesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_batches_use_cached_wrapped_rpc():
@@ -2180,9 +2218,14 @@ async def test_list_batches_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_batches_async(
-    transport: str = "grpc_asyncio", request_type=batches.ListBatchesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        batches.ListBatchesRequest(),
+        {},
+    ],
+)
+async def test_list_batches_async(request_type, transport: str = "grpc_asyncio"):
     client = BatchControllerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2190,7 +2233,7 @@ async def test_list_batches_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_batches), "__call__") as call:
@@ -2213,11 +2256,6 @@ async def test_list_batches_async(
     assert isinstance(response, pagers.ListBatchesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_batches_async_from_dict():
-    await test_list_batches_async(request_type=dict)
 
 
 def test_list_batches_field_headers():
@@ -2412,6 +2450,9 @@ def test_list_batches_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, batches.Batch) for i in results)
@@ -2500,6 +2541,8 @@ async def test_list_batches_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2547,11 +2590,7 @@ async def test_list_batches_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_batches(request={})
-        ).pages:
+        async for page_ in (await client.list_batches(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2560,8 +2599,8 @@ async def test_list_batches_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        batches.DeleteBatchRequest,
-        dict,
+        batches.DeleteBatchRequest(),
+        {},
     ],
 )
 def test_delete_batch(request_type, transport: str = "grpc"):
@@ -2572,7 +2611,7 @@ def test_delete_batch(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_batch), "__call__") as call:
@@ -2613,9 +2652,10 @@ def test_delete_batch_non_empty_request_with_auto_populated_field():
         client.delete_batch(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batches.DeleteBatchRequest(
+        request_msg = batches.DeleteBatchRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_batch_use_cached_wrapped_rpc():
@@ -2696,9 +2736,14 @@ async def test_delete_batch_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_batch_async(
-    transport: str = "grpc_asyncio", request_type=batches.DeleteBatchRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        batches.DeleteBatchRequest(),
+        {},
+    ],
+)
+async def test_delete_batch_async(request_type, transport: str = "grpc_asyncio"):
     client = BatchControllerAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2706,7 +2751,7 @@ async def test_delete_batch_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_batch), "__call__") as call:
@@ -2722,11 +2767,6 @@ async def test_delete_batch_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_batch_async_from_dict():
-    await test_delete_batch_async(request_type=dict)
 
 
 def test_delete_batch_field_headers():
@@ -2983,7 +3023,7 @@ def test_create_batch_rest_required_fields(request_type=batches.CreateBatchReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_batch_rest_unset_required_fields():
@@ -3173,7 +3213,7 @@ def test_get_batch_rest_required_fields(request_type=batches.GetBatchRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_batch_rest_unset_required_fields():
@@ -3357,7 +3397,7 @@ def test_list_batches_rest_required_fields(request_type=batches.ListBatchesReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_batches_rest_unset_required_fields():
@@ -3488,6 +3528,9 @@ def test_list_batches_rest_pager(transport: str = "rest"):
 
         pager = client.list_batches(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, batches.Batch) for i in results)
@@ -3600,7 +3643,7 @@ def test_delete_batch_rest_required_fields(request_type=batches.DeleteBatchReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_batch_rest_unset_required_fields():
@@ -3790,7 +3833,6 @@ def test_create_batch_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.CreateBatchRequest()
-
         assert args[0] == request_msg
 
 
@@ -3811,7 +3853,6 @@ def test_get_batch_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.GetBatchRequest()
-
         assert args[0] == request_msg
 
 
@@ -3832,7 +3873,6 @@ def test_list_batches_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.ListBatchesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3853,7 +3893,6 @@ def test_delete_batch_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.DeleteBatchRequest()
-
         assert args[0] == request_msg
 
 
@@ -3892,7 +3931,6 @@ async def test_create_batch_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.CreateBatchRequest()
-
         assert args[0] == request_msg
 
 
@@ -3924,7 +3962,6 @@ async def test_get_batch_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.GetBatchRequest()
-
         assert args[0] == request_msg
 
 
@@ -3952,7 +3989,6 @@ async def test_list_batches_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.ListBatchesRequest()
-
         assert args[0] == request_msg
 
 
@@ -3975,7 +4011,6 @@ async def test_delete_batch_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.DeleteBatchRequest()
-
         assert args[0] == request_msg
 
 
@@ -3995,8 +4030,9 @@ def test_create_batch_rest_bad_request(request_type=batches.CreateBatchRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4054,6 +4090,14 @@ def test_create_batch_rest_call_success(request_type):
             "query_variables": {},
             "jar_file_uris": ["jar_file_uris_value1", "jar_file_uris_value2"],
         },
+        "pyspark_notebook_batch": {
+            "notebook_file_uri": "notebook_file_uri_value",
+            "params": {},
+            "python_file_uris": ["python_file_uris_value1", "python_file_uris_value2"],
+            "jar_file_uris": ["jar_file_uris_value1", "jar_file_uris_value2"],
+            "file_uris": ["file_uris_value1", "file_uris_value2"],
+            "archive_uris": ["archive_uris_value1", "archive_uris_value2"],
+        },
         "runtime_info": {
             "endpoints": {},
             "output_uri": "output_uri_value",
@@ -4063,6 +4107,7 @@ def test_create_batch_rest_call_success(request_type):
                 "shuffle_storage_gb_seconds": 2743,
                 "milli_accelerator_seconds": 2633,
                 "accelerator_type": "accelerator_type_value",
+                "update_time": {},
             },
             "current_usage": {
                 "milli_dcu": 946,
@@ -4100,6 +4145,7 @@ def test_create_batch_rest_call_success(request_type):
                 "ttl": {},
                 "staging_bucket": "staging_bucket_value",
                 "authentication_config": {"user_workload_authentication_type": 1},
+                "resource_manager_tags": {},
             },
             "peripherals_config": {
                 "metastore_service": "metastore_service_value",
@@ -4210,19 +4256,20 @@ def test_create_batch_rest_interceptors(null_interceptor):
     )
     client = BatchControllerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BatchControllerRestInterceptor, "post_create_batch"
-    ) as post, mock.patch.object(
-        transports.BatchControllerRestInterceptor, "post_create_batch_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BatchControllerRestInterceptor, "pre_create_batch"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BatchControllerRestInterceptor, "post_create_batch"
+        ) as post,
+        mock.patch.object(
+            transports.BatchControllerRestInterceptor, "post_create_batch_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BatchControllerRestInterceptor, "pre_create_batch"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4271,8 +4318,9 @@ def test_get_batch_rest_bad_request(request_type=batches.GetBatchRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4345,17 +4393,19 @@ def test_get_batch_rest_interceptors(null_interceptor):
     )
     client = BatchControllerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BatchControllerRestInterceptor, "post_get_batch"
-    ) as post, mock.patch.object(
-        transports.BatchControllerRestInterceptor, "post_get_batch_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BatchControllerRestInterceptor, "pre_get_batch"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BatchControllerRestInterceptor, "post_get_batch"
+        ) as post,
+        mock.patch.object(
+            transports.BatchControllerRestInterceptor, "post_get_batch_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BatchControllerRestInterceptor, "pre_get_batch"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4404,8 +4454,9 @@ def test_list_batches_rest_bad_request(request_type=batches.ListBatchesRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4470,17 +4521,19 @@ def test_list_batches_rest_interceptors(null_interceptor):
     )
     client = BatchControllerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BatchControllerRestInterceptor, "post_list_batches"
-    ) as post, mock.patch.object(
-        transports.BatchControllerRestInterceptor, "post_list_batches_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BatchControllerRestInterceptor, "pre_list_batches"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BatchControllerRestInterceptor, "post_list_batches"
+        ) as post,
+        mock.patch.object(
+            transports.BatchControllerRestInterceptor, "post_list_batches_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BatchControllerRestInterceptor, "pre_list_batches"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4531,8 +4584,9 @@ def test_delete_batch_rest_bad_request(request_type=batches.DeleteBatchRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4589,13 +4643,13 @@ def test_delete_batch_rest_interceptors(null_interceptor):
     )
     client = BatchControllerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BatchControllerRestInterceptor, "pre_delete_batch"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BatchControllerRestInterceptor, "pre_delete_batch"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = batches.DeleteBatchRequest.pb(batches.DeleteBatchRequest())
         transcode.return_value = {
@@ -4640,8 +4694,9 @@ def test_get_iam_policy_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -4702,8 +4757,9 @@ def test_set_iam_policy_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -4764,8 +4820,9 @@ def test_test_iam_permissions_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -4826,8 +4883,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -4888,8 +4946,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -4950,8 +5009,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -5012,8 +5072,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -5084,7 +5145,6 @@ def test_create_batch_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.CreateBatchRequest()
-
         assert args[0] == request_msg
 
 
@@ -5104,7 +5164,6 @@ def test_get_batch_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.GetBatchRequest()
-
         assert args[0] == request_msg
 
 
@@ -5124,7 +5183,6 @@ def test_list_batches_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.ListBatchesRequest()
-
         assert args[0] == request_msg
 
 
@@ -5144,7 +5202,6 @@ def test_delete_batch_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = batches.DeleteBatchRequest()
-
         assert args[0] == request_msg
 
 
@@ -5233,11 +5290,14 @@ def test_batch_controller_base_transport():
 
 def test_batch_controller_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.dataproc_v1.services.batch_controller.transports.BatchControllerTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.dataproc_v1.services.batch_controller.transports.BatchControllerTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.BatchControllerTransport(
@@ -5247,16 +5307,23 @@ def test_batch_controller_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dataproc",
+                "https://www.googleapis.com/auth/dataproc.read-only",
+            ),
             quota_project_id="octopus",
         )
 
 
 def test_batch_controller_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.dataproc_v1.services.batch_controller.transports.BatchControllerTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.dataproc_v1.services.batch_controller.transports.BatchControllerTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.BatchControllerTransport()
@@ -5270,7 +5337,11 @@ def test_batch_controller_auth_adc():
         BatchControllerClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dataproc",
+                "https://www.googleapis.com/auth/dataproc.read-only",
+            ),
             quota_project_id=None,
         )
 
@@ -5290,7 +5361,11 @@ def test_batch_controller_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dataproc",
+                "https://www.googleapis.com/auth/dataproc.read-only",
+            ),
             quota_project_id="octopus",
         )
 
@@ -5328,11 +5403,12 @@ def test_batch_controller_transport_auth_gdch_credentials(transport_class):
 def test_batch_controller_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -5342,7 +5418,11 @@ def test_batch_controller_transport_create_channel(transport_class, grpc_helpers
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dataproc",
+                "https://www.googleapis.com/auth/dataproc.read-only",
+            ),
             scopes=["1", "2"],
             default_host="dataproc.googleapis.com",
             ssl_credentials=None,
@@ -5673,10 +5753,41 @@ def test_parse_batch_path():
     assert expected == actual
 
 
-def test_service_path():
+def test_crypto_key_path():
     project = "cuttlefish"
     location = "mussel"
-    service = "winkle"
+    key_ring = "winkle"
+    crypto_key = "nautilus"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+    )
+    actual = BatchControllerClient.crypto_key_path(
+        project, location, key_ring, crypto_key
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "key_ring": "squid",
+        "crypto_key": "clam",
+    }
+    path = BatchControllerClient.crypto_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = BatchControllerClient.parse_crypto_key_path(path)
+    assert expected == actual
+
+
+def test_service_path():
+    project = "whelk"
+    location = "octopus"
+    service = "oyster"
     expected = "projects/{project}/locations/{location}/services/{service}".format(
         project=project,
         location=location,
@@ -5688,9 +5799,9 @@ def test_service_path():
 
 def test_parse_service_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "service": "abalone",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "service": "mussel",
     }
     path = BatchControllerClient.service_path(**expected)
 
@@ -5700,7 +5811,7 @@ def test_parse_service_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5710,7 +5821,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "nautilus",
     }
     path = BatchControllerClient.common_billing_account_path(**expected)
 
@@ -5720,7 +5831,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -5730,7 +5841,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "abalone",
     }
     path = BatchControllerClient.common_folder_path(**expected)
 
@@ -5740,7 +5851,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -5750,7 +5861,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "clam",
     }
     path = BatchControllerClient.common_organization_path(**expected)
 
@@ -5760,7 +5871,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -5770,7 +5881,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "octopus",
     }
     path = BatchControllerClient.common_project_path(**expected)
 
@@ -5780,8 +5891,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -5792,8 +5903,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = BatchControllerClient.common_location_path(**expected)
 
@@ -5964,6 +6075,38 @@ async def test_delete_operation_from_dict_async():
         call.assert_called()
 
 
+def test_delete_operation_flattened():
+    client = BatchControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = BatchControllerAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
 def test_cancel_operation(transport: str = "grpc"):
     client = BatchControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6101,6 +6244,38 @@ async def test_cancel_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_cancel_operation_flattened():
+    client = BatchControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = BatchControllerAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
 
 
 def test_get_operation(transport: str = "grpc"):
@@ -6248,6 +6423,40 @@ async def test_get_operation_from_dict_async():
         call.assert_called()
 
 
+def test_get_operation_flattened():
+    client = BatchControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = BatchControllerAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
 def test_list_operations(transport: str = "grpc"):
     client = BatchControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6391,6 +6600,40 @@ async def test_list_operations_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_flattened():
+    client = BatchControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = BatchControllerAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
 
 
 def test_set_iam_policy(transport: str = "grpc"):
@@ -6555,6 +6798,41 @@ async def test_set_iam_policy_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_set_iam_policy_flattened():
+    client = BatchControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        client.set_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_flattened_async():
+    client = BatchControllerAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.set_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
 
 
 def test_get_iam_policy(transport: str = "grpc"):
@@ -6722,6 +7000,41 @@ async def test_get_iam_policy_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_iam_policy_flattened():
+    client = BatchControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        client.get_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_flattened_async():
+    client = BatchControllerAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.get_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
 
 
 def test_test_iam_permissions(transport: str = "grpc"):
@@ -6899,6 +7212,47 @@ async def test_test_iam_permissions_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_test_iam_permissions_flattened():
+    client = BatchControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        client.test_iam_permissions()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_flattened_async():
+    client = BatchControllerAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+
+        await client.test_iam_permissions()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
 
 
 def test_transport_close_grpc():

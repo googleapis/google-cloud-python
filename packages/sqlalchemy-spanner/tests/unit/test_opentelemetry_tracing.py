@@ -5,9 +5,10 @@
 # https://developers.google.com/open-source/licenses/bsd
 
 import importlib
+import sys
+
 import mock
 import pytest
-import sys
 
 try:
     from opentelemetry import trace as trace_api
@@ -17,8 +18,9 @@ except ImportError:
 
 from google.api_core.exceptions import GoogleAPICallError
 from google.cloud.spanner_v1 import SpannerClient
+
 from google.cloud.sqlalchemy_spanner import _opentelemetry_tracing
-from tests._helpers import OpenTelemetryBase, HAS_OPENTELEMETRY_INSTALLED
+from tests._helpers import HAS_OPENTELEMETRY_INSTALLED, OpenTelemetryBase
 
 
 def _make_rpc_error(error_cls, trailing_metadata=None):

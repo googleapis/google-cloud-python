@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -116,12 +111,28 @@ def modify_default_endpoint_template(client):
     )
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert ApiHubDiscoveryClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -142,6 +153,10 @@ def test__get_default_mtls_endpoint():
     )
     assert (
         ApiHubDiscoveryClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    )
+    assert (
+        ApiHubDiscoveryClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -968,7 +983,14 @@ def test_api_hub_discovery_client_get_mtls_endpoint_and_cert_source(client_class
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1015,7 +1037,14 @@ def test_api_hub_discovery_client_get_mtls_endpoint_and_cert_source(client_class
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1307,11 +1336,13 @@ def test_api_hub_discovery_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1336,8 +1367,8 @@ def test_api_hub_discovery_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        discovery_service.ListDiscoveredApiObservationsRequest,
-        dict,
+        discovery_service.ListDiscoveredApiObservationsRequest(),
+        {},
     ],
 )
 def test_list_discovered_api_observations(request_type, transport: str = "grpc"):
@@ -1348,7 +1379,7 @@ def test_list_discovered_api_observations(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1397,10 +1428,11 @@ def test_list_discovered_api_observations_non_empty_request_with_auto_populated_
         client.list_discovered_api_observations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == discovery_service.ListDiscoveredApiObservationsRequest(
+        request_msg = discovery_service.ListDiscoveredApiObservationsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_discovered_api_observations_use_cached_wrapped_rpc():
@@ -1486,9 +1518,15 @@ async def test_list_discovered_api_observations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        discovery_service.ListDiscoveredApiObservationsRequest(),
+        {},
+    ],
+)
 async def test_list_discovered_api_observations_async(
-    transport: str = "grpc_asyncio",
-    request_type=discovery_service.ListDiscoveredApiObservationsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ApiHubDiscoveryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1497,7 +1535,7 @@ async def test_list_discovered_api_observations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1520,11 +1558,6 @@ async def test_list_discovered_api_observations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDiscoveredApiObservationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_discovered_api_observations_async_from_dict():
-    await test_list_discovered_api_observations_async(request_type=dict)
 
 
 def test_list_discovered_api_observations_field_headers():
@@ -1731,6 +1764,9 @@ def test_list_discovered_api_observations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -1825,6 +1861,8 @@ async def test_list_discovered_api_observations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1876,9 +1914,7 @@ async def test_list_discovered_api_observations_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_discovered_api_observations(request={})
         ).pages:
             pages.append(page_)
@@ -1889,8 +1925,8 @@ async def test_list_discovered_api_observations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        discovery_service.GetDiscoveredApiObservationRequest,
-        dict,
+        discovery_service.GetDiscoveredApiObservationRequest(),
+        {},
     ],
 )
 def test_get_discovered_api_observation(request_type, transport: str = "grpc"):
@@ -1901,7 +1937,7 @@ def test_get_discovered_api_observation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1969,9 +2005,10 @@ def test_get_discovered_api_observation_non_empty_request_with_auto_populated_fi
         client.get_discovered_api_observation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == discovery_service.GetDiscoveredApiObservationRequest(
+        request_msg = discovery_service.GetDiscoveredApiObservationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_discovered_api_observation_use_cached_wrapped_rpc():
@@ -2057,9 +2094,15 @@ async def test_get_discovered_api_observation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        discovery_service.GetDiscoveredApiObservationRequest(),
+        {},
+    ],
+)
 async def test_get_discovered_api_observation_async(
-    transport: str = "grpc_asyncio",
-    request_type=discovery_service.GetDiscoveredApiObservationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ApiHubDiscoveryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2068,7 +2111,7 @@ async def test_get_discovered_api_observation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2113,11 +2156,6 @@ async def test_get_discovered_api_observation_async(
     ]
     assert response.known_operations_count == 2392
     assert response.unknown_operations_count == 2619
-
-
-@pytest.mark.asyncio
-async def test_get_discovered_api_observation_async_from_dict():
-    await test_get_discovered_api_observation_async(request_type=dict)
 
 
 def test_get_discovered_api_observation_field_headers():
@@ -2274,8 +2312,8 @@ async def test_get_discovered_api_observation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        discovery_service.ListDiscoveredApiOperationsRequest,
-        dict,
+        discovery_service.ListDiscoveredApiOperationsRequest(),
+        {},
     ],
 )
 def test_list_discovered_api_operations(request_type, transport: str = "grpc"):
@@ -2286,7 +2324,7 @@ def test_list_discovered_api_operations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2335,10 +2373,11 @@ def test_list_discovered_api_operations_non_empty_request_with_auto_populated_fi
         client.list_discovered_api_operations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == discovery_service.ListDiscoveredApiOperationsRequest(
+        request_msg = discovery_service.ListDiscoveredApiOperationsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_discovered_api_operations_use_cached_wrapped_rpc():
@@ -2424,9 +2463,15 @@ async def test_list_discovered_api_operations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        discovery_service.ListDiscoveredApiOperationsRequest(),
+        {},
+    ],
+)
 async def test_list_discovered_api_operations_async(
-    transport: str = "grpc_asyncio",
-    request_type=discovery_service.ListDiscoveredApiOperationsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ApiHubDiscoveryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2435,7 +2480,7 @@ async def test_list_discovered_api_operations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2458,11 +2503,6 @@ async def test_list_discovered_api_operations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDiscoveredApiOperationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_discovered_api_operations_async_from_dict():
-    await test_list_discovered_api_operations_async(request_type=dict)
 
 
 def test_list_discovered_api_operations_field_headers():
@@ -2669,6 +2709,9 @@ def test_list_discovered_api_operations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, common_fields.DiscoveredApiOperation) for i in results)
@@ -2761,6 +2804,8 @@ async def test_list_discovered_api_operations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2812,9 +2857,7 @@ async def test_list_discovered_api_operations_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_discovered_api_operations(request={})
         ).pages:
             pages.append(page_)
@@ -2825,8 +2868,8 @@ async def test_list_discovered_api_operations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        discovery_service.GetDiscoveredApiOperationRequest,
-        dict,
+        discovery_service.GetDiscoveredApiOperationRequest(),
+        {},
     ],
 )
 def test_get_discovered_api_operation(request_type, transport: str = "grpc"):
@@ -2837,7 +2880,7 @@ def test_get_discovered_api_operation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2892,9 +2935,10 @@ def test_get_discovered_api_operation_non_empty_request_with_auto_populated_fiel
         client.get_discovered_api_operation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == discovery_service.GetDiscoveredApiOperationRequest(
+        request_msg = discovery_service.GetDiscoveredApiOperationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_discovered_api_operation_use_cached_wrapped_rpc():
@@ -2980,9 +3024,15 @@ async def test_get_discovered_api_operation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        discovery_service.GetDiscoveredApiOperationRequest(),
+        {},
+    ],
+)
 async def test_get_discovered_api_operation_async(
-    transport: str = "grpc_asyncio",
-    request_type=discovery_service.GetDiscoveredApiOperationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ApiHubDiscoveryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2991,7 +3041,7 @@ async def test_get_discovered_api_operation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3021,11 +3071,6 @@ async def test_get_discovered_api_operation_async(
         response.classification
         == common_fields.DiscoveredApiOperation.Classification.KNOWN
     )
-
-
-@pytest.mark.asyncio
-async def test_get_discovered_api_operation_async_from_dict():
-    await test_get_discovered_api_operation_async(request_type=dict)
 
 
 def test_get_discovered_api_operation_field_headers():
@@ -3301,7 +3346,7 @@ def test_list_discovered_api_observations_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_discovered_api_observations_rest_unset_required_fields():
@@ -3438,6 +3483,9 @@ def test_list_discovered_api_observations_rest_pager(transport: str = "rest"):
 
         pager = client.list_discovered_api_observations(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -3564,7 +3612,7 @@ def test_get_discovered_api_observation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_discovered_api_observation_rest_unset_required_fields():
@@ -3760,7 +3808,7 @@ def test_list_discovered_api_operations_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_discovered_api_operations_rest_unset_required_fields():
@@ -3901,6 +3949,9 @@ def test_list_discovered_api_operations_rest_pager(transport: str = "rest"):
 
         pager = client.list_discovered_api_operations(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, common_fields.DiscoveredApiOperation) for i in results)
@@ -4025,7 +4076,7 @@ def test_get_discovered_api_operation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_discovered_api_operation_rest_unset_required_fields():
@@ -4222,7 +4273,6 @@ def test_list_discovered_api_observations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = discovery_service.ListDiscoveredApiObservationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4245,7 +4295,6 @@ def test_get_discovered_api_observation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = discovery_service.GetDiscoveredApiObservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4268,7 +4317,6 @@ def test_list_discovered_api_operations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = discovery_service.ListDiscoveredApiOperationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4291,7 +4339,6 @@ def test_get_discovered_api_operation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = discovery_service.GetDiscoveredApiOperationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4334,7 +4381,6 @@ async def test_list_discovered_api_observations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = discovery_service.ListDiscoveredApiObservationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4374,7 +4420,6 @@ async def test_get_discovered_api_observation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = discovery_service.GetDiscoveredApiObservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4403,7 +4448,6 @@ async def test_list_discovered_api_operations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = discovery_service.ListDiscoveredApiOperationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4434,7 +4478,6 @@ async def test_get_discovered_api_operation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = discovery_service.GetDiscoveredApiOperationRequest()
-
         assert args[0] == request_msg
 
 
@@ -4456,8 +4499,9 @@ def test_list_discovered_api_observations_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4522,20 +4566,22 @@ def test_list_discovered_api_observations_rest_interceptors(null_interceptor):
     )
     client = ApiHubDiscoveryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubDiscoveryRestInterceptor,
-        "post_list_discovered_api_observations",
-    ) as post, mock.patch.object(
-        transports.ApiHubDiscoveryRestInterceptor,
-        "post_list_discovered_api_observations_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ApiHubDiscoveryRestInterceptor,
-        "pre_list_discovered_api_observations",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ApiHubDiscoveryRestInterceptor,
+            "post_list_discovered_api_observations",
+        ) as post,
+        mock.patch.object(
+            transports.ApiHubDiscoveryRestInterceptor,
+            "post_list_discovered_api_observations_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ApiHubDiscoveryRestInterceptor,
+            "pre_list_discovered_api_observations",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4595,8 +4641,9 @@ def test_get_discovered_api_observation_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4681,18 +4728,22 @@ def test_get_discovered_api_observation_rest_interceptors(null_interceptor):
     )
     client = ApiHubDiscoveryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubDiscoveryRestInterceptor, "post_get_discovered_api_observation"
-    ) as post, mock.patch.object(
-        transports.ApiHubDiscoveryRestInterceptor,
-        "post_get_discovered_api_observation_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ApiHubDiscoveryRestInterceptor, "pre_get_discovered_api_observation"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ApiHubDiscoveryRestInterceptor,
+            "post_get_discovered_api_observation",
+        ) as post,
+        mock.patch.object(
+            transports.ApiHubDiscoveryRestInterceptor,
+            "post_get_discovered_api_observation_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ApiHubDiscoveryRestInterceptor,
+            "pre_get_discovered_api_observation",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4752,8 +4803,9 @@ def test_list_discovered_api_operations_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4820,18 +4872,22 @@ def test_list_discovered_api_operations_rest_interceptors(null_interceptor):
     )
     client = ApiHubDiscoveryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubDiscoveryRestInterceptor, "post_list_discovered_api_operations"
-    ) as post, mock.patch.object(
-        transports.ApiHubDiscoveryRestInterceptor,
-        "post_list_discovered_api_operations_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ApiHubDiscoveryRestInterceptor, "pre_list_discovered_api_operations"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ApiHubDiscoveryRestInterceptor,
+            "post_list_discovered_api_operations",
+        ) as post,
+        mock.patch.object(
+            transports.ApiHubDiscoveryRestInterceptor,
+            "post_list_discovered_api_operations_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ApiHubDiscoveryRestInterceptor,
+            "pre_list_discovered_api_operations",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4891,8 +4947,9 @@ def test_get_discovered_api_operation_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4964,18 +5021,22 @@ def test_get_discovered_api_operation_rest_interceptors(null_interceptor):
     )
     client = ApiHubDiscoveryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubDiscoveryRestInterceptor, "post_get_discovered_api_operation"
-    ) as post, mock.patch.object(
-        transports.ApiHubDiscoveryRestInterceptor,
-        "post_get_discovered_api_operation_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ApiHubDiscoveryRestInterceptor, "pre_get_discovered_api_operation"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ApiHubDiscoveryRestInterceptor,
+            "post_get_discovered_api_operation",
+        ) as post,
+        mock.patch.object(
+            transports.ApiHubDiscoveryRestInterceptor,
+            "post_get_discovered_api_operation_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ApiHubDiscoveryRestInterceptor,
+            "pre_get_discovered_api_operation",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5033,8 +5094,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -5093,8 +5155,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -5155,8 +5218,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -5217,8 +5281,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -5279,8 +5344,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -5341,8 +5407,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -5415,7 +5482,6 @@ def test_list_discovered_api_observations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = discovery_service.ListDiscoveredApiObservationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5437,7 +5503,6 @@ def test_get_discovered_api_observation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = discovery_service.GetDiscoveredApiObservationRequest()
-
         assert args[0] == request_msg
 
 
@@ -5459,7 +5524,6 @@ def test_list_discovered_api_operations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = discovery_service.ListDiscoveredApiOperationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -5481,7 +5545,6 @@ def test_get_discovered_api_operation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = discovery_service.GetDiscoveredApiOperationRequest()
-
         assert args[0] == request_msg
 
 
@@ -5547,11 +5610,14 @@ def test_api_hub_discovery_base_transport():
 
 def test_api_hub_discovery_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.apihub_v1.services.api_hub_discovery.transports.ApiHubDiscoveryTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.apihub_v1.services.api_hub_discovery.transports.ApiHubDiscoveryTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ApiHubDiscoveryTransport(
@@ -5568,9 +5634,12 @@ def test_api_hub_discovery_base_transport_with_credentials_file():
 
 def test_api_hub_discovery_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.apihub_v1.services.api_hub_discovery.transports.ApiHubDiscoveryTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.apihub_v1.services.api_hub_discovery.transports.ApiHubDiscoveryTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ApiHubDiscoveryTransport()
@@ -5642,11 +5711,12 @@ def test_api_hub_discovery_transport_auth_gdch_credentials(transport_class):
 def test_api_hub_discovery_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -6282,6 +6352,38 @@ async def test_delete_operation_from_dict_async():
         call.assert_called()
 
 
+def test_delete_operation_flattened():
+    client = ApiHubDiscoveryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = ApiHubDiscoveryAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
 def test_cancel_operation(transport: str = "grpc"):
     client = ApiHubDiscoveryClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6419,6 +6521,38 @@ async def test_cancel_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_cancel_operation_flattened():
+    client = ApiHubDiscoveryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = ApiHubDiscoveryAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
 
 
 def test_get_operation(transport: str = "grpc"):
@@ -6566,6 +6700,40 @@ async def test_get_operation_from_dict_async():
         call.assert_called()
 
 
+def test_get_operation_flattened():
+    client = ApiHubDiscoveryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = ApiHubDiscoveryAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
 def test_list_operations(transport: str = "grpc"):
     client = ApiHubDiscoveryClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6709,6 +6877,40 @@ async def test_list_operations_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_flattened():
+    client = ApiHubDiscoveryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = ApiHubDiscoveryAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
 
 
 def test_list_locations(transport: str = "grpc"):
@@ -6856,6 +7058,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = ApiHubDiscoveryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = ApiHubDiscoveryAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = ApiHubDiscoveryClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6995,6 +7231,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = ApiHubDiscoveryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = ApiHubDiscoveryAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():

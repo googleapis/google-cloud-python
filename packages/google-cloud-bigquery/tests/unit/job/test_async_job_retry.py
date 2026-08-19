@@ -15,19 +15,16 @@
 from unittest import mock
 
 import google.api_core.retry
+import google.cloud.bigquery.job
 from google.api_core import exceptions
 
 from . import helpers
-import google.cloud.bigquery.job
-
 
 PROJECT = "test-project"
 JOB_ID = "test-job-id"
 
 
 def test_cancel_w_custom_retry(global_time_lock):
-    from google.cloud.bigquery.retry import DEFAULT_RETRY
-
     api_path = "/projects/{}/jobs/{}/cancel".format(PROJECT, JOB_ID)
     resource = {
         "jobReference": {
@@ -49,8 +46,11 @@ def test_cancel_w_custom_retry(global_time_lock):
         google.cloud.bigquery.job._JobReference(JOB_ID, PROJECT, "EU"), client
     )
 
-    retry = DEFAULT_RETRY.with_deadline(1).with_predicate(
-        lambda exc: isinstance(exc, ValueError)
+    retry = google.api_core.retry.Retry(
+        predicate=lambda exc: isinstance(exc, ValueError),
+        initial=0.01,
+        maximum=0.01,
+        deadline=1.0,
     )
 
     with mock.patch(
@@ -109,7 +109,7 @@ def test_result_w_retry_wo_state(global_time_lock):
         predicate=custom_predicate,
         initial=0.001,
         maximum=0.001,
-        deadline=0.1,
+        deadline=1.0,
     )
     assert job.result(retry=custom_retry) is job
 

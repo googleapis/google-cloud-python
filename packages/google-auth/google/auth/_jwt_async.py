@@ -44,6 +44,8 @@ change in minor releases.
 """
 
 from google.auth import _credentials_async
+from google.auth import _helpers
+from google.auth import _regional_access_boundary_utils
 from google.auth import jwt
 
 
@@ -91,7 +93,9 @@ def decode(token, certs=None, verify=True, audience=None):
 
 
 class Credentials(
-    jwt.Credentials, _credentials_async.Signing, _credentials_async.Credentials
+    jwt.Credentials,
+    _credentials_async.Signing,
+    _credentials_async.CredentialsWithRegionalAccessBoundary,
 ):
     """Credentials that use a JWT as the bearer token.
 
@@ -142,6 +146,14 @@ class Credentials(
         new_credentials = credentials.with_claims(audience=new_audience)
     """
 
+    def __setstate__(self, state):
+        """Restores the credential state and ensures the async refresh manager is attached."""
+        super().__setstate__(state)
+
+        self._rab_manager.refresh_manager = (
+            _regional_access_boundary_utils._AsyncRegionalAccessBoundaryRefreshManager()
+        )
+
 
 class OnDemandCredentials(
     jwt.OnDemandCredentials, _credentials_async.Signing, _credentials_async.Credentials
@@ -162,3 +174,7 @@ class OnDemandCredentials(
 
     .. _grpc: http://www.grpc.io/
     """
+
+    @_helpers.copy_docstring(jwt.OnDemandCredentials)
+    async def before_request(self, request, method, url, headers):
+        super(OnDemandCredentials, self).before_request(request, method, url, headers)

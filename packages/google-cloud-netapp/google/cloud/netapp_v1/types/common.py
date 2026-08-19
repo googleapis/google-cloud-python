@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
         "EncryptionType",
         "DirectoryServiceType",
         "StoragePoolType",
+        "ScaleType",
         "HybridReplicationSchedule",
         "QosType",
         "OsType",
@@ -120,14 +121,32 @@ class StoragePoolType(proto.Enum):
             Storage pool type is file.
         UNIFIED (2):
             Storage pool type is unified.
-        UNIFIED_LARGE_CAPACITY (3):
-            Storage pool type is unified large capacity.
     """
 
     STORAGE_POOL_TYPE_UNSPECIFIED = 0
     FILE = 1
     UNIFIED = 2
-    UNIFIED_LARGE_CAPACITY = 3
+
+
+class ScaleType(proto.Enum):
+    r"""Defines the scale-type of a UNIFIED Storage Pool.
+
+    Values:
+        SCALE_TYPE_UNSPECIFIED (0):
+            Unspecified scale type.
+        SCALE_TYPE_DEFAULT (1):
+            Represents standard capacity and performance
+            scale-type. Suitable for general purpose
+            workloads.
+        SCALE_TYPE_SCALEOUT (2):
+            Represents higher capacity and performance
+            scale-type. Suitable for more demanding
+            workloads.
+    """
+
+    SCALE_TYPE_UNSPECIFIED = 0
+    SCALE_TYPE_DEFAULT = 1
+    SCALE_TYPE_SCALEOUT = 2
 
 
 class HybridReplicationSchedule(proto.Enum):

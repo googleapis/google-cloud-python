@@ -11,11 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""
-.. warning::
-    **Preview API**: Firestore Pipelines is currently in preview and is
-    subject to potential breaking changes in future releases.
-"""
 
 from __future__ import annotations
 
@@ -58,10 +53,10 @@ class Pipeline(_BasePipeline):
 
     Use `client.pipeline()` to create instances of this class.
 
-    .. warning::
-        **Preview API**: Firestore Pipelines is currently in preview and is
-        subject to potential breaking changes in future releases.
+
     """
+
+    _client: Client
 
     def __init__(self, client: Client, *stages: stages.Stage):
         """
@@ -99,6 +94,9 @@ class Pipeline(_BasePipeline):
                 explain_metrics will be available on the returned list.
             additional_options (Optional[dict[str, Value | Constant]]): Additional options to pass to the query.
                 These options will take precedence over method argument if there is a conflict (e.g. explain_options)
+
+        Raises:
+            google.api_core.exceptions.GoogleAPIError: If there is a backend error.
         """
         kwargs = {k: v for k, v in locals().items() if k != "self"}
         stream = PipelineStream(PipelineResult, self, **kwargs)
@@ -131,6 +129,9 @@ class Pipeline(_BasePipeline):
                 explain_metrics will be available on the returned generator.
             additional_options (Optional[dict[str, Value | Constant]]): Additional options to pass to the query.
                 These options will take precedence over method argument if there is a conflict (e.g. explain_options)
+
+        Raises:
+            google.api_core.exceptions.GoogleAPIError: If there is a backend error.
         """
         kwargs = {k: v for k, v in locals().items() if k != "self"}
         return PipelineStream(PipelineResult, self, **kwargs)

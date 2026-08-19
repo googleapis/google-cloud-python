@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,12 +21,62 @@ from google.cloud.ces_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER
-    from importlib import metadata
-else:  # pragma: NO COVER
-    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
-    # this code path once we drop support for Python 3.7
-    import importlib_metadata as metadata
+from importlib import metadata
+
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.ces_v1.services.agent_service",
+    "google.cloud.ces_v1.services.session_service",
+    "google.cloud.ces_v1.services.tool_service",
+    "google.cloud.ces_v1.services.widget_service",
+    "google.cloud.ces_v1.types.agent",
+    "google.cloud.ces_v1.types.agent_card",
+    "google.cloud.ces_v1.types.agent_service",
+    "google.cloud.ces_v1.types.agent_tool",
+    "google.cloud.ces_v1.types.agent_transfers",
+    "google.cloud.ces_v1.types.app",
+    "google.cloud.ces_v1.types.app_version",
+    "google.cloud.ces_v1.types.auth",
+    "google.cloud.ces_v1.types.bigquery_export",
+    "google.cloud.ces_v1.types.changelog",
+    "google.cloud.ces_v1.types.client_function",
+    "google.cloud.ces_v1.types.common",
+    "google.cloud.ces_v1.types.connector_tool",
+    "google.cloud.ces_v1.types.connector_toolset",
+    "google.cloud.ces_v1.types.conversation",
+    "google.cloud.ces_v1.types.data_store",
+    "google.cloud.ces_v1.types.data_store_tool",
+    "google.cloud.ces_v1.types.deployment",
+    "google.cloud.ces_v1.types.example",
+    "google.cloud.ces_v1.types.fakes",
+    "google.cloud.ces_v1.types.file_search_tool",
+    "google.cloud.ces_v1.types.google_search_tool",
+    "google.cloud.ces_v1.types.guardrail",
+    "google.cloud.ces_v1.types.mcp_tool",
+    "google.cloud.ces_v1.types.mcp_toolset",
+    "google.cloud.ces_v1.types.mocks",
+    "google.cloud.ces_v1.types.omnichannel",
+    "google.cloud.ces_v1.types.omnichannel_service",
+    "google.cloud.ces_v1.types.open_api_tool",
+    "google.cloud.ces_v1.types.open_api_toolset",
+    "google.cloud.ces_v1.types.python_function",
+    "google.cloud.ces_v1.types.schema",
+    "google.cloud.ces_v1.types.search_suggestions",
+    "google.cloud.ces_v1.types.security_settings",
+    "google.cloud.ces_v1.types.session_service",
+    "google.cloud.ces_v1.types.system_tool",
+    "google.cloud.ces_v1.types.tool",
+    "google.cloud.ces_v1.types.tool_service",
+    "google.cloud.ces_v1.types.toolset",
+    "google.cloud.ces_v1.types.toolset_tool",
+    "google.cloud.ces_v1.types.widget_service",
+    "google.cloud.ces_v1.types.widget_tool",
+}
 
 
 from .services.agent_service import AgentServiceAsyncClient, AgentServiceClient
@@ -34,6 +84,7 @@ from .services.session_service import SessionServiceAsyncClient, SessionServiceC
 from .services.tool_service import ToolServiceAsyncClient, ToolServiceClient
 from .services.widget_service import WidgetServiceAsyncClient, WidgetServiceClient
 from .types.agent import Agent
+from .types.agent_card import AgentCard, AgentInterface, AgentSkill, RemoteAgentTool
 from .types.agent_service import (
     BatchDeleteConversationsRequest,
     BatchDeleteConversationsResponse,
@@ -99,6 +150,7 @@ from .types.agent_service import (
     UpdateToolRequest,
     UpdateToolsetRequest,
 )
+from .types.agent_tool import AgentTool
 from .types.agent_transfers import (
     ExpressionCondition,
     PythonCodeCondition,
@@ -114,6 +166,7 @@ from .types.app import (
     CloudLoggingSettings,
     ConversationLoggingSettings,
     DataStoreSettings,
+    ErrorHandlingSettings,
     EvaluationMetricsThresholds,
     LanguageSettings,
     LoggingSettings,
@@ -121,6 +174,7 @@ from .types.app import (
     RedactionConfig,
     SynthesizeSpeechConfig,
     TimeZoneSettings,
+    VpcScSettings,
 )
 from .types.app_version import AppSnapshot, AppVersion
 from .types.auth import (
@@ -150,7 +204,12 @@ from .types.connector_toolset import ConnectorToolset
 from .types.conversation import Conversation
 from .types.data_store import DataStore
 from .types.data_store_tool import DataStoreTool
-from .types.deployment import Deployment
+from .types.deployment import (
+    Deployment,
+    ExperimentConfig,
+    InstagramCredentials,
+    WhatsAppCredentials,
+)
 from .types.example import (
     AgentTransfer,
     Blob,
@@ -166,7 +225,8 @@ from .types.file_search_tool import FileSearchTool
 from .types.google_search_tool import GoogleSearchTool
 from .types.guardrail import Guardrail
 from .types.mcp_tool import McpTool
-from .types.mcp_toolset import McpToolset
+from .types.mcp_toolset import McpToolDefinition, McpToolOverride, McpToolset
+from .types.mocks import MockedToolCall
 from .types.omnichannel import Omnichannel, OmnichannelIntegrationConfig
 from .types.omnichannel_service import OmnichannelOperationMetadata
 from .types.open_api_tool import OpenApiTool
@@ -174,6 +234,7 @@ from .types.open_api_toolset import OpenApiToolset
 from .types.python_function import PythonFunction
 from .types.schema import Schema
 from .types.search_suggestions import GoogleSearchSuggestions, WebSearchQuery
+from .types.security_settings import EndpointControlPolicy, SecuritySettings
 from .types.session_service import (
     AudioEncoding,
     BidiSessionClientMessage,
@@ -184,6 +245,7 @@ from .types.session_service import (
     GoAway,
     InputAudioConfig,
     InterruptionSignal,
+    MockConfig,
     OutputAudioConfig,
     RecognitionResult,
     RunSessionRequest,
@@ -218,34 +280,23 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import sys
         import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.ces_v1"
-        if sys.version_info < (3, 9):
+        if sys.version_info < (3, 10):
             warnings.warn(
                 "You are using a non-supported Python version "
                 + f"({_py_version_str}).  Google will not post any further "
                 + f"updates to {_package_label} supporting this Python version. "
                 + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.9, and then update {_package_label}.",
-                FutureWarning,
-            )
-        if sys.version_info[:2] == (3, 9):
-            warnings.warn(
-                f"You are using a Python version ({_py_version_str}) "
-                + f"which Google will stop supporting in {_package_label} in "
-                + "January 2026. Please "
-                + "upgrade to the latest Python version, or at "
-                + "least to Python 3.10, before then, and "
-                + f"then update {_package_label}.",
+                + f"least to Python 3.10, and then update {_package_label}.",
                 FutureWarning,
             )
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -274,9 +325,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -310,7 +361,11 @@ __all__ = (
     "WidgetServiceAsyncClient",
     "Action",
     "Agent",
+    "AgentCard",
+    "AgentInterface",
     "AgentServiceClient",
+    "AgentSkill",
+    "AgentTool",
     "AgentTransfer",
     "AmbientSoundConfig",
     "ApiAuthentication",
@@ -365,12 +420,15 @@ __all__ = (
     "Deployment",
     "EndSession",
     "EndUserAuthConfig",
+    "EndpointControlPolicy",
+    "ErrorHandlingSettings",
     "EvaluationMetricsThresholds",
     "Event",
     "Example",
     "ExecuteToolRequest",
     "ExecuteToolResponse",
     "ExecutionType",
+    "ExperimentConfig",
     "ExportAppRequest",
     "ExportAppResponse",
     "ExpressionCondition",
@@ -395,6 +453,7 @@ __all__ = (
     "ImportAppRequest",
     "ImportAppResponse",
     "InputAudioConfig",
+    "InstagramCredentials",
     "InterruptionSignal",
     "LanguageSettings",
     "ListAgentsRequest",
@@ -419,9 +478,13 @@ __all__ = (
     "ListToolsetsResponse",
     "LoggingSettings",
     "McpTool",
+    "McpToolDefinition",
+    "McpToolOverride",
     "McpToolset",
     "Message",
     "MetricAnalysisSettings",
+    "MockConfig",
+    "MockedToolCall",
     "ModelSettings",
     "OAuthConfig",
     "Omnichannel",
@@ -435,6 +498,7 @@ __all__ = (
     "PythonFunction",
     "RecognitionResult",
     "RedactionConfig",
+    "RemoteAgentTool",
     "RestoreAppVersionRequest",
     "RestoreAppVersionResponse",
     "RetrieveToolSchemaRequest",
@@ -444,6 +508,7 @@ __all__ = (
     "RunSessionRequest",
     "RunSessionResponse",
     "Schema",
+    "SecuritySettings",
     "ServiceAccountAuthConfig",
     "ServiceAgentIdTokenAuthConfig",
     "ServiceDirectoryConfig",
@@ -474,7 +539,9 @@ __all__ = (
     "UpdateGuardrailRequest",
     "UpdateToolRequest",
     "UpdateToolsetRequest",
+    "VpcScSettings",
     "WebSearchQuery",
+    "WhatsAppCredentials",
     "WidgetServiceClient",
     "WidgetTool",
 )

@@ -96,6 +96,14 @@ class TestCredentials(object):
         assert credentials.rapt_token == self.RAPT_TOKEN
         assert credentials.refresh_handler is None
 
+    def test_set_blocking_regional_access_boundary_lookup(self):
+        creds = self.make_credentials()
+        assert not creds._rab_manager._use_blocking_regional_access_boundary_lookup
+
+        new_creds = creds._set_blocking_regional_access_boundary_lookup()
+        assert creds._rab_manager._use_blocking_regional_access_boundary_lookup
+        assert new_creds is creds
+
     def test_get_cred_info(self):
         credentials = self.make_credentials()
         credentials._account = "fake-account"
@@ -836,9 +844,10 @@ class TestCredentials(object):
 
         new_creds = creds.with_quota_project("new-project-456")
         assert new_creds.quota_project_id == "new-project-456"
+        request = mock.create_autospec(transport.Request, instance=True)
         headers = {}
-        creds.apply(headers)
-        assert "x-goog-user-project" in headers
+        new_creds.before_request(request, "GET", "https://example.com", headers)
+        assert headers.get("x-goog-user-project") == "new-project-456"
 
     def test_with_universe_domain(self):
         creds = credentials.Credentials(token="token")

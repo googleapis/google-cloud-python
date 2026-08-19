@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -143,12 +138,28 @@ def modify_default_endpoint_template(client):
     )
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert DocumentProcessorServiceClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -170,6 +181,10 @@ def test__get_default_mtls_endpoint():
     assert (
         DocumentProcessorServiceClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        DocumentProcessorServiceClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1029,7 +1044,14 @@ def test_document_processor_service_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1076,7 +1098,14 @@ def test_document_processor_service_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1382,11 +1411,13 @@ def test_document_processor_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1411,8 +1442,8 @@ def test_document_processor_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.ProcessRequest,
-        dict,
+        document_processor_service.ProcessRequest(),
+        {},
     ],
 )
 def test_process_document(request_type, transport: str = "grpc"):
@@ -1423,7 +1454,7 @@ def test_process_document(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.process_document), "__call__") as call:
@@ -1467,9 +1498,10 @@ def test_process_document_non_empty_request_with_auto_populated_field():
         client.process_document(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.ProcessRequest(
+        request_msg = document_processor_service.ProcessRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_process_document_use_cached_wrapped_rpc():
@@ -1552,10 +1584,14 @@ async def test_process_document_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_process_document_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.ProcessRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.ProcessRequest(),
+        {},
+    ],
+)
+async def test_process_document_async(request_type, transport: str = "grpc_asyncio"):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1563,7 +1599,7 @@ async def test_process_document_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.process_document), "__call__") as call:
@@ -1584,11 +1620,6 @@ async def test_process_document_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_processor_service.ProcessResponse)
     assert response.human_review_operation == "human_review_operation_value"
-
-
-@pytest.mark.asyncio
-async def test_process_document_async_from_dict():
-    await test_process_document_async(request_type=dict)
 
 
 def test_process_document_field_headers():
@@ -1737,8 +1768,8 @@ async def test_process_document_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.BatchProcessRequest,
-        dict,
+        document_processor_service.BatchProcessRequest(),
+        {},
     ],
 )
 def test_batch_process_documents(request_type, transport: str = "grpc"):
@@ -1749,7 +1780,7 @@ def test_batch_process_documents(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1794,9 +1825,10 @@ def test_batch_process_documents_non_empty_request_with_auto_populated_field():
         client.batch_process_documents(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.BatchProcessRequest(
+        request_msg = document_processor_service.BatchProcessRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_process_documents_use_cached_wrapped_rpc():
@@ -1892,9 +1924,15 @@ async def test_batch_process_documents_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.BatchProcessRequest(),
+        {},
+    ],
+)
 async def test_batch_process_documents_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.BatchProcessRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1903,7 +1941,7 @@ async def test_batch_process_documents_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1923,11 +1961,6 @@ async def test_batch_process_documents_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_batch_process_documents_async_from_dict():
-    await test_batch_process_documents_async(request_type=dict)
 
 
 def test_batch_process_documents_field_headers():
@@ -2084,8 +2117,8 @@ async def test_batch_process_documents_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.FetchProcessorTypesRequest,
-        dict,
+        document_processor_service.FetchProcessorTypesRequest(),
+        {},
     ],
 )
 def test_fetch_processor_types(request_type, transport: str = "grpc"):
@@ -2096,7 +2129,7 @@ def test_fetch_processor_types(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2141,9 +2174,10 @@ def test_fetch_processor_types_non_empty_request_with_auto_populated_field():
         client.fetch_processor_types(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.FetchProcessorTypesRequest(
+        request_msg = document_processor_service.FetchProcessorTypesRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_fetch_processor_types_use_cached_wrapped_rpc():
@@ -2229,9 +2263,15 @@ async def test_fetch_processor_types_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.FetchProcessorTypesRequest(),
+        {},
+    ],
+)
 async def test_fetch_processor_types_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.FetchProcessorTypesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2240,7 +2280,7 @@ async def test_fetch_processor_types_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2260,11 +2300,6 @@ async def test_fetch_processor_types_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_processor_service.FetchProcessorTypesResponse)
-
-
-@pytest.mark.asyncio
-async def test_fetch_processor_types_async_from_dict():
-    await test_fetch_processor_types_async(request_type=dict)
 
 
 def test_fetch_processor_types_field_headers():
@@ -2421,8 +2456,8 @@ async def test_fetch_processor_types_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.ListProcessorTypesRequest,
-        dict,
+        document_processor_service.ListProcessorTypesRequest(),
+        {},
     ],
 )
 def test_list_processor_types(request_type, transport: str = "grpc"):
@@ -2433,7 +2468,7 @@ def test_list_processor_types(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2482,10 +2517,11 @@ def test_list_processor_types_non_empty_request_with_auto_populated_field():
         client.list_processor_types(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.ListProcessorTypesRequest(
+        request_msg = document_processor_service.ListProcessorTypesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_processor_types_use_cached_wrapped_rpc():
@@ -2570,9 +2606,15 @@ async def test_list_processor_types_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.ListProcessorTypesRequest(),
+        {},
+    ],
+)
 async def test_list_processor_types_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.ListProcessorTypesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2581,7 +2623,7 @@ async def test_list_processor_types_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2604,11 +2646,6 @@ async def test_list_processor_types_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProcessorTypesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_processor_types_async_from_dict():
-    await test_list_processor_types_async(request_type=dict)
 
 
 def test_list_processor_types_field_headers():
@@ -2813,6 +2850,9 @@ def test_list_processor_types_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, processor_type.ProcessorType) for i in results)
@@ -2905,6 +2945,8 @@ async def test_list_processor_types_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2954,11 +2996,7 @@ async def test_list_processor_types_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_processor_types(request={})
-        ).pages:
+        async for page_ in (await client.list_processor_types(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2967,8 +3005,8 @@ async def test_list_processor_types_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.GetProcessorTypeRequest,
-        dict,
+        document_processor_service.GetProcessorTypeRequest(),
+        {},
     ],
 )
 def test_get_processor_type(request_type, transport: str = "grpc"):
@@ -2979,7 +3017,7 @@ def test_get_processor_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3037,9 +3075,10 @@ def test_get_processor_type_non_empty_request_with_auto_populated_field():
         client.get_processor_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.GetProcessorTypeRequest(
+        request_msg = document_processor_service.GetProcessorTypeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_processor_type_use_cached_wrapped_rpc():
@@ -3124,10 +3163,14 @@ async def test_get_processor_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_processor_type_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.GetProcessorTypeRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.GetProcessorTypeRequest(),
+        {},
+    ],
+)
+async def test_get_processor_type_async(request_type, transport: str = "grpc_asyncio"):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3135,7 +3178,7 @@ async def test_get_processor_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3168,11 +3211,6 @@ async def test_get_processor_type_async(
     assert response.allow_creation is True
     assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
     assert response.sample_document_uris == ["sample_document_uris_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_processor_type_async_from_dict():
-    await test_get_processor_type_async(request_type=dict)
 
 
 def test_get_processor_type_field_headers():
@@ -3329,8 +3367,8 @@ async def test_get_processor_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.ListProcessorsRequest,
-        dict,
+        document_processor_service.ListProcessorsRequest(),
+        {},
     ],
 )
 def test_list_processors(request_type, transport: str = "grpc"):
@@ -3341,7 +3379,7 @@ def test_list_processors(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_processors), "__call__") as call:
@@ -3386,10 +3424,11 @@ def test_list_processors_non_empty_request_with_auto_populated_field():
         client.list_processors(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.ListProcessorsRequest(
+        request_msg = document_processor_service.ListProcessorsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_processors_use_cached_wrapped_rpc():
@@ -3470,10 +3509,14 @@ async def test_list_processors_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_processors_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.ListProcessorsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.ListProcessorsRequest(),
+        {},
+    ],
+)
+async def test_list_processors_async(request_type, transport: str = "grpc_asyncio"):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3481,7 +3524,7 @@ async def test_list_processors_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_processors), "__call__") as call:
@@ -3502,11 +3545,6 @@ async def test_list_processors_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProcessorsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_processors_async_from_dict():
-    await test_list_processors_async(request_type=dict)
 
 
 def test_list_processors_field_headers():
@@ -3701,6 +3739,9 @@ def test_list_processors_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, processor.Processor) for i in results)
@@ -3789,6 +3830,8 @@ async def test_list_processors_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3836,11 +3879,7 @@ async def test_list_processors_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_processors(request={})
-        ).pages:
+        async for page_ in (await client.list_processors(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3849,8 +3888,8 @@ async def test_list_processors_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.GetProcessorRequest,
-        dict,
+        document_processor_service.GetProcessorRequest(),
+        {},
     ],
 )
 def test_get_processor(request_type, transport: str = "grpc"):
@@ -3861,7 +3900,7 @@ def test_get_processor(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_processor), "__call__") as call:
@@ -3921,9 +3960,10 @@ def test_get_processor_non_empty_request_with_auto_populated_field():
         client.get_processor(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.GetProcessorRequest(
+        request_msg = document_processor_service.GetProcessorRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_processor_use_cached_wrapped_rpc():
@@ -4004,10 +4044,14 @@ async def test_get_processor_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_processor_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.GetProcessorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.GetProcessorRequest(),
+        {},
+    ],
+)
+async def test_get_processor_async(request_type, transport: str = "grpc_asyncio"):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4015,7 +4059,7 @@ async def test_get_processor_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_processor), "__call__") as call:
@@ -4052,11 +4096,6 @@ async def test_get_processor_async(
     assert response.kms_key_name == "kms_key_name_value"
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
-
-
-@pytest.mark.asyncio
-async def test_get_processor_async_from_dict():
-    await test_get_processor_async(request_type=dict)
 
 
 def test_get_processor_field_headers():
@@ -4201,8 +4240,8 @@ async def test_get_processor_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.TrainProcessorVersionRequest,
-        dict,
+        document_processor_service.TrainProcessorVersionRequest(),
+        {},
     ],
 )
 def test_train_processor_version(request_type, transport: str = "grpc"):
@@ -4213,7 +4252,7 @@ def test_train_processor_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4259,10 +4298,11 @@ def test_train_processor_version_non_empty_request_with_auto_populated_field():
         client.train_processor_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.TrainProcessorVersionRequest(
+        request_msg = document_processor_service.TrainProcessorVersionRequest(
             parent="parent_value",
             base_processor_version="base_processor_version_value",
         )
+        assert args[0] == request_msg
 
 
 def test_train_processor_version_use_cached_wrapped_rpc():
@@ -4358,9 +4398,15 @@ async def test_train_processor_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.TrainProcessorVersionRequest(),
+        {},
+    ],
+)
 async def test_train_processor_version_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.TrainProcessorVersionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4369,7 +4415,7 @@ async def test_train_processor_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4389,11 +4435,6 @@ async def test_train_processor_version_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_train_processor_version_async_from_dict():
-    await test_train_processor_version_async(request_type=dict)
 
 
 def test_train_processor_version_field_headers():
@@ -4560,8 +4601,8 @@ async def test_train_processor_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.GetProcessorVersionRequest,
-        dict,
+        document_processor_service.GetProcessorVersionRequest(),
+        {},
     ],
 )
 def test_get_processor_version(request_type, transport: str = "grpc"):
@@ -4572,7 +4613,7 @@ def test_get_processor_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4639,9 +4680,10 @@ def test_get_processor_version_non_empty_request_with_auto_populated_field():
         client.get_processor_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.GetProcessorVersionRequest(
+        request_msg = document_processor_service.GetProcessorVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_processor_version_use_cached_wrapped_rpc():
@@ -4727,9 +4769,15 @@ async def test_get_processor_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.GetProcessorVersionRequest(),
+        {},
+    ],
+)
 async def test_get_processor_version_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.GetProcessorVersionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4738,7 +4786,7 @@ async def test_get_processor_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4780,11 +4828,6 @@ async def test_get_processor_version_async(
     )
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
-
-
-@pytest.mark.asyncio
-async def test_get_processor_version_async_from_dict():
-    await test_get_processor_version_async(request_type=dict)
 
 
 def test_get_processor_version_field_headers():
@@ -4941,8 +4984,8 @@ async def test_get_processor_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.ListProcessorVersionsRequest,
-        dict,
+        document_processor_service.ListProcessorVersionsRequest(),
+        {},
     ],
 )
 def test_list_processor_versions(request_type, transport: str = "grpc"):
@@ -4953,7 +4996,7 @@ def test_list_processor_versions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5002,10 +5045,11 @@ def test_list_processor_versions_non_empty_request_with_auto_populated_field():
         client.list_processor_versions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.ListProcessorVersionsRequest(
+        request_msg = document_processor_service.ListProcessorVersionsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_processor_versions_use_cached_wrapped_rpc():
@@ -5091,9 +5135,15 @@ async def test_list_processor_versions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.ListProcessorVersionsRequest(),
+        {},
+    ],
+)
 async def test_list_processor_versions_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.ListProcessorVersionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5102,7 +5152,7 @@ async def test_list_processor_versions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5125,11 +5175,6 @@ async def test_list_processor_versions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProcessorVersionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_processor_versions_async_from_dict():
-    await test_list_processor_versions_async(request_type=dict)
 
 
 def test_list_processor_versions_field_headers():
@@ -5334,6 +5379,9 @@ def test_list_processor_versions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, processor.ProcessorVersion) for i in results)
@@ -5426,6 +5474,8 @@ async def test_list_processor_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5475,11 +5525,7 @@ async def test_list_processor_versions_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_processor_versions(request={})
-        ).pages:
+        async for page_ in (await client.list_processor_versions(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5488,8 +5534,8 @@ async def test_list_processor_versions_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.DeleteProcessorVersionRequest,
-        dict,
+        document_processor_service.DeleteProcessorVersionRequest(),
+        {},
     ],
 )
 def test_delete_processor_version(request_type, transport: str = "grpc"):
@@ -5500,7 +5546,7 @@ def test_delete_processor_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5545,9 +5591,10 @@ def test_delete_processor_version_non_empty_request_with_auto_populated_field():
         client.delete_processor_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.DeleteProcessorVersionRequest(
+        request_msg = document_processor_service.DeleteProcessorVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_processor_version_use_cached_wrapped_rpc():
@@ -5643,9 +5690,15 @@ async def test_delete_processor_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.DeleteProcessorVersionRequest(),
+        {},
+    ],
+)
 async def test_delete_processor_version_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.DeleteProcessorVersionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5654,7 +5707,7 @@ async def test_delete_processor_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5674,11 +5727,6 @@ async def test_delete_processor_version_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_processor_version_async_from_dict():
-    await test_delete_processor_version_async(request_type=dict)
 
 
 def test_delete_processor_version_field_headers():
@@ -5835,8 +5883,8 @@ async def test_delete_processor_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.DeployProcessorVersionRequest,
-        dict,
+        document_processor_service.DeployProcessorVersionRequest(),
+        {},
     ],
 )
 def test_deploy_processor_version(request_type, transport: str = "grpc"):
@@ -5847,7 +5895,7 @@ def test_deploy_processor_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5892,9 +5940,10 @@ def test_deploy_processor_version_non_empty_request_with_auto_populated_field():
         client.deploy_processor_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.DeployProcessorVersionRequest(
+        request_msg = document_processor_service.DeployProcessorVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_deploy_processor_version_use_cached_wrapped_rpc():
@@ -5990,9 +6039,15 @@ async def test_deploy_processor_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.DeployProcessorVersionRequest(),
+        {},
+    ],
+)
 async def test_deploy_processor_version_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.DeployProcessorVersionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6001,7 +6056,7 @@ async def test_deploy_processor_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6021,11 +6076,6 @@ async def test_deploy_processor_version_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_deploy_processor_version_async_from_dict():
-    await test_deploy_processor_version_async(request_type=dict)
 
 
 def test_deploy_processor_version_field_headers():
@@ -6182,8 +6232,8 @@ async def test_deploy_processor_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.UndeployProcessorVersionRequest,
-        dict,
+        document_processor_service.UndeployProcessorVersionRequest(),
+        {},
     ],
 )
 def test_undeploy_processor_version(request_type, transport: str = "grpc"):
@@ -6194,7 +6244,7 @@ def test_undeploy_processor_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6239,9 +6289,10 @@ def test_undeploy_processor_version_non_empty_request_with_auto_populated_field(
         client.undeploy_processor_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.UndeployProcessorVersionRequest(
+        request_msg = document_processor_service.UndeployProcessorVersionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_undeploy_processor_version_use_cached_wrapped_rpc():
@@ -6337,9 +6388,15 @@ async def test_undeploy_processor_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.UndeployProcessorVersionRequest(),
+        {},
+    ],
+)
 async def test_undeploy_processor_version_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.UndeployProcessorVersionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6348,7 +6405,7 @@ async def test_undeploy_processor_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6368,11 +6425,6 @@ async def test_undeploy_processor_version_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_undeploy_processor_version_async_from_dict():
-    await test_undeploy_processor_version_async(request_type=dict)
 
 
 def test_undeploy_processor_version_field_headers():
@@ -6529,8 +6581,8 @@ async def test_undeploy_processor_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.CreateProcessorRequest,
-        dict,
+        document_processor_service.CreateProcessorRequest(),
+        {},
     ],
 )
 def test_create_processor(request_type, transport: str = "grpc"):
@@ -6541,7 +6593,7 @@ def test_create_processor(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_processor), "__call__") as call:
@@ -6601,9 +6653,10 @@ def test_create_processor_non_empty_request_with_auto_populated_field():
         client.create_processor(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.CreateProcessorRequest(
+        request_msg = document_processor_service.CreateProcessorRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_processor_use_cached_wrapped_rpc():
@@ -6686,10 +6739,14 @@ async def test_create_processor_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_processor_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.CreateProcessorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.CreateProcessorRequest(),
+        {},
+    ],
+)
+async def test_create_processor_async(request_type, transport: str = "grpc_asyncio"):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6697,7 +6754,7 @@ async def test_create_processor_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_processor), "__call__") as call:
@@ -6734,11 +6791,6 @@ async def test_create_processor_async(
     assert response.kms_key_name == "kms_key_name_value"
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
-
-
-@pytest.mark.asyncio
-async def test_create_processor_async_from_dict():
-    await test_create_processor_async(request_type=dict)
 
 
 def test_create_processor_field_headers():
@@ -6897,8 +6949,8 @@ async def test_create_processor_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.DeleteProcessorRequest,
-        dict,
+        document_processor_service.DeleteProcessorRequest(),
+        {},
     ],
 )
 def test_delete_processor(request_type, transport: str = "grpc"):
@@ -6909,7 +6961,7 @@ def test_delete_processor(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_processor), "__call__") as call:
@@ -6950,9 +7002,10 @@ def test_delete_processor_non_empty_request_with_auto_populated_field():
         client.delete_processor(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.DeleteProcessorRequest(
+        request_msg = document_processor_service.DeleteProcessorRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_processor_use_cached_wrapped_rpc():
@@ -7045,10 +7098,14 @@ async def test_delete_processor_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_processor_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.DeleteProcessorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.DeleteProcessorRequest(),
+        {},
+    ],
+)
+async def test_delete_processor_async(request_type, transport: str = "grpc_asyncio"):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7056,7 +7113,7 @@ async def test_delete_processor_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_processor), "__call__") as call:
@@ -7074,11 +7131,6 @@ async def test_delete_processor_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_processor_async_from_dict():
-    await test_delete_processor_async(request_type=dict)
 
 
 def test_delete_processor_field_headers():
@@ -7227,8 +7279,8 @@ async def test_delete_processor_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.EnableProcessorRequest,
-        dict,
+        document_processor_service.EnableProcessorRequest(),
+        {},
     ],
 )
 def test_enable_processor(request_type, transport: str = "grpc"):
@@ -7239,7 +7291,7 @@ def test_enable_processor(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.enable_processor), "__call__") as call:
@@ -7280,9 +7332,10 @@ def test_enable_processor_non_empty_request_with_auto_populated_field():
         client.enable_processor(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.EnableProcessorRequest(
+        request_msg = document_processor_service.EnableProcessorRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_enable_processor_use_cached_wrapped_rpc():
@@ -7375,10 +7428,14 @@ async def test_enable_processor_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_enable_processor_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.EnableProcessorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.EnableProcessorRequest(),
+        {},
+    ],
+)
+async def test_enable_processor_async(request_type, transport: str = "grpc_asyncio"):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7386,7 +7443,7 @@ async def test_enable_processor_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.enable_processor), "__call__") as call:
@@ -7404,11 +7461,6 @@ async def test_enable_processor_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_enable_processor_async_from_dict():
-    await test_enable_processor_async(request_type=dict)
 
 
 def test_enable_processor_field_headers():
@@ -7475,8 +7527,8 @@ async def test_enable_processor_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.DisableProcessorRequest,
-        dict,
+        document_processor_service.DisableProcessorRequest(),
+        {},
     ],
 )
 def test_disable_processor(request_type, transport: str = "grpc"):
@@ -7487,7 +7539,7 @@ def test_disable_processor(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7532,9 +7584,10 @@ def test_disable_processor_non_empty_request_with_auto_populated_field():
         client.disable_processor(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.DisableProcessorRequest(
+        request_msg = document_processor_service.DisableProcessorRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_disable_processor_use_cached_wrapped_rpc():
@@ -7627,10 +7680,14 @@ async def test_disable_processor_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_disable_processor_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.DisableProcessorRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.DisableProcessorRequest(),
+        {},
+    ],
+)
+async def test_disable_processor_async(request_type, transport: str = "grpc_asyncio"):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7638,7 +7695,7 @@ async def test_disable_processor_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7658,11 +7715,6 @@ async def test_disable_processor_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_disable_processor_async_from_dict():
-    await test_disable_processor_async(request_type=dict)
 
 
 def test_disable_processor_field_headers():
@@ -7733,8 +7785,8 @@ async def test_disable_processor_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.SetDefaultProcessorVersionRequest,
-        dict,
+        document_processor_service.SetDefaultProcessorVersionRequest(),
+        {},
     ],
 )
 def test_set_default_processor_version(request_type, transport: str = "grpc"):
@@ -7745,7 +7797,7 @@ def test_set_default_processor_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7791,10 +7843,11 @@ def test_set_default_processor_version_non_empty_request_with_auto_populated_fie
         client.set_default_processor_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.SetDefaultProcessorVersionRequest(
+        request_msg = document_processor_service.SetDefaultProcessorVersionRequest(
             processor="processor_value",
             default_processor_version="default_processor_version_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_default_processor_version_use_cached_wrapped_rpc():
@@ -7890,9 +7943,15 @@ async def test_set_default_processor_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.SetDefaultProcessorVersionRequest(),
+        {},
+    ],
+)
 async def test_set_default_processor_version_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.SetDefaultProcessorVersionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7901,7 +7960,7 @@ async def test_set_default_processor_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7921,11 +7980,6 @@ async def test_set_default_processor_version_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_set_default_processor_version_async_from_dict():
-    await test_set_default_processor_version_async(request_type=dict)
 
 
 def test_set_default_processor_version_field_headers():
@@ -7996,8 +8050,8 @@ async def test_set_default_processor_version_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.ReviewDocumentRequest,
-        dict,
+        document_processor_service.ReviewDocumentRequest(),
+        {},
     ],
 )
 def test_review_document(request_type, transport: str = "grpc"):
@@ -8008,7 +8062,7 @@ def test_review_document(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.review_document), "__call__") as call:
@@ -8049,9 +8103,10 @@ def test_review_document_non_empty_request_with_auto_populated_field():
         client.review_document(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.ReviewDocumentRequest(
+        request_msg = document_processor_service.ReviewDocumentRequest(
             human_review_config="human_review_config_value",
         )
+        assert args[0] == request_msg
 
 
 def test_review_document_use_cached_wrapped_rpc():
@@ -8142,10 +8197,14 @@ async def test_review_document_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_review_document_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.ReviewDocumentRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.ReviewDocumentRequest(),
+        {},
+    ],
+)
+async def test_review_document_async(request_type, transport: str = "grpc_asyncio"):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8153,7 +8212,7 @@ async def test_review_document_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.review_document), "__call__") as call:
@@ -8171,11 +8230,6 @@ async def test_review_document_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_review_document_async_from_dict():
-    await test_review_document_async(request_type=dict)
 
 
 def test_review_document_field_headers():
@@ -8324,8 +8378,8 @@ async def test_review_document_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.EvaluateProcessorVersionRequest,
-        dict,
+        document_processor_service.EvaluateProcessorVersionRequest(),
+        {},
     ],
 )
 def test_evaluate_processor_version(request_type, transport: str = "grpc"):
@@ -8336,7 +8390,7 @@ def test_evaluate_processor_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8381,9 +8435,10 @@ def test_evaluate_processor_version_non_empty_request_with_auto_populated_field(
         client.evaluate_processor_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.EvaluateProcessorVersionRequest(
+        request_msg = document_processor_service.EvaluateProcessorVersionRequest(
             processor_version="processor_version_value",
         )
+        assert args[0] == request_msg
 
 
 def test_evaluate_processor_version_use_cached_wrapped_rpc():
@@ -8479,9 +8534,15 @@ async def test_evaluate_processor_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.EvaluateProcessorVersionRequest(),
+        {},
+    ],
+)
 async def test_evaluate_processor_version_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.EvaluateProcessorVersionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8490,7 +8551,7 @@ async def test_evaluate_processor_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8510,11 +8571,6 @@ async def test_evaluate_processor_version_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_evaluate_processor_version_async_from_dict():
-    await test_evaluate_processor_version_async(request_type=dict)
 
 
 def test_evaluate_processor_version_field_headers():
@@ -8671,8 +8727,8 @@ async def test_evaluate_processor_version_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.GetEvaluationRequest,
-        dict,
+        document_processor_service.GetEvaluationRequest(),
+        {},
     ],
 )
 def test_get_evaluation(request_type, transport: str = "grpc"):
@@ -8683,7 +8739,7 @@ def test_get_evaluation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_evaluation), "__call__") as call:
@@ -8731,9 +8787,10 @@ def test_get_evaluation_non_empty_request_with_auto_populated_field():
         client.get_evaluation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.GetEvaluationRequest(
+        request_msg = document_processor_service.GetEvaluationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_evaluation_use_cached_wrapped_rpc():
@@ -8814,10 +8871,14 @@ async def test_get_evaluation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_evaluation_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.GetEvaluationRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.GetEvaluationRequest(),
+        {},
+    ],
+)
+async def test_get_evaluation_async(request_type, transport: str = "grpc_asyncio"):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8825,7 +8886,7 @@ async def test_get_evaluation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_evaluation), "__call__") as call:
@@ -8850,11 +8911,6 @@ async def test_get_evaluation_async(
     assert response.name == "name_value"
     assert response.kms_key_name == "kms_key_name_value"
     assert response.kms_key_version_name == "kms_key_version_name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_evaluation_async_from_dict():
-    await test_get_evaluation_async(request_type=dict)
 
 
 def test_get_evaluation_field_headers():
@@ -9003,8 +9059,8 @@ async def test_get_evaluation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.ListEvaluationsRequest,
-        dict,
+        document_processor_service.ListEvaluationsRequest(),
+        {},
     ],
 )
 def test_list_evaluations(request_type, transport: str = "grpc"):
@@ -9015,7 +9071,7 @@ def test_list_evaluations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_evaluations), "__call__") as call:
@@ -9060,10 +9116,11 @@ def test_list_evaluations_non_empty_request_with_auto_populated_field():
         client.list_evaluations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.ListEvaluationsRequest(
+        request_msg = document_processor_service.ListEvaluationsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_evaluations_use_cached_wrapped_rpc():
@@ -9146,10 +9203,14 @@ async def test_list_evaluations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_evaluations_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.ListEvaluationsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.ListEvaluationsRequest(),
+        {},
+    ],
+)
+async def test_list_evaluations_async(request_type, transport: str = "grpc_asyncio"):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9157,7 +9218,7 @@ async def test_list_evaluations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_evaluations), "__call__") as call:
@@ -9178,11 +9239,6 @@ async def test_list_evaluations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEvaluationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_evaluations_async_from_dict():
-    await test_list_evaluations_async(request_type=dict)
 
 
 def test_list_evaluations_field_headers():
@@ -9377,6 +9433,9 @@ def test_list_evaluations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, evaluation.Evaluation) for i in results)
@@ -9465,6 +9524,8 @@ async def test_list_evaluations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -9512,11 +9573,7 @@ async def test_list_evaluations_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_evaluations(request={})
-        ).pages:
+        async for page_ in (await client.list_evaluations(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -9525,8 +9582,8 @@ async def test_list_evaluations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        document_processor_service.ImportProcessorVersionRequest,
-        dict,
+        document_processor_service.ImportProcessorVersionRequest(),
+        {},
     ],
 )
 def test_import_processor_version(request_type, transport: str = "grpc"):
@@ -9537,7 +9594,7 @@ def test_import_processor_version(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9583,10 +9640,11 @@ def test_import_processor_version_non_empty_request_with_auto_populated_field():
         client.import_processor_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_processor_service.ImportProcessorVersionRequest(
+        request_msg = document_processor_service.ImportProcessorVersionRequest(
             processor_version_source="processor_version_source_value",
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_import_processor_version_use_cached_wrapped_rpc():
@@ -9682,9 +9740,15 @@ async def test_import_processor_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_processor_service.ImportProcessorVersionRequest(),
+        {},
+    ],
+)
 async def test_import_processor_version_async(
-    transport: str = "grpc_asyncio",
-    request_type=document_processor_service.ImportProcessorVersionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DocumentProcessorServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9693,7 +9757,7 @@ async def test_import_processor_version_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9713,11 +9777,6 @@ async def test_import_processor_version_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_import_processor_version_async_from_dict():
-    await test_import_processor_version_async(request_type=dict)
 
 
 def test_import_processor_version_field_headers():
@@ -9982,7 +10041,7 @@ def test_process_document_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_process_document_rest_unset_required_fields():
@@ -10169,7 +10228,7 @@ def test_batch_process_documents_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_process_documents_rest_unset_required_fields():
@@ -10354,7 +10413,7 @@ def test_fetch_processor_types_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_fetch_processor_types_rest_unset_required_fields():
@@ -10547,7 +10606,7 @@ def test_list_processor_types_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_processor_types_rest_unset_required_fields():
@@ -10682,6 +10741,9 @@ def test_list_processor_types_rest_pager(transport: str = "rest"):
 
         pager = client.list_processor_types(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, processor_type.ProcessorType) for i in results)
@@ -10803,7 +10865,7 @@ def test_get_processor_type_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_processor_type_rest_unset_required_fields():
@@ -10992,7 +11054,7 @@ def test_list_processors_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_processors_rest_unset_required_fields():
@@ -11127,6 +11189,9 @@ def test_list_processors_rest_pager(transport: str = "rest"):
 
         pager = client.list_processors(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, processor.Processor) for i in results)
@@ -11244,7 +11309,7 @@ def test_get_processor_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_processor_rest_unset_required_fields():
@@ -11431,7 +11496,7 @@ def test_train_processor_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_train_processor_version_rest_unset_required_fields():
@@ -11624,7 +11689,7 @@ def test_get_processor_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_processor_version_rest_unset_required_fields():
@@ -11818,7 +11883,7 @@ def test_list_processor_versions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_processor_versions_rest_unset_required_fields():
@@ -11957,6 +12022,9 @@ def test_list_processor_versions_rest_pager(transport: str = "rest"):
 
         pager = client.list_processor_versions(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, processor.ProcessorVersion) for i in results)
@@ -12080,7 +12148,7 @@ def test_delete_processor_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_processor_version_rest_unset_required_fields():
@@ -12265,7 +12333,7 @@ def test_deploy_processor_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_deploy_processor_version_rest_unset_required_fields():
@@ -12450,7 +12518,7 @@ def test_undeploy_processor_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_undeploy_processor_version_rest_unset_required_fields():
@@ -12631,7 +12699,7 @@ def test_create_processor_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_processor_rest_unset_required_fields():
@@ -12822,7 +12890,7 @@ def test_delete_processor_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_processor_rest_unset_required_fields():
@@ -13004,7 +13072,7 @@ def test_enable_processor_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_enable_processor_rest_unset_required_fields():
@@ -13128,7 +13196,7 @@ def test_disable_processor_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_disable_processor_rest_unset_required_fields():
@@ -13262,7 +13330,7 @@ def test_set_default_processor_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_default_processor_version_rest_unset_required_fields():
@@ -13394,7 +13462,7 @@ def test_review_document_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_review_document_rest_unset_required_fields():
@@ -13579,7 +13647,7 @@ def test_evaluate_processor_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_evaluate_processor_version_rest_unset_required_fields():
@@ -13757,7 +13825,7 @@ def test_get_evaluation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_evaluation_rest_unset_required_fields():
@@ -13948,7 +14016,7 @@ def test_list_evaluations_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_evaluations_rest_unset_required_fields():
@@ -14087,6 +14155,9 @@ def test_list_evaluations_rest_pager(transport: str = "rest"):
 
         pager = client.list_evaluations(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, evaluation.Evaluation) for i in results)
@@ -14211,7 +14282,7 @@ def test_import_processor_version_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_import_processor_version_rest_unset_required_fields():
@@ -14404,7 +14475,6 @@ def test_process_document_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.ProcessRequest()
-
         assert args[0] == request_msg
 
 
@@ -14427,7 +14497,6 @@ def test_batch_process_documents_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.BatchProcessRequest()
-
         assert args[0] == request_msg
 
 
@@ -14450,7 +14519,6 @@ def test_fetch_processor_types_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.FetchProcessorTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14473,7 +14541,6 @@ def test_list_processor_types_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.ListProcessorTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -14496,7 +14563,6 @@ def test_get_processor_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.GetProcessorTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -14517,7 +14583,6 @@ def test_list_processors_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.ListProcessorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14538,7 +14603,6 @@ def test_get_processor_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.GetProcessorRequest()
-
         assert args[0] == request_msg
 
 
@@ -14561,7 +14625,6 @@ def test_train_processor_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.TrainProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14584,7 +14647,6 @@ def test_get_processor_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.GetProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14607,7 +14669,6 @@ def test_list_processor_versions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.ListProcessorVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14630,7 +14691,6 @@ def test_delete_processor_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.DeleteProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14653,7 +14713,6 @@ def test_deploy_processor_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.DeployProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14676,7 +14735,6 @@ def test_undeploy_processor_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.UndeployProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14697,7 +14755,6 @@ def test_create_processor_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.CreateProcessorRequest()
-
         assert args[0] == request_msg
 
 
@@ -14718,7 +14775,6 @@ def test_delete_processor_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.DeleteProcessorRequest()
-
         assert args[0] == request_msg
 
 
@@ -14739,7 +14795,6 @@ def test_enable_processor_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.EnableProcessorRequest()
-
         assert args[0] == request_msg
 
 
@@ -14762,7 +14817,6 @@ def test_disable_processor_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.DisableProcessorRequest()
-
         assert args[0] == request_msg
 
 
@@ -14785,7 +14839,6 @@ def test_set_default_processor_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.SetDefaultProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14806,7 +14859,6 @@ def test_review_document_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.ReviewDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -14829,7 +14881,6 @@ def test_evaluate_processor_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.EvaluateProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14850,7 +14901,6 @@ def test_get_evaluation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.GetEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -14871,7 +14921,6 @@ def test_list_evaluations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.ListEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -14894,7 +14943,6 @@ def test_import_processor_version_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.ImportProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -14935,7 +14983,6 @@ async def test_process_document_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.ProcessRequest()
-
         assert args[0] == request_msg
 
 
@@ -14962,7 +15009,6 @@ async def test_batch_process_documents_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.BatchProcessRequest()
-
         assert args[0] == request_msg
 
 
@@ -14989,7 +15035,6 @@ async def test_fetch_processor_types_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.FetchProcessorTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -15018,7 +15063,6 @@ async def test_list_processor_types_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.ListProcessorTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -15052,7 +15096,6 @@ async def test_get_processor_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.GetProcessorTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -15079,7 +15122,6 @@ async def test_list_processors_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.ListProcessorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15114,7 +15156,6 @@ async def test_get_processor_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.GetProcessorRequest()
-
         assert args[0] == request_msg
 
 
@@ -15141,7 +15182,6 @@ async def test_train_processor_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.TrainProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -15178,7 +15218,6 @@ async def test_get_processor_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.GetProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -15207,7 +15246,6 @@ async def test_list_processor_versions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.ListProcessorVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15234,7 +15272,6 @@ async def test_delete_processor_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.DeleteProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -15261,7 +15298,6 @@ async def test_deploy_processor_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.DeployProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -15288,7 +15324,6 @@ async def test_undeploy_processor_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.UndeployProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -15323,7 +15358,6 @@ async def test_create_processor_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.CreateProcessorRequest()
-
         assert args[0] == request_msg
 
 
@@ -15348,7 +15382,6 @@ async def test_delete_processor_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.DeleteProcessorRequest()
-
         assert args[0] == request_msg
 
 
@@ -15373,7 +15406,6 @@ async def test_enable_processor_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.EnableProcessorRequest()
-
         assert args[0] == request_msg
 
 
@@ -15400,7 +15432,6 @@ async def test_disable_processor_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.DisableProcessorRequest()
-
         assert args[0] == request_msg
 
 
@@ -15427,7 +15458,6 @@ async def test_set_default_processor_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.SetDefaultProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -15452,7 +15482,6 @@ async def test_review_document_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.ReviewDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -15479,7 +15508,6 @@ async def test_evaluate_processor_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.EvaluateProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -15508,7 +15536,6 @@ async def test_get_evaluation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.GetEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -15535,7 +15562,6 @@ async def test_list_evaluations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.ListEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15562,7 +15588,6 @@ async def test_import_processor_version_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.ImportProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -15584,8 +15609,9 @@ def test_process_document_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15648,18 +15674,20 @@ def test_process_document_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_process_document"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_process_document_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_process_document"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "post_process_document"
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_process_document_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_process_document"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15717,8 +15745,9 @@ def test_batch_process_documents_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15775,22 +15804,23 @@ def test_batch_process_documents_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_batch_process_documents",
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_batch_process_documents_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "pre_batch_process_documents",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_batch_process_documents",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_batch_process_documents_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_batch_process_documents",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15843,8 +15873,9 @@ def test_fetch_processor_types_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15906,18 +15937,22 @@ def test_fetch_processor_types_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_fetch_processor_types"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_fetch_processor_types_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_fetch_processor_types"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_fetch_processor_types",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_fetch_processor_types_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_fetch_processor_types",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15975,8 +16010,9 @@ def test_list_processor_types_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16041,18 +16077,22 @@ def test_list_processor_types_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_list_processor_types"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_list_processor_types_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_list_processor_types"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_list_processor_types",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_list_processor_types_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_list_processor_types",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16110,8 +16150,9 @@ def test_get_processor_type_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16184,18 +16225,21 @@ def test_get_processor_type_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_get_processor_type"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_get_processor_type_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_get_processor_type"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_get_processor_type",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_get_processor_type_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_get_processor_type"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16250,8 +16294,9 @@ def test_list_processors_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16316,18 +16361,20 @@ def test_list_processors_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_list_processors"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_list_processors_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_list_processors"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "post_list_processors"
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_list_processors_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_list_processors"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16385,8 +16432,9 @@ def test_get_processor_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16465,18 +16513,20 @@ def test_get_processor_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_get_processor"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_get_processor_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_get_processor"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "post_get_processor"
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_get_processor_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_get_processor"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16529,8 +16579,9 @@ def test_train_processor_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16587,22 +16638,23 @@ def test_train_processor_version_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_train_processor_version",
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_train_processor_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "pre_train_processor_version",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_train_processor_version",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_train_processor_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_train_processor_version",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16657,8 +16709,9 @@ def test_get_processor_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16742,18 +16795,22 @@ def test_get_processor_version_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_get_processor_version"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_get_processor_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_get_processor_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_get_processor_version",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_get_processor_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_get_processor_version",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16806,8 +16863,9 @@ def test_list_processor_versions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16872,20 +16930,22 @@ def test_list_processor_versions_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_list_processor_versions",
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_list_processor_versions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "pre_list_processor_versions",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_list_processor_versions",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_list_processor_versions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_list_processor_versions",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16945,8 +17005,9 @@ def test_delete_processor_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17005,22 +17066,23 @@ def test_delete_processor_version_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_delete_processor_version",
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_delete_processor_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "pre_delete_processor_version",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_delete_processor_version",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_delete_processor_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_delete_processor_version",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17075,8 +17137,9 @@ def test_deploy_processor_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17135,22 +17198,23 @@ def test_deploy_processor_version_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_deploy_processor_version",
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_deploy_processor_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "pre_deploy_processor_version",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_deploy_processor_version",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_deploy_processor_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_deploy_processor_version",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17205,8 +17269,9 @@ def test_undeploy_processor_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17265,22 +17330,23 @@ def test_undeploy_processor_version_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_undeploy_processor_version",
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_undeploy_processor_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "pre_undeploy_processor_version",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_undeploy_processor_version",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_undeploy_processor_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_undeploy_processor_version",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17333,8 +17399,9 @@ def test_create_processor_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17497,18 +17564,20 @@ def test_create_processor_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_create_processor"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_create_processor_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_create_processor"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "post_create_processor"
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_create_processor_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_create_processor"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17561,8 +17630,9 @@ def test_delete_processor_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17619,20 +17689,21 @@ def test_delete_processor_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_delete_processor"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_delete_processor_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_delete_processor"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "post_delete_processor"
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_delete_processor_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_delete_processor"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17685,8 +17756,9 @@ def test_enable_processor_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17743,20 +17815,21 @@ def test_enable_processor_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_enable_processor"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_enable_processor_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_enable_processor"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "post_enable_processor"
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_enable_processor_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_enable_processor"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17809,8 +17882,9 @@ def test_disable_processor_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17867,20 +17941,21 @@ def test_disable_processor_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_disable_processor"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_disable_processor_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_disable_processor"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "post_disable_processor"
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_disable_processor_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_disable_processor"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17935,8 +18010,9 @@ def test_set_default_processor_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17995,22 +18071,23 @@ def test_set_default_processor_version_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_set_default_processor_version",
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_set_default_processor_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "pre_set_default_processor_version",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_set_default_processor_version",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_set_default_processor_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_set_default_processor_version",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18065,8 +18142,9 @@ def test_review_document_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18125,20 +18203,21 @@ def test_review_document_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_review_document"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_review_document_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_review_document"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "post_review_document"
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_review_document_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_review_document"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18193,8 +18272,9 @@ def test_evaluate_processor_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18253,22 +18333,23 @@ def test_evaluate_processor_version_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_evaluate_processor_version",
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_evaluate_processor_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "pre_evaluate_processor_version",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_evaluate_processor_version",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_evaluate_processor_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_evaluate_processor_version",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18323,8 +18404,9 @@ def test_get_evaluation_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18393,18 +18475,20 @@ def test_get_evaluation_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_get_evaluation"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_get_evaluation_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_get_evaluation"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "post_get_evaluation"
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_get_evaluation_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_get_evaluation"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18459,8 +18543,9 @@ def test_list_evaluations_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18527,18 +18612,20 @@ def test_list_evaluations_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "post_list_evaluations"
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_list_evaluations_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor, "pre_list_evaluations"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "post_list_evaluations"
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_list_evaluations_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor, "pre_list_evaluations"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18596,8 +18683,9 @@ def test_import_processor_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18654,22 +18742,23 @@ def test_import_processor_version_rest_interceptors(null_interceptor):
     )
     client = DocumentProcessorServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_import_processor_version",
-    ) as post, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "post_import_processor_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DocumentProcessorServiceRestInterceptor,
-        "pre_import_processor_version",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_import_processor_version",
+        ) as post,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "post_import_processor_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DocumentProcessorServiceRestInterceptor,
+            "pre_import_processor_version",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18722,8 +18811,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -18782,8 +18872,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -18844,8 +18935,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -18906,8 +18998,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -18968,8 +19061,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -19040,7 +19134,6 @@ def test_process_document_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.ProcessRequest()
-
         assert args[0] == request_msg
 
 
@@ -19062,7 +19155,6 @@ def test_batch_process_documents_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.BatchProcessRequest()
-
         assert args[0] == request_msg
 
 
@@ -19084,7 +19176,6 @@ def test_fetch_processor_types_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.FetchProcessorTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -19106,7 +19197,6 @@ def test_list_processor_types_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.ListProcessorTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -19128,7 +19218,6 @@ def test_get_processor_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.GetProcessorTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -19148,7 +19237,6 @@ def test_list_processors_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.ListProcessorsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19168,7 +19256,6 @@ def test_get_processor_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.GetProcessorRequest()
-
         assert args[0] == request_msg
 
 
@@ -19190,7 +19277,6 @@ def test_train_processor_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.TrainProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -19212,7 +19298,6 @@ def test_get_processor_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.GetProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -19234,7 +19319,6 @@ def test_list_processor_versions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.ListProcessorVersionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19256,7 +19340,6 @@ def test_delete_processor_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.DeleteProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -19278,7 +19361,6 @@ def test_deploy_processor_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.DeployProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -19300,7 +19382,6 @@ def test_undeploy_processor_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.UndeployProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -19320,7 +19401,6 @@ def test_create_processor_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.CreateProcessorRequest()
-
         assert args[0] == request_msg
 
 
@@ -19340,7 +19420,6 @@ def test_delete_processor_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.DeleteProcessorRequest()
-
         assert args[0] == request_msg
 
 
@@ -19360,7 +19439,6 @@ def test_enable_processor_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.EnableProcessorRequest()
-
         assert args[0] == request_msg
 
 
@@ -19382,7 +19460,6 @@ def test_disable_processor_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.DisableProcessorRequest()
-
         assert args[0] == request_msg
 
 
@@ -19404,7 +19481,6 @@ def test_set_default_processor_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.SetDefaultProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -19424,7 +19500,6 @@ def test_review_document_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.ReviewDocumentRequest()
-
         assert args[0] == request_msg
 
 
@@ -19446,7 +19521,6 @@ def test_evaluate_processor_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.EvaluateProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -19466,7 +19540,6 @@ def test_get_evaluation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.GetEvaluationRequest()
-
         assert args[0] == request_msg
 
 
@@ -19486,7 +19559,6 @@ def test_list_evaluations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.ListEvaluationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19508,7 +19580,6 @@ def test_import_processor_version_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = document_processor_service.ImportProcessorVersionRequest()
-
         assert args[0] == request_msg
 
 
@@ -19614,11 +19685,14 @@ def test_document_processor_service_base_transport():
 
 def test_document_processor_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.documentai_v1beta3.services.document_processor_service.transports.DocumentProcessorServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.documentai_v1beta3.services.document_processor_service.transports.DocumentProcessorServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DocumentProcessorServiceTransport(
@@ -19635,9 +19709,12 @@ def test_document_processor_service_base_transport_with_credentials_file():
 
 def test_document_processor_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.documentai_v1beta3.services.document_processor_service.transports.DocumentProcessorServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.documentai_v1beta3.services.document_processor_service.transports.DocumentProcessorServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DocumentProcessorServiceTransport()
@@ -19711,11 +19788,12 @@ def test_document_processor_service_transport_create_channel(
 ):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -20501,6 +20579,38 @@ async def test_cancel_operation_from_dict_async():
         call.assert_called()
 
 
+def test_cancel_operation_flattened():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
 def test_get_operation(transport: str = "grpc"):
     client = DocumentProcessorServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -20644,6 +20754,40 @@ async def test_get_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_operation_flattened():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
 
 
 def test_list_operations(transport: str = "grpc"):
@@ -20791,6 +20935,40 @@ async def test_list_operations_from_dict_async():
         call.assert_called()
 
 
+def test_list_operations_flattened():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
 def test_list_locations(transport: str = "grpc"):
     client = DocumentProcessorServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -20936,6 +21114,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = DocumentProcessorServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -21079,6 +21291,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():

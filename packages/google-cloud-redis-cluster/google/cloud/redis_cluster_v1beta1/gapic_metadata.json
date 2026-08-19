@@ -55,6 +55,11 @@
                 "get_cluster_certificate_authority"
               ]
             },
+            "GetSharedRegionalCertificateAuthority": {
+              "methods": [
+                "get_shared_regional_certificate_authority"
+              ]
+            },
             "ListBackupCollections": {
               "methods": [
                 "list_backup_collections"
@@ -130,6 +135,11 @@
                 "get_cluster_certificate_authority"
               ]
             },
+            "GetSharedRegionalCertificateAuthority": {
+              "methods": [
+                "get_shared_regional_certificate_authority"
+              ]
+            },
             "ListBackupCollections": {
               "methods": [
                 "list_backup_collections"
@@ -203,6 +213,11 @@
             "GetClusterCertificateAuthority": {
               "methods": [
                 "get_cluster_certificate_authority"
+              ]
+            },
+            "GetSharedRegionalCertificateAuthority": {
+              "methods": [
+                "get_shared_regional_certificate_authority"
               ]
             },
             "ListBackupCollections": {

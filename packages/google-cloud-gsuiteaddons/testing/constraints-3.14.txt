@@ -9,5 +9,5 @@ google-api-core>=2
 google-auth>=2
 grpcio>=1
 proto-plus>=1
-protobuf>=6
+protobuf>=7
 google-apps-script-type>=0

@@ -4,6 +4,39 @@
 
 [1]: https://pypi.org/project/proto-plus/#history
 
+## [1.28.3](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.28.2...proto-plus-v1.28.3) (2026-08-06)
+
+
+### Bug Fixes
+
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+* **proto-plus:** add context to TypeErrors during message manipulation ([#17682](https://github.com/googleapis/google-cloud-python/issues/17682)) ([08f21a6](https://github.com/googleapis/google-cloud-python/commit/08f21a6bfc357d249a6c85cd9d4282154fa9aba2))
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
+## [1.28.2](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.28.1...proto-plus-v1.28.2) (2026-07-22)
+
+
+### Bug Fixes
+
+* **proto-plus:** make Marshal thread-safe and handle race conditions ([#17774](https://github.com/googleapis/google-cloud-python/issues/17774)) ([0719f1e](https://github.com/googleapis/google-cloud-python/commit/0719f1ec1d4146dbfc96d24c95b7ccafd31ab447)), closes [#15100](https://github.com/googleapis/google-cloud-python/issues/15100)
+
+## [1.28.1](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.28.0...proto-plus-v1.28.1) (2026-07-07)
+
+
+### Bug Fixes
+
+* **tests:** add --cov-append to gapic-generator and proto-plus to preserve monorepo coverage ([#17603](https://github.com/googleapis/google-cloud-python/issues/17603)) ([2ddcf4d](https://github.com/googleapis/google-cloud-python/commit/2ddcf4dfc711771b284797569f7f8a2de902ade8))
+
+## [1.28.0](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.27.2...proto-plus-v1.28.0) (2026-05-06)
+
+## [1.27.2](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.27.1...proto-plus-v1.27.2) (2026-03-26)
+
+
+### Bug Fixes
+
+* Allow Protobuf 7.x, require Python 3.9 (#16102) ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+* Require Python 3.9 ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+
 ## [1.27.1](https://github.com/googleapis/proto-plus-python/compare/v1.27.0...v1.27.1) (2026-01-30)
 
 

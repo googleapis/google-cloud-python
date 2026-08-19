@@ -4,6 +4,38 @@
 
 [1]: https://pypi.org/project/pandas-gbq/#history
 
+## [0.35.1](https://github.com/googleapis/google-cloud-python/compare/pandas-gbq-v0.35.0...pandas-gbq-v0.35.1) (2026-08-06)
+
+
+### Features
+
+* **pandas-gbq:** add arrow decoder for read rows response ([#17958](https://github.com/googleapis/google-cloud-python/issues/17958)) ([e1df28c](https://github.com/googleapis/google-cloud-python/commit/e1df28c5330c67f949f7b8888f4d906488e07a3b))
+
+
+### Bug Fixes
+
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
+
+### Documentation
+
+* add project ID to pandas-gbq run sample ([#17692](https://github.com/googleapis/google-cloud-python/issues/17692)) ([bd5d1a4](https://github.com/googleapis/google-cloud-python/commit/bd5d1a4b100cd1d22fc19da75d07a0b47396edd3))
+
+## [0.35.0](https://github.com/googleapis/google-cloud-python/compare/pandas-gbq-v0.34.1...pandas-gbq-v0.35.0) (2026-04-09)
+
+
+### Features
+
+* drop support for Python 3.9 (#16476) ([f38cd44be98acb9a51c30b47ac9688a44e19c2fb](https://github.com/googleapis/google-cloud-python/commit/f38cd44be98acb9a51c30b47ac9688a44e19c2fb))
+
+## [0.34.1](https://github.com/googleapis/google-cloud-python/compare/pandas-gbq-v0.34.0...pandas-gbq-v0.34.1) (2026-03-26)
+
+
+### Bug Fixes
+
+* Allow Protobuf 7.x, require Python 3.9 (#16102) ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+* Require Python 3.9 ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+
 ## [0.34.0](https://github.com/googleapis/google-cloud-python/compare/pandas-gbq-v0.33.0...pandas-gbq-v0.34.0) (2026-03-05)
 
 

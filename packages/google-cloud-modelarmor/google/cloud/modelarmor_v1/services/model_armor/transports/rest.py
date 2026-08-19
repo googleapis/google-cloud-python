@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -55,8 +55,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ModelArmorRestInterceptor:
@@ -649,6 +648,12 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
             url_scheme: the protocol scheme for the API endpoint.  Normally
                 "https", but for testing or local servers,
                 "http" can be specified.
+            interceptor (Optional[ModelArmorRestInterceptor]): Interceptor used
+                to manipulate requests, request metadata, and responses.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -1685,6 +1690,43 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
                 )
             return resp
 
+    class _StreamSanitizeModelResponse(
+        _BaseModelArmorRestTransport._BaseStreamSanitizeModelResponse,
+        ModelArmorRestStub,
+    ):
+        def __hash__(self):
+            return hash("ModelArmorRestTransport.StreamSanitizeModelResponse")
+
+        def __call__(
+            self,
+            request: service.SanitizeModelResponseRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> rest_streaming.ResponseIterator:
+            raise NotImplementedError(
+                "Method StreamSanitizeModelResponse is not available over REST transport"
+            )
+
+    class _StreamSanitizeUserPrompt(
+        _BaseModelArmorRestTransport._BaseStreamSanitizeUserPrompt, ModelArmorRestStub
+    ):
+        def __hash__(self):
+            return hash("ModelArmorRestTransport.StreamSanitizeUserPrompt")
+
+        def __call__(
+            self,
+            request: service.SanitizeUserPromptRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> rest_streaming.ResponseIterator:
+            raise NotImplementedError(
+                "Method StreamSanitizeUserPrompt is not available over REST transport"
+            )
+
     class _UpdateFloorSetting(
         _BaseModelArmorRestTransport._BaseUpdateFloorSetting, ModelArmorRestStub
     ):
@@ -2050,6 +2092,30 @@ class ModelArmorRestTransport(_BaseModelArmorRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SanitizeUserPrompt(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def stream_sanitize_model_response(
+        self,
+    ) -> Callable[
+        [service.SanitizeModelResponseRequest], service.SanitizeModelResponseResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._StreamSanitizeModelResponse(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def stream_sanitize_user_prompt(
+        self,
+    ) -> Callable[
+        [service.SanitizeUserPromptRequest], service.SanitizeUserPromptResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._StreamSanitizeUserPrompt(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_floor_setting(

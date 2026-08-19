@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -99,7 +99,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -194,6 +194,10 @@ class ConversationalSearchServiceGrpcTransport(ConversationalSearchServiceTransp
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
           google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -546,6 +550,41 @@ class ConversationalSearchServiceGrpcTransport(ConversationalSearchServiceTransp
                 response_deserializer=conversational_search_service.AnswerQueryResponse.deserialize,
             )
         return self._stubs["answer_query"]
+
+    @property
+    def stream_answer_query(
+        self,
+    ) -> Callable[
+        [conversational_search_service.AnswerQueryRequest],
+        conversational_search_service.AnswerQueryResponse,
+    ]:
+        r"""Return a callable for the stream answer query method over gRPC.
+
+        Answer query method (streaming).
+
+        It takes one
+        [AnswerQueryRequest][google.cloud.discoveryengine.v1beta.AnswerQueryRequest]
+        and returns multiple
+        [AnswerQueryResponse][google.cloud.discoveryengine.v1beta.AnswerQueryResponse]
+        messages in a stream.
+
+        Returns:
+            Callable[[~.AnswerQueryRequest],
+                    ~.AnswerQueryResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "stream_answer_query" not in self._stubs:
+            self._stubs["stream_answer_query"] = self._logged_channel.unary_stream(
+                "/google.cloud.discoveryengine.v1beta.ConversationalSearchService/StreamAnswerQuery",
+                request_serializer=conversational_search_service.AnswerQueryRequest.serialize,
+                response_deserializer=conversational_search_service.AnswerQueryResponse.deserialize,
+            )
+        return self._stubs["stream_answer_query"]
 
     @property
     def get_answer(

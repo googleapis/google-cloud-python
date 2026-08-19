@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -181,7 +181,7 @@ class OutputAudioEncoding(proto.Enum):
             PCM). Audio content returned as LINEAR16 also contains a WAV
             header. LINT: LEGACY_NAMES
         OUTPUT_AUDIO_ENCODING_MP3 (2):
-            MP3 audio at 32kbps.
+            MP3 audio at 64kbps.
         OUTPUT_AUDIO_ENCODING_MP3_64_KBPS (4):
             MP3 audio at 64kbps. LINT: LEGACY_NAMES
         OUTPUT_AUDIO_ENCODING_OGG_OPUS (3):

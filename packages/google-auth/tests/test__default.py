@@ -14,6 +14,7 @@
 
 import json
 import os
+import sys
 from unittest import mock
 import warnings
 
@@ -773,7 +774,9 @@ def test__get_gae_credentials_gen1(app_identity):
 
 @mock.patch.dict(os.environ)
 def test__get_gae_credentials_gen2():
-    os.environ["GAE_RUNTIME"] = "python37"
+    os.environ[
+        "GAE_RUNTIME"
+    ] = f"python{sys.version_info.major}{sys.version_info.minor}"
     credentials, project_id = _default._get_gae_credentials()
     assert credentials is None
     assert project_id is None
@@ -783,8 +786,9 @@ def test__get_gae_credentials_gen2():
 def test__get_gae_credentials_gen2_backwards_compat():
     # compat helpers may copy GAE_RUNTIME to APPENGINE_RUNTIME
     # for backwards compatibility with code that relies on it
-    os.environ[environment_vars.LEGACY_APPENGINE_RUNTIME] = "python37"
-    os.environ["GAE_RUNTIME"] = "python37"
+    current_runtime = f"python{sys.version_info.major}{sys.version_info.minor}"
+    os.environ[environment_vars.LEGACY_APPENGINE_RUNTIME] = current_runtime
+    os.environ["GAE_RUNTIME"] = current_runtime
     credentials, project_id = _default._get_gae_credentials()
     assert credentials is None
     assert project_id is None
@@ -888,6 +892,18 @@ def test__get_gce_credentials_no_compute_engine():
 def test__get_gce_credentials_explicit_request(ping):
     _default._get_gce_credentials(mock.sentinel.request)
     ping.assert_called_with(request=mock.sentinel.request)
+
+
+@mock.patch(
+    "google.auth.compute_engine._metadata.is_on_gce", return_value=False, autospec=True
+)
+@mock.patch("google.auth.transport.requests.Request", autospec=True)
+def test__get_gce_credentials_default_request(mock_request_cls, ping):
+    credentials, project_id = _default._get_gce_credentials()
+    mock_request_cls.assert_called_once()
+    ping.assert_called_with(request=mock_request_cls.return_value)
+    assert credentials is None
+    assert project_id is None
 
 
 @mock.patch(
@@ -1004,6 +1020,35 @@ def test_default_fail(unused_gce, unused_gae, unused_sdk, unused_explicit):
         assert _default.default()
 
     assert excinfo.match(_default._CLOUD_SDK_MISSING_CREDENTIALS)
+
+
+@mock.patch(
+    "google.auth._default._get_explicit_environ_credentials",
+    return_value=(None, None),
+    autospec=True,
+)
+@mock.patch(
+    "google.auth._default._get_gcloud_sdk_credentials",
+    return_value=(None, None),
+    autospec=True,
+)
+@mock.patch(
+    "google.auth._default._get_gae_credentials",
+    return_value=(None, None),
+    autospec=True,
+)
+@mock.patch(
+    "google.auth.compute_engine._metadata.is_on_gce", return_value=False, autospec=True
+)
+@mock.patch("google.auth.transport.requests.Request", autospec=True)
+def test_default_gce_triggers_request_creation(
+    mock_request_cls, is_on_gce, unused_gae, unused_sdk, unused_explicit
+):
+    with pytest.raises(exceptions.DefaultCredentialsError):
+        _default.default()
+
+    mock_request_cls.assert_called_once()
+    is_on_gce.assert_called_once_with(request=mock_request_cls.return_value)
 
 
 @mock.patch(

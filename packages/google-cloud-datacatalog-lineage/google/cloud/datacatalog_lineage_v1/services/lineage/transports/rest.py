@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -55,8 +55,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class LineageRestInterceptor:
@@ -179,6 +178,14 @@ class LineageRestInterceptor:
                 return request, metadata
 
             def post_process_open_lineage_run_event(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_search_lineage_streaming(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_search_lineage_streaming(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -829,6 +836,56 @@ class LineageRestInterceptor:
         """
         return response, metadata
 
+    def pre_search_lineage_streaming(
+        self,
+        request: lineage.SearchLineageStreamingRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        lineage.SearchLineageStreamingRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for search_lineage_streaming
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Lineage server.
+        """
+        return request, metadata
+
+    def post_search_lineage_streaming(
+        self, response: rest_streaming.ResponseIterator
+    ) -> rest_streaming.ResponseIterator:
+        """Post-rpc interceptor for search_lineage_streaming
+
+        DEPRECATED. Please use the `post_search_lineage_streaming_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Lineage server but before
+        it is returned to user code. This `post_search_lineage_streaming` interceptor runs
+        before the `post_search_lineage_streaming_with_metadata` interceptor.
+        """
+        return response
+
+    def post_search_lineage_streaming_with_metadata(
+        self,
+        response: rest_streaming.ResponseIterator,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        rest_streaming.ResponseIterator, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for search_lineage_streaming
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Lineage server but before it is returned to user code.
+
+        We recommend only using this `post_search_lineage_streaming_with_metadata`
+        interceptor in new development instead of the `post_search_lineage_streaming` interceptor.
+        When both interceptors are used, this `post_search_lineage_streaming_with_metadata` interceptor runs after the
+        `post_search_lineage_streaming` interceptor. The (possibly modified) response returned by
+        `post_search_lineage_streaming` will be passed to
+        `post_search_lineage_streaming_with_metadata`.
+        """
+        return response, metadata
+
     def pre_search_links(
         self,
         request: lineage.SearchLinksRequest,
@@ -1128,6 +1185,12 @@ class LineageRestTransport(_BaseLineageRestTransport):
             url_scheme: the protocol scheme for the API endpoint.  Normally
                 "https", but for testing or local servers,
                 "http" can be specified.
+            interceptor (Optional[LineageRestInterceptor]): Interceptor used
+                to manipulate requests, request metadata, and responses.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -1401,7 +1464,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             Args:
                 request (~.lineage.CreateLineageEventRequest):
                     The request object. Request message for
-                [CreateLineageEvent][google.cloud.datacatalog.lineage.v1.CreateLineageEvent].
+                [CreateLineageEvent][google.cloud.datacatalog.lineage.v1.Lineage.CreateLineageEvent].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1557,7 +1620,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             Args:
                 request (~.lineage.CreateProcessRequest):
                     The request object. Request message for
-                [CreateProcess][google.cloud.datacatalog.lineage.v1.CreateProcess].
+                [CreateProcess][google.cloud.datacatalog.lineage.v1.Lineage.CreateProcess].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1712,7 +1775,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             Args:
                 request (~.lineage.CreateRunRequest):
                     The request object. Request message for
-                [CreateRun][google.cloud.datacatalog.lineage.v1.CreateRun].
+                [CreateRun][google.cloud.datacatalog.lineage.v1.Lineage.CreateRun].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1867,7 +1930,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             Args:
                 request (~.lineage.DeleteLineageEventRequest):
                     The request object. Request message for
-                [DeleteLineageEvent][google.cloud.datacatalog.lineage.v1.DeleteLineageEvent].
+                [DeleteLineageEvent][google.cloud.datacatalog.lineage.v1.Lineage.DeleteLineageEvent].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1974,7 +2037,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             Args:
                 request (~.lineage.DeleteProcessRequest):
                     The request object. Request message for
-                [DeleteProcess][google.cloud.datacatalog.lineage.v1.DeleteProcess].
+                [DeleteProcess][google.cloud.datacatalog.lineage.v1.Lineage.DeleteProcess].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2122,7 +2185,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             Args:
                 request (~.lineage.DeleteRunRequest):
                     The request object. Request message for
-                [DeleteRun][google.cloud.datacatalog.lineage.v1.DeleteRun].
+                [DeleteRun][google.cloud.datacatalog.lineage.v1.Lineage.DeleteRun].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2270,7 +2333,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             Args:
                 request (~.lineage.GetLineageEventRequest):
                     The request object. Request message for
-                [GetLineageEvent][google.cloud.datacatalog.lineage.v1.GetLineageEvent].
+                [GetLineageEvent][google.cloud.datacatalog.lineage.v1.Lineage.GetLineageEvent].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2424,7 +2487,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             Args:
                 request (~.lineage.GetProcessRequest):
                     The request object. Request message for
-                [GetProcess][google.cloud.datacatalog.lineage.v1.GetProcess].
+                [GetProcess][google.cloud.datacatalog.lineage.v1.Lineage.GetProcess].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2571,7 +2634,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             Args:
                 request (~.lineage.GetRunRequest):
                     The request object. Request message for
-                [GetRun][google.cloud.datacatalog.lineage.v1.GetRun].
+                [GetRun][google.cloud.datacatalog.lineage.v1.Lineage.GetRun].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2719,7 +2782,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             Args:
                 request (~.lineage.ListLineageEventsRequest):
                     The request object. Request message for
-                [ListLineageEvents][google.cloud.datacatalog.lineage.v1.ListLineageEvents].
+                [ListLineageEvents][google.cloud.datacatalog.lineage.v1.Lineage.ListLineageEvents].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2731,7 +2794,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             Returns:
                 ~.lineage.ListLineageEventsResponse:
                     Response message for
-                [ListLineageEvents][google.cloud.datacatalog.lineage.v1.ListLineageEvents].
+                [ListLineageEvents][google.cloud.datacatalog.lineage.v1.Lineage.ListLineageEvents].
 
             """
 
@@ -2870,7 +2933,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             Args:
                 request (~.lineage.ListProcessesRequest):
                     The request object. Request message for
-                [ListProcesses][google.cloud.datacatalog.lineage.v1.ListProcesses].
+                [ListProcesses][google.cloud.datacatalog.lineage.v1.Lineage.ListProcesses].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2882,7 +2945,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             Returns:
                 ~.lineage.ListProcessesResponse:
                     Response message for
-                [ListProcesses][google.cloud.datacatalog.lineage.v1.ListProcesses].
+                [ListProcesses][google.cloud.datacatalog.lineage.v1.Lineage.ListProcesses].
 
             """
 
@@ -3019,7 +3082,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             Args:
                 request (~.lineage.ListRunsRequest):
                     The request object. Request message for
-                [ListRuns][google.cloud.datacatalog.lineage.v1.ListRuns].
+                [ListRuns][google.cloud.datacatalog.lineage.v1.Lineage.ListRuns].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3031,7 +3094,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             Returns:
                 ~.lineage.ListRunsResponse:
                     Response message for
-                [ListRuns][google.cloud.datacatalog.lineage.v1.ListRuns].
+                [ListRuns][google.cloud.datacatalog.lineage.v1.Lineage.ListRuns].
 
             """
 
@@ -3170,7 +3233,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 Args:
                     request (~.lineage.ProcessOpenLineageRunEventRequest):
                         The request object. Request message for
-                    [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.ProcessOpenLineageRunEvent].
+                    [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.Lineage.ProcessOpenLineageRunEvent].
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -3182,7 +3245,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 Returns:
                     ~.lineage.ProcessOpenLineageRunEventResponse:
                         Response message for
-                    [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.ProcessOpenLineageRunEvent].
+                    [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.Lineage.ProcessOpenLineageRunEvent].
 
             """
 
@@ -3279,6 +3342,154 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     extra={
                         "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
                         "rpcName": "ProcessOpenLineageRunEvent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _SearchLineageStreaming(
+        _BaseLineageRestTransport._BaseSearchLineageStreaming, LineageRestStub
+    ):
+        def __hash__(self):
+            return hash("LineageRestTransport.SearchLineageStreaming")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                stream=True,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: lineage.SearchLineageStreamingRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> rest_streaming.ResponseIterator:
+            r"""Call the search lineage streaming method over HTTP.
+
+            Args:
+                request (~.lineage.SearchLineageStreamingRequest):
+                    The request object. Request message for
+                [SearchLineageStreaming][google.cloud.datacatalog.lineage.v1.Lineage.SearchLineageStreaming].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.lineage.SearchLineageStreamingResponse:
+                    Response message for
+                [SearchLineageStreaming][google.cloud.datacatalog.lineage.v1.Lineage.SearchLineageStreaming].
+
+            """
+
+            http_options = _BaseLineageRestTransport._BaseSearchLineageStreaming._get_http_options()
+
+            request, metadata = self._interceptor.pre_search_lineage_streaming(
+                request, metadata
+            )
+            transcoded_request = _BaseLineageRestTransport._BaseSearchLineageStreaming._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseLineageRestTransport._BaseSearchLineageStreaming._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseLineageRestTransport._BaseSearchLineageStreaming._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.SearchLineageStreaming",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "SearchLineageStreaming",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = LineageRestTransport._SearchLineageStreaming._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = rest_streaming.ResponseIterator(
+                response, lineage.SearchLineageStreamingResponse
+            )
+
+            resp = self._interceptor.post_search_lineage_streaming(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_search_lineage_streaming_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                http_response = {
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datacatalog.lineage_v1.LineageClient.search_lineage_streaming",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "SearchLineageStreaming",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -3480,7 +3691,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             Args:
                 request (~.lineage.UpdateProcessRequest):
                     The request object. Request message for
-                [UpdateProcess][google.cloud.datacatalog.lineage.v1.UpdateProcess].
+                [UpdateProcess][google.cloud.datacatalog.lineage.v1.Lineage.UpdateProcess].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3635,7 +3846,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             Args:
                 request (~.lineage.UpdateRunRequest):
                     The request object. Request message for
-                [UpdateRun][google.cloud.datacatalog.lineage.v1.UpdateRun].
+                [UpdateRun][google.cloud.datacatalog.lineage.v1.Lineage.UpdateRun].
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3864,6 +4075,18 @@ class LineageRestTransport(_BaseLineageRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ProcessOpenLineageRunEvent(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def search_lineage_streaming(
+        self,
+    ) -> Callable[
+        [lineage.SearchLineageStreamingRequest], lineage.SearchLineageStreamingResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SearchLineageStreaming(
             self._session, self._host, self._interceptor
         )  # type: ignore
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -114,12 +109,28 @@ def modify_default_endpoint_template(client):
     )
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert InstanceGroupManagersClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -141,6 +152,10 @@ def test__get_default_mtls_endpoint():
     assert (
         InstanceGroupManagersClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        InstanceGroupManagersClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -928,7 +943,14 @@ def test_instance_group_managers_client_get_mtls_endpoint_and_cert_source(client
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -975,7 +997,14 @@ def test_instance_group_managers_client_get_mtls_endpoint_and_cert_source(client
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1314,7 +1343,7 @@ def test_abandon_instances_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_abandon_instances_rest_unset_required_fields():
@@ -1533,7 +1562,7 @@ def test_abandon_instances_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_abandon_instances_unary_rest_unset_required_fields():
@@ -1747,7 +1776,7 @@ def test_aggregated_list_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_aggregated_list_rest_unset_required_fields():
@@ -1883,6 +1912,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1"}
 
         pager = client.aggregated_list(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         assert isinstance(pager.get("a"), compute.InstanceGroupManagersScopedList)
         assert pager.get("h") is None
@@ -2031,7 +2063,7 @@ def test_apply_updates_to_instances_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_apply_updates_to_instances_rest_unset_required_fields():
@@ -2251,7 +2283,7 @@ def test_apply_updates_to_instances_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_apply_updates_to_instances_unary_rest_unset_required_fields():
@@ -2473,7 +2505,7 @@ def test_configure_accelerator_topologies_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_configure_accelerator_topologies_rest_unset_required_fields():
@@ -2697,7 +2729,7 @@ def test_configure_accelerator_topologies_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_configure_accelerator_topologies_unary_rest_unset_required_fields():
@@ -2920,7 +2952,7 @@ def test_create_instances_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_instances_rest_unset_required_fields():
@@ -3139,7 +3171,7 @@ def test_create_instances_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_instances_unary_rest_unset_required_fields():
@@ -3305,7 +3337,12 @@ def test_delete_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3355,7 +3392,7 @@ def test_delete_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_rest_unset_required_fields():
@@ -3365,7 +3402,12 @@ def test_delete_rest_unset_required_fields():
 
     unset_fields = transport.delete._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -3514,7 +3556,12 @@ def test_delete_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3564,7 +3611,7 @@ def test_delete_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_unary_rest_unset_required_fields():
@@ -3574,7 +3621,12 @@ def test_delete_unary_rest_unset_required_fields():
 
     unset_fields = transport.delete._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -3725,7 +3777,12 @@ def test_delete_instances_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3776,7 +3833,7 @@ def test_delete_instances_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_instances_rest_unset_required_fields():
@@ -3786,7 +3843,12 @@ def test_delete_instances_rest_unset_required_fields():
 
     unset_fields = transport.delete_instances._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -3944,7 +4006,12 @@ def test_delete_instances_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3995,7 +4062,7 @@ def test_delete_instances_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_instances_unary_rest_unset_required_fields():
@@ -4005,7 +4072,12 @@ def test_delete_instances_unary_rest_unset_required_fields():
 
     unset_fields = transport.delete_instances._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -4215,7 +4287,7 @@ def test_delete_per_instance_configs_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_per_instance_configs_rest_unset_required_fields():
@@ -4435,7 +4507,7 @@ def test_delete_per_instance_configs_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_per_instance_configs_unary_rest_unset_required_fields():
@@ -4645,7 +4717,7 @@ def test_get_rest_required_fields(request_type=compute.GetInstanceGroupManagerRe
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_rest_unset_required_fields():
@@ -4857,7 +4929,7 @@ def test_get_available_accelerator_topologies_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_available_accelerator_topologies_rest_unset_required_fields():
@@ -5073,7 +5145,7 @@ def test_insert_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_rest_unset_required_fields():
@@ -5287,7 +5359,7 @@ def test_insert_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_unary_rest_unset_required_fields():
@@ -5504,7 +5576,7 @@ def test_list_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_rest_unset_required_fields():
@@ -5644,6 +5716,9 @@ def test_list_rest_pager(transport: str = "rest"):
 
         pager = client.list(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.InstanceGroupManager) for i in results)
@@ -5781,7 +5856,7 @@ def test_list_errors_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_errors_rest_unset_required_fields():
@@ -5934,6 +6009,9 @@ def test_list_errors_rest_pager(transport: str = "rest"):
 
         pager = client.list_errors(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.InstanceManagedByIgmError) for i in results)
@@ -6076,7 +6154,7 @@ def test_list_managed_instances_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_managed_instances_rest_unset_required_fields():
@@ -6232,6 +6310,9 @@ def test_list_managed_instances_rest_pager(transport: str = "rest"):
 
         pager = client.list_managed_instances(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.ManagedInstance) for i in results)
@@ -6374,7 +6455,7 @@ def test_list_per_instance_configs_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_per_instance_configs_rest_unset_required_fields():
@@ -6530,6 +6611,9 @@ def test_list_per_instance_configs_rest_pager(transport: str = "rest"):
 
         pager = client.list_per_instance_configs(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, compute.PerInstanceConfig) for i in results)
@@ -6662,7 +6746,7 @@ def test_patch_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_rest_unset_required_fields():
@@ -6887,7 +6971,7 @@ def test_patch_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_unary_rest_unset_required_fields():
@@ -7117,7 +7201,7 @@ def test_patch_per_instance_configs_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_per_instance_configs_rest_unset_required_fields():
@@ -7343,7 +7427,7 @@ def test_patch_per_instance_configs_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_patch_per_instance_configs_unary_rest_unset_required_fields():
@@ -7517,7 +7601,12 @@ def test_recreate_instances_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).recreate_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -7568,7 +7657,7 @@ def test_recreate_instances_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_recreate_instances_rest_unset_required_fields():
@@ -7578,7 +7667,12 @@ def test_recreate_instances_rest_unset_required_fields():
 
     unset_fields = transport.recreate_instances._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -7738,7 +7832,12 @@ def test_recreate_instances_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).recreate_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -7789,7 +7888,7 @@ def test_recreate_instances_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_recreate_instances_unary_rest_unset_required_fields():
@@ -7799,7 +7898,12 @@ def test_recreate_instances_unary_rest_unset_required_fields():
 
     unset_fields = transport.recreate_instances._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -8022,7 +8126,7 @@ def test_resize_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_resize_rest_unset_required_fields():
@@ -8256,7 +8360,7 @@ def test_resize_unary_rest_required_fields(
                 ),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_resize_unary_rest_unset_required_fields():
@@ -8474,7 +8578,7 @@ def test_resize_advanced_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_resize_advanced_rest_unset_required_fields():
@@ -8691,7 +8795,7 @@ def test_resize_advanced_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_resize_advanced_unary_rest_unset_required_fields():
@@ -8910,7 +9014,7 @@ def test_resume_instances_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_resume_instances_rest_unset_required_fields():
@@ -9129,7 +9233,7 @@ def test_resume_instances_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_resume_instances_unary_rest_unset_required_fields():
@@ -9351,7 +9455,7 @@ def test_set_auto_healing_policies_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_auto_healing_policies_rest_unset_required_fields():
@@ -9581,7 +9685,7 @@ def test_set_auto_healing_policies_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_auto_healing_policies_unary_rest_unset_required_fields():
@@ -9811,7 +9915,7 @@ def test_set_instance_template_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_instance_template_rest_unset_required_fields():
@@ -10033,7 +10137,7 @@ def test_set_instance_template_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_instance_template_unary_rest_unset_required_fields():
@@ -10252,7 +10356,7 @@ def test_set_target_pools_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_target_pools_rest_unset_required_fields():
@@ -10471,7 +10575,7 @@ def test_set_target_pools_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_target_pools_unary_rest_unset_required_fields():
@@ -10688,7 +10792,7 @@ def test_start_instances_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_start_instances_rest_unset_required_fields():
@@ -10905,7 +11009,7 @@ def test_start_instances_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_start_instances_unary_rest_unset_required_fields():
@@ -11071,7 +11175,12 @@ def test_stop_instances_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).stop_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -11122,7 +11231,7 @@ def test_stop_instances_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_stop_instances_rest_unset_required_fields():
@@ -11132,7 +11241,12 @@ def test_stop_instances_rest_unset_required_fields():
 
     unset_fields = transport.stop_instances._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -11288,7 +11402,12 @@ def test_stop_instances_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).stop_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -11339,7 +11458,7 @@ def test_stop_instances_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_stop_instances_unary_rest_unset_required_fields():
@@ -11349,7 +11468,12 @@ def test_stop_instances_unary_rest_unset_required_fields():
 
     unset_fields = transport.stop_instances._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instanceGroupManager",
@@ -11558,7 +11682,7 @@ def test_suspend_instances_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_suspend_instances_rest_unset_required_fields():
@@ -11777,7 +11901,7 @@ def test_suspend_instances_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_suspend_instances_unary_rest_unset_required_fields():
@@ -11992,7 +12116,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_test_iam_permissions_rest_unset_required_fields():
@@ -12209,7 +12333,7 @@ def test_update_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_rest_unset_required_fields():
@@ -12434,7 +12558,7 @@ def test_update_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_unary_rest_unset_required_fields():
@@ -12664,7 +12788,7 @@ def test_update_per_instance_configs_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_per_instance_configs_rest_unset_required_fields():
@@ -12890,7 +13014,7 @@ def test_update_per_instance_configs_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_per_instance_configs_unary_rest_unset_required_fields():
@@ -13087,8 +13211,9 @@ def test_abandon_instances_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13282,18 +13407,20 @@ def test_abandon_instances_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_abandon_instances"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_abandon_instances_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_abandon_instances"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_abandon_instances"
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_abandon_instances_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "pre_abandon_instances"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13346,8 +13473,9 @@ def test_aggregated_list_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13418,18 +13546,20 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_aggregated_list"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_aggregated_list_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_aggregated_list"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_aggregated_list"
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_aggregated_list_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "pre_aggregated_list"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13491,8 +13621,9 @@ def test_apply_updates_to_instances_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13525,6 +13656,7 @@ def test_apply_updates_to_instances_rest_call_success(request_type):
     }
     request_init["instance_group_managers_apply_updates_request_resource"] = {
         "all_instances": True,
+        "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
         "instances": ["instances_value1", "instances_value2"],
         "minimal_action": "minimal_action_value",
         "most_disruptive_allowed_action": "most_disruptive_allowed_action_value",
@@ -13689,20 +13821,22 @@ def test_apply_updates_to_instances_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_apply_updates_to_instances",
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_apply_updates_to_instances_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "pre_apply_updates_to_instances",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_apply_updates_to_instances",
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_apply_updates_to_instances_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "pre_apply_updates_to_instances",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13759,8 +13893,9 @@ def test_configure_accelerator_topologies_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13793,7 +13928,7 @@ def test_configure_accelerator_topologies_rest_call_success(request_type):
     }
     request_init[
         "instance_group_managers_configure_accelerator_topologies_request_resource"
-    ] = {"accelerator_topology_actions": {}}
+    ] = {"accelerator_topology_actions": {}, "accelerator_topology_configurations": {}}
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
@@ -13956,20 +14091,22 @@ def test_configure_accelerator_topologies_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_configure_accelerator_topologies",
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_configure_accelerator_topologies_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "pre_configure_accelerator_topologies",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_configure_accelerator_topologies",
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_configure_accelerator_topologies_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "pre_configure_accelerator_topologies",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14028,8 +14165,9 @@ def test_create_instances_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14235,18 +14373,20 @@ def test_create_instances_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_create_instances"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_create_instances_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_create_instances"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_create_instances"
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_create_instances_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "pre_create_instances"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14303,8 +14443,9 @@ def test_delete_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14413,17 +14554,19 @@ def test_delete_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_delete"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_delete_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_delete"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_delete"
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_delete_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "pre_delete"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14480,8 +14623,9 @@ def test_delete_instances_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14676,18 +14820,20 @@ def test_delete_instances_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_delete_instances"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_delete_instances_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_delete_instances"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_delete_instances"
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_delete_instances_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "pre_delete_instances"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14744,8 +14890,9 @@ def test_delete_per_instance_configs_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14941,20 +15088,22 @@ def test_delete_per_instance_configs_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_delete_per_instance_configs",
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_delete_per_instance_configs_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "pre_delete_per_instance_configs",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_delete_per_instance_configs",
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_delete_per_instance_configs_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "pre_delete_per_instance_configs",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15009,8 +15158,9 @@ def test_get_rest_bad_request(request_type=compute.GetInstanceGroupManagerReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15122,17 +15272,19 @@ def test_get_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_get"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_get_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_get"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_get"
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_get_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "pre_get"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15187,8 +15339,9 @@ def test_get_available_accelerator_topologies_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15259,20 +15412,22 @@ def test_get_available_accelerator_topologies_rest_interceptors(null_interceptor
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_get_available_accelerator_topologies",
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_get_available_accelerator_topologies_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "pre_get_available_accelerator_topologies",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_get_available_accelerator_topologies",
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_get_available_accelerator_topologies_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "pre_get_available_accelerator_topologies",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15334,8 +15489,9 @@ def test_insert_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15379,6 +15535,7 @@ def test_insert_rest_call_success(request_type):
             "recreating": 1060,
             "refreshing": 1069,
             "restarting": 1091,
+            "restarting_in_place": 2013,
             "resuming": 874,
             "starting": 876,
             "stopping": 884,
@@ -15510,6 +15667,7 @@ def test_insert_rest_call_success(request_type):
         "target_stopped_size": 2047,
         "target_suspended_size": 2251,
         "update_policy": {
+            "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
             "instance_redistribution_type": "instance_redistribution_type_value",
             "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
             "max_unavailable": {},
@@ -15681,17 +15839,19 @@ def test_insert_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_insert"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_insert_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_insert"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_insert"
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_insert_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "pre_insert"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15742,8 +15902,9 @@ def test_list_rest_bad_request(request_type=compute.ListInstanceGroupManagersReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15812,17 +15973,19 @@ def test_list_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_list"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_list_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_list"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_list"
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_list_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "pre_list"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15881,8 +16044,9 @@ def test_list_errors_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15949,18 +16113,20 @@ def test_list_errors_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_list_errors"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_list_errors_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_list_errors"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_list_errors"
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_list_errors_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "pre_list_errors"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16022,8 +16188,9 @@ def test_list_managed_instances_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16092,18 +16259,22 @@ def test_list_managed_instances_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_list_managed_instances"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_list_managed_instances_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_list_managed_instances"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_list_managed_instances",
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_list_managed_instances_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "pre_list_managed_instances",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16167,8 +16338,9 @@ def test_list_per_instance_configs_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16237,19 +16409,22 @@ def test_list_per_instance_configs_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_list_per_instance_configs",
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_list_per_instance_configs_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_list_per_instance_configs"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_list_per_instance_configs",
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_list_per_instance_configs_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "pre_list_per_instance_configs",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16309,8 +16484,9 @@ def test_patch_rest_bad_request(request_type=compute.PatchInstanceGroupManagerRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16358,6 +16534,7 @@ def test_patch_rest_call_success(request_type):
             "recreating": 1060,
             "refreshing": 1069,
             "restarting": 1091,
+            "restarting_in_place": 2013,
             "resuming": 874,
             "starting": 876,
             "stopping": 884,
@@ -16489,6 +16666,7 @@ def test_patch_rest_call_success(request_type):
         "target_stopped_size": 2047,
         "target_suspended_size": 2251,
         "update_policy": {
+            "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
             "instance_redistribution_type": "instance_redistribution_type_value",
             "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
             "max_unavailable": {},
@@ -16660,17 +16838,19 @@ def test_patch_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_patch"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_patch_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_patch"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_patch"
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_patch_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "pre_patch"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16727,8 +16907,9 @@ def test_patch_per_instance_configs_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16934,20 +17115,22 @@ def test_patch_per_instance_configs_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_patch_per_instance_configs",
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_patch_per_instance_configs_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "pre_patch_per_instance_configs",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_patch_per_instance_configs",
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_patch_per_instance_configs_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "pre_patch_per_instance_configs",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17004,8 +17187,9 @@ def test_recreate_instances_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17199,18 +17383,20 @@ def test_recreate_instances_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_recreate_instances"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_recreate_instances_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_recreate_instances"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_recreate_instances"
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_recreate_instances_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "pre_recreate_instances"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17267,8 +17453,9 @@ def test_resize_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17377,17 +17564,19 @@ def test_resize_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_resize"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_resize_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_resize"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_resize"
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_resize_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "pre_resize"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17444,8 +17633,9 @@ def test_resize_advanced_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17640,18 +17830,20 @@ def test_resize_advanced_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_resize_advanced"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_resize_advanced_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_resize_advanced"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_resize_advanced"
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_resize_advanced_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "pre_resize_advanced"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17708,8 +17900,9 @@ def test_resume_instances_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17903,18 +18096,20 @@ def test_resume_instances_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_resume_instances"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_resume_instances_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_resume_instances"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_resume_instances"
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_resume_instances_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "pre_resume_instances"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17971,8 +18166,9 @@ def test_set_auto_healing_policies_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18168,19 +18364,22 @@ def test_set_auto_healing_policies_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_set_auto_healing_policies",
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_set_auto_healing_policies_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_set_auto_healing_policies"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_set_auto_healing_policies",
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_set_auto_healing_policies_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "pre_set_auto_healing_policies",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18237,8 +18436,9 @@ def test_set_instance_template_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18432,18 +18632,21 @@ def test_set_instance_template_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_set_instance_template"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_set_instance_template_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_set_instance_template"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_set_instance_template",
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_set_instance_template_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "pre_set_instance_template"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18500,8 +18703,9 @@ def test_set_target_pools_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18696,18 +18900,20 @@ def test_set_target_pools_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_set_target_pools"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_set_target_pools_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_set_target_pools"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_set_target_pools"
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_set_target_pools_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "pre_set_target_pools"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18764,8 +18970,9 @@ def test_start_instances_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18959,18 +19166,20 @@ def test_start_instances_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_start_instances"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_start_instances_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_start_instances"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_start_instances"
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_start_instances_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "pre_start_instances"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19027,8 +19236,9 @@ def test_stop_instances_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19223,18 +19433,20 @@ def test_stop_instances_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_stop_instances"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_stop_instances_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_stop_instances"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_stop_instances"
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_stop_instances_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "pre_stop_instances"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19291,8 +19503,9 @@ def test_suspend_instances_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19487,18 +19700,20 @@ def test_suspend_instances_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_suspend_instances"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_suspend_instances_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_suspend_instances"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_suspend_instances"
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_suspend_instances_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "pre_suspend_instances"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19551,8 +19766,9 @@ def test_test_iam_permissions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19693,18 +19909,20 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_test_iam_permissions"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_test_iam_permissions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_test_iam_permissions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_test_iam_permissions"
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_test_iam_permissions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "pre_test_iam_permissions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19763,8 +19981,9 @@ def test_update_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19812,6 +20031,7 @@ def test_update_rest_call_success(request_type):
             "recreating": 1060,
             "refreshing": 1069,
             "restarting": 1091,
+            "restarting_in_place": 2013,
             "resuming": 874,
             "starting": 876,
             "stopping": 884,
@@ -19943,6 +20163,7 @@ def test_update_rest_call_success(request_type):
         "target_stopped_size": 2047,
         "target_suspended_size": 2251,
         "update_policy": {
+            "allowed_actions": ["allowed_actions_value1", "allowed_actions_value2"],
             "instance_redistribution_type": "instance_redistribution_type_value",
             "max_surge": {"calculated": 1042, "fixed": 528, "percent": 753},
             "max_unavailable": {},
@@ -20114,17 +20335,19 @@ def test_update_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_update"
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "post_update_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor, "pre_update"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_update"
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "post_update_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor, "pre_update"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20181,8 +20404,9 @@ def test_update_per_instance_configs_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -20390,20 +20614,22 @@ def test_update_per_instance_configs_rest_interceptors(null_interceptor):
     )
     client = InstanceGroupManagersClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_update_per_instance_configs",
-    ) as post, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "post_update_per_instance_configs_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.InstanceGroupManagersRestInterceptor,
-        "pre_update_per_instance_configs",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_update_per_instance_configs",
+        ) as post,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "post_update_per_instance_configs_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.InstanceGroupManagersRestInterceptor,
+            "pre_update_per_instance_configs",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20470,7 +20696,6 @@ def test_abandon_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AbandonInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20490,7 +20715,6 @@ def test_aggregated_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AggregatedListInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20512,7 +20736,6 @@ def test_apply_updates_to_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20536,7 +20759,6 @@ def test_configure_accelerator_topologies_unary_empty_call_rest():
         request_msg = (
             compute.ConfigureAcceleratorTopologiesInstanceGroupManagerRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -20556,7 +20778,6 @@ def test_create_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.CreateInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20576,7 +20797,6 @@ def test_delete_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20596,7 +20816,6 @@ def test_delete_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20618,7 +20837,6 @@ def test_delete_per_instance_configs_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeletePerInstanceConfigsInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20638,7 +20856,6 @@ def test_get_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20662,7 +20879,6 @@ def test_get_available_accelerator_topologies_empty_call_rest():
         request_msg = (
             compute.GetAvailableAcceleratorTopologiesInstanceGroupManagerRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -20682,7 +20898,6 @@ def test_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.InsertInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20702,7 +20917,6 @@ def test_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20722,7 +20936,6 @@ def test_list_errors_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListErrorsInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20744,7 +20957,6 @@ def test_list_managed_instances_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListManagedInstancesInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20766,7 +20978,6 @@ def test_list_per_instance_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListPerInstanceConfigsInstanceGroupManagersRequest()
-
         assert args[0] == request_msg
 
 
@@ -20786,7 +20997,6 @@ def test_patch_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20808,7 +21018,6 @@ def test_patch_per_instance_configs_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.PatchPerInstanceConfigsInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20830,7 +21039,6 @@ def test_recreate_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.RecreateInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20850,7 +21058,6 @@ def test_resize_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResizeInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20870,7 +21077,6 @@ def test_resize_advanced_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResizeAdvancedInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20890,7 +21096,6 @@ def test_resume_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ResumeInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20912,7 +21117,6 @@ def test_set_auto_healing_policies_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetAutoHealingPoliciesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20934,7 +21138,6 @@ def test_set_instance_template_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetInstanceTemplateInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20954,7 +21157,6 @@ def test_set_target_pools_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SetTargetPoolsInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20974,7 +21176,6 @@ def test_start_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StartInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -20994,7 +21195,6 @@ def test_stop_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.StopInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21016,7 +21216,6 @@ def test_suspend_instances_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.SuspendInstancesInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21038,7 +21237,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.TestIamPermissionsInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21058,7 +21256,6 @@ def test_update_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdateInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21080,7 +21277,6 @@ def test_update_per_instance_configs_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest()
-
         assert args[0] == request_msg
 
 
@@ -21155,11 +21351,14 @@ def test_instance_group_managers_base_transport():
 
 def test_instance_group_managers_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.compute_v1beta.services.instance_group_managers.transports.InstanceGroupManagersTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.compute_v1beta.services.instance_group_managers.transports.InstanceGroupManagersTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.InstanceGroupManagersTransport(
@@ -21179,9 +21378,12 @@ def test_instance_group_managers_base_transport_with_credentials_file():
 
 def test_instance_group_managers_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.compute_v1beta.services.instance_group_managers.transports.InstanceGroupManagersTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.compute_v1beta.services.instance_group_managers.transports.InstanceGroupManagersTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.InstanceGroupManagersTransport()

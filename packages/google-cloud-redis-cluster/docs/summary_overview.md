@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Google Cloud Memorystore for Redis API API
+# Google Cloud Memorystore for Redis API
 
-Overview of the APIs available for Google Cloud Memorystore for Redis API API.
+Overview of the APIs available for Google Cloud Memorystore for Redis API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Google Cloud Memorystore for Redis API API.
+Google Cloud Memorystore for Redis API.
 
 [classes](https://cloud.google.com/python/docs/reference/google-cloud-redis-cluster/latest/summary_class.html)
 

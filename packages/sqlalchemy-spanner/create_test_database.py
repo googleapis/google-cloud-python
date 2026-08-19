@@ -15,6 +15,7 @@
 # limitations under the License.
 
 import os
+import re
 import time
 
 from google.api_core import datetime_helpers
@@ -68,19 +69,30 @@ def delete_stale_test_instances():
 
 
 def delete_stale_test_databases():
-    """Delete test databases that are older than four hours."""
-    cutoff = (int(time.time()) - 4 * 60 * 60) * 1000
+    """Delete test databases that are older than 10 minutes.
+    
+    In this test suite, active databases typically finish running in ~5 minutes.
+    To prevent concurrent Kokoro runs from accidentally deleting each other's
+    active databases we use a 10-minute safety threshold. Without an aggressive
+    cutoff we quickly bump up against Cloud Spanner's limit of 100 databases per instance.
+    """
+    cutoff = (int(time.time()) - 10 * 60) * 1000
     instance = CLIENT.instance("sqlalchemy-dialect-test")
     if not instance.exists():
         return
     database_pbs = instance.list_databases()
     for database_pb in database_pbs:
         database = Database.from_pb(database_pb, instance)
-        # The emulator does not return a create_time for databases.
-        if database.create_time is None:
-            continue
-        create_time = datetime_helpers.to_milliseconds(database_pb.create_time)
-        if create_time > cutoff:
+        # Parse creation time from database ID first (e.g. "sqlalchemy-test-1779989493809")
+        # to be 100% independent of emulator metadata or GCP Client API create_time gaps!
+        create_time = None
+        match = re.match(r"sqlalchemy-test-(\d+)", database.database_id)
+        if match:
+            create_time = int(match.group(1))
+        elif database_pb.create_time is not None:
+            create_time = datetime_helpers.to_milliseconds(database_pb.create_time)
+
+        if create_time is None or create_time > cutoff:
             continue
         try:
             database.drop()

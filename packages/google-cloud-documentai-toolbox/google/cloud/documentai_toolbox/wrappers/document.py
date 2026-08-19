@@ -22,7 +22,7 @@ from functools import cached_property
 import glob
 import os
 import re
-from typing import Dict, Iterator, List, Optional, Type, Union
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Type, Union
 
 from google.api_core.client_options import ClientOptions
 from google.api_core.operation import from_gapic as operation_from_gapic
@@ -51,7 +51,7 @@ def _document_layout_blocks_from_shards(
     shards: List[documentai.Document],
 ) -> Iterator[documentai.Document.DocumentLayout.DocumentLayoutBlock]:
     def extract_blocks(
-        blocks: List[documentai.Document.DocumentLayout.DocumentLayoutBlock],
+        blocks: Iterable[documentai.Document.DocumentLayout.DocumentLayoutBlock],
     ) -> Iterator[documentai.Document.DocumentLayout.DocumentLayoutBlock]:
         queue = collections.deque(blocks)
 
@@ -325,8 +325,9 @@ def _dict_to_bigquery(
     bq_client = bigquery.Client(
         project=project_id, client_info=gcs_utilities._get_client_info()
     )
+    resolved_project_id = project_id or bq_client.project
     table_ref = bigquery.DatasetReference(
-        project=project_id, dataset_id=dataset_name
+        project=resolved_project_id, dataset_id=dataset_name
     ).table(table_name)
 
     job_config = bigquery.LoadJobConfig(
@@ -345,7 +346,7 @@ def _dict_to_bigquery(
 
 
 def _apply_text_offset(
-    documentai_object: Union[Dict[str, Dict], List], text_offset: int
+    documentai_object: Union[Dict[str, Any], List[Any]], text_offset: int
 ) -> None:
     r"""Applies a text offset to all text_segments in `documentai_object`.
 
@@ -822,7 +823,17 @@ class Document:
         input_filename, input_extension = os.path.splitext(os.path.basename(pdf_path))
         with Pdf.open(pdf_path) as pdf:
             for entity in self.entities:
-                subdoc_type = entity.type_ or "subdoc"
+                # Entity types come from the parsed Document and may contain
+                # path separators (e.g. "vat/tax_amount") or traversal
+                # sequences. Flatten them so the split file stays inside
+                # output_path. ":" is also flattened since it is not a valid
+                # filename character on Windows.
+                subdoc_type = (
+                    (entity.type_ or "subdoc")
+                    .replace("/", "_")
+                    .replace("\\", "_")
+                    .replace(":", "_")
+                )
                 page_range = (
                     f"pg{entity.start_page + 1}"
                     if entity.start_page == entity.end_page
@@ -932,7 +943,8 @@ class Document:
                 A string hOCR version of the Document
         """
         environment = Environment(
-            loader=PackageLoader("google.cloud.documentai_toolbox", "templates")
+            loader=PackageLoader("google.cloud.documentai_toolbox", "templates"),
+            autoescape=True,
         )
         template = environment.get_template("hocr_document_template.xml.j2")
         content = template.render(pages=self.pages, title=title)

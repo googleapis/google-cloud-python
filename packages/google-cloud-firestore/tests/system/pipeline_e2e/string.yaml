@@ -652,3 +652,599 @@ tests:
                     - stringValue: ", "
                     name: join
           name: select
+  - description: testRegexFind
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: author
+              - Constant: "Douglas Adams"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.regex_find:
+                - Field: title
+                - Constant: '\b[A-Z][a-z]{4}\b'
+            - "found"
+    assert_results:
+      - found: "Guide"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: author
+              - stringValue: "Douglas Adams"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                found:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: title
+                    - stringValue: '\b[A-Z][a-z]{4}\b'
+                    name: regex_find
+          name: select
+  - description: testRegexFindAll
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: author
+              - Constant: "Douglas Adams"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.regex_find_all:
+                - Field: title
+                - Constant: "(?i)[a-z]+"
+            - "found_all"
+    assert_results:
+      - found_all:
+        - "The"
+        - "Hitchhiker"
+        - "s"
+        - "Guide"
+        - "to"
+        - "the"
+        - "Galaxy"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: author
+              - stringValue: "Douglas Adams"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                found_all:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: title
+                    - stringValue: "(?i)[a-z]+"
+                    name: regex_find_all
+          name: select
+
+  - description: testSplit
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: author
+              - Constant: "Douglas Adams"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.split:
+                - Field: title
+                - Constant: " "
+            - "title_words"
+    assert_results:
+      - title_words:
+        - "The"
+        - "Hitchhiker's"
+        - "Guide"
+        - "to"
+        - "the"
+        - "Galaxy"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: author
+              - stringValue: "Douglas Adams"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                title_words:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: title
+                    - stringValue: " "
+                    name: split
+          name: select
+
+  - description: testStringRepeat
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: author
+              - Constant: "Douglas Adams"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.string_repeat:
+                - FunctionExpression.to_upper:
+                    - Field: author
+                - Constant: 2
+            - "repeated"
+    assert_results:
+      - repeated: "DOUGLAS ADAMSDOUGLAS ADAMS"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: author
+              - stringValue: "Douglas Adams"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                repeated:
+                  functionValue:
+                    args:
+                    - functionValue:
+                        args:
+                        - fieldReferenceValue: author
+                        name: to_upper
+                    - integerValue: "2"
+                    name: string_repeat
+          name: select
+
+  - description: testStringReplaceAll
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.string_replace_all:
+                - FunctionExpression.concat:
+                    - Field: author
+                    - Constant: ": "
+                    - Field: title
+                - Constant: "la"
+                - Constant: "LA"
+            - "replaced"
+    assert_results:
+      - replaced: "DougLAs Adams: The Hitchhiker's Guide to the GaLAxy"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                replaced:
+                  functionValue:
+                    args:
+                    - functionValue:
+                        args:
+                        - fieldReferenceValue: author
+                        - stringValue: ": "
+                        - fieldReferenceValue: title
+                        name: concat
+                    - stringValue: "la"
+                    - stringValue: "LA"
+                    name: string_replace_all
+          name: select
+
+  - description: testStringReplaceAllWithBytes
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.string_replace_all:
+                - Constant: !!binary Zm9vYmF6Zm9v
+                - Constant: !!binary Zm9v
+                - Constant: !!binary YmFy
+            - "replacedBytes"
+    assert_results:
+      - replacedBytes: !!binary YmFyYmF6YmFy
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                replacedBytes:
+                  functionValue:
+                    args:
+                    - bytesValue: Zm9vYmF6Zm9v
+                    - bytesValue: Zm9v
+                    - bytesValue: YmFy
+                    name: string_replace_all
+          name: select
+
+  - description: testStringReplaceOne
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.string_replace_one:
+                - FunctionExpression.concat:
+                    - Field: author
+                    - Constant: ": "
+                    - Field: title
+                - Constant: "la"
+                - Constant: "LA"
+            - "replaced"
+    assert_results:
+      - replaced: "DougLAs Adams: The Hitchhiker's Guide to the Galaxy"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                replaced:
+                  functionValue:
+                    args:
+                    - functionValue:
+                        args:
+                        - fieldReferenceValue: author
+                        - stringValue: ": "
+                        - fieldReferenceValue: title
+                        name: concat
+                    - stringValue: "la"
+                    - stringValue: "LA"
+                    name: string_replace_one
+          name: select
+
+  - description: testStringReplaceOneWithBytes
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.string_replace_one:
+                - Constant: !!binary Zm9vYmF6Zm9v
+                - Constant: !!binary Zm9v
+                - Constant: !!binary YmFy
+            - "replacedBytes"
+    assert_results:
+      - replacedBytes: !!binary YmFyYmF6Zm9v
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                replacedBytes:
+                  functionValue:
+                    args:
+                    - bytesValue: Zm9vYmF6Zm9v
+                    - bytesValue: Zm9v
+                    - bytesValue: YmFy
+                    name: string_replace_one
+          name: select
+
+  - description: testStringIndexOf
+    pipeline:
+      - Collection: books
+      - Where:
+          - FunctionExpression.equal:
+              - Field: title
+              - Constant: "The Hitchhiker's Guide to the Galaxy"
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.string_index_of:
+                - Field: title
+                - Constant: "Hitchhiker"
+            - "index"
+    assert_results:
+      - index: 4
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - functionValue:
+              args:
+              - fieldReferenceValue: title
+              - stringValue: "The Hitchhiker's Guide to the Galaxy"
+              name: equal
+          name: where
+        - args:
+          - mapValue:
+              fields:
+                index:
+                  functionValue:
+                    args:
+                    - fieldReferenceValue: title
+                    - stringValue: "Hitchhiker"
+                    name: string_index_of
+          name: select
+
+  - description: testStringIndexOfWithBytes
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.string_index_of:
+                - Constant: !!binary Zm9vYmF6
+                - Constant: !!binary YmF6
+            - "index"
+    assert_results:
+      - index: 3
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                index:
+                  functionValue:
+                    args:
+                    - bytesValue: Zm9vYmF6
+                    - bytesValue: YmF6
+                    name: string_index_of
+          name: select
+
+  - description: testLtrim
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.ltrim:
+                - Constant: "  foo"
+            - "trimmed"
+    assert_results:
+      - trimmed: "foo"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                trimmed:
+                  functionValue:
+                    args:
+                    - stringValue: "  foo"
+                    name: ltrim
+          name: select
+
+  - description: testLtrimWithChars
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.ltrim:
+                - Constant: "foobar"
+                - Constant: "fo"
+            - "trimmed"
+    assert_results:
+      - trimmed: "bar"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                trimmed:
+                  functionValue:
+                    args:
+                    - stringValue: "foobar"
+                    - stringValue: "fo"
+                    name: ltrim
+          name: select
+
+  - description: testLtrimWithBytes
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.ltrim:
+                - Constant: !!binary Zm9vYmFy
+                - Constant: !!binary Zm8=
+            - "trimmed"
+    assert_results:
+      - trimmed: !!binary YmFy
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                trimmed:
+                  functionValue:
+                    args:
+                    - bytesValue: Zm9vYmFy
+                    - bytesValue: Zm8=
+                    name: ltrim
+          name: select
+
+  - description: testRtrim
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.rtrim:
+                - Constant: "foo  "
+            - "trimmed"
+    assert_results:
+      - trimmed: "foo"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                trimmed:
+                  functionValue:
+                    args:
+                    - stringValue: "foo  "
+                    name: rtrim
+          name: select
+
+  - description: testRtrimWithChars
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.rtrim:
+                - Constant: "foobar"
+                - Constant: "ar"
+            - "trimmed"
+    assert_results:
+      - trimmed: "foob"
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                trimmed:
+                  functionValue:
+                    args:
+                    - stringValue: "foobar"
+                    - stringValue: "ar"
+                    name: rtrim
+          name: select
+
+  - description: testRtrimWithBytes
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.rtrim:
+                - Constant: !!binary Zm9vYmFy
+                - Constant: !!binary YXI=
+            - "trimmed"
+    assert_results:
+      - trimmed: !!binary Zm9vYg==
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                trimmed:
+                  functionValue:
+                    args:
+                    - bytesValue: Zm9vYmFy
+                    - bytesValue: YXI=
+                    name: rtrim
+          name: select

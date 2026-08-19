@@ -11,16 +11,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """Shared helper functions for verifying versions of installed modules."""
 
-import sys
 from typing import Any
 
 import packaging.version
-
 from google.cloud.bigquery import exceptions
-
 
 _MIN_PYARROW_VERSION = packaging.version.Version("3.0.0")
 _MIN_BQ_STORAGE_VERSION = packaging.version.Version("2.0.0")
@@ -29,6 +25,7 @@ _MIN_PANDAS_VERSION = packaging.version.Version("1.1.0")
 
 _MIN_PANDAS_VERSION_RANGE = packaging.version.Version("1.5.0")
 _MIN_PYARROW_VERSION_RANGE = packaging.version.Version("10.0.1")
+_MIN_PANDAS_GBQ_DELEGATION_VERSION = packaging.version.Version("1.0.0")
 
 
 class PyarrowVersions:
@@ -251,14 +248,50 @@ SUPPORTS_RANGE_PYARROW = (
 )
 
 
-def extract_runtime_version():
-    # Retrieve the version information
-    version_info = sys.version_info
+class PandasGBQVersions:
+    """Version and delegation comparisons for pandas-gbq package."""
 
-    # Extract the major, minor, and micro components
-    major = version_info.major
-    minor = version_info.minor
-    micro = version_info.micro
+    def __init__(self):
+        self._installed_version = None
+        self._delegation_api_version = None
 
-    # Display the version number in a clear format
-    return major, minor, micro
+    @property
+    def installed_version(self) -> packaging.version.Version:
+        """Return the parsed version of pandas-gbq."""
+        if self._installed_version is not None:
+            return self._installed_version
+
+        try:
+            import pandas_gbq  # type: ignore
+
+            self._installed_version = packaging.version.parse(
+                getattr(pandas_gbq, "__version__", "0.0.0")
+            )
+        except Exception:
+            self._installed_version = packaging.version.parse("0.0.0")
+        return self._installed_version
+
+    @property
+    def delegation_api_version(self) -> packaging.version.Version:
+        """Return the delegation API version of pandas-gbq if installed, otherwise 0.0.0."""
+        if self._delegation_api_version is not None:
+            return self._delegation_api_version
+
+        try:
+            import pandas_gbq  # type: ignore
+
+            raw_version = getattr(
+                pandas_gbq, "_internal_delegation_api_version", "0.0.0"
+            )
+            self._delegation_api_version = packaging.version.parse(str(raw_version))
+        except Exception:
+            self._delegation_api_version = packaging.version.parse("0.0.0")
+        return self._delegation_api_version
+
+    @property
+    def is_delegation_supported(self) -> bool:
+        """True if the installed pandas-gbq version supports query delegation API."""
+        return self.delegation_api_version >= _MIN_PANDAS_GBQ_DELEGATION_VERSION
+
+
+PANDAS_GBQ_VERSIONS = PandasGBQVersions()

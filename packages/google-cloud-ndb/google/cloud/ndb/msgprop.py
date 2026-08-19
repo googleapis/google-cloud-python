@@ -17,7 +17,6 @@
 These classes are not implemented.
 """
 
-
 __all__ = ["EnumProperty", "MessageProperty"]
 
 

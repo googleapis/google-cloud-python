@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -99,7 +99,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -240,6 +240,10 @@ class EvaluationServiceGrpcAsyncIOTransport(EvaluationServiceTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -1273,6 +1277,124 @@ class EvaluationServiceGrpcAsyncIOTransport(EvaluationServiceTransport):
             )
         return self._stubs["test_persona_voice"]
 
+    @property
+    def export_evaluations(
+        self,
+    ) -> Callable[
+        [evaluation_service.ExportEvaluationsRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the export evaluations method over gRPC.
+
+        Exports evaluations.
+
+        Returns:
+            Callable[[~.ExportEvaluationsRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_evaluations" not in self._stubs:
+            self._stubs["export_evaluations"] = self._logged_channel.unary_unary(
+                "/google.cloud.ces.v1beta.EvaluationService/ExportEvaluations",
+                request_serializer=evaluation_service.ExportEvaluationsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["export_evaluations"]
+
+    @property
+    def export_evaluation_runs(
+        self,
+    ) -> Callable[
+        [evaluation_service.ExportEvaluationRunsRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the export evaluation runs method over gRPC.
+
+        Exports evaluations runs.
+
+        Returns:
+            Callable[[~.ExportEvaluationRunsRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_evaluation_runs" not in self._stubs:
+            self._stubs["export_evaluation_runs"] = self._logged_channel.unary_unary(
+                "/google.cloud.ces.v1beta.EvaluationService/ExportEvaluationRuns",
+                request_serializer=evaluation_service.ExportEvaluationRunsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["export_evaluation_runs"]
+
+    @property
+    def export_evaluation_results(
+        self,
+    ) -> Callable[
+        [evaluation_service.ExportEvaluationResultsRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the export evaluation results method over gRPC.
+
+        Exports evaluations results.
+
+        Returns:
+            Callable[[~.ExportEvaluationResultsRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_evaluation_results" not in self._stubs:
+            self._stubs["export_evaluation_results"] = self._logged_channel.unary_unary(
+                "/google.cloud.ces.v1beta.EvaluationService/ExportEvaluationResults",
+                request_serializer=evaluation_service.ExportEvaluationResultsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["export_evaluation_results"]
+
+    @property
+    def run_evaluation_result_metrics(
+        self,
+    ) -> Callable[
+        [evaluation_service.RunEvaluationResultMetricsRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the run evaluation result metrics method over gRPC.
+
+        Runs metrics on an existing evaluation result.
+
+        Returns:
+            Callable[[~.RunEvaluationResultMetricsRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "run_evaluation_result_metrics" not in self._stubs:
+            self._stubs["run_evaluation_result_metrics"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.ces.v1beta.EvaluationService/RunEvaluationResultMetrics",
+                    request_serializer=evaluation_service.RunEvaluationResultMetricsRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
+            )
+        return self._stubs["run_evaluation_result_metrics"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1428,6 +1550,26 @@ class EvaluationServiceGrpcAsyncIOTransport(EvaluationServiceTransport):
             ),
             self.test_persona_voice: self._wrap_method(
                 self.test_persona_voice,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_evaluations: self._wrap_method(
+                self.export_evaluations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_evaluation_runs: self._wrap_method(
+                self.export_evaluation_runs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_evaluation_results: self._wrap_method(
+                self.export_evaluation_results,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.run_evaluation_result_metrics: self._wrap_method(
+                self.run_evaluation_result_metrics,
                 default_timeout=None,
                 client_info=client_info,
             ),

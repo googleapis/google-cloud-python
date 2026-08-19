@@ -12,20 +12,21 @@ import os
 from uuid import uuid4
 
 import django
-
-RANDOM_ID_GENERATION_ENABLED_SETTING = "RANDOM_ID_GENERATION_ENABLED"
-
-from django.conf.global_settings import DATABASES
 from django.db import DEFAULT_DB_ALIAS
+from django.db.models import JSONField
 from django.db.models.fields import (
     NOT_PROVIDED,
     AutoField,
+    BigAutoField,
     Field,
+    SmallAutoField,
 )
 
 # Monkey-patch google.DatetimeWithNanoseconds's __eq__ compare against
 # datetime.datetime.
-from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+from google.api_core.datetime_helpers import (
+    DatetimeWithNanoseconds,
+)
 from google.cloud.spanner_v1 import JsonObject
 
 from .functions import register_functions
@@ -33,26 +34,15 @@ from .lookups import register_lookups
 from .utils import check_django_compatability
 from .version import __version__
 
-USING_DJANGO_3 = False
-if django.VERSION[:2] == (3, 2):
-    USING_DJANGO_3 = True
-
-USING_DJANGO_4 = False
-if django.VERSION[:2] == (4, 2):
-    USING_DJANGO_4 = True
-
-from django.db.models import JSONField
-from django.db.models.fields import (
-    BigAutoField,
-    SmallAutoField,
-)
+RANDOM_ID_GENERATION_ENABLED_SETTING = "RANDOM_ID_GENERATION_ENABLED"
 
 USE_EMULATOR = os.getenv("SPANNER_EMULATOR_HOST") is not None
 
-# Only active LTS django versions (3.2.*, 4.2.*) are supported by this library right now.
-SUPPORTED_DJANGO_VERSIONS = [(3, 2), (4, 2)]
+SUPPORTED_DJANGO_VERSIONS = [(5, 2)]
 
 check_django_compatability(SUPPORTED_DJANGO_VERSIONS)
+
+__all__ = ["__version__", "USE_EMULATOR"]
 register_functions()
 register_lookups()
 

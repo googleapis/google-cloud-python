@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,6 +41,7 @@ async def sample_remove_audience_members():
     # Initialize request argument(s)
     destinations = datamanager_v1.Destination()
     destinations.operating_account.account_id = "account_id_value"
+    destinations.operating_account.account_type = "FLOODLIGHT_CONFIG"
     destinations.product_destination_id = "product_destination_id_value"
 
     audience_members = datamanager_v1.AudienceMember()

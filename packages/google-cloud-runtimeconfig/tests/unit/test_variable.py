@@ -32,6 +32,7 @@ class TestVariable(unittest.TestCase):
 
     def _verifyResourceProperties(self, variable, resource):
         import base64
+
         from google.api_core import datetime_helpers
 
         if "name" in resource:
@@ -131,6 +132,7 @@ class TestVariable(unittest.TestCase):
 
     def test_create_conflict(self):
         from google.cloud.exceptions import Conflict
+
         from google.cloud.runtimeconfig.config import Config
 
         conn = _Connection(Conflict("test"))

@@ -21,11 +21,23 @@ from google.cloud.spanner_dbapi.parse_utils import (
     escape_name,
 )
 
-from django_spanner import USING_DJANGO_3
-
 
 class DatabaseOperations(BaseDatabaseOperations):
     """A Spanner-specific version of Django database operations."""
+
+    # Cloud Spanner only supports INT64, so all integer fields can hold
+    # 64-bit values.
+    integer_field_ranges = {
+        "SmallIntegerField": (-9223372036854775808, 9223372036854775807),
+        "IntegerField": (-9223372036854775808, 9223372036854775807),
+        "BigIntegerField": (-9223372036854775808, 9223372036854775807),
+        "PositiveBigIntegerField": (0, 9223372036854775807),
+        "PositiveSmallIntegerField": (0, 9223372036854775807),
+        "PositiveIntegerField": (0, 9223372036854775807),
+        "SmallAutoField": (-9223372036854775808, 9223372036854775807),
+        "AutoField": (-9223372036854775808, 9223372036854775807),
+        "BigAutoField": (-9223372036854775808, 9223372036854775807),
+    }
 
     cast_data_types = {"CharField": "STRING", "TextField": "STRING"}
     cast_char_field_without_max_length = "STRING"
@@ -78,19 +90,22 @@ class DatabaseOperations(BaseDatabaseOperations):
 
     def bulk_batch_size(self, fields, objs):
         """
-        Override the base class method. Returns the maximum number of the
-        query parameters.
+        Override the base class method. Returns the maximum number of objects
+        that can be batched in a single query.
 
         :type fields: list
-        :param fields: Currently not used.
+        :param fields: List of fields to be inserted.
 
         :type objs: list
-        :param objs: Currently not used.
+        :param objs: List of objects to be inserted.
 
         :rtype: int
-        :returns: The maximum number of query parameters (constant).
+        :returns: The maximum number of objects (row counts).
         """
-        return self.connection.features.max_query_params
+        max_params = self.connection.features.max_query_params
+        if not fields:
+            return max_params
+        return max_params // len(fields)
 
     def bulk_insert_sql(self, fields, placeholder_rows):
         """
@@ -136,7 +151,7 @@ class DatabaseOperations(BaseDatabaseOperations):
         # Cloud Spanner doesn't support TRUNCATE so DELETE instead.
         # A dummy WHERE clause is required.
         if tables:
-            delete_sql = "%s %s %%s" % (
+            delete_sql = "%s %s %%s WHERE 1=1" % (
                 style.SQL_KEYWORD("DELETE"),
                 style.SQL_KEYWORD("FROM"),
             )
@@ -145,6 +160,66 @@ class DatabaseOperations(BaseDatabaseOperations):
             ]
         else:
             return []
+
+    def execute_sql_flush(self, sql_list):
+        """Execute a list of SQL statements to flush the database.
+
+        Cloud Spanner doesn't support disabling foreign key checks, so we use a
+        retry mechanism to handle deletion order. We try to delete from all tables;
+        if some fail due to foreign key constraints, we retry them in subsequent
+        passes. As long as we make progress (delete at least one table) in each
+        pass, we continue.
+        """
+        if not sql_list:
+            return
+
+        # Ensure we are in autocommit mode or commit explicitly if needed
+        was_autocommit = self.connection.get_autocommit()
+        if not was_autocommit:
+            self.connection.set_autocommit(True)
+
+        try:
+            with self.connection.cursor() as cursor:
+                # We might need several passes if there is a deep dependency chain
+                remaining_sql = list(sql_list)
+
+                # Safety valve: 10 passes should be enough for any reasonable schema depth
+                max_passes = 10
+                pass_count = 0
+
+                while remaining_sql:
+                    pass_count += 1
+                    failed_sql = []
+                    progress = False
+                    last_exception = None
+
+                    if pass_count > max_passes:
+                        # We are stuck in a cycle or too deep
+                        if last_exception:
+                            raise last_exception
+                        raise DatabaseError(
+                            "Max passes reached in execute_sql_flush without clearing all tables."
+                        )
+
+                    for sql in remaining_sql:
+                        try:
+                            cursor.execute(sql)
+                            progress = True
+                        except Exception as e:
+                            # We catch Exception because Spanner might raise various errors
+                            # (Aborted, FailedPrecondition, IntegrityError, etc.)
+                            failed_sql.append(sql)
+                            last_exception = e
+
+                    # If no progress and still have failed SQL, we are stuck
+                    if not progress and failed_sql:
+                        raise last_exception
+
+                    remaining_sql = failed_sql
+
+        finally:
+            if not was_autocommit:
+                self.connection.set_autocommit(False)
 
     def adapt_datefield_value(self, value):
         """Cast date argument into Spanner DB API DateStr format.
@@ -183,27 +258,6 @@ class DatabaseOperations(BaseDatabaseOperations):
                     "timezone-aware datetimes when USE_TZ is False."
                 )
         return TimestampStr(value.isoformat(timespec="microseconds") + "Z")
-
-    def adapt_decimalfield_value(self, value, max_digits=None, decimal_places=None):
-        """
-        Convert value from decimal.Decimal to spanner compatible value.
-        Since spanner supports Numeric storage of decimal and python spanner
-        takes care of the conversion so this is a no-op method call.
-
-        :type value: :class:`decimal.Decimal`
-        :param value: A decimal field value.
-
-        :type max_digits: int
-        :param max_digits: (Optional) A maximum number of digits.
-
-        :type decimal_places: int
-        :param decimal_places: (Optional) The number of decimal places to store
-                               with the number.
-
-        :rtype: decimal.Decimal
-        :returns: decimal value.
-        """
-        return value
 
     def adapt_timefield_value(self, value):
         """
@@ -358,65 +412,35 @@ class DatabaseOperations(BaseDatabaseOperations):
         """
         lookup_type = self.extract_names.get(lookup_type, lookup_type)
         sql = "EXTRACT(%s FROM %s)" % (lookup_type, field_name)
-        if USING_DJANGO_3:
-            return sql
         return sql, params
 
-    if USING_DJANGO_3:
+    def datetime_extract_sql(self, lookup_type, field_name, params, tzname):
+        """Extract datetime from the lookup.
 
-        def datetime_extract_sql(self, lookup_type, field_name, tzname):
-            """Extract datetime from the lookup.
+        :type lookup_type: str
+        :param lookup_type: A type of the lookup.
 
-            :type lookup_type: str
-            :param lookup_type: A type of the lookup.
+        :type field_name: str
+        :param field_name: The name of the field.
 
-            :type field_name: str
-            :param field_name: The name of the field.
+        :type tzname: str
+        :param tzname: The time zone name. If using of time zone is not
+                       allowed in settings default will be UTC.
 
-            :type tzname: str
-            :param tzname: The time zone name. If using of time zone is not
-                           allowed in settings default will be UTC.
-
-            :rtype: str
-            :returns: A SQL statement for extracting.
-            """
-            tzname = tzname if settings.USE_TZ and tzname else "UTC"
-            lookup_type = self.extract_names.get(lookup_type, lookup_type)
-            return 'EXTRACT(%s FROM %s AT TIME ZONE "%s")' % (
+        :rtype: str
+        :returns: A SQL statement for extracting.
+        """
+        tzname = tzname if settings.USE_TZ and tzname else "UTC"
+        lookup_type = self.extract_names.get(lookup_type, lookup_type)
+        return (
+            'EXTRACT(%s FROM %s AT TIME ZONE "%s")'
+            % (
                 lookup_type,
                 field_name,
                 tzname,
-            )
-
-    else:
-
-        def datetime_extract_sql(self, lookup_type, field_name, params, tzname):
-            """Extract datetime from the lookup.
-
-            :type lookup_type: str
-            :param lookup_type: A type of the lookup.
-
-            :type field_name: str
-            :param field_name: The name of the field.
-
-            :type tzname: str
-            :param tzname: The time zone name. If using of time zone is not
-                           allowed in settings default will be UTC.
-
-            :rtype: str
-            :returns: A SQL statement for extracting.
-            """
-            tzname = tzname if settings.USE_TZ and tzname else "UTC"
-            lookup_type = self.extract_names.get(lookup_type, lookup_type)
-            return (
-                'EXTRACT(%s FROM %s AT TIME ZONE "%s")'
-                % (
-                    lookup_type,
-                    field_name,
-                    tzname,
-                ),
-                params,
-            )
+            ),
+            params,
+        )
 
     def time_extract_sql(self, lookup_type, field_name, params=None):
         """Extract time from the lookup.
@@ -438,300 +462,150 @@ class DatabaseOperations(BaseDatabaseOperations):
             lookup_type,
             field_name,
         )
-        if USING_DJANGO_3:
-            return sql
         return sql, params
 
-    if USING_DJANGO_3:
+    def date_trunc_sql(self, lookup_type, field_name, params, tzname=None):
+        """Truncate date in the lookup.
 
-        def date_trunc_sql(self, lookup_type, field_name, tzname=None):
-            """Truncate date in the lookup.
+        :type lookup_type: str
+        :param lookup_type: A type of the lookup.
 
-            :type lookup_type: str
-            :param lookup_type: A type of the lookup.
+        :type field_name: str
+        :param field_name: The name of the field.
 
-            :type field_name: str
-            :param field_name: The name of the field.
+        :type params: list(str)
+        :param params: list of query params.
 
-            :type tzname: str
-            :param tzname: The name of the timezone. This is ignored because
-            Spanner does not support Timezone conversion in DATE_TRUNC function.
+        :type tzname: str
+        :param tzname: The name of the timezone. This is ignored because
+        Spanner does not support Timezone conversion in DATE_TRUNC function.
 
-            :rtype: str
-            :returns: A SQL statement for truncating.
-            """
-            # https://cloud.google.com/spanner/docs/functions-and-operators#date_trunc
-            if lookup_type == "week":
-                # Spanner truncates to Sunday but Django expects Monday. First,
-                # subtract a day so that a Sunday will be truncated to the previous
-                # week...
-                field_name = (
-                    "DATE_SUB(CAST(" + field_name + " AS DATE), INTERVAL 1 DAY)"
-                )
-            sql = "DATE_TRUNC(CAST(%s AS DATE), %s)" % (
-                field_name,
-                lookup_type,
-            )
-            if lookup_type == "week":
-                # ...then add a day to get from Sunday to Monday.
-                sql = "DATE_ADD(CAST(" + sql + " AS DATE), INTERVAL 1 DAY)"
-            return sql
+        :rtype: str
+        :returns: A SQL statement for truncating.
+        """
+        # https://cloud.google.com/spanner/docs/functions-and-operators#date_trunc
+        if lookup_type == "week":
+            # Spanner truncates to Sunday but Django expects Monday. First,
+            # subtract a day so that a Sunday will be truncated to the previous
+            # week...
+            field_name = "DATE_SUB(CAST(" + field_name + " AS DATE), INTERVAL 1 DAY)"
+        sql = "DATE_TRUNC(CAST(%s AS DATE), %s)" % (
+            field_name,
+            lookup_type,
+        )
+        if lookup_type == "week":
+            # ...then add a day to get from Sunday to Monday.
+            sql = "DATE_ADD(CAST(" + sql + " AS DATE), INTERVAL 1 DAY)"
+        return sql, params
 
-    else:
+    def datetime_trunc_sql(self, lookup_type, field_name, params, tzname="UTC"):
+        """Truncate datetime in the lookup.
 
-        def date_trunc_sql(self, lookup_type, field_name, params, tzname=None):
-            """Truncate date in the lookup.
+        :type lookup_type: str
+        :param lookup_type: A type of the lookup.
 
-            :type lookup_type: str
-            :param lookup_type: A type of the lookup.
+        :type field_name: str
+        :param field_name: The name of the field.
 
-            :type field_name: str
-            :param field_name: The name of the field.
+        :type params: list(str)
+        :param params: list of query params.
 
-            :type params: list(str)
-            :param params: list of query params.
+        :type tzname: str
+        :param tzname: The name of the timezone.
 
-            :type tzname: str
-            :param tzname: The name of the timezone. This is ignored because
-            Spanner does not support Timezone conversion in DATE_TRUNC function.
+        :rtype: str
+        :returns: A SQL statement for truncating.
+        """
+        # https://cloud.google.com/spanner/docs/functions-and-operators#timestamp_trunc
+        tzname = tzname if settings.USE_TZ and tzname else "UTC"
+        if lookup_type == "week":
+            # Spanner truncates to Sunday but Django expects Monday. First,
+            # subtract a day so that a Sunday will be truncated to the previous
+            # week...
+            field_name = "TIMESTAMP_SUB(" + field_name + ", INTERVAL 1 DAY)"
+        sql = 'TIMESTAMP_TRUNC(%s, %s, "%s")' % (
+            field_name,
+            lookup_type,
+            tzname,
+        )
+        if lookup_type == "week":
+            # ...then add a day to get from Sunday to Monday.
+            sql = "TIMESTAMP_ADD(" + sql + ", INTERVAL 1 DAY)"
+        return sql, params
 
-            :rtype: str
-            :returns: A SQL statement for truncating.
-            """
-            # https://cloud.google.com/spanner/docs/functions-and-operators#date_trunc
-            if lookup_type == "week":
-                # Spanner truncates to Sunday but Django expects Monday. First,
-                # subtract a day so that a Sunday will be truncated to the previous
-                # week...
-                field_name = (
-                    "DATE_SUB(CAST(" + field_name + " AS DATE), INTERVAL 1 DAY)"
-                )
-            sql = "DATE_TRUNC(CAST(%s AS DATE), %s)" % (
-                field_name,
-                lookup_type,
-            )
-            if lookup_type == "week":
-                # ...then add a day to get from Sunday to Monday.
-                sql = "DATE_ADD(CAST(" + sql + " AS DATE), INTERVAL 1 DAY)"
-            return sql, params
+    def time_trunc_sql(self, lookup_type, field_name, params, tzname="UTC"):
+        """Truncate time in the lookup.
 
-    if USING_DJANGO_3:
+        :type lookup_type: str
+        :param lookup_type: A type of the lookup.
 
-        def datetime_trunc_sql(self, lookup_type, field_name, tzname="UTC"):
-            """Truncate datetime in the lookup.
+        :type field_name: str
+        :param field_name: The name of the field.
 
-            :type lookup_type: str
-            :param lookup_type: A type of the lookup.
+        :type params: list(str)
+        :param params: list of query params.
 
-            :type field_name: str
-            :param field_name: The name of the field.
+        :type tzname: str
+        :param tzname: The name of the timezone. Defaults to 'UTC' For backward compatability.
 
-            :type tzname: str
-            :param tzname: The name of the timezone.
-
-            :rtype: str
-            :returns: A SQL statement for truncating.
-            """
-            # https://cloud.google.com/spanner/docs/functions-and-operators#timestamp_trunc
-            tzname = tzname if settings.USE_TZ and tzname else "UTC"
-            if lookup_type == "week":
-                # Spanner truncates to Sunday but Django expects Monday. First,
-                # subtract a day so that a Sunday will be truncated to the previous
-                # week...
-                field_name = "TIMESTAMP_SUB(" + field_name + ", INTERVAL 1 DAY)"
-            sql = 'TIMESTAMP_TRUNC(%s, %s, "%s")' % (
+        :rtype: str
+        :returns: A SQL statement for truncating.
+        """
+        # https://cloud.google.com/spanner/docs/functions-and-operators#timestamp_trunc
+        tzname = tzname if settings.USE_TZ and tzname else "UTC"
+        return (
+            'TIMESTAMP_TRUNC(%s, %s, "%s")'
+            % (
                 field_name,
                 lookup_type,
                 tzname,
-            )
-            if lookup_type == "week":
-                # ...then add a day to get from Sunday to Monday.
-                sql = "TIMESTAMP_ADD(" + sql + ", INTERVAL 1 DAY)"
-            return sql
+            ),
+            params,
+        )
 
-    else:
+    def datetime_cast_date_sql(self, field_name, params, tzname):
+        """Cast date in the lookup.
 
-        def datetime_trunc_sql(self, lookup_type, field_name, params, tzname="UTC"):
-            """Truncate datetime in the lookup.
+        :type field_name: str
+        :param field_name: The name of the field.
 
-            :type lookup_type: str
-            :param lookup_type: A type of the lookup.
+        :type params: list(str)
+        :param params: list of query params.
 
-            :type field_name: str
-            :param field_name: The name of the field.
+        :type tzname: str
+        :param tzname: The time zone name. If using of time zone is not
+                       allowed in settings default will be UTC.
 
-            :type params: list(str)
-            :param params: list of query params.
+        :rtype: str
+        :returns: A SQL statement for casting.
+        """
+        # https://cloud.google.com/spanner/docs/functions-and-operators#date
+        tzname = tzname if settings.USE_TZ and tzname else "UTC"
+        return 'DATE(%s, "%s")' % (field_name, tzname), params
 
-            :type tzname: str
-            :param tzname: The name of the timezone.
+    def datetime_cast_time_sql(self, field_name, params, tzname):
+        """Cast time in the lookup.
 
-            :rtype: str
-            :returns: A SQL statement for truncating.
-            """
-            # https://cloud.google.com/spanner/docs/functions-and-operators#timestamp_trunc
-            tzname = tzname if settings.USE_TZ and tzname else "UTC"
-            if lookup_type == "week":
-                # Spanner truncates to Sunday but Django expects Monday. First,
-                # subtract a day so that a Sunday will be truncated to the previous
-                # week...
-                field_name = "TIMESTAMP_SUB(" + field_name + ", INTERVAL 1 DAY)"
-            sql = 'TIMESTAMP_TRUNC(%s, %s, "%s")' % (
-                field_name,
-                lookup_type,
-                tzname,
-            )
-            if lookup_type == "week":
-                # ...then add a day to get from Sunday to Monday.
-                sql = "TIMESTAMP_ADD(" + sql + ", INTERVAL 1 DAY)"
-            return sql, params
+        :type field_name: str
+        :param field_name: The name of the field.
 
-    if USING_DJANGO_3:
+        :type params: list(str)
+        :param params: list of query params.
 
-        def time_trunc_sql(self, lookup_type, field_name, tzname="UTC"):
-            """Truncate time in the lookup.
+        :type tzname: str
+        :param tzname: The time zone name. If using of time zone is not
+                       allowed in settings default will be UTC.
 
-            :type lookup_type: str
-            :param lookup_type: A type of the lookup.
-
-            :type field_name: str
-            :param field_name: The name of the field.
-
-            :type tzname: str
-            :param tzname: The name of the timezone. Defaults to 'UTC' For backward compatability.
-
-            :rtype: str
-            :returns: A SQL statement for truncating.
-            """
-            # https://cloud.google.com/spanner/docs/functions-and-operators#timestamp_trunc
-            tzname = tzname if settings.USE_TZ and tzname else "UTC"
-            return 'TIMESTAMP_TRUNC(%s, %s, "%s")' % (
-                field_name,
-                lookup_type,
-                tzname,
-            )
-
-    else:
-
-        def time_trunc_sql(self, lookup_type, field_name, params, tzname="UTC"):
-            """Truncate time in the lookup.
-
-            :type lookup_type: str
-            :param lookup_type: A type of the lookup.
-
-            :type field_name: str
-            :param field_name: The name of the field.
-
-            :type params: list(str)
-            :param params: list of query params.
-
-            :type tzname: str
-            :param tzname: The name of the timezone. Defaults to 'UTC' For backward compatability.
-
-            :rtype: str
-            :returns: A SQL statement for truncating.
-            """
-            # https://cloud.google.com/spanner/docs/functions-and-operators#timestamp_trunc
-            tzname = tzname if settings.USE_TZ and tzname else "UTC"
-            return (
-                'TIMESTAMP_TRUNC(%s, %s, "%s")'
-                % (
-                    field_name,
-                    lookup_type,
-                    tzname,
-                ),
-                params,
-            )
-
-    if USING_DJANGO_3:
-
-        def datetime_cast_date_sql(self, field_name, tzname):
-            """Cast date in the lookup.
-
-            :type field_name: str
-            :param field_name: The name of the field.
-
-            :type tzname: str
-            :param tzname: The time zone name. If using of time zone is not
-                           allowed in settings default will be UTC.
-
-            :rtype: str
-            :returns: A SQL statement for casting.
-            """
-            # https://cloud.google.com/spanner/docs/functions-and-operators#date
-            tzname = tzname if settings.USE_TZ and tzname else "UTC"
-            return 'DATE(%s, "%s")' % (field_name, tzname)
-
-    else:
-
-        def datetime_cast_date_sql(self, field_name, params, tzname):
-            """Cast date in the lookup.
-
-            :type field_name: str
-            :param field_name: The name of the field.
-
-            :type params: list(str)
-            :param params: list of query params.
-
-            :type tzname: str
-            :param tzname: The time zone name. If using of time zone is not
-                           allowed in settings default will be UTC.
-
-            :rtype: str
-            :returns: A SQL statement for casting.
-            """
-            # https://cloud.google.com/spanner/docs/functions-and-operators#date
-            tzname = tzname if settings.USE_TZ and tzname else "UTC"
-            return 'DATE(%s, "%s")' % (field_name, tzname), params
-
-    if USING_DJANGO_3:
-
-        def datetime_cast_time_sql(self, field_name, tzname):
-            """Cast time in the lookup.
-
-            :type field_name: str
-            :param field_name: The name of the field.
-
-            :type tzname: str
-            :param tzname: The time zone name. If using of time zone is not
-                           allowed in settings default will be UTC.
-
-            :rtype: str
-            :returns: A SQL statement for casting.
-            """
-            tzname = tzname if settings.USE_TZ and tzname else "UTC"
-            # Cloud Spanner doesn't have a function for converting
-            # TIMESTAMP to another time zone.
-            return (
-                "TIMESTAMP(FORMAT_TIMESTAMP("
-                "'%%Y-%%m-%%d %%R:%%E9S %%Z', %s, '%s'))" % (field_name, tzname)
-            )
-
-    else:
-
-        def datetime_cast_time_sql(self, field_name, params, tzname):
-            """Cast time in the lookup.
-
-            :type field_name: str
-            :param field_name: The name of the field.
-
-            :type params: list(str)
-            :param params: list of query params.
-
-            :type tzname: str
-            :param tzname: The time zone name. If using of time zone is not
-                           allowed in settings default will be UTC.
-
-            :rtype: str
-            :returns: A SQL statement for casting.
-            """
-            tzname = tzname if settings.USE_TZ and tzname else "UTC"
-            # Cloud Spanner doesn't have a function for converting
-            # TIMESTAMP to another time zone.
-            return (
-                "TIMESTAMP(FORMAT_TIMESTAMP("
-                "'%%Y-%%m-%%d %%R:%%E9S %%Z', %s, '%s'))" % (field_name, tzname)
-            ), params
+        :rtype: str
+        :returns: A SQL statement for casting.
+        """
+        tzname = tzname if settings.USE_TZ and tzname else "UTC"
+        # Cloud Spanner doesn't have a function for converting
+        # TIMESTAMP to another time zone.
+        return (
+            "TIMESTAMP(FORMAT_TIMESTAMP("
+            "'%%Y-%%m-%%d %%R:%%E9S %%Z', %s, '%s'))" % (field_name, tzname)
+        ), params
 
     def date_interval_sql(self, timedelta):
         """Get a date interval in microseconds.
@@ -867,3 +741,21 @@ class DatabaseOperations(BaseDatabaseOperations):
             # from Cloud Spanner.
             limit -= offset
         return limit, offset
+
+    def savepoint_create_sql(self, sid):
+        """
+        Return the SQL for creating a savepoint.
+        """
+        return "SELECT 1"
+
+    def savepoint_commit_sql(self, sid):
+        """
+        Return the SQL for committing a savepoint.
+        """
+        return "SELECT 1"
+
+    def savepoint_rollback_sql(self, sid):
+        """
+        Return the SQL for rolling back to a savepoint.
+        """
+        return "SELECT 1"

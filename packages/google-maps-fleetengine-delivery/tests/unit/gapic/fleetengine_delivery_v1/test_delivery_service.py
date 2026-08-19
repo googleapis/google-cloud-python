@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -126,12 +121,28 @@ def modify_default_endpoint_template(client):
     )
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert DeliveryServiceClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -152,6 +163,10 @@ def test__get_default_mtls_endpoint():
     )
     assert (
         DeliveryServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    )
+    assert (
+        DeliveryServiceClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -978,7 +993,14 @@ def test_delivery_service_client_get_mtls_endpoint_and_cert_source(client_class)
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1025,7 +1047,14 @@ def test_delivery_service_client_get_mtls_endpoint_and_cert_source(client_class)
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1317,11 +1346,13 @@ def test_delivery_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1346,8 +1377,8 @@ def test_delivery_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        delivery_api.CreateDeliveryVehicleRequest,
-        dict,
+        delivery_api.CreateDeliveryVehicleRequest(),
+        {},
     ],
 )
 def test_create_delivery_vehicle(request_type, transport: str = "grpc"):
@@ -1358,7 +1389,7 @@ def test_create_delivery_vehicle(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1415,10 +1446,11 @@ def test_create_delivery_vehicle_non_empty_request_with_auto_populated_field():
         client.create_delivery_vehicle(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.CreateDeliveryVehicleRequest(
+        request_msg = delivery_api.CreateDeliveryVehicleRequest(
             parent="parent_value",
             delivery_vehicle_id="delivery_vehicle_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_delivery_vehicle_use_cached_wrapped_rpc():
@@ -1504,9 +1536,15 @@ async def test_create_delivery_vehicle_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        delivery_api.CreateDeliveryVehicleRequest(),
+        {},
+    ],
+)
 async def test_create_delivery_vehicle_async(
-    transport: str = "grpc_asyncio",
-    request_type=delivery_api.CreateDeliveryVehicleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DeliveryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1515,7 +1553,7 @@ async def test_create_delivery_vehicle_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1546,11 +1584,6 @@ async def test_create_delivery_vehicle_async(
     )
     assert response.current_route_segment == b"current_route_segment_blob"
     assert response.type_ == delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO
-
-
-@pytest.mark.asyncio
-async def test_create_delivery_vehicle_async_from_dict():
-    await test_create_delivery_vehicle_async(request_type=dict)
 
 
 def test_create_delivery_vehicle_flattened():
@@ -1662,8 +1695,8 @@ async def test_create_delivery_vehicle_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        delivery_api.GetDeliveryVehicleRequest,
-        dict,
+        delivery_api.GetDeliveryVehicleRequest(),
+        {},
     ],
 )
 def test_get_delivery_vehicle(request_type, transport: str = "grpc"):
@@ -1674,7 +1707,7 @@ def test_get_delivery_vehicle(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1730,9 +1763,10 @@ def test_get_delivery_vehicle_non_empty_request_with_auto_populated_field():
         client.get_delivery_vehicle(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.GetDeliveryVehicleRequest(
+        request_msg = delivery_api.GetDeliveryVehicleRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_delivery_vehicle_use_cached_wrapped_rpc():
@@ -1817,8 +1851,15 @@ async def test_get_delivery_vehicle_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        delivery_api.GetDeliveryVehicleRequest(),
+        {},
+    ],
+)
 async def test_get_delivery_vehicle_async(
-    transport: str = "grpc_asyncio", request_type=delivery_api.GetDeliveryVehicleRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DeliveryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1827,7 +1868,7 @@ async def test_get_delivery_vehicle_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1858,11 +1899,6 @@ async def test_get_delivery_vehicle_async(
     )
     assert response.current_route_segment == b"current_route_segment_blob"
     assert response.type_ == delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO
-
-
-@pytest.mark.asyncio
-async def test_get_delivery_vehicle_async_from_dict():
-    await test_get_delivery_vehicle_async(request_type=dict)
 
 
 def test_get_delivery_vehicle_flattened():
@@ -1954,8 +1990,8 @@ async def test_get_delivery_vehicle_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        delivery_api.DeleteDeliveryVehicleRequest,
-        dict,
+        delivery_api.DeleteDeliveryVehicleRequest(),
+        {},
     ],
 )
 def test_delete_delivery_vehicle(request_type, transport: str = "grpc"):
@@ -1966,7 +2002,7 @@ def test_delete_delivery_vehicle(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2011,9 +2047,10 @@ def test_delete_delivery_vehicle_non_empty_request_with_auto_populated_field():
         client.delete_delivery_vehicle(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.DeleteDeliveryVehicleRequest(
+        request_msg = delivery_api.DeleteDeliveryVehicleRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_delivery_vehicle_use_cached_wrapped_rpc():
@@ -2099,9 +2136,15 @@ async def test_delete_delivery_vehicle_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        delivery_api.DeleteDeliveryVehicleRequest(),
+        {},
+    ],
+)
 async def test_delete_delivery_vehicle_async(
-    transport: str = "grpc_asyncio",
-    request_type=delivery_api.DeleteDeliveryVehicleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DeliveryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2110,7 +2153,7 @@ async def test_delete_delivery_vehicle_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2128,11 +2171,6 @@ async def test_delete_delivery_vehicle_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_delivery_vehicle_async_from_dict():
-    await test_delete_delivery_vehicle_async(request_type=dict)
 
 
 def test_delete_delivery_vehicle_flattened():
@@ -2222,8 +2260,8 @@ async def test_delete_delivery_vehicle_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        delivery_api.UpdateDeliveryVehicleRequest,
-        dict,
+        delivery_api.UpdateDeliveryVehicleRequest(),
+        {},
     ],
 )
 def test_update_delivery_vehicle(request_type, transport: str = "grpc"):
@@ -2234,7 +2272,7 @@ def test_update_delivery_vehicle(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2288,7 +2326,8 @@ def test_update_delivery_vehicle_non_empty_request_with_auto_populated_field():
         client.update_delivery_vehicle(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.UpdateDeliveryVehicleRequest()
+        request_msg = delivery_api.UpdateDeliveryVehicleRequest()
+        assert args[0] == request_msg
 
 
 def test_update_delivery_vehicle_use_cached_wrapped_rpc():
@@ -2374,9 +2413,15 @@ async def test_update_delivery_vehicle_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        delivery_api.UpdateDeliveryVehicleRequest(),
+        {},
+    ],
+)
 async def test_update_delivery_vehicle_async(
-    transport: str = "grpc_asyncio",
-    request_type=delivery_api.UpdateDeliveryVehicleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DeliveryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2385,7 +2430,7 @@ async def test_update_delivery_vehicle_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2416,11 +2461,6 @@ async def test_update_delivery_vehicle_async(
     )
     assert response.current_route_segment == b"current_route_segment_blob"
     assert response.type_ == delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO
-
-
-@pytest.mark.asyncio
-async def test_update_delivery_vehicle_async_from_dict():
-    await test_update_delivery_vehicle_async(request_type=dict)
 
 
 def test_update_delivery_vehicle_flattened():
@@ -2522,8 +2562,8 @@ async def test_update_delivery_vehicle_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        delivery_api.BatchCreateTasksRequest,
-        dict,
+        delivery_api.BatchCreateTasksRequest(),
+        {},
     ],
 )
 def test_batch_create_tasks(request_type, transport: str = "grpc"):
@@ -2534,7 +2574,7 @@ def test_batch_create_tasks(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2579,9 +2619,10 @@ def test_batch_create_tasks_non_empty_request_with_auto_populated_field():
         client.batch_create_tasks(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.BatchCreateTasksRequest(
+        request_msg = delivery_api.BatchCreateTasksRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_create_tasks_use_cached_wrapped_rpc():
@@ -2666,9 +2707,14 @@ async def test_batch_create_tasks_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_batch_create_tasks_async(
-    transport: str = "grpc_asyncio", request_type=delivery_api.BatchCreateTasksRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        delivery_api.BatchCreateTasksRequest(),
+        {},
+    ],
+)
+async def test_batch_create_tasks_async(request_type, transport: str = "grpc_asyncio"):
     client = DeliveryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2676,7 +2722,7 @@ async def test_batch_create_tasks_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2698,16 +2744,11 @@ async def test_batch_create_tasks_async(
     assert isinstance(response, delivery_api.BatchCreateTasksResponse)
 
 
-@pytest.mark.asyncio
-async def test_batch_create_tasks_async_from_dict():
-    await test_batch_create_tasks_async(request_type=dict)
-
-
 @pytest.mark.parametrize(
     "request_type",
     [
-        delivery_api.CreateTaskRequest,
-        dict,
+        delivery_api.CreateTaskRequest(),
+        {},
     ],
 )
 def test_create_task(request_type, transport: str = "grpc"):
@@ -2718,7 +2759,7 @@ def test_create_task(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_task), "__call__") as call:
@@ -2778,10 +2819,11 @@ def test_create_task_non_empty_request_with_auto_populated_field():
         client.create_task(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.CreateTaskRequest(
+        request_msg = delivery_api.CreateTaskRequest(
             parent="parent_value",
             task_id="task_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_task_use_cached_wrapped_rpc():
@@ -2862,9 +2904,14 @@ async def test_create_task_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_task_async(
-    transport: str = "grpc_asyncio", request_type=delivery_api.CreateTaskRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        delivery_api.CreateTaskRequest(),
+        {},
+    ],
+)
+async def test_create_task_async(request_type, transport: str = "grpc_asyncio"):
     client = DeliveryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2872,7 +2919,7 @@ async def test_create_task_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_task), "__call__") as call:
@@ -2908,11 +2955,6 @@ async def test_create_task_async(
     )
     assert response.tracking_id == "tracking_id_value"
     assert response.delivery_vehicle_id == "delivery_vehicle_id_value"
-
-
-@pytest.mark.asyncio
-async def test_create_task_async_from_dict():
-    await test_create_task_async(request_type=dict)
 
 
 def test_create_task_flattened():
@@ -3018,8 +3060,8 @@ async def test_create_task_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        delivery_api.GetTaskRequest,
-        dict,
+        delivery_api.GetTaskRequest(),
+        {},
     ],
 )
 def test_get_task(request_type, transport: str = "grpc"):
@@ -3030,7 +3072,7 @@ def test_get_task(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_task), "__call__") as call:
@@ -3089,9 +3131,10 @@ def test_get_task_non_empty_request_with_auto_populated_field():
         client.get_task(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.GetTaskRequest(
+        request_msg = delivery_api.GetTaskRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_task_use_cached_wrapped_rpc():
@@ -3170,9 +3213,14 @@ async def test_get_task_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_task_async(
-    transport: str = "grpc_asyncio", request_type=delivery_api.GetTaskRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        delivery_api.GetTaskRequest(),
+        {},
+    ],
+)
+async def test_get_task_async(request_type, transport: str = "grpc_asyncio"):
     client = DeliveryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3180,7 +3228,7 @@ async def test_get_task_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_task), "__call__") as call:
@@ -3216,11 +3264,6 @@ async def test_get_task_async(
     )
     assert response.tracking_id == "tracking_id_value"
     assert response.delivery_vehicle_id == "delivery_vehicle_id_value"
-
-
-@pytest.mark.asyncio
-async def test_get_task_async_from_dict():
-    await test_get_task_async(request_type=dict)
 
 
 def test_get_task_flattened():
@@ -3306,8 +3349,8 @@ async def test_get_task_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        delivery_api.DeleteTaskRequest,
-        dict,
+        delivery_api.DeleteTaskRequest(),
+        {},
     ],
 )
 def test_delete_task(request_type, transport: str = "grpc"):
@@ -3318,7 +3361,7 @@ def test_delete_task(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_task), "__call__") as call:
@@ -3359,9 +3402,10 @@ def test_delete_task_non_empty_request_with_auto_populated_field():
         client.delete_task(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.DeleteTaskRequest(
+        request_msg = delivery_api.DeleteTaskRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_task_use_cached_wrapped_rpc():
@@ -3442,9 +3486,14 @@ async def test_delete_task_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_task_async(
-    transport: str = "grpc_asyncio", request_type=delivery_api.DeleteTaskRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        delivery_api.DeleteTaskRequest(),
+        {},
+    ],
+)
+async def test_delete_task_async(request_type, transport: str = "grpc_asyncio"):
     client = DeliveryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3452,7 +3501,7 @@ async def test_delete_task_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_task), "__call__") as call:
@@ -3468,11 +3517,6 @@ async def test_delete_task_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_task_async_from_dict():
-    await test_delete_task_async(request_type=dict)
 
 
 def test_delete_task_flattened():
@@ -3558,8 +3602,8 @@ async def test_delete_task_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        delivery_api.UpdateTaskRequest,
-        dict,
+        delivery_api.UpdateTaskRequest(),
+        {},
     ],
 )
 def test_update_task(request_type, transport: str = "grpc"):
@@ -3570,7 +3614,7 @@ def test_update_task(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_task), "__call__") as call:
@@ -3627,7 +3671,8 @@ def test_update_task_non_empty_request_with_auto_populated_field():
         client.update_task(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.UpdateTaskRequest()
+        request_msg = delivery_api.UpdateTaskRequest()
+        assert args[0] == request_msg
 
 
 def test_update_task_use_cached_wrapped_rpc():
@@ -3708,9 +3753,14 @@ async def test_update_task_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_task_async(
-    transport: str = "grpc_asyncio", request_type=delivery_api.UpdateTaskRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        delivery_api.UpdateTaskRequest(),
+        {},
+    ],
+)
+async def test_update_task_async(request_type, transport: str = "grpc_asyncio"):
     client = DeliveryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3718,7 +3768,7 @@ async def test_update_task_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_task), "__call__") as call:
@@ -3754,11 +3804,6 @@ async def test_update_task_async(
     )
     assert response.tracking_id == "tracking_id_value"
     assert response.delivery_vehicle_id == "delivery_vehicle_id_value"
-
-
-@pytest.mark.asyncio
-async def test_update_task_async_from_dict():
-    await test_update_task_async(request_type=dict)
 
 
 def test_update_task_flattened():
@@ -3854,8 +3899,8 @@ async def test_update_task_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        delivery_api.ListTasksRequest,
-        dict,
+        delivery_api.ListTasksRequest(),
+        {},
     ],
 )
 def test_list_tasks(request_type, transport: str = "grpc"):
@@ -3866,7 +3911,7 @@ def test_list_tasks(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
@@ -3914,11 +3959,12 @@ def test_list_tasks_non_empty_request_with_auto_populated_field():
         client.list_tasks(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.ListTasksRequest(
+        request_msg = delivery_api.ListTasksRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_tasks_use_cached_wrapped_rpc():
@@ -3997,9 +4043,14 @@ async def test_list_tasks_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_tasks_async(
-    transport: str = "grpc_asyncio", request_type=delivery_api.ListTasksRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        delivery_api.ListTasksRequest(),
+        {},
+    ],
+)
+async def test_list_tasks_async(request_type, transport: str = "grpc_asyncio"):
     client = DeliveryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4007,7 +4058,7 @@ async def test_list_tasks_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
@@ -4030,11 +4081,6 @@ async def test_list_tasks_async(
     assert isinstance(response, pagers.ListTasksAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-@pytest.mark.asyncio
-async def test_list_tasks_async_from_dict():
-    await test_list_tasks_async(request_type=dict)
 
 
 def test_list_tasks_flattened():
@@ -4165,6 +4211,9 @@ def test_list_tasks_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, tasks.Task) for i in results)
@@ -4253,6 +4302,8 @@ async def test_list_tasks_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4300,11 +4351,7 @@ async def test_list_tasks_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_tasks(request={})
-        ).pages:
+        async for page_ in (await client.list_tasks(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4313,8 +4360,8 @@ async def test_list_tasks_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        delivery_api.GetTaskTrackingInfoRequest,
-        dict,
+        delivery_api.GetTaskTrackingInfoRequest(),
+        {},
     ],
 )
 def test_get_task_tracking_info(request_type, transport: str = "grpc"):
@@ -4325,7 +4372,7 @@ def test_get_task_tracking_info(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4379,9 +4426,10 @@ def test_get_task_tracking_info_non_empty_request_with_auto_populated_field():
         client.get_task_tracking_info(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.GetTaskTrackingInfoRequest(
+        request_msg = delivery_api.GetTaskTrackingInfoRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_task_tracking_info_use_cached_wrapped_rpc():
@@ -4467,9 +4515,15 @@ async def test_get_task_tracking_info_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        delivery_api.GetTaskTrackingInfoRequest(),
+        {},
+    ],
+)
 async def test_get_task_tracking_info_async(
-    transport: str = "grpc_asyncio",
-    request_type=delivery_api.GetTaskTrackingInfoRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DeliveryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4478,7 +4532,7 @@ async def test_get_task_tracking_info_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4507,11 +4561,6 @@ async def test_get_task_tracking_info_async(
     assert response.tracking_id == "tracking_id_value"
     assert response.state == tasks.Task.State.OPEN
     assert response.task_outcome == tasks.Task.TaskOutcome.SUCCEEDED
-
-
-@pytest.mark.asyncio
-async def test_get_task_tracking_info_async_from_dict():
-    await test_get_task_tracking_info_async(request_type=dict)
 
 
 def test_get_task_tracking_info_flattened():
@@ -4603,8 +4652,8 @@ async def test_get_task_tracking_info_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        delivery_api.ListDeliveryVehiclesRequest,
-        dict,
+        delivery_api.ListDeliveryVehiclesRequest(),
+        {},
     ],
 )
 def test_list_delivery_vehicles(request_type, transport: str = "grpc"):
@@ -4615,7 +4664,7 @@ def test_list_delivery_vehicles(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4667,11 +4716,12 @@ def test_list_delivery_vehicles_non_empty_request_with_auto_populated_field():
         client.list_delivery_vehicles(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.ListDeliveryVehiclesRequest(
+        request_msg = delivery_api.ListDeliveryVehiclesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_delivery_vehicles_use_cached_wrapped_rpc():
@@ -4757,9 +4807,15 @@ async def test_list_delivery_vehicles_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        delivery_api.ListDeliveryVehiclesRequest(),
+        {},
+    ],
+)
 async def test_list_delivery_vehicles_async(
-    transport: str = "grpc_asyncio",
-    request_type=delivery_api.ListDeliveryVehiclesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DeliveryServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4768,7 +4824,7 @@ async def test_list_delivery_vehicles_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4793,11 +4849,6 @@ async def test_list_delivery_vehicles_async(
     assert isinstance(response, pagers.ListDeliveryVehiclesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-@pytest.mark.asyncio
-async def test_list_delivery_vehicles_async_from_dict():
-    await test_list_delivery_vehicles_async(request_type=dict)
 
 
 def test_list_delivery_vehicles_flattened():
@@ -4934,6 +4985,9 @@ def test_list_delivery_vehicles_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, delivery_vehicles.DeliveryVehicle) for i in results)
@@ -5026,6 +5080,8 @@ async def test_list_delivery_vehicles_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5075,11 +5131,7 @@ async def test_list_delivery_vehicles_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_delivery_vehicles(request={})
-        ).pages:
+        async for page_ in (await client.list_delivery_vehicles(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5219,7 +5271,7 @@ def test_create_delivery_vehicle_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_delivery_vehicle_rest_unset_required_fields():
@@ -5420,7 +5472,7 @@ def test_get_delivery_vehicle_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_delivery_vehicle_rest_unset_required_fields():
@@ -5601,7 +5653,7 @@ def test_delete_delivery_vehicle_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_delivery_vehicle_rest_unset_required_fields():
@@ -5784,7 +5836,7 @@ def test_update_delivery_vehicle_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_delivery_vehicle_rest_unset_required_fields():
@@ -5984,7 +6036,7 @@ def test_batch_create_tasks_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_create_tasks_rest_unset_required_fields():
@@ -6131,7 +6183,7 @@ def test_create_task_rest_required_fields(request_type=delivery_api.CreateTaskRe
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_task_rest_unset_required_fields():
@@ -6325,7 +6377,7 @@ def test_get_task_rest_required_fields(request_type=delivery_api.GetTaskRequest)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_task_rest_unset_required_fields():
@@ -6498,7 +6550,7 @@ def test_delete_task_rest_required_fields(request_type=delivery_api.DeleteTaskRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_task_rest_unset_required_fields():
@@ -6673,7 +6725,7 @@ def test_update_task_rest_required_fields(request_type=delivery_api.UpdateTaskRe
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_task_rest_unset_required_fields():
@@ -6871,7 +6923,7 @@ def test_list_tasks_rest_required_fields(request_type=delivery_api.ListTasksRequ
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_tasks_rest_unset_required_fields():
@@ -7001,6 +7053,9 @@ def test_list_tasks_rest_pager(transport: str = "rest"):
 
         pager = client.list_tasks(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, tasks.Task) for i in results)
@@ -7125,7 +7180,7 @@ def test_get_task_tracking_info_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_task_tracking_info_rest_unset_required_fields():
@@ -7317,7 +7372,7 @@ def test_list_delivery_vehicles_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_delivery_vehicles_rest_unset_required_fields():
@@ -7450,6 +7505,9 @@ def test_list_delivery_vehicles_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "providers/sample1"}
 
         pager = client.list_delivery_vehicles(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -7585,7 +7643,6 @@ def test_create_delivery_vehicle_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.CreateDeliveryVehicleRequest()
-
         assert args[0] == request_msg
 
 
@@ -7608,7 +7665,6 @@ def test_get_delivery_vehicle_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.GetDeliveryVehicleRequest()
-
         assert args[0] == request_msg
 
 
@@ -7631,7 +7687,6 @@ def test_delete_delivery_vehicle_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.DeleteDeliveryVehicleRequest()
-
         assert args[0] == request_msg
 
 
@@ -7654,7 +7709,6 @@ def test_update_delivery_vehicle_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.UpdateDeliveryVehicleRequest()
-
         assert args[0] == request_msg
 
 
@@ -7677,7 +7731,6 @@ def test_batch_create_tasks_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.BatchCreateTasksRequest()
-
         assert args[0] == request_msg
 
 
@@ -7698,7 +7751,6 @@ def test_create_task_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.CreateTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -7719,7 +7771,6 @@ def test_get_task_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.GetTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -7740,7 +7791,6 @@ def test_delete_task_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.DeleteTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -7761,7 +7811,6 @@ def test_update_task_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.UpdateTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -7782,7 +7831,6 @@ def test_list_tasks_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.ListTasksRequest()
-
         assert args[0] == request_msg
 
 
@@ -7805,7 +7853,6 @@ def test_get_task_tracking_info_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.GetTaskTrackingInfoRequest()
-
         assert args[0] == request_msg
 
 
@@ -7828,7 +7875,6 @@ def test_list_delivery_vehicles_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.ListDeliveryVehiclesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7851,7 +7897,6 @@ def test_create_delivery_vehicle_routing_parameters_request_1_grpc():
         request_msg = delivery_api.CreateDeliveryVehicleRequest(
             **{"parent": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -7879,7 +7924,6 @@ def test_get_delivery_vehicle_routing_parameters_request_1_grpc():
         request_msg = delivery_api.GetDeliveryVehicleRequest(
             **{"name": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -7907,7 +7951,6 @@ def test_delete_delivery_vehicle_routing_parameters_request_1_grpc():
         request_msg = delivery_api.DeleteDeliveryVehicleRequest(
             **{"name": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -7937,7 +7980,6 @@ def test_update_delivery_vehicle_routing_parameters_request_1_grpc():
         request_msg = delivery_api.UpdateDeliveryVehicleRequest(
             **{"delivery_vehicle": {"name": "providers/sample1"}}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -7965,7 +8007,6 @@ def test_batch_create_tasks_routing_parameters_request_1_grpc():
         request_msg = delivery_api.BatchCreateTasksRequest(
             **{"parent": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -7989,7 +8030,6 @@ def test_create_task_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = delivery_api.CreateTaskRequest(**{"parent": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -8013,7 +8053,6 @@ def test_get_task_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = delivery_api.GetTaskRequest(**{"name": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -8037,7 +8076,6 @@ def test_delete_task_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = delivery_api.DeleteTaskRequest(**{"name": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -8063,7 +8101,6 @@ def test_update_task_routing_parameters_request_1_grpc():
         request_msg = delivery_api.UpdateTaskRequest(
             **{"task": {"name": "providers/sample1"}}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -8087,7 +8124,6 @@ def test_list_tasks_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = delivery_api.ListTasksRequest(**{"parent": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -8115,7 +8151,6 @@ def test_get_task_tracking_info_routing_parameters_request_1_grpc():
         request_msg = delivery_api.GetTaskTrackingInfoRequest(
             **{"name": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -8143,7 +8178,6 @@ def test_list_delivery_vehicles_routing_parameters_request_1_grpc():
         request_msg = delivery_api.ListDeliveryVehiclesRequest(
             **{"parent": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -8194,7 +8228,6 @@ async def test_create_delivery_vehicle_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.CreateDeliveryVehicleRequest()
-
         assert args[0] == request_msg
 
 
@@ -8226,7 +8259,6 @@ async def test_get_delivery_vehicle_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.GetDeliveryVehicleRequest()
-
         assert args[0] == request_msg
 
 
@@ -8251,7 +8283,6 @@ async def test_delete_delivery_vehicle_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.DeleteDeliveryVehicleRequest()
-
         assert args[0] == request_msg
 
 
@@ -8283,7 +8314,6 @@ async def test_update_delivery_vehicle_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.UpdateDeliveryVehicleRequest()
-
         assert args[0] == request_msg
 
 
@@ -8310,7 +8340,6 @@ async def test_batch_create_tasks_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.BatchCreateTasksRequest()
-
         assert args[0] == request_msg
 
 
@@ -8343,7 +8372,6 @@ async def test_create_task_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.CreateTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -8376,7 +8404,6 @@ async def test_get_task_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.GetTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -8399,7 +8426,6 @@ async def test_delete_task_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.DeleteTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -8432,7 +8458,6 @@ async def test_update_task_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.UpdateTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -8460,7 +8485,6 @@ async def test_list_tasks_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.ListTasksRequest()
-
         assert args[0] == request_msg
 
 
@@ -8492,7 +8516,6 @@ async def test_get_task_tracking_info_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.GetTaskTrackingInfoRequest()
-
         assert args[0] == request_msg
 
 
@@ -8522,7 +8545,6 @@ async def test_list_delivery_vehicles_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.ListDeliveryVehiclesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8554,7 +8576,6 @@ async def test_create_delivery_vehicle_routing_parameters_request_1_grpc_asyncio
         request_msg = delivery_api.CreateDeliveryVehicleRequest(
             **{"parent": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -8591,7 +8612,6 @@ async def test_get_delivery_vehicle_routing_parameters_request_1_grpc_asyncio():
         request_msg = delivery_api.GetDeliveryVehicleRequest(
             **{"name": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -8621,7 +8641,6 @@ async def test_delete_delivery_vehicle_routing_parameters_request_1_grpc_asyncio
         request_msg = delivery_api.DeleteDeliveryVehicleRequest(
             **{"name": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -8660,7 +8679,6 @@ async def test_update_delivery_vehicle_routing_parameters_request_1_grpc_asyncio
         request_msg = delivery_api.UpdateDeliveryVehicleRequest(
             **{"delivery_vehicle": {"name": "providers/sample1"}}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -8692,7 +8710,6 @@ async def test_batch_create_tasks_routing_parameters_request_1_grpc_asyncio():
         request_msg = delivery_api.BatchCreateTasksRequest(
             **{"parent": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -8728,7 +8745,6 @@ async def test_create_task_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = delivery_api.CreateTaskRequest(**{"parent": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -8764,7 +8780,6 @@ async def test_get_task_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = delivery_api.GetTaskRequest(**{"name": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -8790,7 +8805,6 @@ async def test_delete_task_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = delivery_api.DeleteTaskRequest(**{"name": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -8828,7 +8842,6 @@ async def test_update_task_routing_parameters_request_1_grpc_asyncio():
         request_msg = delivery_api.UpdateTaskRequest(
             **{"task": {"name": "providers/sample1"}}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -8859,7 +8872,6 @@ async def test_list_tasks_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = delivery_api.ListTasksRequest(**{"parent": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -8896,7 +8908,6 @@ async def test_get_task_tracking_info_routing_parameters_request_1_grpc_asyncio(
         request_msg = delivery_api.GetTaskTrackingInfoRequest(
             **{"name": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -8931,7 +8942,6 @@ async def test_list_delivery_vehicles_routing_parameters_request_1_grpc_asyncio(
         request_msg = delivery_api.ListDeliveryVehiclesRequest(
             **{"parent": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -8958,8 +8968,9 @@ def test_create_delivery_vehicle_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9170,18 +9181,20 @@ def test_create_delivery_vehicle_rest_interceptors(null_interceptor):
     )
     client = DeliveryServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_create_delivery_vehicle"
-    ) as post, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor,
-        "post_create_delivery_vehicle_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_create_delivery_vehicle"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "post_create_delivery_vehicle"
+        ) as post,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor,
+            "post_create_delivery_vehicle_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "pre_create_delivery_vehicle"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9236,8 +9249,9 @@ def test_get_delivery_vehicle_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9308,18 +9322,20 @@ def test_get_delivery_vehicle_rest_interceptors(null_interceptor):
     )
     client = DeliveryServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_get_delivery_vehicle"
-    ) as post, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor,
-        "post_get_delivery_vehicle_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_get_delivery_vehicle"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "post_get_delivery_vehicle"
+        ) as post,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor,
+            "post_get_delivery_vehicle_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "pre_get_delivery_vehicle"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9374,8 +9390,9 @@ def test_delete_delivery_vehicle_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9432,13 +9449,13 @@ def test_delete_delivery_vehicle_rest_interceptors(null_interceptor):
     )
     client = DeliveryServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_delete_delivery_vehicle"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "pre_delete_delivery_vehicle"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = delivery_api.DeleteDeliveryVehicleRequest.pb(
             delivery_api.DeleteDeliveryVehicleRequest()
@@ -9485,8 +9502,9 @@ def test_update_delivery_vehicle_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9699,18 +9717,20 @@ def test_update_delivery_vehicle_rest_interceptors(null_interceptor):
     )
     client = DeliveryServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_update_delivery_vehicle"
-    ) as post, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor,
-        "post_update_delivery_vehicle_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_update_delivery_vehicle"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "post_update_delivery_vehicle"
+        ) as post,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor,
+            "post_update_delivery_vehicle_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "pre_update_delivery_vehicle"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9765,8 +9785,9 @@ def test_batch_create_tasks_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9826,18 +9847,20 @@ def test_batch_create_tasks_rest_interceptors(null_interceptor):
     )
     client = DeliveryServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_batch_create_tasks"
-    ) as post, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor,
-        "post_batch_create_tasks_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_batch_create_tasks"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "post_batch_create_tasks"
+        ) as post,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor,
+            "post_batch_create_tasks_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "pre_batch_create_tasks"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9893,8 +9916,9 @@ def test_create_task_rest_bad_request(request_type=delivery_api.CreateTaskReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10130,17 +10154,19 @@ def test_create_task_rest_interceptors(null_interceptor):
     )
     client = DeliveryServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_create_task"
-    ) as post, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_create_task_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_create_task"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "post_create_task"
+        ) as post,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "post_create_task_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "pre_create_task"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10189,8 +10215,9 @@ def test_get_task_rest_bad_request(request_type=delivery_api.GetTaskRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10268,17 +10295,19 @@ def test_get_task_rest_interceptors(null_interceptor):
     )
     client = DeliveryServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_get_task"
-    ) as post, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_get_task_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_get_task"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "post_get_task"
+        ) as post,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "post_get_task_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "pre_get_task"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10327,8 +10356,9 @@ def test_delete_task_rest_bad_request(request_type=delivery_api.DeleteTaskReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10385,13 +10415,13 @@ def test_delete_task_rest_interceptors(null_interceptor):
     )
     client = DeliveryServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_delete_task"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "pre_delete_task"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = delivery_api.DeleteTaskRequest.pb(delivery_api.DeleteTaskRequest())
         transcode.return_value = {
@@ -10432,8 +10462,9 @@ def test_update_task_rest_bad_request(request_type=delivery_api.UpdateTaskReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10669,17 +10700,19 @@ def test_update_task_rest_interceptors(null_interceptor):
     )
     client = DeliveryServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_update_task"
-    ) as post, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_update_task_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_update_task"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "post_update_task"
+        ) as post,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "post_update_task_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "pre_update_task"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10728,8 +10761,9 @@ def test_list_tasks_rest_bad_request(request_type=delivery_api.ListTasksRequest)
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10794,17 +10828,19 @@ def test_list_tasks_rest_interceptors(null_interceptor):
     )
     client = DeliveryServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_list_tasks"
-    ) as post, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_list_tasks_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_list_tasks"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "post_list_tasks"
+        ) as post,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "post_list_tasks_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "pre_list_tasks"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10857,8 +10893,9 @@ def test_get_task_tracking_info_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10927,18 +10964,20 @@ def test_get_task_tracking_info_rest_interceptors(null_interceptor):
     )
     client = DeliveryServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_get_task_tracking_info"
-    ) as post, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor,
-        "post_get_task_tracking_info_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_get_task_tracking_info"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "post_get_task_tracking_info"
+        ) as post,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor,
+            "post_get_task_tracking_info_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "pre_get_task_tracking_info"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10996,8 +11035,9 @@ def test_list_delivery_vehicles_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11062,18 +11102,20 @@ def test_list_delivery_vehicles_rest_interceptors(null_interceptor):
     )
     client = DeliveryServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_list_delivery_vehicles"
-    ) as post, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor,
-        "post_list_delivery_vehicles_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_list_delivery_vehicles"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "post_list_delivery_vehicles"
+        ) as post,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor,
+            "post_list_delivery_vehicles_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DeliveryServiceRestInterceptor, "pre_list_delivery_vehicles"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11145,7 +11187,6 @@ def test_create_delivery_vehicle_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.CreateDeliveryVehicleRequest()
-
         assert args[0] == request_msg
 
 
@@ -11167,7 +11208,6 @@ def test_get_delivery_vehicle_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.GetDeliveryVehicleRequest()
-
         assert args[0] == request_msg
 
 
@@ -11189,7 +11229,6 @@ def test_delete_delivery_vehicle_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.DeleteDeliveryVehicleRequest()
-
         assert args[0] == request_msg
 
 
@@ -11211,7 +11250,6 @@ def test_update_delivery_vehicle_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.UpdateDeliveryVehicleRequest()
-
         assert args[0] == request_msg
 
 
@@ -11233,7 +11271,6 @@ def test_batch_create_tasks_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.BatchCreateTasksRequest()
-
         assert args[0] == request_msg
 
 
@@ -11253,7 +11290,6 @@ def test_create_task_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.CreateTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -11273,7 +11309,6 @@ def test_get_task_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.GetTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -11293,7 +11328,6 @@ def test_delete_task_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.DeleteTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -11313,7 +11347,6 @@ def test_update_task_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.UpdateTaskRequest()
-
         assert args[0] == request_msg
 
 
@@ -11333,7 +11366,6 @@ def test_list_tasks_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.ListTasksRequest()
-
         assert args[0] == request_msg
 
 
@@ -11355,7 +11387,6 @@ def test_get_task_tracking_info_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.GetTaskTrackingInfoRequest()
-
         assert args[0] == request_msg
 
 
@@ -11377,7 +11408,6 @@ def test_list_delivery_vehicles_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = delivery_api.ListDeliveryVehiclesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11399,7 +11429,6 @@ def test_create_delivery_vehicle_routing_parameters_request_1_rest():
         request_msg = delivery_api.CreateDeliveryVehicleRequest(
             **{"parent": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -11426,7 +11455,6 @@ def test_get_delivery_vehicle_routing_parameters_request_1_rest():
         request_msg = delivery_api.GetDeliveryVehicleRequest(
             **{"name": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -11453,7 +11481,6 @@ def test_delete_delivery_vehicle_routing_parameters_request_1_rest():
         request_msg = delivery_api.DeleteDeliveryVehicleRequest(
             **{"name": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -11482,7 +11509,6 @@ def test_update_delivery_vehicle_routing_parameters_request_1_rest():
         request_msg = delivery_api.UpdateDeliveryVehicleRequest(
             **{"delivery_vehicle": {"name": "providers/sample1"}}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -11509,7 +11535,6 @@ def test_batch_create_tasks_routing_parameters_request_1_rest():
         request_msg = delivery_api.BatchCreateTasksRequest(
             **{"parent": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -11532,7 +11557,6 @@ def test_create_task_routing_parameters_request_1_rest():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = delivery_api.CreateTaskRequest(**{"parent": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -11555,7 +11579,6 @@ def test_get_task_routing_parameters_request_1_rest():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = delivery_api.GetTaskRequest(**{"name": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -11578,7 +11601,6 @@ def test_delete_task_routing_parameters_request_1_rest():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = delivery_api.DeleteTaskRequest(**{"name": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -11603,7 +11625,6 @@ def test_update_task_routing_parameters_request_1_rest():
         request_msg = delivery_api.UpdateTaskRequest(
             **{"task": {"name": "providers/sample1"}}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -11626,7 +11647,6 @@ def test_list_tasks_routing_parameters_request_1_rest():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = delivery_api.ListTasksRequest(**{"parent": "providers/sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -11653,7 +11673,6 @@ def test_get_task_tracking_info_routing_parameters_request_1_rest():
         request_msg = delivery_api.GetTaskTrackingInfoRequest(
             **{"name": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -11680,7 +11699,6 @@ def test_list_delivery_vehicles_routing_parameters_request_1_rest():
         request_msg = delivery_api.ListDeliveryVehiclesRequest(
             **{"parent": "providers/sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"provider_id": "providers/sample1"}
@@ -11753,11 +11771,14 @@ def test_delivery_service_base_transport():
 
 def test_delivery_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.maps.fleetengine_delivery_v1.services.delivery_service.transports.DeliveryServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.maps.fleetengine_delivery_v1.services.delivery_service.transports.DeliveryServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DeliveryServiceTransport(
@@ -11774,9 +11795,12 @@ def test_delivery_service_base_transport_with_credentials_file():
 
 def test_delivery_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.maps.fleetengine_delivery_v1.services.delivery_service.transports.DeliveryServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.maps.fleetengine_delivery_v1.services.delivery_service.transports.DeliveryServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DeliveryServiceTransport()
@@ -11848,11 +11872,12 @@ def test_delivery_service_transport_auth_gdch_credentials(transport_class):
 def test_delivery_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

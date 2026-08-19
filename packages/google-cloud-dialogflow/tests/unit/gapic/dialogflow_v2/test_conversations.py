@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -71,12 +66,16 @@ from google.cloud.dialogflow_v2.services.conversations import (
 from google.cloud.dialogflow_v2.types import (
     agent_coaching_instruction,
     audio_config,
+    ces_app,
+    ces_tool,
     conversation,
     conversation_profile,
     generator,
     participant,
     session,
+    tool,
     tool_call,
+    toolset,
 )
 from google.cloud.dialogflow_v2.types import conversation as gcd_conversation
 
@@ -128,12 +127,28 @@ def modify_default_endpoint_template(client):
     )
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert ConversationsClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -154,6 +169,10 @@ def test__get_default_mtls_endpoint():
     )
     assert (
         ConversationsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    )
+    assert (
+        ConversationsClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -952,7 +971,14 @@ def test_conversations_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -999,7 +1025,14 @@ def test_conversations_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1291,11 +1324,13 @@ def test_conversations_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1323,8 +1358,8 @@ def test_conversations_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_conversation.CreateConversationRequest,
-        dict,
+        gcd_conversation.CreateConversationRequest(),
+        {},
     ],
 )
 def test_create_conversation(request_type, transport: str = "grpc"):
@@ -1335,7 +1370,7 @@ def test_create_conversation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1396,10 +1431,11 @@ def test_create_conversation_non_empty_request_with_auto_populated_field():
         client.create_conversation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_conversation.CreateConversationRequest(
+        request_msg = gcd_conversation.CreateConversationRequest(
             parent="parent_value",
             conversation_id="conversation_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_conversation_use_cached_wrapped_rpc():
@@ -1484,10 +1520,14 @@ async def test_create_conversation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_conversation_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcd_conversation.CreateConversationRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_conversation.CreateConversationRequest(),
+        {},
+    ],
+)
+async def test_create_conversation_async(request_type, transport: str = "grpc_asyncio"):
     client = ConversationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1495,7 +1535,7 @@ async def test_create_conversation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1530,11 +1570,6 @@ async def test_create_conversation_async(
         response.conversation_stage
         == gcd_conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE
     )
-
-
-@pytest.mark.asyncio
-async def test_create_conversation_async_from_dict():
-    await test_create_conversation_async(request_type=dict)
 
 
 def test_create_conversation_field_headers():
@@ -1701,8 +1736,8 @@ async def test_create_conversation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation.ListConversationsRequest,
-        dict,
+        conversation.ListConversationsRequest(),
+        {},
     ],
 )
 def test_list_conversations(request_type, transport: str = "grpc"):
@@ -1713,7 +1748,7 @@ def test_list_conversations(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1763,11 +1798,12 @@ def test_list_conversations_non_empty_request_with_auto_populated_field():
         client.list_conversations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.ListConversationsRequest(
+        request_msg = conversation.ListConversationsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_conversations_use_cached_wrapped_rpc():
@@ -1852,9 +1888,14 @@ async def test_list_conversations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_conversations_async(
-    transport: str = "grpc_asyncio", request_type=conversation.ListConversationsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation.ListConversationsRequest(),
+        {},
+    ],
+)
+async def test_list_conversations_async(request_type, transport: str = "grpc_asyncio"):
     client = ConversationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1862,7 +1903,7 @@ async def test_list_conversations_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1885,11 +1926,6 @@ async def test_list_conversations_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConversationsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_conversations_async_from_dict():
-    await test_list_conversations_async(request_type=dict)
 
 
 def test_list_conversations_field_headers():
@@ -2094,6 +2130,9 @@ def test_list_conversations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, conversation.Conversation) for i in results)
@@ -2186,6 +2225,8 @@ async def test_list_conversations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2235,11 +2276,7 @@ async def test_list_conversations_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_conversations(request={})
-        ).pages:
+        async for page_ in (await client.list_conversations(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2248,8 +2285,8 @@ async def test_list_conversations_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation.GetConversationRequest,
-        dict,
+        conversation.GetConversationRequest(),
+        {},
     ],
 )
 def test_get_conversation(request_type, transport: str = "grpc"):
@@ -2260,7 +2297,7 @@ def test_get_conversation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_conversation), "__call__") as call:
@@ -2315,9 +2352,10 @@ def test_get_conversation_non_empty_request_with_auto_populated_field():
         client.get_conversation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.GetConversationRequest(
+        request_msg = conversation.GetConversationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_conversation_use_cached_wrapped_rpc():
@@ -2400,9 +2438,14 @@ async def test_get_conversation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_conversation_async(
-    transport: str = "grpc_asyncio", request_type=conversation.GetConversationRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation.GetConversationRequest(),
+        {},
+    ],
+)
+async def test_get_conversation_async(request_type, transport: str = "grpc_asyncio"):
     client = ConversationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2410,7 +2453,7 @@ async def test_get_conversation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_conversation), "__call__") as call:
@@ -2442,11 +2485,6 @@ async def test_get_conversation_async(
         response.conversation_stage
         == conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE
     )
-
-
-@pytest.mark.asyncio
-async def test_get_conversation_async_from_dict():
-    await test_get_conversation_async(request_type=dict)
 
 
 def test_get_conversation_field_headers():
@@ -2595,8 +2633,8 @@ async def test_get_conversation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation.CompleteConversationRequest,
-        dict,
+        conversation.CompleteConversationRequest(),
+        {},
     ],
 )
 def test_complete_conversation(request_type, transport: str = "grpc"):
@@ -2607,7 +2645,7 @@ def test_complete_conversation(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2666,9 +2704,10 @@ def test_complete_conversation_non_empty_request_with_auto_populated_field():
         client.complete_conversation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.CompleteConversationRequest(
+        request_msg = conversation.CompleteConversationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_complete_conversation_use_cached_wrapped_rpc():
@@ -2754,9 +2793,15 @@ async def test_complete_conversation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation.CompleteConversationRequest(),
+        {},
+    ],
+)
 async def test_complete_conversation_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversation.CompleteConversationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2765,7 +2810,7 @@ async def test_complete_conversation_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2799,11 +2844,6 @@ async def test_complete_conversation_async(
         response.conversation_stage
         == conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE
     )
-
-
-@pytest.mark.asyncio
-async def test_complete_conversation_async_from_dict():
-    await test_complete_conversation_async(request_type=dict)
 
 
 def test_complete_conversation_field_headers():
@@ -2960,8 +3000,8 @@ async def test_complete_conversation_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_conversation.IngestContextReferencesRequest,
-        dict,
+        gcd_conversation.IngestContextReferencesRequest(),
+        {},
     ],
 )
 def test_ingest_context_references(request_type, transport: str = "grpc"):
@@ -2972,7 +3012,7 @@ def test_ingest_context_references(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3017,9 +3057,10 @@ def test_ingest_context_references_non_empty_request_with_auto_populated_field()
         client.ingest_context_references(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_conversation.IngestContextReferencesRequest(
+        request_msg = gcd_conversation.IngestContextReferencesRequest(
             conversation="conversation_value",
         )
+        assert args[0] == request_msg
 
 
 def test_ingest_context_references_use_cached_wrapped_rpc():
@@ -3105,9 +3146,15 @@ async def test_ingest_context_references_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_conversation.IngestContextReferencesRequest(),
+        {},
+    ],
+)
 async def test_ingest_context_references_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcd_conversation.IngestContextReferencesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3116,7 +3163,7 @@ async def test_ingest_context_references_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3136,11 +3183,6 @@ async def test_ingest_context_references_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_conversation.IngestContextReferencesResponse)
-
-
-@pytest.mark.asyncio
-async def test_ingest_context_references_async_from_dict():
-    await test_ingest_context_references_async(request_type=dict)
 
 
 def test_ingest_context_references_field_headers():
@@ -3355,8 +3397,8 @@ async def test_ingest_context_references_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation.ListMessagesRequest,
-        dict,
+        conversation.ListMessagesRequest(),
+        {},
     ],
 )
 def test_list_messages(request_type, transport: str = "grpc"):
@@ -3367,7 +3409,7 @@ def test_list_messages(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_messages), "__call__") as call:
@@ -3413,11 +3455,12 @@ def test_list_messages_non_empty_request_with_auto_populated_field():
         client.list_messages(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.ListMessagesRequest(
+        request_msg = conversation.ListMessagesRequest(
             parent="parent_value",
             filter="filter_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_messages_use_cached_wrapped_rpc():
@@ -3498,9 +3541,14 @@ async def test_list_messages_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_messages_async(
-    transport: str = "grpc_asyncio", request_type=conversation.ListMessagesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation.ListMessagesRequest(),
+        {},
+    ],
+)
+async def test_list_messages_async(request_type, transport: str = "grpc_asyncio"):
     client = ConversationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3508,7 +3556,7 @@ async def test_list_messages_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_messages), "__call__") as call:
@@ -3529,11 +3577,6 @@ async def test_list_messages_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMessagesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_messages_async_from_dict():
-    await test_list_messages_async(request_type=dict)
 
 
 def test_list_messages_field_headers():
@@ -3728,6 +3771,9 @@ def test_list_messages_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, participant.Message) for i in results)
@@ -3816,6 +3862,8 @@ async def test_list_messages_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3863,11 +3911,7 @@ async def test_list_messages_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_messages(request={})
-        ).pages:
+        async for page_ in (await client.list_messages(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3876,8 +3920,8 @@ async def test_list_messages_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_conversation.SuggestConversationSummaryRequest,
-        dict,
+        gcd_conversation.SuggestConversationSummaryRequest(),
+        {},
     ],
 )
 def test_suggest_conversation_summary(request_type, transport: str = "grpc"):
@@ -3888,7 +3932,7 @@ def test_suggest_conversation_summary(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3939,10 +3983,11 @@ def test_suggest_conversation_summary_non_empty_request_with_auto_populated_fiel
         client.suggest_conversation_summary(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_conversation.SuggestConversationSummaryRequest(
+        request_msg = gcd_conversation.SuggestConversationSummaryRequest(
             conversation="conversation_value",
             latest_message="latest_message_value",
         )
+        assert args[0] == request_msg
 
 
 def test_suggest_conversation_summary_use_cached_wrapped_rpc():
@@ -4028,9 +4073,15 @@ async def test_suggest_conversation_summary_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_conversation.SuggestConversationSummaryRequest(),
+        {},
+    ],
+)
 async def test_suggest_conversation_summary_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcd_conversation.SuggestConversationSummaryRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4039,7 +4090,7 @@ async def test_suggest_conversation_summary_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4064,11 +4115,6 @@ async def test_suggest_conversation_summary_async(
     assert isinstance(response, gcd_conversation.SuggestConversationSummaryResponse)
     assert response.latest_message == "latest_message_value"
     assert response.context_size == 1311
-
-
-@pytest.mark.asyncio
-async def test_suggest_conversation_summary_async_from_dict():
-    await test_suggest_conversation_summary_async(request_type=dict)
 
 
 def test_suggest_conversation_summary_field_headers():
@@ -4225,8 +4271,8 @@ async def test_suggest_conversation_summary_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation.GenerateStatelessSummaryRequest,
-        dict,
+        conversation.GenerateStatelessSummaryRequest(),
+        {},
     ],
 )
 def test_generate_stateless_summary(request_type, transport: str = "grpc"):
@@ -4237,7 +4283,7 @@ def test_generate_stateless_summary(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4287,9 +4333,10 @@ def test_generate_stateless_summary_non_empty_request_with_auto_populated_field(
         client.generate_stateless_summary(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.GenerateStatelessSummaryRequest(
+        request_msg = conversation.GenerateStatelessSummaryRequest(
             latest_message="latest_message_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_stateless_summary_use_cached_wrapped_rpc():
@@ -4375,9 +4422,15 @@ async def test_generate_stateless_summary_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation.GenerateStatelessSummaryRequest(),
+        {},
+    ],
+)
 async def test_generate_stateless_summary_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversation.GenerateStatelessSummaryRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4386,7 +4439,7 @@ async def test_generate_stateless_summary_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4411,11 +4464,6 @@ async def test_generate_stateless_summary_async(
     assert isinstance(response, conversation.GenerateStatelessSummaryResponse)
     assert response.latest_message == "latest_message_value"
     assert response.context_size == 1311
-
-
-@pytest.mark.asyncio
-async def test_generate_stateless_summary_async_from_dict():
-    await test_generate_stateless_summary_async(request_type=dict)
 
 
 def test_generate_stateless_summary_field_headers():
@@ -4486,8 +4534,8 @@ async def test_generate_stateless_summary_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation.GenerateStatelessSuggestionRequest,
-        dict,
+        conversation.GenerateStatelessSuggestionRequest(),
+        {},
     ],
 )
 def test_generate_stateless_suggestion(request_type, transport: str = "grpc"):
@@ -4498,7 +4546,7 @@ def test_generate_stateless_suggestion(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4545,11 +4593,12 @@ def test_generate_stateless_suggestion_non_empty_request_with_auto_populated_fie
         client.generate_stateless_suggestion(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.GenerateStatelessSuggestionRequest(
+        request_msg = conversation.GenerateStatelessSuggestionRequest(
             parent="parent_value",
             generator_name="generator_name_value",
             security_settings="security_settings_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_stateless_suggestion_use_cached_wrapped_rpc():
@@ -4635,9 +4684,15 @@ async def test_generate_stateless_suggestion_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation.GenerateStatelessSuggestionRequest(),
+        {},
+    ],
+)
 async def test_generate_stateless_suggestion_async(
-    transport: str = "grpc_asyncio",
-    request_type=conversation.GenerateStatelessSuggestionRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4646,7 +4701,7 @@ async def test_generate_stateless_suggestion_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4666,11 +4721,6 @@ async def test_generate_stateless_suggestion_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, conversation.GenerateStatelessSuggestionResponse)
-
-
-@pytest.mark.asyncio
-async def test_generate_stateless_suggestion_async_from_dict():
-    await test_generate_stateless_suggestion_async(request_type=dict)
 
 
 def test_generate_stateless_suggestion_field_headers():
@@ -4741,8 +4791,8 @@ async def test_generate_stateless_suggestion_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        conversation.SearchKnowledgeRequest,
-        dict,
+        conversation.SearchKnowledgeRequest(),
+        {},
     ],
 )
 def test_search_knowledge(request_type, transport: str = "grpc"):
@@ -4753,7 +4803,7 @@ def test_search_knowledge(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_knowledge), "__call__") as call:
@@ -4801,13 +4851,14 @@ def test_search_knowledge_non_empty_request_with_auto_populated_field():
         client.search_knowledge(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.SearchKnowledgeRequest(
+        request_msg = conversation.SearchKnowledgeRequest(
             parent="parent_value",
             conversation_profile="conversation_profile_value",
             session_id="session_id_value",
             conversation="conversation_value",
             latest_message="latest_message_value",
         )
+        assert args[0] == request_msg
 
 
 def test_search_knowledge_use_cached_wrapped_rpc():
@@ -4890,9 +4941,14 @@ async def test_search_knowledge_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_search_knowledge_async(
-    transport: str = "grpc_asyncio", request_type=conversation.SearchKnowledgeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation.SearchKnowledgeRequest(),
+        {},
+    ],
+)
+async def test_search_knowledge_async(request_type, transport: str = "grpc_asyncio"):
     client = ConversationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4900,7 +4956,7 @@ async def test_search_knowledge_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_knowledge), "__call__") as call:
@@ -4921,11 +4977,6 @@ async def test_search_knowledge_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, conversation.SearchKnowledgeResponse)
     assert response.rewritten_query == "rewritten_query_value"
-
-
-@pytest.mark.asyncio
-async def test_search_knowledge_async_from_dict():
-    await test_search_knowledge_async(request_type=dict)
 
 
 def test_search_knowledge_field_headers():
@@ -4992,8 +5043,8 @@ async def test_search_knowledge_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_conversation.GenerateSuggestionsRequest,
-        dict,
+        gcd_conversation.GenerateSuggestionsRequest(),
+        {},
     ],
 )
 def test_generate_suggestions(request_type, transport: str = "grpc"):
@@ -5004,7 +5055,7 @@ def test_generate_suggestions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5053,10 +5104,11 @@ def test_generate_suggestions_non_empty_request_with_auto_populated_field():
         client.generate_suggestions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_conversation.GenerateSuggestionsRequest(
+        request_msg = gcd_conversation.GenerateSuggestionsRequest(
             conversation="conversation_value",
             latest_message="latest_message_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_suggestions_use_cached_wrapped_rpc():
@@ -5141,9 +5193,15 @@ async def test_generate_suggestions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_conversation.GenerateSuggestionsRequest(),
+        {},
+    ],
+)
 async def test_generate_suggestions_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcd_conversation.GenerateSuggestionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ConversationsAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5152,7 +5210,7 @@ async def test_generate_suggestions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5175,11 +5233,6 @@ async def test_generate_suggestions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, participant.GenerateSuggestionsResponse)
     assert response.latest_message == "latest_message_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_suggestions_async_from_dict():
-    await test_generate_suggestions_async(request_type=dict)
 
 
 def test_generate_suggestions_field_headers():
@@ -5448,7 +5501,7 @@ def test_create_conversation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_conversation_rest_unset_required_fields():
@@ -5646,7 +5699,7 @@ def test_list_conversations_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_conversations_rest_unset_required_fields():
@@ -5777,6 +5830,9 @@ def test_list_conversations_rest_pager(transport: str = "rest"):
 
         pager = client.list_conversations(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, conversation.Conversation) for i in results)
@@ -5896,7 +5952,7 @@ def test_get_conversation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_conversation_rest_unset_required_fields():
@@ -6078,7 +6134,7 @@ def test_complete_conversation_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_complete_conversation_rest_unset_required_fields():
@@ -6263,7 +6319,7 @@ def test_ingest_context_references_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_ingest_context_references_rest_unset_required_fields():
@@ -6477,7 +6533,7 @@ def test_list_messages_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_messages_rest_unset_required_fields():
@@ -6608,6 +6664,9 @@ def test_list_messages_rest_pager(transport: str = "rest"):
 
         pager = client.list_messages(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, participant.Message) for i in results)
@@ -6733,7 +6792,7 @@ def test_suggest_conversation_summary_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_suggest_conversation_summary_rest_unset_required_fields():
@@ -6916,7 +6975,7 @@ def test_generate_stateless_summary_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_generate_stateless_summary_rest_unset_required_fields():
@@ -7052,7 +7111,7 @@ def test_generate_stateless_suggestion_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_generate_stateless_suggestion_rest_unset_required_fields():
@@ -7185,7 +7244,7 @@ def test_search_knowledge_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_search_knowledge_rest_unset_required_fields():
@@ -7320,7 +7379,7 @@ def test_generate_suggestions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_generate_suggestions_rest_unset_required_fields():
@@ -7515,7 +7574,6 @@ def test_create_conversation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation.CreateConversationRequest()
-
         assert args[0] == request_msg
 
 
@@ -7538,7 +7596,6 @@ def test_list_conversations_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation.ListConversationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7559,7 +7616,6 @@ def test_get_conversation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation.GetConversationRequest()
-
         assert args[0] == request_msg
 
 
@@ -7582,7 +7638,6 @@ def test_complete_conversation_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation.CompleteConversationRequest()
-
         assert args[0] == request_msg
 
 
@@ -7605,7 +7660,6 @@ def test_ingest_context_references_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation.IngestContextReferencesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7626,7 +7680,6 @@ def test_list_messages_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation.ListMessagesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7649,7 +7702,6 @@ def test_suggest_conversation_summary_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation.SuggestConversationSummaryRequest()
-
         assert args[0] == request_msg
 
 
@@ -7672,7 +7724,6 @@ def test_generate_stateless_summary_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation.GenerateStatelessSummaryRequest()
-
         assert args[0] == request_msg
 
 
@@ -7695,7 +7746,6 @@ def test_generate_stateless_suggestion_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation.GenerateStatelessSuggestionRequest()
-
         assert args[0] == request_msg
 
 
@@ -7716,7 +7766,6 @@ def test_search_knowledge_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation.SearchKnowledgeRequest()
-
         assert args[0] == request_msg
 
 
@@ -7739,7 +7788,6 @@ def test_generate_suggestions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation.GenerateSuggestionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7785,7 +7833,6 @@ async def test_create_conversation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation.CreateConversationRequest()
-
         assert args[0] == request_msg
 
 
@@ -7814,7 +7861,6 @@ async def test_list_conversations_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation.ListConversationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -7844,7 +7890,6 @@ async def test_get_conversation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation.GetConversationRequest()
-
         assert args[0] == request_msg
 
 
@@ -7876,7 +7921,6 @@ async def test_complete_conversation_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation.CompleteConversationRequest()
-
         assert args[0] == request_msg
 
 
@@ -7903,7 +7947,6 @@ async def test_ingest_context_references_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation.IngestContextReferencesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7930,7 +7973,6 @@ async def test_list_messages_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation.ListMessagesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7960,7 +8002,6 @@ async def test_suggest_conversation_summary_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation.SuggestConversationSummaryRequest()
-
         assert args[0] == request_msg
 
 
@@ -7990,7 +8031,6 @@ async def test_generate_stateless_summary_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation.GenerateStatelessSummaryRequest()
-
         assert args[0] == request_msg
 
 
@@ -8017,7 +8057,6 @@ async def test_generate_stateless_suggestion_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation.GenerateStatelessSuggestionRequest()
-
         assert args[0] == request_msg
 
 
@@ -8044,7 +8083,6 @@ async def test_search_knowledge_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation.SearchKnowledgeRequest()
-
         assert args[0] == request_msg
 
 
@@ -8073,7 +8111,6 @@ async def test_generate_suggestions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation.GenerateSuggestionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -8095,8 +8132,9 @@ def test_create_conversation_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8139,7 +8177,146 @@ def test_create_conversation_rest_call_success(request_type):
                 {"mime_type": "mime_type_value", "content": b"content_blob"}
             ],
         },
+        "initial_conversation_profile": {
+            "name": "name_value",
+            "display_name": "display_name_value",
+            "create_time": {},
+            "update_time": {},
+            "automated_agent_config": {
+                "agent": "agent_value",
+                "session_ttl": {"seconds": 751, "nanos": 543},
+            },
+            "human_agent_assistant_config": {
+                "notification_config": {"topic": "topic_value", "message_format": 1},
+                "human_agent_suggestion_config": {
+                    "feature_configs": [
+                        {
+                            "suggestion_feature": {"type_": 1},
+                            "enable_event_based_suggestion": True,
+                            "disable_agent_query_logging": True,
+                            "enable_query_suggestion_when_no_answer": True,
+                            "enable_conversation_augmented_query": True,
+                            "enable_query_suggestion_only": True,
+                            "enable_response_debug_info": True,
+                            "rai_settings": {
+                                "rai_category_configs": [
+                                    {"category": 1, "sensitivity_level": 1}
+                                ]
+                            },
+                            "suggestion_trigger_event": 1,
+                            "disable_query_search_context": True,
+                            "suggestion_trigger_settings": {
+                                "no_smalltalk": True,
+                                "only_end_user": True,
+                            },
+                            "query_config": {
+                                "knowledge_base_query_source": {
+                                    "knowledge_bases": [
+                                        "knowledge_bases_value1",
+                                        "knowledge_bases_value2",
+                                    ]
+                                },
+                                "document_query_source": {
+                                    "documents": [
+                                        "documents_value1",
+                                        "documents_value2",
+                                    ]
+                                },
+                                "dialogflow_query_source": {
+                                    "agent": "agent_value",
+                                    "human_agent_side_config": {"agent": "agent_value"},
+                                },
+                                "max_results": 1207,
+                                "confidence_threshold": 0.2106,
+                                "context_filter_settings": {
+                                    "drop_handoff_messages": True,
+                                    "drop_virtual_agent_messages": True,
+                                    "drop_ivr_messages": True,
+                                },
+                                "sections": {"section_types": [1]},
+                                "context_size": 1311,
+                            },
+                            "conversation_model_config": {
+                                "model": "model_value",
+                                "baseline_model_version": "baseline_model_version_value",
+                            },
+                            "conversation_process_config": {
+                                "recent_sentences_count": 2352
+                            },
+                        }
+                    ],
+                    "group_suggestion_responses": True,
+                    "generators": ["generators_value1", "generators_value2"],
+                    "disable_high_latency_features_sync_delivery": True,
+                    "skip_empty_event_based_suggestion": True,
+                    "use_unredacted_conversation_data": True,
+                    "enable_async_tool_call": True,
+                },
+                "end_user_suggestion_config": {},
+                "message_analysis_config": {
+                    "enable_entity_extraction": True,
+                    "enable_sentiment_analysis": True,
+                    "enable_sentiment_analysis_v3": True,
+                },
+            },
+            "human_agent_handoff_config": {
+                "live_person_config": {"account_number": "account_number_value"},
+                "salesforce_live_agent_config": {
+                    "organization_id": "organization_id_value",
+                    "deployment_id": "deployment_id_value",
+                    "button_id": "button_id_value",
+                    "endpoint_domain": "endpoint_domain_value",
+                },
+            },
+            "notification_config": {},
+            "logging_config": {"enable_stackdriver_logging": True},
+            "new_message_event_notification_config": {},
+            "new_recognition_result_notification_config": {},
+            "stt_config": {
+                "speech_model_variant": 1,
+                "model": "model_value",
+                "phrase_sets": ["phrase_sets_value1", "phrase_sets_value2"],
+                "audio_encoding": 1,
+                "sample_rate_hertz": 1817,
+                "language_code": "language_code_value",
+                "enable_word_info": True,
+                "use_timeout_based_endpointing": True,
+            },
+            "language_code": "language_code_value",
+            "sip_config": {
+                "create_conversation_on_the_fly": True,
+                "inactive_start": True,
+                "max_audio_recording_duration": {},
+                "allow_virtual_agent_interaction": True,
+                "keep_conversation_running": True,
+                "copy_inbound_call_leg_headers": [
+                    "copy_inbound_call_leg_headers_value1",
+                    "copy_inbound_call_leg_headers_value2",
+                ],
+                "ignore_reinvite_media_direction": True,
+            },
+            "time_zone": "time_zone_value",
+            "security_settings": "security_settings_value",
+            "tts_config": {
+                "speaking_rate": 0.1373,
+                "pitch": 0.536,
+                "volume_gain_db": 0.1467,
+                "effects_profile_id": [
+                    "effects_profile_id_value1",
+                    "effects_profile_id_value2",
+                ],
+                "voice": {"name": "name_value", "ssml_gender": 1},
+                "pronunciations": [
+                    {
+                        "phrase": "phrase_value",
+                        "phonetic_encoding": 1,
+                        "pronunciation": "pronunciation_value",
+                    }
+                ],
+            },
+        },
         "ingested_context_references": {},
+        "initial_generator_contexts": {},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8256,18 +8433,20 @@ def test_create_conversation_rest_interceptors(null_interceptor):
     )
     client = ConversationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_create_conversation"
-    ) as post, mock.patch.object(
-        transports.ConversationsRestInterceptor,
-        "post_create_conversation_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ConversationsRestInterceptor, "pre_create_conversation"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "post_create_conversation"
+        ) as post,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor,
+            "post_create_conversation_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "pre_create_conversation"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8322,8 +8501,9 @@ def test_list_conversations_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8386,17 +8566,20 @@ def test_list_conversations_rest_interceptors(null_interceptor):
     )
     client = ConversationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_list_conversations"
-    ) as post, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_list_conversations_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ConversationsRestInterceptor, "pre_list_conversations"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "post_list_conversations"
+        ) as post,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor,
+            "post_list_conversations_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "pre_list_conversations"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8454,8 +8637,9 @@ def test_get_conversation_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8529,17 +8713,20 @@ def test_get_conversation_rest_interceptors(null_interceptor):
     )
     client = ConversationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_get_conversation"
-    ) as post, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_get_conversation_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ConversationsRestInterceptor, "pre_get_conversation"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "post_get_conversation"
+        ) as post,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor,
+            "post_get_conversation_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "pre_get_conversation"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8592,8 +8779,9 @@ def test_complete_conversation_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8667,18 +8855,20 @@ def test_complete_conversation_rest_interceptors(null_interceptor):
     )
     client = ConversationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_complete_conversation"
-    ) as post, mock.patch.object(
-        transports.ConversationsRestInterceptor,
-        "post_complete_conversation_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ConversationsRestInterceptor, "pre_complete_conversation"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "post_complete_conversation"
+        ) as post,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor,
+            "post_complete_conversation_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "pre_complete_conversation"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8733,8 +8923,9 @@ def test_ingest_context_references_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8796,18 +8987,20 @@ def test_ingest_context_references_rest_interceptors(null_interceptor):
     )
     client = ConversationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_ingest_context_references"
-    ) as post, mock.patch.object(
-        transports.ConversationsRestInterceptor,
-        "post_ingest_context_references_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ConversationsRestInterceptor, "pre_ingest_context_references"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "post_ingest_context_references"
+        ) as post,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor,
+            "post_ingest_context_references_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "pre_ingest_context_references"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8863,8 +9056,9 @@ def test_list_messages_rest_bad_request(request_type=conversation.ListMessagesRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8927,17 +9121,19 @@ def test_list_messages_rest_interceptors(null_interceptor):
     )
     client = ConversationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_list_messages"
-    ) as post, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_list_messages_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ConversationsRestInterceptor, "pre_list_messages"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "post_list_messages"
+        ) as post,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "post_list_messages_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "pre_list_messages"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8992,8 +9188,9 @@ def test_suggest_conversation_summary_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9060,18 +9257,20 @@ def test_suggest_conversation_summary_rest_interceptors(null_interceptor):
     )
     client = ConversationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_suggest_conversation_summary"
-    ) as post, mock.patch.object(
-        transports.ConversationsRestInterceptor,
-        "post_suggest_conversation_summary_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ConversationsRestInterceptor, "pre_suggest_conversation_summary"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "post_suggest_conversation_summary"
+        ) as post,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor,
+            "post_suggest_conversation_summary_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "pre_suggest_conversation_summary"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9129,8 +9328,9 @@ def test_generate_stateless_summary_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9195,18 +9395,20 @@ def test_generate_stateless_summary_rest_interceptors(null_interceptor):
     )
     client = ConversationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_generate_stateless_summary"
-    ) as post, mock.patch.object(
-        transports.ConversationsRestInterceptor,
-        "post_generate_stateless_summary_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ConversationsRestInterceptor, "pre_generate_stateless_summary"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "post_generate_stateless_summary"
+        ) as post,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor,
+            "post_generate_stateless_summary_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "pre_generate_stateless_summary"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9264,8 +9466,9 @@ def test_generate_stateless_suggestion_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9325,18 +9528,21 @@ def test_generate_stateless_suggestion_rest_interceptors(null_interceptor):
     )
     client = ConversationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_generate_stateless_suggestion"
-    ) as post, mock.patch.object(
-        transports.ConversationsRestInterceptor,
-        "post_generate_stateless_suggestion_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ConversationsRestInterceptor, "pre_generate_stateless_suggestion"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor,
+            "post_generate_stateless_suggestion",
+        ) as post,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor,
+            "post_generate_stateless_suggestion_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "pre_generate_stateless_suggestion"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9394,8 +9600,9 @@ def test_search_knowledge_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9458,17 +9665,20 @@ def test_search_knowledge_rest_interceptors(null_interceptor):
     )
     client = ConversationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_search_knowledge"
-    ) as post, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_search_knowledge_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ConversationsRestInterceptor, "pre_search_knowledge"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "post_search_knowledge"
+        ) as post,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor,
+            "post_search_knowledge_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "pre_search_knowledge"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9526,8 +9736,9 @@ def test_generate_suggestions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -9590,18 +9801,20 @@ def test_generate_suggestions_rest_interceptors(null_interceptor):
     )
     client = ConversationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_generate_suggestions"
-    ) as post, mock.patch.object(
-        transports.ConversationsRestInterceptor,
-        "post_generate_suggestions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ConversationsRestInterceptor, "pre_generate_suggestions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "post_generate_suggestions"
+        ) as post,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor,
+            "post_generate_suggestions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ConversationsRestInterceptor, "pre_generate_suggestions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9659,8 +9872,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -9719,8 +9933,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -9781,8 +9996,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -9843,8 +10059,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -9903,8 +10120,9 @@ def test_list_operations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -9977,7 +10195,6 @@ def test_create_conversation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation.CreateConversationRequest()
-
         assert args[0] == request_msg
 
 
@@ -9999,7 +10216,6 @@ def test_list_conversations_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation.ListConversationsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10019,7 +10235,6 @@ def test_get_conversation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation.GetConversationRequest()
-
         assert args[0] == request_msg
 
 
@@ -10041,7 +10256,6 @@ def test_complete_conversation_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation.CompleteConversationRequest()
-
         assert args[0] == request_msg
 
 
@@ -10063,7 +10277,6 @@ def test_ingest_context_references_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation.IngestContextReferencesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10083,7 +10296,6 @@ def test_list_messages_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation.ListMessagesRequest()
-
         assert args[0] == request_msg
 
 
@@ -10105,7 +10317,6 @@ def test_suggest_conversation_summary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation.SuggestConversationSummaryRequest()
-
         assert args[0] == request_msg
 
 
@@ -10127,7 +10338,6 @@ def test_generate_stateless_summary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation.GenerateStatelessSummaryRequest()
-
         assert args[0] == request_msg
 
 
@@ -10149,7 +10359,6 @@ def test_generate_stateless_suggestion_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation.GenerateStatelessSuggestionRequest()
-
         assert args[0] == request_msg
 
 
@@ -10169,7 +10378,6 @@ def test_search_knowledge_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = conversation.SearchKnowledgeRequest()
-
         assert args[0] == request_msg
 
 
@@ -10191,7 +10399,6 @@ def test_generate_suggestions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_conversation.GenerateSuggestionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -10263,11 +10470,14 @@ def test_conversations_base_transport():
 
 def test_conversations_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.dialogflow_v2.services.conversations.transports.ConversationsTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.dialogflow_v2.services.conversations.transports.ConversationsTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ConversationsTransport(
@@ -10287,9 +10497,12 @@ def test_conversations_base_transport_with_credentials_file():
 
 def test_conversations_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.dialogflow_v2.services.conversations.transports.ConversationsTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.dialogflow_v2.services.conversations.transports.ConversationsTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ConversationsTransport()
@@ -10367,11 +10580,12 @@ def test_conversations_transport_auth_gdch_credentials(transport_class):
 def test_conversations_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -10717,9 +10931,64 @@ def test_parse_answer_record_path():
     assert expected == actual
 
 
-def test_conversation_path():
+def test_app_path():
     project = "cuttlefish"
-    conversation = "mussel"
+    location = "mussel"
+    app = "winkle"
+    expected = "projects/{project}/locations/{location}/apps/{app}".format(
+        project=project,
+        location=location,
+        app=app,
+    )
+    actual = ConversationsClient.app_path(project, location, app)
+    assert expected == actual
+
+
+def test_parse_app_path():
+    expected = {
+        "project": "nautilus",
+        "location": "scallop",
+        "app": "abalone",
+    }
+    path = ConversationsClient.app_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConversationsClient.parse_app_path(path)
+    assert expected == actual
+
+
+def test_ces_tool_path():
+    project = "squid"
+    location = "clam"
+    app = "whelk"
+    tool = "octopus"
+    expected = "projects/{project}/locations/{location}/apps/{app}/tools/{tool}".format(
+        project=project,
+        location=location,
+        app=app,
+        tool=tool,
+    )
+    actual = ConversationsClient.ces_tool_path(project, location, app, tool)
+    assert expected == actual
+
+
+def test_parse_ces_tool_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "app": "cuttlefish",
+        "tool": "mussel",
+    }
+    path = ConversationsClient.ces_tool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConversationsClient.parse_ces_tool_path(path)
+    assert expected == actual
+
+
+def test_conversation_path():
+    project = "winkle"
+    conversation = "nautilus"
     expected = "projects/{project}/conversations/{conversation}".format(
         project=project,
         conversation=conversation,
@@ -10730,8 +10999,8 @@ def test_conversation_path():
 
 def test_parse_conversation_path():
     expected = {
-        "project": "winkle",
-        "conversation": "nautilus",
+        "project": "scallop",
+        "conversation": "abalone",
     }
     path = ConversationsClient.conversation_path(**expected)
 
@@ -10741,9 +11010,9 @@ def test_parse_conversation_path():
 
 
 def test_conversation_model_path():
-    project = "scallop"
-    location = "abalone"
-    conversation_model = "squid"
+    project = "squid"
+    location = "clam"
+    conversation_model = "whelk"
     expected = "projects/{project}/locations/{location}/conversationModels/{conversation_model}".format(
         project=project,
         location=location,
@@ -10757,9 +11026,9 @@ def test_conversation_model_path():
 
 def test_parse_conversation_model_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "conversation_model": "octopus",
+        "project": "octopus",
+        "location": "oyster",
+        "conversation_model": "nudibranch",
     }
     path = ConversationsClient.conversation_model_path(**expected)
 
@@ -10769,8 +11038,8 @@ def test_parse_conversation_model_path():
 
 
 def test_conversation_profile_path():
-    project = "oyster"
-    conversation_profile = "nudibranch"
+    project = "cuttlefish"
+    conversation_profile = "mussel"
     expected = "projects/{project}/conversationProfiles/{conversation_profile}".format(
         project=project,
         conversation_profile=conversation_profile,
@@ -10783,8 +11052,8 @@ def test_conversation_profile_path():
 
 def test_parse_conversation_profile_path():
     expected = {
-        "project": "cuttlefish",
-        "conversation_profile": "mussel",
+        "project": "winkle",
+        "conversation_profile": "nautilus",
     }
     path = ConversationsClient.conversation_profile_path(**expected)
 
@@ -10794,9 +11063,9 @@ def test_parse_conversation_profile_path():
 
 
 def test_cx_security_settings_path():
-    project = "winkle"
-    location = "nautilus"
-    security_settings = "scallop"
+    project = "scallop"
+    location = "abalone"
+    security_settings = "squid"
     expected = "projects/{project}/locations/{location}/securitySettings/{security_settings}".format(
         project=project,
         location=location,
@@ -10810,9 +11079,9 @@ def test_cx_security_settings_path():
 
 def test_parse_cx_security_settings_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "security_settings": "clam",
+        "project": "clam",
+        "location": "whelk",
+        "security_settings": "octopus",
     }
     path = ConversationsClient.cx_security_settings_path(**expected)
 
@@ -10822,10 +11091,10 @@ def test_parse_cx_security_settings_path():
 
 
 def test_data_store_path():
-    project = "whelk"
-    location = "octopus"
-    collection = "oyster"
-    data_store = "nudibranch"
+    project = "oyster"
+    location = "nudibranch"
+    collection = "cuttlefish"
+    data_store = "mussel"
     expected = "projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}".format(
         project=project,
         location=location,
@@ -10840,10 +11109,10 @@ def test_data_store_path():
 
 def test_parse_data_store_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
-        "collection": "winkle",
-        "data_store": "nautilus",
+        "project": "winkle",
+        "location": "nautilus",
+        "collection": "scallop",
+        "data_store": "abalone",
     }
     path = ConversationsClient.data_store_path(**expected)
 
@@ -10853,9 +11122,9 @@ def test_parse_data_store_path():
 
 
 def test_document_path():
-    project = "scallop"
-    knowledge_base = "abalone"
-    document = "squid"
+    project = "squid"
+    knowledge_base = "clam"
+    document = "whelk"
     expected = "projects/{project}/knowledgeBases/{knowledge_base}/documents/{document}".format(
         project=project,
         knowledge_base=knowledge_base,
@@ -10867,9 +11136,9 @@ def test_document_path():
 
 def test_parse_document_path():
     expected = {
-        "project": "clam",
-        "knowledge_base": "whelk",
-        "document": "octopus",
+        "project": "octopus",
+        "knowledge_base": "oyster",
+        "document": "nudibranch",
     }
     path = ConversationsClient.document_path(**expected)
 
@@ -10879,9 +11148,9 @@ def test_parse_document_path():
 
 
 def test_generator_path():
-    project = "oyster"
-    location = "nudibranch"
-    generator = "cuttlefish"
+    project = "cuttlefish"
+    location = "mussel"
+    generator = "winkle"
     expected = "projects/{project}/locations/{location}/generators/{generator}".format(
         project=project,
         location=location,
@@ -10893,9 +11162,9 @@ def test_generator_path():
 
 def test_parse_generator_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "generator": "nautilus",
+        "project": "nautilus",
+        "location": "scallop",
+        "generator": "abalone",
     }
     path = ConversationsClient.generator_path(**expected)
 
@@ -10905,8 +11174,8 @@ def test_parse_generator_path():
 
 
 def test_knowledge_base_path():
-    project = "scallop"
-    knowledge_base = "abalone"
+    project = "squid"
+    knowledge_base = "clam"
     expected = "projects/{project}/knowledgeBases/{knowledge_base}".format(
         project=project,
         knowledge_base=knowledge_base,
@@ -10917,8 +11186,8 @@ def test_knowledge_base_path():
 
 def test_parse_knowledge_base_path():
     expected = {
-        "project": "squid",
-        "knowledge_base": "clam",
+        "project": "whelk",
+        "knowledge_base": "octopus",
     }
     path = ConversationsClient.knowledge_base_path(**expected)
 
@@ -10928,9 +11197,9 @@ def test_parse_knowledge_base_path():
 
 
 def test_message_path():
-    project = "whelk"
-    conversation = "octopus"
-    message = "oyster"
+    project = "oyster"
+    conversation = "nudibranch"
+    message = "cuttlefish"
     expected = (
         "projects/{project}/conversations/{conversation}/messages/{message}".format(
             project=project,
@@ -10944,9 +11213,9 @@ def test_message_path():
 
 def test_parse_message_path():
     expected = {
-        "project": "nudibranch",
-        "conversation": "cuttlefish",
-        "message": "mussel",
+        "project": "mussel",
+        "conversation": "winkle",
+        "message": "nautilus",
     }
     path = ConversationsClient.message_path(**expected)
 
@@ -10956,9 +11225,9 @@ def test_parse_message_path():
 
 
 def test_phrase_set_path():
-    project = "winkle"
-    location = "nautilus"
-    phrase_set = "scallop"
+    project = "scallop"
+    location = "abalone"
+    phrase_set = "squid"
     expected = "projects/{project}/locations/{location}/phraseSets/{phrase_set}".format(
         project=project,
         location=location,
@@ -10970,9 +11239,9 @@ def test_phrase_set_path():
 
 def test_parse_phrase_set_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "phrase_set": "clam",
+        "project": "clam",
+        "location": "whelk",
+        "phrase_set": "octopus",
     }
     path = ConversationsClient.phrase_set_path(**expected)
 
@@ -10982,9 +11251,9 @@ def test_parse_phrase_set_path():
 
 
 def test_tool_path():
-    project = "whelk"
-    location = "octopus"
-    tool = "oyster"
+    project = "oyster"
+    location = "nudibranch"
+    tool = "cuttlefish"
     expected = "projects/{project}/locations/{location}/tools/{tool}".format(
         project=project,
         location=location,
@@ -10996,9 +11265,9 @@ def test_tool_path():
 
 def test_parse_tool_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "tool": "mussel",
+        "project": "mussel",
+        "location": "winkle",
+        "tool": "nautilus",
     }
     path = ConversationsClient.tool_path(**expected)
 
@@ -11007,8 +11276,39 @@ def test_parse_tool_path():
     assert expected == actual
 
 
+def test_toolset_path():
+    project = "scallop"
+    location = "abalone"
+    app = "squid"
+    toolset = "clam"
+    expected = (
+        "projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}".format(
+            project=project,
+            location=location,
+            app=app,
+            toolset=toolset,
+        )
+    )
+    actual = ConversationsClient.toolset_path(project, location, app, toolset)
+    assert expected == actual
+
+
+def test_parse_toolset_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+        "app": "oyster",
+        "toolset": "nudibranch",
+    }
+    path = ConversationsClient.toolset_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConversationsClient.parse_toolset_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -11018,7 +11318,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "mussel",
     }
     path = ConversationsClient.common_billing_account_path(**expected)
 
@@ -11028,7 +11328,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -11038,7 +11338,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "nautilus",
     }
     path = ConversationsClient.common_folder_path(**expected)
 
@@ -11048,7 +11348,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -11058,7 +11358,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "abalone",
     }
     path = ConversationsClient.common_organization_path(**expected)
 
@@ -11068,7 +11368,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -11078,7 +11378,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "clam",
     }
     path = ConversationsClient.common_project_path(**expected)
 
@@ -11088,8 +11388,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -11100,8 +11400,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = ConversationsClient.common_location_path(**expected)
 
@@ -11272,6 +11572,38 @@ async def test_cancel_operation_from_dict_async():
         call.assert_called()
 
 
+def test_cancel_operation_flattened():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = ConversationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
 def test_get_operation(transport: str = "grpc"):
     client = ConversationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11415,6 +11747,40 @@ async def test_get_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_operation_flattened():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = ConversationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
 
 
 def test_list_operations(transport: str = "grpc"):
@@ -11562,6 +11928,40 @@ async def test_list_operations_from_dict_async():
         call.assert_called()
 
 
+def test_list_operations_flattened():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = ConversationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
 def test_list_locations(transport: str = "grpc"):
     client = ConversationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11707,6 +12107,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = ConversationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = ConversationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11846,6 +12280,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = ConversationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():

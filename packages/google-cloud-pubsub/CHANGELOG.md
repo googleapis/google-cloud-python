@@ -4,6 +4,34 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## [2.39.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.39.0...google-cloud-pubsub-v2.39.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+
+## [2.39.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.38.0...google-cloud-pubsub-v2.39.0) (2026-06-02)
+
+
+### Features
+
+* regenerate pubsub library using gapic-generator v1.32.0 (#17167) ([01d3127d6c96cf87f52e1304eeb9f788226bf066](https://github.com/googleapis/google-cloud-python/commit/01d3127d6c96cf87f52e1304eeb9f788226bf066))
+
+
+### Bug Fixes
+
+* resolve issue with pubsub generation (#17219) ([b21c1d447e41d1be93da313e01e75646a942e607](https://github.com/googleapis/google-cloud-python/commit/b21c1d447e41d1be93da313e01e75646a942e607))
+
+## [2.38.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.37.0...google-cloud-pubsub-v2.38.0) (2026-05-06)
+
+## [2.37.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.36.0...google-cloud-pubsub-v2.37.0) (2026-04-09)
+
+
+### Documentation
+
+* Fix documentation URL AIInference MessageTransform service_account_email field ([56ccbd8612b6790b0477bf8d777080061072e745](https://github.com/googleapis/google-cloud-python/commit/56ccbd8612b6790b0477bf8d777080061072e745))
+
 ## [2.36.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-pubsub-v2.35.0...google-cloud-pubsub-v2.36.0) (2026-03-12)
 
 

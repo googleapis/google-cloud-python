@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,15 +32,16 @@ from google.ads.datamanager_v1.types import partner_link_service
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class PartnerLinkServiceTransport(abc.ABC):
     """Abstract transport class for PartnerLinkService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/datamanager",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/datamanager",
+        "https://www.googleapis.com/auth/datamanager.partnerlink",
+    )
 
     DEFAULT_HOST: str = "datamanager.googleapis.com"
 
@@ -81,6 +82,10 @@ class PartnerLinkServiceTransport(abc.ABC):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
 
         # Save the scopes.
@@ -129,6 +134,8 @@ class PartnerLinkServiceTransport(abc.ABC):
         if ":" not in host:
             host += ":443"
         self._host = host
+
+        self._wrapped_methods: Dict[Callable, Callable] = {}
 
     @property
     def host(self):

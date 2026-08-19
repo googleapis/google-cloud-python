@@ -3,7 +3,8 @@ Python Client for Cloud Billing
 
 |stable| |pypi| |versions|
 
-`Cloud Billing`_: allows developers to manage their billing accounts or browse the catalog of SKUs and pricing.
+`Cloud Billing`_: Allows developers to manage billing for their Google Cloud Platform
+projects     programmatically.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -61,14 +62,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.

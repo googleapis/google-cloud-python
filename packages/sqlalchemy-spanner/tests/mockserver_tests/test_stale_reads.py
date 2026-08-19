@@ -13,15 +13,17 @@
 # limitations under the License.
 
 import datetime
+
+from google.cloud.spanner_v1 import (
+    BeginTransactionRequest,
+    CreateSessionRequest,
+    ExecuteSqlRequest,
+    TransactionOptions,
+)
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from sqlalchemy.testing import eq_, is_instance_of
-from google.cloud.spanner_v1 import (
-    CreateSessionRequest,
-    ExecuteSqlRequest,
-    BeginTransactionRequest,
-    TransactionOptions,
-)
+
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
     add_singer_query_result,

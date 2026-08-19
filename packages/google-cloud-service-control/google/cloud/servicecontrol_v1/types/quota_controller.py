@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -73,9 +73,10 @@ class QuotaOperation(proto.Message):
 
     Attributes:
         operation_id (str):
-            Identity of the operation. This is expected to be unique
-            within the scope of the service that generated the
-            operation, and guarantees idempotency in case of retries.
+            Identity of the operation. For Allocation Quota, this is
+            expected to be unique within the scope of the service that
+            generated the operation, and guarantees idempotency in case
+            of retries.
 
             In order to ensure best performance and latency in the Quota
             backends, operation_ids are optimally associated with time,

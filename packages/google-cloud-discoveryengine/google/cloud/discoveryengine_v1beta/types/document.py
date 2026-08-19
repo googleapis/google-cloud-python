@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@ import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
+
+from google.cloud.discoveryengine_v1beta.types import common
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1beta",
@@ -67,14 +69,14 @@ class Document(proto.Message):
 
             Id should conform to
             `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__ standard
-            with a length limit of 63 characters.
+            with a length limit of 128 characters.
         schema_id (str):
             The identifier of the schema located in the
             same data store.
         content (google.cloud.discoveryengine_v1beta.types.Document.Content):
-            The unstructured data linked to this document. Content must
-            be set if this document is under a ``CONTENT_REQUIRED`` data
-            store.
+            The unstructured data linked to this document. Content can
+            only be set and must be set if this document is under a
+            ``CONTENT_REQUIRED`` data store.
         parent_document_id (str):
             The identifier of the parent document. Currently supports at
             most two level document hierarchy.
@@ -85,13 +87,19 @@ class Document(proto.Message):
         derived_struct_data (google.protobuf.struct_pb2.Struct):
             Output only. This field is OUTPUT_ONLY. It contains derived
             data that are not in the original input document.
+        acl_info (google.cloud.discoveryengine_v1beta.types.Document.AclInfo):
+            Access control information for the document.
         index_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The last time the document was indexed. If this
-            field is set, the document could be returned in search
-            results.
+            Output only. The time when the document was
+            last indexed.
+            If this field is populated, it means the
+            document has been indexed. While documents
+            typically become searchable within seconds of
+            indexing, it can sometimes take up to a few
+            hours.
 
-            This field is OUTPUT_ONLY. If this field is not populated,
-            it means the document has never been indexed.
+            If this field is not populated, it means the
+            document has never been indexed.
         index_status (google.cloud.discoveryengine_v1beta.types.Document.IndexStatus):
             Output only. The index status of the document.
 
@@ -99,7 +107,8 @@ class Document(proto.Message):
               is populated.
             - Otherwise, if document is not indexed due to errors, the
               error_samples field is populated.
-            - Otherwise, index_status is unset.
+            - Otherwise, if document's index is in progress, the
+              pending_message field is populated.
     """
 
     class Content(proto.Message):
@@ -138,11 +147,25 @@ class Document(proto.Message):
                 - ``application/pdf`` (PDF, only native PDFs are supported
                   for now)
                 - ``text/html`` (HTML)
+                - ``text/plain`` (TXT)
+                - ``application/xml`` or ``text/xml`` (XML)
+                - ``application/json`` (JSON)
                 - ``application/vnd.openxmlformats-officedocument.wordprocessingml.document``
                   (DOCX)
                 - ``application/vnd.openxmlformats-officedocument.presentationml.presentation``
                   (PPTX)
-                - ``text/plain`` (TXT)
+                - ``application/vnd.openxmlformats-officedocument.spreadsheetml.sheet``
+                  (XLSX)
+                - ``application/vnd.ms-excel.sheet.macroenabled.12`` (XLSM)
+
+                The following types are supported only if layout parser is
+                enabled in the data store:
+
+                - ``image/bmp`` (BMP)
+                - ``image/gif`` (GIF)
+                - ``image/jpeg`` (JPEG)
+                - ``image/png`` (PNG)
+                - ``image/tiff`` (TIFF)
 
                 See
                 https://www.iana.org/assignments/media-types/media-types.xhtml.
@@ -163,6 +186,58 @@ class Document(proto.Message):
             number=1,
         )
 
+    class AclInfo(proto.Message):
+        r"""ACL Information of the Document.
+
+        Attributes:
+            readers (MutableSequence[google.cloud.discoveryengine_v1beta.types.Document.AclInfo.AccessRestriction]):
+                Readers of the document.
+        """
+
+        class AccessRestriction(proto.Message):
+            r"""AclRestriction to model complex inheritance restrictions.
+
+            Example: Modeling a "Both Permit" inheritance, where to access a
+            child document, user needs to have access to parent document.
+
+            Document Hierarchy - Space_S --> Page_P.
+
+            Readers: Space_S: group_1, user_1 Page_P: group_2, group_3, user_2
+
+            Space_S ACL Restriction - { "acl_info": { "readers": [ {
+            "principals": [ { "group_id": "group_1" }, { "user_id": "user_1" } ]
+            } ] } }
+
+            Page_P ACL Restriction. { "acl_info": { "readers": [ { "principals":
+            [ { "group_id": "group_2" }, { "group_id": "group_3" }, { "user_id":
+            "user_2" } ], }, { "principals": [ { "group_id": "group_1" }, {
+            "user_id": "user_1" } ], } ] } }
+
+            Attributes:
+                principals (MutableSequence[google.cloud.discoveryengine_v1beta.types.Principal]):
+                    List of principals.
+                idp_wide (bool):
+                    All users within the Identity Provider.
+            """
+
+            principals: MutableSequence[common.Principal] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message=common.Principal,
+            )
+            idp_wide: bool = proto.Field(
+                proto.BOOL,
+                number=2,
+            )
+
+        readers: MutableSequence["Document.AclInfo.AccessRestriction"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="Document.AclInfo.AccessRestriction",
+            )
+        )
+
     class IndexStatus(proto.Message):
         r"""Index status of the document.
 
@@ -170,11 +245,18 @@ class Document(proto.Message):
             index_time (google.protobuf.timestamp_pb2.Timestamp):
                 The time when the document was indexed.
                 If this field is populated, it means the
-                document has been indexed.
+                document has been indexed. While documents
+                typically become searchable within seconds of
+                indexing, it can sometimes take up to a few
+                hours.
             error_samples (MutableSequence[google.rpc.status_pb2.Status]):
                 A sample of errors encountered while indexing
                 the document. If this field is populated, the
                 document is not indexed due to errors.
+            pending_message (str):
+                Immutable. The message indicates the document
+                index is in progress. If this field is
+                populated, the document index is pending.
         """
 
         index_time: timestamp_pb2.Timestamp = proto.Field(
@@ -186,6 +268,10 @@ class Document(proto.Message):
             proto.MESSAGE,
             number=2,
             message=status_pb2.Status,
+        )
+        pending_message: str = proto.Field(
+            proto.STRING,
+            number=3,
         )
 
     struct_data: struct_pb2.Struct = proto.Field(
@@ -224,6 +310,11 @@ class Document(proto.Message):
         proto.MESSAGE,
         number=6,
         message=struct_pb2.Struct,
+    )
+    acl_info: AclInfo = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=AclInfo,
     )
     index_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,

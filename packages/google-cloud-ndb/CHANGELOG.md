@@ -4,6 +4,40 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [2.5.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ndb-v2.5.0...google-cloud-ndb-v2.5.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
+## [2.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ndb-v2.4.2...google-cloud-ndb-v2.5.0) (2026-05-06)
+
+
+### Features
+
+* enable mypy session for ndb (#16691) ([192ccc52a030a59f7e2c49ed9701130156d73d6f](https://github.com/googleapis/google-cloud-python/commit/192ccc52a030a59f7e2c49ed9701130156d73d6f))
+
+
+### Bug Fixes
+
+* Drop support for Python 3.9 (#16950) ([d37a95301da1db1ee1be273d2ac9af320c91809f](https://github.com/googleapis/google-cloud-python/commit/d37a95301da1db1ee1be273d2ac9af320c91809f))
+
+## [2.4.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ndb-v2.4.1...google-cloud-ndb-v2.4.2) (2026-04-02)
+
+
+### Bug Fixes
+
+* allow redis 7.x (#16533) ([4c541cf2a364ef7ba39bc48c0a6a063a9334d31a](https://github.com/googleapis/google-cloud-python/commit/4c541cf2a364ef7ba39bc48c0a6a063a9334d31a))
+
+## [2.4.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ndb-v2.4.0...google-cloud-ndb-v2.4.1) (2026-03-26)
+
+
+### Bug Fixes
+
+* Allow Protobuf 7.x, require Python 3.9 (#16102) ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+* Require Python 3.9 ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+
 ## [2.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ndb-v2.3.4...google-cloud-ndb-v2.4.0) (2025-12-15)
 
 

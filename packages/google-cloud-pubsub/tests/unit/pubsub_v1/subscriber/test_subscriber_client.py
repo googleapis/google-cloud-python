@@ -11,8 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-import sys
 from unittest import mock
 
 import grpc
@@ -48,10 +46,16 @@ def test_init_default_client_info(creds):
     expected_client_info = f"gccl/{installed_version}"
 
     for wrapped_method in client.transport._wrapped_methods.values():
+        # Handle internal changes in google-api-core _GapicCallable
+        metadata = getattr(
+            wrapped_method,
+            "_metadata",
+            getattr(wrapped_method, "_default_metadata", []),
+        )
         user_agent = next(
             (
                 header_value
-                for header, header_value in wrapped_method._metadata
+                for header, header_value in metadata
                 if header == METRICS_METADATA_KEY
             ),
             None,  # pragma: NO COVER
@@ -287,10 +291,13 @@ def test_sync_pull_warning_if_return_immediately(creds):
     client = subscriber.Client(credentials=creds)
     subscription_path = "projects/foo/subscriptions/bar"
 
-    with mock.patch.object(client._transport, "_wrapped_methods"), pytest.warns(
-        DeprecationWarning,
-        match="The return_immediately flag is deprecated and should be set to False",
-    ) as warned:
+    with (
+        mock.patch.object(client._transport, "_wrapped_methods"),
+        pytest.warns(
+            DeprecationWarning,
+            match="The return_immediately flag is deprecated and should be set to False",
+        ) as warned,
+    ):
         client.pull(subscription=subscription_path, return_immediately=True)
 
     # Setting the deprecated return_immediately flag to True should emit a warning.
@@ -314,10 +321,13 @@ async def test_sync_pull_warning_if_return_immediately_async(creds):
         new_callable=mock.AsyncMock,
     )
 
-    with patcher, pytest.warns(
-        DeprecationWarning,
-        match="The return_immediately flag is deprecated and should be set to False",
-    ) as warned:
+    with (
+        patcher,
+        pytest.warns(
+            DeprecationWarning,
+            match="The return_immediately flag is deprecated and should be set to False",
+        ) as warned,
+    ):
         await client.pull(subscription=subscription_path, return_immediately=True)
 
     # Setting the deprecated return_immediately flag to True should emit a warning.
@@ -339,17 +349,9 @@ def test_opentelemetry_subscriber_setting(creds, enable_open_telemetry):
     options = types.SubscriberOptions(
         enable_open_telemetry_tracing=enable_open_telemetry,
     )
-    if sys.version_info >= (3, 8) or enable_open_telemetry is False:
-        client = subscriber.Client(credentials=creds, subscriber_options=options)
-        assert client.subscriber_options == options
-        assert client._open_telemetry_enabled == enable_open_telemetry
-    else:
-        with pytest.warns(
-            RuntimeWarning,
-            match="Open Telemetry for Python version 3.7 or lower is not supported. Disabling Open Telemetry tracing.",
-        ):
-            client = subscriber.Client(credentials=creds, subscriber_options=options)
-            assert client._open_telemetry_enabled is False
+    client = subscriber.Client(credentials=creds, subscriber_options=options)
+    assert client.subscriber_options == options
+    assert client._open_telemetry_enabled == enable_open_telemetry
 
 
 def test_opentelemetry_propagator_get():

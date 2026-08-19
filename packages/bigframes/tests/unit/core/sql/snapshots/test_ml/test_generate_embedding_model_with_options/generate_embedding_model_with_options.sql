@@ -1,0 +1,5 @@
+SELECT * FROM ML.GENERATE_EMBEDDING(MODEL `my_project.my_dataset.my_model`, (SELECT * FROM new_data), STRUCT(
+  TRUE AS `flatten_json_output`,
+  'RETRIEVAL_DOCUMENT' AS `task_type`,
+  256 AS `output_dimensionality`
+))

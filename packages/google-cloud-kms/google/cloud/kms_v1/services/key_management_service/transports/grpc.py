@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -95,7 +95,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -201,6 +201,10 @@ class KeyManagementServiceGrpcTransport(KeyManagementServiceTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
           google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -856,6 +860,94 @@ class KeyManagementServiceGrpcTransport(KeyManagementServiceTransport):
                 response_deserializer=resources.CryptoKeyVersion.deserialize,
             )
         return self._stubs["import_crypto_key_version"]
+
+    @property
+    def import_trusted_key_wrapped_crypto_key_version(
+        self,
+    ) -> Callable[
+        [service.ImportTrustedKeyWrappedCryptoKeyVersionRequest],
+        resources.CryptoKeyVersion,
+    ]:
+        r"""Return a callable for the import trusted key wrapped
+        crypto key version method over gRPC.
+
+        Import wrapped key material into a
+        [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] with a
+        trusted key.
+
+        All requests must specify a
+        [CryptoKey][google.cloud.kms.v1.CryptoKey]. If a
+        [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] is
+        additionally specified in the request, key material will be
+        reimported into that version. Otherwise, a new version will be
+        created, and will be assigned the next sequential id within the
+        [CryptoKey][google.cloud.kms.v1.CryptoKey].
+
+        The [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+        will have trusted_wrapping_enabled set to true.
+
+        Returns:
+            Callable[[~.ImportTrustedKeyWrappedCryptoKeyVersionRequest],
+                    ~.CryptoKeyVersion]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "import_trusted_key_wrapped_crypto_key_version" not in self._stubs:
+            self._stubs["import_trusted_key_wrapped_crypto_key_version"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.kms.v1.KeyManagementService/ImportTrustedKeyWrappedCryptoKeyVersion",
+                    request_serializer=service.ImportTrustedKeyWrappedCryptoKeyVersionRequest.serialize,
+                    response_deserializer=resources.CryptoKeyVersion.deserialize,
+                )
+            )
+        return self._stubs["import_trusted_key_wrapped_crypto_key_version"]
+
+    @property
+    def export_trusted_key_wrapped_crypto_key_version(
+        self,
+    ) -> Callable[
+        [service.ExportTrustedKeyWrappedCryptoKeyVersionRequest],
+        service.ExportTrustedKeyWrappedCryptoKeyVersionResponse,
+    ]:
+        r"""Return a callable for the export trusted key wrapped
+        crypto key version method over gRPC.
+
+        Exports a
+        [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] with a
+        trusted key.
+
+        The [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+        must have trusted_wrapping_enabled set to true. The
+        [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] of the
+        [wrapping_key] must have the
+        [AES_WRAPPING][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.AES_WRAPPING]
+        purpose. The [wrapping_key] must have the
+        [AES_256_KWP][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm.AES_256_KWP]
+        algorithm.
+
+        Returns:
+            Callable[[~.ExportTrustedKeyWrappedCryptoKeyVersionRequest],
+                    ~.ExportTrustedKeyWrappedCryptoKeyVersionResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_trusted_key_wrapped_crypto_key_version" not in self._stubs:
+            self._stubs["export_trusted_key_wrapped_crypto_key_version"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.kms.v1.KeyManagementService/ExportTrustedKeyWrappedCryptoKeyVersion",
+                    request_serializer=service.ExportTrustedKeyWrappedCryptoKeyVersionRequest.serialize,
+                    response_deserializer=service.ExportTrustedKeyWrappedCryptoKeyVersionResponse.deserialize,
+                )
+            )
+        return self._stubs["export_trusted_key_wrapped_crypto_key_version"]
 
     @property
     def create_import_job(

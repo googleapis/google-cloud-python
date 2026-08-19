@@ -19,10 +19,8 @@ from __future__ import absolute_import
 import http.client
 import logging
 
-from google.auth import exceptions
-from google.auth import transport
+from google.auth import exceptions, transport
 import httplib2
-
 
 _LOGGER = logging.getLogger(__name__)
 # Properties present in file-like streams / buffers.

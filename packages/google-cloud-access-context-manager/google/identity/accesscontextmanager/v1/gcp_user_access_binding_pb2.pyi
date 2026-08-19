@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
 from typing import Optional as _Optional
 
 from google.api import field_behavior_pb2 as _field_behavior_pb2

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -99,7 +99,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -240,6 +240,10 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -677,6 +681,36 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
         return self._stubs["list_managed_folders"]
 
     @property
+    def update_managed_folder(
+        self,
+    ) -> Callable[
+        [storage_control.UpdateManagedFolderRequest],
+        Awaitable[storage_control.ManagedFolder],
+    ]:
+        r"""Return a callable for the update managed folder method over gRPC.
+
+        Updates a managed folder. Currently, this RPC only supports
+        updating the ``rapid_cache_config`` field.
+
+        Returns:
+            Callable[[~.UpdateManagedFolderRequest],
+                    Awaitable[~.ManagedFolder]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_managed_folder" not in self._stubs:
+            self._stubs["update_managed_folder"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/UpdateManagedFolder",
+                request_serializer=storage_control.UpdateManagedFolderRequest.serialize,
+                response_deserializer=storage_control.ManagedFolder.deserialize,
+            )
+        return self._stubs["update_managed_folder"]
+
+    @property
     def create_anywhere_cache(
         self,
     ) -> Callable[
@@ -883,6 +917,119 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                 response_deserializer=storage_control.ListAnywhereCachesResponse.deserialize,
             )
         return self._stubs["list_anywhere_caches"]
+
+    @property
+    def create_rapid_cache(
+        self,
+    ) -> Callable[
+        [storage_control.CreateRapidCacheRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the create rapid cache method over gRPC.
+
+        Creates a Rapid Cache instance.
+
+        Returns:
+            Callable[[~.CreateRapidCacheRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_rapid_cache" not in self._stubs:
+            self._stubs["create_rapid_cache"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/CreateRapidCache",
+                request_serializer=storage_control.CreateRapidCacheRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_rapid_cache"]
+
+    @property
+    def update_rapid_cache(
+        self,
+    ) -> Callable[
+        [storage_control.UpdateRapidCacheRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the update rapid cache method over gRPC.
+
+        Updates a Rapid Cache instance.
+
+        Returns:
+            Callable[[~.UpdateRapidCacheRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_rapid_cache" not in self._stubs:
+            self._stubs["update_rapid_cache"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/UpdateRapidCache",
+                request_serializer=storage_control.UpdateRapidCacheRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_rapid_cache"]
+
+    @property
+    def get_rapid_cache(
+        self,
+    ) -> Callable[
+        [storage_control.GetRapidCacheRequest], Awaitable[storage_control.RapidCache]
+    ]:
+        r"""Return a callable for the get rapid cache method over gRPC.
+
+        Gets a Rapid Cache instance.
+
+        Returns:
+            Callable[[~.GetRapidCacheRequest],
+                    Awaitable[~.RapidCache]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_rapid_cache" not in self._stubs:
+            self._stubs["get_rapid_cache"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/GetRapidCache",
+                request_serializer=storage_control.GetRapidCacheRequest.serialize,
+                response_deserializer=storage_control.RapidCache.deserialize,
+            )
+        return self._stubs["get_rapid_cache"]
+
+    @property
+    def list_rapid_caches(
+        self,
+    ) -> Callable[
+        [storage_control.ListRapidCachesRequest],
+        Awaitable[storage_control.ListRapidCachesResponse],
+    ]:
+        r"""Return a callable for the list rapid caches method over gRPC.
+
+        Lists Rapid Cache instances for a given bucket.
+
+        Returns:
+            Callable[[~.ListRapidCachesRequest],
+                    Awaitable[~.ListRapidCachesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_rapid_caches" not in self._stubs:
+            self._stubs["list_rapid_caches"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/ListRapidCaches",
+                request_serializer=storage_control.ListRapidCachesRequest.serialize,
+                response_deserializer=storage_control.ListRapidCachesResponse.deserialize,
+            )
+        return self._stubs["list_rapid_caches"]
 
     @property
     def get_project_intelligence_config(
@@ -1177,6 +1324,203 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
             )
         return self._stubs["test_iam_permissions"]
 
+    @property
+    def get_intelligence_finding(
+        self,
+    ) -> Callable[
+        [storage_control.GetIntelligenceFindingRequest],
+        Awaitable[storage_control.IntelligenceFinding],
+    ]:
+        r"""Return a callable for the get intelligence finding method over gRPC.
+
+        Gets the ``IntelligenceFinding`` for a project.
+
+        Returns:
+            Callable[[~.GetIntelligenceFindingRequest],
+                    Awaitable[~.IntelligenceFinding]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_intelligence_finding" not in self._stubs:
+            self._stubs["get_intelligence_finding"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/GetIntelligenceFinding",
+                request_serializer=storage_control.GetIntelligenceFindingRequest.serialize,
+                response_deserializer=storage_control.IntelligenceFinding.deserialize,
+            )
+        return self._stubs["get_intelligence_finding"]
+
+    @property
+    def list_intelligence_findings(
+        self,
+    ) -> Callable[
+        [storage_control.ListIntelligenceFindingsRequest],
+        Awaitable[storage_control.ListIntelligenceFindingsResponse],
+    ]:
+        r"""Return a callable for the list intelligence findings method over gRPC.
+
+        Lists the ``IntelligenceFinding`` resources for the specified
+        the project.
+
+        Returns:
+            Callable[[~.ListIntelligenceFindingsRequest],
+                    Awaitable[~.ListIntelligenceFindingsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_intelligence_findings" not in self._stubs:
+            self._stubs["list_intelligence_findings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.storage.control.v2.StorageControl/ListIntelligenceFindings",
+                    request_serializer=storage_control.ListIntelligenceFindingsRequest.serialize,
+                    response_deserializer=storage_control.ListIntelligenceFindingsResponse.deserialize,
+                )
+            )
+        return self._stubs["list_intelligence_findings"]
+
+    @property
+    def summarize_intelligence_findings(
+        self,
+    ) -> Callable[
+        [storage_control.SummarizeIntelligenceFindingsRequest],
+        Awaitable[storage_control.SummarizeIntelligenceFindingsResponse],
+    ]:
+        r"""Return a callable for the summarize intelligence
+        findings method over gRPC.
+
+        Summarizes the intelligence findings for the
+        specified scope (organization, folder or project).
+
+        Returns:
+            Callable[[~.SummarizeIntelligenceFindingsRequest],
+                    Awaitable[~.SummarizeIntelligenceFindingsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "summarize_intelligence_findings" not in self._stubs:
+            self._stubs["summarize_intelligence_findings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.storage.control.v2.StorageControl/SummarizeIntelligenceFindings",
+                    request_serializer=storage_control.SummarizeIntelligenceFindingsRequest.serialize,
+                    response_deserializer=storage_control.SummarizeIntelligenceFindingsResponse.deserialize,
+                )
+            )
+        return self._stubs["summarize_intelligence_findings"]
+
+    @property
+    def get_intelligence_finding_revision(
+        self,
+    ) -> Callable[
+        [storage_control.GetIntelligenceFindingRevisionRequest],
+        Awaitable[storage_control.IntelligenceFindingRevision],
+    ]:
+        r"""Return a callable for the get intelligence finding
+        revision method over gRPC.
+
+        Gets the ``IntelligenceFindingRevision`` resource.
+
+        Returns:
+            Callable[[~.GetIntelligenceFindingRevisionRequest],
+                    Awaitable[~.IntelligenceFindingRevision]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_intelligence_finding_revision" not in self._stubs:
+            self._stubs["get_intelligence_finding_revision"] = (
+                self._logged_channel.unary_unary(
+                    "/google.storage.control.v2.StorageControl/GetIntelligenceFindingRevision",
+                    request_serializer=storage_control.GetIntelligenceFindingRevisionRequest.serialize,
+                    response_deserializer=storage_control.IntelligenceFindingRevision.deserialize,
+                )
+            )
+        return self._stubs["get_intelligence_finding_revision"]
+
+    @property
+    def list_intelligence_finding_revisions(
+        self,
+    ) -> Callable[
+        [storage_control.ListIntelligenceFindingRevisionsRequest],
+        Awaitable[storage_control.ListIntelligenceFindingRevisionsResponse],
+    ]:
+        r"""Return a callable for the list intelligence finding
+        revisions method over gRPC.
+
+        Lists all the revisions of an ``IntelligenceFinding`` resource.
+
+        Returns:
+            Callable[[~.ListIntelligenceFindingRevisionsRequest],
+                    Awaitable[~.ListIntelligenceFindingRevisionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_intelligence_finding_revisions" not in self._stubs:
+            self._stubs["list_intelligence_finding_revisions"] = (
+                self._logged_channel.unary_unary(
+                    "/google.storage.control.v2.StorageControl/ListIntelligenceFindingRevisions",
+                    request_serializer=storage_control.ListIntelligenceFindingRevisionsRequest.serialize,
+                    response_deserializer=storage_control.ListIntelligenceFindingRevisionsResponse.deserialize,
+                )
+            )
+        return self._stubs["list_intelligence_finding_revisions"]
+
+    @property
+    def view_object_full_context(
+        self,
+    ) -> Callable[
+        [storage_control.ViewObjectFullContextRequest],
+        Awaitable[storage_control.ObjectFullContext],
+    ]:
+        r"""Return a callable for the view object full context method over gRPC.
+
+        Retrieves the full content of an object context, including its
+        key, value, and any associated extended data for a given context
+        key.
+
+        Object contexts can optionally contain extended data. If an
+        object context contains extended data, the metadata payload
+        structure will contain only its type URL. To retrieve the full
+        extended data, call this method.
+
+        Returns the complete representation of the context as an
+        [``ObjectFullContext``][google.storage.control.v2.ObjectFullContext].
+
+        Returns:
+            Callable[[~.ViewObjectFullContextRequest],
+                    Awaitable[~.ObjectFullContext]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "view_object_full_context" not in self._stubs:
+            self._stubs["view_object_full_context"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/ViewObjectFullContext",
+                request_serializer=storage_control.ViewObjectFullContextRequest.serialize,
+                response_deserializer=storage_control.ObjectFullContext.deserialize,
+            )
+        return self._stubs["view_object_full_context"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -1187,7 +1531,6 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -1210,7 +1553,6 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -1228,7 +1570,6 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -1246,7 +1587,6 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -1264,7 +1604,6 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -1282,7 +1621,6 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -1310,7 +1648,6 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -1328,7 +1665,6 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -1339,6 +1675,11 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.update_managed_folder: self._wrap_method(
+                self.update_managed_folder,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.create_anywhere_cache: self._wrap_method(
                 self.create_anywhere_cache,
                 default_retry=retries.AsyncRetry(
@@ -1346,7 +1687,6 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -1364,7 +1704,6 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -1382,7 +1721,6 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -1400,7 +1738,6 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -1418,7 +1755,6 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -1436,7 +1772,6 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -1454,7 +1789,6 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -1465,6 +1799,26 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.create_rapid_cache: self._wrap_method(
+                self.create_rapid_cache,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_rapid_cache: self._wrap_method(
+                self.update_rapid_cache,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_rapid_cache: self._wrap_method(
+                self.get_rapid_cache,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_rapid_caches: self._wrap_method(
+                self.list_rapid_caches,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_project_intelligence_config: self._wrap_method(
                 self.get_project_intelligence_config,
                 default_retry=retries.AsyncRetry(
@@ -1472,7 +1826,6 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -1490,7 +1843,6 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -1508,7 +1860,6 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -1526,7 +1877,6 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -1544,7 +1894,6 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -1562,7 +1911,6 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                     maximum=60.0,
                     multiplier=2,
                     predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
                         core_exceptions.InternalServerError,
                         core_exceptions.ResourceExhausted,
                         core_exceptions.ServiceUnavailable,
@@ -1585,6 +1933,96 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
             ),
             self.test_iam_permissions: self._wrap_method(
                 self.test_iam_permissions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_intelligence_finding: self._wrap_method(
+                self.get_intelligence_finding,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_intelligence_findings: self._wrap_method(
+                self.list_intelligence_findings,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.summarize_intelligence_findings: self._wrap_method(
+                self.summarize_intelligence_findings,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_intelligence_finding_revision: self._wrap_method(
+                self.get_intelligence_finding_revision,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_intelligence_finding_revisions: self._wrap_method(
+                self.list_intelligence_finding_revisions,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.view_object_full_context: self._wrap_method(
+                self.view_object_full_context,
                 default_timeout=None,
                 client_info=client_info,
             ),

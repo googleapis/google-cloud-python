@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ from google.cloud.dialogflowcx_v3.types import (
     response_message,
     session_entity_type,
     tool_call,
+    trace,
 )
 from google.cloud.dialogflowcx_v3.types import intent as gcdc_intent
 
@@ -88,6 +89,14 @@ class DetectIntentResponseView(proto.Enum):
             -----------------------------------------------
 
             [QueryResult.diagnostic_info][google.cloud.dialogflow.cx.v3.QueryResult.diagnostic_info]
+
+            - [QueryResult.generative_info][]
+            -
+
+            [QueryResult.trace_blocks][google.cloud.dialogflow.cx.v3.QueryResult.trace_blocks]
+            ----------------------------------------------------------------------------------
+
+            [QueryResult.data_store_connection_signals][google.cloud.dialogflow.cx.v3.QueryResult.data_store_connection_signals]
         DETECT_INTENT_RESPONSE_VIEW_DEFAULT (3):
             Default response view omits the following fields:
             -------------------------------------------------
@@ -1639,6 +1648,13 @@ class QueryResult(proto.Message):
             Optional. Data store connection feature
             output signals. Filled only when data stores are
             involved in serving the query.
+        trace_blocks (MutableSequence[google.cloud.dialogflowcx_v3.types.TraceBlock]):
+            Optional. Contains the sequence of trace
+            blocks from the current conversation turn. Trace
+            blocks are ordered chronologically and contain
+            detailed traces of runtime behavior such as tool
+            calls, LLM calls, flow and playbook invocations,
+            agent utterances and user utterances.
     """
 
     text: str = proto.Field(
@@ -1742,6 +1758,11 @@ class QueryResult(proto.Message):
             number=35,
             message=data_store_connection.DataStoreConnectionSignals,
         )
+    )
+    trace_blocks: MutableSequence[trace.TraceBlock] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=37,
+        message=trace.TraceBlock,
     )
 
 

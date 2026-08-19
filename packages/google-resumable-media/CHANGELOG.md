@@ -4,6 +4,35 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## [2.10.1](https://github.com/googleapis/google-cloud-python/compare/google-resumable-media-v2.10.0...google-resumable-media-v2.10.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
+## [2.10.0](https://github.com/googleapis/google-cloud-python/compare/google-resumable-media-v2.9.0...google-resumable-media-v2.10.0) (2026-06-02)
+
+
+### Bug Fixes
+
+* update incorrect urls in setup.py to point at monorepo vs splitrepo (#17237) ([eaed04baf3cd356c3811c66e64c277c8841c7563](https://github.com/googleapis/google-cloud-python/commit/eaed04baf3cd356c3811c66e64c277c8841c7563))
+
+## [2.9.0](https://github.com/googleapis/google-cloud-python/compare/google-resumable-media-v2.8.2...google-resumable-media-v2.9.0) (2026-05-06)
+
+
+### Bug Fixes
+
+* Drop support for Python 3.9 (#16938) ([33b55050e75d956efb4c3c4438f339e46e8e9782](https://github.com/googleapis/google-cloud-python/commit/33b55050e75d956efb4c3c4438f339e46e8e9782))
+
+## [2.8.2](https://github.com/googleapis/google-cloud-python/compare/google-resumable-media-v2.8.1...google-resumable-media-v2.8.2) (2026-03-26)
+
+
+### Bug Fixes
+
+* Allow Protobuf 7.x, require Python 3.9 (#16102) ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+* Require Python 3.9 ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+
 ## [2.8.1](https://github.com/googleapis/google-cloud-python/compare/google-resumable-media-v2.8.0...google-resumable-media-v2.8.1) (2026-03-12)
 
 

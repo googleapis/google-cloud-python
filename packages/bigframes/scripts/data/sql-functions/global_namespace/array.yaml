@@ -1,0 +1,341 @@
+urn: extension:google:bq_scalar_functions
+scalar_functions:
+  - name: "array_concat"
+    description: "Concatenates one or more arrays with the same element type into a single array."
+    series_accessor_arg: array_expression_1
+    impls:
+      # Signature: array_concat:list_list
+      - args:
+          - name: "array_expression_1"
+            value: list<any1>
+            optional: false
+            keyword_only: false
+          - name: "array_expression_2"
+            value: list<any1>
+            optional: false
+            keyword_only: false
+        return: list<any1>
+  - name: "array_first"
+    description: "Takes an array and returns the first element in the array."
+    series_accessor_arg: array_expression
+    impls:
+      # Signature: array_first:list
+      - args:
+          - name: "array_expression"
+            value: list<any1>
+            optional: false
+            keyword_only: false
+        return: any1
+  - name: "array_first_n"
+    description: "Returns a prefix of `input_array` consisting of the first `n` elements."
+    series_accessor_arg: input_array
+    impls:
+      # Signature: array_first_n:list_i64
+      - args:
+          - name: "input_array"
+            value: list<any1>
+            optional: false
+            keyword_only: false
+          - name: "n"
+            value: i64
+            optional: false
+            keyword_only: false
+        return: list<any1>
+  - name: "array_includes"
+    description: "Takes an array and returns `TRUE` if there is an element in the array that is equal to the search_value."
+    series_accessor_arg: array_to_search
+    impls:
+      # Signature: array_includes:list_any
+      - args:
+          - name: "array_to_search"
+            value: list<any1>
+            optional: false
+            keyword_only: false
+          - name: "search_value"
+            value: any1
+            optional: false
+            keyword_only: false
+        return: boolean
+  - name: "array_includes_all"
+    description: "Takes an array to search and an array of search values. Returns `TRUE` if all search values are in the array to search, otherwise returns `FALSE`."
+    series_accessor_arg: array_to_search
+    impls:
+      # Signature: array_includes_all:list_list
+      - args:
+          - name: "array_to_search"
+            value: list<any1>
+            optional: false
+            keyword_only: false
+          - name: "search_values"
+            value: list<any1>
+            optional: false
+            keyword_only: false
+        return: boolean
+  - name: "array_includes_any"
+    description: "Takes an array to search and an array of search values. Returns `TRUE` if any search values are in the array to search, otherwise returns `FALSE`."
+    series_accessor_arg: array_to_search
+    impls:
+      # Signature: array_includes_any:list_list
+      - args:
+          - name: "array_to_search"
+            value: list<any1>
+            optional: false
+            keyword_only: false
+          - name: "search_values"
+            value: list<any1>
+            optional: false
+            keyword_only: false
+        return: boolean
+  - name: "array_is_distinct"
+    description: "Returns `TRUE` if the array contains no repeated elements, using the same equality comparison logic as `SELECT DISTINCT`."
+    series_accessor_arg: array_expression
+    impls:
+      # Signature: array_is_distinct:list
+      - args:
+          - name: "array_expression"
+            value: list<any1>
+            optional: false
+            keyword_only: false
+        return: boolean
+  - name: "array_last"
+    description: "Takes an array and returns the last element in the array."
+    series_accessor_arg: array_expression
+    impls:
+      # Signature: array_last:list
+      - args:
+          - name: "array_expression"
+            value: list<any1>
+            optional: false
+            keyword_only: false
+        return: any1
+  - name: "array_length"
+    description: |
+      Compute the length of each array element in the Series.
+
+      **Examples:**
+
+          >>> import bigframes.pandas as bpd
+          >>> import bigframes.bigquery as bbq
+
+          >>> s = bpd.Series([[1, 2, 8, 3], [], [3, 4]])
+          >>> bbq.array_length(s)
+          0    4
+          1    0
+          2    2
+          dtype: Int64
+
+      You can call this function using the Series `bigquery` accessor.
+
+          >>> s.bigquery.array_length()
+          0    4
+          1    0
+          2    2
+          dtype: Int64
+
+      You can also use this accessor on a pandas Series after importing bigframes.
+
+          >>> import bigframes
+          >>> import pandas as pd
+          >>> ps = pd.Series([[1, 2, 8, 3], [], [3, 4]])
+          >>> ps.bigquery.array_length()
+          0    4
+          1    0
+          2    2
+          dtype: Int64
+
+      You can also apply this function directly to Series using `apply`.
+
+          >>> s.apply(bbq.array_length, by_row=False)
+          0    4
+          1    0
+          2    2
+          dtype: Int64
+
+      Args:
+          series (bigframes.series.Series): A Series with array columns.
+
+      Returns:
+          bigframes.series.Series: A Series of integer values indicating
+              the length of each element in the Series.
+    series_accessor_arg: series
+    impls:
+      # Signature: array_length:list
+      - args:
+          - name: "series"
+            value: list<any1>
+            optional: false
+            keyword_only: false
+        return: i64
+  - name: "array_reverse"
+    description: "Returns the input `ARRAY` with elements in reverse order."
+    series_accessor_arg: value
+    impls:
+      # Signature: array_reverse:list
+      - args:
+          - name: "value"
+            value: list<any1>
+            optional: false
+            keyword_only: false
+        return: list<any1>
+  - name: "array_slice"
+    description: "Returns an array containing zero or more consecutive elements from the input array."
+    series_accessor_arg: array_to_slice
+    impls:
+      # Signature: array_slice:list_i64_i64
+      - args:
+          - name: "array_to_slice"
+            value: list<any1>
+            optional: false
+            keyword_only: false
+          - name: "start_offset"
+            value: i64
+            optional: false
+            keyword_only: false
+          - name: "end_offset"
+            value: i64
+            optional: false
+            keyword_only: false
+        return: list<any1>
+  - name: "array_to_string"
+    description: |
+      Converts array elements within a Series into delimited strings.
+
+      **Examples:**
+
+          >>> import bigframes.pandas as bpd
+          >>> import bigframes.bigquery as bbq
+
+          >>> s = bpd.Series([["H", "i", "!"], ["Hello", "World"], np.nan, [], ["Hi"]])
+          >>> bbq.array_to_string(s, delimiter=", ")
+          0         H, i, !
+          1    Hello, World
+          2
+          3
+          4              Hi
+          dtype: string
+
+      You can call this function using the Series `bigquery` accessor.
+
+          >>> s.bigquery.array_to_string(delimiter=", ")
+          0         H, i, !
+          1    Hello, World
+          2
+          3
+          4              Hi
+          dtype: string
+
+      You can also use this accessor on a pandas Series after importing bigframes.
+
+          >>> import bigframes
+          >>> import pandas as pd
+          >>> ps = pd.Series([["H", "i", "!"], ["Hello", "World"], None, [], ["Hi"]])
+          >>> ps.bigquery.array_to_string(delimiter=", ")
+          0         H, i, !
+          1    Hello, World
+          2
+          3
+          4              Hi
+          dtype: string
+
+      Args:
+          series (bigframes.series.Series): A Series containing arrays.
+          delimiter (str): The string used to separate array elements.
+          null_text (str, optional): The string to replace any NULL values in the array with.
+
+      Returns:
+          bigframes.series.Series: A Series containing delimited strings.
+    series_accessor_arg: series
+    impls:
+      # Signature: array_to_string:list_str_str
+      - args:
+          - name: "series"
+            value: list<string>
+            optional: false
+            keyword_only: false
+          - name: "delimiter"
+            value: string
+            optional: false
+            keyword_only: false
+          - name: "null_text"
+            value: string
+            optional: true
+            keyword_only: false
+        return: string
+      # Signature: array_to_string:list_vbin_vbin
+      - args:
+          - name: "series"
+            value: list<binary>
+            optional: false
+            keyword_only: false
+          - name: "delimiter"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "null_text"
+            value: binary
+            optional: true
+            keyword_only: false
+        return: binary
+  - name: "flatten"
+    description: "Takes an array of nested data and flattens a specific part of it into a single, flat array with the [array elements field access operator][array-el-field-operator]. Returns `NULL` if the input value is `NULL`."
+    series_accessor_arg: array_to_flatten
+    impls:
+      # Signature: flatten:list_i64
+      - args:
+          - name: "array_to_flatten"
+            value: list<any1>
+            optional: false
+            keyword_only: false
+          - name: "depth"
+            value: i64
+            optional: true
+            keyword_only: true
+        return: list<any1>
+  - name: "generate_array"
+    description: "Returns an array of values. The `start_expression` and `end_expression` parameters determine the inclusive start and end of the array."
+    impls:
+      # Signature: generate_array:i64_i64_i64
+      - args:
+          - name: "start_expression"
+            value: i64
+            optional: false
+            keyword_only: false
+          - name: "end_expression"
+            value: i64
+            optional: false
+            keyword_only: false
+          - name: "step_expression"
+            value: i64
+            optional: true
+            keyword_only: false
+        return: list<i64>
+      # Signature: generate_array:dec_dec_dec
+      - args:
+          - name: "start_expression"
+            value: decimal<38,9>
+            optional: false
+            keyword_only: false
+          - name: "end_expression"
+            value: decimal<38,9>
+            optional: false
+            keyword_only: false
+          - name: "step_expression"
+            value: decimal<38,9>
+            optional: true
+            keyword_only: false
+        return: list<decimal<38,9>>
+      # Signature: generate_array:fp64_fp64_fp64
+      - args:
+          - name: "start_expression"
+            value: fp64
+            optional: false
+            keyword_only: false
+          - name: "end_expression"
+            value: fp64
+            optional: false
+            keyword_only: false
+          - name: "step_expression"
+            value: fp64
+            optional: true
+            keyword_only: false
+        return: list<fp64>

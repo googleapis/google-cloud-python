@@ -6,8 +6,8 @@
 
 import datetime
 import decimal
-from io import StringIO
 import textwrap
+from io import StringIO
 
 import db_dtypes
 import numpy

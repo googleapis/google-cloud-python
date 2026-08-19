@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ class EntitySignalsMapping(proto.Message):
             ``EntitySignalsMapping``. Format:
             ``networks/{network_code}/entitySignalsMappings/{entity_signals_mapping_id}``
         entity_signals_mapping_id (int):
-            Output only. ``EntitySignalsMapping`` ID.
+            Output only. Deprecated: ``EntitySignalsMapping`` ID.
 
             This field is a member of `oneof`_ ``_entity_signals_mapping_id``.
         taxonomy_category_ids (MutableSequence[int]):

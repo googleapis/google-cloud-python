@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -95,7 +95,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -116,34 +116,15 @@ class _LoggingClientAIOInterceptor(
 class IcebergCatalogServiceGrpcAsyncIOTransport(IcebergCatalogServiceTransport):
     """gRPC AsyncIO backend transport for IcebergCatalogService.
 
-    Iceberg Catalog Service API: this implements the open-source Iceberg
-    REST Catalog API. See the API definition here:
-    https://github.com/apache/iceberg/blob/main/open-api/rest-catalog-open-api.yaml
+    Lakehouse runtime catalog supports the following catalog
+    management methods:
 
-    The API is defined as OpenAPI 3.1.1 spec.
-
-    Currently we only support the following methods:
-
-    - GetConfig/GetIcebergCatalogConfig
-    - ListIcebergNamespaces
-    - CheckIcebergNamespaceExists
-    - GetIcebergNamespace
-    - CreateIcebergNamespace (only supports single level)
-    - DeleteIcebergNamespace
-    - UpdateIcebergNamespace properties
-    - ListTableIdentifiers
-    - CreateIcebergTable
-    - DeleteIcebergTable
-    - GetIcebergTable
-    - UpdateIcebergTable (CommitTable)
-    - LoadIcebergTableCredentials
-    - RegisterTable
-
-    Users are required to provided the ``X-Goog-User-Project`` header
-    with the project id or number which can be different from the bucket
-    project id. That project will be charged for the API calls and the
-    calling user must have access to that project. The caller must have
-    ``serviceusage.services.use`` permission on the project.
+    - GetIcebergCatalog
+    - ListIcebergCatalogs
+    - DeleteIcebergCatalog
+    - UpdateIcebergCatalog
+    - CreateIcebergCatalog
+    - FailoverIcebergCatalog
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -262,6 +243,10 @@ class IcebergCatalogServiceGrpcAsyncIOTransport(IcebergCatalogServiceTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -454,8 +439,7 @@ class IcebergCatalogServiceGrpcAsyncIOTransport(IcebergCatalogServiceTransport):
     ]:
         r"""Return a callable for the create iceberg catalog method over gRPC.
 
-        Creates the Iceberg REST Catalog. Currently only supports Google
-        Cloud Storage Bucket catalogs. Google Cloud Storage Bucket
+        Creates the Iceberg REST Catalog. Google Cloud Storage Bucket
         catalog id is the bucket for which the catalog is created (e.g.
         ``my-catalog`` for ``gs://my-catalog``).
 

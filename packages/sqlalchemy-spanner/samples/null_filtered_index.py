@@ -14,11 +14,10 @@
 
 import uuid
 
-from sqlalchemy import create_engine, Index
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import mapped_column, DeclarativeBase, Mapped, Session
-
 from sample_helper import run_sample
+from sqlalchemy import Index, create_engine
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 
 # Shows how to create a null-filtered index.
 #

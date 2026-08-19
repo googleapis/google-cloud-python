@@ -3,7 +3,8 @@ Python Client for BigQuery Data Transfer
 
 |stable| |pypi| |versions|
 
-`BigQuery Data Transfer`_: allows users to transfer data from partner SaaS applications to Google BigQuery on a scheduled, managed basis.
+`BigQuery Data Transfer`_: Schedule queries or transfer external data from SaaS applications to Google
+BigQuery on a regular basis.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -61,14 +62,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.

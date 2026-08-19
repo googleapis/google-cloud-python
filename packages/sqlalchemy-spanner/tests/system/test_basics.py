@@ -17,28 +17,28 @@ from typing import Optional
 
 import pytest
 from sqlalchemy import (
-    text,
-    Table,
+    BIGINT,
+    Boolean,
     Column,
-    Integer,
     ForeignKey,
     ForeignKeyConstraint,
+    Index,
+    Integer,
+    MetaData,
     PrimaryKeyConstraint,
     String,
-    Index,
-    MetaData,
-    Boolean,
-    BIGINT,
-    inspect,
-    select,
-    update,
+    Table,
     delete,
     event,
+    inspect,
+    select,
+    text,
+    update,
 )
-from sqlalchemy.orm import Session, DeclarativeBase, Mapped, mapped_column
-from sqlalchemy.types import REAL
-from sqlalchemy.testing import eq_, is_true, is_not_none, is_none
+from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
+from sqlalchemy.testing import eq_, is_none, is_not_none, is_true
 from sqlalchemy.testing.plugin.plugin_base import fixtures
+from sqlalchemy.types import REAL
 
 
 class TestBasics(fixtures.TablesTest):

@@ -17,8 +17,9 @@ try:
     from unittest.mock import AsyncMock  # pragma: NO COVER  # noqa: F401
 except ImportError:  # pragma: NO COVER
     import mock  # type: ignore
-from ..helpers import warn_deprecated_credentials_file
 import pytest  # noqa: I202
+
+from ..helpers import warn_deprecated_credentials_file
 
 try:
     import grpc
@@ -31,9 +32,9 @@ if grpc is None:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
 
-from google.api_core import exceptions
-from google.api_core import grpc_helpers_async
 import google.auth.credentials
+
+from google.api_core import exceptions, grpc_helpers_async
 
 
 class RpcErrorImpl(grpc.RpcError, grpc.Call):
@@ -420,9 +421,15 @@ def test_create_channel_implicit_with_default_host(
     assert channel is grpc_secure_channel.return_value
 
     google_auth_default.assert_called_once_with(scopes=None, default_scopes=None)
-    auth_metadata_plugin.assert_called_once_with(
-        mock.sentinel.credentials, mock.sentinel.Request, default_host=default_host
+    assert auth_metadata_plugin.call_count == 1
+    assert auth_metadata_plugin.call_args.args == (
+        mock.sentinel.credentials,
+        mock.sentinel.Request,
     )
+    assert auth_metadata_plugin.call_args.kwargs["default_host"] == default_host
+    # google-auth >= 2.56.3 supports suppress_metrics_header; older versions omit it during fallback
+    if "suppress_metrics_header" in auth_metadata_plugin.call_args.kwargs:
+        assert auth_metadata_plugin.call_args.kwargs["suppress_metrics_header"] is True
     grpc_secure_channel.assert_called_once_with(
         expected_target, composite_creds, compression=None
     )

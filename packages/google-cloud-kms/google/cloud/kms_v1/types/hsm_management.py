@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -83,7 +83,7 @@ class SingleTenantHsmInstance(proto.Message):
             Output only. The system-defined duration that
             an instance can remain unrefreshed until it is
             automatically disabled. This will have a value
-            of 120 days.
+            of 730 days.
         disable_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the instance will be
             automatically disabled if not refreshed. This field is
@@ -94,6 +94,12 @@ class SingleTenantHsmInstance(proto.Message):
             before this time otherwise the
             [SingleTenantHsmInstance][google.cloud.kms.v1.SingleTenantHsmInstance]
             will become disabled.
+        key_portability_enabled (bool):
+            Optional. Immutable. Indicates whether key portability is
+            enabled for the
+            [SingleTenantHsmInstance][google.cloud.kms.v1.SingleTenantHsmInstance].
+            This can only be set at creation time. Key portability
+            features are disabled by default.
     """
 
     class State(proto.Enum):
@@ -227,6 +233,10 @@ class SingleTenantHsmInstance(proto.Message):
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
+    )
+    key_portability_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=8,
     )
 
 
@@ -378,6 +388,13 @@ class SingleTenantHsmInstanceProposal(proto.Message):
             [SingleTenantHsmInstance][google.cloud.kms.v1.SingleTenantHsmInstance]
             must be in the
             [ACTIVE][google.cloud.kms.v1.SingleTenantHsmInstance.State.ACTIVE]
+            state to perform this operation.
+
+            This field is a member of `oneof`_ ``operation``.
+        upgrade_key_trust (google.cloud.kms_v1.types.SingleTenantHsmInstanceProposal.UpgradeKeyTrust):
+            Promotes a key with the AES_WRAPPING purpose to a trusted
+            wrapping key. The key must be in the
+            [ACTIVE][CryptoKeyVersion.CryptoKeyVersionState.ACTIVE]
             state to perform this operation.
 
             This field is a member of `oneof`_ ``operation``.
@@ -646,6 +663,33 @@ class SingleTenantHsmInstanceProposal(proto.Message):
 
         """
 
+    class UpgradeKeyTrust(proto.Message):
+        r"""Promotes a key with the AES_WRAPPING purpose to a trusted wrapping
+        key. The key must be in the
+        [ACTIVE][CryptoKeyVersion.CryptoKeyVersionState.ACTIVE] state to
+        perform this operation.
+
+        Attributes:
+            name (str):
+                Required. The
+                [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
+                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to
+                promote.
+            two_factor_public_key_pem (str):
+                Required. The public key associated with the
+                2FA key that will sign the login nonce for this
+                operation.
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        two_factor_public_key_pem: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -739,6 +783,12 @@ class SingleTenantHsmInstanceProposal(proto.Message):
         number=17,
         oneof="operation",
         message=RefreshSingleTenantHsmInstance,
+    )
+    upgrade_key_trust: UpgradeKeyTrust = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        oneof="operation",
+        message=UpgradeKeyTrust,
     )
 
 

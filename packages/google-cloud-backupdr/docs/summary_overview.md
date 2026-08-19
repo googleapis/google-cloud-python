@@ -5,14 +5,14 @@ reverted. Instead, if you want to place additional content, create an
 pick up on the content and merge the content.
 ]: #
 
-# Backup and DR Service API API
+# Backup and DR Service API
 
-Overview of the APIs available for Backup and DR Service API API.
+Overview of the APIs available for Backup and DR Service API.
 
 ## All entries
 
 Classes, methods and properties & attributes for
-Backup and DR Service API API.
+Backup and DR Service API.
 
 [classes](https://cloud.google.com/python/docs/reference/backupdr/latest/summary_class.html)
 

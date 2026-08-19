@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -78,9 +78,17 @@ class ListSitesRequest(proto.Message):
             ``ListSites`` must match the call that provided the page
             token.
         filter (str):
-            Optional. Expression to filter the response.
-            See syntax details at
+            Optional. Expression to filter the response. See syntax
+            details at
             https://developers.google.com/ad-manager/api/beta/filters
+
+            **Filterable fields:**
+
+            - ``approvalStatus``
+            - ``approvalStatusUpdateTime``
+            - ``childNetworkCode``
+            - ``name``
+            - ``url``
         order_by (str):
             Optional. Expression to specify sorting
             order. See syntax details at
@@ -232,7 +240,7 @@ class UpdateSiteRequest(proto.Message):
             The ``Site``'s ``name`` is used to identify the ``Site`` to
             update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to update.
+            Optional. The list of fields to update.
     """
 
     site: site_messages.Site = proto.Field(

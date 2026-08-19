@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,12 +39,8 @@ def sample_create_session():
     client = dataproc_v1.SessionControllerClient()
 
     # Initialize request argument(s)
-    session = dataproc_v1.Session()
-    session.name = "name_value"
-
     request = dataproc_v1.CreateSessionRequest(
         parent="parent_value",
-        session=session,
         session_id="session_id_value",
     )
 

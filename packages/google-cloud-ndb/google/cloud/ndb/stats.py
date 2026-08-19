@@ -20,7 +20,6 @@ application's datastore by offline processes run by the Google Cloud team.
 
 from google.cloud.ndb import model
 
-
 __all__ = [
     "BaseKindStatistic",
     "BaseStatistic",

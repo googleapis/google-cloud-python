@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,19 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-import re
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
+import re
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -49,11 +44,13 @@ import google.auth
 import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 import google.iam.v1.options_pb2 as options_pb2  # type: ignore
 import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.type.expr_pb2 as expr_pb2  # type: ignore
+import google.type.interval_pb2 as interval_pb2  # type: ignore
 from google.api_core import (
     client_options,
     future,
@@ -85,6 +82,9 @@ CRED_INFO_JSON = {
     "principal": "service-account@example.com",
 }
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+_UUID4_RE = re.compile(
+    r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}"
+)
 
 
 async def mock_async_gen(data, chunk_size=1):
@@ -127,12 +127,28 @@ def modify_default_endpoint_template(client):
     )
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert StorageControlClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -153,6 +169,10 @@ def test__get_default_mtls_endpoint():
     )
     assert (
         StorageControlClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    )
+    assert (
+        StorageControlClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -491,6 +511,104 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
 
     client._add_cred_info_for_auth_errors(error)
     assert error.details == []
+
+
+def test__setup_request_id():
+    class MockRequest:
+        def __init__(self, **kwargs):
+            for k, v in kwargs.items():
+                setattr(self, k, v)
+
+        def __contains__(self, key):
+            return hasattr(self, key)
+
+    class MockProtoRequest:
+        def __init__(self, **kwargs):
+            for k, v in kwargs.items():
+                setattr(self, k, v)
+
+        def HasField(self, key):
+            return hasattr(self, key)
+
+    # Test with proto3 optional field not in request
+    request = MockRequest()
+    StorageControlClient._setup_request_id(request, "request_id", True)
+    assert re.match(
+        r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+        request.request_id,
+    )
+
+    # Test with proto3 optional field already in request
+    request = MockRequest(request_id="already_set")
+    StorageControlClient._setup_request_id(request, "request_id", True)
+    assert request.request_id == "already_set"
+
+    # Test with non-proto3 optional field empty
+    request = MockRequest(request_id="")
+    StorageControlClient._setup_request_id(request, "request_id", False)
+    assert re.match(
+        r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+        request.request_id,
+    )
+
+    # Test with non-proto3 optional field already set
+    request = MockRequest(request_id="already_set")
+    StorageControlClient._setup_request_id(request, "request_id", False)
+    assert request.request_id == "already_set"
+
+    # Test with proto3 optional field not in request (MockProtoRequest)
+    request = MockProtoRequest()
+    StorageControlClient._setup_request_id(request, "request_id", True)
+    assert re.match(
+        r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+        request.request_id,
+    )
+
+    # Test with proto3 optional field already in request (MockProtoRequest)
+    request = MockProtoRequest(request_id="already_set")
+    StorageControlClient._setup_request_id(request, "request_id", True)
+    assert request.request_id == "already_set"
+
+    # Test with ValueError
+    class MockValueErrorRequest:
+        def HasField(self, key):
+            raise ValueError("Mismatched field")
+
+        def __contains__(self, key):
+            return hasattr(self, key)
+
+    request = MockValueErrorRequest()
+    StorageControlClient._setup_request_id(request, "request_id", True)
+    assert re.match(
+        r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+        request.request_id,
+    )
+
+    # Test with dict and proto3 optional field not in request
+    request = {}
+    StorageControlClient._setup_request_id(request, "request_id", True)
+    assert re.match(
+        r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+        request["request_id"],
+    )
+
+    # Test with dict and proto3 optional field already in request
+    request = {"request_id": "already_set"}
+    StorageControlClient._setup_request_id(request, "request_id", True)
+    assert request["request_id"] == "already_set"
+
+    # Test with dict and non-proto3 optional field empty
+    request = {"request_id": ""}
+    StorageControlClient._setup_request_id(request, "request_id", False)
+    assert re.match(
+        r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+        request["request_id"],
+    )
+
+    # Test with dict and non-proto3 optional field already set
+    request = {"request_id": "already_set"}
+    StorageControlClient._setup_request_id(request, "request_id", False)
+    assert request["request_id"] == "already_set"
 
 
 @pytest.mark.parametrize(
@@ -955,7 +1073,14 @@ def test_storage_control_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1002,7 +1127,14 @@ def test_storage_control_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1294,11 +1426,13 @@ def test_storage_control_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1329,8 +1463,15 @@ def test_storage_control_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.CreateFolderRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.CreateFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_create_folder(request_type, transport: str = "grpc"):
@@ -1341,11 +1482,7 @@ def test_create_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_folder), "__call__") as call:
@@ -1393,17 +1530,14 @@ def test_create_folder_non_empty_request_with_auto_populated_field():
         client.create_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.CreateFolderRequest(
+        request_msg = storage_control.CreateFolderRequest(
             parent="parent_value",
             folder_id="folder_id_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_create_folder_use_cached_wrapped_rpc():
@@ -1484,9 +1618,21 @@ async def test_create_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_folder_async(
-    transport: str = "grpc_asyncio", request_type=storage_control.CreateFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.CreateFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
+async def test_create_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1494,11 +1640,7 @@ async def test_create_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_folder), "__call__") as call:
@@ -1522,11 +1664,6 @@ async def test_create_folder_async(
     assert isinstance(response, storage_control.Folder)
     assert response.name == "name_value"
     assert response.metageneration == 1491
-
-
-@pytest.mark.asyncio
-async def test_create_folder_async_from_dict():
-    await test_create_folder_async(request_type=dict)
 
 
 def test_create_folder_flattened():
@@ -1634,8 +1771,15 @@ async def test_create_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.DeleteFolderRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.DeleteFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_delete_folder(request_type, transport: str = "grpc"):
@@ -1646,11 +1790,7 @@ def test_delete_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_folder), "__call__") as call:
@@ -1692,16 +1832,13 @@ def test_delete_folder_non_empty_request_with_auto_populated_field():
         client.delete_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.DeleteFolderRequest(
+        request_msg = storage_control.DeleteFolderRequest(
             name="name_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_delete_folder_use_cached_wrapped_rpc():
@@ -1782,9 +1919,21 @@ async def test_delete_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_folder_async(
-    transport: str = "grpc_asyncio", request_type=storage_control.DeleteFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.DeleteFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
+async def test_delete_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1792,11 +1941,7 @@ async def test_delete_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_folder), "__call__") as call:
@@ -1813,11 +1958,6 @@ async def test_delete_folder_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_folder_async_from_dict():
-    await test_delete_folder_async(request_type=dict)
 
 
 def test_delete_folder_flattened():
@@ -1903,8 +2043,15 @@ async def test_delete_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.GetFolderRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.GetFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_get_folder(request_type, transport: str = "grpc"):
@@ -1915,11 +2062,7 @@ def test_get_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_folder), "__call__") as call:
@@ -1966,16 +2109,13 @@ def test_get_folder_non_empty_request_with_auto_populated_field():
         client.get_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.GetFolderRequest(
+        request_msg = storage_control.GetFolderRequest(
             name="name_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_get_folder_use_cached_wrapped_rpc():
@@ -2054,9 +2194,21 @@ async def test_get_folder_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_folder_async(
-    transport: str = "grpc_asyncio", request_type=storage_control.GetFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.GetFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
+async def test_get_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2064,11 +2216,7 @@ async def test_get_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_folder), "__call__") as call:
@@ -2092,11 +2240,6 @@ async def test_get_folder_async(
     assert isinstance(response, storage_control.Folder)
     assert response.name == "name_value"
     assert response.metageneration == 1491
-
-
-@pytest.mark.asyncio
-async def test_get_folder_async_from_dict():
-    await test_get_folder_async(request_type=dict)
 
 
 def test_get_folder_flattened():
@@ -2184,8 +2327,8 @@ async def test_get_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.ListFoldersRequest,
-        dict,
+        storage_control.ListFoldersRequest(),
+        {},
     ],
 )
 def test_list_folders(request_type, transport: str = "grpc"):
@@ -2196,7 +2339,7 @@ def test_list_folders(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_folders), "__call__") as call:
@@ -2245,7 +2388,7 @@ def test_list_folders_non_empty_request_with_auto_populated_field():
         client.list_folders(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.ListFoldersRequest(
+        request_msg = storage_control.ListFoldersRequest(
             parent="parent_value",
             page_token="page_token_value",
             prefix="prefix_value",
@@ -2253,6 +2396,7 @@ def test_list_folders_non_empty_request_with_auto_populated_field():
             lexicographic_start="lexicographic_start_value",
             lexicographic_end="lexicographic_end_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_folders_use_cached_wrapped_rpc():
@@ -2333,9 +2477,14 @@ async def test_list_folders_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_folders_async(
-    transport: str = "grpc_asyncio", request_type=storage_control.ListFoldersRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.ListFoldersRequest(),
+        {},
+    ],
+)
+async def test_list_folders_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2343,7 +2492,7 @@ async def test_list_folders_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_folders), "__call__") as call:
@@ -2364,11 +2513,6 @@ async def test_list_folders_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFoldersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_folders_async_from_dict():
-    await test_list_folders_async(request_type=dict)
 
 
 def test_list_folders_flattened():
@@ -2499,6 +2643,9 @@ def test_list_folders_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, storage_control.Folder) for i in results)
@@ -2587,6 +2734,8 @@ async def test_list_folders_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2634,11 +2783,7 @@ async def test_list_folders_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_folders(request={})
-        ).pages:
+        async for page_ in (await client.list_folders(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2647,8 +2792,15 @@ async def test_list_folders_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.RenameFolderRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.RenameFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_rename_folder(request_type, transport: str = "grpc"):
@@ -2659,11 +2811,7 @@ def test_rename_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.rename_folder), "__call__") as call:
@@ -2706,17 +2854,14 @@ def test_rename_folder_non_empty_request_with_auto_populated_field():
         client.rename_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.RenameFolderRequest(
+        request_msg = storage_control.RenameFolderRequest(
             name="name_value",
             destination_folder_id="destination_folder_id_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_rename_folder_use_cached_wrapped_rpc():
@@ -2807,9 +2952,21 @@ async def test_rename_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_rename_folder_async(
-    transport: str = "grpc_asyncio", request_type=storage_control.RenameFolderRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.RenameFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
+async def test_rename_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2817,11 +2974,7 @@ async def test_rename_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.rename_folder), "__call__") as call:
@@ -2840,11 +2993,6 @@ async def test_rename_folder_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_rename_folder_async_from_dict():
-    await test_rename_folder_async(request_type=dict)
 
 
 def test_rename_folder_flattened():
@@ -2942,8 +3090,15 @@ async def test_rename_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.DeleteFolderRecursiveRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.DeleteFolderRecursiveRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_delete_folder_recursive(request_type, transport: str = "grpc"):
@@ -2954,11 +3109,7 @@ def test_delete_folder_recursive(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3004,16 +3155,13 @@ def test_delete_folder_recursive_non_empty_request_with_auto_populated_field():
         client.delete_folder_recursive(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.DeleteFolderRecursiveRequest(
+        request_msg = storage_control.DeleteFolderRecursiveRequest(
             name="name_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_delete_folder_recursive_use_cached_wrapped_rpc():
@@ -3109,9 +3257,22 @@ async def test_delete_folder_recursive_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.DeleteFolderRecursiveRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
 async def test_delete_folder_recursive_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.DeleteFolderRecursiveRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3120,11 +3281,7 @@ async def test_delete_folder_recursive_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3145,11 +3302,6 @@ async def test_delete_folder_recursive_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_folder_recursive_async_from_dict():
-    await test_delete_folder_recursive_async(request_type=dict)
 
 
 def test_delete_folder_recursive_flattened():
@@ -3241,8 +3393,15 @@ async def test_delete_folder_recursive_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.GetStorageLayoutRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.GetStorageLayoutRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_get_storage_layout(request_type, transport: str = "grpc"):
@@ -3253,11 +3412,7 @@ def test_get_storage_layout(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3311,17 +3466,14 @@ def test_get_storage_layout_non_empty_request_with_auto_populated_field():
         client.get_storage_layout(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.GetStorageLayoutRequest(
+        request_msg = storage_control.GetStorageLayoutRequest(
             name="name_value",
             prefix="prefix_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_get_storage_layout_use_cached_wrapped_rpc():
@@ -3406,10 +3558,21 @@ async def test_get_storage_layout_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_storage_layout_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.GetStorageLayoutRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.GetStorageLayoutRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
+async def test_get_storage_layout_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3417,11 +3580,7 @@ async def test_get_storage_layout_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3449,11 +3608,6 @@ async def test_get_storage_layout_async(
     assert response.name == "name_value"
     assert response.location == "location_value"
     assert response.location_type == "location_type_value"
-
-
-@pytest.mark.asyncio
-async def test_get_storage_layout_async_from_dict():
-    await test_get_storage_layout_async(request_type=dict)
 
 
 def test_get_storage_layout_flattened():
@@ -3545,8 +3699,15 @@ async def test_get_storage_layout_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.CreateManagedFolderRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.CreateManagedFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_create_managed_folder(request_type, transport: str = "grpc"):
@@ -3557,11 +3718,7 @@ def test_create_managed_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3613,17 +3770,14 @@ def test_create_managed_folder_non_empty_request_with_auto_populated_field():
         client.create_managed_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.CreateManagedFolderRequest(
+        request_msg = storage_control.CreateManagedFolderRequest(
             parent="parent_value",
             managed_folder_id="managed_folder_id_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_create_managed_folder_use_cached_wrapped_rpc():
@@ -3709,9 +3863,22 @@ async def test_create_managed_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.CreateManagedFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
 async def test_create_managed_folder_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.CreateManagedFolderRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3720,11 +3887,7 @@ async def test_create_managed_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3750,11 +3913,6 @@ async def test_create_managed_folder_async(
     assert isinstance(response, storage_control.ManagedFolder)
     assert response.name == "name_value"
     assert response.metageneration == 1491
-
-
-@pytest.mark.asyncio
-async def test_create_managed_folder_async_from_dict():
-    await test_create_managed_folder_async(request_type=dict)
 
 
 def test_create_managed_folder_flattened():
@@ -3866,8 +4024,15 @@ async def test_create_managed_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.DeleteManagedFolderRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.DeleteManagedFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_delete_managed_folder(request_type, transport: str = "grpc"):
@@ -3878,11 +4043,7 @@ def test_delete_managed_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3928,16 +4089,13 @@ def test_delete_managed_folder_non_empty_request_with_auto_populated_field():
         client.delete_managed_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.DeleteManagedFolderRequest(
+        request_msg = storage_control.DeleteManagedFolderRequest(
             name="name_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_delete_managed_folder_use_cached_wrapped_rpc():
@@ -4023,9 +4181,22 @@ async def test_delete_managed_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.DeleteManagedFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
 async def test_delete_managed_folder_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.DeleteManagedFolderRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4034,11 +4205,7 @@ async def test_delete_managed_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4057,11 +4224,6 @@ async def test_delete_managed_folder_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_managed_folder_async_from_dict():
-    await test_delete_managed_folder_async(request_type=dict)
 
 
 def test_delete_managed_folder_flattened():
@@ -4151,8 +4313,15 @@ async def test_delete_managed_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.GetManagedFolderRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.GetManagedFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_get_managed_folder(request_type, transport: str = "grpc"):
@@ -4163,11 +4332,7 @@ def test_get_managed_folder(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4218,16 +4383,13 @@ def test_get_managed_folder_non_empty_request_with_auto_populated_field():
         client.get_managed_folder(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.GetManagedFolderRequest(
+        request_msg = storage_control.GetManagedFolderRequest(
             name="name_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_get_managed_folder_use_cached_wrapped_rpc():
@@ -4312,10 +4474,21 @@ async def test_get_managed_folder_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_managed_folder_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.GetManagedFolderRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.GetManagedFolderRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
+async def test_get_managed_folder_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4323,11 +4496,7 @@ async def test_get_managed_folder_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4353,11 +4522,6 @@ async def test_get_managed_folder_async(
     assert isinstance(response, storage_control.ManagedFolder)
     assert response.name == "name_value"
     assert response.metageneration == 1491
-
-
-@pytest.mark.asyncio
-async def test_get_managed_folder_async_from_dict():
-    await test_get_managed_folder_async(request_type=dict)
 
 
 def test_get_managed_folder_flattened():
@@ -4449,8 +4613,15 @@ async def test_get_managed_folder_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.ListManagedFoldersRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.ListManagedFoldersRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_list_managed_folders(request_type, transport: str = "grpc"):
@@ -4461,11 +4632,7 @@ def test_list_managed_folders(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4516,18 +4683,15 @@ def test_list_managed_folders_non_empty_request_with_auto_populated_field():
         client.list_managed_folders(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.ListManagedFoldersRequest(
+        request_msg = storage_control.ListManagedFoldersRequest(
             parent="parent_value",
             page_token="page_token_value",
             prefix="prefix_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_list_managed_folders_use_cached_wrapped_rpc():
@@ -4612,9 +4776,22 @@ async def test_list_managed_folders_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.ListManagedFoldersRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
 async def test_list_managed_folders_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.ListManagedFoldersRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4623,11 +4800,7 @@ async def test_list_managed_folders_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4651,11 +4824,6 @@ async def test_list_managed_folders_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListManagedFoldersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_managed_folders_async_from_dict():
-    await test_list_managed_folders_async(request_type=dict)
 
 
 def test_list_managed_folders_flattened():
@@ -4792,6 +4960,9 @@ def test_list_managed_folders_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, storage_control.ManagedFolder) for i in results)
@@ -4884,6 +5055,8 @@ async def test_list_managed_folders_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4933,11 +5106,7 @@ async def test_list_managed_folders_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_managed_folders(request={})
-        ).pages:
+        async for page_ in (await client.list_managed_folders(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4946,8 +5115,305 @@ async def test_list_managed_folders_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.CreateAnywhereCacheRequest,
-        dict,
+        storage_control.UpdateManagedFolderRequest(),
+        {},
+    ],
+)
+def test_update_managed_folder(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_managed_folder), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ManagedFolder(
+            name="name_value",
+            metageneration=1491,
+        )
+        response = client.update_managed_folder(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.UpdateManagedFolderRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.ManagedFolder)
+    assert response.name == "name_value"
+    assert response.metageneration == 1491
+
+
+def test_update_managed_folder_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.UpdateManagedFolderRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_managed_folder), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_managed_folder(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.UpdateManagedFolderRequest()
+        assert args[0] == request_msg
+
+
+def test_update_managed_folder_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_managed_folder
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.update_managed_folder] = (
+            mock_rpc
+        )
+        request = {}
+        client.update_managed_folder(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_managed_folder(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_managed_folder_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageControlAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_managed_folder
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_managed_folder
+        ] = mock_rpc
+
+        request = {}
+        await client.update_managed_folder(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.update_managed_folder(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.UpdateManagedFolderRequest(),
+        {},
+    ],
+)
+async def test_update_managed_folder_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_managed_folder), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ManagedFolder(
+                name="name_value",
+                metageneration=1491,
+            )
+        )
+        response = await client.update_managed_folder(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.UpdateManagedFolderRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.ManagedFolder)
+    assert response.name == "name_value"
+    assert response.metageneration == 1491
+
+
+def test_update_managed_folder_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_managed_folder), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ManagedFolder()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_managed_folder(
+            managed_folder=storage_control.ManagedFolder(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].managed_folder
+        mock_val = storage_control.ManagedFolder(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_managed_folder_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_managed_folder(
+            storage_control.UpdateManagedFolderRequest(),
+            managed_folder=storage_control.ManagedFolder(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_managed_folder_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_managed_folder), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ManagedFolder()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ManagedFolder()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_managed_folder(
+            managed_folder=storage_control.ManagedFolder(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].managed_folder
+        mock_val = storage_control.ManagedFolder(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_managed_folder_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_managed_folder(
+            storage_control.UpdateManagedFolderRequest(),
+            managed_folder=storage_control.ManagedFolder(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.CreateAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_create_anywhere_cache(request_type, transport: str = "grpc"):
@@ -4958,11 +5424,7 @@ def test_create_anywhere_cache(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5008,16 +5470,13 @@ def test_create_anywhere_cache_non_empty_request_with_auto_populated_field():
         client.create_anywhere_cache(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.CreateAnywhereCacheRequest(
+        request_msg = storage_control.CreateAnywhereCacheRequest(
             parent="parent_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_create_anywhere_cache_use_cached_wrapped_rpc():
@@ -5113,9 +5572,22 @@ async def test_create_anywhere_cache_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.CreateAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
 async def test_create_anywhere_cache_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.CreateAnywhereCacheRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5124,11 +5596,7 @@ async def test_create_anywhere_cache_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5149,11 +5617,6 @@ async def test_create_anywhere_cache_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_anywhere_cache_async_from_dict():
-    await test_create_anywhere_cache_async(request_type=dict)
 
 
 def test_create_anywhere_cache_flattened():
@@ -5255,8 +5718,15 @@ async def test_create_anywhere_cache_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.UpdateAnywhereCacheRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.UpdateAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_update_anywhere_cache(request_type, transport: str = "grpc"):
@@ -5267,11 +5737,7 @@ def test_update_anywhere_cache(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5315,14 +5781,11 @@ def test_update_anywhere_cache_non_empty_request_with_auto_populated_field():
         client.update_anywhere_cache(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.UpdateAnywhereCacheRequest()
         # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.UpdateAnywhereCacheRequest()
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_update_anywhere_cache_use_cached_wrapped_rpc():
@@ -5418,9 +5881,22 @@ async def test_update_anywhere_cache_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.UpdateAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
 async def test_update_anywhere_cache_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.UpdateAnywhereCacheRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5429,11 +5905,7 @@ async def test_update_anywhere_cache_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5454,11 +5926,6 @@ async def test_update_anywhere_cache_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_anywhere_cache_async_from_dict():
-    await test_update_anywhere_cache_async(request_type=dict)
 
 
 def test_update_anywhere_cache_flattened():
@@ -5560,8 +6027,15 @@ async def test_update_anywhere_cache_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.DisableAnywhereCacheRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.DisableAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_disable_anywhere_cache(request_type, transport: str = "grpc"):
@@ -5572,11 +6046,7 @@ def test_disable_anywhere_cache(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5589,6 +6059,7 @@ def test_disable_anywhere_cache(request_type, transport: str = "grpc"):
             admission_policy="admission_policy_value",
             state="state_value",
             pending_update=True,
+            ingest_on_write=True,
         )
         response = client.disable_anywhere_cache(request)
 
@@ -5606,6 +6077,7 @@ def test_disable_anywhere_cache(request_type, transport: str = "grpc"):
     assert response.admission_policy == "admission_policy_value"
     assert response.state == "state_value"
     assert response.pending_update is True
+    assert response.ingest_on_write is True
 
 
 def test_disable_anywhere_cache_non_empty_request_with_auto_populated_field():
@@ -5633,16 +6105,13 @@ def test_disable_anywhere_cache_non_empty_request_with_auto_populated_field():
         client.disable_anywhere_cache(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.DisableAnywhereCacheRequest(
+        request_msg = storage_control.DisableAnywhereCacheRequest(
             name="name_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_disable_anywhere_cache_use_cached_wrapped_rpc():
@@ -5728,9 +6197,22 @@ async def test_disable_anywhere_cache_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.DisableAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
 async def test_disable_anywhere_cache_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.DisableAnywhereCacheRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5739,11 +6221,7 @@ async def test_disable_anywhere_cache_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5757,6 +6235,7 @@ async def test_disable_anywhere_cache_async(
                 admission_policy="admission_policy_value",
                 state="state_value",
                 pending_update=True,
+                ingest_on_write=True,
             )
         )
         response = await client.disable_anywhere_cache(request)
@@ -5775,11 +6254,7 @@ async def test_disable_anywhere_cache_async(
     assert response.admission_policy == "admission_policy_value"
     assert response.state == "state_value"
     assert response.pending_update is True
-
-
-@pytest.mark.asyncio
-async def test_disable_anywhere_cache_async_from_dict():
-    await test_disable_anywhere_cache_async(request_type=dict)
+    assert response.ingest_on_write is True
 
 
 def test_disable_anywhere_cache_flattened():
@@ -5871,8 +6346,15 @@ async def test_disable_anywhere_cache_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.PauseAnywhereCacheRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.PauseAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_pause_anywhere_cache(request_type, transport: str = "grpc"):
@@ -5883,11 +6365,7 @@ def test_pause_anywhere_cache(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5900,6 +6378,7 @@ def test_pause_anywhere_cache(request_type, transport: str = "grpc"):
             admission_policy="admission_policy_value",
             state="state_value",
             pending_update=True,
+            ingest_on_write=True,
         )
         response = client.pause_anywhere_cache(request)
 
@@ -5917,6 +6396,7 @@ def test_pause_anywhere_cache(request_type, transport: str = "grpc"):
     assert response.admission_policy == "admission_policy_value"
     assert response.state == "state_value"
     assert response.pending_update is True
+    assert response.ingest_on_write is True
 
 
 def test_pause_anywhere_cache_non_empty_request_with_auto_populated_field():
@@ -5944,16 +6424,13 @@ def test_pause_anywhere_cache_non_empty_request_with_auto_populated_field():
         client.pause_anywhere_cache(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.PauseAnywhereCacheRequest(
+        request_msg = storage_control.PauseAnywhereCacheRequest(
             name="name_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_pause_anywhere_cache_use_cached_wrapped_rpc():
@@ -6038,9 +6515,22 @@ async def test_pause_anywhere_cache_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.PauseAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
 async def test_pause_anywhere_cache_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.PauseAnywhereCacheRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6049,11 +6539,7 @@ async def test_pause_anywhere_cache_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6067,6 +6553,7 @@ async def test_pause_anywhere_cache_async(
                 admission_policy="admission_policy_value",
                 state="state_value",
                 pending_update=True,
+                ingest_on_write=True,
             )
         )
         response = await client.pause_anywhere_cache(request)
@@ -6085,11 +6572,7 @@ async def test_pause_anywhere_cache_async(
     assert response.admission_policy == "admission_policy_value"
     assert response.state == "state_value"
     assert response.pending_update is True
-
-
-@pytest.mark.asyncio
-async def test_pause_anywhere_cache_async_from_dict():
-    await test_pause_anywhere_cache_async(request_type=dict)
+    assert response.ingest_on_write is True
 
 
 def test_pause_anywhere_cache_flattened():
@@ -6181,8 +6664,15 @@ async def test_pause_anywhere_cache_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.ResumeAnywhereCacheRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.ResumeAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_resume_anywhere_cache(request_type, transport: str = "grpc"):
@@ -6193,11 +6683,7 @@ def test_resume_anywhere_cache(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6210,6 +6696,7 @@ def test_resume_anywhere_cache(request_type, transport: str = "grpc"):
             admission_policy="admission_policy_value",
             state="state_value",
             pending_update=True,
+            ingest_on_write=True,
         )
         response = client.resume_anywhere_cache(request)
 
@@ -6227,6 +6714,7 @@ def test_resume_anywhere_cache(request_type, transport: str = "grpc"):
     assert response.admission_policy == "admission_policy_value"
     assert response.state == "state_value"
     assert response.pending_update is True
+    assert response.ingest_on_write is True
 
 
 def test_resume_anywhere_cache_non_empty_request_with_auto_populated_field():
@@ -6254,16 +6742,13 @@ def test_resume_anywhere_cache_non_empty_request_with_auto_populated_field():
         client.resume_anywhere_cache(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.ResumeAnywhereCacheRequest(
+        request_msg = storage_control.ResumeAnywhereCacheRequest(
             name="name_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_resume_anywhere_cache_use_cached_wrapped_rpc():
@@ -6349,9 +6834,22 @@ async def test_resume_anywhere_cache_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.ResumeAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
 async def test_resume_anywhere_cache_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.ResumeAnywhereCacheRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6360,11 +6858,7 @@ async def test_resume_anywhere_cache_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6378,6 +6872,7 @@ async def test_resume_anywhere_cache_async(
                 admission_policy="admission_policy_value",
                 state="state_value",
                 pending_update=True,
+                ingest_on_write=True,
             )
         )
         response = await client.resume_anywhere_cache(request)
@@ -6396,11 +6891,7 @@ async def test_resume_anywhere_cache_async(
     assert response.admission_policy == "admission_policy_value"
     assert response.state == "state_value"
     assert response.pending_update is True
-
-
-@pytest.mark.asyncio
-async def test_resume_anywhere_cache_async_from_dict():
-    await test_resume_anywhere_cache_async(request_type=dict)
+    assert response.ingest_on_write is True
 
 
 def test_resume_anywhere_cache_flattened():
@@ -6492,8 +6983,15 @@ async def test_resume_anywhere_cache_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.GetAnywhereCacheRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.GetAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_get_anywhere_cache(request_type, transport: str = "grpc"):
@@ -6504,11 +7002,7 @@ def test_get_anywhere_cache(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6521,6 +7015,7 @@ def test_get_anywhere_cache(request_type, transport: str = "grpc"):
             admission_policy="admission_policy_value",
             state="state_value",
             pending_update=True,
+            ingest_on_write=True,
         )
         response = client.get_anywhere_cache(request)
 
@@ -6538,6 +7033,7 @@ def test_get_anywhere_cache(request_type, transport: str = "grpc"):
     assert response.admission_policy == "admission_policy_value"
     assert response.state == "state_value"
     assert response.pending_update is True
+    assert response.ingest_on_write is True
 
 
 def test_get_anywhere_cache_non_empty_request_with_auto_populated_field():
@@ -6565,16 +7061,13 @@ def test_get_anywhere_cache_non_empty_request_with_auto_populated_field():
         client.get_anywhere_cache(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.GetAnywhereCacheRequest(
+        request_msg = storage_control.GetAnywhereCacheRequest(
             name="name_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_get_anywhere_cache_use_cached_wrapped_rpc():
@@ -6659,10 +7152,21 @@ async def test_get_anywhere_cache_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_anywhere_cache_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.GetAnywhereCacheRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.GetAnywhereCacheRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
+async def test_get_anywhere_cache_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6670,11 +7174,7 @@ async def test_get_anywhere_cache_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6688,6 +7188,7 @@ async def test_get_anywhere_cache_async(
                 admission_policy="admission_policy_value",
                 state="state_value",
                 pending_update=True,
+                ingest_on_write=True,
             )
         )
         response = await client.get_anywhere_cache(request)
@@ -6706,11 +7207,7 @@ async def test_get_anywhere_cache_async(
     assert response.admission_policy == "admission_policy_value"
     assert response.state == "state_value"
     assert response.pending_update is True
-
-
-@pytest.mark.asyncio
-async def test_get_anywhere_cache_async_from_dict():
-    await test_get_anywhere_cache_async(request_type=dict)
+    assert response.ingest_on_write is True
 
 
 def test_get_anywhere_cache_flattened():
@@ -6802,8 +7299,15 @@ async def test_get_anywhere_cache_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.ListAnywhereCachesRequest,
-        dict,
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.ListAnywhereCachesRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
     ],
 )
 def test_list_anywhere_caches(request_type, transport: str = "grpc"):
@@ -6814,11 +7318,7 @@ def test_list_anywhere_caches(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6868,17 +7368,14 @@ def test_list_anywhere_caches_non_empty_request_with_auto_populated_field():
         client.list_anywhere_caches(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
-        assert args[0] == storage_control.ListAnywhereCachesRequest(
+        request_msg = storage_control.ListAnywhereCachesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
 
 def test_list_anywhere_caches_use_cached_wrapped_rpc():
@@ -6963,9 +7460,22 @@ async def test_list_anywhere_caches_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        # Pure protobuf messages (non-proto-plus) require keyword arguments.
+        storage_control.ListAnywhereCachesRequest(
+            **{
+                "request_id": "explicit value for autopopulate-able field",
+            }
+        ),
+        {
+            "request_id": "explicit value for autopopulate-able field",
+        },
+    ],
+)
 async def test_list_anywhere_caches_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.ListAnywhereCachesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6974,11 +7484,7 @@ async def test_list_anywhere_caches_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-    if isinstance(request, dict):
-        request["request_id"] = "explicit value for autopopulate-able field"
-    else:
-        request.request_id = "explicit value for autopopulate-able field"
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7002,11 +7508,6 @@ async def test_list_anywhere_caches_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAnywhereCachesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_anywhere_caches_async_from_dict():
-    await test_list_anywhere_caches_async(request_type=dict)
 
 
 def test_list_anywhere_caches_flattened():
@@ -7143,6 +7644,9 @@ def test_list_anywhere_caches_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, storage_control.AnywhereCache) for i in results)
@@ -7235,6 +7739,8 @@ async def test_list_anywhere_caches_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7284,11 +7790,7 @@ async def test_list_anywhere_caches_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_anywhere_caches(request={})
-        ).pages:
+        async for page_ in (await client.list_anywhere_caches(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7297,8 +7799,1346 @@ async def test_list_anywhere_caches_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.GetProjectIntelligenceConfigRequest,
-        dict,
+        storage_control.CreateRapidCacheRequest(),
+        {},
+    ],
+)
+def test_create_rapid_cache(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_rapid_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.create_rapid_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.CreateRapidCacheRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_rapid_cache_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.CreateRapidCacheRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_rapid_cache), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.create_rapid_cache(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.CreateRapidCacheRequest(
+            parent="parent_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_create_rapid_cache_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_rapid_cache in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.create_rapid_cache] = (
+            mock_rpc
+        )
+        request = {}
+        client.create_rapid_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.create_rapid_cache(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_create_rapid_cache_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageControlAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.create_rapid_cache
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.create_rapid_cache
+        ] = mock_rpc
+
+        request = {}
+        await client.create_rapid_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.create_rapid_cache(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.CreateRapidCacheRequest(),
+        {},
+    ],
+)
+async def test_create_rapid_cache_async(request_type, transport: str = "grpc_asyncio"):
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_rapid_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_rapid_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.CreateRapidCacheRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_rapid_cache_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_rapid_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_rapid_cache(
+            parent="parent_value",
+            rapid_cache=storage_control.RapidCache(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].rapid_cache
+        mock_val = storage_control.RapidCache(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_rapid_cache_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_rapid_cache(
+            storage_control.CreateRapidCacheRequest(),
+            parent="parent_value",
+            rapid_cache=storage_control.RapidCache(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_rapid_cache_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_rapid_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_rapid_cache(
+            parent="parent_value",
+            rapid_cache=storage_control.RapidCache(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].rapid_cache
+        mock_val = storage_control.RapidCache(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_rapid_cache_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_rapid_cache(
+            storage_control.CreateRapidCacheRequest(),
+            parent="parent_value",
+            rapid_cache=storage_control.RapidCache(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.UpdateRapidCacheRequest(),
+        {},
+    ],
+)
+def test_update_rapid_cache(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_rapid_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.update_rapid_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.UpdateRapidCacheRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_rapid_cache_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.UpdateRapidCacheRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_rapid_cache), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.update_rapid_cache(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.UpdateRapidCacheRequest()
+        assert args[0] == request_msg
+
+
+def test_update_rapid_cache_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_rapid_cache in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.update_rapid_cache] = (
+            mock_rpc
+        )
+        request = {}
+        client.update_rapid_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.update_rapid_cache(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_update_rapid_cache_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageControlAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.update_rapid_cache
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.update_rapid_cache
+        ] = mock_rpc
+
+        request = {}
+        await client.update_rapid_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.update_rapid_cache(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.UpdateRapidCacheRequest(),
+        {},
+    ],
+)
+async def test_update_rapid_cache_async(request_type, transport: str = "grpc_asyncio"):
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_rapid_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_rapid_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.UpdateRapidCacheRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_rapid_cache_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_rapid_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_rapid_cache(
+            rapid_cache=storage_control.RapidCache(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].rapid_cache
+        mock_val = storage_control.RapidCache(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_rapid_cache_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_rapid_cache(
+            storage_control.UpdateRapidCacheRequest(),
+            rapid_cache=storage_control.RapidCache(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_rapid_cache_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_rapid_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_rapid_cache(
+            rapid_cache=storage_control.RapidCache(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].rapid_cache
+        mock_val = storage_control.RapidCache(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_rapid_cache_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_rapid_cache(
+            storage_control.UpdateRapidCacheRequest(),
+            rapid_cache=storage_control.RapidCache(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.GetRapidCacheRequest(),
+        {},
+    ],
+)
+def test_get_rapid_cache(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_rapid_cache), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.RapidCache(
+            name="name_value",
+            zone="zone_value",
+            cache_type="cache_type_value",
+            admission_policy="admission_policy_value",
+            state="state_value",
+            pending_update=True,
+        )
+        response = client.get_rapid_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.GetRapidCacheRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.RapidCache)
+    assert response.name == "name_value"
+    assert response.zone == "zone_value"
+    assert response.cache_type == "cache_type_value"
+    assert response.admission_policy == "admission_policy_value"
+    assert response.state == "state_value"
+    assert response.pending_update is True
+
+
+def test_get_rapid_cache_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.GetRapidCacheRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_rapid_cache), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_rapid_cache(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.GetRapidCacheRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_get_rapid_cache_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_rapid_cache in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_rapid_cache] = mock_rpc
+        request = {}
+        client.get_rapid_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_rapid_cache(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_rapid_cache_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageControlAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_rapid_cache
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_rapid_cache
+        ] = mock_rpc
+
+        request = {}
+        await client.get_rapid_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_rapid_cache(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.GetRapidCacheRequest(),
+        {},
+    ],
+)
+async def test_get_rapid_cache_async(request_type, transport: str = "grpc_asyncio"):
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_rapid_cache), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.RapidCache(
+                name="name_value",
+                zone="zone_value",
+                cache_type="cache_type_value",
+                admission_policy="admission_policy_value",
+                state="state_value",
+                pending_update=True,
+            )
+        )
+        response = await client.get_rapid_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.GetRapidCacheRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.RapidCache)
+    assert response.name == "name_value"
+    assert response.zone == "zone_value"
+    assert response.cache_type == "cache_type_value"
+    assert response.admission_policy == "admission_policy_value"
+    assert response.state == "state_value"
+    assert response.pending_update is True
+
+
+def test_get_rapid_cache_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_rapid_cache), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.RapidCache()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_rapid_cache(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_rapid_cache_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_rapid_cache(
+            storage_control.GetRapidCacheRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_rapid_cache_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_rapid_cache), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.RapidCache()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.RapidCache()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_rapid_cache(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_rapid_cache_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_rapid_cache(
+            storage_control.GetRapidCacheRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.ListRapidCachesRequest(),
+        {},
+    ],
+)
+def test_list_rapid_caches(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rapid_caches), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ListRapidCachesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_rapid_caches(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.ListRapidCachesRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListRapidCachesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_rapid_caches_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.ListRapidCachesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rapid_caches), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_rapid_caches(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ListRapidCachesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_list_rapid_caches_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_rapid_caches in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.list_rapid_caches] = (
+            mock_rpc
+        )
+        request = {}
+        client.list_rapid_caches(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_rapid_caches(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_rapid_caches_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageControlAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_rapid_caches
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_rapid_caches
+        ] = mock_rpc
+
+        request = {}
+        await client.list_rapid_caches(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.list_rapid_caches(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.ListRapidCachesRequest(),
+        {},
+    ],
+)
+async def test_list_rapid_caches_async(request_type, transport: str = "grpc_asyncio"):
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rapid_caches), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ListRapidCachesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_rapid_caches(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.ListRapidCachesRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListRapidCachesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_rapid_caches_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rapid_caches), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ListRapidCachesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_rapid_caches(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_rapid_caches_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_rapid_caches(
+            storage_control.ListRapidCachesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_rapid_caches_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rapid_caches), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ListRapidCachesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ListRapidCachesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_rapid_caches(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_rapid_caches_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_rapid_caches(
+            storage_control.ListRapidCachesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_rapid_caches_pager(transport_name: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rapid_caches), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.ListRapidCachesResponse(
+                rapid_caches=[
+                    storage_control.RapidCache(),
+                    storage_control.RapidCache(),
+                    storage_control.RapidCache(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListRapidCachesResponse(
+                rapid_caches=[],
+                next_page_token="def",
+            ),
+            storage_control.ListRapidCachesResponse(
+                rapid_caches=[
+                    storage_control.RapidCache(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListRapidCachesResponse(
+                rapid_caches=[
+                    storage_control.RapidCache(),
+                    storage_control.RapidCache(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        pager = client.list_rapid_caches(request={}, retry=retry, timeout=timeout)
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, storage_control.RapidCache) for i in results)
+
+
+def test_list_rapid_caches_pages(transport_name: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rapid_caches), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.ListRapidCachesResponse(
+                rapid_caches=[
+                    storage_control.RapidCache(),
+                    storage_control.RapidCache(),
+                    storage_control.RapidCache(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListRapidCachesResponse(
+                rapid_caches=[],
+                next_page_token="def",
+            ),
+            storage_control.ListRapidCachesResponse(
+                rapid_caches=[
+                    storage_control.RapidCache(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListRapidCachesResponse(
+                rapid_caches=[
+                    storage_control.RapidCache(),
+                    storage_control.RapidCache(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_rapid_caches(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_rapid_caches_async_pager():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rapid_caches),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.ListRapidCachesResponse(
+                rapid_caches=[
+                    storage_control.RapidCache(),
+                    storage_control.RapidCache(),
+                    storage_control.RapidCache(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListRapidCachesResponse(
+                rapid_caches=[],
+                next_page_token="def",
+            ),
+            storage_control.ListRapidCachesResponse(
+                rapid_caches=[
+                    storage_control.RapidCache(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListRapidCachesResponse(
+                rapid_caches=[
+                    storage_control.RapidCache(),
+                    storage_control.RapidCache(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_rapid_caches(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, storage_control.RapidCache) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_rapid_caches_async_pages():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rapid_caches),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.ListRapidCachesResponse(
+                rapid_caches=[
+                    storage_control.RapidCache(),
+                    storage_control.RapidCache(),
+                    storage_control.RapidCache(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListRapidCachesResponse(
+                rapid_caches=[],
+                next_page_token="def",
+            ),
+            storage_control.ListRapidCachesResponse(
+                rapid_caches=[
+                    storage_control.RapidCache(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListRapidCachesResponse(
+                rapid_caches=[
+                    storage_control.RapidCache(),
+                    storage_control.RapidCache(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.list_rapid_caches(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.GetProjectIntelligenceConfigRequest(),
+        {},
     ],
 )
 def test_get_project_intelligence_config(request_type, transport: str = "grpc"):
@@ -7309,7 +9149,7 @@ def test_get_project_intelligence_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7362,9 +9202,10 @@ def test_get_project_intelligence_config_non_empty_request_with_auto_populated_f
         client.get_project_intelligence_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.GetProjectIntelligenceConfigRequest(
+        request_msg = storage_control.GetProjectIntelligenceConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_project_intelligence_config_use_cached_wrapped_rpc():
@@ -7450,9 +9291,15 @@ async def test_get_project_intelligence_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.GetProjectIntelligenceConfigRequest(),
+        {},
+    ],
+)
 async def test_get_project_intelligence_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.GetProjectIntelligenceConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7461,7 +9308,7 @@ async def test_get_project_intelligence_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7489,11 +9336,6 @@ async def test_get_project_intelligence_config_async(
         response.edition_config
         == storage_control.IntelligenceConfig.EditionConfig.INHERIT
     )
-
-
-@pytest.mark.asyncio
-async def test_get_project_intelligence_config_async_from_dict():
-    await test_get_project_intelligence_config_async(request_type=dict)
 
 
 def test_get_project_intelligence_config_field_headers():
@@ -7650,8 +9492,8 @@ async def test_get_project_intelligence_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.UpdateProjectIntelligenceConfigRequest,
-        dict,
+        storage_control.UpdateProjectIntelligenceConfigRequest(),
+        {},
     ],
 )
 def test_update_project_intelligence_config(request_type, transport: str = "grpc"):
@@ -7662,7 +9504,7 @@ def test_update_project_intelligence_config(request_type, transport: str = "grpc
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7713,7 +9555,8 @@ def test_update_project_intelligence_config_non_empty_request_with_auto_populate
         client.update_project_intelligence_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.UpdateProjectIntelligenceConfigRequest()
+        request_msg = storage_control.UpdateProjectIntelligenceConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_project_intelligence_config_use_cached_wrapped_rpc():
@@ -7799,9 +9642,15 @@ async def test_update_project_intelligence_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.UpdateProjectIntelligenceConfigRequest(),
+        {},
+    ],
+)
 async def test_update_project_intelligence_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.UpdateProjectIntelligenceConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7810,7 +9659,7 @@ async def test_update_project_intelligence_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7838,11 +9687,6 @@ async def test_update_project_intelligence_config_async(
         response.edition_config
         == storage_control.IntelligenceConfig.EditionConfig.INHERIT
     )
-
-
-@pytest.mark.asyncio
-async def test_update_project_intelligence_config_async_from_dict():
-    await test_update_project_intelligence_config_async(request_type=dict)
 
 
 def test_update_project_intelligence_config_field_headers():
@@ -8009,8 +9853,8 @@ async def test_update_project_intelligence_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.GetFolderIntelligenceConfigRequest,
-        dict,
+        storage_control.GetFolderIntelligenceConfigRequest(),
+        {},
     ],
 )
 def test_get_folder_intelligence_config(request_type, transport: str = "grpc"):
@@ -8021,7 +9865,7 @@ def test_get_folder_intelligence_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8074,9 +9918,10 @@ def test_get_folder_intelligence_config_non_empty_request_with_auto_populated_fi
         client.get_folder_intelligence_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.GetFolderIntelligenceConfigRequest(
+        request_msg = storage_control.GetFolderIntelligenceConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_folder_intelligence_config_use_cached_wrapped_rpc():
@@ -8162,9 +10007,15 @@ async def test_get_folder_intelligence_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.GetFolderIntelligenceConfigRequest(),
+        {},
+    ],
+)
 async def test_get_folder_intelligence_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.GetFolderIntelligenceConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8173,7 +10024,7 @@ async def test_get_folder_intelligence_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8201,11 +10052,6 @@ async def test_get_folder_intelligence_config_async(
         response.edition_config
         == storage_control.IntelligenceConfig.EditionConfig.INHERIT
     )
-
-
-@pytest.mark.asyncio
-async def test_get_folder_intelligence_config_async_from_dict():
-    await test_get_folder_intelligence_config_async(request_type=dict)
 
 
 def test_get_folder_intelligence_config_field_headers():
@@ -8362,8 +10208,8 @@ async def test_get_folder_intelligence_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.UpdateFolderIntelligenceConfigRequest,
-        dict,
+        storage_control.UpdateFolderIntelligenceConfigRequest(),
+        {},
     ],
 )
 def test_update_folder_intelligence_config(request_type, transport: str = "grpc"):
@@ -8374,7 +10220,7 @@ def test_update_folder_intelligence_config(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8425,7 +10271,8 @@ def test_update_folder_intelligence_config_non_empty_request_with_auto_populated
         client.update_folder_intelligence_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.UpdateFolderIntelligenceConfigRequest()
+        request_msg = storage_control.UpdateFolderIntelligenceConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_folder_intelligence_config_use_cached_wrapped_rpc():
@@ -8511,9 +10358,15 @@ async def test_update_folder_intelligence_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.UpdateFolderIntelligenceConfigRequest(),
+        {},
+    ],
+)
 async def test_update_folder_intelligence_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.UpdateFolderIntelligenceConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8522,7 +10375,7 @@ async def test_update_folder_intelligence_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8550,11 +10403,6 @@ async def test_update_folder_intelligence_config_async(
         response.edition_config
         == storage_control.IntelligenceConfig.EditionConfig.INHERIT
     )
-
-
-@pytest.mark.asyncio
-async def test_update_folder_intelligence_config_async_from_dict():
-    await test_update_folder_intelligence_config_async(request_type=dict)
 
 
 def test_update_folder_intelligence_config_field_headers():
@@ -8721,8 +10569,8 @@ async def test_update_folder_intelligence_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.GetOrganizationIntelligenceConfigRequest,
-        dict,
+        storage_control.GetOrganizationIntelligenceConfigRequest(),
+        {},
     ],
 )
 def test_get_organization_intelligence_config(request_type, transport: str = "grpc"):
@@ -8733,7 +10581,7 @@ def test_get_organization_intelligence_config(request_type, transport: str = "gr
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8786,9 +10634,10 @@ def test_get_organization_intelligence_config_non_empty_request_with_auto_popula
         client.get_organization_intelligence_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.GetOrganizationIntelligenceConfigRequest(
+        request_msg = storage_control.GetOrganizationIntelligenceConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_organization_intelligence_config_use_cached_wrapped_rpc():
@@ -8874,9 +10723,15 @@ async def test_get_organization_intelligence_config_async_use_cached_wrapped_rpc
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.GetOrganizationIntelligenceConfigRequest(),
+        {},
+    ],
+)
 async def test_get_organization_intelligence_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.GetOrganizationIntelligenceConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8885,7 +10740,7 @@ async def test_get_organization_intelligence_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8913,11 +10768,6 @@ async def test_get_organization_intelligence_config_async(
         response.edition_config
         == storage_control.IntelligenceConfig.EditionConfig.INHERIT
     )
-
-
-@pytest.mark.asyncio
-async def test_get_organization_intelligence_config_async_from_dict():
-    await test_get_organization_intelligence_config_async(request_type=dict)
 
 
 def test_get_organization_intelligence_config_field_headers():
@@ -9074,8 +10924,8 @@ async def test_get_organization_intelligence_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        storage_control.UpdateOrganizationIntelligenceConfigRequest,
-        dict,
+        storage_control.UpdateOrganizationIntelligenceConfigRequest(),
+        {},
     ],
 )
 def test_update_organization_intelligence_config(request_type, transport: str = "grpc"):
@@ -9086,7 +10936,7 @@ def test_update_organization_intelligence_config(request_type, transport: str = 
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9137,7 +10987,8 @@ def test_update_organization_intelligence_config_non_empty_request_with_auto_pop
         client.update_organization_intelligence_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storage_control.UpdateOrganizationIntelligenceConfigRequest()
+        request_msg = storage_control.UpdateOrganizationIntelligenceConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_organization_intelligence_config_use_cached_wrapped_rpc():
@@ -9223,9 +11074,15 @@ async def test_update_organization_intelligence_config_async_use_cached_wrapped_
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.UpdateOrganizationIntelligenceConfigRequest(),
+        {},
+    ],
+)
 async def test_update_organization_intelligence_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=storage_control.UpdateOrganizationIntelligenceConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9234,7 +11091,7 @@ async def test_update_organization_intelligence_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9262,11 +11119,6 @@ async def test_update_organization_intelligence_config_async(
         response.edition_config
         == storage_control.IntelligenceConfig.EditionConfig.INHERIT
     )
-
-
-@pytest.mark.asyncio
-async def test_update_organization_intelligence_config_async_from_dict():
-    await test_update_organization_intelligence_config_async(request_type=dict)
 
 
 def test_update_organization_intelligence_config_field_headers():
@@ -9433,8 +11285,8 @@ async def test_update_organization_intelligence_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
     ],
 )
 def test_get_iam_policy(request_type, transport: str = "grpc"):
@@ -9445,7 +11297,7 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -9491,9 +11343,10 @@ def test_get_iam_policy_non_empty_request_with_auto_populated_field():
         client.get_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+        request_msg = iam_policy_pb2.GetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_iam_policy_use_cached_wrapped_rpc():
@@ -9574,9 +11427,14 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9584,7 +11442,7 @@ async def test_get_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -9607,11 +11465,6 @@ async def test_get_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_async_from_dict():
-    await test_get_iam_policy_async(request_type=dict)
 
 
 def test_get_iam_policy_from_dict_foreign():
@@ -9714,8 +11567,8 @@ async def test_get_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
     ],
 )
 def test_set_iam_policy(request_type, transport: str = "grpc"):
@@ -9726,7 +11579,7 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -9772,9 +11625,10 @@ def test_set_iam_policy_non_empty_request_with_auto_populated_field():
         client.set_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+        request_msg = iam_policy_pb2.SetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_iam_policy_use_cached_wrapped_rpc():
@@ -9855,9 +11709,14 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_set_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9865,7 +11724,7 @@ async def test_set_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -9888,11 +11747,6 @@ async def test_set_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_async_from_dict():
-    await test_set_iam_policy_async(request_type=dict)
 
 
 def test_set_iam_policy_from_dict_foreign():
@@ -9996,8 +11850,8 @@ async def test_set_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
     ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
@@ -10008,7 +11862,7 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10056,9 +11910,10 @@ def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
         client.test_iam_permissions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_test_iam_permissions_use_cached_wrapped_rpc():
@@ -10143,9 +11998,15 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
+    ],
+)
 async def test_test_iam_permissions_async(
-    transport: str = "grpc_asyncio",
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10154,7 +12015,7 @@ async def test_test_iam_permissions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10177,11 +12038,6 @@ async def test_test_iam_permissions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_async_from_dict():
-    await test_test_iam_permissions_async(request_type=dict)
 
 
 def test_test_iam_permissions_from_dict_foreign():
@@ -10299,74 +12155,4207 @@ async def test_test_iam_permissions_flattened_error_async():
         )
 
 
-def test_create_folder_rest_no_http_options():
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.GetIntelligenceFindingRequest(),
+        {},
+    ],
+)
+def test_get_intelligence_finding(request_type, transport: str = "grpc"):
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        transport=transport,
     )
-    request = storage_control.CreateFolderRequest()
-    with pytest.raises(RuntimeError):
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_intelligence_finding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.IntelligenceFinding(
+            name="name_value",
+            description="description_value",
+            type_=storage_control.FindingType.FINDING_TYPE_COLDLINE_AND_ARCHIVAL_STORAGE_OPERATIONS_SPIKE,
+            category=storage_control.FindingCategory.FINDING_CATEGORY_DATA_MANAGEMENT,
+            severity=storage_control.FindingSeverity.FINDING_SEVERITY_CRITICAL,
+            target_resource="target_resource_value",
+            associated_resources=["associated_resources_value"],
+        )
+        response = client.get_intelligence_finding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.GetIntelligenceFindingRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.IntelligenceFinding)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert (
+        response.type_
+        == storage_control.FindingType.FINDING_TYPE_COLDLINE_AND_ARCHIVAL_STORAGE_OPERATIONS_SPIKE
+    )
+    assert (
+        response.category
+        == storage_control.FindingCategory.FINDING_CATEGORY_DATA_MANAGEMENT
+    )
+    assert (
+        response.severity == storage_control.FindingSeverity.FINDING_SEVERITY_CRITICAL
+    )
+    assert response.target_resource == "target_resource_value"
+    assert response.associated_resources == ["associated_resources_value"]
+
+
+def test_get_intelligence_finding_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.GetIntelligenceFindingRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_intelligence_finding), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_intelligence_finding(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.GetIntelligenceFindingRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_get_intelligence_finding_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_intelligence_finding
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_intelligence_finding
+        ] = mock_rpc
+        request = {}
+        client.get_intelligence_finding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_intelligence_finding(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_intelligence_finding_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageControlAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_intelligence_finding
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_intelligence_finding
+        ] = mock_rpc
+
+        request = {}
+        await client.get_intelligence_finding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_intelligence_finding(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.GetIntelligenceFindingRequest(),
+        {},
+    ],
+)
+async def test_get_intelligence_finding_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_intelligence_finding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.IntelligenceFinding(
+                name="name_value",
+                description="description_value",
+                type_=storage_control.FindingType.FINDING_TYPE_COLDLINE_AND_ARCHIVAL_STORAGE_OPERATIONS_SPIKE,
+                category=storage_control.FindingCategory.FINDING_CATEGORY_DATA_MANAGEMENT,
+                severity=storage_control.FindingSeverity.FINDING_SEVERITY_CRITICAL,
+                target_resource="target_resource_value",
+                associated_resources=["associated_resources_value"],
+            )
+        )
+        response = await client.get_intelligence_finding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.GetIntelligenceFindingRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.IntelligenceFinding)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert (
+        response.type_
+        == storage_control.FindingType.FINDING_TYPE_COLDLINE_AND_ARCHIVAL_STORAGE_OPERATIONS_SPIKE
+    )
+    assert (
+        response.category
+        == storage_control.FindingCategory.FINDING_CATEGORY_DATA_MANAGEMENT
+    )
+    assert (
+        response.severity == storage_control.FindingSeverity.FINDING_SEVERITY_CRITICAL
+    )
+    assert response.target_resource == "target_resource_value"
+    assert response.associated_resources == ["associated_resources_value"]
+
+
+def test_get_intelligence_finding_field_headers():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storage_control.GetIntelligenceFindingRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_intelligence_finding), "__call__"
+    ) as call:
+        call.return_value = storage_control.IntelligenceFinding()
+        client.get_intelligence_finding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_intelligence_finding_field_headers_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storage_control.GetIntelligenceFindingRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_intelligence_finding), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.IntelligenceFinding()
+        )
+        await client.get_intelligence_finding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_intelligence_finding_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_intelligence_finding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.IntelligenceFinding()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_intelligence_finding(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_intelligence_finding_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_intelligence_finding(
+            storage_control.GetIntelligenceFindingRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_intelligence_finding_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_intelligence_finding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.IntelligenceFinding()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.IntelligenceFinding()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_intelligence_finding(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_intelligence_finding_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_intelligence_finding(
+            storage_control.GetIntelligenceFindingRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.ListIntelligenceFindingsRequest(),
+        {},
+    ],
+)
+def test_list_intelligence_findings(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_findings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ListIntelligenceFindingsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_intelligence_findings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.ListIntelligenceFindingsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListIntelligenceFindingsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_intelligence_findings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.ListIntelligenceFindingsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_findings), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_intelligence_findings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ListIntelligenceFindingsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_list_intelligence_findings_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_intelligence_findings
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_intelligence_findings
+        ] = mock_rpc
+        request = {}
+        client.list_intelligence_findings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_intelligence_findings(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_intelligence_findings_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageControlAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_intelligence_findings
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_intelligence_findings
+        ] = mock_rpc
+
+        request = {}
+        await client.list_intelligence_findings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.list_intelligence_findings(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.ListIntelligenceFindingsRequest(),
+        {},
+    ],
+)
+async def test_list_intelligence_findings_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_findings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ListIntelligenceFindingsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_intelligence_findings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.ListIntelligenceFindingsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListIntelligenceFindingsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_intelligence_findings_field_headers():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storage_control.ListIntelligenceFindingsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_findings), "__call__"
+    ) as call:
+        call.return_value = storage_control.ListIntelligenceFindingsResponse()
+        client.list_intelligence_findings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_intelligence_findings_field_headers_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storage_control.ListIntelligenceFindingsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_findings), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ListIntelligenceFindingsResponse()
+        )
+        await client.list_intelligence_findings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_intelligence_findings_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_findings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ListIntelligenceFindingsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_intelligence_findings(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_intelligence_findings_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_intelligence_findings(
+            storage_control.ListIntelligenceFindingsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_intelligence_findings_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_findings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ListIntelligenceFindingsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ListIntelligenceFindingsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_intelligence_findings(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_intelligence_findings_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_intelligence_findings(
+            storage_control.ListIntelligenceFindingsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_intelligence_findings_pager(transport_name: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_findings), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.ListIntelligenceFindingsResponse(
+                intelligence_findings=[
+                    storage_control.IntelligenceFinding(),
+                    storage_control.IntelligenceFinding(),
+                    storage_control.IntelligenceFinding(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListIntelligenceFindingsResponse(
+                intelligence_findings=[],
+                next_page_token="def",
+            ),
+            storage_control.ListIntelligenceFindingsResponse(
+                intelligence_findings=[
+                    storage_control.IntelligenceFinding(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListIntelligenceFindingsResponse(
+                intelligence_findings=[
+                    storage_control.IntelligenceFinding(),
+                    storage_control.IntelligenceFinding(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_intelligence_findings(
+            request={}, retry=retry, timeout=timeout
+        )
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, storage_control.IntelligenceFinding) for i in results)
+
+
+def test_list_intelligence_findings_pages(transport_name: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_findings), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.ListIntelligenceFindingsResponse(
+                intelligence_findings=[
+                    storage_control.IntelligenceFinding(),
+                    storage_control.IntelligenceFinding(),
+                    storage_control.IntelligenceFinding(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListIntelligenceFindingsResponse(
+                intelligence_findings=[],
+                next_page_token="def",
+            ),
+            storage_control.ListIntelligenceFindingsResponse(
+                intelligence_findings=[
+                    storage_control.IntelligenceFinding(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListIntelligenceFindingsResponse(
+                intelligence_findings=[
+                    storage_control.IntelligenceFinding(),
+                    storage_control.IntelligenceFinding(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_intelligence_findings(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_intelligence_findings_async_pager():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_findings),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.ListIntelligenceFindingsResponse(
+                intelligence_findings=[
+                    storage_control.IntelligenceFinding(),
+                    storage_control.IntelligenceFinding(),
+                    storage_control.IntelligenceFinding(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListIntelligenceFindingsResponse(
+                intelligence_findings=[],
+                next_page_token="def",
+            ),
+            storage_control.ListIntelligenceFindingsResponse(
+                intelligence_findings=[
+                    storage_control.IntelligenceFinding(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListIntelligenceFindingsResponse(
+                intelligence_findings=[
+                    storage_control.IntelligenceFinding(),
+                    storage_control.IntelligenceFinding(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_intelligence_findings(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, storage_control.IntelligenceFinding) for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_intelligence_findings_async_pages():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_findings),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.ListIntelligenceFindingsResponse(
+                intelligence_findings=[
+                    storage_control.IntelligenceFinding(),
+                    storage_control.IntelligenceFinding(),
+                    storage_control.IntelligenceFinding(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListIntelligenceFindingsResponse(
+                intelligence_findings=[],
+                next_page_token="def",
+            ),
+            storage_control.ListIntelligenceFindingsResponse(
+                intelligence_findings=[
+                    storage_control.IntelligenceFinding(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListIntelligenceFindingsResponse(
+                intelligence_findings=[
+                    storage_control.IntelligenceFinding(),
+                    storage_control.IntelligenceFinding(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.list_intelligence_findings(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.SummarizeIntelligenceFindingsRequest(),
+        {},
+    ],
+)
+def test_summarize_intelligence_findings(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.summarize_intelligence_findings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.SummarizeIntelligenceFindingsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.summarize_intelligence_findings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.SummarizeIntelligenceFindingsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.SummarizeIntelligenceFindingsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_summarize_intelligence_findings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.SummarizeIntelligenceFindingsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.summarize_intelligence_findings), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.summarize_intelligence_findings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.SummarizeIntelligenceFindingsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_summarize_intelligence_findings_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.summarize_intelligence_findings
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.summarize_intelligence_findings
+        ] = mock_rpc
+        request = {}
+        client.summarize_intelligence_findings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.summarize_intelligence_findings(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_summarize_intelligence_findings_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageControlAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.summarize_intelligence_findings
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.summarize_intelligence_findings
+        ] = mock_rpc
+
+        request = {}
+        await client.summarize_intelligence_findings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.summarize_intelligence_findings(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.SummarizeIntelligenceFindingsRequest(),
+        {},
+    ],
+)
+async def test_summarize_intelligence_findings_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.summarize_intelligence_findings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.summarize_intelligence_findings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.SummarizeIntelligenceFindingsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.SummarizeIntelligenceFindingsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_summarize_intelligence_findings_field_headers():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storage_control.SummarizeIntelligenceFindingsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.summarize_intelligence_findings), "__call__"
+    ) as call:
+        call.return_value = storage_control.SummarizeIntelligenceFindingsResponse()
+        client.summarize_intelligence_findings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_summarize_intelligence_findings_field_headers_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storage_control.SummarizeIntelligenceFindingsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.summarize_intelligence_findings), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.SummarizeIntelligenceFindingsResponse()
+        )
+        await client.summarize_intelligence_findings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_summarize_intelligence_findings_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.summarize_intelligence_findings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.SummarizeIntelligenceFindingsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.summarize_intelligence_findings(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_summarize_intelligence_findings_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.summarize_intelligence_findings(
+            storage_control.SummarizeIntelligenceFindingsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_summarize_intelligence_findings_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.summarize_intelligence_findings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.SummarizeIntelligenceFindingsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.SummarizeIntelligenceFindingsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.summarize_intelligence_findings(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_summarize_intelligence_findings_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.summarize_intelligence_findings(
+            storage_control.SummarizeIntelligenceFindingsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_summarize_intelligence_findings_pager(transport_name: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.summarize_intelligence_findings), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                finding_summaries=[
+                    storage_control.FindingSummary(),
+                    storage_control.FindingSummary(),
+                    storage_control.FindingSummary(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                finding_summaries=[],
+                next_page_token="def",
+            ),
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                finding_summaries=[
+                    storage_control.FindingSummary(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                finding_summaries=[
+                    storage_control.FindingSummary(),
+                    storage_control.FindingSummary(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.summarize_intelligence_findings(
+            request={}, retry=retry, timeout=timeout
+        )
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, storage_control.FindingSummary) for i in results)
+
+
+def test_summarize_intelligence_findings_pages(transport_name: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.summarize_intelligence_findings), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                finding_summaries=[
+                    storage_control.FindingSummary(),
+                    storage_control.FindingSummary(),
+                    storage_control.FindingSummary(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                finding_summaries=[],
+                next_page_token="def",
+            ),
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                finding_summaries=[
+                    storage_control.FindingSummary(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                finding_summaries=[
+                    storage_control.FindingSummary(),
+                    storage_control.FindingSummary(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.summarize_intelligence_findings(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_summarize_intelligence_findings_async_pager():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.summarize_intelligence_findings),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                finding_summaries=[
+                    storage_control.FindingSummary(),
+                    storage_control.FindingSummary(),
+                    storage_control.FindingSummary(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                finding_summaries=[],
+                next_page_token="def",
+            ),
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                finding_summaries=[
+                    storage_control.FindingSummary(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                finding_summaries=[
+                    storage_control.FindingSummary(),
+                    storage_control.FindingSummary(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.summarize_intelligence_findings(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, storage_control.FindingSummary) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_summarize_intelligence_findings_async_pages():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.summarize_intelligence_findings),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                finding_summaries=[
+                    storage_control.FindingSummary(),
+                    storage_control.FindingSummary(),
+                    storage_control.FindingSummary(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                finding_summaries=[],
+                next_page_token="def",
+            ),
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                finding_summaries=[
+                    storage_control.FindingSummary(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                finding_summaries=[
+                    storage_control.FindingSummary(),
+                    storage_control.FindingSummary(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.summarize_intelligence_findings(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.GetIntelligenceFindingRevisionRequest(),
+        {},
+    ],
+)
+def test_get_intelligence_finding_revision(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_intelligence_finding_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.IntelligenceFindingRevision(
+            name="name_value",
+        )
+        response = client.get_intelligence_finding_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.GetIntelligenceFindingRevisionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.IntelligenceFindingRevision)
+    assert response.name == "name_value"
+
+
+def test_get_intelligence_finding_revision_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.GetIntelligenceFindingRevisionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_intelligence_finding_revision), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.get_intelligence_finding_revision(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.GetIntelligenceFindingRevisionRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_get_intelligence_finding_revision_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_intelligence_finding_revision
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_intelligence_finding_revision
+        ] = mock_rpc
+        request = {}
+        client.get_intelligence_finding_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_intelligence_finding_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_get_intelligence_finding_revision_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageControlAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.get_intelligence_finding_revision
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.get_intelligence_finding_revision
+        ] = mock_rpc
+
+        request = {}
+        await client.get_intelligence_finding_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.get_intelligence_finding_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.GetIntelligenceFindingRevisionRequest(),
+        {},
+    ],
+)
+async def test_get_intelligence_finding_revision_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_intelligence_finding_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.IntelligenceFindingRevision(
+                name="name_value",
+            )
+        )
+        response = await client.get_intelligence_finding_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.GetIntelligenceFindingRevisionRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.IntelligenceFindingRevision)
+    assert response.name == "name_value"
+
+
+def test_get_intelligence_finding_revision_field_headers():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storage_control.GetIntelligenceFindingRevisionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_intelligence_finding_revision), "__call__"
+    ) as call:
+        call.return_value = storage_control.IntelligenceFindingRevision()
+        client.get_intelligence_finding_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_intelligence_finding_revision_field_headers_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storage_control.GetIntelligenceFindingRevisionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_intelligence_finding_revision), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.IntelligenceFindingRevision()
+        )
+        await client.get_intelligence_finding_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_intelligence_finding_revision_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_intelligence_finding_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.IntelligenceFindingRevision()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_intelligence_finding_revision(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_intelligence_finding_revision_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_intelligence_finding_revision(
+            storage_control.GetIntelligenceFindingRevisionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_intelligence_finding_revision_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_intelligence_finding_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.IntelligenceFindingRevision()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.IntelligenceFindingRevision()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_intelligence_finding_revision(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_intelligence_finding_revision_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_intelligence_finding_revision(
+            storage_control.GetIntelligenceFindingRevisionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.ListIntelligenceFindingRevisionsRequest(),
+        {},
+    ],
+)
+def test_list_intelligence_finding_revisions(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_finding_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ListIntelligenceFindingRevisionsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_intelligence_finding_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.ListIntelligenceFindingRevisionsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListIntelligenceFindingRevisionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_intelligence_finding_revisions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.ListIntelligenceFindingRevisionsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_finding_revisions), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.list_intelligence_finding_revisions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ListIntelligenceFindingRevisionsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_list_intelligence_finding_revisions_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_intelligence_finding_revisions
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_intelligence_finding_revisions
+        ] = mock_rpc
+        request = {}
+        client.list_intelligence_finding_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_intelligence_finding_revisions(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_list_intelligence_finding_revisions_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageControlAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.list_intelligence_finding_revisions
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.list_intelligence_finding_revisions
+        ] = mock_rpc
+
+        request = {}
+        await client.list_intelligence_finding_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.list_intelligence_finding_revisions(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.ListIntelligenceFindingRevisionsRequest(),
+        {},
+    ],
+)
+async def test_list_intelligence_finding_revisions_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_finding_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_intelligence_finding_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.ListIntelligenceFindingRevisionsRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListIntelligenceFindingRevisionsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_intelligence_finding_revisions_field_headers():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storage_control.ListIntelligenceFindingRevisionsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_finding_revisions), "__call__"
+    ) as call:
+        call.return_value = storage_control.ListIntelligenceFindingRevisionsResponse()
+        client.list_intelligence_finding_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_intelligence_finding_revisions_field_headers_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = storage_control.ListIntelligenceFindingRevisionsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_finding_revisions), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ListIntelligenceFindingRevisionsResponse()
+        )
+        await client.list_intelligence_finding_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_intelligence_finding_revisions_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_finding_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ListIntelligenceFindingRevisionsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_intelligence_finding_revisions(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_intelligence_finding_revisions_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_intelligence_finding_revisions(
+            storage_control.ListIntelligenceFindingRevisionsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_intelligence_finding_revisions_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_finding_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ListIntelligenceFindingRevisionsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ListIntelligenceFindingRevisionsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_intelligence_finding_revisions(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_intelligence_finding_revisions_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_intelligence_finding_revisions(
+            storage_control.ListIntelligenceFindingRevisionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_intelligence_finding_revisions_pager(transport_name: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_finding_revisions), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                intelligence_finding_revisions=[
+                    storage_control.IntelligenceFindingRevision(),
+                    storage_control.IntelligenceFindingRevision(),
+                    storage_control.IntelligenceFindingRevision(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                intelligence_finding_revisions=[],
+                next_page_token="def",
+            ),
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                intelligence_finding_revisions=[
+                    storage_control.IntelligenceFindingRevision(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                intelligence_finding_revisions=[
+                    storage_control.IntelligenceFindingRevision(),
+                    storage_control.IntelligenceFindingRevision(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        expected_metadata = tuple(expected_metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_intelligence_finding_revisions(
+            request={}, retry=retry, timeout=timeout
+        )
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, storage_control.IntelligenceFindingRevision) for i in results
+        )
+
+
+def test_list_intelligence_finding_revisions_pages(transport_name: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_finding_revisions), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                intelligence_finding_revisions=[
+                    storage_control.IntelligenceFindingRevision(),
+                    storage_control.IntelligenceFindingRevision(),
+                    storage_control.IntelligenceFindingRevision(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                intelligence_finding_revisions=[],
+                next_page_token="def",
+            ),
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                intelligence_finding_revisions=[
+                    storage_control.IntelligenceFindingRevision(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                intelligence_finding_revisions=[
+                    storage_control.IntelligenceFindingRevision(),
+                    storage_control.IntelligenceFindingRevision(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_intelligence_finding_revisions(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_intelligence_finding_revisions_async_pager():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_finding_revisions),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                intelligence_finding_revisions=[
+                    storage_control.IntelligenceFindingRevision(),
+                    storage_control.IntelligenceFindingRevision(),
+                    storage_control.IntelligenceFindingRevision(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                intelligence_finding_revisions=[],
+                next_page_token="def",
+            ),
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                intelligence_finding_revisions=[
+                    storage_control.IntelligenceFindingRevision(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                intelligence_finding_revisions=[
+                    storage_control.IntelligenceFindingRevision(),
+                    storage_control.IntelligenceFindingRevision(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_intelligence_finding_revisions(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, storage_control.IntelligenceFindingRevision)
+            for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_intelligence_finding_revisions_async_pages():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_finding_revisions),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                intelligence_finding_revisions=[
+                    storage_control.IntelligenceFindingRevision(),
+                    storage_control.IntelligenceFindingRevision(),
+                    storage_control.IntelligenceFindingRevision(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                intelligence_finding_revisions=[],
+                next_page_token="def",
+            ),
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                intelligence_finding_revisions=[
+                    storage_control.IntelligenceFindingRevision(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                intelligence_finding_revisions=[
+                    storage_control.IntelligenceFindingRevision(),
+                    storage_control.IntelligenceFindingRevision(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_intelligence_finding_revisions(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.ViewObjectFullContextRequest(),
+        {},
+    ],
+)
+def test_view_object_full_context(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ObjectFullContext(
+            type_=storage_control.ObjectFullContext.Type.CUSTOM,
+            key="key_value",
+            value="value_value",
+        )
+        response = client.view_object_full_context(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.ViewObjectFullContextRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.ObjectFullContext)
+    assert response.type_ == storage_control.ObjectFullContext.Type.CUSTOM
+    assert response.key == "key_value"
+    assert response.value == "value_value"
+
+
+def test_view_object_full_context_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.ViewObjectFullContextRequest(
+        context_key="context_key_value",
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.view_object_full_context(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ViewObjectFullContextRequest(
+            context_key="context_key_value",
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_view_object_full_context_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.view_object_full_context
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.view_object_full_context
+        ] = mock_rpc
+        request = {}
+        client.view_object_full_context(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.view_object_full_context(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_view_object_full_context_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageControlAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.view_object_full_context
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.view_object_full_context
+        ] = mock_rpc
+
+        request = {}
+        await client.view_object_full_context(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.view_object_full_context(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.ViewObjectFullContextRequest(),
+        {},
+    ],
+)
+async def test_view_object_full_context_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ObjectFullContext(
+                type_=storage_control.ObjectFullContext.Type.CUSTOM,
+                key="key_value",
+                value="value_value",
+            )
+        )
+        response = await client.view_object_full_context(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.ViewObjectFullContextRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.ObjectFullContext)
+    assert response.type_ == storage_control.ObjectFullContext.Type.CUSTOM
+    assert response.key == "key_value"
+    assert response.value == "value_value"
+
+
+def test_view_object_full_context_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ObjectFullContext()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.view_object_full_context(
+            name="name_value",
+            context_key="context_key_value",
+            generation=1068,
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].context_key
+        mock_val = "context_key_value"
+        assert arg == mock_val
+        arg = args[0].generation
+        mock_val = 1068
+        assert arg == mock_val
+
+
+def test_view_object_full_context_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.view_object_full_context(
+            storage_control.ViewObjectFullContextRequest(),
+            name="name_value",
+            context_key="context_key_value",
+            generation=1068,
+        )
+
+
+@pytest.mark.asyncio
+async def test_view_object_full_context_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = storage_control.ObjectFullContext()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ObjectFullContext()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.view_object_full_context(
+            name="name_value",
+            context_key="context_key_value",
+            generation=1068,
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].context_key
+        mock_val = "context_key_value"
+        assert arg == mock_val
+        arg = args[0].generation
+        mock_val = 1068
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_view_object_full_context_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.view_object_full_context(
+            storage_control.ViewObjectFullContextRequest(),
+            name="name_value",
+            context_key="context_key_value",
+            generation=1068,
+        )
+
+
+def test_create_folder_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.create_folder in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.create_folder] = mock_rpc
+
+        request = {}
         client.create_folder(request)
 
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
 
-def test_delete_folder_rest_no_http_options():
+        client.create_folder(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_folder_rest_required_fields(
+    request_type=storage_control.CreateFolderRequest,
+):
+    transport_class = transports.StorageControlRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["folder_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+    assert "folderId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_folder._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "folderId" in jsonified_request
+    assert jsonified_request["folderId"] == request_init["folder_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["folderId"] = "folder_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_folder._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "folder_id",
+            "recursive",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "folderId" in jsonified_request
+    assert jsonified_request["folderId"] == "folder_id_value"
+
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = storage_control.DeleteFolderRequest()
-    with pytest.raises(RuntimeError):
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = storage_control.Folder()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = storage_control.Folder.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.create_folder(request)
+
+            expected_params = [
+                (
+                    "folderId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            # Ensure that the uuid4 field is set according to AIP 4235
+            for i, (key, value) in enumerate(req.call_args.kwargs["params"]):
+                if key == "requestId":
+                    assert _UUID4_RE.match(value)
+                    break
+
+            # Include requestId within expected_params with value mock.ANY
+            expected_params = [p for p in expected_params if p[0] != "requestId"]
+            expected_params.append(("requestId", mock.ANY))
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_create_folder_rest_unset_required_fields():
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_folder._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "folderId",
+                "recursive",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "folder",
+                "folderId",
+            )
+        )
+    )
+
+
+def test_create_folder_rest_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.Folder()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/buckets/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            folder=storage_control.Folder(name="name_value"),
+            folder_id="folder_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = storage_control.Folder.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.create_folder(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/buckets/*}/folders" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_folder_rest_flattened_error(transport: str = "rest"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_folder(
+            storage_control.CreateFolderRequest(),
+            parent="parent_value",
+            folder=storage_control.Folder(name="name_value"),
+            folder_id="folder_id_value",
+        )
+
+
+def test_delete_folder_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.delete_folder in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.delete_folder] = mock_rpc
+
+        request = {}
         client.delete_folder(request)
 
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
 
-def test_get_folder_rest_no_http_options():
+        client.delete_folder(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_folder_rest_required_fields(
+    request_type=storage_control.DeleteFolderRequest,
+):
+    transport_class = transports.StorageControlRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_folder._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_folder._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "if_metageneration_match",
+            "if_metageneration_not_match",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = storage_control.GetFolderRequest()
-    with pytest.raises(RuntimeError):
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.delete_folder(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            # Ensure that the uuid4 field is set according to AIP 4235
+            for i, (key, value) in enumerate(req.call_args.kwargs["params"]):
+                if key == "requestId":
+                    assert _UUID4_RE.match(value)
+                    break
+
+            # Include requestId within expected_params with value mock.ANY
+            expected_params = [p for p in expected_params if p[0] != "requestId"]
+            expected_params.append(("requestId", mock.ANY))
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_delete_folder_rest_unset_required_fields():
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_folder._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "ifMetagenerationMatch",
+                "ifMetagenerationNotMatch",
+                "requestId",
+            )
+        )
+        & set(("name",))
+    )
+
+
+def test_delete_folder_rest_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/buckets/sample2/folders/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.delete_folder(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/buckets/*/folders/**}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_folder_rest_flattened_error(transport: str = "rest"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_folder(
+            storage_control.DeleteFolderRequest(),
+            name="name_value",
+        )
+
+
+def test_get_folder_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_folder in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_folder] = mock_rpc
+
+        request = {}
         client.get_folder(request)
 
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
 
-def test_list_folders_rest_no_http_options():
+        client.get_folder(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_folder_rest_required_fields(request_type=storage_control.GetFolderRequest):
+    transport_class = transports.StorageControlRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_folder._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_folder._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "if_metageneration_match",
+            "if_metageneration_not_match",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = storage_control.ListFoldersRequest()
-    with pytest.raises(RuntimeError):
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = storage_control.Folder()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = storage_control.Folder.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_folder(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            # Ensure that the uuid4 field is set according to AIP 4235
+            for i, (key, value) in enumerate(req.call_args.kwargs["params"]):
+                if key == "requestId":
+                    assert _UUID4_RE.match(value)
+                    break
+
+            # Include requestId within expected_params with value mock.ANY
+            expected_params = [p for p in expected_params if p[0] != "requestId"]
+            expected_params.append(("requestId", mock.ANY))
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_get_folder_rest_unset_required_fields():
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_folder._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "ifMetagenerationMatch",
+                "ifMetagenerationNotMatch",
+                "requestId",
+            )
+        )
+        & set(("name",))
+    )
+
+
+def test_get_folder_rest_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.Folder()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/buckets/sample2/folders/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = storage_control.Folder.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_folder(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/buckets/*/folders/**}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_folder_rest_flattened_error(transport: str = "rest"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_folder(
+            storage_control.GetFolderRequest(),
+            name="name_value",
+        )
+
+
+def test_list_folders_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list_folders in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.list_folders] = mock_rpc
+
+        request = {}
         client.list_folders(request)
 
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
 
-def test_rename_folder_rest_no_http_options():
+        client.list_folders(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_folders_rest_required_fields(
+    request_type=storage_control.ListFoldersRequest,
+):
+    transport_class = transports.StorageControlRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_folders._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_folders._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "delimiter",
+            "lexicographic_end",
+            "lexicographic_start",
+            "page_size",
+            "page_token",
+            "prefix",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = storage_control.RenameFolderRequest()
-    with pytest.raises(RuntimeError):
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = storage_control.ListFoldersResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = storage_control.ListFoldersResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.list_folders(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_list_folders_rest_unset_required_fields():
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_folders._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "delimiter",
+                "lexicographicEnd",
+                "lexicographicStart",
+                "pageSize",
+                "pageToken",
+                "prefix",
+                "requestId",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_folders_rest_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.ListFoldersResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/buckets/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = storage_control.ListFoldersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.list_folders(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/buckets/*}/folders" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_folders_rest_flattened_error(transport: str = "rest"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_folders(
+            storage_control.ListFoldersRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_folders_rest_pager(transport: str = "rest"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            storage_control.ListFoldersResponse(
+                folders=[
+                    storage_control.Folder(),
+                    storage_control.Folder(),
+                    storage_control.Folder(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListFoldersResponse(
+                folders=[],
+                next_page_token="def",
+            ),
+            storage_control.ListFoldersResponse(
+                folders=[
+                    storage_control.Folder(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListFoldersResponse(
+                folders=[
+                    storage_control.Folder(),
+                    storage_control.Folder(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            storage_control.ListFoldersResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/buckets/sample2"}
+
+        pager = client.list_folders(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, storage_control.Folder) for i in results)
+
+        pages = list(client.list_folders(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_rename_folder_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.rename_folder in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.rename_folder] = mock_rpc
+
+        request = {}
         client.rename_folder(request)
 
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
 
-def test_delete_folder_recursive_rest_no_http_options():
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.rename_folder(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_rename_folder_rest_required_fields(
+    request_type=storage_control.RenameFolderRequest,
+):
+    transport_class = transports.StorageControlRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["destination_folder_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rename_folder._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["destinationFolderId"] = "destination_folder_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rename_folder._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "destinationFolderId" in jsonified_request
+    assert jsonified_request["destinationFolderId"] == "destination_folder_id_value"
+
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = storage_control.DeleteFolderRecursiveRequest()
-    with pytest.raises(RuntimeError):
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.rename_folder(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            # Ensure that the uuid4 field is set according to AIP 4235
+            for i, (key, value) in enumerate(req.call_args.kwargs["params"]):
+                if key == "requestId":
+                    assert _UUID4_RE.match(value)
+                    break
+
+            # Include requestId within expected_params with value mock.ANY
+            expected_params = [p for p in expected_params if p[0] != "requestId"]
+            expected_params.append(("requestId", mock.ANY))
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_rename_folder_rest_unset_required_fields():
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.rename_folder._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "destinationFolderId",
+            )
+        )
+    )
+
+
+def test_rename_folder_rest_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/buckets/sample2/folders/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            destination_folder_id="destination_folder_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.rename_folder(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/buckets/*/folders/**}:rename"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_rename_folder_rest_flattened_error(transport: str = "rest"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.rename_folder(
+            storage_control.RenameFolderRequest(),
+            name="name_value",
+            destination_folder_id="destination_folder_id_value",
+        )
+
+
+def test_delete_folder_recursive_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_folder_recursive
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_folder_recursive
+        ] = mock_rpc
+
+        request = {}
         client.delete_folder_recursive(request)
 
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
 
-def test_get_storage_layout_rest_no_http_options():
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_folder_recursive(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_folder_recursive_rest_required_fields(
+    request_type=storage_control.DeleteFolderRecursiveRequest,
+):
+    transport_class = transports.StorageControlRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_folder_recursive._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_folder_recursive._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
-    request = storage_control.GetStorageLayoutRequest()
-    with pytest.raises(RuntimeError):
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.delete_folder_recursive(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            # Ensure that the uuid4 field is set according to AIP 4235
+            for i, (key, value) in enumerate(req.call_args.kwargs["params"]):
+                if key == "requestId":
+                    assert _UUID4_RE.match(value)
+                    break
+
+            # Include requestId within expected_params with value mock.ANY
+            expected_params = [p for p in expected_params if p[0] != "requestId"]
+            expected_params.append(("requestId", mock.ANY))
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_delete_folder_recursive_rest_unset_required_fields():
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_folder_recursive._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_delete_folder_recursive_rest_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/buckets/sample2/folders/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.delete_folder_recursive(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/buckets/*/folders/**}:deleteRecursive"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_folder_recursive_rest_flattened_error(transport: str = "rest"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_folder_recursive(
+            storage_control.DeleteFolderRecursiveRequest(),
+            name="name_value",
+        )
+
+
+def test_get_storage_layout_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_storage_layout in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_storage_layout] = (
+            mock_rpc
+        )
+
+        request = {}
         client.get_storage_layout(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_storage_layout(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_storage_layout_rest_required_fields(
+    request_type=storage_control.GetStorageLayoutRequest,
+):
+    transport_class = transports.StorageControlRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_storage_layout._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_storage_layout._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "prefix",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = storage_control.StorageLayout()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = storage_control.StorageLayout.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_storage_layout(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            # Ensure that the uuid4 field is set according to AIP 4235
+            for i, (key, value) in enumerate(req.call_args.kwargs["params"]):
+                if key == "requestId":
+                    assert _UUID4_RE.match(value)
+                    break
+
+            # Include requestId within expected_params with value mock.ANY
+            expected_params = [p for p in expected_params if p[0] != "requestId"]
+            expected_params.append(("requestId", mock.ANY))
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_get_storage_layout_rest_unset_required_fields():
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_storage_layout._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "prefix",
+                "requestId",
+            )
+        )
+        & set(("name",))
+    )
+
+
+def test_get_storage_layout_rest_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.StorageLayout()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/buckets/sample2/storageLayout"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = storage_control.StorageLayout.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_storage_layout(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/buckets/*/storageLayout}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_storage_layout_rest_flattened_error(transport: str = "rest"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_storage_layout(
+            storage_control.GetStorageLayoutRequest(),
+            name="name_value",
+        )
 
 
 def test_create_managed_folder_rest_no_http_options():
@@ -10407,6 +16396,16 @@ def test_list_managed_folders_rest_no_http_options():
     request = storage_control.ListManagedFoldersRequest()
     with pytest.raises(RuntimeError):
         client.list_managed_folders(request)
+
+
+def test_update_managed_folder_rest_no_http_options():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = storage_control.UpdateManagedFolderRequest()
+    with pytest.raises(RuntimeError):
+        client.update_managed_folder(request)
 
 
 def test_create_anywhere_cache_rest_no_http_options():
@@ -10477,6 +16476,46 @@ def test_list_anywhere_caches_rest_no_http_options():
     request = storage_control.ListAnywhereCachesRequest()
     with pytest.raises(RuntimeError):
         client.list_anywhere_caches(request)
+
+
+def test_create_rapid_cache_rest_no_http_options():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = storage_control.CreateRapidCacheRequest()
+    with pytest.raises(RuntimeError):
+        client.create_rapid_cache(request)
+
+
+def test_update_rapid_cache_rest_no_http_options():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = storage_control.UpdateRapidCacheRequest()
+    with pytest.raises(RuntimeError):
+        client.update_rapid_cache(request)
+
+
+def test_get_rapid_cache_rest_no_http_options():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = storage_control.GetRapidCacheRequest()
+    with pytest.raises(RuntimeError):
+        client.get_rapid_cache(request)
+
+
+def test_list_rapid_caches_rest_no_http_options():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = storage_control.ListRapidCachesRequest()
+    with pytest.raises(RuntimeError):
+        client.list_rapid_caches(request)
 
 
 def test_get_project_intelligence_config_rest_use_cached_wrapped_rpc():
@@ -10592,7 +16631,7 @@ def test_get_project_intelligence_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_project_intelligence_config_rest_unset_required_fields():
@@ -10782,7 +16821,7 @@ def test_update_project_intelligence_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_project_intelligence_config_rest_unset_required_fields():
@@ -10988,7 +17027,7 @@ def test_get_folder_intelligence_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_folder_intelligence_config_rest_unset_required_fields():
@@ -11178,7 +17217,7 @@ def test_update_folder_intelligence_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_folder_intelligence_config_rest_unset_required_fields():
@@ -11384,7 +17423,7 @@ def test_get_organization_intelligence_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_organization_intelligence_config_rest_unset_required_fields():
@@ -11580,7 +17619,7 @@ def test_update_organization_intelligence_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_organization_intelligence_config_rest_unset_required_fields():
@@ -11703,95 +17742,1425 @@ def test_test_iam_permissions_rest_no_http_options():
         client.test_iam_permissions(request)
 
 
-def test_create_folder_rest_error():
+def test_get_intelligence_finding_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_intelligence_finding
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_intelligence_finding
+        ] = mock_rpc
+
+        request = {}
+        client.get_intelligence_finding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_intelligence_finding(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_intelligence_finding_rest_required_fields(
+    request_type=storage_control.GetIntelligenceFindingRequest,
+):
+    transport_class = transports.StorageControlRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_intelligence_finding._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_intelligence_finding._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
     client = StorageControlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    # Since a `google.api.http` annotation is required for using a rest transport
-    # method, this should error.
-    with pytest.raises(NotImplementedError) as not_implemented_error:
-        client.create_folder({})
-    assert "Method CreateFolder is not available over REST transport" in str(
-        not_implemented_error.value
-    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = storage_control.IntelligenceFinding()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = storage_control.IntelligenceFinding.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_intelligence_finding(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
 
 
-def test_delete_folder_rest_error():
+def test_get_intelligence_finding_rest_unset_required_fields():
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_intelligence_finding._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_intelligence_finding_rest_flattened():
     client = StorageControlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # Since a `google.api.http` annotation is required for using a rest transport
-    # method, this should error.
-    with pytest.raises(NotImplementedError) as not_implemented_error:
-        client.delete_folder({})
-    assert "Method DeleteFolder is not available over REST transport" in str(
-        not_implemented_error.value
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.IntelligenceFinding()
 
-def test_get_folder_rest_error():
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/intelligenceFindings/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = storage_control.IntelligenceFinding.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_intelligence_finding(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/intelligenceFindings/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_intelligence_finding_rest_flattened_error(transport: str = "rest"):
     client = StorageControlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # Since a `google.api.http` annotation is required for using a rest transport
-    # method, this should error.
-    with pytest.raises(NotImplementedError) as not_implemented_error:
-        client.get_folder({})
-    assert "Method GetFolder is not available over REST transport" in str(
-        not_implemented_error.value
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_intelligence_finding(
+            storage_control.GetIntelligenceFindingRequest(),
+            name="name_value",
+        )
 
-def test_list_folders_rest_error():
+
+def test_list_intelligence_findings_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_intelligence_findings
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_intelligence_findings
+        ] = mock_rpc
+
+        request = {}
+        client.list_intelligence_findings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_intelligence_findings(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_intelligence_findings_rest_required_fields(
+    request_type=storage_control.ListIntelligenceFindingsRequest,
+):
+    transport_class = transports.StorageControlRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_intelligence_findings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_intelligence_findings._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
     client = StorageControlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    # Since a `google.api.http` annotation is required for using a rest transport
-    # method, this should error.
-    with pytest.raises(NotImplementedError) as not_implemented_error:
-        client.list_folders({})
-    assert "Method ListFolders is not available over REST transport" in str(
-        not_implemented_error.value
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = storage_control.ListIntelligenceFindingsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = storage_control.ListIntelligenceFindingsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.list_intelligence_findings(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_list_intelligence_findings_rest_unset_required_fields():
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_intelligence_findings._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
     )
 
 
-def test_rename_folder_rest_error():
+def test_list_intelligence_findings_rest_flattened():
     client = StorageControlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # Since a `google.api.http` annotation is required for using a rest transport
-    # method, this should error.
-    with pytest.raises(NotImplementedError) as not_implemented_error:
-        client.rename_folder({})
-    assert "Method RenameFolder is not available over REST transport" in str(
-        not_implemented_error.value
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.ListIntelligenceFindingsResponse()
 
-def test_delete_folder_recursive_rest_error():
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = storage_control.ListIntelligenceFindingsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.list_intelligence_findings(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/locations/*}/intelligenceFindings"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_intelligence_findings_rest_flattened_error(transport: str = "rest"):
     client = StorageControlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    # Since a `google.api.http` annotation is required for using a rest transport
-    # method, this should error.
-    with pytest.raises(NotImplementedError) as not_implemented_error:
-        client.delete_folder_recursive({})
-    assert "Method DeleteFolderRecursive is not available over REST transport" in str(
-        not_implemented_error.value
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_intelligence_findings(
+            storage_control.ListIntelligenceFindingsRequest(),
+            parent="parent_value",
+        )
 
-def test_get_storage_layout_rest_error():
+
+def test_list_intelligence_findings_rest_pager(transport: str = "rest"):
     client = StorageControlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
-    # Since a `google.api.http` annotation is required for using a rest transport
-    # method, this should error.
-    with pytest.raises(NotImplementedError) as not_implemented_error:
-        client.get_storage_layout({})
-    assert "Method GetStorageLayout is not available over REST transport" in str(
-        not_implemented_error.value
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            storage_control.ListIntelligenceFindingsResponse(
+                intelligence_findings=[
+                    storage_control.IntelligenceFinding(),
+                    storage_control.IntelligenceFinding(),
+                    storage_control.IntelligenceFinding(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListIntelligenceFindingsResponse(
+                intelligence_findings=[],
+                next_page_token="def",
+            ),
+            storage_control.ListIntelligenceFindingsResponse(
+                intelligence_findings=[
+                    storage_control.IntelligenceFinding(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListIntelligenceFindingsResponse(
+                intelligence_findings=[
+                    storage_control.IntelligenceFinding(),
+                    storage_control.IntelligenceFinding(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            storage_control.ListIntelligenceFindingsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_intelligence_findings(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, storage_control.IntelligenceFinding) for i in results)
+
+        pages = list(client.list_intelligence_findings(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_summarize_intelligence_findings_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.summarize_intelligence_findings
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.summarize_intelligence_findings
+        ] = mock_rpc
+
+        request = {}
+        client.summarize_intelligence_findings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.summarize_intelligence_findings(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_summarize_intelligence_findings_rest_required_fields(
+    request_type=storage_control.SummarizeIntelligenceFindingsRequest,
+):
+    transport_class = transports.StorageControlRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).summarize_intelligence_findings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).summarize_intelligence_findings._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+            "resource_scope",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = storage_control.SummarizeIntelligenceFindingsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = storage_control.SummarizeIntelligenceFindingsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.summarize_intelligence_findings(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_summarize_intelligence_findings_rest_unset_required_fields():
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.summarize_intelligence_findings._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+                "resourceScope",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_summarize_intelligence_findings_rest_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.SummarizeIntelligenceFindingsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = storage_control.SummarizeIntelligenceFindingsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.summarize_intelligence_findings(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/locations/*}/intelligenceFindings:summarize"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_summarize_intelligence_findings_rest_flattened_error(transport: str = "rest"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.summarize_intelligence_findings(
+            storage_control.SummarizeIntelligenceFindingsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_summarize_intelligence_findings_rest_pager(transport: str = "rest"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                finding_summaries=[
+                    storage_control.FindingSummary(),
+                    storage_control.FindingSummary(),
+                    storage_control.FindingSummary(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                finding_summaries=[],
+                next_page_token="def",
+            ),
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                finding_summaries=[
+                    storage_control.FindingSummary(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                finding_summaries=[
+                    storage_control.FindingSummary(),
+                    storage_control.FindingSummary(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            storage_control.SummarizeIntelligenceFindingsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.summarize_intelligence_findings(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, storage_control.FindingSummary) for i in results)
+
+        pages = list(
+            client.summarize_intelligence_findings(request=sample_request).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_get_intelligence_finding_revision_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_intelligence_finding_revision
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_intelligence_finding_revision
+        ] = mock_rpc
+
+        request = {}
+        client.get_intelligence_finding_revision(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_intelligence_finding_revision(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_intelligence_finding_revision_rest_required_fields(
+    request_type=storage_control.GetIntelligenceFindingRevisionRequest,
+):
+    transport_class = transports.StorageControlRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_intelligence_finding_revision._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_intelligence_finding_revision._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = storage_control.IntelligenceFindingRevision()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = storage_control.IntelligenceFindingRevision.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.get_intelligence_finding_revision(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_get_intelligence_finding_revision_rest_unset_required_fields():
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.get_intelligence_finding_revision._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_intelligence_finding_revision_rest_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.IntelligenceFindingRevision()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/intelligenceFindings/sample3/revisions/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = storage_control.IntelligenceFindingRevision.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.get_intelligence_finding_revision(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/intelligenceFindings/*/revisions/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_intelligence_finding_revision_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_intelligence_finding_revision(
+            storage_control.GetIntelligenceFindingRevisionRequest(),
+            name="name_value",
+        )
+
+
+def test_list_intelligence_finding_revisions_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_intelligence_finding_revisions
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_intelligence_finding_revisions
+        ] = mock_rpc
+
+        request = {}
+        client.list_intelligence_finding_revisions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_intelligence_finding_revisions(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_intelligence_finding_revisions_rest_required_fields(
+    request_type=storage_control.ListIntelligenceFindingRevisionsRequest,
+):
+    transport_class = transports.StorageControlRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_intelligence_finding_revisions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_intelligence_finding_revisions._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = storage_control.ListIntelligenceFindingRevisionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = storage_control.ListIntelligenceFindingRevisionsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.list_intelligence_finding_revisions(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_list_intelligence_finding_revisions_rest_unset_required_fields():
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.list_intelligence_finding_revisions._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_intelligence_finding_revisions_rest_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.ListIntelligenceFindingRevisionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/intelligenceFindings/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = storage_control.ListIntelligenceFindingRevisionsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.list_intelligence_finding_revisions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/locations/*/intelligenceFindings/*}/revisions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_intelligence_finding_revisions_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_intelligence_finding_revisions(
+            storage_control.ListIntelligenceFindingRevisionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_intelligence_finding_revisions_rest_pager(transport: str = "rest"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                intelligence_finding_revisions=[
+                    storage_control.IntelligenceFindingRevision(),
+                    storage_control.IntelligenceFindingRevision(),
+                    storage_control.IntelligenceFindingRevision(),
+                ],
+                next_page_token="abc",
+            ),
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                intelligence_finding_revisions=[],
+                next_page_token="def",
+            ),
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                intelligence_finding_revisions=[
+                    storage_control.IntelligenceFindingRevision(),
+                ],
+                next_page_token="ghi",
+            ),
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                intelligence_finding_revisions=[
+                    storage_control.IntelligenceFindingRevision(),
+                    storage_control.IntelligenceFindingRevision(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            storage_control.ListIntelligenceFindingRevisionsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/intelligenceFindings/sample3"
+        }
+
+        pager = client.list_intelligence_finding_revisions(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, storage_control.IntelligenceFindingRevision) for i in results
+        )
+
+        pages = list(
+            client.list_intelligence_finding_revisions(request=sample_request).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_view_object_full_context_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.view_object_full_context
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.view_object_full_context
+        ] = mock_rpc
+
+        request = {}
+        client.view_object_full_context(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.view_object_full_context(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_view_object_full_context_rest_required_fields(
+    request_type=storage_control.ViewObjectFullContextRequest,
+):
+    transport_class = transports.StorageControlRestTransport
+
+    request_init = {}
+    request_init["context_key"] = ""
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+    assert "contextKey" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).view_object_full_context._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "contextKey" in jsonified_request
+    assert jsonified_request["contextKey"] == request_init["context_key"]
+
+    jsonified_request["contextKey"] = "context_key_value"
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).view_object_full_context._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "context_key",
+            "generation",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "contextKey" in jsonified_request
+    assert jsonified_request["contextKey"] == "context_key_value"
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = storage_control.ObjectFullContext()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = storage_control.ObjectFullContext.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.view_object_full_context(request)
+
+            expected_params = [
+                (
+                    "contextKey",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert sorted(expected_params) == sorted(actual_params)
+
+
+def test_view_object_full_context_rest_unset_required_fields():
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.view_object_full_context._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "contextKey",
+                "generation",
+            )
+        )
+        & set(
+            (
+                "contextKey",
+                "name",
+            )
+        )
+    )
+
+
+def test_view_object_full_context_rest_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.ObjectFullContext()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/buckets/sample2/objects/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            context_key="context_key_value",
+            generation=1068,
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = storage_control.ObjectFullContext.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.view_object_full_context(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/buckets/*/objects/**}:viewFullContext"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_view_object_full_context_rest_flattened_error(transport: str = "rest"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.view_object_full_context(
+            storage_control.ViewObjectFullContextRequest(),
+            name="name_value",
+            context_key="context_key_value",
+            generation=1068,
+        )
 
 
 def test_create_managed_folder_rest_error():
@@ -11842,6 +19211,19 @@ def test_list_managed_folders_rest_error():
     with pytest.raises(NotImplementedError) as not_implemented_error:
         client.list_managed_folders({})
     assert "Method ListManagedFolders is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
+def test_update_managed_folder_rest_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.update_managed_folder({})
+    assert "Method UpdateManagedFolder is not available over REST transport" in str(
         not_implemented_error.value
     )
 
@@ -11933,6 +19315,58 @@ def test_list_anywhere_caches_rest_error():
     with pytest.raises(NotImplementedError) as not_implemented_error:
         client.list_anywhere_caches({})
     assert "Method ListAnywhereCaches is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
+def test_create_rapid_cache_rest_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.create_rapid_cache({})
+    assert "Method CreateRapidCache is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
+def test_update_rapid_cache_rest_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.update_rapid_cache({})
+    assert "Method UpdateRapidCache is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
+def test_get_rapid_cache_rest_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.get_rapid_cache({})
+    assert "Method GetRapidCache is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
+def test_list_rapid_caches_rest_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.list_rapid_caches({})
+    assert "Method ListRapidCaches is not available over REST transport" in str(
         not_implemented_error.value
     )
 
@@ -12098,15 +19532,10 @@ def test_create_folder_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12126,15 +19555,10 @@ def test_delete_folder_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12154,15 +19578,10 @@ def test_get_folder_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12183,7 +19602,6 @@ def test_list_folders_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.ListFoldersRequest()
-
         assert args[0] == request_msg
 
 
@@ -12203,15 +19621,10 @@ def test_rename_folder_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.RenameFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12233,15 +19646,10 @@ def test_delete_folder_recursive_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRecursiveRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12263,15 +19671,10 @@ def test_get_storage_layout_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetStorageLayoutRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12293,15 +19696,10 @@ def test_create_managed_folder_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateManagedFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12323,15 +19721,10 @@ def test_delete_managed_folder_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteManagedFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12353,15 +19746,10 @@ def test_get_managed_folder_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetManagedFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12383,15 +19771,32 @@ def test_list_managed_folders_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListManagedFoldersRequest()
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_managed_folder_empty_call_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_managed_folder), "__call__"
+    ) as call:
+        call.return_value = storage_control.ManagedFolder()
+        client.update_managed_folder(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.UpdateManagedFolderRequest()
         assert args[0] == request_msg
 
 
@@ -12413,15 +19818,10 @@ def test_create_anywhere_cache_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12443,15 +19843,10 @@ def test_update_anywhere_cache_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.UpdateAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12473,15 +19868,10 @@ def test_disable_anywhere_cache_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DisableAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12503,15 +19893,10 @@ def test_pause_anywhere_cache_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.PauseAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12533,15 +19918,10 @@ def test_resume_anywhere_cache_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ResumeAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12563,15 +19943,10 @@ def test_get_anywhere_cache_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -12593,15 +19968,96 @@ def test_list_anywhere_caches_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListAnywhereCachesRequest()
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_rapid_cache_empty_call_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_rapid_cache), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_rapid_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.CreateRapidCacheRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_rapid_cache_empty_call_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_rapid_cache), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_rapid_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.UpdateRapidCacheRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_rapid_cache_empty_call_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_rapid_cache), "__call__") as call:
+        call.return_value = storage_control.RapidCache()
+        client.get_rapid_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.GetRapidCacheRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_rapid_caches_empty_call_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rapid_caches), "__call__"
+    ) as call:
+        call.return_value = storage_control.ListRapidCachesResponse()
+        client.list_rapid_caches(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ListRapidCachesRequest()
         assert args[0] == request_msg
 
 
@@ -12624,7 +20080,6 @@ def test_get_project_intelligence_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.GetProjectIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -12647,7 +20102,6 @@ def test_update_project_intelligence_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.UpdateProjectIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -12670,7 +20124,6 @@ def test_get_folder_intelligence_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.GetFolderIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -12693,7 +20146,6 @@ def test_update_folder_intelligence_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.UpdateFolderIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -12716,7 +20168,6 @@ def test_get_organization_intelligence_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.GetOrganizationIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -12739,7 +20190,6 @@ def test_update_organization_intelligence_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.UpdateOrganizationIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -12760,7 +20210,6 @@ def test_get_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -12781,7 +20230,6 @@ def test_set_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -12804,7 +20252,138 @@ def test_test_iam_permissions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_intelligence_finding_empty_call_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_intelligence_finding), "__call__"
+    ) as call:
+        call.return_value = storage_control.IntelligenceFinding()
+        client.get_intelligence_finding(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.GetIntelligenceFindingRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_intelligence_findings_empty_call_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_findings), "__call__"
+    ) as call:
+        call.return_value = storage_control.ListIntelligenceFindingsResponse()
+        client.list_intelligence_findings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ListIntelligenceFindingsRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_summarize_intelligence_findings_empty_call_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.summarize_intelligence_findings), "__call__"
+    ) as call:
+        call.return_value = storage_control.SummarizeIntelligenceFindingsResponse()
+        client.summarize_intelligence_findings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.SummarizeIntelligenceFindingsRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_intelligence_finding_revision_empty_call_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_intelligence_finding_revision), "__call__"
+    ) as call:
+        call.return_value = storage_control.IntelligenceFindingRevision()
+        client.get_intelligence_finding_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.GetIntelligenceFindingRevisionRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_intelligence_finding_revisions_empty_call_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_finding_revisions), "__call__"
+    ) as call:
+        call.return_value = storage_control.ListIntelligenceFindingRevisionsResponse()
+        client.list_intelligence_finding_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ListIntelligenceFindingRevisionsRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_view_object_full_context_empty_call_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        call.return_value = storage_control.ObjectFullContext()
+        client.view_object_full_context(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ViewObjectFullContextRequest()
         assert args[0] == request_msg
 
 
@@ -12822,15 +20401,10 @@ def test_create_folder_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateFolderRequest(**{"parent": "sample1"})
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -12855,17 +20429,12 @@ def test_delete_folder_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -12888,17 +20457,12 @@ def test_get_folder_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -12922,7 +20486,6 @@ def test_list_folders_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage_control.ListFoldersRequest(**{"parent": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -12947,17 +20510,12 @@ def test_rename_folder_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.RenameFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -12984,17 +20542,12 @@ def test_delete_folder_recursive_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRecursiveRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13021,17 +20574,12 @@ def test_get_storage_layout_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetStorageLayoutRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13056,17 +20604,12 @@ def test_create_managed_folder_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateManagedFolderRequest(
             **{"parent": "sample1"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -13093,17 +20636,12 @@ def test_delete_managed_folder_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteManagedFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13130,17 +20668,12 @@ def test_get_managed_folder_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetManagedFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13165,18 +20698,44 @@ def test_list_managed_folders_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListManagedFoldersRequest(**{"parent": "sample1"})
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_update_managed_folder_routing_parameters_request_1_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_managed_folder), "__call__"
+    ) as call:
+        call.return_value = storage_control.ManagedFolder()
+        client.update_managed_folder(
+            request={
+                "managed_folder": {"name": "projects/sample1/buckets/sample2/sample3"}
+            }
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.UpdateManagedFolderRequest(
+            **{"managed_folder": {"name": "projects/sample1/buckets/sample2/sample3"}}
+        )
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
         )
@@ -13198,17 +20757,12 @@ def test_create_anywhere_cache_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateAnywhereCacheRequest(
             **{"parent": "sample1"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -13237,17 +20791,12 @@ def test_update_anywhere_cache_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.UpdateAnywhereCacheRequest(
             **{"anywhere_cache": {"name": "projects/sample1/buckets/sample2/sample3"}}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13274,17 +20823,12 @@ def test_disable_anywhere_cache_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DisableAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13311,17 +20855,12 @@ def test_pause_anywhere_cache_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.PauseAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13348,17 +20887,12 @@ def test_resume_anywhere_cache_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ResumeAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13385,17 +20919,12 @@ def test_get_anywhere_cache_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13420,15 +20949,118 @@ def test_list_anywhere_caches_routing_parameters_request_1_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListAnywhereCachesRequest(**{"parent": "sample1"})
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
+        expected_headers = {"bucket": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_create_rapid_cache_routing_parameters_request_1_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_rapid_cache), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_rapid_cache(request={"parent": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.CreateRapidCacheRequest(**{"parent": "sample1"})
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_update_rapid_cache_routing_parameters_request_1_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_rapid_cache), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_rapid_cache(
+            request={
+                "rapid_cache": {"name": "projects/sample1/buckets/sample2/sample3"}
+            }
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.UpdateRapidCacheRequest(
+            **{"rapid_cache": {"name": "projects/sample1/buckets/sample2/sample3"}}
+        )
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_get_rapid_cache_routing_parameters_request_1_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_rapid_cache), "__call__") as call:
+        call.return_value = storage_control.RapidCache()
+        client.get_rapid_cache(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.GetRapidCacheRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_list_rapid_caches_routing_parameters_request_1_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rapid_caches), "__call__"
+    ) as call:
+        call.return_value = storage_control.ListRapidCachesResponse()
+        client.list_rapid_caches(request={"parent": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.ListRapidCachesRequest(**{"parent": "sample1"})
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -13452,7 +21084,6 @@ def test_get_iam_policy_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest(**{"resource": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -13480,7 +21111,6 @@ def test_get_iam_policy_routing_parameters_request_2_grpc():
         request_msg = iam_policy_pb2.GetIamPolicyRequest(
             **{"resource": "projects/sample1/buckets/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13504,7 +21134,6 @@ def test_set_iam_policy_routing_parameters_request_1_grpc():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest(**{"resource": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -13532,7 +21161,6 @@ def test_set_iam_policy_routing_parameters_request_2_grpc():
         request_msg = iam_policy_pb2.SetIamPolicyRequest(
             **{"resource": "projects/sample1/buckets/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13560,7 +21188,6 @@ def test_test_iam_permissions_routing_parameters_request_1_grpc():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -13590,7 +21217,6 @@ def test_test_iam_permissions_routing_parameters_request_2_grpc():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "projects/sample1/buckets/sample2/objects/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13622,7 +21248,35 @@ def test_test_iam_permissions_routing_parameters_request_3_grpc():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "projects/sample1/buckets/sample2/managedFolders/sample3"}
         )
+        assert args[0] == request_msg
 
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_view_object_full_context_routing_parameters_request_1_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        call.return_value = storage_control.ObjectFullContext()
+        client.view_object_full_context(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.ViewObjectFullContextRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
+        )
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -13668,15 +21322,10 @@ async def test_create_folder_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -13698,15 +21347,10 @@ async def test_delete_folder_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -13733,15 +21377,10 @@ async def test_get_folder_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -13768,7 +21407,6 @@ async def test_list_folders_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.ListFoldersRequest()
-
         assert args[0] == request_msg
 
 
@@ -13792,15 +21430,10 @@ async def test_rename_folder_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.RenameFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -13826,15 +21459,10 @@ async def test_delete_folder_recursive_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRecursiveRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -13864,15 +21492,10 @@ async def test_get_storage_layout_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetStorageLayoutRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -13901,15 +21524,10 @@ async def test_create_managed_folder_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateManagedFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -13933,15 +21551,10 @@ async def test_delete_managed_folder_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteManagedFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -13970,15 +21583,10 @@ async def test_get_managed_folder_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetManagedFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -14006,15 +21614,39 @@ async def test_list_managed_folders_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListManagedFoldersRequest()
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_managed_folder_empty_call_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_managed_folder), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ManagedFolder(
+                name="name_value",
+                metageneration=1491,
+            )
+        )
+        await client.update_managed_folder(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.UpdateManagedFolderRequest()
         assert args[0] == request_msg
 
 
@@ -14040,15 +21672,10 @@ async def test_create_anywhere_cache_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -14074,15 +21701,10 @@ async def test_update_anywhere_cache_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.UpdateAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -14107,6 +21729,7 @@ async def test_disable_anywhere_cache_empty_call_grpc_asyncio():
                 admission_policy="admission_policy_value",
                 state="state_value",
                 pending_update=True,
+                ingest_on_write=True,
             )
         )
         await client.disable_anywhere_cache(request=None)
@@ -14114,15 +21737,10 @@ async def test_disable_anywhere_cache_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DisableAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -14147,6 +21765,7 @@ async def test_pause_anywhere_cache_empty_call_grpc_asyncio():
                 admission_policy="admission_policy_value",
                 state="state_value",
                 pending_update=True,
+                ingest_on_write=True,
             )
         )
         await client.pause_anywhere_cache(request=None)
@@ -14154,15 +21773,10 @@ async def test_pause_anywhere_cache_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.PauseAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -14187,6 +21801,7 @@ async def test_resume_anywhere_cache_empty_call_grpc_asyncio():
                 admission_policy="admission_policy_value",
                 state="state_value",
                 pending_update=True,
+                ingest_on_write=True,
             )
         )
         await client.resume_anywhere_cache(request=None)
@@ -14194,15 +21809,10 @@ async def test_resume_anywhere_cache_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ResumeAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -14227,6 +21837,7 @@ async def test_get_anywhere_cache_empty_call_grpc_asyncio():
                 admission_policy="admission_policy_value",
                 state="state_value",
                 pending_update=True,
+                ingest_on_write=True,
             )
         )
         await client.get_anywhere_cache(request=None)
@@ -14234,15 +21845,10 @@ async def test_get_anywhere_cache_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -14270,15 +21876,121 @@ async def test_list_anywhere_caches_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListAnywhereCachesRequest()
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_rapid_cache_empty_call_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_rapid_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_rapid_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.CreateRapidCacheRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_rapid_cache_empty_call_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_rapid_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_rapid_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.UpdateRapidCacheRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_rapid_cache_empty_call_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_rapid_cache), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.RapidCache(
+                name="name_value",
+                zone="zone_value",
+                cache_type="cache_type_value",
+                admission_policy="admission_policy_value",
+                state="state_value",
+                pending_update=True,
+            )
+        )
+        await client.get_rapid_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.GetRapidCacheRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_rapid_caches_empty_call_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rapid_caches), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ListRapidCachesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_rapid_caches(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ListRapidCachesRequest()
         assert args[0] == request_msg
 
 
@@ -14308,7 +22020,6 @@ async def test_get_project_intelligence_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.GetProjectIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14338,7 +22049,6 @@ async def test_update_project_intelligence_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.UpdateProjectIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14368,7 +22078,6 @@ async def test_get_folder_intelligence_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.GetFolderIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14398,7 +22107,6 @@ async def test_update_folder_intelligence_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.UpdateFolderIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14428,7 +22136,6 @@ async def test_get_organization_intelligence_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.GetOrganizationIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14458,7 +22165,6 @@ async def test_update_organization_intelligence_config_empty_call_grpc_asyncio()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.UpdateOrganizationIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -14486,7 +22192,6 @@ async def test_get_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14514,7 +22219,6 @@ async def test_set_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -14543,7 +22247,182 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_intelligence_finding_empty_call_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_intelligence_finding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.IntelligenceFinding(
+                name="name_value",
+                description="description_value",
+                type_=storage_control.FindingType.FINDING_TYPE_COLDLINE_AND_ARCHIVAL_STORAGE_OPERATIONS_SPIKE,
+                category=storage_control.FindingCategory.FINDING_CATEGORY_DATA_MANAGEMENT,
+                severity=storage_control.FindingSeverity.FINDING_SEVERITY_CRITICAL,
+                target_resource="target_resource_value",
+                associated_resources=["associated_resources_value"],
+            )
+        )
+        await client.get_intelligence_finding(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.GetIntelligenceFindingRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_intelligence_findings_empty_call_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_findings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ListIntelligenceFindingsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_intelligence_findings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ListIntelligenceFindingsRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_summarize_intelligence_findings_empty_call_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.summarize_intelligence_findings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.SummarizeIntelligenceFindingsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.summarize_intelligence_findings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.SummarizeIntelligenceFindingsRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_intelligence_finding_revision_empty_call_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_intelligence_finding_revision), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.IntelligenceFindingRevision(
+                name="name_value",
+            )
+        )
+        await client.get_intelligence_finding_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.GetIntelligenceFindingRevisionRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_intelligence_finding_revisions_empty_call_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_finding_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ListIntelligenceFindingRevisionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_intelligence_finding_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ListIntelligenceFindingRevisionsRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_view_object_full_context_empty_call_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ObjectFullContext(
+                type_=storage_control.ObjectFullContext.Type.CUSTOM,
+                key="key_value",
+                value="value_value",
+            )
+        )
+        await client.view_object_full_context(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ViewObjectFullContextRequest()
         assert args[0] == request_msg
 
 
@@ -14568,15 +22447,10 @@ async def test_create_folder_routing_parameters_request_1_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateFolderRequest(**{"parent": "sample1"})
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -14603,17 +22477,12 @@ async def test_delete_folder_routing_parameters_request_1_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -14645,17 +22514,12 @@ async def test_get_folder_routing_parameters_request_1_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -14685,7 +22549,6 @@ async def test_list_folders_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage_control.ListFoldersRequest(**{"parent": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -14714,17 +22577,12 @@ async def test_rename_folder_routing_parameters_request_1_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.RenameFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -14755,17 +22613,12 @@ async def test_delete_folder_recursive_routing_parameters_request_1_grpc_asyncio
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRecursiveRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -14800,17 +22653,12 @@ async def test_get_storage_layout_routing_parameters_request_1_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetStorageLayoutRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -14842,17 +22690,12 @@ async def test_create_managed_folder_routing_parameters_request_1_grpc_asyncio()
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateManagedFolderRequest(
             **{"parent": "sample1"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -14881,17 +22724,12 @@ async def test_delete_managed_folder_routing_parameters_request_1_grpc_asyncio()
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteManagedFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -14925,17 +22763,12 @@ async def test_get_managed_folder_routing_parameters_request_1_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetManagedFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -14966,18 +22799,51 @@ async def test_list_managed_folders_routing_parameters_request_1_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListManagedFoldersRequest(**{"parent": "sample1"})
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_managed_folder_routing_parameters_request_1_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_managed_folder), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ManagedFolder(
+                name="name_value",
+                metageneration=1491,
+            )
+        )
+        await client.update_managed_folder(
+            request={
+                "managed_folder": {"name": "projects/sample1/buckets/sample2/sample3"}
+            }
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.UpdateManagedFolderRequest(
+            **{"managed_folder": {"name": "projects/sample1/buckets/sample2/sample3"}}
+        )
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
         )
@@ -15003,17 +22869,12 @@ async def test_create_anywhere_cache_routing_parameters_request_1_grpc_asyncio()
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateAnywhereCacheRequest(
             **{"parent": "sample1"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -15046,17 +22907,12 @@ async def test_update_anywhere_cache_routing_parameters_request_1_grpc_asyncio()
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.UpdateAnywhereCacheRequest(
             **{"anywhere_cache": {"name": "projects/sample1/buckets/sample2/sample3"}}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -15084,6 +22940,7 @@ async def test_disable_anywhere_cache_routing_parameters_request_1_grpc_asyncio(
                 admission_policy="admission_policy_value",
                 state="state_value",
                 pending_update=True,
+                ingest_on_write=True,
             )
         )
         await client.disable_anywhere_cache(
@@ -15093,17 +22950,12 @@ async def test_disable_anywhere_cache_routing_parameters_request_1_grpc_asyncio(
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DisableAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -15131,6 +22983,7 @@ async def test_pause_anywhere_cache_routing_parameters_request_1_grpc_asyncio():
                 admission_policy="admission_policy_value",
                 state="state_value",
                 pending_update=True,
+                ingest_on_write=True,
             )
         )
         await client.pause_anywhere_cache(
@@ -15140,17 +22993,12 @@ async def test_pause_anywhere_cache_routing_parameters_request_1_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.PauseAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -15178,6 +23026,7 @@ async def test_resume_anywhere_cache_routing_parameters_request_1_grpc_asyncio()
                 admission_policy="admission_policy_value",
                 state="state_value",
                 pending_update=True,
+                ingest_on_write=True,
             )
         )
         await client.resume_anywhere_cache(
@@ -15187,17 +23036,12 @@ async def test_resume_anywhere_cache_routing_parameters_request_1_grpc_asyncio()
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ResumeAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -15225,6 +23069,7 @@ async def test_get_anywhere_cache_routing_parameters_request_1_grpc_asyncio():
                 admission_policy="admission_policy_value",
                 state="state_value",
                 pending_update=True,
+                ingest_on_write=True,
             )
         )
         await client.get_anywhere_cache(
@@ -15234,17 +23079,12 @@ async def test_get_anywhere_cache_routing_parameters_request_1_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -15275,15 +23115,143 @@ async def test_list_anywhere_caches_routing_parameters_request_1_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListAnywhereCachesRequest(**{"parent": "sample1"})
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
+        expected_headers = {"bucket": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_rapid_cache_routing_parameters_request_1_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_rapid_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_rapid_cache(request={"parent": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.CreateRapidCacheRequest(**{"parent": "sample1"})
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_rapid_cache_routing_parameters_request_1_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_rapid_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_rapid_cache(
+            request={
+                "rapid_cache": {"name": "projects/sample1/buckets/sample2/sample3"}
+            }
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.UpdateRapidCacheRequest(
+            **{"rapid_cache": {"name": "projects/sample1/buckets/sample2/sample3"}}
+        )
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_rapid_cache_routing_parameters_request_1_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_rapid_cache), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.RapidCache(
+                name="name_value",
+                zone="zone_value",
+                cache_type="cache_type_value",
+                admission_policy="admission_policy_value",
+                state="state_value",
+                pending_update=True,
+            )
+        )
+        await client.get_rapid_cache(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.GetRapidCacheRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_rapid_caches_routing_parameters_request_1_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rapid_caches), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ListRapidCachesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_rapid_caches(request={"parent": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.ListRapidCachesRequest(**{"parent": "sample1"})
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -15314,7 +23282,6 @@ async def test_get_iam_policy_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest(**{"resource": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -15349,7 +23316,6 @@ async def test_get_iam_policy_routing_parameters_request_2_grpc_asyncio():
         request_msg = iam_policy_pb2.GetIamPolicyRequest(
             **{"resource": "projects/sample1/buckets/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -15380,7 +23346,6 @@ async def test_set_iam_policy_routing_parameters_request_1_grpc_asyncio():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest(**{"resource": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -15415,7 +23380,6 @@ async def test_set_iam_policy_routing_parameters_request_2_grpc_asyncio():
         request_msg = iam_policy_pb2.SetIamPolicyRequest(
             **{"resource": "projects/sample1/buckets/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -15449,7 +23413,6 @@ async def test_test_iam_permissions_routing_parameters_request_1_grpc_asyncio():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -15485,7 +23448,6 @@ async def test_test_iam_permissions_routing_parameters_request_2_grpc_asyncio():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "projects/sample1/buckets/sample2/objects/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -15523,7 +23485,43 @@ async def test_test_iam_permissions_routing_parameters_request_3_grpc_asyncio():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "projects/sample1/buckets/sample2/managedFolders/sample3"}
         )
+        assert args[0] == request_msg
 
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_view_object_full_context_routing_parameters_request_1_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storage_control.ObjectFullContext(
+                type_=storage_control.ObjectFullContext.Type.CUSTOM,
+                key="key_value",
+                value="value_value",
+            )
+        )
+        await client.view_object_full_context(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.ViewObjectFullContextRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
+        )
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -15539,88 +23537,971 @@ def test_transport_kind_rest():
     assert transport.kind == "rest"
 
 
-def test_create_folder_rest_error():
+def test_create_folder_rest_bad_request(
+    request_type=storage_control.CreateFolderRequest,
+):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/buckets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.create_folder(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.CreateFolderRequest,
+        dict,
+    ],
+)
+def test_create_folder_rest_call_success(request_type):
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
-    with pytest.raises(NotImplementedError) as not_implemented_error:
-        client.create_folder({})
-    assert "Method CreateFolder is not available over REST transport" in str(
-        not_implemented_error.value
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/buckets/sample2"}
+    request_init["folder"] = {
+        "name": "name_value",
+        "metageneration": 1491,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "pending_rename_info": {"operation": "operation_value"},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = storage_control.CreateFolderRequest.meta.fields["folder"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["folder"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["folder"][field])):
+                    del request_init["folder"][field][i][subfield]
+            else:
+                del request_init["folder"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.Folder(
+            name="name_value",
+            metageneration=1491,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = storage_control.Folder.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.create_folder(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.Folder)
+    assert response.name == "name_value"
+    assert response.metageneration == 1491
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_folder_rest_interceptors(null_interceptor):
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.StorageControlRestInterceptor(),
     )
+    client = StorageControlClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "post_create_folder"
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "post_create_folder_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "pre_create_folder"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = storage_control.CreateFolderRequest.pb(
+            storage_control.CreateFolderRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = storage_control.Folder.to_json(storage_control.Folder())
+        req.return_value.content = return_value
+
+        request = storage_control.CreateFolderRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = storage_control.Folder()
+        post_with_metadata.return_value = storage_control.Folder(), metadata
+
+        client.create_folder(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
-def test_delete_folder_rest_error():
+def test_delete_folder_rest_bad_request(
+    request_type=storage_control.DeleteFolderRequest,
+):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/buckets/sample2/folders/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.delete_folder(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.DeleteFolderRequest,
+        dict,
+    ],
+)
+def test_delete_folder_rest_call_success(request_type):
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
-    with pytest.raises(NotImplementedError) as not_implemented_error:
-        client.delete_folder({})
-    assert "Method DeleteFolder is not available over REST transport" in str(
-        not_implemented_error.value
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/buckets/sample2/folders/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.delete_folder(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_folder_rest_interceptors(null_interceptor):
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.StorageControlRestInterceptor(),
     )
+    client = StorageControlClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "pre_delete_folder"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        pb_message = storage_control.DeleteFolderRequest.pb(
+            storage_control.DeleteFolderRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        request = storage_control.DeleteFolderRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_folder(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
 
 
-def test_get_folder_rest_error():
+def test_get_folder_rest_bad_request(request_type=storage_control.GetFolderRequest):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/buckets/sample2/folders/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_folder(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.GetFolderRequest,
+        dict,
+    ],
+)
+def test_get_folder_rest_call_success(request_type):
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
-    with pytest.raises(NotImplementedError) as not_implemented_error:
-        client.get_folder({})
-    assert "Method GetFolder is not available over REST transport" in str(
-        not_implemented_error.value
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/buckets/sample2/folders/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.Folder(
+            name="name_value",
+            metageneration=1491,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = storage_control.Folder.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_folder(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.Folder)
+    assert response.name == "name_value"
+    assert response.metageneration == 1491
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_folder_rest_interceptors(null_interceptor):
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.StorageControlRestInterceptor(),
     )
+    client = StorageControlClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "post_get_folder"
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "post_get_folder_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "pre_get_folder"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = storage_control.GetFolderRequest.pb(
+            storage_control.GetFolderRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = storage_control.Folder.to_json(storage_control.Folder())
+        req.return_value.content = return_value
+
+        request = storage_control.GetFolderRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = storage_control.Folder()
+        post_with_metadata.return_value = storage_control.Folder(), metadata
+
+        client.get_folder(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
-def test_list_folders_rest_error():
+def test_list_folders_rest_bad_request(request_type=storage_control.ListFoldersRequest):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/buckets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.list_folders(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.ListFoldersRequest,
+        dict,
+    ],
+)
+def test_list_folders_rest_call_success(request_type):
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
-    with pytest.raises(NotImplementedError) as not_implemented_error:
-        client.list_folders({})
-    assert "Method ListFolders is not available over REST transport" in str(
-        not_implemented_error.value
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/buckets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.ListFoldersResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = storage_control.ListFoldersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.list_folders(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListFoldersPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_folders_rest_interceptors(null_interceptor):
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.StorageControlRestInterceptor(),
     )
+    client = StorageControlClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "post_list_folders"
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "post_list_folders_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "pre_list_folders"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = storage_control.ListFoldersRequest.pb(
+            storage_control.ListFoldersRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = storage_control.ListFoldersResponse.to_json(
+            storage_control.ListFoldersResponse()
+        )
+        req.return_value.content = return_value
+
+        request = storage_control.ListFoldersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = storage_control.ListFoldersResponse()
+        post_with_metadata.return_value = (
+            storage_control.ListFoldersResponse(),
+            metadata,
+        )
+
+        client.list_folders(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
-def test_rename_folder_rest_error():
+def test_rename_folder_rest_bad_request(
+    request_type=storage_control.RenameFolderRequest,
+):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/buckets/sample2/folders/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.rename_folder(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.RenameFolderRequest,
+        dict,
+    ],
+)
+def test_rename_folder_rest_call_success(request_type):
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
-    with pytest.raises(NotImplementedError) as not_implemented_error:
-        client.rename_folder({})
-    assert "Method RenameFolder is not available over REST transport" in str(
-        not_implemented_error.value
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/buckets/sample2/folders/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.rename_folder(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_rename_folder_rest_interceptors(null_interceptor):
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.StorageControlRestInterceptor(),
     )
+    client = StorageControlClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "post_rename_folder"
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "post_rename_folder_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "pre_rename_folder"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = storage_control.RenameFolderRequest.pb(
+            storage_control.RenameFolderRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = storage_control.RenameFolderRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.rename_folder(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
-def test_delete_folder_recursive_rest_error():
+def test_delete_folder_recursive_rest_bad_request(
+    request_type=storage_control.DeleteFolderRecursiveRequest,
+):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/buckets/sample2/folders/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.delete_folder_recursive(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.DeleteFolderRecursiveRequest,
+        dict,
+    ],
+)
+def test_delete_folder_recursive_rest_call_success(request_type):
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
-    with pytest.raises(NotImplementedError) as not_implemented_error:
-        client.delete_folder_recursive({})
-    assert "Method DeleteFolderRecursive is not available over REST transport" in str(
-        not_implemented_error.value
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/buckets/sample2/folders/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.delete_folder_recursive(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_folder_recursive_rest_interceptors(null_interceptor):
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.StorageControlRestInterceptor(),
     )
+    client = StorageControlClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "post_delete_folder_recursive"
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_delete_folder_recursive_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "pre_delete_folder_recursive"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = storage_control.DeleteFolderRecursiveRequest.pb(
+            storage_control.DeleteFolderRecursiveRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = storage_control.DeleteFolderRecursiveRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+        post_with_metadata.return_value = operations_pb2.Operation(), metadata
+
+        client.delete_folder_recursive(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
-def test_get_storage_layout_rest_error():
+def test_get_storage_layout_rest_bad_request(
+    request_type=storage_control.GetStorageLayoutRequest,
+):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/buckets/sample2/storageLayout"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_storage_layout(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.GetStorageLayoutRequest,
+        dict,
+    ],
+)
+def test_get_storage_layout_rest_call_success(request_type):
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
-    with pytest.raises(NotImplementedError) as not_implemented_error:
-        client.get_storage_layout({})
-    assert "Method GetStorageLayout is not available over REST transport" in str(
-        not_implemented_error.value
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/buckets/sample2/storageLayout"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.StorageLayout(
+            name="name_value",
+            location="location_value",
+            location_type="location_type_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = storage_control.StorageLayout.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_storage_layout(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.StorageLayout)
+    assert response.name == "name_value"
+    assert response.location == "location_value"
+    assert response.location_type == "location_type_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_storage_layout_rest_interceptors(null_interceptor):
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.StorageControlRestInterceptor(),
     )
+    client = StorageControlClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "post_get_storage_layout"
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_get_storage_layout_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "pre_get_storage_layout"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = storage_control.GetStorageLayoutRequest.pb(
+            storage_control.GetStorageLayoutRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = storage_control.StorageLayout.to_json(
+            storage_control.StorageLayout()
+        )
+        req.return_value.content = return_value
+
+        request = storage_control.GetStorageLayoutRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = storage_control.StorageLayout()
+        post_with_metadata.return_value = storage_control.StorageLayout(), metadata
+
+        client.get_storage_layout(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
 
 
 def test_create_managed_folder_rest_error():
@@ -15667,6 +24548,18 @@ def test_list_managed_folders_rest_error():
     with pytest.raises(NotImplementedError) as not_implemented_error:
         client.list_managed_folders({})
     assert "Method ListManagedFolders is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
+def test_update_managed_folder_rest_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.update_managed_folder({})
+    assert "Method UpdateManagedFolder is not available over REST transport" in str(
         not_implemented_error.value
     )
 
@@ -15755,6 +24648,54 @@ def test_list_anywhere_caches_rest_error():
     )
 
 
+def test_create_rapid_cache_rest_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.create_rapid_cache({})
+    assert "Method CreateRapidCache is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
+def test_update_rapid_cache_rest_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.update_rapid_cache({})
+    assert "Method UpdateRapidCache is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
+def test_get_rapid_cache_rest_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.get_rapid_cache({})
+    assert "Method GetRapidCache is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
+def test_list_rapid_caches_rest_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.list_rapid_caches({})
+    assert "Method ListRapidCaches is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
 def test_get_project_intelligence_config_rest_bad_request(
     request_type=storage_control.GetProjectIntelligenceConfigRequest,
 ):
@@ -15766,8 +24707,9 @@ def test_get_project_intelligence_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15835,18 +24777,22 @@ def test_get_project_intelligence_config_rest_interceptors(null_interceptor):
     )
     client = StorageControlClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.StorageControlRestInterceptor, "post_get_project_intelligence_config"
-    ) as post, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "post_get_project_intelligence_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.StorageControlRestInterceptor, "pre_get_project_intelligence_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_get_project_intelligence_config",
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_get_project_intelligence_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "pre_get_project_intelligence_config",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15905,8 +24851,9 @@ def test_update_project_intelligence_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16070,20 +25017,22 @@ def test_update_project_intelligence_config_rest_interceptors(null_interceptor):
     )
     client = StorageControlClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "post_update_project_intelligence_config",
-    ) as post, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "post_update_project_intelligence_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "pre_update_project_intelligence_config",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_update_project_intelligence_config",
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_update_project_intelligence_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "pre_update_project_intelligence_config",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16138,8 +25087,9 @@ def test_get_folder_intelligence_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16207,18 +25157,22 @@ def test_get_folder_intelligence_config_rest_interceptors(null_interceptor):
     )
     client = StorageControlClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.StorageControlRestInterceptor, "post_get_folder_intelligence_config"
-    ) as post, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "post_get_folder_intelligence_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.StorageControlRestInterceptor, "pre_get_folder_intelligence_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_get_folder_intelligence_config",
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_get_folder_intelligence_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "pre_get_folder_intelligence_config",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16277,8 +25231,9 @@ def test_update_folder_intelligence_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16442,20 +25397,22 @@ def test_update_folder_intelligence_config_rest_interceptors(null_interceptor):
     )
     client = StorageControlClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "post_update_folder_intelligence_config",
-    ) as post, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "post_update_folder_intelligence_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "pre_update_folder_intelligence_config",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_update_folder_intelligence_config",
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_update_folder_intelligence_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "pre_update_folder_intelligence_config",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16512,8 +25469,9 @@ def test_get_organization_intelligence_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16583,20 +25541,22 @@ def test_get_organization_intelligence_config_rest_interceptors(null_interceptor
     )
     client = StorageControlClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "post_get_organization_intelligence_config",
-    ) as post, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "post_get_organization_intelligence_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "pre_get_organization_intelligence_config",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_get_organization_intelligence_config",
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_get_organization_intelligence_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "pre_get_organization_intelligence_config",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16655,8 +25615,9 @@ def test_update_organization_intelligence_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16822,20 +25783,22 @@ def test_update_organization_intelligence_config_rest_interceptors(null_intercep
     )
     client = StorageControlClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "post_update_organization_intelligence_config",
-    ) as post, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "post_update_organization_intelligence_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "pre_update_organization_intelligence_config",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_update_organization_intelligence_config",
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_update_organization_intelligence_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "pre_update_organization_intelligence_config",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16915,6 +25878,865 @@ def test_test_iam_permissions_rest_error():
     )
 
 
+def test_get_intelligence_finding_rest_bad_request(
+    request_type=storage_control.GetIntelligenceFindingRequest,
+):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/intelligenceFindings/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_intelligence_finding(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.GetIntelligenceFindingRequest,
+        dict,
+    ],
+)
+def test_get_intelligence_finding_rest_call_success(request_type):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/intelligenceFindings/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.IntelligenceFinding(
+            name="name_value",
+            description="description_value",
+            type_=storage_control.FindingType.FINDING_TYPE_COLDLINE_AND_ARCHIVAL_STORAGE_OPERATIONS_SPIKE,
+            category=storage_control.FindingCategory.FINDING_CATEGORY_DATA_MANAGEMENT,
+            severity=storage_control.FindingSeverity.FINDING_SEVERITY_CRITICAL,
+            target_resource="target_resource_value",
+            associated_resources=["associated_resources_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = storage_control.IntelligenceFinding.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_intelligence_finding(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.IntelligenceFinding)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert (
+        response.type_
+        == storage_control.FindingType.FINDING_TYPE_COLDLINE_AND_ARCHIVAL_STORAGE_OPERATIONS_SPIKE
+    )
+    assert (
+        response.category
+        == storage_control.FindingCategory.FINDING_CATEGORY_DATA_MANAGEMENT
+    )
+    assert (
+        response.severity == storage_control.FindingSeverity.FINDING_SEVERITY_CRITICAL
+    )
+    assert response.target_resource == "target_resource_value"
+    assert response.associated_resources == ["associated_resources_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_intelligence_finding_rest_interceptors(null_interceptor):
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.StorageControlRestInterceptor(),
+    )
+    client = StorageControlClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "post_get_intelligence_finding"
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_get_intelligence_finding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "pre_get_intelligence_finding"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = storage_control.GetIntelligenceFindingRequest.pb(
+            storage_control.GetIntelligenceFindingRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = storage_control.IntelligenceFinding.to_json(
+            storage_control.IntelligenceFinding()
+        )
+        req.return_value.content = return_value
+
+        request = storage_control.GetIntelligenceFindingRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = storage_control.IntelligenceFinding()
+        post_with_metadata.return_value = (
+            storage_control.IntelligenceFinding(),
+            metadata,
+        )
+
+        client.get_intelligence_finding(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_list_intelligence_findings_rest_bad_request(
+    request_type=storage_control.ListIntelligenceFindingsRequest,
+):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.list_intelligence_findings(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.ListIntelligenceFindingsRequest,
+        dict,
+    ],
+)
+def test_list_intelligence_findings_rest_call_success(request_type):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.ListIntelligenceFindingsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = storage_control.ListIntelligenceFindingsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.list_intelligence_findings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListIntelligenceFindingsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_intelligence_findings_rest_interceptors(null_interceptor):
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.StorageControlRestInterceptor(),
+    )
+    client = StorageControlClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "post_list_intelligence_findings"
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_list_intelligence_findings_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "pre_list_intelligence_findings"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = storage_control.ListIntelligenceFindingsRequest.pb(
+            storage_control.ListIntelligenceFindingsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = storage_control.ListIntelligenceFindingsResponse.to_json(
+            storage_control.ListIntelligenceFindingsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = storage_control.ListIntelligenceFindingsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = storage_control.ListIntelligenceFindingsResponse()
+        post_with_metadata.return_value = (
+            storage_control.ListIntelligenceFindingsResponse(),
+            metadata,
+        )
+
+        client.list_intelligence_findings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_summarize_intelligence_findings_rest_bad_request(
+    request_type=storage_control.SummarizeIntelligenceFindingsRequest,
+):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.summarize_intelligence_findings(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.SummarizeIntelligenceFindingsRequest,
+        dict,
+    ],
+)
+def test_summarize_intelligence_findings_rest_call_success(request_type):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.SummarizeIntelligenceFindingsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = storage_control.SummarizeIntelligenceFindingsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.summarize_intelligence_findings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.SummarizeIntelligenceFindingsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_summarize_intelligence_findings_rest_interceptors(null_interceptor):
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.StorageControlRestInterceptor(),
+    )
+    client = StorageControlClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_summarize_intelligence_findings",
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_summarize_intelligence_findings_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "pre_summarize_intelligence_findings",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = storage_control.SummarizeIntelligenceFindingsRequest.pb(
+            storage_control.SummarizeIntelligenceFindingsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = storage_control.SummarizeIntelligenceFindingsResponse.to_json(
+            storage_control.SummarizeIntelligenceFindingsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = storage_control.SummarizeIntelligenceFindingsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = storage_control.SummarizeIntelligenceFindingsResponse()
+        post_with_metadata.return_value = (
+            storage_control.SummarizeIntelligenceFindingsResponse(),
+            metadata,
+        )
+
+        client.summarize_intelligence_findings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_get_intelligence_finding_revision_rest_bad_request(
+    request_type=storage_control.GetIntelligenceFindingRevisionRequest,
+):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/intelligenceFindings/sample3/revisions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.get_intelligence_finding_revision(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.GetIntelligenceFindingRevisionRequest,
+        dict,
+    ],
+)
+def test_get_intelligence_finding_revision_rest_call_success(request_type):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/intelligenceFindings/sample3/revisions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.IntelligenceFindingRevision(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = storage_control.IntelligenceFindingRevision.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.get_intelligence_finding_revision(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.IntelligenceFindingRevision)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_intelligence_finding_revision_rest_interceptors(null_interceptor):
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.StorageControlRestInterceptor(),
+    )
+    client = StorageControlClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_get_intelligence_finding_revision",
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_get_intelligence_finding_revision_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "pre_get_intelligence_finding_revision",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = storage_control.GetIntelligenceFindingRevisionRequest.pb(
+            storage_control.GetIntelligenceFindingRevisionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = storage_control.IntelligenceFindingRevision.to_json(
+            storage_control.IntelligenceFindingRevision()
+        )
+        req.return_value.content = return_value
+
+        request = storage_control.GetIntelligenceFindingRevisionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = storage_control.IntelligenceFindingRevision()
+        post_with_metadata.return_value = (
+            storage_control.IntelligenceFindingRevision(),
+            metadata,
+        )
+
+        client.get_intelligence_finding_revision(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_list_intelligence_finding_revisions_rest_bad_request(
+    request_type=storage_control.ListIntelligenceFindingRevisionsRequest,
+):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/intelligenceFindings/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.list_intelligence_finding_revisions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.ListIntelligenceFindingRevisionsRequest,
+        dict,
+    ],
+)
+def test_list_intelligence_finding_revisions_rest_call_success(request_type):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/intelligenceFindings/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.ListIntelligenceFindingRevisionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = storage_control.ListIntelligenceFindingRevisionsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.list_intelligence_finding_revisions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListIntelligenceFindingRevisionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_intelligence_finding_revisions_rest_interceptors(null_interceptor):
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.StorageControlRestInterceptor(),
+    )
+    client = StorageControlClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_list_intelligence_finding_revisions",
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_list_intelligence_finding_revisions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "pre_list_intelligence_finding_revisions",
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = storage_control.ListIntelligenceFindingRevisionsRequest.pb(
+            storage_control.ListIntelligenceFindingRevisionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = storage_control.ListIntelligenceFindingRevisionsResponse.to_json(
+            storage_control.ListIntelligenceFindingRevisionsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = storage_control.ListIntelligenceFindingRevisionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = storage_control.ListIntelligenceFindingRevisionsResponse()
+        post_with_metadata.return_value = (
+            storage_control.ListIntelligenceFindingRevisionsResponse(),
+            metadata,
+        )
+
+        client.list_intelligence_finding_revisions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
+def test_view_object_full_context_rest_bad_request(
+    request_type=storage_control.ViewObjectFullContextRequest,
+):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/buckets/sample2/objects/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.view_object_full_context(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.ViewObjectFullContextRequest,
+        dict,
+    ],
+)
+def test_view_object_full_context_rest_call_success(request_type):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/buckets/sample2/objects/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = storage_control.ObjectFullContext(
+            type_=storage_control.ObjectFullContext.Type.CUSTOM,
+            key="key_value",
+            value="value_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = storage_control.ObjectFullContext.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.view_object_full_context(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, storage_control.ObjectFullContext)
+    assert response.type_ == storage_control.ObjectFullContext.Type.CUSTOM
+    assert response.key == "key_value"
+    assert response.value == "value_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_view_object_full_context_rest_interceptors(null_interceptor):
+    transport = transports.StorageControlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.StorageControlRestInterceptor(),
+    )
+    client = StorageControlClient(transport=transport)
+
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "post_view_object_full_context"
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_view_object_full_context_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor, "pre_view_object_full_context"
+        ) as pre,
+    ):
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = storage_control.ViewObjectFullContextRequest.pb(
+            storage_control.ViewObjectFullContextRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = storage_control.ObjectFullContext.to_json(
+            storage_control.ObjectFullContext()
+        )
+        req.return_value.content = return_value
+
+        request = storage_control.ViewObjectFullContextRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = storage_control.ObjectFullContext()
+        post_with_metadata.return_value = storage_control.ObjectFullContext(), metadata
+
+        client.view_object_full_context(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_initialize_client_w_rest():
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -16937,15 +26759,10 @@ def test_create_folder_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -16964,15 +26781,10 @@ def test_delete_folder_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -16991,15 +26803,10 @@ def test_get_folder_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17019,7 +26826,6 @@ def test_list_folders_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.ListFoldersRequest()
-
         assert args[0] == request_msg
 
 
@@ -17038,15 +26844,10 @@ def test_rename_folder_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.RenameFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17067,15 +26868,10 @@ def test_delete_folder_recursive_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRecursiveRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17096,15 +26892,10 @@ def test_get_storage_layout_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetStorageLayoutRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17125,15 +26916,10 @@ def test_create_managed_folder_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateManagedFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17154,15 +26940,10 @@ def test_delete_managed_folder_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteManagedFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17183,15 +26964,10 @@ def test_get_managed_folder_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetManagedFolderRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17212,15 +26988,31 @@ def test_list_managed_folders_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListManagedFoldersRequest()
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_managed_folder_empty_call_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_managed_folder), "__call__"
+    ) as call:
+        client.update_managed_folder(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.UpdateManagedFolderRequest()
         assert args[0] == request_msg
 
 
@@ -17241,15 +27033,10 @@ def test_create_anywhere_cache_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17270,15 +27057,10 @@ def test_update_anywhere_cache_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.UpdateAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17299,15 +27081,10 @@ def test_disable_anywhere_cache_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DisableAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17328,15 +27105,10 @@ def test_pause_anywhere_cache_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.PauseAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17357,15 +27129,10 @@ def test_resume_anywhere_cache_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ResumeAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17386,15 +27153,10 @@ def test_get_anywhere_cache_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetAnywhereCacheRequest()
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
 
@@ -17415,15 +27177,92 @@ def test_list_anywhere_caches_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListAnywhereCachesRequest()
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_rapid_cache_empty_call_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_rapid_cache), "__call__"
+    ) as call:
+        client.create_rapid_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.CreateRapidCacheRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_rapid_cache_empty_call_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_rapid_cache), "__call__"
+    ) as call:
+        client.update_rapid_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.UpdateRapidCacheRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_rapid_cache_empty_call_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_rapid_cache), "__call__") as call:
+        client.get_rapid_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.GetRapidCacheRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_rapid_caches_empty_call_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rapid_caches), "__call__"
+    ) as call:
+        client.list_rapid_caches(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ListRapidCachesRequest()
         assert args[0] == request_msg
 
 
@@ -17445,7 +27284,6 @@ def test_get_project_intelligence_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.GetProjectIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -17467,7 +27305,6 @@ def test_update_project_intelligence_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.UpdateProjectIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -17489,7 +27326,6 @@ def test_get_folder_intelligence_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.GetFolderIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -17511,7 +27347,6 @@ def test_update_folder_intelligence_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.UpdateFolderIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -17533,7 +27368,6 @@ def test_get_organization_intelligence_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.GetOrganizationIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -17555,7 +27389,6 @@ def test_update_organization_intelligence_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.UpdateOrganizationIntelligenceConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -17575,7 +27408,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -17595,7 +27427,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -17617,7 +27448,132 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
+        assert args[0] == request_msg
 
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_intelligence_finding_empty_call_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_intelligence_finding), "__call__"
+    ) as call:
+        client.get_intelligence_finding(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.GetIntelligenceFindingRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_intelligence_findings_empty_call_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_findings), "__call__"
+    ) as call:
+        client.list_intelligence_findings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ListIntelligenceFindingsRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_summarize_intelligence_findings_empty_call_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.summarize_intelligence_findings), "__call__"
+    ) as call:
+        client.summarize_intelligence_findings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.SummarizeIntelligenceFindingsRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_intelligence_finding_revision_empty_call_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_intelligence_finding_revision), "__call__"
+    ) as call:
+        client.get_intelligence_finding_revision(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.GetIntelligenceFindingRevisionRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_intelligence_finding_revisions_empty_call_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_intelligence_finding_revisions), "__call__"
+    ) as call:
+        client.list_intelligence_finding_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ListIntelligenceFindingRevisionsRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_view_object_full_context_empty_call_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        client.view_object_full_context(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.ViewObjectFullContextRequest()
         assert args[0] == request_msg
 
 
@@ -17634,15 +27590,10 @@ def test_create_folder_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateFolderRequest(**{"parent": "sample1"})
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -17666,17 +27617,12 @@ def test_delete_folder_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -17698,17 +27644,12 @@ def test_get_folder_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -17731,7 +27672,6 @@ def test_list_folders_routing_parameters_request_1_rest():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = storage_control.ListFoldersRequest(**{"parent": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -17755,17 +27695,12 @@ def test_rename_folder_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.RenameFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -17791,17 +27726,12 @@ def test_delete_folder_recursive_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteFolderRecursiveRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -17827,17 +27757,12 @@ def test_get_storage_layout_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetStorageLayoutRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -17861,17 +27786,12 @@ def test_create_managed_folder_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateManagedFolderRequest(
             **{"parent": "sample1"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -17897,17 +27817,12 @@ def test_delete_managed_folder_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DeleteManagedFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -17933,17 +27848,12 @@ def test_get_managed_folder_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetManagedFolderRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -17967,18 +27877,43 @@ def test_list_managed_folders_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListManagedFoldersRequest(**{"parent": "sample1"})
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_update_managed_folder_routing_parameters_request_1_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_managed_folder), "__call__"
+    ) as call:
+        client.update_managed_folder(
+            request={
+                "managed_folder": {"name": "projects/sample1/buckets/sample2/sample3"}
+            }
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.UpdateManagedFolderRequest(
+            **{"managed_folder": {"name": "projects/sample1/buckets/sample2/sample3"}}
+        )
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
         assert (
             gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
         )
@@ -17999,17 +27934,12 @@ def test_create_anywhere_cache_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.CreateAnywhereCacheRequest(
             **{"parent": "sample1"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -18037,17 +27967,12 @@ def test_update_anywhere_cache_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.UpdateAnywhereCacheRequest(
             **{"anywhere_cache": {"name": "projects/sample1/buckets/sample2/sample3"}}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -18073,17 +27998,12 @@ def test_disable_anywhere_cache_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.DisableAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -18109,17 +28029,12 @@ def test_pause_anywhere_cache_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.PauseAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -18145,17 +28060,12 @@ def test_resume_anywhere_cache_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ResumeAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -18181,17 +28091,12 @@ def test_get_anywhere_cache_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.GetAnywhereCacheRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
-
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -18215,15 +28120,114 @@ def test_list_anywhere_caches_routing_parameters_request_1_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, kw = call.mock_calls[0]
-        # Ensure that the uuid4 field is set according to AIP 4235
-        assert re.match(
-            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
-            args[0].request_id,
-        )
-        # clear UUID field so that the check below succeeds
-        args[0].request_id = None
         request_msg = storage_control.ListAnywhereCachesRequest(**{"parent": "sample1"})
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert _UUID4_RE.fullmatch(args[0].request_id)
+        request_msg.request_id = args[0].request_id
+        assert args[0] == request_msg
 
+        expected_headers = {"bucket": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_create_rapid_cache_routing_parameters_request_1_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_rapid_cache), "__call__"
+    ) as call:
+        client.create_rapid_cache(request={"parent": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.CreateRapidCacheRequest(**{"parent": "sample1"})
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_update_rapid_cache_routing_parameters_request_1_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_rapid_cache), "__call__"
+    ) as call:
+        client.update_rapid_cache(
+            request={
+                "rapid_cache": {"name": "projects/sample1/buckets/sample2/sample3"}
+            }
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.UpdateRapidCacheRequest(
+            **{"rapid_cache": {"name": "projects/sample1/buckets/sample2/sample3"}}
+        )
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_get_rapid_cache_routing_parameters_request_1_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_rapid_cache), "__call__") as call:
+        client.get_rapid_cache(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.GetRapidCacheRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_list_rapid_caches_routing_parameters_request_1_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_rapid_caches), "__call__"
+    ) as call:
+        client.list_rapid_caches(request={"parent": "sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.ListRapidCachesRequest(**{"parent": "sample1"})
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -18246,7 +28250,6 @@ def test_get_iam_policy_routing_parameters_request_1_rest():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest(**{"resource": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -18273,7 +28276,6 @@ def test_get_iam_policy_routing_parameters_request_2_rest():
         request_msg = iam_policy_pb2.GetIamPolicyRequest(
             **{"resource": "projects/sample1/buckets/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -18296,7 +28298,6 @@ def test_set_iam_policy_routing_parameters_request_1_rest():
         call.assert_called()
         _, args, kw = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest(**{"resource": "sample1"})
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -18323,7 +28324,6 @@ def test_set_iam_policy_routing_parameters_request_2_rest():
         request_msg = iam_policy_pb2.SetIamPolicyRequest(
             **{"resource": "projects/sample1/buckets/sample2/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -18350,7 +28350,6 @@ def test_test_iam_permissions_routing_parameters_request_1_rest():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "sample1"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "sample1"}
@@ -18379,7 +28378,6 @@ def test_test_iam_permissions_routing_parameters_request_2_rest():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "projects/sample1/buckets/sample2/objects/sample3"}
         )
-
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -18410,7 +28408,34 @@ def test_test_iam_permissions_routing_parameters_request_3_rest():
         request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             **{"resource": "projects/sample1/buckets/sample2/managedFolders/sample3"}
         )
+        assert args[0] == request_msg
 
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_view_object_full_context_routing_parameters_request_1_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.view_object_full_context), "__call__"
+    ) as call:
+        client.view_object_full_context(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.ViewObjectFullContextRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
+        )
         assert args[0] == request_msg
 
         expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
@@ -18480,6 +28505,7 @@ def test_storage_control_base_transport():
         "delete_managed_folder",
         "get_managed_folder",
         "list_managed_folders",
+        "update_managed_folder",
         "create_anywhere_cache",
         "update_anywhere_cache",
         "disable_anywhere_cache",
@@ -18487,6 +28513,10 @@ def test_storage_control_base_transport():
         "resume_anywhere_cache",
         "get_anywhere_cache",
         "list_anywhere_caches",
+        "create_rapid_cache",
+        "update_rapid_cache",
+        "get_rapid_cache",
+        "list_rapid_caches",
         "get_project_intelligence_config",
         "update_project_intelligence_config",
         "get_folder_intelligence_config",
@@ -18496,6 +28526,12 @@ def test_storage_control_base_transport():
         "get_iam_policy",
         "set_iam_policy",
         "test_iam_permissions",
+        "get_intelligence_finding",
+        "list_intelligence_findings",
+        "summarize_intelligence_findings",
+        "get_intelligence_finding_revision",
+        "list_intelligence_finding_revisions",
+        "view_object_full_context",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -18520,11 +28556,14 @@ def test_storage_control_base_transport():
 
 def test_storage_control_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.storage_control_v2.services.storage_control.transports.StorageControlTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.storage_control_v2.services.storage_control.transports.StorageControlTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.StorageControlTransport(
@@ -18547,9 +28586,12 @@ def test_storage_control_base_transport_with_credentials_file():
 
 def test_storage_control_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.storage_control_v2.services.storage_control.transports.StorageControlTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.storage_control_v2.services.storage_control.transports.StorageControlTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.StorageControlTransport()
@@ -18633,11 +28675,12 @@ def test_storage_control_transport_auth_gdch_credentials(transport_class):
 def test_storage_control_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -18816,6 +28859,9 @@ def test_storage_control_client_transport_session_collision(transport_name):
     session1 = client1.transport.list_managed_folders._session
     session2 = client2.transport.list_managed_folders._session
     assert session1 != session2
+    session1 = client1.transport.update_managed_folder._session
+    session2 = client2.transport.update_managed_folder._session
+    assert session1 != session2
     session1 = client1.transport.create_anywhere_cache._session
     session2 = client2.transport.create_anywhere_cache._session
     assert session1 != session2
@@ -18836,6 +28882,18 @@ def test_storage_control_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.list_anywhere_caches._session
     session2 = client2.transport.list_anywhere_caches._session
+    assert session1 != session2
+    session1 = client1.transport.create_rapid_cache._session
+    session2 = client2.transport.create_rapid_cache._session
+    assert session1 != session2
+    session1 = client1.transport.update_rapid_cache._session
+    session2 = client2.transport.update_rapid_cache._session
+    assert session1 != session2
+    session1 = client1.transport.get_rapid_cache._session
+    session2 = client2.transport.get_rapid_cache._session
+    assert session1 != session2
+    session1 = client1.transport.list_rapid_caches._session
+    session2 = client2.transport.list_rapid_caches._session
     assert session1 != session2
     session1 = client1.transport.get_project_intelligence_config._session
     session2 = client2.transport.get_project_intelligence_config._session
@@ -18863,6 +28921,24 @@ def test_storage_control_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.test_iam_permissions._session
     session2 = client2.transport.test_iam_permissions._session
+    assert session1 != session2
+    session1 = client1.transport.get_intelligence_finding._session
+    session2 = client2.transport.get_intelligence_finding._session
+    assert session1 != session2
+    session1 = client1.transport.list_intelligence_findings._session
+    session2 = client2.transport.list_intelligence_findings._session
+    assert session1 != session2
+    session1 = client1.transport.summarize_intelligence_findings._session
+    session2 = client2.transport.summarize_intelligence_findings._session
+    assert session1 != session2
+    session1 = client1.transport.get_intelligence_finding_revision._session
+    session2 = client2.transport.get_intelligence_finding_revision._session
+    assert session1 != session2
+    session1 = client1.transport.list_intelligence_finding_revisions._session
+    session2 = client2.transport.list_intelligence_finding_revisions._session
+    assert session1 != session2
+    session1 = client1.transport.view_object_full_context._session
+    session2 = client2.transport.view_object_full_context._session
     assert session1 != session2
 
 
@@ -19055,10 +29131,33 @@ def test_parse_anywhere_cache_path():
     assert expected == actual
 
 
-def test_folder_path():
+def test_bucket_path():
     project = "cuttlefish"
     bucket = "mussel"
-    folder = "winkle"
+    expected = "projects/{project}/buckets/{bucket}".format(
+        project=project,
+        bucket=bucket,
+    )
+    actual = StorageControlClient.bucket_path(project, bucket)
+    assert expected == actual
+
+
+def test_parse_bucket_path():
+    expected = {
+        "project": "winkle",
+        "bucket": "nautilus",
+    }
+    path = StorageControlClient.bucket_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = StorageControlClient.parse_bucket_path(path)
+    assert expected == actual
+
+
+def test_folder_path():
+    project = "scallop"
+    bucket = "abalone"
+    folder = "squid"
     expected = "projects/{project}/buckets/{bucket}/folders/{folder}".format(
         project=project,
         bucket=bucket,
@@ -19070,9 +29169,9 @@ def test_folder_path():
 
 def test_parse_folder_path():
     expected = {
-        "project": "nautilus",
-        "bucket": "scallop",
-        "folder": "abalone",
+        "project": "clam",
+        "bucket": "whelk",
+        "folder": "octopus",
     }
     path = StorageControlClient.folder_path(**expected)
 
@@ -19082,8 +29181,8 @@ def test_parse_folder_path():
 
 
 def test_intelligence_config_path():
-    folder = "squid"
-    location = "clam"
+    folder = "oyster"
+    location = "nudibranch"
     expected = "folders/{folder}/locations/{location}/intelligenceConfig".format(
         folder=folder,
         location=location,
@@ -19094,8 +29193,8 @@ def test_intelligence_config_path():
 
 def test_parse_intelligence_config_path():
     expected = {
-        "folder": "whelk",
-        "location": "octopus",
+        "folder": "cuttlefish",
+        "location": "mussel",
     }
     path = StorageControlClient.intelligence_config_path(**expected)
 
@@ -19104,10 +29203,69 @@ def test_parse_intelligence_config_path():
     assert expected == actual
 
 
+def test_intelligence_finding_path():
+    project = "winkle"
+    location = "nautilus"
+    intelligence_finding = "scallop"
+    expected = "projects/{project}/locations/{location}/intelligenceFindings/{intelligence_finding}".format(
+        project=project,
+        location=location,
+        intelligence_finding=intelligence_finding,
+    )
+    actual = StorageControlClient.intelligence_finding_path(
+        project, location, intelligence_finding
+    )
+    assert expected == actual
+
+
+def test_parse_intelligence_finding_path():
+    expected = {
+        "project": "abalone",
+        "location": "squid",
+        "intelligence_finding": "clam",
+    }
+    path = StorageControlClient.intelligence_finding_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = StorageControlClient.parse_intelligence_finding_path(path)
+    assert expected == actual
+
+
+def test_intelligence_finding_revision_path():
+    project = "whelk"
+    location = "octopus"
+    intelligence_finding = "oyster"
+    revision = "nudibranch"
+    expected = "projects/{project}/locations/{location}/intelligenceFindings/{intelligence_finding}/revisions/{revision}".format(
+        project=project,
+        location=location,
+        intelligence_finding=intelligence_finding,
+        revision=revision,
+    )
+    actual = StorageControlClient.intelligence_finding_revision_path(
+        project, location, intelligence_finding, revision
+    )
+    assert expected == actual
+
+
+def test_parse_intelligence_finding_revision_path():
+    expected = {
+        "project": "cuttlefish",
+        "location": "mussel",
+        "intelligence_finding": "winkle",
+        "revision": "nautilus",
+    }
+    path = StorageControlClient.intelligence_finding_revision_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = StorageControlClient.parse_intelligence_finding_revision_path(path)
+    assert expected == actual
+
+
 def test_managed_folder_path():
-    project = "oyster"
-    bucket = "nudibranch"
-    managed_folder = "cuttlefish"
+    project = "scallop"
+    bucket = "abalone"
+    managed_folder = "squid"
     expected = (
         "projects/{project}/buckets/{bucket}/managedFolders/{managed_folder}".format(
             project=project,
@@ -19121,9 +29279,9 @@ def test_managed_folder_path():
 
 def test_parse_managed_folder_path():
     expected = {
-        "project": "mussel",
-        "bucket": "winkle",
-        "managed_folder": "nautilus",
+        "project": "clam",
+        "bucket": "whelk",
+        "managed_folder": "octopus",
     }
     path = StorageControlClient.managed_folder_path(**expected)
 
@@ -19132,9 +29290,61 @@ def test_parse_managed_folder_path():
     assert expected == actual
 
 
-def test_storage_layout_path():
+def test_object_path():
+    project = "oyster"
+    bucket = "nudibranch"
+    object = "cuttlefish"
+    expected = "projects/{project}/buckets/{bucket}/objects/{object}".format(
+        project=project,
+        bucket=bucket,
+        object=object,
+    )
+    actual = StorageControlClient.object_path(project, bucket, object)
+    assert expected == actual
+
+
+def test_parse_object_path():
+    expected = {
+        "project": "mussel",
+        "bucket": "winkle",
+        "object": "nautilus",
+    }
+    path = StorageControlClient.object_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = StorageControlClient.parse_object_path(path)
+    assert expected == actual
+
+
+def test_rapid_cache_path():
     project = "scallop"
     bucket = "abalone"
+    rapid_cache = "squid"
+    expected = "projects/{project}/buckets/{bucket}/rapidCaches/{rapid_cache}".format(
+        project=project,
+        bucket=bucket,
+        rapid_cache=rapid_cache,
+    )
+    actual = StorageControlClient.rapid_cache_path(project, bucket, rapid_cache)
+    assert expected == actual
+
+
+def test_parse_rapid_cache_path():
+    expected = {
+        "project": "clam",
+        "bucket": "whelk",
+        "rapid_cache": "octopus",
+    }
+    path = StorageControlClient.rapid_cache_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = StorageControlClient.parse_rapid_cache_path(path)
+    assert expected == actual
+
+
+def test_storage_layout_path():
+    project = "oyster"
+    bucket = "nudibranch"
     expected = "projects/{project}/buckets/{bucket}/storageLayout".format(
         project=project,
         bucket=bucket,
@@ -19145,8 +29355,8 @@ def test_storage_layout_path():
 
 def test_parse_storage_layout_path():
     expected = {
-        "project": "squid",
-        "bucket": "clam",
+        "project": "cuttlefish",
+        "bucket": "mussel",
     }
     path = StorageControlClient.storage_layout_path(**expected)
 
@@ -19156,7 +29366,7 @@ def test_parse_storage_layout_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -19166,7 +29376,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nautilus",
     }
     path = StorageControlClient.common_billing_account_path(**expected)
 
@@ -19176,7 +29386,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -19186,7 +29396,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "abalone",
     }
     path = StorageControlClient.common_folder_path(**expected)
 
@@ -19196,7 +29406,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -19206,7 +29416,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "clam",
     }
     path = StorageControlClient.common_organization_path(**expected)
 
@@ -19216,7 +29426,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -19226,7 +29436,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "octopus",
     }
     path = StorageControlClient.common_project_path(**expected)
 
@@ -19236,8 +29446,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -19248,8 +29458,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = StorageControlClient.common_location_path(**expected)
 

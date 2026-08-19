@@ -14,8 +14,7 @@
 
 import pytest
 
-from google.cloud.ndb import _batch
-from google.cloud.ndb import _eventloop
+from google.cloud.ndb import _batch, _eventloop
 
 
 @pytest.mark.usefixtures("in_context")

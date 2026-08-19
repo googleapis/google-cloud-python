@@ -130,7 +130,7 @@ class TestUtils(SpannerSimpleTestClass):
         )
         self.assertEqual(
             primary_key,
-            "PK_column",
+            ("PK_column",),
         )
 
     def test_get_primary_key_column_returns_none(self):

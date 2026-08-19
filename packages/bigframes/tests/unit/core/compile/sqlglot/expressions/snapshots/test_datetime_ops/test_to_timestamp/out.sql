@@ -1,0 +1,10 @@
+SELECT
+  CAST(TIMESTAMP_MICROS(CAST(TRUNC(`int64_col` * 0.001) AS INT64)) AS TIMESTAMP) AS `int64_col`,
+  CAST(TIMESTAMP_MICROS(CAST(TRUNC(`float64_col` * 0.001) AS INT64)) AS TIMESTAMP) AS `float64_col`,
+  CAST(TIMESTAMP_MICROS(CAST(TRUNC(`int64_col` * 1000000) AS INT64)) AS TIMESTAMP) AS `int64_col_s`,
+  CAST(TIMESTAMP_MICROS(CAST(TRUNC(`int64_col` * 1000) AS INT64)) AS TIMESTAMP) AS `int64_col_ms`,
+  CAST(TIMESTAMP_MICROS(CAST(TRUNC(`int64_col`) AS INT64)) AS TIMESTAMP) AS `int64_col_us`,
+  CAST(TIMESTAMP_MICROS(CAST(TRUNC(`int64_col` * 0.001) AS INT64)) AS TIMESTAMP) AS `int64_col_ns`,
+  TIMESTAMP(`datetime_col`) AS `datetime_col`,
+  PARSE_TIMESTAMP('%Y-%m-%d', `string_col`, 'UTC') AS `string_col_fmt`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types` AS `bft_0`

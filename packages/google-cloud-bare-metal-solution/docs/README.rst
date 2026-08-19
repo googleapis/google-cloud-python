@@ -3,7 +3,8 @@ Python Client for Bare Metal Solution
 
 |stable| |pypi| |versions|
 
-`Bare Metal Solution`_: Bring your Oracle workloads to Google Cloud with Bare Metal Solution and jumpstart your cloud journey with minimal risk.
+`Bare Metal Solution`_: Provides ways to manage Bare Metal Solution hardware installed in a
+regional extension located near a Google Cloud data center.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -61,14 +62,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.

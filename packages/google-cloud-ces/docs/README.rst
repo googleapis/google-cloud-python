@@ -1,9 +1,9 @@
-Python Client for Gemini Enterprise for Customer Experience API
-===============================================================
+Python Client for Gemini Enterprise for Customer Experience
+===========================================================
 
 |preview| |pypi| |versions|
 
-`Gemini Enterprise for Customer Experience API`_: 
+`Gemini Enterprise for Customer Experience`_: 
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Gemini Enterprise for Customer Experience API
    :target: https://pypi.org/project/google-cloud-ces/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-ces.svg
    :target: https://pypi.org/project/google-cloud-ces/
-.. _Gemini Enterprise for Customer Experience API: https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps
+.. _Gemini Enterprise for Customer Experience: https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-ces/latest/summary_overview
 .. _Product Documentation:  https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Gemini Enterprise for Customer Experience API.`_
+3. `Enable the Gemini Enterprise for Customer Experience.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Gemini Enterprise for Customer Experience API.:  https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps
+.. _Enable the Gemini Enterprise for Customer Experience.:  https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +61,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -97,14 +98,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Gemini Enterprise for Customer Experience API
+-  Read the `Client Library Documentation`_ for Gemini Enterprise for Customer Experience
    to see other available methods on the client.
--  Read the `Gemini Enterprise for Customer Experience API Product documentation`_ to learn
+-  Read the `Gemini Enterprise for Customer Experience Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Gemini Enterprise for Customer Experience API Product documentation:  https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps
+.. _Gemini Enterprise for Customer Experience Product documentation:  https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

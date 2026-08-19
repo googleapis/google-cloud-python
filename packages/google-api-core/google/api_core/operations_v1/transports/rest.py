@@ -14,23 +14,27 @@
 # limitations under the License.
 #
 
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import grpc
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import json_format  # type: ignore
-import grpc
+from google.protobuf import (
+    empty_pb2,  # type: ignore
+    json_format,  # type: ignore
+)
 from requests import __version__ as requests_version
 
 from google.api_core import exceptions as core_exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import general_helpers
-from google.api_core import path_template  # type: ignore
-from google.api_core import rest_helpers  # type: ignore
+from google.api_core import (
+    gapic_v1,  # type: ignore
+    general_helpers,
+    path_template,  # type: ignore
+    rest_helpers,  # type: ignore
+)
 from google.api_core import retry as retries  # type: ignore
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO

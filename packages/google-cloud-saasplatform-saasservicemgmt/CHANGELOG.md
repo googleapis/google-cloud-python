@@ -4,6 +4,36 @@
 
 [1]: https://pypi.org/project/google-cloud-saasplatform-saasservicemgmt/#history
 
+## [0.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-saasplatform-saasservicemgmt-v0.7.0...google-cloud-saasplatform-saasservicemgmt-v0.7.1) (2026-07-07)
+
+
+### Features
+
+* update googleapis and regenerate ([#17635](https://github.com/googleapis/google-cloud-python/issues/17635)) ([9638879](https://github.com/googleapis/google-cloud-python/commit/96388796440b226440f885c04ce565782b1d9190))
+
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-saasplatform-saasservicemgmt-v0.6.0...google-cloud-saasplatform-saasservicemgmt-v0.7.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-s packages (#17086) ([40b522a8473dec7ade45113ddd44ccd960803c45](https://github.com/googleapis/google-cloud-python/commit/40b522a8473dec7ade45113ddd44ccd960803c45))
+
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-saasplatform-saasservicemgmt-v0.5.0...google-cloud-saasplatform-saasservicemgmt-v0.6.0) (2026-05-06)
+
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-saasplatform-saasservicemgmt-v0.4.0...google-cloud-saasplatform-saasservicemgmt-v0.5.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-saasplatform-saasservicemgmt-v0.3.0...google-cloud-saasplatform-saasservicemgmt-v0.4.0) (2026-02-19)
 
 

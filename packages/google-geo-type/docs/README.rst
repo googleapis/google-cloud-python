@@ -1,9 +1,9 @@
-Python Client for Geo Type Protos
-=================================
+Python Client for Common Geo Types
+==================================
 
 |preview| |pypi| |versions|
 
-`Geo Type Protos`_: 
+`Common Geo Types`_: Defines common types for Google Geo APIs.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Geo Type Protos
    :target: https://pypi.org/project/google-geo-type/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-geo-type.svg
    :target: https://pypi.org/project/google-geo-type/
-.. _Geo Type Protos: https://mapsplatform.google.com/maps-products
+.. _Common Geo Types: https://mapsplatform.google.com/maps-products
 .. _Client Library Documentation: https://googleapis.dev/python/geotype/latest
 .. _Product Documentation:  https://mapsplatform.google.com/maps-products
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Geo Type Protos.`_
+3. `Enable the Common Geo Types.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Geo Type Protos.:  https://mapsplatform.google.com/maps-products
+.. _Enable the Common Geo Types.:  https://mapsplatform.google.com/maps-products
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +61,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -97,14 +98,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Geo Type Protos
+-  Read the `Client Library Documentation`_ for Common Geo Types
    to see other available methods on the client.
--  Read the `Geo Type Protos Product documentation`_ to learn
+-  Read the `Common Geo Types Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Geo Type Protos Product documentation:  https://mapsplatform.google.com/maps-products
+.. _Common Geo Types Product documentation:  https://mapsplatform.google.com/maps-products
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

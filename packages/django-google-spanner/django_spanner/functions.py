@@ -15,6 +15,7 @@ from django.db.models.functions import (
     ConcatPair,
     Cot,
     Degrees,
+    JSONArray,
     Left,
     Log,
     Ord,
@@ -178,6 +179,36 @@ def degrees(self, compiler, connection, **extra_context):
         compiler,
         connection,
         template="((%%(expressions)s) * 180 / %s)" % math.pi,
+        **extra_context,
+    )
+
+
+def json_array(self, compiler, connection, **extra_context):
+    """
+    A method to extend Django JSONArray class. Returns a SQL query that
+    generates a JSON array.
+
+    :type self: :class:`~django.db.models.functions.JSONArray`
+    :param self: the instance of the class that owns this method.
+
+    :type compiler: :class:`~django_spanner.compiler.SQLCompilerst`
+    :param compiler: The query compiler responsible for generating the query.
+                     Must have a compile method, returning a (sql, [params])
+                     tuple. Calling compiler(value) will return a quoted
+                     `value`.
+
+    :type connection: :class:`~google.cloud.spanner_dbapi.connection.Connection`
+    :param connection: The Spanner database connection used for the current
+                       query.
+
+    :rtype: tuple(str, list)
+    :returns: A tuple where `str` is a string containing ordered SQL parameters
+              to be replaced with the elements of the `list`.
+    """
+    return self.as_sql(
+        compiler,
+        connection,
+        template="TO_JSON_STRING([%(expressions)s])",
         **extra_context,
     )
 
@@ -377,6 +408,7 @@ def register_functions():
     ConcatPair.as_spanner = concatpair
     Cot.as_spanner = cot
     Degrees.as_spanner = degrees
+    JSONArray.as_spanner = json_array
     Left.as_spanner = left_and_right
     Log.as_spanner = log
     Ord.as_spanner = ord_

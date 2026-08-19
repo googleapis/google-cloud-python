@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,15 +41,17 @@ from google.cloud.discoveryengine_v1beta.types import session as gcd_session
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ConversationalSearchServiceTransport(abc.ABC):
     """Abstract transport class for ConversationalSearchService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/cloud-platform",
+        "https://www.googleapis.com/auth/discoveryengine.readwrite",
+        "https://www.googleapis.com/auth/discoveryengine.serving.readwrite",
+    )
 
     DEFAULT_HOST: str = "discoveryengine.googleapis.com"
 
@@ -90,6 +92,10 @@ class ConversationalSearchServiceTransport(abc.ABC):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
 
         # Save the scopes.
@@ -139,6 +145,8 @@ class ConversationalSearchServiceTransport(abc.ABC):
             host += ":443"
         self._host = host
 
+        self._wrapped_methods: Dict[Callable, Callable] = {}
+
     @property
     def host(self):
         return self._host
@@ -178,6 +186,11 @@ class ConversationalSearchServiceTransport(abc.ABC):
             ),
             self.answer_query: gapic_v1.method.wrap_method(
                 self.answer_query,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.stream_answer_query: gapic_v1.method.wrap_method(
+                self.stream_answer_query,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -299,6 +312,18 @@ class ConversationalSearchServiceTransport(abc.ABC):
 
     @property
     def answer_query(
+        self,
+    ) -> Callable[
+        [conversational_search_service.AnswerQueryRequest],
+        Union[
+            conversational_search_service.AnswerQueryResponse,
+            Awaitable[conversational_search_service.AnswerQueryResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def stream_answer_query(
         self,
     ) -> Callable[
         [conversational_search_service.AnswerQueryRequest],

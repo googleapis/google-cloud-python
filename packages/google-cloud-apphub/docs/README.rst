@@ -1,9 +1,9 @@
-Python Client for App Hub API
-=============================
+Python Client for App Hub
+=========================
 
 |preview| |pypi| |versions|
 
-`App Hub API`_: null 
+`App Hub`_: App Hub acts as the foundational data model and central registry for your applications on Google Cloud.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for App Hub API
    :target: https://pypi.org/project/google-cloud-apphub/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-apphub.svg
    :target: https://pypi.org/project/google-cloud-apphub/
-.. _App Hub API: https://cloud.google.com/app-hub/docs/overview
+.. _App Hub: https://cloud.google.com/app-hub/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-apphub/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/app-hub/docs/overview
+.. _Product Documentation:  https://cloud.google.com/app-hub/
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the App Hub API.`_
+3. `Enable the App Hub.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the App Hub API.:  https://cloud.google.com/app-hub/docs/overview
+.. _Enable the App Hub.:  https://cloud.google.com/app-hub/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +61,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -97,14 +98,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for App Hub API
+-  Read the `Client Library Documentation`_ for App Hub
    to see other available methods on the client.
--  Read the `App Hub API Product documentation`_ to learn
+-  Read the `App Hub Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _App Hub API Product documentation:  https://cloud.google.com/app-hub/docs/overview
+.. _App Hub Product documentation:  https://cloud.google.com/app-hub/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

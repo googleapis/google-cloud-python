@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,9 +32,7 @@ from google.cloud.compute_v1beta.types import compute
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class RolloutsTransport(abc.ABC):
@@ -84,6 +82,10 @@ class RolloutsTransport(abc.ABC):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
         self._extended_operations_services: Dict[str, Any] = {}
 
@@ -134,6 +136,8 @@ class RolloutsTransport(abc.ABC):
             host += ":443"
         self._host = host
 
+        self._wrapped_methods: Dict[Callable, Callable] = {}
+
     @property
     def host(self):
         return self._host
@@ -141,24 +145,59 @@ class RolloutsTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
+            self.advance: gapic_v1.method.wrap_method(
+                self.advance,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
             self.cancel: gapic_v1.method.wrap_method(
                 self.cancel,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.delete: gapic_v1.method.wrap_method(
                 self.delete,
-                default_timeout=None,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.get: gapic_v1.method.wrap_method(
                 self.get,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
                 client_info=client_info,
             ),
             self.list: gapic_v1.method.wrap_method(
                 self.list,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=600.0,
+                ),
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.pause: gapic_v1.method.wrap_method(
+                self.pause,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.resume: gapic_v1.method.wrap_method(
+                self.resume,
+                default_timeout=600.0,
                 client_info=client_info,
             ),
         }
@@ -170,6 +209,15 @@ class RolloutsTransport(abc.ABC):
              Only call this method if the transport is NOT shared
              with other clients - this may cause errors in other clients!
         """
+        raise NotImplementedError()
+
+    @property
+    def advance(
+        self,
+    ) -> Callable[
+        [compute.AdvanceRolloutRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
@@ -204,6 +252,24 @@ class RolloutsTransport(abc.ABC):
     ) -> Callable[
         [compute.ListRolloutsRequest],
         Union[compute.RolloutsListResponse, Awaitable[compute.RolloutsListResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def pause(
+        self,
+    ) -> Callable[
+        [compute.PauseRolloutRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def resume(
+        self,
+    ) -> Callable[
+        [compute.ResumeRolloutRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
 

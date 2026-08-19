@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,9 +35,7 @@ from google.cloud.ces_v1beta.types import evaluation as gcc_evaluation
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class EvaluationServiceTransport(abc.ABC):
@@ -87,6 +85,10 @@ class EvaluationServiceTransport(abc.ABC):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
 
         # Save the scopes.
@@ -135,6 +137,8 @@ class EvaluationServiceTransport(abc.ABC):
         if ":" not in host:
             host += ":443"
         self._host = host
+
+        self._wrapped_methods: Dict[Callable, Callable] = {}
 
     @property
     def host(self):
@@ -295,6 +299,26 @@ class EvaluationServiceTransport(abc.ABC):
             ),
             self.test_persona_voice: gapic_v1.method.wrap_method(
                 self.test_persona_voice,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_evaluations: gapic_v1.method.wrap_method(
+                self.export_evaluations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_evaluation_runs: gapic_v1.method.wrap_method(
+                self.export_evaluation_runs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_evaluation_results: gapic_v1.method.wrap_method(
+                self.export_evaluation_results,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.run_evaluation_result_metrics: gapic_v1.method.wrap_method(
+                self.run_evaluation_result_metrics,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -662,6 +686,42 @@ class EvaluationServiceTransport(abc.ABC):
             evaluation_service.TestPersonaVoiceResponse,
             Awaitable[evaluation_service.TestPersonaVoiceResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_evaluations(
+        self,
+    ) -> Callable[
+        [evaluation_service.ExportEvaluationsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_evaluation_runs(
+        self,
+    ) -> Callable[
+        [evaluation_service.ExportEvaluationRunsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_evaluation_results(
+        self,
+    ) -> Callable[
+        [evaluation_service.ExportEvaluationResultsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def run_evaluation_result_metrics(
+        self,
+    ) -> Callable[
+        [evaluation_service.RunEvaluationResultMetricsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

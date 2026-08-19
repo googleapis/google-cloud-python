@@ -4,6 +4,37 @@
 
 [1]: https://pypi.org/project/google-analytics-admin/#history
 
+## [0.30.1](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.30.0...google-analytics-admin-v0.30.1) (2026-06-25)
+
+
+### Features
+
+* update googleapis and regenerate ([#17554](https://github.com/googleapis/google-cloud-python/issues/17554)) ([03d0574](https://github.com/googleapis/google-cloud-python/commit/03d0574da8485e918f16e90666928f5c7b7f1c92))
+
+## [0.30.0](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.29.0...google-analytics-admin-v0.30.0) (2026-06-02)
+
+
+### Features
+
+* regenerate remaining packages (#17078) ([cc4f36f65e8b29d28f636e082435801b899cbca0](https://github.com/googleapis/google-cloud-python/commit/cc4f36f65e8b29d28f636e082435801b899cbca0))
+
+## [0.29.0](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.28.0...google-analytics-admin-v0.29.0) (2026-05-06)
+
+## [0.28.0](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.27.0...google-analytics-admin-v0.28.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* update image to us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:f5426423676c75008c2135037e7b98f78cbb99f78b3c46fe043b6897be92d836 ([3654fe76d755dd8db62ece81d5770ec58b3624df](https://github.com/googleapis/google-cloud-python/commit/3654fe76d755dd8db62ece81d5770ec58b3624df))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
 ## [0.27.0](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.26.0...google-analytics-admin-v0.27.0) (2026-01-08)
 
 

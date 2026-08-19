@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Cloud Batch.
+This package includes clients for multiple versions of Batch.
 By default, you will get version ``batch_v1``.
 
 

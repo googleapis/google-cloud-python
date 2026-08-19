@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -123,12 +118,28 @@ def modify_default_endpoint_template(client):
     )
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert EntityTypesClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -147,6 +158,9 @@ def test__get_default_mtls_endpoint():
         == sandbox_mtls_endpoint
     )
     assert EntityTypesClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert (
+        EntityTypesClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
+    )
 
 
 def test__read_environment_variables():
@@ -928,7 +942,14 @@ def test_entity_types_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -975,7 +996,14 @@ def test_entity_types_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1253,11 +1281,13 @@ def test_entity_types_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1285,8 +1315,8 @@ def test_entity_types_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        entity_type.ListEntityTypesRequest,
-        dict,
+        entity_type.ListEntityTypesRequest(),
+        {},
     ],
 )
 def test_list_entity_types(request_type, transport: str = "grpc"):
@@ -1297,7 +1327,7 @@ def test_list_entity_types(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1347,11 +1377,12 @@ def test_list_entity_types_non_empty_request_with_auto_populated_field():
         client.list_entity_types(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.ListEntityTypesRequest(
+        request_msg = entity_type.ListEntityTypesRequest(
             parent="parent_value",
             language_code="language_code_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_entity_types_use_cached_wrapped_rpc():
@@ -1434,9 +1465,14 @@ async def test_list_entity_types_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_entity_types_async(
-    transport: str = "grpc_asyncio", request_type=entity_type.ListEntityTypesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_type.ListEntityTypesRequest(),
+        {},
+    ],
+)
+async def test_list_entity_types_async(request_type, transport: str = "grpc_asyncio"):
     client = EntityTypesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1444,7 +1480,7 @@ async def test_list_entity_types_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1467,11 +1503,6 @@ async def test_list_entity_types_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEntityTypesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_entity_types_async_from_dict():
-    await test_list_entity_types_async(request_type=dict)
 
 
 def test_list_entity_types_field_headers():
@@ -1686,6 +1717,9 @@ def test_list_entity_types_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, entity_type.EntityType) for i in results)
@@ -1778,6 +1812,8 @@ async def test_list_entity_types_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1827,11 +1863,7 @@ async def test_list_entity_types_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_entity_types(request={})
-        ).pages:
+        async for page_ in (await client.list_entity_types(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1840,8 +1872,8 @@ async def test_list_entity_types_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        entity_type.GetEntityTypeRequest,
-        dict,
+        entity_type.GetEntityTypeRequest(),
+        {},
     ],
 )
 def test_get_entity_type(request_type, transport: str = "grpc"):
@@ -1852,7 +1884,7 @@ def test_get_entity_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entity_type), "__call__") as call:
@@ -1908,10 +1940,11 @@ def test_get_entity_type_non_empty_request_with_auto_populated_field():
         client.get_entity_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.GetEntityTypeRequest(
+        request_msg = entity_type.GetEntityTypeRequest(
             name="name_value",
             language_code="language_code_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_entity_type_use_cached_wrapped_rpc():
@@ -1992,9 +2025,14 @@ async def test_get_entity_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_entity_type_async(
-    transport: str = "grpc_asyncio", request_type=entity_type.GetEntityTypeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_type.GetEntityTypeRequest(),
+        {},
+    ],
+)
+async def test_get_entity_type_async(request_type, transport: str = "grpc_asyncio"):
     client = EntityTypesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2002,7 +2040,7 @@ async def test_get_entity_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entity_type), "__call__") as call:
@@ -2034,11 +2072,6 @@ async def test_get_entity_type_async(
         == entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT
     )
     assert response.enable_fuzzy_extraction is True
-
-
-@pytest.mark.asyncio
-async def test_get_entity_type_async_from_dict():
-    await test_get_entity_type_async(request_type=dict)
 
 
 def test_get_entity_type_field_headers():
@@ -2197,8 +2230,8 @@ async def test_get_entity_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_entity_type.CreateEntityTypeRequest,
-        dict,
+        gcd_entity_type.CreateEntityTypeRequest(),
+        {},
     ],
 )
 def test_create_entity_type(request_type, transport: str = "grpc"):
@@ -2209,7 +2242,7 @@ def test_create_entity_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2269,10 +2302,11 @@ def test_create_entity_type_non_empty_request_with_auto_populated_field():
         client.create_entity_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_entity_type.CreateEntityTypeRequest(
+        request_msg = gcd_entity_type.CreateEntityTypeRequest(
             parent="parent_value",
             language_code="language_code_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_entity_type_use_cached_wrapped_rpc():
@@ -2357,10 +2391,14 @@ async def test_create_entity_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_entity_type_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcd_entity_type.CreateEntityTypeRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_entity_type.CreateEntityTypeRequest(),
+        {},
+    ],
+)
+async def test_create_entity_type_async(request_type, transport: str = "grpc_asyncio"):
     client = EntityTypesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2368,7 +2406,7 @@ async def test_create_entity_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2402,11 +2440,6 @@ async def test_create_entity_type_async(
         == gcd_entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT
     )
     assert response.enable_fuzzy_extraction is True
-
-
-@pytest.mark.asyncio
-async def test_create_entity_type_async_from_dict():
-    await test_create_entity_type_async(request_type=dict)
 
 
 def test_create_entity_type_field_headers():
@@ -2583,8 +2616,8 @@ async def test_create_entity_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcd_entity_type.UpdateEntityTypeRequest,
-        dict,
+        gcd_entity_type.UpdateEntityTypeRequest(),
+        {},
     ],
 )
 def test_update_entity_type(request_type, transport: str = "grpc"):
@@ -2595,7 +2628,7 @@ def test_update_entity_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2654,9 +2687,10 @@ def test_update_entity_type_non_empty_request_with_auto_populated_field():
         client.update_entity_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_entity_type.UpdateEntityTypeRequest(
+        request_msg = gcd_entity_type.UpdateEntityTypeRequest(
             language_code="language_code_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_entity_type_use_cached_wrapped_rpc():
@@ -2741,10 +2775,14 @@ async def test_update_entity_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_entity_type_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcd_entity_type.UpdateEntityTypeRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_entity_type.UpdateEntityTypeRequest(),
+        {},
+    ],
+)
+async def test_update_entity_type_async(request_type, transport: str = "grpc_asyncio"):
     client = EntityTypesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2752,7 +2790,7 @@ async def test_update_entity_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2786,11 +2824,6 @@ async def test_update_entity_type_async(
         == gcd_entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT
     )
     assert response.enable_fuzzy_extraction is True
-
-
-@pytest.mark.asyncio
-async def test_update_entity_type_async_from_dict():
-    await test_update_entity_type_async(request_type=dict)
 
 
 def test_update_entity_type_field_headers():
@@ -2967,8 +3000,8 @@ async def test_update_entity_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        entity_type.DeleteEntityTypeRequest,
-        dict,
+        entity_type.DeleteEntityTypeRequest(),
+        {},
     ],
 )
 def test_delete_entity_type(request_type, transport: str = "grpc"):
@@ -2979,7 +3012,7 @@ def test_delete_entity_type(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3024,9 +3057,10 @@ def test_delete_entity_type_non_empty_request_with_auto_populated_field():
         client.delete_entity_type(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.DeleteEntityTypeRequest(
+        request_msg = entity_type.DeleteEntityTypeRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_entity_type_use_cached_wrapped_rpc():
@@ -3111,9 +3145,14 @@ async def test_delete_entity_type_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_entity_type_async(
-    transport: str = "grpc_asyncio", request_type=entity_type.DeleteEntityTypeRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_type.DeleteEntityTypeRequest(),
+        {},
+    ],
+)
+async def test_delete_entity_type_async(request_type, transport: str = "grpc_asyncio"):
     client = EntityTypesAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3121,7 +3160,7 @@ async def test_delete_entity_type_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3139,11 +3178,6 @@ async def test_delete_entity_type_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_entity_type_async_from_dict():
-    await test_delete_entity_type_async(request_type=dict)
 
 
 def test_delete_entity_type_field_headers():
@@ -3296,8 +3330,8 @@ async def test_delete_entity_type_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        entity_type.BatchUpdateEntityTypesRequest,
-        dict,
+        entity_type.BatchUpdateEntityTypesRequest(),
+        {},
     ],
 )
 def test_batch_update_entity_types(request_type, transport: str = "grpc"):
@@ -3308,7 +3342,7 @@ def test_batch_update_entity_types(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3355,11 +3389,12 @@ def test_batch_update_entity_types_non_empty_request_with_auto_populated_field()
         client.batch_update_entity_types(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.BatchUpdateEntityTypesRequest(
+        request_msg = entity_type.BatchUpdateEntityTypesRequest(
             parent="parent_value",
             entity_type_batch_uri="entity_type_batch_uri_value",
             language_code="language_code_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_update_entity_types_use_cached_wrapped_rpc():
@@ -3455,9 +3490,15 @@ async def test_batch_update_entity_types_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_type.BatchUpdateEntityTypesRequest(),
+        {},
+    ],
+)
 async def test_batch_update_entity_types_async(
-    transport: str = "grpc_asyncio",
-    request_type=entity_type.BatchUpdateEntityTypesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EntityTypesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3466,7 +3507,7 @@ async def test_batch_update_entity_types_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3486,11 +3527,6 @@ async def test_batch_update_entity_types_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_batch_update_entity_types_async_from_dict():
-    await test_batch_update_entity_types_async(request_type=dict)
 
 
 def test_batch_update_entity_types_field_headers():
@@ -3561,8 +3597,8 @@ async def test_batch_update_entity_types_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        entity_type.BatchDeleteEntityTypesRequest,
-        dict,
+        entity_type.BatchDeleteEntityTypesRequest(),
+        {},
     ],
 )
 def test_batch_delete_entity_types(request_type, transport: str = "grpc"):
@@ -3573,7 +3609,7 @@ def test_batch_delete_entity_types(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3618,9 +3654,10 @@ def test_batch_delete_entity_types_non_empty_request_with_auto_populated_field()
         client.batch_delete_entity_types(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.BatchDeleteEntityTypesRequest(
+        request_msg = entity_type.BatchDeleteEntityTypesRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_delete_entity_types_use_cached_wrapped_rpc():
@@ -3716,9 +3753,15 @@ async def test_batch_delete_entity_types_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_type.BatchDeleteEntityTypesRequest(),
+        {},
+    ],
+)
 async def test_batch_delete_entity_types_async(
-    transport: str = "grpc_asyncio",
-    request_type=entity_type.BatchDeleteEntityTypesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EntityTypesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3727,7 +3770,7 @@ async def test_batch_delete_entity_types_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3747,11 +3790,6 @@ async def test_batch_delete_entity_types_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_batch_delete_entity_types_async_from_dict():
-    await test_batch_delete_entity_types_async(request_type=dict)
 
 
 def test_batch_delete_entity_types_field_headers():
@@ -3918,8 +3956,8 @@ async def test_batch_delete_entity_types_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        entity_type.BatchCreateEntitiesRequest,
-        dict,
+        entity_type.BatchCreateEntitiesRequest(),
+        {},
     ],
 )
 def test_batch_create_entities(request_type, transport: str = "grpc"):
@@ -3930,7 +3968,7 @@ def test_batch_create_entities(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3976,10 +4014,11 @@ def test_batch_create_entities_non_empty_request_with_auto_populated_field():
         client.batch_create_entities(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.BatchCreateEntitiesRequest(
+        request_msg = entity_type.BatchCreateEntitiesRequest(
             parent="parent_value",
             language_code="language_code_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_create_entities_use_cached_wrapped_rpc():
@@ -4075,8 +4114,15 @@ async def test_batch_create_entities_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_type.BatchCreateEntitiesRequest(),
+        {},
+    ],
+)
 async def test_batch_create_entities_async(
-    transport: str = "grpc_asyncio", request_type=entity_type.BatchCreateEntitiesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EntityTypesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4085,7 +4131,7 @@ async def test_batch_create_entities_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4105,11 +4151,6 @@ async def test_batch_create_entities_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_batch_create_entities_async_from_dict():
-    await test_batch_create_entities_async(request_type=dict)
 
 
 def test_batch_create_entities_field_headers():
@@ -4286,8 +4327,8 @@ async def test_batch_create_entities_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        entity_type.BatchUpdateEntitiesRequest,
-        dict,
+        entity_type.BatchUpdateEntitiesRequest(),
+        {},
     ],
 )
 def test_batch_update_entities(request_type, transport: str = "grpc"):
@@ -4298,7 +4339,7 @@ def test_batch_update_entities(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4344,10 +4385,11 @@ def test_batch_update_entities_non_empty_request_with_auto_populated_field():
         client.batch_update_entities(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.BatchUpdateEntitiesRequest(
+        request_msg = entity_type.BatchUpdateEntitiesRequest(
             parent="parent_value",
             language_code="language_code_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_update_entities_use_cached_wrapped_rpc():
@@ -4443,8 +4485,15 @@ async def test_batch_update_entities_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_type.BatchUpdateEntitiesRequest(),
+        {},
+    ],
+)
 async def test_batch_update_entities_async(
-    transport: str = "grpc_asyncio", request_type=entity_type.BatchUpdateEntitiesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EntityTypesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4453,7 +4502,7 @@ async def test_batch_update_entities_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4473,11 +4522,6 @@ async def test_batch_update_entities_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_batch_update_entities_async_from_dict():
-    await test_batch_update_entities_async(request_type=dict)
 
 
 def test_batch_update_entities_field_headers():
@@ -4654,8 +4698,8 @@ async def test_batch_update_entities_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        entity_type.BatchDeleteEntitiesRequest,
-        dict,
+        entity_type.BatchDeleteEntitiesRequest(),
+        {},
     ],
 )
 def test_batch_delete_entities(request_type, transport: str = "grpc"):
@@ -4666,7 +4710,7 @@ def test_batch_delete_entities(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4712,10 +4756,11 @@ def test_batch_delete_entities_non_empty_request_with_auto_populated_field():
         client.batch_delete_entities(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.BatchDeleteEntitiesRequest(
+        request_msg = entity_type.BatchDeleteEntitiesRequest(
             parent="parent_value",
             language_code="language_code_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_delete_entities_use_cached_wrapped_rpc():
@@ -4811,8 +4856,15 @@ async def test_batch_delete_entities_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_type.BatchDeleteEntitiesRequest(),
+        {},
+    ],
+)
 async def test_batch_delete_entities_async(
-    transport: str = "grpc_asyncio", request_type=entity_type.BatchDeleteEntitiesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = EntityTypesAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4821,7 +4873,7 @@ async def test_batch_delete_entities_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4841,11 +4893,6 @@ async def test_batch_delete_entities_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_batch_delete_entities_async_from_dict():
-    await test_batch_delete_entities_async(request_type=dict)
 
 
 def test_batch_delete_entities_field_headers():
@@ -5137,7 +5184,7 @@ def test_list_entity_types_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_entity_types_rest_unset_required_fields():
@@ -5271,6 +5318,9 @@ def test_list_entity_types_rest_pager(transport: str = "rest"):
 
         pager = client.list_entity_types(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, entity_type.EntityType) for i in results)
@@ -5390,7 +5440,7 @@ def test_get_entity_type_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_entity_type_rest_unset_required_fields():
@@ -5576,7 +5626,7 @@ def test_create_entity_type_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_entity_type_rest_unset_required_fields():
@@ -5772,7 +5822,7 @@ def test_update_entity_type_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_entity_type_rest_unset_required_fields():
@@ -5965,7 +6015,7 @@ def test_delete_entity_type_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_entity_type_rest_unset_required_fields():
@@ -6147,7 +6197,7 @@ def test_batch_update_entity_types_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_update_entity_types_rest_unset_required_fields():
@@ -6278,7 +6328,7 @@ def test_batch_delete_entity_types_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_delete_entity_types_rest_unset_required_fields():
@@ -6471,7 +6521,7 @@ def test_batch_create_entities_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_create_entities_rest_unset_required_fields():
@@ -6666,7 +6716,7 @@ def test_batch_update_entities_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_update_entities_rest_unset_required_fields():
@@ -6865,7 +6915,7 @@ def test_batch_delete_entities_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_delete_entities_rest_unset_required_fields():
@@ -7070,7 +7120,6 @@ def test_list_entity_types_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.ListEntityTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7091,7 +7140,6 @@ def test_get_entity_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.GetEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -7114,7 +7162,6 @@ def test_create_entity_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_entity_type.CreateEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -7137,7 +7184,6 @@ def test_update_entity_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_entity_type.UpdateEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -7160,7 +7206,6 @@ def test_delete_entity_type_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.DeleteEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -7183,7 +7228,6 @@ def test_batch_update_entity_types_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.BatchUpdateEntityTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7206,7 +7250,6 @@ def test_batch_delete_entity_types_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.BatchDeleteEntityTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7229,7 +7272,6 @@ def test_batch_create_entities_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.BatchCreateEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7252,7 +7294,6 @@ def test_batch_update_entities_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.BatchUpdateEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7275,7 +7316,6 @@ def test_batch_delete_entities_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.BatchDeleteEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7318,7 +7358,6 @@ async def test_list_entity_types_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.ListEntityTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7349,7 +7388,6 @@ async def test_get_entity_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.GetEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -7382,7 +7420,6 @@ async def test_create_entity_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_entity_type.CreateEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -7415,7 +7452,6 @@ async def test_update_entity_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_entity_type.UpdateEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -7440,7 +7476,6 @@ async def test_delete_entity_type_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.DeleteEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -7467,7 +7502,6 @@ async def test_batch_update_entity_types_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.BatchUpdateEntityTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7494,7 +7528,6 @@ async def test_batch_delete_entity_types_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.BatchDeleteEntityTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7521,7 +7554,6 @@ async def test_batch_create_entities_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.BatchCreateEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7548,7 +7580,6 @@ async def test_batch_update_entities_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.BatchUpdateEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7575,7 +7606,6 @@ async def test_batch_delete_entities_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.BatchDeleteEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -7597,8 +7627,9 @@ def test_list_entity_types_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7661,17 +7692,20 @@ def test_list_entity_types_rest_interceptors(null_interceptor):
     )
     client = EntityTypesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_list_entity_types"
-    ) as post, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_list_entity_types_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "pre_list_entity_types"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor, "post_list_entity_types"
+        ) as post,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor,
+            "post_list_entity_types_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor, "pre_list_entity_types"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7729,8 +7763,9 @@ def test_get_entity_type_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7804,17 +7839,19 @@ def test_get_entity_type_rest_interceptors(null_interceptor):
     )
     client = EntityTypesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_get_entity_type"
-    ) as post, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_get_entity_type_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "pre_get_entity_type"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor, "post_get_entity_type"
+        ) as post,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor, "post_get_entity_type_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor, "pre_get_entity_type"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7867,8 +7904,9 @@ def test_create_entity_type_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8019,17 +8057,20 @@ def test_create_entity_type_rest_interceptors(null_interceptor):
     )
     client = EntityTypesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_create_entity_type"
-    ) as post, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_create_entity_type_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "pre_create_entity_type"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor, "post_create_entity_type"
+        ) as post,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor,
+            "post_create_entity_type_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor, "pre_create_entity_type"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8084,8 +8125,9 @@ def test_update_entity_type_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8238,17 +8280,20 @@ def test_update_entity_type_rest_interceptors(null_interceptor):
     )
     client = EntityTypesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_update_entity_type"
-    ) as post, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_update_entity_type_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "pre_update_entity_type"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor, "post_update_entity_type"
+        ) as post,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor,
+            "post_update_entity_type_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor, "pre_update_entity_type"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8301,8 +8346,9 @@ def test_delete_entity_type_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8359,13 +8405,13 @@ def test_delete_entity_type_rest_interceptors(null_interceptor):
     )
     client = EntityTypesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "pre_delete_entity_type"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor, "pre_delete_entity_type"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = entity_type.DeleteEntityTypeRequest.pb(
             entity_type.DeleteEntityTypeRequest()
@@ -8410,8 +8456,9 @@ def test_batch_update_entity_types_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8468,20 +8515,21 @@ def test_batch_update_entity_types_rest_interceptors(null_interceptor):
     )
     client = EntityTypesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_batch_update_entity_types"
-    ) as post, mock.patch.object(
-        transports.EntityTypesRestInterceptor,
-        "post_batch_update_entity_types_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "pre_batch_update_entity_types"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor, "post_batch_update_entity_types"
+        ) as post,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor,
+            "post_batch_update_entity_types_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor, "pre_batch_update_entity_types"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8534,8 +8582,9 @@ def test_batch_delete_entity_types_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8592,20 +8641,21 @@ def test_batch_delete_entity_types_rest_interceptors(null_interceptor):
     )
     client = EntityTypesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_batch_delete_entity_types"
-    ) as post, mock.patch.object(
-        transports.EntityTypesRestInterceptor,
-        "post_batch_delete_entity_types_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "pre_batch_delete_entity_types"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor, "post_batch_delete_entity_types"
+        ) as post,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor,
+            "post_batch_delete_entity_types_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor, "pre_batch_delete_entity_types"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8658,8 +8708,9 @@ def test_batch_create_entities_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8716,20 +8767,21 @@ def test_batch_create_entities_rest_interceptors(null_interceptor):
     )
     client = EntityTypesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_batch_create_entities"
-    ) as post, mock.patch.object(
-        transports.EntityTypesRestInterceptor,
-        "post_batch_create_entities_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "pre_batch_create_entities"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor, "post_batch_create_entities"
+        ) as post,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor,
+            "post_batch_create_entities_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor, "pre_batch_create_entities"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8782,8 +8834,9 @@ def test_batch_update_entities_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8840,20 +8893,21 @@ def test_batch_update_entities_rest_interceptors(null_interceptor):
     )
     client = EntityTypesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_batch_update_entities"
-    ) as post, mock.patch.object(
-        transports.EntityTypesRestInterceptor,
-        "post_batch_update_entities_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "pre_batch_update_entities"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor, "post_batch_update_entities"
+        ) as post,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor,
+            "post_batch_update_entities_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor, "pre_batch_update_entities"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -8906,8 +8960,9 @@ def test_batch_delete_entities_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -8964,20 +9019,21 @@ def test_batch_delete_entities_rest_interceptors(null_interceptor):
     )
     client = EntityTypesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_batch_delete_entities"
-    ) as post, mock.patch.object(
-        transports.EntityTypesRestInterceptor,
-        "post_batch_delete_entities_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "pre_batch_delete_entities"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor, "post_batch_delete_entities"
+        ) as post,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor,
+            "post_batch_delete_entities_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EntityTypesRestInterceptor, "pre_batch_delete_entities"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -9030,8 +9086,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -9090,8 +9147,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -9152,8 +9210,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -9214,8 +9273,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -9274,8 +9334,9 @@ def test_list_operations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -9348,7 +9409,6 @@ def test_list_entity_types_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.ListEntityTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9368,7 +9428,6 @@ def test_get_entity_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.GetEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -9390,7 +9449,6 @@ def test_create_entity_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_entity_type.CreateEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -9412,7 +9470,6 @@ def test_update_entity_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcd_entity_type.UpdateEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -9434,7 +9491,6 @@ def test_delete_entity_type_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.DeleteEntityTypeRequest()
-
         assert args[0] == request_msg
 
 
@@ -9456,7 +9512,6 @@ def test_batch_update_entity_types_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.BatchUpdateEntityTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9478,7 +9533,6 @@ def test_batch_delete_entity_types_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.BatchDeleteEntityTypesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9500,7 +9554,6 @@ def test_batch_create_entities_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.BatchCreateEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9522,7 +9575,6 @@ def test_batch_update_entities_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.BatchUpdateEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9544,7 +9596,6 @@ def test_batch_delete_entities_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = entity_type.BatchDeleteEntitiesRequest()
-
         assert args[0] == request_msg
 
 
@@ -9637,11 +9688,14 @@ def test_entity_types_base_transport():
 
 def test_entity_types_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.dialogflow_v2beta1.services.entity_types.transports.EntityTypesTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.dialogflow_v2beta1.services.entity_types.transports.EntityTypesTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.EntityTypesTransport(
@@ -9661,9 +9715,12 @@ def test_entity_types_base_transport_with_credentials_file():
 
 def test_entity_types_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.dialogflow_v2beta1.services.entity_types.transports.EntityTypesTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.dialogflow_v2beta1.services.entity_types.transports.EntityTypesTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.EntityTypesTransport()
@@ -9741,11 +9798,12 @@ def test_entity_types_transport_auth_gdch_credentials(transport_class):
 def test_entity_types_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -10358,6 +10416,38 @@ async def test_cancel_operation_from_dict_async():
         call.assert_called()
 
 
+def test_cancel_operation_flattened():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = EntityTypesAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
 def test_get_operation(transport: str = "grpc"):
     client = EntityTypesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10501,6 +10591,40 @@ async def test_get_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_operation_flattened():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = EntityTypesAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
 
 
 def test_list_operations(transport: str = "grpc"):
@@ -10648,6 +10772,40 @@ async def test_list_operations_from_dict_async():
         call.assert_called()
 
 
+def test_list_operations_flattened():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = EntityTypesAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
 def test_list_locations(transport: str = "grpc"):
     client = EntityTypesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10793,6 +10951,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = EntityTypesAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = EntityTypesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10932,6 +11124,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = EntityTypesAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():

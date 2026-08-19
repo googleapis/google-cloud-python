@@ -49,11 +49,11 @@ if (
 else:
     _IAM_DOMAIN = f"iamcredentials.{credentials.DEFAULT_UNIVERSE_DOMAIN}"
 
-# 3. Create the common base URL template
+# Create the common base URL template
 # We use double brackets {{}} so .format() can be called later for the email.
 _IAM_BASE_URL = f"https://{_IAM_DOMAIN}/v1/projects/-/serviceAccounts/{{}}"
 
-# 4. Define the endpoints as templates
+# Define the endpoints as static templates
 _IAM_ENDPOINT = _IAM_BASE_URL + ":generateAccessToken"
 _IAM_SIGN_ENDPOINT = _IAM_BASE_URL + ":signBlob"
 _IAM_SIGNJWT_ENDPOINT = _IAM_BASE_URL + ":signJwt"

@@ -1,5 +1,46 @@
 # Changelog
 
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-cloud-documentai-toolbox/#history
+
+## [0.17.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-toolbox-v0.17.1...google-cloud-documentai-toolbox-v0.17.2) (2026-08-06)
+
+
+### Bug Fixes
+
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
+## [0.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-toolbox-v0.17.0...google-cloud-documentai-toolbox-v0.17.1) (2026-07-13)
+
+
+### Bug Fixes
+
+* bump jinja2 from 3.1.0 to 3.1.6 in /packages/google-cloud-documentai-toolbox ([#17630](https://github.com/googleapis/google-cloud-python/issues/17630)) ([4cfb931](https://github.com/googleapis/google-cloud-python/commit/4cfb93113e02773c9372abd8742bf192f83dc48c))
+* bump pillow from 10.0.0 to 12.2.0 in /packages/google-cloud-documentai-toolbox ([#17631](https://github.com/googleapis/google-cloud-python/issues/17631)) ([1838c35](https://github.com/googleapis/google-cloud-python/commit/1838c3584bc5d87e35b0e7a51569c033f66809e8))
+
+## [0.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-toolbox-v0.16.0...google-cloud-documentai-toolbox-v0.17.0) (2026-06-02)
+
+
+### Bug Fixes
+
+* Drop support for Python <= 3.9 (#16967) ([8fa321e77e7ce48d23dc565f35a99c7b1432c012](https://github.com/googleapis/google-cloud-python/commit/8fa321e77e7ce48d23dc565f35a99c7b1432c012))
+
+## [0.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-toolbox-v0.15.2...google-cloud-documentai-toolbox-v0.16.0) (2026-05-06)
+
+## [0.15.1-alpha.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-toolbox-v0.15.1-alpha...google-cloud-documentai-toolbox-v0.15.1-alpha.1) (2026-03-26)
+
+
+### Documentation
+
+* remove samples ([a129b70224f173f17e7665c46d2cc8cbd0ad13c0](https://github.com/googleapis/google-cloud-python/commit/a129b70224f173f17e7665c46d2cc8cbd0ad13c0))
+
+
+### Bug Fixes
+
+* Allow Protobuf 7.x, require Python 3.9 (#16102) ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+* Require Python 3.9 ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+
 ## [0.15.1-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.15.0-alpha...v0.15.1-alpha) (2026-01-14)
 
 

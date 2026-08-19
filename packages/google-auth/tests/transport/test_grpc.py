@@ -13,9 +13,11 @@
 # limitations under the License.
 
 import datetime
+import importlib
 import os
 import time
 from unittest import mock
+import warnings
 
 import pytest  # type: ignore
 
@@ -132,6 +134,35 @@ class TestAuthMetadataPlugin(object):
             "https://{}/".format(default_host)
         )
 
+    def test_suppress_metrics_header(self):
+        credentials = mock.create_autospec(service_account.Credentials)
+
+        # Mock credentials before_request that adds metric and authorization
+        def mock_before_request(request, method, url, headers):
+            headers["x-goog-api-client"] = "foo"
+            headers["authorization"] = "Bearer token"
+
+        credentials.before_request.side_effect = mock_before_request
+        request = mock.create_autospec(transport.Request)
+
+        # By default, suppress_metrics_header=False
+        plugin = google.auth.transport.grpc.AuthMetadataPlugin(credentials, request)
+        context = mock.create_autospec(grpc.AuthMetadataContext, instance=True)
+        context.method_name = "methodName"
+        context.service_url = "https://pubsub.googleapis.com/methodName"
+
+        headers = dict(plugin._get_authorization_headers(context))
+        assert "x-goog-api-client" in headers
+        assert headers["x-goog-api-client"] == "foo"
+
+        # With suppress_metrics_header=True
+        plugin_suppressed = google.auth.transport.grpc.AuthMetadataPlugin(
+            credentials, request, suppress_metrics_header=True
+        )
+        headers_suppressed = dict(plugin_suppressed._get_authorization_headers(context))
+        assert "x-goog-api-client" not in headers_suppressed
+        assert headers_suppressed["authorization"] == "Bearer token"
+
 
 @mock.patch(
     "google.auth.transport._mtls_helper.get_client_ssl_credentials", autospec=True
@@ -216,9 +247,12 @@ class TestSecureAuthorizedChannel(object):
         request = mock.create_autospec(transport.Request)
         target = "example.com:80"
 
-        channel = google.auth.transport.grpc.secure_authorized_channel(
-            credentials, request, target, options=mock.sentinel.options
-        )
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "false"}
+        ):
+            channel = google.auth.transport.grpc.secure_authorized_channel(
+                credentials, request, target, options=mock.sentinel.options
+            )
 
         # Check the auth plugin construction.
         auth_plugin = metadata_call_credentials.call_args[0][0]
@@ -375,9 +409,12 @@ class TestSecureAuthorizedChannel(object):
         target = "example.com:80"
         client_cert_callback = mock.Mock()
 
-        google.auth.transport.grpc.secure_authorized_channel(
-            credentials, request, target, client_cert_callback=client_cert_callback
-        )
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "false"}
+        ):
+            google.auth.transport.grpc.secure_authorized_channel(
+                credentials, request, target, client_cert_callback=client_cert_callback
+            )
 
         # Check client_cert_callback is not called because GOOGLE_API_USE_CLIENT_CERTIFICATE
         # is not set.
@@ -398,13 +435,16 @@ class TestSecureAuthorizedChannel(object):
 @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
 @mock.patch("google.auth.transport._mtls_helper._check_config_path", autospec=True)
 class TestSslCredentials(object):
+    @mock.patch("os.path.exists", autospec=True)
     def test_no_context_aware_metadata(
         self,
+        mock_path_exists,
         mock_check_config_path,
         mock_load_json_file,
         mock_get_client_ssl_credentials,
         mock_ssl_channel_credentials,
     ):
+        mock_path_exists.return_value = False
         # Mock that the metadata file doesn't exist.
         mock_check_config_path.return_value = None
 
@@ -468,6 +508,41 @@ class TestSslCredentials(object):
             certificate_chain=PUBLIC_CERT_BYTES, private_key=PRIVATE_KEY_BYTES
         )
 
+    @mock.patch(
+        "google.auth.transport.mtls.has_default_client_cert_source", autospec=True
+    )
+    def test_get_client_ssl_credentials_workload_cert(
+        self,
+        mock_has_default_client_cert_source,
+        mock_check_config_path,
+        mock_load_json_file,
+        mock_get_client_ssl_credentials,
+        mock_ssl_channel_credentials,
+    ):
+        # Mock that context-aware metadata does not exist, but workload cert config does.
+        mock_check_config_path.return_value = None
+        mock_has_default_client_cert_source.return_value = True
+        mock_get_client_ssl_credentials.return_value = (
+            True,
+            PUBLIC_CERT_BYTES,
+            PRIVATE_KEY_BYTES,
+            None,
+        )
+
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+        ):
+            ssl_credentials = google.auth.transport.grpc.SslCredentials()
+
+        # If a workload certificate config exists on the device (and use_client_cert is true),
+        # is_mtls must be True and get_client_ssl_credentials should be invoked.
+        assert ssl_credentials.ssl_credentials is not None
+        assert ssl_credentials.is_mtls
+        mock_get_client_ssl_credentials.assert_called_once()
+        mock_ssl_channel_credentials.assert_called_once_with(
+            certificate_chain=PUBLIC_CERT_BYTES, private_key=PRIVATE_KEY_BYTES
+        )
+
     def test_get_client_ssl_credentials_without_client_cert_env(
         self,
         mock_check_config_path,
@@ -475,8 +550,10 @@ class TestSslCredentials(object):
         mock_get_client_ssl_credentials,
         mock_ssl_channel_credentials,
     ):
-        # Test client cert won't be used if GOOGLE_API_USE_CLIENT_CERTIFICATE is not set.
-        ssl_credentials = google.auth.transport.grpc.SslCredentials()
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "false"}
+        ):
+            ssl_credentials = google.auth.transport.grpc.SslCredentials()
 
         assert ssl_credentials.ssl_credentials is not None
         assert not ssl_credentials.is_mtls
@@ -484,3 +561,144 @@ class TestSslCredentials(object):
         mock_load_json_file.assert_not_called()
         mock_get_client_ssl_credentials.assert_not_called()
         mock_ssl_channel_credentials.assert_called_once()
+
+    def test_get_client_ssl_credentials_no_workload_cert(
+        self,
+        mock_check_config_path,
+        mock_load_json_file,
+        mock_get_client_ssl_credentials,
+        mock_ssl_channel_credentials,
+    ):
+        mock_check_config_path.return_value = METADATA_PATH
+        mock_load_json_file.return_value = {"cert_provider_command": ["some command"]}
+        mock_get_client_ssl_credentials.return_value = (
+            False,
+            None,
+            None,
+            None,
+        )
+
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+        ):
+            ssl_credentials = google.auth.transport.grpc.SslCredentials()
+
+        assert ssl_credentials.ssl_credentials is not None
+        assert not ssl_credentials.is_mtls
+        mock_get_client_ssl_credentials.assert_called_once()
+        mock_ssl_channel_credentials.assert_called_once_with()
+
+    def test_get_client_ssl_credentials_os_error(
+        self,
+        mock_check_config_path,
+        mock_load_json_file,
+        mock_get_client_ssl_credentials,
+        mock_ssl_channel_credentials,
+    ):
+        mock_check_config_path.return_value = METADATA_PATH
+        mock_load_json_file.return_value = {"cert_provider_command": ["some command"]}
+        mock_get_client_ssl_credentials.side_effect = OSError("Mock file read error")
+
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+        ):
+            ssl_credentials = google.auth.transport.grpc.SslCredentials()
+
+        with pytest.raises(exceptions.MutualTLSChannelError):
+            _ = ssl_credentials.ssl_credentials
+
+        assert ssl_credentials.is_mtls
+
+    def test_get_client_ssl_credentials_transient_error_retry(
+        self,
+        mock_check_config_path,
+        mock_load_json_file,
+        mock_get_client_ssl_credentials,
+        mock_ssl_channel_credentials,
+    ):
+        mock_check_config_path.return_value = METADATA_PATH
+        mock_load_json_file.return_value = {"cert_provider_command": ["some command"]}
+        # First call fails with OSError, second succeeds
+        mock_get_client_ssl_credentials.side_effect = [
+            OSError("Mock transient error"),
+            (True, b"cert", b"key", None),
+        ]
+
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+        ):
+            ssl_credentials = google.auth.transport.grpc.SslCredentials()
+
+        # First call raises error
+        with pytest.raises(exceptions.MutualTLSChannelError):
+            _ = ssl_credentials.ssl_credentials
+
+        assert ssl_credentials.is_mtls  # Should remain True
+
+        # Second call succeeds
+        assert ssl_credentials.ssl_credentials is not None
+        assert ssl_credentials.is_mtls
+        mock_ssl_channel_credentials.assert_called_with(
+            certificate_chain=b"cert", private_key=b"key"
+        )
+
+    def test_get_client_ssl_credentials_auto_enablement(
+        self,
+        mock_check_config_path,
+        mock_load_json_file,
+        mock_get_client_ssl_credentials,
+        mock_ssl_channel_credentials,
+    ):
+        fake_config_content = '{"version": 1, "cert_configs": {"workload": {"cert_path": "/tmp/mock_cert.pem", "key_path": "/tmp/mock_key.pem"}}}'
+        mock_get_client_ssl_credentials.return_value = (
+            True,
+            PUBLIC_CERT_BYTES,
+            PRIVATE_KEY_BYTES,
+            None,
+        )
+
+        with mock.patch.dict(
+            os.environ,
+            {
+                environment_vars.GOOGLE_API_CERTIFICATE_CONFIG: "fake_config_path.json",
+            },
+        ), mock.patch(
+            "builtins.open", mock.mock_open(read_data=fake_config_content)
+        ), mock.patch(
+            "os.path.exists", return_value=True
+        ):
+            # Ensure mTLS explicit flags are not present in the environment
+            os.environ.pop(environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE, None)
+            os.environ.pop(
+                environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE, None
+            )
+            ssl_credentials = google.auth.transport.grpc.SslCredentials()
+
+        assert ssl_credentials.ssl_credentials is not None
+        assert ssl_credentials.is_mtls
+        mock_get_client_ssl_credentials.assert_called_once()
+        mock_ssl_channel_credentials.assert_called_once_with(
+            certificate_chain=PUBLIC_CERT_BYTES, private_key=PRIVATE_KEY_BYTES
+        )
+
+
+def test_grpc_version_warning_for_older_version(monkeypatch):
+    monkeypatch.setattr(grpc, "__version__", "1.80.0")
+    with pytest.warns(
+        FutureWarning, match="does not support Post-Quantum Cryptography"
+    ):
+        importlib.reload(google.auth.transport.grpc)
+
+
+def test_grpc_version_warning_not_emitted_for_supported_version(monkeypatch):
+    monkeypatch.setattr(grpc, "__version__", "1.83.0")
+    with warnings.catch_warnings():
+        warnings.simplefilter("error", FutureWarning)
+        importlib.reload(google.auth.transport.grpc)
+
+
+def test_grpc_version_warning_not_emitted_when_no_version(monkeypatch):
+    monkeypatch.delattr(grpc, "__version__", raising=False)
+    with warnings.catch_warnings():
+        warnings.simplefilter("error", FutureWarning)
+        importlib.reload(google.auth.transport.grpc)

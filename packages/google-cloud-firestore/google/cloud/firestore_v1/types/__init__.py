@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ from .bloom_filter import (
 from .common import (
     DocumentMask,
     Precondition,
+    RequestOptions,
     TransactionOptions,
 )
 from .document import (
@@ -99,6 +100,7 @@ __all__ = (
     "BloomFilter",
     "DocumentMask",
     "Precondition",
+    "RequestOptions",
     "TransactionOptions",
     "ArrayValue",
     "Document",

@@ -13,22 +13,17 @@
 # limitations under the License.
 
 import base64
-
 from unittest import mock
 
 import pytest
-
 from google.cloud.datastore_v1.types import datastore as datastore_pb2
 from google.cloud.datastore_v1.types import entity as entity_pb2
 from google.cloud.datastore_v1.types import query as query_pb2
 
-from google.cloud.ndb import _datastore_query
+from google.cloud.ndb import _datastore_query, exceptions, model, tasklets
 from google.cloud.ndb import context as context_module
-from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
-from google.cloud.ndb import model
 from google.cloud.ndb import query as query_module
-from google.cloud.ndb import tasklets
 
 from . import utils
 

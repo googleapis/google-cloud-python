@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -131,12 +126,28 @@ def modify_default_endpoint_template(client):
     )
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert AlloyDBAdminClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -155,6 +166,10 @@ def test__get_default_mtls_endpoint():
         == sandbox_mtls_endpoint
     )
     assert AlloyDBAdminClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert (
+        AlloyDBAdminClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
+    )
 
 
 def test__read_environment_variables():
@@ -940,7 +955,14 @@ def test_alloy_db_admin_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -987,7 +1009,14 @@ def test_alloy_db_admin_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1275,11 +1304,13 @@ def test_alloy_db_admin_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1304,8 +1335,8 @@ def test_alloy_db_admin_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListClustersRequest,
-        dict,
+        service.ListClustersRequest(),
+        {},
     ],
 )
 def test_list_clusters(request_type, transport: str = "grpc"):
@@ -1316,7 +1347,7 @@ def test_list_clusters(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
@@ -1365,12 +1396,13 @@ def test_list_clusters_non_empty_request_with_auto_populated_field():
         client.list_clusters(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListClustersRequest(
+        request_msg = service.ListClustersRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_clusters_use_cached_wrapped_rpc():
@@ -1451,9 +1483,14 @@ async def test_list_clusters_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_clusters_async(
-    transport: str = "grpc_asyncio", request_type=service.ListClustersRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListClustersRequest(),
+        {},
+    ],
+)
+async def test_list_clusters_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1461,7 +1498,7 @@ async def test_list_clusters_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
@@ -1484,11 +1521,6 @@ async def test_list_clusters_async(
     assert isinstance(response, pagers.ListClustersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_clusters_async_from_dict():
-    await test_list_clusters_async(request_type=dict)
 
 
 def test_list_clusters_field_headers():
@@ -1683,6 +1715,9 @@ def test_list_clusters_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Cluster) for i in results)
@@ -1771,6 +1806,8 @@ async def test_list_clusters_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1818,11 +1855,7 @@ async def test_list_clusters_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_clusters(request={})
-        ).pages:
+        async for page_ in (await client.list_clusters(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1831,8 +1864,8 @@ async def test_list_clusters_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetClusterRequest,
-        dict,
+        service.GetClusterRequest(),
+        {},
     ],
 )
 def test_get_cluster(request_type, transport: str = "grpc"):
@@ -1843,7 +1876,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
@@ -1907,9 +1940,10 @@ def test_get_cluster_non_empty_request_with_auto_populated_field():
         client.get_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetClusterRequest(
+        request_msg = service.GetClusterRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_cluster_use_cached_wrapped_rpc():
@@ -1990,9 +2024,14 @@ async def test_get_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_cluster_async(
-    transport: str = "grpc_asyncio", request_type=service.GetClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetClusterRequest(),
+        {},
+    ],
+)
+async def test_get_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2000,7 +2039,7 @@ async def test_get_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
@@ -2041,11 +2080,6 @@ async def test_get_cluster_async(
     assert response.reconciling is True
     assert response.satisfies_pzs is True
     assert response.subscription_type == resources.SubscriptionType.STANDARD
-
-
-@pytest.mark.asyncio
-async def test_get_cluster_async_from_dict():
-    await test_get_cluster_async(request_type=dict)
 
 
 def test_get_cluster_field_headers():
@@ -2190,8 +2224,8 @@ async def test_get_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateClusterRequest,
-        dict,
+        service.CreateClusterRequest(),
+        {},
     ],
 )
 def test_create_cluster(request_type, transport: str = "grpc"):
@@ -2202,7 +2236,7 @@ def test_create_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_cluster), "__call__") as call:
@@ -2245,11 +2279,12 @@ def test_create_cluster_non_empty_request_with_auto_populated_field():
         client.create_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateClusterRequest(
+        request_msg = service.CreateClusterRequest(
             parent="parent_value",
             cluster_id="cluster_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_cluster_use_cached_wrapped_rpc():
@@ -2340,9 +2375,14 @@ async def test_create_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_cluster_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateClusterRequest(),
+        {},
+    ],
+)
+async def test_create_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2350,7 +2390,7 @@ async def test_create_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_cluster), "__call__") as call:
@@ -2368,11 +2408,6 @@ async def test_create_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_cluster_async_from_dict():
-    await test_create_cluster_async(request_type=dict)
 
 
 def test_create_cluster_field_headers():
@@ -2553,8 +2588,8 @@ async def test_create_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateClusterRequest,
-        dict,
+        service.UpdateClusterRequest(),
+        {},
     ],
 )
 def test_update_cluster(request_type, transport: str = "grpc"):
@@ -2565,7 +2600,7 @@ def test_update_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_cluster), "__call__") as call:
@@ -2606,9 +2641,10 @@ def test_update_cluster_non_empty_request_with_auto_populated_field():
         client.update_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateClusterRequest(
+        request_msg = service.UpdateClusterRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_cluster_use_cached_wrapped_rpc():
@@ -2699,9 +2735,14 @@ async def test_update_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_cluster_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateClusterRequest(),
+        {},
+    ],
+)
+async def test_update_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2709,7 +2750,7 @@ async def test_update_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_cluster), "__call__") as call:
@@ -2727,11 +2768,6 @@ async def test_update_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_cluster_async_from_dict():
-    await test_update_cluster_async(request_type=dict)
 
 
 def test_update_cluster_field_headers():
@@ -2902,8 +2938,8 @@ async def test_update_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ExportClusterRequest,
-        dict,
+        service.ExportClusterRequest(),
+        {},
     ],
 )
 def test_export_cluster(request_type, transport: str = "grpc"):
@@ -2914,7 +2950,7 @@ def test_export_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_cluster), "__call__") as call:
@@ -2956,10 +2992,11 @@ def test_export_cluster_non_empty_request_with_auto_populated_field():
         client.export_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ExportClusterRequest(
+        request_msg = service.ExportClusterRequest(
             name="name_value",
             database="database_value",
         )
+        assert args[0] == request_msg
 
 
 def test_export_cluster_use_cached_wrapped_rpc():
@@ -3050,9 +3087,14 @@ async def test_export_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_export_cluster_async(
-    transport: str = "grpc_asyncio", request_type=service.ExportClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ExportClusterRequest(),
+        {},
+    ],
+)
+async def test_export_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3060,7 +3102,7 @@ async def test_export_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_cluster), "__call__") as call:
@@ -3078,11 +3120,6 @@ async def test_export_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_export_cluster_async_from_dict():
-    await test_export_cluster_async(request_type=dict)
 
 
 def test_export_cluster_field_headers():
@@ -3281,8 +3318,8 @@ async def test_export_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ImportClusterRequest,
-        dict,
+        service.ImportClusterRequest(),
+        {},
     ],
 )
 def test_import_cluster(request_type, transport: str = "grpc"):
@@ -3293,7 +3330,7 @@ def test_import_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_cluster), "__call__") as call:
@@ -3337,12 +3374,13 @@ def test_import_cluster_non_empty_request_with_auto_populated_field():
         client.import_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ImportClusterRequest(
+        request_msg = service.ImportClusterRequest(
             name="name_value",
             gcs_uri="gcs_uri_value",
             database="database_value",
             user="user_value",
         )
+        assert args[0] == request_msg
 
 
 def test_import_cluster_use_cached_wrapped_rpc():
@@ -3433,9 +3471,14 @@ async def test_import_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_import_cluster_async(
-    transport: str = "grpc_asyncio", request_type=service.ImportClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ImportClusterRequest(),
+        {},
+    ],
+)
+async def test_import_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3443,7 +3486,7 @@ async def test_import_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_cluster), "__call__") as call:
@@ -3461,11 +3504,6 @@ async def test_import_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_import_cluster_async_from_dict():
-    await test_import_cluster_async(request_type=dict)
 
 
 def test_import_cluster_field_headers():
@@ -3644,8 +3682,8 @@ async def test_import_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpgradeClusterRequest,
-        dict,
+        service.UpgradeClusterRequest(),
+        {},
     ],
 )
 def test_upgrade_cluster(request_type, transport: str = "grpc"):
@@ -3656,7 +3694,7 @@ def test_upgrade_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.upgrade_cluster), "__call__") as call:
@@ -3698,10 +3736,11 @@ def test_upgrade_cluster_non_empty_request_with_auto_populated_field():
         client.upgrade_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpgradeClusterRequest(
+        request_msg = service.UpgradeClusterRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_upgrade_cluster_use_cached_wrapped_rpc():
@@ -3792,9 +3831,14 @@ async def test_upgrade_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_upgrade_cluster_async(
-    transport: str = "grpc_asyncio", request_type=service.UpgradeClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpgradeClusterRequest(),
+        {},
+    ],
+)
+async def test_upgrade_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3802,7 +3846,7 @@ async def test_upgrade_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.upgrade_cluster), "__call__") as call:
@@ -3820,11 +3864,6 @@ async def test_upgrade_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_upgrade_cluster_async_from_dict():
-    await test_upgrade_cluster_async(request_type=dict)
 
 
 def test_upgrade_cluster_field_headers():
@@ -3983,8 +4022,8 @@ async def test_upgrade_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteClusterRequest,
-        dict,
+        service.DeleteClusterRequest(),
+        {},
     ],
 )
 def test_delete_cluster(request_type, transport: str = "grpc"):
@@ -3995,7 +4034,7 @@ def test_delete_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_cluster), "__call__") as call:
@@ -4038,11 +4077,12 @@ def test_delete_cluster_non_empty_request_with_auto_populated_field():
         client.delete_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteClusterRequest(
+        request_msg = service.DeleteClusterRequest(
             name="name_value",
             request_id="request_id_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_cluster_use_cached_wrapped_rpc():
@@ -4133,9 +4173,14 @@ async def test_delete_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_cluster_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteClusterRequest(),
+        {},
+    ],
+)
+async def test_delete_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4143,7 +4188,7 @@ async def test_delete_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_cluster), "__call__") as call:
@@ -4161,11 +4206,6 @@ async def test_delete_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_cluster_async_from_dict():
-    await test_delete_cluster_async(request_type=dict)
 
 
 def test_delete_cluster_field_headers():
@@ -4314,8 +4354,8 @@ async def test_delete_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.PromoteClusterRequest,
-        dict,
+        service.PromoteClusterRequest(),
+        {},
     ],
 )
 def test_promote_cluster(request_type, transport: str = "grpc"):
@@ -4326,7 +4366,7 @@ def test_promote_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.promote_cluster), "__call__") as call:
@@ -4369,11 +4409,12 @@ def test_promote_cluster_non_empty_request_with_auto_populated_field():
         client.promote_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.PromoteClusterRequest(
+        request_msg = service.PromoteClusterRequest(
             name="name_value",
             request_id="request_id_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_promote_cluster_use_cached_wrapped_rpc():
@@ -4464,9 +4505,14 @@ async def test_promote_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_promote_cluster_async(
-    transport: str = "grpc_asyncio", request_type=service.PromoteClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.PromoteClusterRequest(),
+        {},
+    ],
+)
+async def test_promote_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4474,7 +4520,7 @@ async def test_promote_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.promote_cluster), "__call__") as call:
@@ -4492,11 +4538,6 @@ async def test_promote_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_promote_cluster_async_from_dict():
-    await test_promote_cluster_async(request_type=dict)
 
 
 def test_promote_cluster_field_headers():
@@ -4645,8 +4686,8 @@ async def test_promote_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.SwitchoverClusterRequest,
-        dict,
+        service.SwitchoverClusterRequest(),
+        {},
     ],
 )
 def test_switchover_cluster(request_type, transport: str = "grpc"):
@@ -4657,7 +4698,7 @@ def test_switchover_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4703,10 +4744,11 @@ def test_switchover_cluster_non_empty_request_with_auto_populated_field():
         client.switchover_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.SwitchoverClusterRequest(
+        request_msg = service.SwitchoverClusterRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_switchover_cluster_use_cached_wrapped_rpc():
@@ -4801,9 +4843,14 @@ async def test_switchover_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_switchover_cluster_async(
-    transport: str = "grpc_asyncio", request_type=service.SwitchoverClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SwitchoverClusterRequest(),
+        {},
+    ],
+)
+async def test_switchover_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4811,7 +4858,7 @@ async def test_switchover_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4831,11 +4878,6 @@ async def test_switchover_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_switchover_cluster_async_from_dict():
-    await test_switchover_cluster_async(request_type=dict)
 
 
 def test_switchover_cluster_field_headers():
@@ -4992,8 +5034,8 @@ async def test_switchover_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.RestoreClusterRequest,
-        dict,
+        service.RestoreClusterRequest(),
+        {},
     ],
 )
 def test_restore_cluster(request_type, transport: str = "grpc"):
@@ -5004,7 +5046,7 @@ def test_restore_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.restore_cluster), "__call__") as call:
@@ -5047,11 +5089,12 @@ def test_restore_cluster_non_empty_request_with_auto_populated_field():
         client.restore_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.RestoreClusterRequest(
+        request_msg = service.RestoreClusterRequest(
             parent="parent_value",
             cluster_id="cluster_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_restore_cluster_use_cached_wrapped_rpc():
@@ -5142,9 +5185,14 @@ async def test_restore_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_restore_cluster_async(
-    transport: str = "grpc_asyncio", request_type=service.RestoreClusterRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.RestoreClusterRequest(),
+        {},
+    ],
+)
+async def test_restore_cluster_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5152,7 +5200,7 @@ async def test_restore_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.restore_cluster), "__call__") as call:
@@ -5170,11 +5218,6 @@ async def test_restore_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_restore_cluster_async_from_dict():
-    await test_restore_cluster_async(request_type=dict)
 
 
 def test_restore_cluster_field_headers():
@@ -5241,8 +5284,8 @@ async def test_restore_cluster_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateSecondaryClusterRequest,
-        dict,
+        service.CreateSecondaryClusterRequest(),
+        {},
     ],
 )
 def test_create_secondary_cluster(request_type, transport: str = "grpc"):
@@ -5253,7 +5296,7 @@ def test_create_secondary_cluster(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5300,11 +5343,12 @@ def test_create_secondary_cluster_non_empty_request_with_auto_populated_field():
         client.create_secondary_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateSecondaryClusterRequest(
+        request_msg = service.CreateSecondaryClusterRequest(
             parent="parent_value",
             cluster_id="cluster_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_secondary_cluster_use_cached_wrapped_rpc():
@@ -5400,8 +5444,15 @@ async def test_create_secondary_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateSecondaryClusterRequest(),
+        {},
+    ],
+)
 async def test_create_secondary_cluster_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateSecondaryClusterRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5410,7 +5461,7 @@ async def test_create_secondary_cluster_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5430,11 +5481,6 @@ async def test_create_secondary_cluster_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_secondary_cluster_async_from_dict():
-    await test_create_secondary_cluster_async(request_type=dict)
 
 
 def test_create_secondary_cluster_field_headers():
@@ -5623,8 +5669,8 @@ async def test_create_secondary_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListInstancesRequest,
-        dict,
+        service.ListInstancesRequest(),
+        {},
     ],
 )
 def test_list_instances(request_type, transport: str = "grpc"):
@@ -5635,7 +5681,7 @@ def test_list_instances(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -5684,12 +5730,13 @@ def test_list_instances_non_empty_request_with_auto_populated_field():
         client.list_instances(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListInstancesRequest(
+        request_msg = service.ListInstancesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_instances_use_cached_wrapped_rpc():
@@ -5770,9 +5817,14 @@ async def test_list_instances_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_instances_async(
-    transport: str = "grpc_asyncio", request_type=service.ListInstancesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListInstancesRequest(),
+        {},
+    ],
+)
+async def test_list_instances_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5780,7 +5832,7 @@ async def test_list_instances_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
@@ -5803,11 +5855,6 @@ async def test_list_instances_async(
     assert isinstance(response, pagers.ListInstancesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_instances_async_from_dict():
-    await test_list_instances_async(request_type=dict)
 
 
 def test_list_instances_field_headers():
@@ -6002,6 +6049,9 @@ def test_list_instances_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Instance) for i in results)
@@ -6090,6 +6140,8 @@ async def test_list_instances_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6137,11 +6189,7 @@ async def test_list_instances_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_instances(request={})
-        ).pages:
+        async for page_ in (await client.list_instances(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6150,8 +6198,8 @@ async def test_list_instances_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetInstanceRequest,
-        dict,
+        service.GetInstanceRequest(),
+        {},
     ],
 )
 def test_get_instance(request_type, transport: str = "grpc"):
@@ -6162,7 +6210,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -6234,9 +6282,10 @@ def test_get_instance_non_empty_request_with_auto_populated_field():
         client.get_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetInstanceRequest(
+        request_msg = service.GetInstanceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_instance_use_cached_wrapped_rpc():
@@ -6317,9 +6366,14 @@ async def test_get_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_instance_async(
-    transport: str = "grpc_asyncio", request_type=service.GetInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetInstanceRequest(),
+        {},
+    ],
+)
+async def test_get_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6327,7 +6381,7 @@ async def test_get_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
@@ -6376,11 +6430,6 @@ async def test_get_instance_async(
         "outbound_public_ip_addresses_value"
     ]
     assert response.activation_policy == resources.Instance.ActivationPolicy.ALWAYS
-
-
-@pytest.mark.asyncio
-async def test_get_instance_async_from_dict():
-    await test_get_instance_async(request_type=dict)
 
 
 def test_get_instance_field_headers():
@@ -6525,8 +6574,8 @@ async def test_get_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateInstanceRequest,
-        dict,
+        service.CreateInstanceRequest(),
+        {},
     ],
 )
 def test_create_instance(request_type, transport: str = "grpc"):
@@ -6537,7 +6586,7 @@ def test_create_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
@@ -6580,11 +6629,12 @@ def test_create_instance_non_empty_request_with_auto_populated_field():
         client.create_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateInstanceRequest(
+        request_msg = service.CreateInstanceRequest(
             parent="parent_value",
             instance_id="instance_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_instance_use_cached_wrapped_rpc():
@@ -6675,9 +6725,14 @@ async def test_create_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_instance_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateInstanceRequest(),
+        {},
+    ],
+)
+async def test_create_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6685,7 +6740,7 @@ async def test_create_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
@@ -6703,11 +6758,6 @@ async def test_create_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_instance_async_from_dict():
-    await test_create_instance_async(request_type=dict)
 
 
 def test_create_instance_field_headers():
@@ -6876,8 +6926,8 @@ async def test_create_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateSecondaryInstanceRequest,
-        dict,
+        service.CreateSecondaryInstanceRequest(),
+        {},
     ],
 )
 def test_create_secondary_instance(request_type, transport: str = "grpc"):
@@ -6888,7 +6938,7 @@ def test_create_secondary_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6935,11 +6985,12 @@ def test_create_secondary_instance_non_empty_request_with_auto_populated_field()
         client.create_secondary_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateSecondaryInstanceRequest(
+        request_msg = service.CreateSecondaryInstanceRequest(
             parent="parent_value",
             instance_id="instance_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_secondary_instance_use_cached_wrapped_rpc():
@@ -7035,8 +7086,15 @@ async def test_create_secondary_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateSecondaryInstanceRequest(),
+        {},
+    ],
+)
 async def test_create_secondary_instance_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateSecondaryInstanceRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7045,7 +7103,7 @@ async def test_create_secondary_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7065,11 +7123,6 @@ async def test_create_secondary_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_secondary_instance_async_from_dict():
-    await test_create_secondary_instance_async(request_type=dict)
 
 
 def test_create_secondary_instance_field_headers():
@@ -7246,8 +7299,8 @@ async def test_create_secondary_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.BatchCreateInstancesRequest,
-        dict,
+        service.BatchCreateInstancesRequest(),
+        {},
     ],
 )
 def test_batch_create_instances(request_type, transport: str = "grpc"):
@@ -7258,7 +7311,7 @@ def test_batch_create_instances(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7304,10 +7357,11 @@ def test_batch_create_instances_non_empty_request_with_auto_populated_field():
         client.batch_create_instances(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.BatchCreateInstancesRequest(
+        request_msg = service.BatchCreateInstancesRequest(
             parent="parent_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_batch_create_instances_use_cached_wrapped_rpc():
@@ -7403,8 +7457,15 @@ async def test_batch_create_instances_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.BatchCreateInstancesRequest(),
+        {},
+    ],
+)
 async def test_batch_create_instances_async(
-    transport: str = "grpc_asyncio", request_type=service.BatchCreateInstancesRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7413,7 +7474,7 @@ async def test_batch_create_instances_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7433,11 +7494,6 @@ async def test_batch_create_instances_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_batch_create_instances_async_from_dict():
-    await test_batch_create_instances_async(request_type=dict)
 
 
 def test_batch_create_instances_field_headers():
@@ -7508,8 +7564,8 @@ async def test_batch_create_instances_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateInstanceRequest,
-        dict,
+        service.UpdateInstanceRequest(),
+        {},
     ],
 )
 def test_update_instance(request_type, transport: str = "grpc"):
@@ -7520,7 +7576,7 @@ def test_update_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
@@ -7561,9 +7617,10 @@ def test_update_instance_non_empty_request_with_auto_populated_field():
         client.update_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateInstanceRequest(
+        request_msg = service.UpdateInstanceRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_instance_use_cached_wrapped_rpc():
@@ -7654,9 +7711,14 @@ async def test_update_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_instance_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateInstanceRequest(),
+        {},
+    ],
+)
+async def test_update_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7664,7 +7726,7 @@ async def test_update_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
@@ -7682,11 +7744,6 @@ async def test_update_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_instance_async_from_dict():
-    await test_update_instance_async(request_type=dict)
 
 
 def test_update_instance_field_headers():
@@ -7845,8 +7902,8 @@ async def test_update_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteInstanceRequest,
-        dict,
+        service.DeleteInstanceRequest(),
+        {},
     ],
 )
 def test_delete_instance(request_type, transport: str = "grpc"):
@@ -7857,7 +7914,7 @@ def test_delete_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
@@ -7900,11 +7957,12 @@ def test_delete_instance_non_empty_request_with_auto_populated_field():
         client.delete_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteInstanceRequest(
+        request_msg = service.DeleteInstanceRequest(
             name="name_value",
             request_id="request_id_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_instance_use_cached_wrapped_rpc():
@@ -7995,9 +8053,14 @@ async def test_delete_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_instance_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteInstanceRequest(),
+        {},
+    ],
+)
+async def test_delete_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8005,7 +8068,7 @@ async def test_delete_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
@@ -8023,11 +8086,6 @@ async def test_delete_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_instance_async_from_dict():
-    await test_delete_instance_async(request_type=dict)
 
 
 def test_delete_instance_field_headers():
@@ -8176,8 +8234,8 @@ async def test_delete_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.FailoverInstanceRequest,
-        dict,
+        service.FailoverInstanceRequest(),
+        {},
     ],
 )
 def test_failover_instance(request_type, transport: str = "grpc"):
@@ -8188,7 +8246,7 @@ def test_failover_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8234,10 +8292,11 @@ def test_failover_instance_non_empty_request_with_auto_populated_field():
         client.failover_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.FailoverInstanceRequest(
+        request_msg = service.FailoverInstanceRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_failover_instance_use_cached_wrapped_rpc():
@@ -8330,9 +8389,14 @@ async def test_failover_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_failover_instance_async(
-    transport: str = "grpc_asyncio", request_type=service.FailoverInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.FailoverInstanceRequest(),
+        {},
+    ],
+)
+async def test_failover_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8340,7 +8404,7 @@ async def test_failover_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8360,11 +8424,6 @@ async def test_failover_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_failover_instance_async_from_dict():
-    await test_failover_instance_async(request_type=dict)
 
 
 def test_failover_instance_field_headers():
@@ -8521,8 +8580,8 @@ async def test_failover_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.InjectFaultRequest,
-        dict,
+        service.InjectFaultRequest(),
+        {},
     ],
 )
 def test_inject_fault(request_type, transport: str = "grpc"):
@@ -8533,7 +8592,7 @@ def test_inject_fault(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.inject_fault), "__call__") as call:
@@ -8575,10 +8634,11 @@ def test_inject_fault_non_empty_request_with_auto_populated_field():
         client.inject_fault(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.InjectFaultRequest(
+        request_msg = service.InjectFaultRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_inject_fault_use_cached_wrapped_rpc():
@@ -8669,9 +8729,14 @@ async def test_inject_fault_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_inject_fault_async(
-    transport: str = "grpc_asyncio", request_type=service.InjectFaultRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.InjectFaultRequest(),
+        {},
+    ],
+)
+async def test_inject_fault_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8679,7 +8744,7 @@ async def test_inject_fault_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.inject_fault), "__call__") as call:
@@ -8697,11 +8762,6 @@ async def test_inject_fault_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_inject_fault_async_from_dict():
-    await test_inject_fault_async(request_type=dict)
 
 
 def test_inject_fault_field_headers():
@@ -8860,8 +8920,8 @@ async def test_inject_fault_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.RestartInstanceRequest,
-        dict,
+        service.RestartInstanceRequest(),
+        {},
     ],
 )
 def test_restart_instance(request_type, transport: str = "grpc"):
@@ -8872,7 +8932,7 @@ def test_restart_instance(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.restart_instance), "__call__") as call:
@@ -8914,10 +8974,11 @@ def test_restart_instance_non_empty_request_with_auto_populated_field():
         client.restart_instance(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.RestartInstanceRequest(
+        request_msg = service.RestartInstanceRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_restart_instance_use_cached_wrapped_rpc():
@@ -9010,9 +9071,14 @@ async def test_restart_instance_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_restart_instance_async(
-    transport: str = "grpc_asyncio", request_type=service.RestartInstanceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.RestartInstanceRequest(),
+        {},
+    ],
+)
+async def test_restart_instance_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9020,7 +9086,7 @@ async def test_restart_instance_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.restart_instance), "__call__") as call:
@@ -9038,11 +9104,6 @@ async def test_restart_instance_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_restart_instance_async_from_dict():
-    await test_restart_instance_async(request_type=dict)
 
 
 def test_restart_instance_field_headers():
@@ -9191,8 +9252,8 @@ async def test_restart_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ExecuteSqlRequest,
-        dict,
+        service.ExecuteSqlRequest(),
+        {},
     ],
 )
 def test_execute_sql(request_type, transport: str = "grpc"):
@@ -9203,7 +9264,7 @@ def test_execute_sql(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.execute_sql), "__call__") as call:
@@ -9248,13 +9309,14 @@ def test_execute_sql_non_empty_request_with_auto_populated_field():
         client.execute_sql(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ExecuteSqlRequest(
+        request_msg = service.ExecuteSqlRequest(
             password="password_value",
             instance="instance_value",
             database="database_value",
             user="user_value",
             sql_statement="sql_statement_value",
         )
+        assert args[0] == request_msg
 
 
 def test_execute_sql_use_cached_wrapped_rpc():
@@ -9335,9 +9397,14 @@ async def test_execute_sql_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_execute_sql_async(
-    transport: str = "grpc_asyncio", request_type=service.ExecuteSqlRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ExecuteSqlRequest(),
+        {},
+    ],
+)
+async def test_execute_sql_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9345,7 +9412,7 @@ async def test_execute_sql_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.execute_sql), "__call__") as call:
@@ -9363,11 +9430,6 @@ async def test_execute_sql_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.ExecuteSqlResponse)
-
-
-@pytest.mark.asyncio
-async def test_execute_sql_async_from_dict():
-    await test_execute_sql_async(request_type=dict)
 
 
 def test_execute_sql_field_headers():
@@ -9552,8 +9614,8 @@ async def test_execute_sql_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListBackupsRequest,
-        dict,
+        service.ListBackupsRequest(),
+        {},
     ],
 )
 def test_list_backups(request_type, transport: str = "grpc"):
@@ -9564,7 +9626,7 @@ def test_list_backups(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
@@ -9613,12 +9675,13 @@ def test_list_backups_non_empty_request_with_auto_populated_field():
         client.list_backups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListBackupsRequest(
+        request_msg = service.ListBackupsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_backups_use_cached_wrapped_rpc():
@@ -9699,9 +9762,14 @@ async def test_list_backups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_backups_async(
-    transport: str = "grpc_asyncio", request_type=service.ListBackupsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListBackupsRequest(),
+        {},
+    ],
+)
+async def test_list_backups_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9709,7 +9777,7 @@ async def test_list_backups_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
@@ -9732,11 +9800,6 @@ async def test_list_backups_async(
     assert isinstance(response, pagers.ListBackupsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_backups_async_from_dict():
-    await test_list_backups_async(request_type=dict)
 
 
 def test_list_backups_field_headers():
@@ -9931,6 +9994,9 @@ def test_list_backups_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Backup) for i in results)
@@ -10019,6 +10085,8 @@ async def test_list_backups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -10066,11 +10134,7 @@ async def test_list_backups_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_backups(request={})
-        ).pages:
+        async for page_ in (await client.list_backups(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -10079,8 +10143,8 @@ async def test_list_backups_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetBackupRequest,
-        dict,
+        service.GetBackupRequest(),
+        {},
     ],
 )
 def test_get_backup(request_type, transport: str = "grpc"):
@@ -10091,7 +10155,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
@@ -10159,9 +10223,10 @@ def test_get_backup_non_empty_request_with_auto_populated_field():
         client.get_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetBackupRequest(
+        request_msg = service.GetBackupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_backup_use_cached_wrapped_rpc():
@@ -10240,9 +10305,14 @@ async def test_get_backup_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_backup_async(
-    transport: str = "grpc_asyncio", request_type=service.GetBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetBackupRequest(),
+        {},
+    ],
+)
+async def test_get_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10250,7 +10320,7 @@ async def test_get_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
@@ -10295,11 +10365,6 @@ async def test_get_backup_async(
     assert response.size_bytes == 1089
     assert response.satisfies_pzs is True
     assert response.database_version == resources.DatabaseVersion.POSTGRES_13
-
-
-@pytest.mark.asyncio
-async def test_get_backup_async_from_dict():
-    await test_get_backup_async(request_type=dict)
 
 
 def test_get_backup_field_headers():
@@ -10444,8 +10509,8 @@ async def test_get_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateBackupRequest,
-        dict,
+        service.CreateBackupRequest(),
+        {},
     ],
 )
 def test_create_backup(request_type, transport: str = "grpc"):
@@ -10456,7 +10521,7 @@ def test_create_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
@@ -10499,11 +10564,12 @@ def test_create_backup_non_empty_request_with_auto_populated_field():
         client.create_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateBackupRequest(
+        request_msg = service.CreateBackupRequest(
             parent="parent_value",
             backup_id="backup_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_backup_use_cached_wrapped_rpc():
@@ -10594,9 +10660,14 @@ async def test_create_backup_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_backup_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateBackupRequest(),
+        {},
+    ],
+)
+async def test_create_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10604,7 +10675,7 @@ async def test_create_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
@@ -10622,11 +10693,6 @@ async def test_create_backup_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_backup_async_from_dict():
-    await test_create_backup_async(request_type=dict)
 
 
 def test_create_backup_field_headers():
@@ -10795,8 +10861,8 @@ async def test_create_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateBackupRequest,
-        dict,
+        service.UpdateBackupRequest(),
+        {},
     ],
 )
 def test_update_backup(request_type, transport: str = "grpc"):
@@ -10807,7 +10873,7 @@ def test_update_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
@@ -10848,9 +10914,10 @@ def test_update_backup_non_empty_request_with_auto_populated_field():
         client.update_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateBackupRequest(
+        request_msg = service.UpdateBackupRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_backup_use_cached_wrapped_rpc():
@@ -10941,9 +11008,14 @@ async def test_update_backup_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_backup_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateBackupRequest(),
+        {},
+    ],
+)
+async def test_update_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10951,7 +11023,7 @@ async def test_update_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
@@ -10969,11 +11041,6 @@ async def test_update_backup_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_backup_async_from_dict():
-    await test_update_backup_async(request_type=dict)
 
 
 def test_update_backup_field_headers():
@@ -11132,8 +11199,8 @@ async def test_update_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteBackupRequest,
-        dict,
+        service.DeleteBackupRequest(),
+        {},
     ],
 )
 def test_delete_backup(request_type, transport: str = "grpc"):
@@ -11144,7 +11211,7 @@ def test_delete_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
@@ -11187,11 +11254,12 @@ def test_delete_backup_non_empty_request_with_auto_populated_field():
         client.delete_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteBackupRequest(
+        request_msg = service.DeleteBackupRequest(
             name="name_value",
             request_id="request_id_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_backup_use_cached_wrapped_rpc():
@@ -11282,9 +11350,14 @@ async def test_delete_backup_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_backup_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteBackupRequest(),
+        {},
+    ],
+)
+async def test_delete_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11292,7 +11365,7 @@ async def test_delete_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
@@ -11310,11 +11383,6 @@ async def test_delete_backup_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_backup_async_from_dict():
-    await test_delete_backup_async(request_type=dict)
 
 
 def test_delete_backup_field_headers():
@@ -11463,8 +11531,8 @@ async def test_delete_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListSupportedDatabaseFlagsRequest,
-        dict,
+        service.ListSupportedDatabaseFlagsRequest(),
+        {},
     ],
 )
 def test_list_supported_database_flags(request_type, transport: str = "grpc"):
@@ -11475,7 +11543,7 @@ def test_list_supported_database_flags(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11524,10 +11592,11 @@ def test_list_supported_database_flags_non_empty_request_with_auto_populated_fie
         client.list_supported_database_flags(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListSupportedDatabaseFlagsRequest(
+        request_msg = service.ListSupportedDatabaseFlagsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_supported_database_flags_use_cached_wrapped_rpc():
@@ -11613,9 +11682,15 @@ async def test_list_supported_database_flags_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListSupportedDatabaseFlagsRequest(),
+        {},
+    ],
+)
 async def test_list_supported_database_flags_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.ListSupportedDatabaseFlagsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11624,7 +11699,7 @@ async def test_list_supported_database_flags_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11647,11 +11722,6 @@ async def test_list_supported_database_flags_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSupportedDatabaseFlagsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_supported_database_flags_async_from_dict():
-    await test_list_supported_database_flags_async(request_type=dict)
 
 
 def test_list_supported_database_flags_field_headers():
@@ -11858,6 +11928,9 @@ def test_list_supported_database_flags_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.SupportedDatabaseFlag) for i in results)
@@ -11950,6 +12023,8 @@ async def test_list_supported_database_flags_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -11999,9 +12074,7 @@ async def test_list_supported_database_flags_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_supported_database_flags(request={})
         ).pages:
             pages.append(page_)
@@ -12012,8 +12085,8 @@ async def test_list_supported_database_flags_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GenerateClientCertificateRequest,
-        dict,
+        service.GenerateClientCertificateRequest(),
+        {},
     ],
 )
 def test_generate_client_certificate(request_type, transport: str = "grpc"):
@@ -12024,7 +12097,7 @@ def test_generate_client_certificate(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12076,11 +12149,12 @@ def test_generate_client_certificate_non_empty_request_with_auto_populated_field
         client.generate_client_certificate(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GenerateClientCertificateRequest(
+        request_msg = service.GenerateClientCertificateRequest(
             parent="parent_value",
             request_id="request_id_value",
             public_key="public_key_value",
         )
+        assert args[0] == request_msg
 
 
 def test_generate_client_certificate_use_cached_wrapped_rpc():
@@ -12166,9 +12240,15 @@ async def test_generate_client_certificate_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GenerateClientCertificateRequest(),
+        {},
+    ],
+)
 async def test_generate_client_certificate_async(
-    transport: str = "grpc_asyncio",
-    request_type=service.GenerateClientCertificateRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12177,7 +12257,7 @@ async def test_generate_client_certificate_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12202,11 +12282,6 @@ async def test_generate_client_certificate_async(
     assert isinstance(response, service.GenerateClientCertificateResponse)
     assert response.pem_certificate_chain == ["pem_certificate_chain_value"]
     assert response.ca_cert == "ca_cert_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_client_certificate_async_from_dict():
-    await test_generate_client_certificate_async(request_type=dict)
 
 
 def test_generate_client_certificate_field_headers():
@@ -12363,8 +12438,8 @@ async def test_generate_client_certificate_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetConnectionInfoRequest,
-        dict,
+        service.GetConnectionInfoRequest(),
+        {},
     ],
 )
 def test_get_connection_info(request_type, transport: str = "grpc"):
@@ -12375,7 +12450,7 @@ def test_get_connection_info(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12430,10 +12505,11 @@ def test_get_connection_info_non_empty_request_with_auto_populated_field():
         client.get_connection_info(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetConnectionInfoRequest(
+        request_msg = service.GetConnectionInfoRequest(
             parent="parent_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_connection_info_use_cached_wrapped_rpc():
@@ -12518,9 +12594,14 @@ async def test_get_connection_info_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_connection_info_async(
-    transport: str = "grpc_asyncio", request_type=service.GetConnectionInfoRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetConnectionInfoRequest(),
+        {},
+    ],
+)
+async def test_get_connection_info_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12528,7 +12609,7 @@ async def test_get_connection_info_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12557,11 +12638,6 @@ async def test_get_connection_info_async(
     assert response.ip_address == "ip_address_value"
     assert response.public_ip_address == "public_ip_address_value"
     assert response.instance_uid == "instance_uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_connection_info_async_from_dict():
-    await test_get_connection_info_async(request_type=dict)
 
 
 def test_get_connection_info_field_headers():
@@ -12718,8 +12794,8 @@ async def test_get_connection_info_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListUsersRequest,
-        dict,
+        service.ListUsersRequest(),
+        {},
     ],
 )
 def test_list_users(request_type, transport: str = "grpc"):
@@ -12730,7 +12806,7 @@ def test_list_users(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_users), "__call__") as call:
@@ -12779,12 +12855,13 @@ def test_list_users_non_empty_request_with_auto_populated_field():
         client.list_users(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListUsersRequest(
+        request_msg = service.ListUsersRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_users_use_cached_wrapped_rpc():
@@ -12863,9 +12940,14 @@ async def test_list_users_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_users_async(
-    transport: str = "grpc_asyncio", request_type=service.ListUsersRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListUsersRequest(),
+        {},
+    ],
+)
+async def test_list_users_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12873,7 +12955,7 @@ async def test_list_users_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_users), "__call__") as call:
@@ -12896,11 +12978,6 @@ async def test_list_users_async(
     assert isinstance(response, pagers.ListUsersAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_users_async_from_dict():
-    await test_list_users_async(request_type=dict)
 
 
 def test_list_users_field_headers():
@@ -13095,6 +13172,9 @@ def test_list_users_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.User) for i in results)
@@ -13183,6 +13263,8 @@ async def test_list_users_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -13230,11 +13312,7 @@ async def test_list_users_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_users(request={})
-        ).pages:
+        async for page_ in (await client.list_users(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -13243,8 +13321,8 @@ async def test_list_users_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetUserRequest,
-        dict,
+        service.GetUserRequest(),
+        {},
     ],
 )
 def test_get_user(request_type, transport: str = "grpc"):
@@ -13255,7 +13333,7 @@ def test_get_user(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_user), "__call__") as call:
@@ -13307,9 +13385,10 @@ def test_get_user_non_empty_request_with_auto_populated_field():
         client.get_user(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetUserRequest(
+        request_msg = service.GetUserRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_user_use_cached_wrapped_rpc():
@@ -13388,9 +13467,14 @@ async def test_get_user_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_user_async(
-    transport: str = "grpc_asyncio", request_type=service.GetUserRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetUserRequest(),
+        {},
+    ],
+)
+async def test_get_user_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13398,7 +13482,7 @@ async def test_get_user_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_user), "__call__") as call:
@@ -13427,11 +13511,6 @@ async def test_get_user_async(
     assert response.database_roles == ["database_roles_value"]
     assert response.user_type == resources.User.UserType.ALLOYDB_BUILT_IN
     assert response.keep_extra_roles is True
-
-
-@pytest.mark.asyncio
-async def test_get_user_async_from_dict():
-    await test_get_user_async(request_type=dict)
 
 
 def test_get_user_field_headers():
@@ -13576,8 +13655,8 @@ async def test_get_user_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateUserRequest,
-        dict,
+        service.CreateUserRequest(),
+        {},
     ],
 )
 def test_create_user(request_type, transport: str = "grpc"):
@@ -13588,7 +13667,7 @@ def test_create_user(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_user), "__call__") as call:
@@ -13642,11 +13721,12 @@ def test_create_user_non_empty_request_with_auto_populated_field():
         client.create_user(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateUserRequest(
+        request_msg = service.CreateUserRequest(
             parent="parent_value",
             user_id="user_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_user_use_cached_wrapped_rpc():
@@ -13727,9 +13807,14 @@ async def test_create_user_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_user_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateUserRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateUserRequest(),
+        {},
+    ],
+)
+async def test_create_user_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13737,7 +13822,7 @@ async def test_create_user_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_user), "__call__") as call:
@@ -13766,11 +13851,6 @@ async def test_create_user_async(
     assert response.database_roles == ["database_roles_value"]
     assert response.user_type == resources.User.UserType.ALLOYDB_BUILT_IN
     assert response.keep_extra_roles is True
-
-
-@pytest.mark.asyncio
-async def test_create_user_async_from_dict():
-    await test_create_user_async(request_type=dict)
 
 
 def test_create_user_field_headers():
@@ -13935,8 +14015,8 @@ async def test_create_user_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateUserRequest,
-        dict,
+        service.UpdateUserRequest(),
+        {},
     ],
 )
 def test_update_user(request_type, transport: str = "grpc"):
@@ -13947,7 +14027,7 @@ def test_update_user(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_user), "__call__") as call:
@@ -13999,9 +14079,10 @@ def test_update_user_non_empty_request_with_auto_populated_field():
         client.update_user(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateUserRequest(
+        request_msg = service.UpdateUserRequest(
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_update_user_use_cached_wrapped_rpc():
@@ -14082,9 +14163,14 @@ async def test_update_user_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_user_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateUserRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateUserRequest(),
+        {},
+    ],
+)
+async def test_update_user_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14092,7 +14178,7 @@ async def test_update_user_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_user), "__call__") as call:
@@ -14121,11 +14207,6 @@ async def test_update_user_async(
     assert response.database_roles == ["database_roles_value"]
     assert response.user_type == resources.User.UserType.ALLOYDB_BUILT_IN
     assert response.keep_extra_roles is True
-
-
-@pytest.mark.asyncio
-async def test_update_user_async_from_dict():
-    await test_update_user_async(request_type=dict)
 
 
 def test_update_user_field_headers():
@@ -14280,8 +14361,8 @@ async def test_update_user_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteUserRequest,
-        dict,
+        service.DeleteUserRequest(),
+        {},
     ],
 )
 def test_delete_user(request_type, transport: str = "grpc"):
@@ -14292,7 +14373,7 @@ def test_delete_user(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_user), "__call__") as call:
@@ -14334,10 +14415,11 @@ def test_delete_user_non_empty_request_with_auto_populated_field():
         client.delete_user(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteUserRequest(
+        request_msg = service.DeleteUserRequest(
             name="name_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_user_use_cached_wrapped_rpc():
@@ -14418,9 +14500,14 @@ async def test_delete_user_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_user_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteUserRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteUserRequest(),
+        {},
+    ],
+)
+async def test_delete_user_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14428,7 +14515,7 @@ async def test_delete_user_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_user), "__call__") as call:
@@ -14444,11 +14531,6 @@ async def test_delete_user_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_user_async_from_dict():
-    await test_delete_user_async(request_type=dict)
 
 
 def test_delete_user_field_headers():
@@ -14593,8 +14675,8 @@ async def test_delete_user_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListDatabasesRequest,
-        dict,
+        service.ListDatabasesRequest(),
+        {},
     ],
 )
 def test_list_databases(request_type, transport: str = "grpc"):
@@ -14605,7 +14687,7 @@ def test_list_databases(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
@@ -14651,11 +14733,12 @@ def test_list_databases_non_empty_request_with_auto_populated_field():
         client.list_databases(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListDatabasesRequest(
+        request_msg = service.ListDatabasesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_databases_use_cached_wrapped_rpc():
@@ -14736,9 +14819,14 @@ async def test_list_databases_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_databases_async(
-    transport: str = "grpc_asyncio", request_type=service.ListDatabasesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListDatabasesRequest(),
+        {},
+    ],
+)
+async def test_list_databases_async(request_type, transport: str = "grpc_asyncio"):
     client = AlloyDBAdminAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14746,7 +14834,7 @@ async def test_list_databases_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
@@ -14767,11 +14855,6 @@ async def test_list_databases_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDatabasesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_databases_async_from_dict():
-    await test_list_databases_async(request_type=dict)
 
 
 def test_list_databases_field_headers():
@@ -14966,6 +15049,9 @@ def test_list_databases_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Database) for i in results)
@@ -15054,6 +15140,8 @@ async def test_list_databases_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -15101,11 +15189,7 @@ async def test_list_databases_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_databases(request={})
-        ).pages:
+        async for page_ in (await client.list_databases(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -15226,7 +15310,7 @@ def test_list_clusters_rest_required_fields(request_type=service.ListClustersReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_clusters_rest_unset_required_fields():
@@ -15357,6 +15441,9 @@ def test_list_clusters_rest_pager(transport: str = "rest"):
 
         pager = client.list_clusters(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Cluster) for i in results)
@@ -15474,7 +15561,7 @@ def test_get_cluster_rest_required_fields(request_type=service.GetClusterRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_cluster_rest_unset_required_fields():
@@ -15672,7 +15759,7 @@ def test_create_cluster_rest_required_fields(request_type=service.CreateClusterR
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_cluster_rest_unset_required_fields():
@@ -15874,7 +15961,7 @@ def test_update_cluster_rest_required_fields(request_type=service.UpdateClusterR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_cluster_rest_unset_required_fields():
@@ -16072,7 +16159,7 @@ def test_export_cluster_rest_required_fields(request_type=service.ExportClusterR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_export_cluster_rest_unset_required_fields():
@@ -16270,7 +16357,7 @@ def test_import_cluster_rest_required_fields(request_type=service.ImportClusterR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_import_cluster_rest_unset_required_fields():
@@ -16462,7 +16549,7 @@ def test_upgrade_cluster_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_upgrade_cluster_rest_unset_required_fields():
@@ -16656,7 +16743,7 @@ def test_delete_cluster_rest_required_fields(request_type=service.DeleteClusterR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_cluster_rest_unset_required_fields():
@@ -16843,7 +16930,7 @@ def test_promote_cluster_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_promote_cluster_rest_unset_required_fields():
@@ -17025,7 +17112,7 @@ def test_switchover_cluster_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_switchover_cluster_rest_unset_required_fields():
@@ -17207,7 +17294,7 @@ def test_restore_cluster_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_restore_cluster_rest_unset_required_fields():
@@ -17364,7 +17451,7 @@ def test_create_secondary_cluster_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_secondary_cluster_rest_unset_required_fields():
@@ -17570,7 +17657,7 @@ def test_list_instances_rest_required_fields(request_type=service.ListInstancesR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_instances_rest_unset_required_fields():
@@ -17706,6 +17793,9 @@ def test_list_instances_rest_pager(transport: str = "rest"):
 
         pager = client.list_instances(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Instance) for i in results)
@@ -17823,7 +17913,7 @@ def test_get_instance_rest_required_fields(request_type=service.GetInstanceReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_instance_rest_unset_required_fields():
@@ -18026,7 +18116,7 @@ def test_create_instance_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_instance_rest_unset_required_fields():
@@ -18251,7 +18341,7 @@ def test_create_secondary_instance_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_secondary_instance_rest_unset_required_fields():
@@ -18457,7 +18547,7 @@ def test_batch_create_instances_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_batch_create_instances_rest_unset_required_fields():
@@ -18591,7 +18681,7 @@ def test_update_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_instance_rest_unset_required_fields():
@@ -18792,7 +18882,7 @@ def test_delete_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_instance_rest_unset_required_fields():
@@ -18983,7 +19073,7 @@ def test_failover_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_failover_instance_rest_unset_required_fields():
@@ -19161,7 +19251,7 @@ def test_inject_fault_rest_required_fields(request_type=service.InjectFaultReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_inject_fault_rest_unset_required_fields():
@@ -19353,7 +19443,7 @@ def test_restart_instance_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_restart_instance_rest_unset_required_fields():
@@ -19538,7 +19628,7 @@ def test_execute_sql_rest_required_fields(request_type=service.ExecuteSqlRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_execute_sql_rest_unset_required_fields():
@@ -19741,7 +19831,7 @@ def test_list_backups_rest_required_fields(request_type=service.ListBackupsReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_backups_rest_unset_required_fields():
@@ -19872,6 +19962,9 @@ def test_list_backups_rest_pager(transport: str = "rest"):
 
         pager = client.list_backups(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Backup) for i in results)
@@ -19987,7 +20080,7 @@ def test_get_backup_rest_required_fields(request_type=service.GetBackupRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_backup_rest_unset_required_fields():
@@ -20185,7 +20278,7 @@ def test_create_backup_rest_required_fields(request_type=service.CreateBackupReq
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_backup_rest_unset_required_fields():
@@ -20383,7 +20476,7 @@ def test_update_backup_rest_required_fields(request_type=service.UpdateBackupReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_backup_rest_unset_required_fields():
@@ -20580,7 +20673,7 @@ def test_delete_backup_rest_required_fields(request_type=service.DeleteBackupReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_backup_rest_unset_required_fields():
@@ -20777,7 +20870,7 @@ def test_list_supported_database_flags_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_supported_database_flags_rest_unset_required_fields():
@@ -20912,6 +21005,9 @@ def test_list_supported_database_flags_rest_pager(transport: str = "rest"):
 
         pager = client.list_supported_database_flags(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.SupportedDatabaseFlag) for i in results)
@@ -21035,7 +21131,7 @@ def test_generate_client_certificate_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_generate_client_certificate_rest_unset_required_fields():
@@ -21221,7 +21317,7 @@ def test_get_connection_info_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_connection_info_rest_unset_required_fields():
@@ -21408,7 +21504,7 @@ def test_list_users_rest_required_fields(request_type=service.ListUsersRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_users_rest_unset_required_fields():
@@ -21544,6 +21640,9 @@ def test_list_users_rest_pager(transport: str = "rest"):
 
         pager = client.list_users(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.User) for i in results)
@@ -21659,7 +21758,7 @@ def test_get_user_rest_required_fields(request_type=service.GetUserRequest):
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_user_rest_unset_required_fields():
@@ -21859,7 +21958,7 @@ def test_create_user_rest_required_fields(request_type=service.CreateUserRequest
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_user_rest_unset_required_fields():
@@ -22061,7 +22160,7 @@ def test_update_user_rest_required_fields(request_type=service.UpdateUserRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_user_rest_unset_required_fields():
@@ -22257,7 +22356,7 @@ def test_delete_user_rest_required_fields(request_type=service.DeleteUserRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_user_rest_unset_required_fields():
@@ -22449,7 +22548,7 @@ def test_list_databases_rest_required_fields(request_type=service.ListDatabasesR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_databases_rest_unset_required_fields():
@@ -22584,6 +22683,9 @@ def test_list_databases_rest_pager(transport: str = "rest"):
 
         pager = client.list_databases(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, resources.Database) for i in results)
@@ -22716,7 +22818,6 @@ def test_list_clusters_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -22737,7 +22838,6 @@ def test_get_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -22758,7 +22858,6 @@ def test_create_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -22779,7 +22878,6 @@ def test_update_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -22800,7 +22898,6 @@ def test_export_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ExportClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -22821,7 +22918,6 @@ def test_import_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ImportClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -22842,7 +22938,6 @@ def test_upgrade_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpgradeClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -22863,7 +22958,6 @@ def test_delete_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -22884,7 +22978,6 @@ def test_promote_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.PromoteClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -22907,7 +23000,6 @@ def test_switchover_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SwitchoverClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -22928,7 +23020,6 @@ def test_restore_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.RestoreClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -22951,7 +23042,6 @@ def test_create_secondary_cluster_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateSecondaryClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -22972,7 +23062,6 @@ def test_list_instances_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -22993,7 +23082,6 @@ def test_get_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -23014,7 +23102,6 @@ def test_create_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -23037,7 +23124,6 @@ def test_create_secondary_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateSecondaryInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -23060,7 +23146,6 @@ def test_batch_create_instances_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.BatchCreateInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -23081,7 +23166,6 @@ def test_update_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -23102,7 +23186,6 @@ def test_delete_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -23125,7 +23208,6 @@ def test_failover_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.FailoverInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -23146,7 +23228,6 @@ def test_inject_fault_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.InjectFaultRequest()
-
         assert args[0] == request_msg
 
 
@@ -23167,7 +23248,6 @@ def test_restart_instance_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.RestartInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -23188,7 +23268,6 @@ def test_execute_sql_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ExecuteSqlRequest()
-
         assert args[0] == request_msg
 
 
@@ -23209,7 +23288,6 @@ def test_list_backups_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23230,7 +23308,6 @@ def test_get_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -23251,7 +23328,6 @@ def test_create_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -23272,7 +23348,6 @@ def test_update_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -23293,7 +23368,6 @@ def test_delete_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -23316,7 +23390,6 @@ def test_list_supported_database_flags_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListSupportedDatabaseFlagsRequest()
-
         assert args[0] == request_msg
 
 
@@ -23339,7 +23412,6 @@ def test_generate_client_certificate_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GenerateClientCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -23362,7 +23434,6 @@ def test_get_connection_info_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetConnectionInfoRequest()
-
         assert args[0] == request_msg
 
 
@@ -23383,7 +23454,6 @@ def test_list_users_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListUsersRequest()
-
         assert args[0] == request_msg
 
 
@@ -23404,7 +23474,6 @@ def test_get_user_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -23425,7 +23494,6 @@ def test_create_user_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -23446,7 +23514,6 @@ def test_update_user_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -23467,7 +23534,6 @@ def test_delete_user_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -23488,7 +23554,6 @@ def test_list_databases_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListDatabasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -23530,7 +23595,6 @@ async def test_list_clusters_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -23567,7 +23631,6 @@ async def test_get_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -23592,7 +23655,6 @@ async def test_create_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -23617,7 +23679,6 @@ async def test_update_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -23642,7 +23703,6 @@ async def test_export_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ExportClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -23667,7 +23727,6 @@ async def test_import_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ImportClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -23692,7 +23751,6 @@ async def test_upgrade_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpgradeClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -23717,7 +23775,6 @@ async def test_delete_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -23742,7 +23799,6 @@ async def test_promote_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.PromoteClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -23769,7 +23825,6 @@ async def test_switchover_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SwitchoverClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -23794,7 +23849,6 @@ async def test_restore_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.RestoreClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -23821,7 +23875,6 @@ async def test_create_secondary_cluster_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateSecondaryClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -23849,7 +23902,6 @@ async def test_list_instances_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -23889,7 +23941,6 @@ async def test_get_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -23914,7 +23965,6 @@ async def test_create_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -23941,7 +23991,6 @@ async def test_create_secondary_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateSecondaryInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -23968,7 +24017,6 @@ async def test_batch_create_instances_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.BatchCreateInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -23993,7 +24041,6 @@ async def test_update_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -24018,7 +24065,6 @@ async def test_delete_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -24045,7 +24091,6 @@ async def test_failover_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.FailoverInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -24070,7 +24115,6 @@ async def test_inject_fault_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.InjectFaultRequest()
-
         assert args[0] == request_msg
 
 
@@ -24095,7 +24139,6 @@ async def test_restart_instance_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.RestartInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -24120,7 +24163,6 @@ async def test_execute_sql_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ExecuteSqlRequest()
-
         assert args[0] == request_msg
 
 
@@ -24148,7 +24190,6 @@ async def test_list_backups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24187,7 +24228,6 @@ async def test_get_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -24212,7 +24252,6 @@ async def test_create_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -24237,7 +24276,6 @@ async def test_update_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -24262,7 +24300,6 @@ async def test_delete_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -24291,7 +24328,6 @@ async def test_list_supported_database_flags_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListSupportedDatabaseFlagsRequest()
-
         assert args[0] == request_msg
 
 
@@ -24321,7 +24357,6 @@ async def test_generate_client_certificate_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GenerateClientCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -24353,7 +24388,6 @@ async def test_get_connection_info_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetConnectionInfoRequest()
-
         assert args[0] == request_msg
 
 
@@ -24381,7 +24415,6 @@ async def test_list_users_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListUsersRequest()
-
         assert args[0] == request_msg
 
 
@@ -24412,7 +24445,6 @@ async def test_get_user_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -24443,7 +24475,6 @@ async def test_create_user_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -24474,7 +24505,6 @@ async def test_update_user_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -24497,7 +24527,6 @@ async def test_delete_user_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -24524,7 +24553,6 @@ async def test_list_databases_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListDatabasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -24544,8 +24572,9 @@ def test_list_clusters_rest_bad_request(request_type=service.ListClustersRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24610,17 +24639,19 @@ def test_list_clusters_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_clusters"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_clusters_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_list_clusters"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_clusters"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_clusters_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_list_clusters"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24671,8 +24702,9 @@ def test_get_cluster_rest_bad_request(request_type=service.GetClusterRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24755,17 +24787,19 @@ def test_get_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_get_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_get_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_get_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_get_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_get_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_get_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24814,8 +24848,9 @@ def test_create_cluster_rest_bad_request(request_type=service.CreateClusterReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25037,19 +25072,20 @@ def test_create_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_create_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_create_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25100,8 +25136,9 @@ def test_update_cluster_rest_bad_request(request_type=service.UpdateClusterReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25325,19 +25362,20 @@ def test_update_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_update_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_update_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_update_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_update_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_update_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_update_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25386,8 +25424,9 @@ def test_export_cluster_rest_bad_request(request_type=service.ExportClusterReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25444,19 +25483,20 @@ def test_export_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_export_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_export_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_export_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_export_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_export_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_export_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25505,8 +25545,9 @@ def test_import_cluster_rest_bad_request(request_type=service.ImportClusterReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25563,19 +25604,20 @@ def test_import_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_import_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_import_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_import_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_import_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_import_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_import_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25624,8 +25666,9 @@ def test_upgrade_cluster_rest_bad_request(request_type=service.UpgradeClusterReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25682,19 +25725,20 @@ def test_upgrade_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_upgrade_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_upgrade_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_upgrade_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_upgrade_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_upgrade_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_upgrade_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25743,8 +25787,9 @@ def test_delete_cluster_rest_bad_request(request_type=service.DeleteClusterReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25801,19 +25846,20 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_delete_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_delete_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_delete_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_delete_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_delete_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_delete_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25862,8 +25908,9 @@ def test_promote_cluster_rest_bad_request(request_type=service.PromoteClusterReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25920,19 +25967,20 @@ def test_promote_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_promote_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_promote_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_promote_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_promote_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_promote_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_promote_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25983,8 +26031,9 @@ def test_switchover_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26041,19 +26090,21 @@ def test_switchover_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_switchover_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_switchover_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_switchover_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_switchover_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor,
+            "post_switchover_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_switchover_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26104,8 +26155,9 @@ def test_restore_cluster_rest_bad_request(request_type=service.RestoreClusterReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26162,19 +26214,20 @@ def test_restore_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_restore_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_restore_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_restore_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_restore_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_restore_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_restore_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26225,8 +26278,9 @@ def test_create_secondary_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26448,20 +26502,21 @@ def test_create_secondary_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_secondary_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor,
-        "post_create_secondary_cluster_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_create_secondary_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_secondary_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor,
+            "post_create_secondary_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_create_secondary_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26512,8 +26567,9 @@ def test_list_instances_rest_bad_request(request_type=service.ListInstancesReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26578,17 +26634,19 @@ def test_list_instances_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_instances"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_instances_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_list_instances"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_instances"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_instances_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_list_instances"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26641,8 +26699,9 @@ def test_get_instance_rest_bad_request(request_type=service.GetInstanceRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26735,17 +26794,19 @@ def test_get_instance_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_get_instance"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_get_instance_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_get_instance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_get_instance"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_get_instance_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_get_instance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26794,8 +26855,9 @@ def test_create_instance_rest_bad_request(request_type=service.CreateInstanceReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27001,19 +27063,20 @@ def test_create_instance_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_instance"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_instance_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_create_instance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_instance"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_instance_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_create_instance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27064,8 +27127,9 @@ def test_create_secondary_instance_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27271,20 +27335,21 @@ def test_create_secondary_instance_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_secondary_instance"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor,
-        "post_create_secondary_instance_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_create_secondary_instance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_secondary_instance"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor,
+            "post_create_secondary_instance_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_create_secondary_instance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27337,8 +27402,9 @@ def test_batch_create_instances_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27565,20 +27631,21 @@ def test_batch_create_instances_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_batch_create_instances"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor,
-        "post_batch_create_instances_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_batch_create_instances"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_batch_create_instances"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor,
+            "post_batch_create_instances_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_batch_create_instances"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27633,8 +27700,9 @@ def test_update_instance_rest_bad_request(request_type=service.UpdateInstanceReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27844,19 +27912,20 @@ def test_update_instance_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_update_instance"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_update_instance_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_update_instance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_update_instance"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_update_instance_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_update_instance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27907,8 +27976,9 @@ def test_delete_instance_rest_bad_request(request_type=service.DeleteInstanceReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27967,19 +28037,20 @@ def test_delete_instance_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_delete_instance"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_delete_instance_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_delete_instance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_delete_instance"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_delete_instance_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_delete_instance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28032,8 +28103,9 @@ def test_failover_instance_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28092,19 +28164,21 @@ def test_failover_instance_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_failover_instance"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_failover_instance_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_failover_instance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_failover_instance"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor,
+            "post_failover_instance_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_failover_instance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28157,8 +28231,9 @@ def test_inject_fault_rest_bad_request(request_type=service.InjectFaultRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28217,19 +28292,20 @@ def test_inject_fault_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_inject_fault"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_inject_fault_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_inject_fault"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_inject_fault"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_inject_fault_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_inject_fault"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28280,8 +28356,9 @@ def test_restart_instance_rest_bad_request(request_type=service.RestartInstanceR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28340,19 +28417,21 @@ def test_restart_instance_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_restart_instance"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_restart_instance_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_restart_instance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_restart_instance"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor,
+            "post_restart_instance_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_restart_instance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28403,8 +28482,9 @@ def test_execute_sql_rest_bad_request(request_type=service.ExecuteSqlRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28466,17 +28546,19 @@ def test_execute_sql_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_execute_sql"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_execute_sql_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_execute_sql"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_execute_sql"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_execute_sql_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_execute_sql"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28525,8 +28607,9 @@ def test_list_backups_rest_bad_request(request_type=service.ListBackupsRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28591,17 +28674,19 @@ def test_list_backups_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_backups"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_backups_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_list_backups"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_backups"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_backups_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_list_backups"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28652,8 +28737,9 @@ def test_get_backup_rest_bad_request(request_type=service.GetBackupRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28740,17 +28826,19 @@ def test_get_backup_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_get_backup"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_get_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_get_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_get_backup"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_get_backup_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_get_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28799,8 +28887,9 @@ def test_create_backup_rest_bad_request(request_type=service.CreateBackupRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28953,19 +29042,20 @@ def test_create_backup_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_backup"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_create_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_backup"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_backup_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_create_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29016,8 +29106,9 @@ def test_update_backup_rest_bad_request(request_type=service.UpdateBackupRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29172,19 +29263,20 @@ def test_update_backup_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_update_backup"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_update_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_update_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_update_backup"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_update_backup_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_update_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29233,8 +29325,9 @@ def test_delete_backup_rest_bad_request(request_type=service.DeleteBackupRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29291,19 +29384,20 @@ def test_delete_backup_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_delete_backup"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_delete_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_delete_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_delete_backup"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_delete_backup_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_delete_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29354,8 +29448,9 @@ def test_list_supported_database_flags_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29418,18 +29513,20 @@ def test_list_supported_database_flags_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_supported_database_flags"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor,
-        "post_list_supported_database_flags_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_list_supported_database_flags"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_supported_database_flags"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor,
+            "post_list_supported_database_flags_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_list_supported_database_flags"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29487,8 +29584,9 @@ def test_generate_client_certificate_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29553,18 +29651,20 @@ def test_generate_client_certificate_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_generate_client_certificate"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor,
-        "post_generate_client_certificate_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_generate_client_certificate"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_generate_client_certificate"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor,
+            "post_generate_client_certificate_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_generate_client_certificate"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29624,8 +29724,9 @@ def test_get_connection_info_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29696,17 +29797,20 @@ def test_get_connection_info_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_get_connection_info"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_get_connection_info_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_get_connection_info"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_get_connection_info"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor,
+            "post_get_connection_info_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_get_connection_info"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29757,8 +29861,9 @@ def test_list_users_rest_bad_request(request_type=service.ListUsersRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29823,17 +29928,19 @@ def test_list_users_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_users"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_users_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_list_users"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_users"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_users_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_list_users"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29884,8 +29991,9 @@ def test_get_user_rest_bad_request(request_type=service.GetUserRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29958,17 +30066,19 @@ def test_get_user_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_get_user"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_get_user_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_get_user"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_get_user"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_get_user_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_get_user"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30017,8 +30127,9 @@ def test_create_user_rest_bad_request(request_type=service.CreateUserRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30163,17 +30274,19 @@ def test_create_user_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_user"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_user_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_create_user"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_user"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_user_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_create_user"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30226,8 +30339,9 @@ def test_update_user_rest_bad_request(request_type=service.UpdateUserRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30376,17 +30490,19 @@ def test_update_user_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_update_user"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_update_user_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_update_user"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_update_user"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_update_user_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_update_user"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30437,8 +30553,9 @@ def test_delete_user_rest_bad_request(request_type=service.DeleteUserRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30497,13 +30614,13 @@ def test_delete_user_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_delete_user"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_delete_user"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = service.DeleteUserRequest.pb(service.DeleteUserRequest())
         transcode.return_value = {
@@ -30544,8 +30661,9 @@ def test_list_databases_rest_bad_request(request_type=service.ListDatabasesReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30608,17 +30726,19 @@ def test_list_databases_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_databases"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_databases_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_list_databases"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_databases"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_databases_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_list_databases"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30671,8 +30791,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -30731,8 +30852,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -30793,8 +30915,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -30855,8 +30978,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -30917,8 +31041,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -30979,8 +31104,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -31051,7 +31177,6 @@ def test_list_clusters_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListClustersRequest()
-
         assert args[0] == request_msg
 
 
@@ -31071,7 +31196,6 @@ def test_get_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -31091,7 +31215,6 @@ def test_create_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -31111,7 +31234,6 @@ def test_update_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -31131,7 +31253,6 @@ def test_export_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ExportClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -31151,7 +31272,6 @@ def test_import_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ImportClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -31171,7 +31291,6 @@ def test_upgrade_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpgradeClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -31191,7 +31310,6 @@ def test_delete_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -31211,7 +31329,6 @@ def test_promote_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.PromoteClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -31233,7 +31350,6 @@ def test_switchover_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SwitchoverClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -31253,7 +31369,6 @@ def test_restore_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.RestoreClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -31275,7 +31390,6 @@ def test_create_secondary_cluster_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateSecondaryClusterRequest()
-
         assert args[0] == request_msg
 
 
@@ -31295,7 +31409,6 @@ def test_list_instances_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -31315,7 +31428,6 @@ def test_get_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -31335,7 +31447,6 @@ def test_create_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -31357,7 +31468,6 @@ def test_create_secondary_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateSecondaryInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -31379,7 +31489,6 @@ def test_batch_create_instances_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.BatchCreateInstancesRequest()
-
         assert args[0] == request_msg
 
 
@@ -31399,7 +31508,6 @@ def test_update_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -31419,7 +31527,6 @@ def test_delete_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -31441,7 +31548,6 @@ def test_failover_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.FailoverInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -31461,7 +31567,6 @@ def test_inject_fault_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.InjectFaultRequest()
-
         assert args[0] == request_msg
 
 
@@ -31481,7 +31586,6 @@ def test_restart_instance_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.RestartInstanceRequest()
-
         assert args[0] == request_msg
 
 
@@ -31501,7 +31605,6 @@ def test_execute_sql_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ExecuteSqlRequest()
-
         assert args[0] == request_msg
 
 
@@ -31521,7 +31624,6 @@ def test_list_backups_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -31541,7 +31643,6 @@ def test_get_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -31561,7 +31662,6 @@ def test_create_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -31581,7 +31681,6 @@ def test_update_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -31601,7 +31700,6 @@ def test_delete_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -31623,7 +31721,6 @@ def test_list_supported_database_flags_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListSupportedDatabaseFlagsRequest()
-
         assert args[0] == request_msg
 
 
@@ -31645,7 +31742,6 @@ def test_generate_client_certificate_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GenerateClientCertificateRequest()
-
         assert args[0] == request_msg
 
 
@@ -31667,7 +31763,6 @@ def test_get_connection_info_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetConnectionInfoRequest()
-
         assert args[0] == request_msg
 
 
@@ -31687,7 +31782,6 @@ def test_list_users_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListUsersRequest()
-
         assert args[0] == request_msg
 
 
@@ -31707,7 +31801,6 @@ def test_get_user_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -31727,7 +31820,6 @@ def test_create_user_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -31747,7 +31839,6 @@ def test_update_user_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -31767,7 +31858,6 @@ def test_delete_user_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteUserRequest()
-
         assert args[0] == request_msg
 
 
@@ -31787,7 +31877,6 @@ def test_list_databases_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListDatabasesRequest()
-
         assert args[0] == request_msg
 
 
@@ -31908,11 +31997,14 @@ def test_alloy_db_admin_base_transport():
 
 def test_alloy_db_admin_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.alloydb_v1.services.alloy_db_admin.transports.AlloyDBAdminTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.alloydb_v1.services.alloy_db_admin.transports.AlloyDBAdminTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AlloyDBAdminTransport(
@@ -31929,9 +32021,12 @@ def test_alloy_db_admin_base_transport_with_credentials_file():
 
 def test_alloy_db_admin_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.alloydb_v1.services.alloy_db_admin.transports.AlloyDBAdminTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.alloydb_v1.services.alloy_db_admin.transports.AlloyDBAdminTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AlloyDBAdminTransport()
@@ -32003,11 +32098,12 @@ def test_alloy_db_admin_transport_auth_gdch_credentials(transport_class):
 def test_alloy_db_admin_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -32985,6 +33081,38 @@ async def test_delete_operation_from_dict_async():
         call.assert_called()
 
 
+def test_delete_operation_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
 def test_cancel_operation(transport: str = "grpc"):
     client = AlloyDBAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -33122,6 +33250,38 @@ async def test_cancel_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_cancel_operation_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
 
 
 def test_get_operation(transport: str = "grpc"):
@@ -33269,6 +33429,40 @@ async def test_get_operation_from_dict_async():
         call.assert_called()
 
 
+def test_get_operation_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
 def test_list_operations(transport: str = "grpc"):
     client = AlloyDBAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -33412,6 +33606,40 @@ async def test_list_operations_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
 
 
 def test_list_locations(transport: str = "grpc"):
@@ -33559,6 +33787,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = AlloyDBAdminClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -33698,6 +33960,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = AlloyDBAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = AlloyDBAdminAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():

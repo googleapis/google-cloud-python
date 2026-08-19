@@ -40,6 +40,11 @@ _UNSTRUCTURED_RETRYABLE_TYPES = (
 
 _DEFAULT_RETRY_DEADLINE = 10.0 * 60.0  # 10 minutes
 
+# Exceptions that are subclasses of types in _UNSTRUCTURED_RETRYABLE_TYPES
+# but should not be retried because they typically indicate persistent
+# configuration or security issues.
+_UNSTRUCTURED_NON_RETRYABLE_TYPES = (requests.exceptions.SSLError,)
+
 # Ambiguous errors (e.g. internalError, backendError, rateLimitExceeded) retry
 # until the full `_DEFAULT_RETRY_DEADLINE`. This is because the
 # `jobs.getQueryResults` REST API translates a job failure into an HTTP error.
@@ -64,9 +69,13 @@ _DEFAULT_JOB_DEADLINE = 2.0 * (2.0 * _DEFAULT_RETRY_DEADLINE)
 def _should_retry(exc):
     """Predicate for determining when to retry.
 
-    We retry if and only if the 'reason' is in _RETRYABLE_REASONS or is
-    in _UNSTRUCTURED_RETRYABLE_TYPES.
+    We retry if the 'reason' is in _RETRYABLE_REASONS or if the exception
+    is an instance of one of the _UNSTRUCTURED_RETRYABLE_TYPES, unless it
+    is explicitly excluded by being in _UNSTRUCTURED_NON_RETRYABLE_TYPES.
     """
+    if isinstance(exc, _UNSTRUCTURED_NON_RETRYABLE_TYPES):
+        return False
+
     try:
         reason = exc.errors[0]["reason"]
     except (AttributeError, IndexError, TypeError, KeyError):

@@ -17,40 +17,16 @@ Helper functions for mTLS in async for discovery of certs.
 """
 
 import asyncio
-import contextlib
+import inspect
 import logging
-import os
 import ssl
-import tempfile
 from typing import Optional
 
 from google.auth import exceptions
-import google.auth.transport._mtls_helper
+from google.auth.transport._mtls_helper import secure_cert_key_paths
 import google.auth.transport.mtls
 
 _LOGGER = logging.getLogger(__name__)
-
-
-@contextlib.contextmanager
-def _create_temp_file(content: bytes):
-    """Creates a temporary file with the given content.
-
-    Args:
-        content (bytes): The content to write to the file.
-
-    Yields:
-        str: The path to the temporary file.
-    """
-    # Create a temporary file that is readable only by the owner.
-    fd, file_path = tempfile.mkstemp()
-    try:
-        with os.fdopen(fd, "wb") as f:
-            f.write(content)
-        yield file_path
-    finally:
-        # Securely delete the file after use.
-        if os.path.exists(file_path):
-            os.remove(file_path)
 
 
 def make_client_cert_ssl_context(
@@ -71,19 +47,25 @@ def make_client_cert_ssl_context(
     Raises:
         google.auth.exceptions.TransportError: If there is an error loading the certificate.
     """
-    with _create_temp_file(cert_bytes) as cert_path, _create_temp_file(
-        key_bytes
-    ) as key_path:
-        try:
+    try:
+        with secure_cert_key_paths(cert_bytes, key_bytes, passphrase=passphrase) as (
+            cert_path,
+            key_path,
+            passphrase_val,
+        ):
             context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
-            context.load_cert_chain(
-                certfile=cert_path, keyfile=key_path, password=passphrase
-            )
+            if cert_path:
+                password = passphrase_val
+                context.load_cert_chain(
+                    certfile=cert_path,
+                    keyfile=key_path,
+                    password=password,
+                )
             return context
-        except (ssl.SSLError, OSError, IOError, ValueError, RuntimeError) as exc:
-            raise exceptions.TransportError(
-                "Failed to load client certificate and key for mTLS."
-            ) from exc
+    except (ssl.SSLError, OSError, IOError, ValueError, RuntimeError, TypeError) as exc:
+        raise exceptions.TransportError(
+            "Failed to load client certificate and key for mTLS."
+        ) from exc
 
 
 async def _run_in_executor(func, *args):
@@ -187,9 +169,9 @@ async def get_client_cert_and_key(client_cert_callback=None):
     """
     if client_cert_callback:
         result = client_cert_callback()
-        try:
+        if inspect.isawaitable(result):
             cert, key = await result
-        except TypeError:
+        else:
             cert, key = result
         return True, cert, key
 

@@ -4,6 +4,36 @@
 
 [1]: https://pypi.org/project/google-cloud-access-context-manager/#history
 
+## [0.6.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-context-manager-v0.6.0...google-cloud-access-context-manager-v0.6.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-context-manager-v0.5.0...google-cloud-access-context-manager-v0.6.0) (2026-06-02)
+
+
+### Bug Fixes
+
+* update incorrect urls in setup.py to point at monorepo vs splitrepo (#17237) ([eaed04baf3cd356c3811c66e64c277c8841c7563](https://github.com/googleapis/google-cloud-python/commit/eaed04baf3cd356c3811c66e64c277c8841c7563))
+
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-context-manager-v0.4.0...google-cloud-access-context-manager-v0.5.0) (2026-05-06)
+
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-context-manager-v0.3.0...google-cloud-access-context-manager-v0.4.0) (2026-03-26)
+
+
+### Features
+
+* update image to us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:c8612d3fffb3f6a32353b2d1abd16b61e87811866f7ec9d65b59b02eb452a620 ([d3579bf00f0cd37df54f7287518a9e2330bdcc83](https://github.com/googleapis/google-cloud-python/commit/d3579bf00f0cd37df54f7287518a9e2330bdcc83))
+
+
+### Bug Fixes
+
+* Allow Protobuf 7.x, require Python 3.9 (#16102) ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+* Require Python 3.9 ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-access-context-manager-v0.2.3...google-cloud-access-context-manager-v0.3.0) (2025-10-16)
 
 

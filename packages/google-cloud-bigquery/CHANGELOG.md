@@ -4,6 +4,86 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.43.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.42.3...google-cloud-bigquery-v3.43.0) (2026-08-06)
+
+
+### Features
+
+* add pandas-gbq capability helper ([#17957](https://github.com/googleapis/google-cloud-python/issues/17957)) ([2207ca6](https://github.com/googleapis/google-cloud-python/commit/2207ca66fe9b5d5aff201dd922f37df06ab4b664))
+
+
+### Bug Fixes
+
+* **bigquery:** Fix bigquery socket leak ([#17953](https://github.com/googleapis/google-cloud-python/issues/17953)) ([8c26b38](https://github.com/googleapis/google-cloud-python/commit/8c26b38a7ab4b5c543f479705c4a231fffffcfcc))
+* remove stray debug print in RangeQueryParameter constructor ([#17973](https://github.com/googleapis/google-cloud-python/issues/17973)) ([fe7bfd0](https://github.com/googleapis/google-cloud-python/commit/fe7bfd03bedf340ed41f3a2730bf77657075833e))
+
+
+### Documentation
+
+* add connector libraries overview table to package README ([#17939](https://github.com/googleapis/google-cloud-python/issues/17939)) ([71bc622](https://github.com/googleapis/google-cloud-python/commit/71bc6223ee0f344b2bc91ddcab82ab0b1b8fc19b))
+* correct return type in CellDataParser.time_to_py docstring ([#17972](https://github.com/googleapis/google-cloud-python/issues/17972)) ([bd1e224](https://github.com/googleapis/google-cloud-python/commit/bd1e2246d2a2a1a0f1973a568e8eb87a1427f9d5))
+
+## [3.42.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.42.2...google-cloud-bigquery-v3.42.3) (2026-07-30)
+
+
+### Bug Fixes
+
+* **bigquery:** dbapi socket leak ([#17921](https://github.com/googleapis/google-cloud-python/issues/17921)) ([d328e3b](https://github.com/googleapis/google-cloud-python/commit/d328e3b5b3d4093421edacc31f306d45a078e186))
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
+## [3.42.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.42.1...google-cloud-bigquery-v3.42.2) (2026-07-07)
+
+
+### Bug Fixes
+
+* **bigquery:** avoid SSLError retry loop ([#17489](https://github.com/googleapis/google-cloud-python/issues/17489)) ([8248d8e](https://github.com/googleapis/google-cloud-python/commit/8248d8e2f891e68d875d417fe64d7d9de4703b62))
+* include amended user agent in read client ([#17592](https://github.com/googleapis/google-cloud-python/issues/17592)) ([c43caee](https://github.com/googleapis/google-cloud-python/commit/c43caeee34e7c0878766d2806f69016c319697e2))
+
+## [3.42.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.42.0...google-cloud-bigquery-v3.42.1) (2026-06-22)
+
+
+### Bug Fixes
+
+* **bigquery:** close GAPIC storage transport and auth sessions to prevent socket leaks ([#17508](https://github.com/googleapis/google-cloud-python/issues/17508)) ([0258405](https://github.com/googleapis/google-cloud-python/commit/025840544f5d4ab6a429d1cd9bdbb256c981aa0d))
+
+## [3.42.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.41.0...google-cloud-bigquery-v3.42.0) (2026-06-12)
+
+
+### Documentation
+
+* fix FAQ grammar in httplib2 example</li> <li><a href="https://github.com/psf/requests/commit/774a0b837a194ee885d4fdd9ca947900cc3daf71"><code>774a0b8</code></a> ([5283c92639438d9e4dd3519d00a64755e87ea669](https://github.com/googleapis/google-cloud-python/commit/5283c92639438d9e4dd3519d00a64755e87ea669))
+* same block as other sections</li> <li><a href="https://github.com/psf/requests/commit/9c72a41bec8597f948c9d8caa5dc3f12273b3303"><code>9c72a41</code></a> Bump github/codeql-action from 4.33.0 to 4.34.1</li> <li><a href="https://github.com/psf/requests/commit/ebf71906798ec82f34e07d3168f8b8aecaf8a3be"><code>ebf7190</code></a> Bump github/codeql-action from 4.32.0 to 4.33.0</li> <li><a href="https://github.com/psf/requests/commit/0e4ae38f0c93d4f92a96c774bd52c069d12a4798"><code>0e4ae38</code></a> ([5283c92639438d9e4dd3519d00a64755e87ea669](https://github.com/googleapis/google-cloud-python/commit/5283c92639438d9e4dd3519d00a64755e87ea669))
+* exclude Response.is_permanent_redirect from API docs (<a href="https://redirect.github.com/psf/requests/issues/7244">#7244</a>)</li> <li><a href="https://github.com/psf/requests/commit/d568f47278492e630cc990a259047c67991d007a"><code>d568f47</code></a> ([5283c92639438d9e4dd3519d00a64755e87ea669](https://github.com/googleapis/google-cloud-python/commit/5283c92639438d9e4dd3519d00a64755e87ea669))
+* clarify Quickstart POST example (<a href="https://redirect.github.com/psf/requests/issues/6960">#6960</a>)</li> <li>Additional commits viewable in <a href="https://github.com/psf/requests/compare/v2.21.0...v2.33.0">compare view</a></li> </ul> </details> <br /> ([5283c92639438d9e4dd3519d00a64755e87ea669](https://github.com/googleapis/google-cloud-python/commit/5283c92639438d9e4dd3519d00a64755e87ea669))
+
+
+### Features
+
+* drop Python 3.7-3.9 support and regenerate (#17187) ([494abcdfc2bc4f28be9477db86fde149a3af6b66](https://github.com/googleapis/google-cloud-python/commit/494abcdfc2bc4f28be9477db86fde149a3af6b66))
+
+
+### Bug Fixes
+
+* include pyopenssl as a dependency (#17345) ([12817900fd11e68067a5ce9b4254fa8703e864d8](https://github.com/googleapis/google-cloud-python/commit/12817900fd11e68067a5ce9b4254fa8703e864d8))
+* bump requests from 2.21.0 to 2.33.0 in /packages/google-cloud-bigquery (#17192) ([5283c92639438d9e4dd3519d00a64755e87ea669](https://github.com/googleapis/google-cloud-python/commit/5283c92639438d9e4dd3519d00a64755e87ea669))
+* bump tqdm from 4.23.4 to 4.66.3 in /packages/google-cloud-bigquery (#17194) ([8cda5fe1c6aec69af209851c778183e1bb673f07](https://github.com/googleapis/google-cloud-python/commit/8cda5fe1c6aec69af209851c778183e1bb673f07))
+* bump opentelemetry-instrumentation from 0.37b0 to 0.41b0 in /packages/google-cloud-bigquery (#17195) ([f530a2c64fb468c611cfe23c833efdb0b9ea45e1](https://github.com/googleapis/google-cloud-python/commit/f530a2c64fb468c611cfe23c833efdb0b9ea45e1))
+* allow multi-part dataset IDs to support BigLake tables (#17137) ([f93911c0a7f163a8d0374f96cbb73cce75e8dc42](https://github.com/googleapis/google-cloud-python/commit/f93911c0a7f163a8d0374f96cbb73cce75e8dc42))
+
+## [3.41.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.40.1...google-cloud-bigquery-v3.41.0) (2026-03-26)
+
+
+### Features
+
+* Add python client api for JobStatistics.referenced_property_graphs. (#16137) ([1b4467f9f6140cca639a3e8360c06798877f9433](https://github.com/googleapis/google-cloud-python/commit/1b4467f9f6140cca639a3e8360c06798877f9433))
+
+
+### Bug Fixes
+
+* Allow Protobuf 7.x, require Python 3.9 (#16102) ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+* Require Python 3.9 ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+
 ## [3.40.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.40.0...google-cloud-bigquery-v3.40.1) (2026-02-12)
 
 

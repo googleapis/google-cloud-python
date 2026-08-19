@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -237,7 +237,7 @@ class KeyManagementServiceAsyncClient:
         return self._client.transport
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -2204,11 +2204,11 @@ class KeyManagementServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_crypto_key(request=request)
+                operation = await client.delete_crypto_key(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2349,11 +2349,11 @@ class KeyManagementServiceAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_crypto_key_version(request=request)
+                operation = await client.delete_crypto_key_version(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2490,7 +2490,7 @@ class KeyManagementServiceAsyncClient:
                 request = kms_v1.ImportCryptoKeyVersionRequest(
                     rsa_aes_wrapped_key=b'rsa_aes_wrapped_key_blob',
                     parent="parent_value",
-                    algorithm="PQ_SIGN_ML_DSA_87_EXTERNAL_MU",
+                    algorithm="AES_256_KWP",
                     import_job="import_job_value",
                 )
 
@@ -2562,6 +2562,226 @@ class KeyManagementServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def import_trusted_key_wrapped_crypto_key_version(
+        self,
+        request: Optional[
+            Union[service.ImportTrustedKeyWrappedCryptoKeyVersionRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> resources.CryptoKeyVersion:
+        r"""Import wrapped key material into a
+        [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] with a
+        trusted key.
+
+        All requests must specify a
+        [CryptoKey][google.cloud.kms.v1.CryptoKey]. If a
+        [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] is
+        additionally specified in the request, key material will be
+        reimported into that version. Otherwise, a new version will be
+        created, and will be assigned the next sequential id within the
+        [CryptoKey][google.cloud.kms.v1.CryptoKey].
+
+        The [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+        will have trusted_wrapping_enabled set to true.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import kms_v1
+
+            async def sample_import_trusted_key_wrapped_crypto_key_version():
+                # Create a client
+                client = kms_v1.KeyManagementServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.ImportTrustedKeyWrappedCryptoKeyVersionRequest(
+                    parent="parent_value",
+                    importing_key="importing_key_value",
+                    wrapped_key=b'wrapped_key_blob',
+                    algorithm="AES_256_KWP",
+                )
+
+                # Make the request
+                response = await client.import_trusted_key_wrapped_crypto_key_version(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.kms_v1.types.ImportTrustedKeyWrappedCryptoKeyVersionRequest, dict]]):
+                The request object. Request message for
+                [KeyManagementService.ImportTrustedKeyWrappedCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportTrustedKeyWrappedCryptoKeyVersion].
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.kms_v1.types.CryptoKeyVersion:
+                A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents an
+                   individual cryptographic key, and the associated key
+                   material.
+
+                   An
+                   [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+                   version can be used for cryptographic operations.
+
+                   For security reasons, the raw cryptographic key
+                   material represented by a
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                   can never be viewed or exported. It can only be used
+                   to encrypt, decrypt, or sign data when an authorized
+                   user or application invokes Cloud KMS.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, service.ImportTrustedKeyWrappedCryptoKeyVersionRequest
+        ):
+            request = service.ImportTrustedKeyWrappedCryptoKeyVersionRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.import_trusted_key_wrapped_crypto_key_version
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def export_trusted_key_wrapped_crypto_key_version(
+        self,
+        request: Optional[
+            Union[service.ExportTrustedKeyWrappedCryptoKeyVersionRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> service.ExportTrustedKeyWrappedCryptoKeyVersionResponse:
+        r"""Exports a
+        [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] with a
+        trusted key.
+
+        The [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+        must have trusted_wrapping_enabled set to true. The
+        [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] of the
+        [wrapping_key] must have the
+        [AES_WRAPPING][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.AES_WRAPPING]
+        purpose. The [wrapping_key] must have the
+        [AES_256_KWP][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm.AES_256_KWP]
+        algorithm.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import kms_v1
+
+            async def sample_export_trusted_key_wrapped_crypto_key_version():
+                # Create a client
+                client = kms_v1.KeyManagementServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = kms_v1.ExportTrustedKeyWrappedCryptoKeyVersionRequest(
+                    name="name_value",
+                    wrapping_key="wrapping_key_value",
+                )
+
+                # Make the request
+                response = await client.export_trusted_key_wrapped_crypto_key_version(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.kms_v1.types.ExportTrustedKeyWrappedCryptoKeyVersionRequest, dict]]):
+                The request object. Request message for
+                [KeyManagementService.ExportTrustedKeyWrappedCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ExportTrustedKeyWrappedCryptoKeyVersion].
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.kms_v1.types.ExportTrustedKeyWrappedCryptoKeyVersionResponse:
+                Response message for
+                   [KeyManagementService.ExportTrustedKeyWrappedCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ExportTrustedKeyWrappedCryptoKeyVersion].
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, service.ExportTrustedKeyWrappedCryptoKeyVersionRequest
+        ):
+            request = service.ExportTrustedKeyWrappedCryptoKeyVersionRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.export_trusted_key_wrapped_crypto_key_version
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def create_import_job(
         self,
         request: Optional[Union[service.CreateImportJobRequest, dict]] = None,
@@ -2596,7 +2816,7 @@ class KeyManagementServiceAsyncClient:
 
                 # Initialize request argument(s)
                 import_job = kms_v1.ImportJob()
-                import_job.import_method = "RSA_OAEP_4096_SHA256"
+                import_job.import_method = "HPKE_KEM_XWING_HKDF_SHA256_AES_256_GCM"
                 import_job.protection_level = "HSM_SINGLE_TENANT"
 
                 request = kms_v1.CreateImportJobRequest(
@@ -4654,7 +4874,7 @@ class KeyManagementServiceAsyncClient:
 
     async def get_operation(
         self,
-        request: Optional[operations_pb2.GetOperationRequest] = None,
+        request: Optional[Union[operations_pb2.GetOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -4680,8 +4900,12 @@ class KeyManagementServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.GetOperationRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.GetOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.GetOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4690,7 +4914,7 @@ class KeyManagementServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -4698,7 +4922,7 @@ class KeyManagementServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -4709,7 +4933,7 @@ class KeyManagementServiceAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: Optional[iam_policy_pb2.SetIamPolicyRequest] = None,
+        request: Optional[Union[iam_policy_pb2.SetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -4801,8 +5025,12 @@ class KeyManagementServiceAsyncClient:
 
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = iam_policy_pb2.SetIamPolicyRequest(**request)
+        if request is None:
+            request_pb = iam_policy_pb2.SetIamPolicyRequest()
+        elif isinstance(request, dict):
+            request_pb = iam_policy_pb2.SetIamPolicyRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4811,7 +5039,9 @@ class KeyManagementServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("resource", request_pb.resource),)
+            ),
         )
 
         # Validate the universe domain.
@@ -4819,7 +5049,7 @@ class KeyManagementServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -4830,7 +5060,7 @@ class KeyManagementServiceAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: Optional[iam_policy_pb2.GetIamPolicyRequest] = None,
+        request: Optional[Union[iam_policy_pb2.GetIamPolicyRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -4923,8 +5153,12 @@ class KeyManagementServiceAsyncClient:
 
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = iam_policy_pb2.GetIamPolicyRequest(**request)
+        if request is None:
+            request_pb = iam_policy_pb2.GetIamPolicyRequest()
+        elif isinstance(request, dict):
+            request_pb = iam_policy_pb2.GetIamPolicyRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4933,7 +5167,9 @@ class KeyManagementServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("resource", request_pb.resource),)
+            ),
         )
 
         # Validate the universe domain.
@@ -4941,7 +5177,7 @@ class KeyManagementServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -4952,7 +5188,7 @@ class KeyManagementServiceAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: Optional[iam_policy_pb2.TestIamPermissionsRequest] = None,
+        request: Optional[Union[iam_policy_pb2.TestIamPermissionsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -4983,8 +5219,12 @@ class KeyManagementServiceAsyncClient:
 
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = iam_policy_pb2.TestIamPermissionsRequest(**request)
+        if request is None:
+            request_pb = iam_policy_pb2.TestIamPermissionsRequest()
+        elif isinstance(request, dict):
+            request_pb = iam_policy_pb2.TestIamPermissionsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4995,7 +5235,9 @@ class KeyManagementServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("resource", request_pb.resource),)
+            ),
         )
 
         # Validate the universe domain.
@@ -5003,7 +5245,7 @@ class KeyManagementServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -5014,7 +5256,7 @@ class KeyManagementServiceAsyncClient:
 
     async def get_location(
         self,
-        request: Optional[locations_pb2.GetLocationRequest] = None,
+        request: Optional[Union[locations_pb2.GetLocationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -5040,8 +5282,12 @@ class KeyManagementServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = locations_pb2.GetLocationRequest(**request)
+        if request is None:
+            request_pb = locations_pb2.GetLocationRequest()
+        elif isinstance(request, dict):
+            request_pb = locations_pb2.GetLocationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -5050,7 +5296,7 @@ class KeyManagementServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -5058,7 +5304,7 @@ class KeyManagementServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -5069,7 +5315,7 @@ class KeyManagementServiceAsyncClient:
 
     async def list_locations(
         self,
-        request: Optional[locations_pb2.ListLocationsRequest] = None,
+        request: Optional[Union[locations_pb2.ListLocationsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -5095,8 +5341,12 @@ class KeyManagementServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = locations_pb2.ListLocationsRequest(**request)
+        if request is None:
+            request_pb = locations_pb2.ListLocationsRequest()
+        elif isinstance(request, dict):
+            request_pb = locations_pb2.ListLocationsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -5105,7 +5355,7 @@ class KeyManagementServiceAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -5113,7 +5363,7 @@ class KeyManagementServiceAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -5132,9 +5382,7 @@ class KeyManagementServiceAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("KeyManagementServiceAsyncClient",)

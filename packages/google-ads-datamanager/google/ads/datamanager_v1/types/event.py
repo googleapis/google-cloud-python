@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,11 @@ import proto  # type: ignore
 
 from google.ads.datamanager_v1.types import cart_data as gad_cart_data
 from google.ads.datamanager_v1.types import consent as gad_consent
-from google.ads.datamanager_v1.types import device_info, experimental_field
+from google.ads.datamanager_v1.types import (
+    device_info,
+    encrypted_user_id,
+    experimental_field,
+)
 from google.ads.datamanager_v1.types import user_data as gad_user_data
 from google.ads.datamanager_v1.types import user_properties as gad_user_properties
 
@@ -34,6 +38,7 @@ __protobuf__ = proto.module(
         "AdIdentifiers",
         "CustomVariable",
         "EventParameter",
+        "EventLocation",
     },
 )
 
@@ -54,6 +59,8 @@ class EventSource(proto.Enum):
             transaction.
         PHONE (4):
             The event was generated from a phone call.
+        MESSAGE (6):
+            The event was generated from a message.
         OTHER (5):
             The event was generated from other sources.
     """
@@ -63,6 +70,7 @@ class EventSource(proto.Enum):
     APP = 2
     IN_STORE = 3
     PHONE = 4
+    MESSAGE = 6
     OTHER = 5
 
 
@@ -81,8 +89,8 @@ class Event(proto.Message):
             in the request.
         transaction_id (str):
             Optional. The unique identifier for this
-            event. Required for conversions using multiple
-            data sources.
+            event. Required for events sent as an additional
+            data source for tag conversions.
         event_timestamp (google.protobuf.timestamp_pb2.Timestamp):
             Required. The time the event occurred.
         last_updated_timestamp (google.protobuf.timestamp_pb2.Timestamp):
@@ -108,6 +116,11 @@ class Event(proto.Message):
             with the event, for value-based conversions.
 
             This field is a member of `oneof`_ ``_conversion_value``.
+        conversion_count (float):
+            Optional. The conversion quantity associated
+            with the event, for counting-based conversions.
+
+            This field is a member of `oneof`_ ``_conversion_count``.
         event_source (google.ads.datamanager_v1.types.EventSource):
             Optional. Signal for where the event happened
             (web, app, in-store, etc.).
@@ -145,6 +158,17 @@ class Event(proto.Message):
             parameters <https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events>`__
             to be included within the event that were not already
             specified using other structured fields.
+        third_party_user_data (google.ads.datamanager_v1.types.UserData):
+            Optional. The same type of data provided in user_data, but
+            explicitly flagged as being provided as owned by a
+            third-party and not first-party advertiser data.
+        event_location (google.ads.datamanager_v1.types.EventLocation):
+            Optional. Information gathered about the
+            location of the user when this event occurred.
+        app_instance_id (str):
+            Optional. A unique identifier for the user
+            instance of an app client for this GA4 app
+            stream.
     """
 
     destination_references: MutableSequence[str] = proto.RepeatedField(
@@ -187,6 +211,11 @@ class Event(proto.Message):
     conversion_value: float = proto.Field(
         proto.DOUBLE,
         number=9,
+        optional=True,
+    )
+    conversion_count: float = proto.Field(
+        proto.DOUBLE,
+        number=23,
         optional=True,
     )
     event_source: "EventSource" = proto.Field(
@@ -240,6 +269,20 @@ class Event(proto.Message):
             message="EventParameter",
         )
     )
+    third_party_user_data: gad_user_data.UserData = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        message=gad_user_data.UserData,
+    )
+    event_location: "EventLocation" = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message="EventLocation",
+    )
+    app_instance_id: str = proto.Field(
+        proto.STRING,
+        number=22,
+    )
 
 
 class AdIdentifiers(proto.Message):
@@ -266,6 +309,22 @@ class AdIdentifiers(proto.Message):
             device being used (if any) at the time of
             landing onto the advertiser’s site after
             interacting with the ad.
+        mobile_device_id (str):
+            Optional. The mobile identifier for
+            advertisers. This would be IDFA on iOS, AdID on
+            Android, or other platforms’ identifiers for
+            advertisers.
+        dclid (str):
+            Optional. The display click ID associated
+            with this event.
+        impression_id (str):
+            Optional. The impression ID associated with
+            this event.
+        match_id (str):
+            Optional. The match ID field used to join
+            this event with a previous event.
+        encrypted_user_ids (MutableSequence[google.ads.datamanager_v1.types.EncryptedUserId]):
+            Optional. Any number of encrypted user IDs.
     """
 
     session_attributes: str = proto.Field(
@@ -288,6 +347,29 @@ class AdIdentifiers(proto.Message):
         proto.MESSAGE,
         number=5,
         message=device_info.DeviceInfo,
+    )
+    mobile_device_id: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    dclid: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    impression_id: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    match_id: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    encrypted_user_ids: MutableSequence[encrypted_user_id.EncryptedUserId] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=10,
+            message=encrypted_user_id.EncryptedUserId,
+        )
     )
 
 
@@ -342,6 +424,57 @@ class EventParameter(proto.Message):
     value: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class EventLocation(proto.Message):
+    r"""The location where the event occurred.
+
+    Attributes:
+        store_id (str):
+            Optional. Required for Store Sales. The
+            identifier to represent a physical store where
+            the event happened.
+        city (str):
+            Optional. The name of the city where the
+            event occurred.
+        subdivision_code (str):
+            Optional. The ISO 3166-2 subdivision code
+            where the event occurred.
+        region_code (str):
+            Optional. The 2-letter CLDR region code of
+            the user's address.
+        subcontinent_code (str):
+            Optional. The subcontinent code in UN M49
+            format where the event occurred.
+        continent_code (str):
+            Optional. The continent code in UN M49 format
+            where the event occurred.
+    """
+
+    store_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    city: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    subdivision_code: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    region_code: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    subcontinent_code: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    continent_code: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 

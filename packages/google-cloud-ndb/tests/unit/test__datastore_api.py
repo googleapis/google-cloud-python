@@ -16,23 +16,17 @@ from unittest import mock
 
 import grpc
 import pytest
-
 from google.api_core import client_info
 from google.api_core import exceptions as core_exceptions
-from google.cloud.datastore import entity
-from google.cloud.datastore import helpers
+from google.cloud.datastore import entity, helpers
 from google.cloud.datastore import key as ds_key_module
 from google.cloud.datastore_v1.types import datastore as datastore_pb2
 from google.cloud.datastore_v1.types import entity as entity_pb2
-from google.cloud.ndb import _batch
-from google.cloud.ndb import _cache
-from google.cloud.ndb import context as context_module
+
+from google.cloud.ndb import __version__, _batch, _cache, _options, model, tasklets
 from google.cloud.ndb import _datastore_api as _api
+from google.cloud.ndb import context as context_module
 from google.cloud.ndb import key as key_module
-from google.cloud.ndb import model
-from google.cloud.ndb import _options
-from google.cloud.ndb import tasklets
-from google.cloud.ndb import __version__
 
 from . import utils
 
@@ -890,6 +884,26 @@ class Test_delete_WithGlobalCache:
 
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_api._NonTransactionalCommitBatch")
+    def test_lock_not_acquired(Batch, global_cache):
+        key = key_module.Key("SomeKind", 1)
+        cache_key = _cache.global_cache_key(key._key)
+        global_cache.set({cache_key: b"foo"})
+
+        batch = Batch.return_value
+        batch.delete.return_value = future_result(None)
+
+        with mock.patch(
+            "google.cloud.ndb._datastore_api._cache.global_lock_for_write",
+            return_value=future_result(None),
+        ):
+            future = _api.delete(key._key, _options.Options())
+
+        assert future.result() is None
+        batch.delete.assert_called_once_with(key._key)
+        assert global_cache.get([cache_key]) == [b"foo"]
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_api._NonTransactionalCommitBatch")
     def test_w_transaction(Batch, global_cache):
         context = context_module.get_context()
         callbacks = []
@@ -926,6 +940,31 @@ class Test_delete_WithGlobalCache:
         assert future.result() is None
 
         assert global_cache.get([cache_key]) == [None]
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_api._NonTransactionalCommitBatch")
+    def test_without_datastore_with_transaction(Batch, global_cache):
+        context = context_module.get_context()
+        callbacks = []
+
+        with context.new(
+            transaction=b"abc123", transaction_complete_callbacks=callbacks
+        ).use():
+            key = key_module.Key("SomeKind", 1)
+            cache_key = _cache.global_cache_key(key._key)
+            global_cache.set({cache_key: b"foo"})
+
+            batch = Batch.return_value
+            batch.delete.side_effect = Exception("Shouldn't use Datastore")
+
+            future = _api.delete(
+                key._key,
+                _options.Options(use_datastore=False),
+            )
+            assert future.result() is None
+
+            assert callbacks == []
+            assert global_cache.get([cache_key]) == [None]
 
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_api._NonTransactionalCommitBatch")

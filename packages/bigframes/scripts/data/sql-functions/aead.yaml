@@ -1,0 +1,134 @@
+urn: extension:google:bq_scalar_functions
+scalar_functions:
+  - name: "aead.decrypt_bytes"
+    description: "Uses the matching key from keyset to decrypt ciphertext and verifies the integrity of the data using additional_data. Returns an error if decryption or verification fails."
+    series_accessor_arg: keyset
+    impls:
+      # Signature: aead.decrypt_bytes:vbin_vbin_vbin
+      - args:
+          - name: "keyset"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "ciphertext"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "additional_data"
+            value: binary
+            optional: false
+            keyword_only: false
+        return: binary
+      # Signature: aead.decrypt_bytes:struct_vbin_vbin
+      - args:
+          - name: "keyset"
+            value: struct
+            optional: false
+            keyword_only: false
+          - name: "ciphertext"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "additional_data"
+            value: binary
+            optional: false
+            keyword_only: false
+        return: binary
+  - name: "aead.decrypt_string"
+    description: "Like AEAD.DECRYPT_BYTES, but where additional_data is of type STRING."
+    series_accessor_arg: keyset
+    impls:
+      # Signature: aead.decrypt_string:vbin_vbin_str
+      - args:
+          - name: "keyset"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "ciphertext"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "additional_data"
+            value: string
+            optional: false
+            keyword_only: false
+        return: string
+      # Signature: aead.decrypt_string:struct_vbin_str
+      - args:
+          - name: "keyset"
+            value: struct
+            optional: false
+            keyword_only: false
+          - name: "ciphertext"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "additional_data"
+            value: string
+            optional: false
+            keyword_only: false
+        return: string
+  - name: "aead.encrypt"
+    description: "Encrypts plaintext using the primary cryptographic key in keyset. The algorithm of the primary key must be AEAD_AES_GCM_256. Binds the ciphertext to the context defined by additional_data. Returns NULL if any input is NULL."
+    series_accessor_arg: keyset
+    impls:
+      # Signature: aead.encrypt:vbin_str_str
+      - args:
+          - name: "keyset"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "plaintext"
+            value: string
+            optional: false
+            keyword_only: false
+          - name: "additional_data"
+            value: string
+            optional: false
+            keyword_only: false
+        return: binary
+      # Signature: aead.encrypt:vbin_vbin_vbin
+      - args:
+          - name: "keyset"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "plaintext"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "additional_data"
+            value: binary
+            optional: false
+            keyword_only: false
+        return: binary
+      # Signature: aead.encrypt:struct_str_str
+      - args:
+          - name: "keyset"
+            value: struct
+            optional: false
+            keyword_only: false
+          - name: "plaintext"
+            value: string
+            optional: false
+            keyword_only: false
+          - name: "additional_data"
+            value: string
+            optional: false
+            keyword_only: false
+        return: binary
+      # Signature: aead.encrypt:struct_vbin_vbin
+      - args:
+          - name: "keyset"
+            value: struct
+            optional: false
+            keyword_only: false
+          - name: "plaintext"
+            value: binary
+            optional: false
+            keyword_only: false
+          - name: "additional_data"
+            value: binary
+            optional: false
+            keyword_only: false
+        return: binary

@@ -39,18 +39,22 @@ class TestAppEngineHandler(unittest.TestCase):
 
         # Verify that project/service/version are picked up from the
         # environment.
-        with mock.patch(
-            "os.environ",
-            new={
-                app_engine._GAE_SERVICE_ENV: "test_service",
-                app_engine._GAE_VERSION_ENV: "test_version",
-            },
-        ), mock.patch(
-            "google.cloud.logging_v2.handlers._monitored_resources.retrieve_metadata_server",
-            return_value=self.PROJECT,
-        ), pytest.warns(
-            DeprecationWarning,
-            match="AppEngineHandler is deprecated. Use CloudLoggingHandler instead",
+        with (
+            mock.patch(
+                "os.environ",
+                new={
+                    app_engine._GAE_SERVICE_ENV: "test_service",
+                    app_engine._GAE_VERSION_ENV: "test_version",
+                },
+            ),
+            mock.patch(
+                "google.cloud.logging_v2.handlers._monitored_resources.retrieve_metadata_server",
+                return_value=self.PROJECT,
+            ),
+            pytest.warns(
+                DeprecationWarning,
+                match="AppEngineHandler is deprecated. Use CloudLoggingHandler instead",
+            ),
         ):
             handler = self._make_one(client, transport=_Transport)
 
@@ -73,20 +77,24 @@ class TestAppEngineHandler(unittest.TestCase):
 
         # Verify that _GAE_PROJECT_ENV_FLEX environment variable takes
         # precedence over _GAE_PROJECT_ENV_STANDARD.
-        with mock.patch(
-            "os.environ",
-            new={
-                app_engine._GAE_PROJECT_ENV_FLEX: "test_project_2",
-                app_engine._GAE_PROJECT_ENV_STANDARD: "test_project_should_be_overridden",
-                app_engine._GAE_SERVICE_ENV: "test_service_2",
-                app_engine._GAE_VERSION_ENV: "test_version_2",
-            },
-        ), mock.patch(
-            "google.cloud.logging_v2.handlers._monitored_resources.retrieve_metadata_server",
-            return_value=self.PROJECT,
-        ), pytest.warns(
-            DeprecationWarning,
-            match="AppEngineHandler is deprecated. Use CloudLoggingHandler instead",
+        with (
+            mock.patch(
+                "os.environ",
+                new={
+                    app_engine._GAE_PROJECT_ENV_FLEX: "test_project_2",
+                    app_engine._GAE_PROJECT_ENV_STANDARD: "test_project_should_be_overridden",
+                    app_engine._GAE_SERVICE_ENV: "test_service_2",
+                    app_engine._GAE_VERSION_ENV: "test_version_2",
+                },
+            ),
+            mock.patch(
+                "google.cloud.logging_v2.handlers._monitored_resources.retrieve_metadata_server",
+                return_value=self.PROJECT,
+            ),
+            pytest.warns(
+                DeprecationWarning,
+                match="AppEngineHandler is deprecated. Use CloudLoggingHandler instead",
+            ),
         ):
             handler = self._make_one(
                 client, name=name, transport=_Transport, stream=stream
@@ -108,9 +116,12 @@ class TestAppEngineHandler(unittest.TestCase):
             "google.cloud.logging_v2.handlers.app_engine.get_request_data",
             return_value=(expected_http_request, trace_id, None, None),
         )
-        with get_request_patch, pytest.warns(
-            DeprecationWarning,
-            match="AppEngineHandler is deprecated. Use CloudLoggingHandler instead",
+        with (
+            get_request_patch,
+            pytest.warns(
+                DeprecationWarning,
+                match="AppEngineHandler is deprecated. Use CloudLoggingHandler instead",
+            ),
         ):
             # library integrations mocked to return test data
             client = mock.Mock(project=self.PROJECT, spec=["project"])
@@ -149,9 +160,12 @@ class TestAppEngineHandler(unittest.TestCase):
             "google.cloud.logging_v2.handlers.app_engine.get_request_data",
             return_value=(inferred_http_request, inferred_trace_id, None, None),
         )
-        with get_request_patch, pytest.warns(
-            DeprecationWarning,
-            match="AppEngineHandler is deprecated. Use CloudLoggingHandler instead",
+        with (
+            get_request_patch,
+            pytest.warns(
+                DeprecationWarning,
+                match="AppEngineHandler is deprecated. Use CloudLoggingHandler instead",
+            ),
         ):
             # library integrations mocked to return test data
             client = mock.Mock(project=self.PROJECT, spec=["project"])

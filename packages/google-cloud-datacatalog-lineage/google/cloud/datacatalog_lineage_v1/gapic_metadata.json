@@ -80,6 +80,11 @@
                 "process_open_lineage_run_event"
               ]
             },
+            "SearchLineageStreaming": {
+              "methods": [
+                "search_lineage_streaming"
+              ]
+            },
             "SearchLinks": {
               "methods": [
                 "search_links"
@@ -170,6 +175,11 @@
                 "process_open_lineage_run_event"
               ]
             },
+            "SearchLineageStreaming": {
+              "methods": [
+                "search_lineage_streaming"
+              ]
+            },
             "SearchLinks": {
               "methods": [
                 "search_links"
@@ -258,6 +268,11 @@
             "ProcessOpenLineageRunEvent": {
               "methods": [
                 "process_open_lineage_run_event"
+              ]
+            },
+            "SearchLineageStreaming": {
+              "methods": [
+                "search_lineage_streaming"
               ]
             },
             "SearchLinks": {

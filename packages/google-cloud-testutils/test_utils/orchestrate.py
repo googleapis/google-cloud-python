@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+from __future__ import annotations
 import itertools
 import math
 import queue
@@ -242,7 +242,7 @@ class _Conductor:
         self._go.put(None)
 
 
-_SYNCPOINTS = {}
+_SYNCPOINTS: dict[str, dict[str, set[int]]] = {}
 """Dict[str, Dict[str, Set[int]]]: Dict mapping source fileneme to a dict mapping
 syncpoint name to set of line numbers where syncpoints with that name occur in the
 source file.

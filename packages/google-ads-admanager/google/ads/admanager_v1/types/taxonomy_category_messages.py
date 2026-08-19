@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ class TaxonomyCategory(proto.Message):
             Format:
             ``networks/{network_code}/taxonomyCategories/{taxonomy_category_id}``
         taxonomy_category_id (int):
-            Output only. ``TaxonomyCategory`` ID.
+            Output only. Deprecated: ``TaxonomyCategory`` ID.
 
             This field is a member of `oneof`_ ``_taxonomy_category_id``.
         display_name (str):

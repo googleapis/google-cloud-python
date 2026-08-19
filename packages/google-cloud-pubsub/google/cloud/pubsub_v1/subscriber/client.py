@@ -15,7 +15,6 @@
 from __future__ import absolute_import
 
 import os
-import sys
 import typing
 import warnings
 from typing import Any, Callable, Optional, Sequence, Union, cast
@@ -102,18 +101,6 @@ class Client(subscriber_client.SubscriberClient):
         self._open_telemetry_enabled = (
             self.subscriber_options.enable_open_telemetry_tracing
         )
-        # OpenTelemetry features used by the library are not supported in Python versions <= 3.7.
-        # Refer https://github.com/open-telemetry/opentelemetry-python/issues/3993#issuecomment-2211976389
-        if (
-            self.subscriber_options.enable_open_telemetry_tracing
-            and sys.version_info.major == 3
-            and sys.version_info.minor < 8
-        ):
-            warnings.warn(
-                message="Open Telemetry for Python version 3.7 or lower is not supported. Disabling Open Telemetry tracing.",
-                category=RuntimeWarning,
-            )
-            self._open_telemetry_enabled = False
 
     @property
     def open_telemetry_enabled(self) -> bool:

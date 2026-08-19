@@ -13,14 +13,12 @@
 # limitations under the License.
 
 import collections
-
 from unittest import mock
 
 import grpc
 import pytest
 
-from google.cloud.ndb import exceptions
-from google.cloud.ndb import _eventloop
+from google.cloud.ndb import _eventloop, exceptions
 
 
 def _Event(when=0, what="foo", args=(), kw={}):

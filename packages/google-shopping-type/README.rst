@@ -1,9 +1,9 @@
-Python Client for Shopping Type Protos
-======================================
+Python Client for Shopping Common Types
+=======================================
 
 |stable| |pypi| |versions|
 
-`Shopping Type Protos`_: 
+`Shopping Common Types`_: 
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Shopping Type Protos
    :target: https://pypi.org/project/google-shopping-type/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-shopping-type.svg
    :target: https://pypi.org/project/google-shopping-type/
-.. _Shopping Type Protos: https://developers.google.com/merchant/api
+.. _Shopping Common Types: https://developers.google.com/merchant/api
 .. _Client Library Documentation: https://googleapis.dev/python/google-shopping-type/latest
 .. _Product Documentation:  https://developers.google.com/merchant/api
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Shopping Type Protos.`_
+3. `Enable the Shopping Common Types.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Shopping Type Protos.:  https://developers.google.com/merchant/api
+.. _Enable the Shopping Common Types.:  https://developers.google.com/merchant/api
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +61,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -97,14 +98,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Shopping Type Protos
+-  Read the `Client Library Documentation`_ for Shopping Common Types
    to see other available methods on the client.
--  Read the `Shopping Type Protos Product documentation`_ to learn
+-  Read the `Shopping Common Types Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Shopping Type Protos Product documentation:  https://developers.google.com/merchant/api
+.. _Shopping Common Types Product documentation:  https://developers.google.com/merchant/api
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

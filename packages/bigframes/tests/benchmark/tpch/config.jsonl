@@ -1,0 +1,10 @@
+{"benchmark_suffix": "1g_ordered", "project_id": "bigframes-dev-perf", "dataset_id": "tpch_0001g", "ordered": true}
+{"benchmark_suffix": "1g_unordered", "project_id": "bigframes-dev-perf", "dataset_id": "tpch_0001g", "ordered": false}
+{"benchmark_suffix": "10g_ordered", "project_id": "bigframes-dev-perf", "dataset_id": "tpch_0010g", "ordered": true}
+{"benchmark_suffix": "10g_unordered", "project_id": "bigframes-dev-perf", "dataset_id": "tpch_0010g", "ordered": false}
+{"benchmark_suffix": "100g_ordered", "project_id": "bigframes-dev-perf", "dataset_id": "tpch_0100g", "ordered": true}
+{"benchmark_suffix": "100g_unordered", "project_id": "bigframes-dev-perf", "dataset_id": "tpch_0100g", "ordered": false}
+{"benchmark_suffix": "1t_ordered", "project_id": "bigframes-dev-perf", "dataset_id": "tpch_0001t", "ordered": true}
+{"benchmark_suffix": "1t_unordered", "project_id": "bigframes-dev-perf", "dataset_id": "tpch_0001t", "ordered": false}
+{"benchmark_suffix": "10t_ordered", "project_id": "bigframes-dev-perf", "dataset_id": "tpch_0010t", "ordered": true}
+{"benchmark_suffix": "10t_unordered", "project_id": "bigframes-dev-perf", "dataset_id": "tpch_0010t", "ordered": false}

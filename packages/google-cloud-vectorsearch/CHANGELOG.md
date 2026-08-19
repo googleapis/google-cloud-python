@@ -4,6 +4,47 @@
 
 [1]: https://pypi.org/project/google-cloud-vectorsearch/#history
 
+## [0.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.11.0...google-cloud-vectorsearch-v0.11.1) (2026-06-25)
+
+
+### Features
+
+* update googleapis and regenerate ([#17554](https://github.com/googleapis/google-cloud-python/issues/17554)) ([03d0574](https://github.com/googleapis/google-cloud-python/commit/03d0574da8485e918f16e90666928f5c7b7f1c92))
+
+## [0.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.10.0...google-cloud-vectorsearch-v0.11.0) (2026-06-02)
+
+
+### Features
+
+* update API sources and regenerate (#16998) ([cef659d8207939aab3834a32c99a3a2738cb3015](https://github.com/googleapis/google-cloud-python/commit/cef659d8207939aab3834a32c99a3a2738cb3015))
+
+## [0.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.8.0...google-cloud-vectorsearch-v0.9.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.7.0...google-cloud-vectorsearch-v0.8.0) (2026-03-23)
+
+
+### Documentation
+
+* Update changelog entry for release (#16092) ([128966437ae7886c08e613aa7306552b05d515da](https://github.com/googleapis/google-cloud-python/commit/128966437ae7886c08e613aa7306552b05d515da))
+
+
+### Features
+
+* Add support for ExportDataObjects ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+* Mark Vector Search v1 API as GA ([ee7dd7dc168ecf943440cef38efff348e8eff095](https://github.com/googleapis/google-cloud-python/commit/ee7dd7dc168ecf943440cef38efff348e8eff095))
+
 ## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.6.0...google-cloud-vectorsearch-v0.7.0) (2026-03-09)
 
 

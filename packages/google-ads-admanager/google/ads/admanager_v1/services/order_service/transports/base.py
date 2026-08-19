@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,15 +32,16 @@ from google.ads.admanager_v1.types import order_messages, order_service
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class OrderServiceTransport(abc.ABC):
     """Abstract transport class for OrderService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/admanager",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/admanager",
+        "https://www.googleapis.com/auth/admanager.readonly",
+    )
 
     DEFAULT_HOST: str = "admanager.googleapis.com"
 
@@ -81,6 +82,10 @@ class OrderServiceTransport(abc.ABC):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
 
         # Save the scopes.
@@ -130,6 +135,8 @@ class OrderServiceTransport(abc.ABC):
             host += ":443"
         self._host = host
 
+        self._wrapped_methods: Dict[Callable, Callable] = {}
+
     @property
     def host(self):
         return self._host
@@ -144,6 +151,101 @@ class OrderServiceTransport(abc.ABC):
             ),
             self.list_orders: gapic_v1.method.wrap_method(
                 self.list_orders,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_create_orders: gapic_v1.method.wrap_method(
+                self.batch_create_orders,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_update_orders: gapic_v1.method.wrap_method(
+                self.batch_update_orders,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_approve_orders: gapic_v1.method.wrap_method(
+                self.batch_approve_orders,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_approve_and_overbook_orders: gapic_v1.method.wrap_method(
+                self.batch_approve_and_overbook_orders,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_submit_orders_for_approval: gapic_v1.method.wrap_method(
+                self.batch_submit_orders_for_approval,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_submit_orders_for_approval_and_overbook: gapic_v1.method.wrap_method(
+                self.batch_submit_orders_for_approval_and_overbook,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_submit_orders_for_approval_without_reservation_changes: gapic_v1.method.wrap_method(
+                self.batch_submit_orders_for_approval_without_reservation_changes,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_pause_orders: gapic_v1.method.wrap_method(
+                self.batch_pause_orders,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_resume_orders: gapic_v1.method.wrap_method(
+                self.batch_resume_orders,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_resume_and_overbook_orders: gapic_v1.method.wrap_method(
+                self.batch_resume_and_overbook_orders,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_approve_orders_without_reservation: gapic_v1.method.wrap_method(
+                self.batch_approve_orders_without_reservation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_archive_orders: gapic_v1.method.wrap_method(
+                self.batch_archive_orders,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_unarchive_orders: gapic_v1.method.wrap_method(
+                self.batch_unarchive_orders,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_delete_orders: gapic_v1.method.wrap_method(
+                self.batch_delete_orders,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_disapprove_orders: gapic_v1.method.wrap_method(
+                self.batch_disapprove_orders,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_disapprove_orders_without_reservation_changes: gapic_v1.method.wrap_method(
+                self.batch_disapprove_orders_without_reservation_changes,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_retract_orders: gapic_v1.method.wrap_method(
+                self.batch_retract_orders,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_retract_orders_without_reservation_changes: gapic_v1.method.wrap_method(
+                self.batch_retract_orders_without_reservation_changes,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: gapic_v1.method.wrap_method(
+                self.cancel_operation,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -185,11 +287,242 @@ class OrderServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def batch_create_orders(
+        self,
+    ) -> Callable[
+        [order_service.BatchCreateOrdersRequest],
+        Union[
+            order_service.BatchCreateOrdersResponse,
+            Awaitable[order_service.BatchCreateOrdersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_update_orders(
+        self,
+    ) -> Callable[
+        [order_service.BatchUpdateOrdersRequest],
+        Union[
+            order_service.BatchUpdateOrdersResponse,
+            Awaitable[order_service.BatchUpdateOrdersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_approve_orders(
+        self,
+    ) -> Callable[
+        [order_service.BatchApproveOrdersRequest],
+        Union[
+            order_service.BatchApproveOrdersResponse,
+            Awaitable[order_service.BatchApproveOrdersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_approve_and_overbook_orders(
+        self,
+    ) -> Callable[
+        [order_service.BatchApproveAndOverbookOrdersRequest],
+        Union[
+            order_service.BatchApproveAndOverbookOrdersResponse,
+            Awaitable[order_service.BatchApproveAndOverbookOrdersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_submit_orders_for_approval(
+        self,
+    ) -> Callable[
+        [order_service.BatchSubmitOrdersForApprovalRequest],
+        Union[
+            order_service.BatchSubmitOrdersForApprovalResponse,
+            Awaitable[order_service.BatchSubmitOrdersForApprovalResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_submit_orders_for_approval_and_overbook(
+        self,
+    ) -> Callable[
+        [order_service.BatchSubmitOrdersForApprovalAndOverbookRequest],
+        Union[
+            order_service.BatchSubmitOrdersForApprovalAndOverbookResponse,
+            Awaitable[order_service.BatchSubmitOrdersForApprovalAndOverbookResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_submit_orders_for_approval_without_reservation_changes(
+        self,
+    ) -> Callable[
+        [order_service.BatchSubmitOrdersForApprovalWithoutReservationChangesRequest],
+        Union[
+            order_service.BatchSubmitOrdersForApprovalWithoutReservationChangesResponse,
+            Awaitable[
+                order_service.BatchSubmitOrdersForApprovalWithoutReservationChangesResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_pause_orders(
+        self,
+    ) -> Callable[
+        [order_service.BatchPauseOrdersRequest],
+        Union[
+            order_service.BatchPauseOrdersResponse,
+            Awaitable[order_service.BatchPauseOrdersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_resume_orders(
+        self,
+    ) -> Callable[
+        [order_service.BatchResumeOrdersRequest],
+        Union[
+            order_service.BatchResumeOrdersResponse,
+            Awaitable[order_service.BatchResumeOrdersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_resume_and_overbook_orders(
+        self,
+    ) -> Callable[
+        [order_service.BatchResumeAndOverbookOrdersRequest],
+        Union[
+            order_service.BatchResumeAndOverbookOrdersResponse,
+            Awaitable[order_service.BatchResumeAndOverbookOrdersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_approve_orders_without_reservation(
+        self,
+    ) -> Callable[
+        [order_service.BatchApproveOrdersWithoutReservationRequest],
+        Union[
+            order_service.BatchApproveOrdersWithoutReservationResponse,
+            Awaitable[order_service.BatchApproveOrdersWithoutReservationResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_archive_orders(
+        self,
+    ) -> Callable[
+        [order_service.BatchArchiveOrdersRequest],
+        Union[
+            order_service.BatchArchiveOrdersResponse,
+            Awaitable[order_service.BatchArchiveOrdersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_unarchive_orders(
+        self,
+    ) -> Callable[
+        [order_service.BatchUnarchiveOrdersRequest],
+        Union[
+            order_service.BatchUnarchiveOrdersResponse,
+            Awaitable[order_service.BatchUnarchiveOrdersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_delete_orders(
+        self,
+    ) -> Callable[
+        [order_service.BatchDeleteOrdersRequest],
+        Union[
+            order_service.BatchDeleteOrdersResponse,
+            Awaitable[order_service.BatchDeleteOrdersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_disapprove_orders(
+        self,
+    ) -> Callable[
+        [order_service.BatchDisapproveOrdersRequest],
+        Union[
+            order_service.BatchDisapproveOrdersResponse,
+            Awaitable[order_service.BatchDisapproveOrdersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_disapprove_orders_without_reservation_changes(
+        self,
+    ) -> Callable[
+        [order_service.BatchDisapproveOrdersWithoutReservationChangesRequest],
+        Union[
+            order_service.BatchDisapproveOrdersWithoutReservationChangesResponse,
+            Awaitable[
+                order_service.BatchDisapproveOrdersWithoutReservationChangesResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_retract_orders(
+        self,
+    ) -> Callable[
+        [order_service.BatchRetractOrdersRequest],
+        Union[
+            order_service.BatchRetractOrdersResponse,
+            Awaitable[order_service.BatchRetractOrdersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_retract_orders_without_reservation_changes(
+        self,
+    ) -> Callable[
+        [order_service.BatchRetractOrdersWithoutReservationChangesRequest],
+        Union[
+            order_service.BatchRetractOrdersWithoutReservationChangesResponse,
+            Awaitable[
+                order_service.BatchRetractOrdersWithoutReservationChangesResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def get_operation(
         self,
     ) -> Callable[
         [operations_pb2.GetOperationRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.CancelOperationRequest],
+        None,
     ]:
         raise NotImplementedError()
 

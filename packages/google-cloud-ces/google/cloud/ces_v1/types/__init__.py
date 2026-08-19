@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,6 +15,12 @@
 #
 from .agent import (
     Agent,
+)
+from .agent_card import (
+    AgentCard,
+    AgentInterface,
+    AgentSkill,
+    RemoteAgentTool,
 )
 from .agent_service import (
     BatchDeleteConversationsRequest,
@@ -81,6 +87,9 @@ from .agent_service import (
     UpdateToolRequest,
     UpdateToolsetRequest,
 )
+from .agent_tool import (
+    AgentTool,
+)
 from .agent_transfers import (
     ExpressionCondition,
     PythonCodeCondition,
@@ -96,6 +105,7 @@ from .app import (
     CloudLoggingSettings,
     ConversationLoggingSettings,
     DataStoreSettings,
+    ErrorHandlingSettings,
     EvaluationMetricsThresholds,
     LanguageSettings,
     LoggingSettings,
@@ -103,6 +113,7 @@ from .app import (
     RedactionConfig,
     SynthesizeSpeechConfig,
     TimeZoneSettings,
+    VpcScSettings,
 )
 from .app_version import (
     AppSnapshot,
@@ -154,6 +165,9 @@ from .data_store_tool import (
 )
 from .deployment import (
     Deployment,
+    ExperimentConfig,
+    InstagramCredentials,
+    WhatsAppCredentials,
 )
 from .example import (
     AgentTransfer,
@@ -182,7 +196,12 @@ from .mcp_tool import (
     McpTool,
 )
 from .mcp_toolset import (
+    McpToolDefinition,
+    McpToolOverride,
     McpToolset,
+)
+from .mocks import (
+    MockedToolCall,
 )
 from .omnichannel import (
     Omnichannel,
@@ -207,6 +226,10 @@ from .search_suggestions import (
     GoogleSearchSuggestions,
     WebSearchQuery,
 )
+from .security_settings import (
+    EndpointControlPolicy,
+    SecuritySettings,
+)
 from .session_service import (
     AudioEncoding,
     BidiSessionClientMessage,
@@ -217,6 +240,7 @@ from .session_service import (
     GoAway,
     InputAudioConfig,
     InterruptionSignal,
+    MockConfig,
     OutputAudioConfig,
     RecognitionResult,
     RunSessionRequest,
@@ -257,6 +281,10 @@ from .widget_tool import (
 
 __all__ = (
     "Agent",
+    "AgentCard",
+    "AgentInterface",
+    "AgentSkill",
+    "RemoteAgentTool",
     "BatchDeleteConversationsRequest",
     "BatchDeleteConversationsResponse",
     "CreateAgentRequest",
@@ -320,6 +348,7 @@ __all__ = (
     "UpdateGuardrailRequest",
     "UpdateToolRequest",
     "UpdateToolsetRequest",
+    "AgentTool",
     "ExpressionCondition",
     "PythonCodeCondition",
     "TransferRule",
@@ -332,6 +361,7 @@ __all__ = (
     "CloudLoggingSettings",
     "ConversationLoggingSettings",
     "DataStoreSettings",
+    "ErrorHandlingSettings",
     "EvaluationMetricsThresholds",
     "LanguageSettings",
     "LoggingSettings",
@@ -339,6 +369,7 @@ __all__ = (
     "RedactionConfig",
     "SynthesizeSpeechConfig",
     "TimeZoneSettings",
+    "VpcScSettings",
     "AppSnapshot",
     "AppVersion",
     "ApiAuthentication",
@@ -366,6 +397,9 @@ __all__ = (
     "DataStore",
     "DataStoreTool",
     "Deployment",
+    "ExperimentConfig",
+    "InstagramCredentials",
+    "WhatsAppCredentials",
     "AgentTransfer",
     "Blob",
     "Chunk",
@@ -380,7 +414,10 @@ __all__ = (
     "GoogleSearchTool",
     "Guardrail",
     "McpTool",
+    "McpToolDefinition",
+    "McpToolOverride",
     "McpToolset",
+    "MockedToolCall",
     "Omnichannel",
     "OmnichannelIntegrationConfig",
     "OmnichannelOperationMetadata",
@@ -390,6 +427,8 @@ __all__ = (
     "Schema",
     "GoogleSearchSuggestions",
     "WebSearchQuery",
+    "EndpointControlPolicy",
+    "SecuritySettings",
     "BidiSessionClientMessage",
     "BidiSessionServerMessage",
     "Citations",
@@ -398,6 +437,7 @@ __all__ = (
     "GoAway",
     "InputAudioConfig",
     "InterruptionSignal",
+    "MockConfig",
     "OutputAudioConfig",
     "RecognitionResult",
     "RunSessionRequest",

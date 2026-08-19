@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -112,6 +112,11 @@ class Operation(proto.Message):
             Represents information to be logged.
         importance (google.cloud.servicecontrol_v1.types.Operation.Importance):
             DO NOT USE. This is an experimental field.
+        user_labels (MutableMapping[str, str]):
+            Private Preview. This feature is only
+            available for approved services.
+            User defined labels for the resource that this
+            operation is associated with.
         extensions (MutableSequence[google.protobuf.any_pb2.Any]):
             Unimplemented.
     """
@@ -178,6 +183,11 @@ class Operation(proto.Message):
         proto.ENUM,
         number=11,
         enum=Importance,
+    )
+    user_labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=12,
     )
     extensions: MutableSequence[any_pb2.Any] = proto.RepeatedField(
         proto.MESSAGE,

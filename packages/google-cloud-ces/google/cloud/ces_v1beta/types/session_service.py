@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,15 +17,17 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.ces_v1beta.types import common, example, search_suggestions
+from google.cloud.ces_v1beta.types import common, example, mocks, search_suggestions
 
 __protobuf__ = proto.module(
     package="google.cloud.ces.v1beta",
     manifest={
         "AudioEncoding",
+        "MockConfig",
         "InputAudioConfig",
         "OutputAudioConfig",
         "SessionConfig",
@@ -67,6 +69,49 @@ class AudioEncoding(proto.Enum):
     LINEAR16 = 1
     MULAW = 2
     ALAW = 3
+
+
+class MockConfig(proto.Message):
+    r"""Mock tool calls configuration for the session.
+
+    Attributes:
+        mocked_tool_calls (MutableSequence[google.cloud.ces_v1beta.types.MockedToolCall]):
+            Optional. All tool calls to mock for the
+            duration of the session.
+        unmatched_tool_call_behavior (google.cloud.ces_v1beta.types.MockConfig.UnmatchedToolCallBehavior):
+            Required. Beavhior for tool calls that don't match any args
+            patterns in mocked_tool_calls.
+    """
+
+    class UnmatchedToolCallBehavior(proto.Enum):
+        r"""What to do when a tool call doesn't match any mocked tool
+        calls.
+
+        Values:
+            UNMATCHED_TOOL_CALL_BEHAVIOR_UNSPECIFIED (0):
+                Default value. This value is unused.
+            FAIL (1):
+                Throw an error for any tool calls that don't
+                match a mock expected input pattern.
+            PASS_THROUGH (2):
+                For unmatched tool calls, pass the tool call
+                through to real tool.
+        """
+
+        UNMATCHED_TOOL_CALL_BEHAVIOR_UNSPECIFIED = 0
+        FAIL = 1
+        PASS_THROUGH = 2
+
+    mocked_tool_calls: MutableSequence[mocks.MockedToolCall] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=mocks.MockedToolCall,
+    )
+    unmatched_tool_call_behavior: UnmatchedToolCallBehavior = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=UnmatchedToolCallBehavior,
+    )
 
 
 class InputAudioConfig(proto.Message):
@@ -177,6 +222,14 @@ class SessionConfig(proto.Message):
             `Dialogflow <https://cloud.google.com/dialogflow/cx/docs/concept/console-conversational-agents>`__
             agent when the session control is transferred to the remote
             agent.
+        enable_text_streaming (bool):
+            Optional. Whether to enable streaming text outputs from the
+            model. By default, text outputs from the model are collected
+            before sending to the client. NOTE: This is only supported
+            for text (non-voice) sessions via
+            [StreamRunSession][google.cloud.ces.v1beta.SessionService.StreamRunSession]
+            or
+            [BidiRunSession][google.cloud.ces.v1beta.SessionService.BidiRunSession].
     """
 
     class RemoteDialogflowQueryParameters(proto.Message):
@@ -253,6 +306,10 @@ class SessionConfig(proto.Message):
         number=15,
         message=RemoteDialogflowQueryParameters,
     )
+    enable_text_streaming: bool = proto.Field(
+        proto.BOOL,
+        number=18,
+    )
 
 
 class ToolCalls(proto.Message):
@@ -305,6 +362,9 @@ class Citations(proto.Message):
                 Title of the cited document.
             text (str):
                 Text used for citation.
+            requires_attribution (bool):
+                Whether this citation requires attribution to
+                be shown to the end users.
         """
 
         uri: str = proto.Field(
@@ -318,6 +378,10 @@ class Citations(proto.Message):
         text: str = proto.Field(
             proto.STRING,
             number=3,
+        )
+        requires_attribution: bool = proto.Field(
+            proto.BOOL,
+            number=4,
         )
 
     cited_chunks: MutableSequence[CitedChunk] = proto.RepeatedField(
@@ -512,6 +576,9 @@ class SessionOutput(proto.Message):
             during the processing of the input. Only populated in the
             last SessionOutput (with ``turn_completed=true``) for each
             turn.
+        context (MutableSequence[google.protobuf.any_pb2.Any]):
+            Context messages for external supervision
+            guardrails.
     """
 
     class DiagnosticInfo(proto.Message):
@@ -591,6 +658,11 @@ class SessionOutput(proto.Message):
         proto.MESSAGE,
         number=7,
         message=DiagnosticInfo,
+    )
+    context: MutableSequence[any_pb2.Any] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=12,
+        message=any_pb2.Any,
     )
 
 

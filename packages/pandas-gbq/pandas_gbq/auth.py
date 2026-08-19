@@ -23,7 +23,10 @@ def get_credentials(
     client_id=None,
     client_secret=None,
 ):
-    import pydata_google_auth
+    # pydata-google-auth does not have type hints nor stubs that mypy uses for type checking.
+    # Remove this comment and the ignore pragma upon completing:
+    # https://github.com/googleapis/google-cloud-python/issues/17045
+    import pydata_google_auth  # type: ignore[import-untyped]
 
     if private_key:
         raise NotImplementedError(
@@ -48,7 +51,10 @@ method from the google-auth package."""
 
 
 def get_credentials_cache(reauth):
-    import pydata_google_auth.cache
+    # pydata-google-auth does not have type hints nor stubs that mypy uses for type checking.
+    # Remove this comment and the ignore pragma upon completing:
+    # https://github.com/googleapis/google-cloud-python/issues/17045
+    import pydata_google_auth.cache  # type: ignore[import-untyped]
 
     if reauth:
         return pydata_google_auth.cache.WriteOnlyCredentialsCache(

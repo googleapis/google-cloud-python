@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -133,12 +128,28 @@ def modify_default_endpoint_template(client):
     )
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert VideoStitcherServiceClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -160,6 +171,10 @@ def test__get_default_mtls_endpoint():
     assert (
         VideoStitcherServiceClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        VideoStitcherServiceClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1008,7 +1023,14 @@ def test_video_stitcher_service_client_get_mtls_endpoint_and_cert_source(client_
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1055,7 +1077,14 @@ def test_video_stitcher_service_client_get_mtls_endpoint_and_cert_source(client_
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1360,11 +1389,13 @@ def test_video_stitcher_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1389,8 +1420,8 @@ def test_video_stitcher_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.CreateCdnKeyRequest,
-        dict,
+        video_stitcher_service.CreateCdnKeyRequest(),
+        {},
     ],
 )
 def test_create_cdn_key(request_type, transport: str = "grpc"):
@@ -1401,7 +1432,7 @@ def test_create_cdn_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_cdn_key), "__call__") as call:
@@ -1443,10 +1474,11 @@ def test_create_cdn_key_non_empty_request_with_auto_populated_field():
         client.create_cdn_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.CreateCdnKeyRequest(
+        request_msg = video_stitcher_service.CreateCdnKeyRequest(
             parent="parent_value",
             cdn_key_id="cdn_key_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_cdn_key_use_cached_wrapped_rpc():
@@ -1537,10 +1569,14 @@ async def test_create_cdn_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_cdn_key_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.CreateCdnKeyRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.CreateCdnKeyRequest(),
+        {},
+    ],
+)
+async def test_create_cdn_key_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1548,7 +1584,7 @@ async def test_create_cdn_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_cdn_key), "__call__") as call:
@@ -1566,11 +1602,6 @@ async def test_create_cdn_key_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_cdn_key_async_from_dict():
-    await test_create_cdn_key_async(request_type=dict)
 
 
 def test_create_cdn_key_field_headers():
@@ -1751,8 +1782,8 @@ async def test_create_cdn_key_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.ListCdnKeysRequest,
-        dict,
+        video_stitcher_service.ListCdnKeysRequest(),
+        {},
     ],
 )
 def test_list_cdn_keys(request_type, transport: str = "grpc"):
@@ -1763,7 +1794,7 @@ def test_list_cdn_keys(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_cdn_keys), "__call__") as call:
@@ -1812,12 +1843,13 @@ def test_list_cdn_keys_non_empty_request_with_auto_populated_field():
         client.list_cdn_keys(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.ListCdnKeysRequest(
+        request_msg = video_stitcher_service.ListCdnKeysRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_cdn_keys_use_cached_wrapped_rpc():
@@ -1898,10 +1930,14 @@ async def test_list_cdn_keys_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_cdn_keys_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.ListCdnKeysRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.ListCdnKeysRequest(),
+        {},
+    ],
+)
+async def test_list_cdn_keys_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1909,7 +1945,7 @@ async def test_list_cdn_keys_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_cdn_keys), "__call__") as call:
@@ -1932,11 +1968,6 @@ async def test_list_cdn_keys_async(
     assert isinstance(response, pagers.ListCdnKeysAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_cdn_keys_async_from_dict():
-    await test_list_cdn_keys_async(request_type=dict)
 
 
 def test_list_cdn_keys_field_headers():
@@ -2131,6 +2162,9 @@ def test_list_cdn_keys_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cdn_keys.CdnKey) for i in results)
@@ -2219,6 +2253,8 @@ async def test_list_cdn_keys_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2266,11 +2302,7 @@ async def test_list_cdn_keys_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_cdn_keys(request={})
-        ).pages:
+        async for page_ in (await client.list_cdn_keys(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2279,8 +2311,8 @@ async def test_list_cdn_keys_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.GetCdnKeyRequest,
-        dict,
+        video_stitcher_service.GetCdnKeyRequest(),
+        {},
     ],
 )
 def test_get_cdn_key(request_type, transport: str = "grpc"):
@@ -2291,7 +2323,7 @@ def test_get_cdn_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cdn_key), "__call__") as call:
@@ -2337,9 +2369,10 @@ def test_get_cdn_key_non_empty_request_with_auto_populated_field():
         client.get_cdn_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetCdnKeyRequest(
+        request_msg = video_stitcher_service.GetCdnKeyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_cdn_key_use_cached_wrapped_rpc():
@@ -2420,10 +2453,14 @@ async def test_get_cdn_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_cdn_key_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.GetCdnKeyRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.GetCdnKeyRequest(),
+        {},
+    ],
+)
+async def test_get_cdn_key_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2431,7 +2468,7 @@ async def test_get_cdn_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cdn_key), "__call__") as call:
@@ -2454,11 +2491,6 @@ async def test_get_cdn_key_async(
     assert isinstance(response, cdn_keys.CdnKey)
     assert response.name == "name_value"
     assert response.hostname == "hostname_value"
-
-
-@pytest.mark.asyncio
-async def test_get_cdn_key_async_from_dict():
-    await test_get_cdn_key_async(request_type=dict)
 
 
 def test_get_cdn_key_field_headers():
@@ -2603,8 +2635,8 @@ async def test_get_cdn_key_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.DeleteCdnKeyRequest,
-        dict,
+        video_stitcher_service.DeleteCdnKeyRequest(),
+        {},
     ],
 )
 def test_delete_cdn_key(request_type, transport: str = "grpc"):
@@ -2615,7 +2647,7 @@ def test_delete_cdn_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_cdn_key), "__call__") as call:
@@ -2656,9 +2688,10 @@ def test_delete_cdn_key_non_empty_request_with_auto_populated_field():
         client.delete_cdn_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.DeleteCdnKeyRequest(
+        request_msg = video_stitcher_service.DeleteCdnKeyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_cdn_key_use_cached_wrapped_rpc():
@@ -2749,10 +2782,14 @@ async def test_delete_cdn_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_cdn_key_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.DeleteCdnKeyRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.DeleteCdnKeyRequest(),
+        {},
+    ],
+)
+async def test_delete_cdn_key_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2760,7 +2797,7 @@ async def test_delete_cdn_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_cdn_key), "__call__") as call:
@@ -2778,11 +2815,6 @@ async def test_delete_cdn_key_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_cdn_key_async_from_dict():
-    await test_delete_cdn_key_async(request_type=dict)
 
 
 def test_delete_cdn_key_field_headers():
@@ -2931,8 +2963,8 @@ async def test_delete_cdn_key_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.UpdateCdnKeyRequest,
-        dict,
+        video_stitcher_service.UpdateCdnKeyRequest(),
+        {},
     ],
 )
 def test_update_cdn_key(request_type, transport: str = "grpc"):
@@ -2943,7 +2975,7 @@ def test_update_cdn_key(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_cdn_key), "__call__") as call:
@@ -2982,7 +3014,8 @@ def test_update_cdn_key_non_empty_request_with_auto_populated_field():
         client.update_cdn_key(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.UpdateCdnKeyRequest()
+        request_msg = video_stitcher_service.UpdateCdnKeyRequest()
+        assert args[0] == request_msg
 
 
 def test_update_cdn_key_use_cached_wrapped_rpc():
@@ -3073,10 +3106,14 @@ async def test_update_cdn_key_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_cdn_key_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.UpdateCdnKeyRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.UpdateCdnKeyRequest(),
+        {},
+    ],
+)
+async def test_update_cdn_key_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3084,7 +3121,7 @@ async def test_update_cdn_key_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_cdn_key), "__call__") as call:
@@ -3102,11 +3139,6 @@ async def test_update_cdn_key_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_cdn_key_async_from_dict():
-    await test_update_cdn_key_async(request_type=dict)
 
 
 def test_update_cdn_key_field_headers():
@@ -3277,8 +3309,8 @@ async def test_update_cdn_key_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.CreateVodSessionRequest,
-        dict,
+        video_stitcher_service.CreateVodSessionRequest(),
+        {},
     ],
 )
 def test_create_vod_session(request_type, transport: str = "grpc"):
@@ -3289,7 +3321,7 @@ def test_create_vod_session(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3349,9 +3381,10 @@ def test_create_vod_session_non_empty_request_with_auto_populated_field():
         client.create_vod_session(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.CreateVodSessionRequest(
+        request_msg = video_stitcher_service.CreateVodSessionRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_vod_session_use_cached_wrapped_rpc():
@@ -3436,10 +3469,14 @@ async def test_create_vod_session_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_vod_session_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.CreateVodSessionRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.CreateVodSessionRequest(),
+        {},
+    ],
+)
+async def test_create_vod_session_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3447,7 +3484,7 @@ async def test_create_vod_session_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3482,11 +3519,6 @@ async def test_create_vod_session_async(
     assert response.asset_id == "asset_id_value"
     assert response.ad_tracking == live_configs.AdTracking.CLIENT
     assert response.vod_config == "vod_config_value"
-
-
-@pytest.mark.asyncio
-async def test_create_vod_session_async_from_dict():
-    await test_create_vod_session_async(request_type=dict)
 
 
 def test_create_vod_session_field_headers():
@@ -3649,8 +3681,8 @@ async def test_create_vod_session_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.GetVodSessionRequest,
-        dict,
+        video_stitcher_service.GetVodSessionRequest(),
+        {},
     ],
 )
 def test_get_vod_session(request_type, transport: str = "grpc"):
@@ -3661,7 +3693,7 @@ def test_get_vod_session(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_vod_session), "__call__") as call:
@@ -3717,9 +3749,10 @@ def test_get_vod_session_non_empty_request_with_auto_populated_field():
         client.get_vod_session(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetVodSessionRequest(
+        request_msg = video_stitcher_service.GetVodSessionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_vod_session_use_cached_wrapped_rpc():
@@ -3800,10 +3833,14 @@ async def test_get_vod_session_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_vod_session_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.GetVodSessionRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.GetVodSessionRequest(),
+        {},
+    ],
+)
+async def test_get_vod_session_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3811,7 +3848,7 @@ async def test_get_vod_session_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_vod_session), "__call__") as call:
@@ -3844,11 +3881,6 @@ async def test_get_vod_session_async(
     assert response.asset_id == "asset_id_value"
     assert response.ad_tracking == live_configs.AdTracking.CLIENT
     assert response.vod_config == "vod_config_value"
-
-
-@pytest.mark.asyncio
-async def test_get_vod_session_async_from_dict():
-    await test_get_vod_session_async(request_type=dict)
 
 
 def test_get_vod_session_field_headers():
@@ -3993,8 +4025,8 @@ async def test_get_vod_session_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.ListVodStitchDetailsRequest,
-        dict,
+        video_stitcher_service.ListVodStitchDetailsRequest(),
+        {},
     ],
 )
 def test_list_vod_stitch_details(request_type, transport: str = "grpc"):
@@ -4005,7 +4037,7 @@ def test_list_vod_stitch_details(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4054,10 +4086,11 @@ def test_list_vod_stitch_details_non_empty_request_with_auto_populated_field():
         client.list_vod_stitch_details(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.ListVodStitchDetailsRequest(
+        request_msg = video_stitcher_service.ListVodStitchDetailsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_vod_stitch_details_use_cached_wrapped_rpc():
@@ -4143,9 +4176,15 @@ async def test_list_vod_stitch_details_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.ListVodStitchDetailsRequest(),
+        {},
+    ],
+)
 async def test_list_vod_stitch_details_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.ListVodStitchDetailsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4154,7 +4193,7 @@ async def test_list_vod_stitch_details_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4177,11 +4216,6 @@ async def test_list_vod_stitch_details_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVodStitchDetailsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_vod_stitch_details_async_from_dict():
-    await test_list_vod_stitch_details_async(request_type=dict)
 
 
 def test_list_vod_stitch_details_field_headers():
@@ -4386,6 +4420,9 @@ def test_list_vod_stitch_details_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, stitch_details.VodStitchDetail) for i in results)
@@ -4478,6 +4515,8 @@ async def test_list_vod_stitch_details_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4527,11 +4566,7 @@ async def test_list_vod_stitch_details_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_vod_stitch_details(request={})
-        ).pages:
+        async for page_ in (await client.list_vod_stitch_details(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4540,8 +4575,8 @@ async def test_list_vod_stitch_details_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.GetVodStitchDetailRequest,
-        dict,
+        video_stitcher_service.GetVodStitchDetailRequest(),
+        {},
     ],
 )
 def test_get_vod_stitch_detail(request_type, transport: str = "grpc"):
@@ -4552,7 +4587,7 @@ def test_get_vod_stitch_detail(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4600,9 +4635,10 @@ def test_get_vod_stitch_detail_non_empty_request_with_auto_populated_field():
         client.get_vod_stitch_detail(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetVodStitchDetailRequest(
+        request_msg = video_stitcher_service.GetVodStitchDetailRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_vod_stitch_detail_use_cached_wrapped_rpc():
@@ -4688,9 +4724,15 @@ async def test_get_vod_stitch_detail_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.GetVodStitchDetailRequest(),
+        {},
+    ],
+)
 async def test_get_vod_stitch_detail_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.GetVodStitchDetailRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4699,7 +4741,7 @@ async def test_get_vod_stitch_detail_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4722,11 +4764,6 @@ async def test_get_vod_stitch_detail_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, stitch_details.VodStitchDetail)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_vod_stitch_detail_async_from_dict():
-    await test_get_vod_stitch_detail_async(request_type=dict)
 
 
 def test_get_vod_stitch_detail_field_headers():
@@ -4883,8 +4920,8 @@ async def test_get_vod_stitch_detail_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.ListVodAdTagDetailsRequest,
-        dict,
+        video_stitcher_service.ListVodAdTagDetailsRequest(),
+        {},
     ],
 )
 def test_list_vod_ad_tag_details(request_type, transport: str = "grpc"):
@@ -4895,7 +4932,7 @@ def test_list_vod_ad_tag_details(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4944,10 +4981,11 @@ def test_list_vod_ad_tag_details_non_empty_request_with_auto_populated_field():
         client.list_vod_ad_tag_details(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.ListVodAdTagDetailsRequest(
+        request_msg = video_stitcher_service.ListVodAdTagDetailsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_vod_ad_tag_details_use_cached_wrapped_rpc():
@@ -5033,9 +5071,15 @@ async def test_list_vod_ad_tag_details_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.ListVodAdTagDetailsRequest(),
+        {},
+    ],
+)
 async def test_list_vod_ad_tag_details_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.ListVodAdTagDetailsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5044,7 +5088,7 @@ async def test_list_vod_ad_tag_details_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5067,11 +5111,6 @@ async def test_list_vod_ad_tag_details_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVodAdTagDetailsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_vod_ad_tag_details_async_from_dict():
-    await test_list_vod_ad_tag_details_async(request_type=dict)
 
 
 def test_list_vod_ad_tag_details_field_headers():
@@ -5276,6 +5315,9 @@ def test_list_vod_ad_tag_details_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, ad_tag_details.VodAdTagDetail) for i in results)
@@ -5368,6 +5410,8 @@ async def test_list_vod_ad_tag_details_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5417,11 +5461,7 @@ async def test_list_vod_ad_tag_details_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_vod_ad_tag_details(request={})
-        ).pages:
+        async for page_ in (await client.list_vod_ad_tag_details(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5430,8 +5470,8 @@ async def test_list_vod_ad_tag_details_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.GetVodAdTagDetailRequest,
-        dict,
+        video_stitcher_service.GetVodAdTagDetailRequest(),
+        {},
     ],
 )
 def test_get_vod_ad_tag_detail(request_type, transport: str = "grpc"):
@@ -5442,7 +5482,7 @@ def test_get_vod_ad_tag_detail(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5490,9 +5530,10 @@ def test_get_vod_ad_tag_detail_non_empty_request_with_auto_populated_field():
         client.get_vod_ad_tag_detail(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetVodAdTagDetailRequest(
+        request_msg = video_stitcher_service.GetVodAdTagDetailRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_vod_ad_tag_detail_use_cached_wrapped_rpc():
@@ -5578,9 +5619,15 @@ async def test_get_vod_ad_tag_detail_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.GetVodAdTagDetailRequest(),
+        {},
+    ],
+)
 async def test_get_vod_ad_tag_detail_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.GetVodAdTagDetailRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5589,7 +5636,7 @@ async def test_get_vod_ad_tag_detail_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5612,11 +5659,6 @@ async def test_get_vod_ad_tag_detail_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, ad_tag_details.VodAdTagDetail)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_vod_ad_tag_detail_async_from_dict():
-    await test_get_vod_ad_tag_detail_async(request_type=dict)
 
 
 def test_get_vod_ad_tag_detail_field_headers():
@@ -5773,8 +5815,8 @@ async def test_get_vod_ad_tag_detail_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.ListLiveAdTagDetailsRequest,
-        dict,
+        video_stitcher_service.ListLiveAdTagDetailsRequest(),
+        {},
     ],
 )
 def test_list_live_ad_tag_details(request_type, transport: str = "grpc"):
@@ -5785,7 +5827,7 @@ def test_list_live_ad_tag_details(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5834,10 +5876,11 @@ def test_list_live_ad_tag_details_non_empty_request_with_auto_populated_field():
         client.list_live_ad_tag_details(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.ListLiveAdTagDetailsRequest(
+        request_msg = video_stitcher_service.ListLiveAdTagDetailsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_live_ad_tag_details_use_cached_wrapped_rpc():
@@ -5923,9 +5966,15 @@ async def test_list_live_ad_tag_details_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.ListLiveAdTagDetailsRequest(),
+        {},
+    ],
+)
 async def test_list_live_ad_tag_details_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.ListLiveAdTagDetailsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5934,7 +5983,7 @@ async def test_list_live_ad_tag_details_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5957,11 +6006,6 @@ async def test_list_live_ad_tag_details_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLiveAdTagDetailsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_live_ad_tag_details_async_from_dict():
-    await test_list_live_ad_tag_details_async(request_type=dict)
 
 
 def test_list_live_ad_tag_details_field_headers():
@@ -6168,6 +6212,9 @@ def test_list_live_ad_tag_details_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, ad_tag_details.LiveAdTagDetail) for i in results)
@@ -6260,6 +6307,8 @@ async def test_list_live_ad_tag_details_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6309,11 +6358,7 @@ async def test_list_live_ad_tag_details_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_live_ad_tag_details(request={})
-        ).pages:
+        async for page_ in (await client.list_live_ad_tag_details(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6322,8 +6367,8 @@ async def test_list_live_ad_tag_details_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.GetLiveAdTagDetailRequest,
-        dict,
+        video_stitcher_service.GetLiveAdTagDetailRequest(),
+        {},
     ],
 )
 def test_get_live_ad_tag_detail(request_type, transport: str = "grpc"):
@@ -6334,7 +6379,7 @@ def test_get_live_ad_tag_detail(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6382,9 +6427,10 @@ def test_get_live_ad_tag_detail_non_empty_request_with_auto_populated_field():
         client.get_live_ad_tag_detail(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetLiveAdTagDetailRequest(
+        request_msg = video_stitcher_service.GetLiveAdTagDetailRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_live_ad_tag_detail_use_cached_wrapped_rpc():
@@ -6470,9 +6516,15 @@ async def test_get_live_ad_tag_detail_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.GetLiveAdTagDetailRequest(),
+        {},
+    ],
+)
 async def test_get_live_ad_tag_detail_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.GetLiveAdTagDetailRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6481,7 +6533,7 @@ async def test_get_live_ad_tag_detail_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6504,11 +6556,6 @@ async def test_get_live_ad_tag_detail_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, ad_tag_details.LiveAdTagDetail)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_live_ad_tag_detail_async_from_dict():
-    await test_get_live_ad_tag_detail_async(request_type=dict)
 
 
 def test_get_live_ad_tag_detail_field_headers():
@@ -6665,8 +6712,8 @@ async def test_get_live_ad_tag_detail_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.CreateSlateRequest,
-        dict,
+        video_stitcher_service.CreateSlateRequest(),
+        {},
     ],
 )
 def test_create_slate(request_type, transport: str = "grpc"):
@@ -6677,7 +6724,7 @@ def test_create_slate(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_slate), "__call__") as call:
@@ -6720,11 +6767,12 @@ def test_create_slate_non_empty_request_with_auto_populated_field():
         client.create_slate(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.CreateSlateRequest(
+        request_msg = video_stitcher_service.CreateSlateRequest(
             parent="parent_value",
             slate_id="slate_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_slate_use_cached_wrapped_rpc():
@@ -6815,10 +6863,14 @@ async def test_create_slate_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_slate_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.CreateSlateRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.CreateSlateRequest(),
+        {},
+    ],
+)
+async def test_create_slate_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6826,7 +6878,7 @@ async def test_create_slate_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_slate), "__call__") as call:
@@ -6844,11 +6896,6 @@ async def test_create_slate_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_slate_async_from_dict():
-    await test_create_slate_async(request_type=dict)
 
 
 def test_create_slate_field_headers():
@@ -7017,8 +7064,8 @@ async def test_create_slate_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.ListSlatesRequest,
-        dict,
+        video_stitcher_service.ListSlatesRequest(),
+        {},
     ],
 )
 def test_list_slates(request_type, transport: str = "grpc"):
@@ -7029,7 +7076,7 @@ def test_list_slates(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_slates), "__call__") as call:
@@ -7078,12 +7125,13 @@ def test_list_slates_non_empty_request_with_auto_populated_field():
         client.list_slates(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.ListSlatesRequest(
+        request_msg = video_stitcher_service.ListSlatesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_slates_use_cached_wrapped_rpc():
@@ -7164,10 +7212,14 @@ async def test_list_slates_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_slates_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.ListSlatesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.ListSlatesRequest(),
+        {},
+    ],
+)
+async def test_list_slates_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7175,7 +7227,7 @@ async def test_list_slates_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_slates), "__call__") as call:
@@ -7198,11 +7250,6 @@ async def test_list_slates_async(
     assert isinstance(response, pagers.ListSlatesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_slates_async_from_dict():
-    await test_list_slates_async(request_type=dict)
 
 
 def test_list_slates_field_headers():
@@ -7397,6 +7444,9 @@ def test_list_slates_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, slates.Slate) for i in results)
@@ -7485,6 +7535,8 @@ async def test_list_slates_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7532,11 +7584,7 @@ async def test_list_slates_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_slates(request={})
-        ).pages:
+        async for page_ in (await client.list_slates(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7545,8 +7593,8 @@ async def test_list_slates_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.GetSlateRequest,
-        dict,
+        video_stitcher_service.GetSlateRequest(),
+        {},
     ],
 )
 def test_get_slate(request_type, transport: str = "grpc"):
@@ -7557,7 +7605,7 @@ def test_get_slate(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_slate), "__call__") as call:
@@ -7603,9 +7651,10 @@ def test_get_slate_non_empty_request_with_auto_populated_field():
         client.get_slate(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetSlateRequest(
+        request_msg = video_stitcher_service.GetSlateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_slate_use_cached_wrapped_rpc():
@@ -7684,9 +7733,14 @@ async def test_get_slate_async_use_cached_wrapped_rpc(transport: str = "grpc_asy
 
 
 @pytest.mark.asyncio
-async def test_get_slate_async(
-    transport: str = "grpc_asyncio", request_type=video_stitcher_service.GetSlateRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.GetSlateRequest(),
+        {},
+    ],
+)
+async def test_get_slate_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7694,7 +7748,7 @@ async def test_get_slate_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_slate), "__call__") as call:
@@ -7717,11 +7771,6 @@ async def test_get_slate_async(
     assert isinstance(response, slates.Slate)
     assert response.name == "name_value"
     assert response.uri == "uri_value"
-
-
-@pytest.mark.asyncio
-async def test_get_slate_async_from_dict():
-    await test_get_slate_async(request_type=dict)
 
 
 def test_get_slate_field_headers():
@@ -7866,8 +7915,8 @@ async def test_get_slate_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.UpdateSlateRequest,
-        dict,
+        video_stitcher_service.UpdateSlateRequest(),
+        {},
     ],
 )
 def test_update_slate(request_type, transport: str = "grpc"):
@@ -7878,7 +7927,7 @@ def test_update_slate(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_slate), "__call__") as call:
@@ -7917,7 +7966,8 @@ def test_update_slate_non_empty_request_with_auto_populated_field():
         client.update_slate(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.UpdateSlateRequest()
+        request_msg = video_stitcher_service.UpdateSlateRequest()
+        assert args[0] == request_msg
 
 
 def test_update_slate_use_cached_wrapped_rpc():
@@ -8008,10 +8058,14 @@ async def test_update_slate_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_slate_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.UpdateSlateRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.UpdateSlateRequest(),
+        {},
+    ],
+)
+async def test_update_slate_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8019,7 +8073,7 @@ async def test_update_slate_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_slate), "__call__") as call:
@@ -8037,11 +8091,6 @@ async def test_update_slate_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_slate_async_from_dict():
-    await test_update_slate_async(request_type=dict)
 
 
 def test_update_slate_field_headers():
@@ -8200,8 +8249,8 @@ async def test_update_slate_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.DeleteSlateRequest,
-        dict,
+        video_stitcher_service.DeleteSlateRequest(),
+        {},
     ],
 )
 def test_delete_slate(request_type, transport: str = "grpc"):
@@ -8212,7 +8261,7 @@ def test_delete_slate(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_slate), "__call__") as call:
@@ -8253,9 +8302,10 @@ def test_delete_slate_non_empty_request_with_auto_populated_field():
         client.delete_slate(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.DeleteSlateRequest(
+        request_msg = video_stitcher_service.DeleteSlateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_slate_use_cached_wrapped_rpc():
@@ -8346,10 +8396,14 @@ async def test_delete_slate_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_slate_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.DeleteSlateRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.DeleteSlateRequest(),
+        {},
+    ],
+)
+async def test_delete_slate_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8357,7 +8411,7 @@ async def test_delete_slate_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_slate), "__call__") as call:
@@ -8375,11 +8429,6 @@ async def test_delete_slate_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_slate_async_from_dict():
-    await test_delete_slate_async(request_type=dict)
 
 
 def test_delete_slate_field_headers():
@@ -8528,8 +8577,8 @@ async def test_delete_slate_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.CreateLiveSessionRequest,
-        dict,
+        video_stitcher_service.CreateLiveSessionRequest(),
+        {},
     ],
 )
 def test_create_live_session(request_type, transport: str = "grpc"):
@@ -8540,7 +8589,7 @@ def test_create_live_session(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8594,9 +8643,10 @@ def test_create_live_session_non_empty_request_with_auto_populated_field():
         client.create_live_session(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.CreateLiveSessionRequest(
+        request_msg = video_stitcher_service.CreateLiveSessionRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_live_session_use_cached_wrapped_rpc():
@@ -8681,10 +8731,14 @@ async def test_create_live_session_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_live_session_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.CreateLiveSessionRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.CreateLiveSessionRequest(),
+        {},
+    ],
+)
+async def test_create_live_session_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8692,7 +8746,7 @@ async def test_create_live_session_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8721,11 +8775,6 @@ async def test_create_live_session_async(
     assert response.play_uri == "play_uri_value"
     assert response.live_config == "live_config_value"
     assert response.ad_tracking == live_configs.AdTracking.CLIENT
-
-
-@pytest.mark.asyncio
-async def test_create_live_session_async_from_dict():
-    await test_create_live_session_async(request_type=dict)
 
 
 def test_create_live_session_field_headers():
@@ -8892,8 +8941,8 @@ async def test_create_live_session_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.GetLiveSessionRequest,
-        dict,
+        video_stitcher_service.GetLiveSessionRequest(),
+        {},
     ],
 )
 def test_get_live_session(request_type, transport: str = "grpc"):
@@ -8904,7 +8953,7 @@ def test_get_live_session(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_live_session), "__call__") as call:
@@ -8954,9 +9003,10 @@ def test_get_live_session_non_empty_request_with_auto_populated_field():
         client.get_live_session(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetLiveSessionRequest(
+        request_msg = video_stitcher_service.GetLiveSessionRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_live_session_use_cached_wrapped_rpc():
@@ -9039,10 +9089,14 @@ async def test_get_live_session_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_live_session_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.GetLiveSessionRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.GetLiveSessionRequest(),
+        {},
+    ],
+)
+async def test_get_live_session_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9050,7 +9104,7 @@ async def test_get_live_session_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_live_session), "__call__") as call:
@@ -9077,11 +9131,6 @@ async def test_get_live_session_async(
     assert response.play_uri == "play_uri_value"
     assert response.live_config == "live_config_value"
     assert response.ad_tracking == live_configs.AdTracking.CLIENT
-
-
-@pytest.mark.asyncio
-async def test_get_live_session_async_from_dict():
-    await test_get_live_session_async(request_type=dict)
 
 
 def test_get_live_session_field_headers():
@@ -9230,8 +9279,8 @@ async def test_get_live_session_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.CreateLiveConfigRequest,
-        dict,
+        video_stitcher_service.CreateLiveConfigRequest(),
+        {},
     ],
 )
 def test_create_live_config(request_type, transport: str = "grpc"):
@@ -9242,7 +9291,7 @@ def test_create_live_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9289,11 +9338,12 @@ def test_create_live_config_non_empty_request_with_auto_populated_field():
         client.create_live_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.CreateLiveConfigRequest(
+        request_msg = video_stitcher_service.CreateLiveConfigRequest(
             parent="parent_value",
             live_config_id="live_config_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_live_config_use_cached_wrapped_rpc():
@@ -9388,10 +9438,14 @@ async def test_create_live_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_live_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.CreateLiveConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.CreateLiveConfigRequest(),
+        {},
+    ],
+)
+async def test_create_live_config_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9399,7 +9453,7 @@ async def test_create_live_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9419,11 +9473,6 @@ async def test_create_live_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_live_config_async_from_dict():
-    await test_create_live_config_async(request_type=dict)
 
 
 def test_create_live_config_field_headers():
@@ -9600,8 +9649,8 @@ async def test_create_live_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.ListLiveConfigsRequest,
-        dict,
+        video_stitcher_service.ListLiveConfigsRequest(),
+        {},
     ],
 )
 def test_list_live_configs(request_type, transport: str = "grpc"):
@@ -9612,7 +9661,7 @@ def test_list_live_configs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9665,12 +9714,13 @@ def test_list_live_configs_non_empty_request_with_auto_populated_field():
         client.list_live_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.ListLiveConfigsRequest(
+        request_msg = video_stitcher_service.ListLiveConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_live_configs_use_cached_wrapped_rpc():
@@ -9753,10 +9803,14 @@ async def test_list_live_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_live_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.ListLiveConfigsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.ListLiveConfigsRequest(),
+        {},
+    ],
+)
+async def test_list_live_configs_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9764,7 +9818,7 @@ async def test_list_live_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9789,11 +9843,6 @@ async def test_list_live_configs_async(
     assert isinstance(response, pagers.ListLiveConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_live_configs_async_from_dict():
-    await test_list_live_configs_async(request_type=dict)
 
 
 def test_list_live_configs_field_headers():
@@ -9998,6 +10047,9 @@ def test_list_live_configs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, live_configs.LiveConfig) for i in results)
@@ -10090,6 +10142,8 @@ async def test_list_live_configs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -10139,11 +10193,7 @@ async def test_list_live_configs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_live_configs(request={})
-        ).pages:
+        async for page_ in (await client.list_live_configs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -10152,8 +10202,8 @@ async def test_list_live_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.GetLiveConfigRequest,
-        dict,
+        video_stitcher_service.GetLiveConfigRequest(),
+        {},
     ],
 )
 def test_get_live_config(request_type, transport: str = "grpc"):
@@ -10164,7 +10214,7 @@ def test_get_live_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_live_config), "__call__") as call:
@@ -10222,9 +10272,10 @@ def test_get_live_config_non_empty_request_with_auto_populated_field():
         client.get_live_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetLiveConfigRequest(
+        request_msg = video_stitcher_service.GetLiveConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_live_config_use_cached_wrapped_rpc():
@@ -10305,10 +10356,14 @@ async def test_get_live_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_live_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.GetLiveConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.GetLiveConfigRequest(),
+        {},
+    ],
+)
+async def test_get_live_config_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10316,7 +10371,7 @@ async def test_get_live_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_live_config), "__call__") as call:
@@ -10351,11 +10406,6 @@ async def test_get_live_config_async(
     assert (
         response.stitching_policy == live_configs.LiveConfig.StitchingPolicy.CUT_CURRENT
     )
-
-
-@pytest.mark.asyncio
-async def test_get_live_config_async_from_dict():
-    await test_get_live_config_async(request_type=dict)
 
 
 def test_get_live_config_field_headers():
@@ -10504,8 +10554,8 @@ async def test_get_live_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.DeleteLiveConfigRequest,
-        dict,
+        video_stitcher_service.DeleteLiveConfigRequest(),
+        {},
     ],
 )
 def test_delete_live_config(request_type, transport: str = "grpc"):
@@ -10516,7 +10566,7 @@ def test_delete_live_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10561,9 +10611,10 @@ def test_delete_live_config_non_empty_request_with_auto_populated_field():
         client.delete_live_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.DeleteLiveConfigRequest(
+        request_msg = video_stitcher_service.DeleteLiveConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_live_config_use_cached_wrapped_rpc():
@@ -10658,10 +10709,14 @@ async def test_delete_live_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_live_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.DeleteLiveConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.DeleteLiveConfigRequest(),
+        {},
+    ],
+)
+async def test_delete_live_config_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10669,7 +10724,7 @@ async def test_delete_live_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10689,11 +10744,6 @@ async def test_delete_live_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_live_config_async_from_dict():
-    await test_delete_live_config_async(request_type=dict)
 
 
 def test_delete_live_config_field_headers():
@@ -10850,8 +10900,8 @@ async def test_delete_live_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.UpdateLiveConfigRequest,
-        dict,
+        video_stitcher_service.UpdateLiveConfigRequest(),
+        {},
     ],
 )
 def test_update_live_config(request_type, transport: str = "grpc"):
@@ -10862,7 +10912,7 @@ def test_update_live_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10905,7 +10955,8 @@ def test_update_live_config_non_empty_request_with_auto_populated_field():
         client.update_live_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.UpdateLiveConfigRequest()
+        request_msg = video_stitcher_service.UpdateLiveConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_live_config_use_cached_wrapped_rpc():
@@ -11000,10 +11051,14 @@ async def test_update_live_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_live_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.UpdateLiveConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.UpdateLiveConfigRequest(),
+        {},
+    ],
+)
+async def test_update_live_config_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11011,7 +11066,7 @@ async def test_update_live_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11031,11 +11086,6 @@ async def test_update_live_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_live_config_async_from_dict():
-    await test_update_live_config_async(request_type=dict)
 
 
 def test_update_live_config_field_headers():
@@ -11202,8 +11252,8 @@ async def test_update_live_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.CreateVodConfigRequest,
-        dict,
+        video_stitcher_service.CreateVodConfigRequest(),
+        {},
     ],
 )
 def test_create_vod_config(request_type, transport: str = "grpc"):
@@ -11214,7 +11264,7 @@ def test_create_vod_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11261,11 +11311,12 @@ def test_create_vod_config_non_empty_request_with_auto_populated_field():
         client.create_vod_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.CreateVodConfigRequest(
+        request_msg = video_stitcher_service.CreateVodConfigRequest(
             parent="parent_value",
             vod_config_id="vod_config_id_value",
             request_id="request_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_vod_config_use_cached_wrapped_rpc():
@@ -11358,10 +11409,14 @@ async def test_create_vod_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_vod_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.CreateVodConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.CreateVodConfigRequest(),
+        {},
+    ],
+)
+async def test_create_vod_config_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11369,7 +11424,7 @@ async def test_create_vod_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11389,11 +11444,6 @@ async def test_create_vod_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_vod_config_async_from_dict():
-    await test_create_vod_config_async(request_type=dict)
 
 
 def test_create_vod_config_field_headers():
@@ -11570,8 +11620,8 @@ async def test_create_vod_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.ListVodConfigsRequest,
-        dict,
+        video_stitcher_service.ListVodConfigsRequest(),
+        {},
     ],
 )
 def test_list_vod_configs(request_type, transport: str = "grpc"):
@@ -11582,7 +11632,7 @@ def test_list_vod_configs(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_vod_configs), "__call__") as call:
@@ -11631,12 +11681,13 @@ def test_list_vod_configs_non_empty_request_with_auto_populated_field():
         client.list_vod_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.ListVodConfigsRequest(
+        request_msg = video_stitcher_service.ListVodConfigsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_vod_configs_use_cached_wrapped_rpc():
@@ -11719,10 +11770,14 @@ async def test_list_vod_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_vod_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.ListVodConfigsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.ListVodConfigsRequest(),
+        {},
+    ],
+)
+async def test_list_vod_configs_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11730,7 +11785,7 @@ async def test_list_vod_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_vod_configs), "__call__") as call:
@@ -11753,11 +11808,6 @@ async def test_list_vod_configs_async(
     assert isinstance(response, pagers.ListVodConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_vod_configs_async_from_dict():
-    await test_list_vod_configs_async(request_type=dict)
 
 
 def test_list_vod_configs_field_headers():
@@ -11952,6 +12002,9 @@ def test_list_vod_configs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vod_configs.VodConfig) for i in results)
@@ -12040,6 +12093,8 @@ async def test_list_vod_configs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -12087,11 +12142,7 @@ async def test_list_vod_configs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_vod_configs(request={})
-        ).pages:
+        async for page_ in (await client.list_vod_configs(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -12100,8 +12151,8 @@ async def test_list_vod_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.GetVodConfigRequest,
-        dict,
+        video_stitcher_service.GetVodConfigRequest(),
+        {},
     ],
 )
 def test_get_vod_config(request_type, transport: str = "grpc"):
@@ -12112,7 +12163,7 @@ def test_get_vod_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_vod_config), "__call__") as call:
@@ -12162,9 +12213,10 @@ def test_get_vod_config_non_empty_request_with_auto_populated_field():
         client.get_vod_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.GetVodConfigRequest(
+        request_msg = video_stitcher_service.GetVodConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_vod_config_use_cached_wrapped_rpc():
@@ -12245,10 +12297,14 @@ async def test_get_vod_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_vod_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.GetVodConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.GetVodConfigRequest(),
+        {},
+    ],
+)
+async def test_get_vod_config_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12256,7 +12312,7 @@ async def test_get_vod_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_vod_config), "__call__") as call:
@@ -12283,11 +12339,6 @@ async def test_get_vod_config_async(
     assert response.source_uri == "source_uri_value"
     assert response.ad_tag_uri == "ad_tag_uri_value"
     assert response.state == vod_configs.VodConfig.State.CREATING
-
-
-@pytest.mark.asyncio
-async def test_get_vod_config_async_from_dict():
-    await test_get_vod_config_async(request_type=dict)
 
 
 def test_get_vod_config_field_headers():
@@ -12436,8 +12487,8 @@ async def test_get_vod_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.DeleteVodConfigRequest,
-        dict,
+        video_stitcher_service.DeleteVodConfigRequest(),
+        {},
     ],
 )
 def test_delete_vod_config(request_type, transport: str = "grpc"):
@@ -12448,7 +12499,7 @@ def test_delete_vod_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12493,9 +12544,10 @@ def test_delete_vod_config_non_empty_request_with_auto_populated_field():
         client.delete_vod_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.DeleteVodConfigRequest(
+        request_msg = video_stitcher_service.DeleteVodConfigRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_vod_config_use_cached_wrapped_rpc():
@@ -12588,10 +12640,14 @@ async def test_delete_vod_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_vod_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.DeleteVodConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.DeleteVodConfigRequest(),
+        {},
+    ],
+)
+async def test_delete_vod_config_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12599,7 +12655,7 @@ async def test_delete_vod_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12619,11 +12675,6 @@ async def test_delete_vod_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_vod_config_async_from_dict():
-    await test_delete_vod_config_async(request_type=dict)
 
 
 def test_delete_vod_config_field_headers():
@@ -12780,8 +12831,8 @@ async def test_delete_vod_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        video_stitcher_service.UpdateVodConfigRequest,
-        dict,
+        video_stitcher_service.UpdateVodConfigRequest(),
+        {},
     ],
 )
 def test_update_vod_config(request_type, transport: str = "grpc"):
@@ -12792,7 +12843,7 @@ def test_update_vod_config(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12835,7 +12886,8 @@ def test_update_vod_config_non_empty_request_with_auto_populated_field():
         client.update_vod_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == video_stitcher_service.UpdateVodConfigRequest()
+        request_msg = video_stitcher_service.UpdateVodConfigRequest()
+        assert args[0] == request_msg
 
 
 def test_update_vod_config_use_cached_wrapped_rpc():
@@ -12928,10 +12980,14 @@ async def test_update_vod_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_vod_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=video_stitcher_service.UpdateVodConfigRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        video_stitcher_service.UpdateVodConfigRequest(),
+        {},
+    ],
+)
+async def test_update_vod_config_async(request_type, transport: str = "grpc_asyncio"):
     client = VideoStitcherServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12939,7 +12995,7 @@ async def test_update_vod_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12959,11 +13015,6 @@ async def test_update_vod_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_vod_config_async_from_dict():
-    await test_update_vod_config_async(request_type=dict)
 
 
 def test_update_vod_config_field_headers():
@@ -13252,7 +13303,7 @@ def test_create_cdn_key_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_cdn_key_rest_unset_required_fields():
@@ -13453,7 +13504,7 @@ def test_list_cdn_keys_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_cdn_keys_rest_unset_required_fields():
@@ -13586,6 +13637,9 @@ def test_list_cdn_keys_rest_pager(transport: str = "rest"):
 
         pager = client.list_cdn_keys(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, cdn_keys.CdnKey) for i in results)
@@ -13703,7 +13757,7 @@ def test_get_cdn_key_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_cdn_key_rest_unset_required_fields():
@@ -13881,7 +13935,7 @@ def test_delete_cdn_key_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_cdn_key_rest_unset_required_fields():
@@ -14055,7 +14109,7 @@ def test_update_cdn_key_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_cdn_key_rest_unset_required_fields():
@@ -14252,7 +14306,7 @@ def test_create_vod_session_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_vod_session_rest_unset_required_fields():
@@ -14440,7 +14494,7 @@ def test_get_vod_session_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_vod_session_rest_unset_required_fields():
@@ -14634,7 +14688,7 @@ def test_list_vod_stitch_details_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_vod_stitch_details_rest_unset_required_fields():
@@ -14773,6 +14827,9 @@ def test_list_vod_stitch_details_rest_pager(transport: str = "rest"):
 
         pager = client.list_vod_stitch_details(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, stitch_details.VodStitchDetail) for i in results)
@@ -14895,7 +14952,7 @@ def test_get_vod_stitch_detail_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_vod_stitch_detail_rest_unset_required_fields():
@@ -15089,7 +15146,7 @@ def test_list_vod_ad_tag_details_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_vod_ad_tag_details_rest_unset_required_fields():
@@ -15228,6 +15285,9 @@ def test_list_vod_ad_tag_details_rest_pager(transport: str = "rest"):
 
         pager = client.list_vod_ad_tag_details(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, ad_tag_details.VodAdTagDetail) for i in results)
@@ -15350,7 +15410,7 @@ def test_get_vod_ad_tag_detail_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_vod_ad_tag_detail_rest_unset_required_fields():
@@ -15544,7 +15604,7 @@ def test_list_live_ad_tag_details_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_live_ad_tag_details_rest_unset_required_fields():
@@ -15683,6 +15743,9 @@ def test_list_live_ad_tag_details_rest_pager(transport: str = "rest"):
 
         pager = client.list_live_ad_tag_details(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, ad_tag_details.LiveAdTagDetail) for i in results)
@@ -15805,7 +15868,7 @@ def test_get_live_ad_tag_detail_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_live_ad_tag_detail_rest_unset_required_fields():
@@ -16007,7 +16070,7 @@ def test_create_slate_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_slate_rest_unset_required_fields():
@@ -16209,7 +16272,7 @@ def test_list_slates_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_slates_rest_unset_required_fields():
@@ -16342,6 +16405,9 @@ def test_list_slates_rest_pager(transport: str = "rest"):
 
         pager = client.list_slates(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, slates.Slate) for i in results)
@@ -16459,7 +16525,7 @@ def test_get_slate_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_slate_rest_unset_required_fields():
@@ -16635,7 +16701,7 @@ def test_update_slate_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_slate_rest_unset_required_fields():
@@ -16824,7 +16890,7 @@ def test_delete_slate_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_slate_rest_unset_required_fields():
@@ -17004,7 +17070,7 @@ def test_create_live_session_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_live_session_rest_unset_required_fields():
@@ -17194,7 +17260,7 @@ def test_get_live_session_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_live_session_rest_unset_required_fields():
@@ -17400,7 +17466,7 @@ def test_create_live_config_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_live_config_rest_unset_required_fields():
@@ -17607,7 +17673,7 @@ def test_list_live_configs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_live_configs_rest_unset_required_fields():
@@ -17741,6 +17807,9 @@ def test_list_live_configs_rest_pager(transport: str = "rest"):
 
         pager = client.list_live_configs(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, live_configs.LiveConfig) for i in results)
@@ -17858,7 +17927,7 @@ def test_get_live_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_live_config_rest_unset_required_fields():
@@ -18043,7 +18112,7 @@ def test_delete_live_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_live_config_rest_unset_required_fields():
@@ -18224,7 +18293,7 @@ def test_update_live_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_live_config_rest_unset_required_fields():
@@ -18438,7 +18507,7 @@ def test_create_vod_config_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_vod_config_rest_unset_required_fields():
@@ -18644,7 +18713,7 @@ def test_list_vod_configs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_vod_configs_rest_unset_required_fields():
@@ -18777,6 +18846,9 @@ def test_list_vod_configs_rest_pager(transport: str = "rest"):
 
         pager = client.list_vod_configs(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, vod_configs.VodConfig) for i in results)
@@ -18894,7 +18966,7 @@ def test_get_vod_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_vod_config_rest_unset_required_fields():
@@ -19076,7 +19148,7 @@ def test_delete_vod_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_vod_config_rest_unset_required_fields():
@@ -19254,7 +19326,7 @@ def test_update_vod_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_vod_config_rest_unset_required_fields():
@@ -19459,7 +19531,6 @@ def test_create_cdn_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.CreateCdnKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -19480,7 +19551,6 @@ def test_list_cdn_keys_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.ListCdnKeysRequest()
-
         assert args[0] == request_msg
 
 
@@ -19501,7 +19571,6 @@ def test_get_cdn_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetCdnKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -19522,7 +19591,6 @@ def test_delete_cdn_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.DeleteCdnKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -19543,7 +19611,6 @@ def test_update_cdn_key_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.UpdateCdnKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -19566,7 +19633,6 @@ def test_create_vod_session_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.CreateVodSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -19587,7 +19653,6 @@ def test_get_vod_session_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetVodSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -19610,7 +19675,6 @@ def test_list_vod_stitch_details_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.ListVodStitchDetailsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19633,7 +19697,6 @@ def test_get_vod_stitch_detail_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetVodStitchDetailRequest()
-
         assert args[0] == request_msg
 
 
@@ -19656,7 +19719,6 @@ def test_list_vod_ad_tag_details_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.ListVodAdTagDetailsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19679,7 +19741,6 @@ def test_get_vod_ad_tag_detail_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetVodAdTagDetailRequest()
-
         assert args[0] == request_msg
 
 
@@ -19702,7 +19763,6 @@ def test_list_live_ad_tag_details_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.ListLiveAdTagDetailsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19725,7 +19785,6 @@ def test_get_live_ad_tag_detail_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetLiveAdTagDetailRequest()
-
         assert args[0] == request_msg
 
 
@@ -19746,7 +19805,6 @@ def test_create_slate_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.CreateSlateRequest()
-
         assert args[0] == request_msg
 
 
@@ -19767,7 +19825,6 @@ def test_list_slates_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.ListSlatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -19788,7 +19845,6 @@ def test_get_slate_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetSlateRequest()
-
         assert args[0] == request_msg
 
 
@@ -19809,7 +19865,6 @@ def test_update_slate_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.UpdateSlateRequest()
-
         assert args[0] == request_msg
 
 
@@ -19830,7 +19885,6 @@ def test_delete_slate_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.DeleteSlateRequest()
-
         assert args[0] == request_msg
 
 
@@ -19853,7 +19907,6 @@ def test_create_live_session_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.CreateLiveSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -19874,7 +19927,6 @@ def test_get_live_session_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetLiveSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -19897,7 +19949,6 @@ def test_create_live_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.CreateLiveConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -19920,7 +19971,6 @@ def test_list_live_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.ListLiveConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -19941,7 +19991,6 @@ def test_get_live_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetLiveConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -19964,7 +20013,6 @@ def test_delete_live_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.DeleteLiveConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -19987,7 +20035,6 @@ def test_update_live_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.UpdateLiveConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -20010,7 +20057,6 @@ def test_create_vod_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.CreateVodConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -20031,7 +20077,6 @@ def test_list_vod_configs_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.ListVodConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -20052,7 +20097,6 @@ def test_get_vod_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetVodConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -20075,7 +20119,6 @@ def test_delete_vod_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.DeleteVodConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -20098,7 +20141,6 @@ def test_update_vod_config_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.UpdateVodConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -20137,7 +20179,6 @@ async def test_create_cdn_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.CreateCdnKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -20165,7 +20206,6 @@ async def test_list_cdn_keys_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.ListCdnKeysRequest()
-
         assert args[0] == request_msg
 
 
@@ -20193,7 +20233,6 @@ async def test_get_cdn_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetCdnKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -20218,7 +20257,6 @@ async def test_delete_cdn_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.DeleteCdnKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -20243,7 +20281,6 @@ async def test_update_cdn_key_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.UpdateCdnKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -20278,7 +20315,6 @@ async def test_create_vod_session_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.CreateVodSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -20311,7 +20347,6 @@ async def test_get_vod_session_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetVodSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -20340,7 +20375,6 @@ async def test_list_vod_stitch_details_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.ListVodStitchDetailsRequest()
-
         assert args[0] == request_msg
 
 
@@ -20369,7 +20403,6 @@ async def test_get_vod_stitch_detail_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetVodStitchDetailRequest()
-
         assert args[0] == request_msg
 
 
@@ -20398,7 +20431,6 @@ async def test_list_vod_ad_tag_details_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.ListVodAdTagDetailsRequest()
-
         assert args[0] == request_msg
 
 
@@ -20427,7 +20459,6 @@ async def test_get_vod_ad_tag_detail_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetVodAdTagDetailRequest()
-
         assert args[0] == request_msg
 
 
@@ -20456,7 +20487,6 @@ async def test_list_live_ad_tag_details_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.ListLiveAdTagDetailsRequest()
-
         assert args[0] == request_msg
 
 
@@ -20485,7 +20515,6 @@ async def test_get_live_ad_tag_detail_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetLiveAdTagDetailRequest()
-
         assert args[0] == request_msg
 
 
@@ -20510,7 +20539,6 @@ async def test_create_slate_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.CreateSlateRequest()
-
         assert args[0] == request_msg
 
 
@@ -20538,7 +20566,6 @@ async def test_list_slates_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.ListSlatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -20566,7 +20593,6 @@ async def test_get_slate_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetSlateRequest()
-
         assert args[0] == request_msg
 
 
@@ -20591,7 +20617,6 @@ async def test_update_slate_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.UpdateSlateRequest()
-
         assert args[0] == request_msg
 
 
@@ -20616,7 +20641,6 @@ async def test_delete_slate_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.DeleteSlateRequest()
-
         assert args[0] == request_msg
 
 
@@ -20648,7 +20672,6 @@ async def test_create_live_session_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.CreateLiveSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -20678,7 +20701,6 @@ async def test_get_live_session_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetLiveSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -20705,7 +20727,6 @@ async def test_create_live_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.CreateLiveConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -20735,7 +20756,6 @@ async def test_list_live_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.ListLiveConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -20768,7 +20788,6 @@ async def test_get_live_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetLiveConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -20795,7 +20814,6 @@ async def test_delete_live_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.DeleteLiveConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -20822,7 +20840,6 @@ async def test_update_live_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.UpdateLiveConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -20849,7 +20866,6 @@ async def test_create_vod_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.CreateVodConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -20877,7 +20893,6 @@ async def test_list_vod_configs_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.ListVodConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -20907,7 +20922,6 @@ async def test_get_vod_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetVodConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -20934,7 +20948,6 @@ async def test_delete_vod_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.DeleteVodConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -20961,7 +20974,6 @@ async def test_update_vod_config_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.UpdateVodConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -20983,8 +20995,9 @@ def test_create_cdn_key_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21122,20 +21135,21 @@ def test_create_cdn_key_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_create_cdn_key"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_create_cdn_key_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_create_cdn_key"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_create_cdn_key"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_create_cdn_key_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_create_cdn_key"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -21188,8 +21202,9 @@ def test_list_cdn_keys_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21254,18 +21269,20 @@ def test_list_cdn_keys_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_list_cdn_keys"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_list_cdn_keys_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_list_cdn_keys"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_list_cdn_keys"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_list_cdn_keys_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_list_cdn_keys"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -21323,8 +21340,9 @@ def test_get_cdn_key_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21389,17 +21407,20 @@ def test_get_cdn_key_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_get_cdn_key"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_get_cdn_key_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_get_cdn_key"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_get_cdn_key"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_get_cdn_key_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_get_cdn_key"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -21452,8 +21473,9 @@ def test_delete_cdn_key_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21510,20 +21532,21 @@ def test_delete_cdn_key_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_delete_cdn_key"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_delete_cdn_key_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_delete_cdn_key"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_delete_cdn_key"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_delete_cdn_key_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_delete_cdn_key"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -21578,8 +21601,9 @@ def test_update_cdn_key_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21719,20 +21743,21 @@ def test_update_cdn_key_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_update_cdn_key"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_update_cdn_key_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_update_cdn_key"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_update_cdn_key"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_update_cdn_key_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_update_cdn_key"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -21785,8 +21810,9 @@ def test_create_vod_session_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -22000,18 +22026,20 @@ def test_create_vod_session_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_create_vod_session"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_create_vod_session_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_create_vod_session"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_create_vod_session"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_create_vod_session_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_create_vod_session"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -22064,8 +22092,9 @@ def test_get_vod_session_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -22140,18 +22169,20 @@ def test_get_vod_session_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_get_vod_session"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_get_vod_session_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_get_vod_session"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_get_vod_session"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_get_vod_session_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_get_vod_session"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -22204,8 +22235,9 @@ def test_list_vod_stitch_details_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -22270,18 +22302,22 @@ def test_list_vod_stitch_details_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_list_vod_stitch_details"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_list_vod_stitch_details_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_list_vod_stitch_details"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_list_vod_stitch_details",
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_list_vod_stitch_details_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "pre_list_vod_stitch_details",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -22341,8 +22377,9 @@ def test_get_vod_stitch_detail_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -22407,18 +22444,20 @@ def test_get_vod_stitch_detail_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_get_vod_stitch_detail"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_get_vod_stitch_detail_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_get_vod_stitch_detail"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_get_vod_stitch_detail"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_get_vod_stitch_detail_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_get_vod_stitch_detail"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -22473,8 +22512,9 @@ def test_list_vod_ad_tag_details_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -22539,18 +22579,22 @@ def test_list_vod_ad_tag_details_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_list_vod_ad_tag_details"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_list_vod_ad_tag_details_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_list_vod_ad_tag_details"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_list_vod_ad_tag_details",
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_list_vod_ad_tag_details_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "pre_list_vod_ad_tag_details",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -22610,8 +22654,9 @@ def test_get_vod_ad_tag_detail_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -22676,18 +22721,20 @@ def test_get_vod_ad_tag_detail_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_get_vod_ad_tag_detail"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_get_vod_ad_tag_detail_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_get_vod_ad_tag_detail"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_get_vod_ad_tag_detail"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_get_vod_ad_tag_detail_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_get_vod_ad_tag_detail"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -22742,8 +22789,9 @@ def test_list_live_ad_tag_details_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -22808,18 +22856,22 @@ def test_list_live_ad_tag_details_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_list_live_ad_tag_details"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_list_live_ad_tag_details_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_list_live_ad_tag_details"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_list_live_ad_tag_details",
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_list_live_ad_tag_details_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "pre_list_live_ad_tag_details",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -22879,8 +22931,9 @@ def test_get_live_ad_tag_detail_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -22945,18 +22998,21 @@ def test_get_live_ad_tag_detail_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_get_live_ad_tag_detail"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_get_live_ad_tag_detail_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_get_live_ad_tag_detail"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_get_live_ad_tag_detail",
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_get_live_ad_tag_detail_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_get_live_ad_tag_detail"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23011,8 +23067,9 @@ def test_create_slate_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23141,20 +23198,21 @@ def test_create_slate_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_create_slate"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_create_slate_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_create_slate"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_create_slate"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_create_slate_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_create_slate"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23207,8 +23265,9 @@ def test_list_slates_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23273,17 +23332,20 @@ def test_list_slates_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_list_slates"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_list_slates_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_list_slates"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_list_slates"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_list_slates_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_list_slates"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23341,8 +23403,9 @@ def test_get_slate_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23407,17 +23470,20 @@ def test_get_slate_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_get_slate"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_get_slate_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_get_slate"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_get_slate"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_get_slate_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_get_slate"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23472,8 +23538,9 @@ def test_update_slate_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23604,20 +23671,21 @@ def test_update_slate_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_update_slate"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_update_slate_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_update_slate"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_update_slate"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_update_slate_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_update_slate"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23670,8 +23738,9 @@ def test_delete_slate_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23728,20 +23797,21 @@ def test_delete_slate_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_delete_slate"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_delete_slate_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_delete_slate"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_delete_slate"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_delete_slate_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_delete_slate"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23794,8 +23864,9 @@ def test_create_live_session_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23945,18 +24016,20 @@ def test_create_live_session_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_create_live_session"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_create_live_session_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_create_live_session"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_create_live_session"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_create_live_session_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_create_live_session"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24009,8 +24082,9 @@ def test_get_live_session_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24079,18 +24153,20 @@ def test_get_live_session_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_get_live_session"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_get_live_session_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_get_live_session"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_get_live_session"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_get_live_session_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_get_live_session"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24143,8 +24219,9 @@ def test_create_live_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24289,20 +24366,21 @@ def test_create_live_config_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_create_live_config"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_create_live_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_create_live_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_create_live_config"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_create_live_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_create_live_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24355,8 +24433,9 @@ def test_list_live_configs_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24421,18 +24500,20 @@ def test_list_live_configs_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_list_live_configs"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_list_live_configs_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_list_live_configs"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_list_live_configs"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_list_live_configs_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_list_live_configs"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24490,8 +24571,9 @@ def test_get_live_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24568,18 +24650,20 @@ def test_get_live_config_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_get_live_config"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_get_live_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_get_live_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_get_live_config"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_get_live_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_get_live_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24632,8 +24716,9 @@ def test_delete_live_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24690,20 +24775,21 @@ def test_delete_live_config_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_delete_live_config"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_delete_live_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_delete_live_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_delete_live_config"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_delete_live_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_delete_live_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24760,8 +24846,9 @@ def test_update_live_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24910,20 +24997,21 @@ def test_update_live_config_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_update_live_config"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_update_live_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_update_live_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_update_live_config"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_update_live_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_update_live_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24976,8 +25064,9 @@ def test_create_vod_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25109,20 +25198,21 @@ def test_create_vod_config_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_create_vod_config"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_create_vod_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_create_vod_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_create_vod_config"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_create_vod_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_create_vod_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25175,8 +25265,9 @@ def test_list_vod_configs_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25241,18 +25332,20 @@ def test_list_vod_configs_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_list_vod_configs"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_list_vod_configs_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_list_vod_configs"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_list_vod_configs"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_list_vod_configs_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_list_vod_configs"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25310,8 +25403,9 @@ def test_get_vod_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25380,18 +25474,20 @@ def test_get_vod_config_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_get_vod_config"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_get_vod_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_get_vod_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_get_vod_config"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_get_vod_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_get_vod_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25444,8 +25540,9 @@ def test_delete_vod_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25502,20 +25599,21 @@ def test_delete_vod_config_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_delete_vod_config"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_delete_vod_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_delete_vod_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_delete_vod_config"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_delete_vod_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_delete_vod_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25570,8 +25668,9 @@ def test_update_vod_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25705,20 +25804,21 @@ def test_update_vod_config_rest_interceptors(null_interceptor):
     )
     client = VideoStitcherServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "post_update_vod_config"
-    ) as post, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor,
-        "post_update_vod_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VideoStitcherServiceRestInterceptor, "pre_update_vod_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "post_update_vod_config"
+        ) as post,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor,
+            "post_update_vod_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VideoStitcherServiceRestInterceptor, "pre_update_vod_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25773,8 +25873,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -25835,8 +25936,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -25897,8 +25999,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -25959,8 +26062,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -26031,7 +26135,6 @@ def test_create_cdn_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.CreateCdnKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -26051,7 +26154,6 @@ def test_list_cdn_keys_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.ListCdnKeysRequest()
-
         assert args[0] == request_msg
 
 
@@ -26071,7 +26173,6 @@ def test_get_cdn_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetCdnKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -26091,7 +26192,6 @@ def test_delete_cdn_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.DeleteCdnKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -26111,7 +26211,6 @@ def test_update_cdn_key_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.UpdateCdnKeyRequest()
-
         assert args[0] == request_msg
 
 
@@ -26133,7 +26232,6 @@ def test_create_vod_session_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.CreateVodSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -26153,7 +26251,6 @@ def test_get_vod_session_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetVodSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -26175,7 +26272,6 @@ def test_list_vod_stitch_details_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.ListVodStitchDetailsRequest()
-
         assert args[0] == request_msg
 
 
@@ -26197,7 +26293,6 @@ def test_get_vod_stitch_detail_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetVodStitchDetailRequest()
-
         assert args[0] == request_msg
 
 
@@ -26219,7 +26314,6 @@ def test_list_vod_ad_tag_details_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.ListVodAdTagDetailsRequest()
-
         assert args[0] == request_msg
 
 
@@ -26241,7 +26335,6 @@ def test_get_vod_ad_tag_detail_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetVodAdTagDetailRequest()
-
         assert args[0] == request_msg
 
 
@@ -26263,7 +26356,6 @@ def test_list_live_ad_tag_details_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.ListLiveAdTagDetailsRequest()
-
         assert args[0] == request_msg
 
 
@@ -26285,7 +26377,6 @@ def test_get_live_ad_tag_detail_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetLiveAdTagDetailRequest()
-
         assert args[0] == request_msg
 
 
@@ -26305,7 +26396,6 @@ def test_create_slate_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.CreateSlateRequest()
-
         assert args[0] == request_msg
 
 
@@ -26325,7 +26415,6 @@ def test_list_slates_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.ListSlatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -26345,7 +26434,6 @@ def test_get_slate_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetSlateRequest()
-
         assert args[0] == request_msg
 
 
@@ -26365,7 +26453,6 @@ def test_update_slate_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.UpdateSlateRequest()
-
         assert args[0] == request_msg
 
 
@@ -26385,7 +26472,6 @@ def test_delete_slate_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.DeleteSlateRequest()
-
         assert args[0] == request_msg
 
 
@@ -26407,7 +26493,6 @@ def test_create_live_session_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.CreateLiveSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -26427,7 +26512,6 @@ def test_get_live_session_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetLiveSessionRequest()
-
         assert args[0] == request_msg
 
 
@@ -26449,7 +26533,6 @@ def test_create_live_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.CreateLiveConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -26471,7 +26554,6 @@ def test_list_live_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.ListLiveConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -26491,7 +26573,6 @@ def test_get_live_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetLiveConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -26513,7 +26594,6 @@ def test_delete_live_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.DeleteLiveConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -26535,7 +26615,6 @@ def test_update_live_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.UpdateLiveConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -26557,7 +26636,6 @@ def test_create_vod_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.CreateVodConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -26577,7 +26655,6 @@ def test_list_vod_configs_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.ListVodConfigsRequest()
-
         assert args[0] == request_msg
 
 
@@ -26597,7 +26674,6 @@ def test_get_vod_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.GetVodConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -26619,7 +26695,6 @@ def test_delete_vod_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.DeleteVodConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -26641,7 +26716,6 @@ def test_update_vod_config_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = video_stitcher_service.UpdateVodConfigRequest()
-
         assert args[0] == request_msg
 
 
@@ -26753,11 +26827,14 @@ def test_video_stitcher_service_base_transport():
 
 def test_video_stitcher_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.video.stitcher_v1.services.video_stitcher_service.transports.VideoStitcherServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.video.stitcher_v1.services.video_stitcher_service.transports.VideoStitcherServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.VideoStitcherServiceTransport(
@@ -26774,9 +26851,12 @@ def test_video_stitcher_service_base_transport_with_credentials_file():
 
 def test_video_stitcher_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.video.stitcher_v1.services.video_stitcher_service.transports.VideoStitcherServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.video.stitcher_v1.services.video_stitcher_service.transports.VideoStitcherServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.VideoStitcherServiceTransport()
@@ -26848,11 +26928,12 @@ def test_video_stitcher_service_transport_auth_gdch_credentials(transport_class)
 def test_video_stitcher_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -27769,6 +27850,38 @@ async def test_delete_operation_from_dict_async():
         call.assert_called()
 
 
+def test_delete_operation_flattened():
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = VideoStitcherServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
 def test_cancel_operation(transport: str = "grpc"):
     client = VideoStitcherServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -27906,6 +28019,38 @@ async def test_cancel_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_cancel_operation_flattened():
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = VideoStitcherServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
 
 
 def test_get_operation(transport: str = "grpc"):
@@ -28053,6 +28198,40 @@ async def test_get_operation_from_dict_async():
         call.assert_called()
 
 
+def test_get_operation_flattened():
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = VideoStitcherServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
 def test_list_operations(transport: str = "grpc"):
     client = VideoStitcherServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -28196,6 +28375,40 @@ async def test_list_operations_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_flattened():
+    client = VideoStitcherServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = VideoStitcherServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
 
 
 def test_transport_close_grpc():

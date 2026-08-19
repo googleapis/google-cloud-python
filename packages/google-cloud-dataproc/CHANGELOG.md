@@ -4,6 +4,42 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.29.0...google-cloud-dataproc-v5.30.0) (2026-07-07)
+
+
+### Features
+
+* update googleapis and regenerate ([#17635](https://github.com/googleapis/google-cloud-python/issues/17635)) ([9638879](https://github.com/googleapis/google-cloud-python/commit/96388796440b226440f885c04ce565782b1d9190))
+
+## [5.29.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.28.0...google-cloud-dataproc-v5.29.0) (2026-06-25)
+
+
+### Features
+
+* update googleapis and regenerate ([#17554](https://github.com/googleapis/google-cloud-python/issues/17554)) ([03d0574](https://github.com/googleapis/google-cloud-python/commit/03d0574da8485e918f16e90666928f5c7b7f1c92))
+
+## [5.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.27.0...google-cloud-dataproc-v5.28.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-d packages (#17092) ([d49a2b9412b4ee9105125db36104a3e18344e0ad](https://github.com/googleapis/google-cloud-python/commit/d49a2b9412b4ee9105125db36104a3e18344e0ad))
+* update API sources and regenerate (#16998) ([cef659d8207939aab3834a32c99a3a2738cb3015](https://github.com/googleapis/google-cloud-python/commit/cef659d8207939aab3834a32c99a3a2738cb3015))
+
+## [5.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.25.0...google-cloud-dataproc-v5.26.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
 ## [5.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.24.0...google-cloud-dataproc-v5.25.0) (2026-02-19)
 
 

@@ -15,15 +15,11 @@
 import click
 from pathlib import Path
 from typing import List, Tuple, Set
-import sys
 
 from packaging.requirements import Requirement
 from packaging.version import Version
 
-if sys.version_info < (3, 8):
-    import importlib_metadata as metadata
-else:
-    import importlib.metadata as metadata
+import importlib.metadata as metadata
 
 
 def _get_package_requirements(package_name: str) -> List[Requirement]:
@@ -125,7 +121,7 @@ def _lower_bound(requirement: Requirement) -> str:
     Returns:
         str: The lower bound for the requirement.
     """
-    spec_set = list(requirement.specifier)
+    spec_set = [s for s in requirement.specifier if s.operator != "!="]
 
     # sort by operator: <, then >=
     spec_set.sort(key=lambda x: x.operator)

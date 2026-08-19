@@ -17,6 +17,7 @@ from google.cloud.firestore_v1 import pipeline_stages as stages
 from google.cloud.firestore_v1.async_pipeline import AsyncPipeline
 from google.cloud.firestore_v1.async_query import AsyncQuery
 from google.cloud.firestore_v1.base_document import BaseDocumentReference
+from google.cloud.firestore_v1.base_pipeline import SubPipeline
 from google.cloud.firestore_v1.pipeline import Pipeline
 from google.cloud.firestore_v1.pipeline_source import PipelineSource
 from google.cloud.firestore_v1.query import Query
@@ -109,6 +110,26 @@ class TestPipelineSource:
         assert first_stage.paths[0] == "/a/1"
         assert first_stage.paths[1] == "/a/2"
         assert first_stage.paths[2] == "/a/3"
+
+    def test_literals(self):
+        from google.cloud.firestore_v1.pipeline_expressions import Field
+
+        instance = self._make_client().pipeline()
+        documents = ({"field": Field.of("a")}, {"name": "joe"})
+        ppl = instance.literals(*documents)
+        assert isinstance(ppl, self._expected_pipeline_type)
+        assert len(ppl.stages) == 1
+        first_stage = ppl.stages[0]
+        assert isinstance(first_stage, stages.Literals)
+
+    def test_subcollection(self):
+        expected_path = "/a/b/c"
+        ppl = PipelineSource.subcollection(expected_path)
+        assert isinstance(ppl, SubPipeline)
+        assert len(ppl.stages) == 1
+        first_stage = ppl.stages[0]
+        assert isinstance(first_stage, stages.Subcollection)
+        assert first_stage.path == expected_path
 
 
 class TestPipelineSourceWithAsyncClient(TestPipelineSource):

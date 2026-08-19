@@ -16,13 +16,12 @@ common helpers used by all Google API clients. For more information, see the
 
 Supported Python Versions
 -------------------------
-Python >= 3.9
+Python >= 3.10
 
 
 Unsupported Python Versions
 ---------------------------
-
-Python == 2.7, Python == 3.5, Python == 3.6, Python == 3.7, Python == 3.8.
+Python <= 3.9
 
 The last version of this library compatible with Python 2.7 and 3.5 is
 `google-api-core==1.31.1`.
@@ -32,3 +31,6 @@ The last version of this library compatible with Python 3.6 is
 
 The last version of this library compatible with Python 3.7 and 3.8 is
 `google-api-core==2.29.0`.
+
+The last version of this library compatible with Python 3.9 is
+`google-api-core==2.30.3`.

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -167,7 +167,70 @@ class DocumentProcessingConfig(proto.Message):
             )
 
         class LayoutParsingConfig(proto.Message):
-            r"""The layout parsing configurations for documents."""
+            r"""The layout parsing configurations for documents.
+
+            Attributes:
+                enable_table_annotation (bool):
+                    Optional. If true, the LLM based annotation
+                    is added to the table during parsing.
+                enable_image_annotation (bool):
+                    Optional. If true, the LLM based annotation
+                    is added to the image during parsing.
+                enable_llm_layout_parsing (bool):
+                    Optional. If true, the pdf layout will be
+                    refined using an LLM.
+                structured_content_types (MutableSequence[str]):
+                    Optional. Contains the required structure types to extract
+                    from the document. Supported values:
+
+                    - ``shareholder-structure``
+                exclude_html_elements (MutableSequence[str]):
+                    Optional. List of HTML elements to exclude
+                    from the parsed content.
+                exclude_html_classes (MutableSequence[str]):
+                    Optional. List of HTML classes to exclude
+                    from the parsed content.
+                exclude_html_ids (MutableSequence[str]):
+                    Optional. List of HTML ids to exclude from
+                    the parsed content.
+                enable_get_processed_document (bool):
+                    Optional. If true, the processed document
+                    will be made available for the
+                    GetProcessedDocument API.
+            """
+
+            enable_table_annotation: bool = proto.Field(
+                proto.BOOL,
+                number=1,
+            )
+            enable_image_annotation: bool = proto.Field(
+                proto.BOOL,
+                number=2,
+            )
+            enable_llm_layout_parsing: bool = proto.Field(
+                proto.BOOL,
+                number=5,
+            )
+            structured_content_types: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=9,
+            )
+            exclude_html_elements: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=10,
+            )
+            exclude_html_classes: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=11,
+            )
+            exclude_html_ids: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=12,
+            )
+            enable_get_processed_document: bool = proto.Field(
+                proto.BOOL,
+                number=14,
+            )
 
         digital_parsing_config: "DocumentProcessingConfig.ParsingConfig.DigitalParsingConfig" = proto.Field(
             proto.MESSAGE,

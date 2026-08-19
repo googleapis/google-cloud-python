@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -55,8 +55,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class MemorystoreRestInterceptor:
@@ -74,6 +73,22 @@ class MemorystoreRestInterceptor:
 
     .. code-block:: python
         class MyCustomMemorystoreInterceptor(MemorystoreRestInterceptor):
+            def pre_add_auth_token(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_add_auth_token(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_add_token_auth_user(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_add_token_auth_user(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_backup_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -87,6 +102,14 @@ class MemorystoreRestInterceptor:
                 return request, metadata
 
             def post_create_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_auth_token(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_auth_token(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -106,11 +129,35 @@ class MemorystoreRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_token_auth_user(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_token_auth_user(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_export_backup(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_export_backup(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_finish_migration(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_finish_migration(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_auth_token(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_auth_token(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -146,6 +193,30 @@ class MemorystoreRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_shared_regional_certificate_authority(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_shared_regional_certificate_authority(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_token_auth_user(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_token_auth_user(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_auth_tokens(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_auth_tokens(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_backup_collections(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -170,11 +241,27 @@ class MemorystoreRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_token_auth_users(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_token_auth_users(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_reschedule_maintenance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_reschedule_maintenance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_start_migration(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_start_migration(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -191,6 +278,102 @@ class MemorystoreRestInterceptor:
 
 
     """
+
+    def pre_add_auth_token(
+        self,
+        request: memorystore.AddAuthTokenRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.AddAuthTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for add_auth_token
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Memorystore server.
+        """
+        return request, metadata
+
+    def post_add_auth_token(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for add_auth_token
+
+        DEPRECATED. Please use the `post_add_auth_token_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Memorystore server but before
+        it is returned to user code. This `post_add_auth_token` interceptor runs
+        before the `post_add_auth_token_with_metadata` interceptor.
+        """
+        return response
+
+    def post_add_auth_token_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for add_auth_token
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Memorystore server but before it is returned to user code.
+
+        We recommend only using this `post_add_auth_token_with_metadata`
+        interceptor in new development instead of the `post_add_auth_token` interceptor.
+        When both interceptors are used, this `post_add_auth_token_with_metadata` interceptor runs after the
+        `post_add_auth_token` interceptor. The (possibly modified) response returned by
+        `post_add_auth_token` will be passed to
+        `post_add_auth_token_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_add_token_auth_user(
+        self,
+        request: memorystore.AddTokenAuthUserRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.AddTokenAuthUserRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for add_token_auth_user
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Memorystore server.
+        """
+        return request, metadata
+
+    def post_add_token_auth_user(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for add_token_auth_user
+
+        DEPRECATED. Please use the `post_add_token_auth_user_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Memorystore server but before
+        it is returned to user code. This `post_add_token_auth_user` interceptor runs
+        before the `post_add_token_auth_user_with_metadata` interceptor.
+        """
+        return response
+
+    def post_add_token_auth_user_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for add_token_auth_user
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Memorystore server but before it is returned to user code.
+
+        We recommend only using this `post_add_token_auth_user_with_metadata`
+        interceptor in new development instead of the `post_add_token_auth_user` interceptor.
+        When both interceptors are used, this `post_add_token_auth_user_with_metadata` interceptor runs after the
+        `post_add_token_auth_user` interceptor. The (possibly modified) response returned by
+        `post_add_token_auth_user` will be passed to
+        `post_add_token_auth_user_with_metadata`.
+        """
+        return response, metadata
 
     def pre_backup_instance(
         self,
@@ -285,6 +468,54 @@ class MemorystoreRestInterceptor:
         `post_create_instance` interceptor. The (possibly modified) response returned by
         `post_create_instance` will be passed to
         `post_create_instance_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_delete_auth_token(
+        self,
+        request: memorystore.DeleteAuthTokenRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.DeleteAuthTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_auth_token
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Memorystore server.
+        """
+        return request, metadata
+
+    def post_delete_auth_token(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_auth_token
+
+        DEPRECATED. Please use the `post_delete_auth_token_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Memorystore server but before
+        it is returned to user code. This `post_delete_auth_token` interceptor runs
+        before the `post_delete_auth_token_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_auth_token_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_auth_token
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Memorystore server but before it is returned to user code.
+
+        We recommend only using this `post_delete_auth_token_with_metadata`
+        interceptor in new development instead of the `post_delete_auth_token` interceptor.
+        When both interceptors are used, this `post_delete_auth_token_with_metadata` interceptor runs after the
+        `post_delete_auth_token` interceptor. The (possibly modified) response returned by
+        `post_delete_auth_token` will be passed to
+        `post_delete_auth_token_with_metadata`.
         """
         return response, metadata
 
@@ -384,6 +615,54 @@ class MemorystoreRestInterceptor:
         """
         return response, metadata
 
+    def pre_delete_token_auth_user(
+        self,
+        request: memorystore.DeleteTokenAuthUserRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.DeleteTokenAuthUserRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_token_auth_user
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Memorystore server.
+        """
+        return request, metadata
+
+    def post_delete_token_auth_user(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_token_auth_user
+
+        DEPRECATED. Please use the `post_delete_token_auth_user_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Memorystore server but before
+        it is returned to user code. This `post_delete_token_auth_user` interceptor runs
+        before the `post_delete_token_auth_user_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_token_auth_user_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_token_auth_user
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Memorystore server but before it is returned to user code.
+
+        We recommend only using this `post_delete_token_auth_user_with_metadata`
+        interceptor in new development instead of the `post_delete_token_auth_user` interceptor.
+        When both interceptors are used, this `post_delete_token_auth_user_with_metadata` interceptor runs after the
+        `post_delete_token_auth_user` interceptor. The (possibly modified) response returned by
+        `post_delete_token_auth_user` will be passed to
+        `post_delete_token_auth_user_with_metadata`.
+        """
+        return response, metadata
+
     def pre_export_backup(
         self,
         request: memorystore.ExportBackupRequest,
@@ -429,6 +708,102 @@ class MemorystoreRestInterceptor:
         `post_export_backup` interceptor. The (possibly modified) response returned by
         `post_export_backup` will be passed to
         `post_export_backup_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_finish_migration(
+        self,
+        request: memorystore.FinishMigrationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.FinishMigrationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for finish_migration
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Memorystore server.
+        """
+        return request, metadata
+
+    def post_finish_migration(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for finish_migration
+
+        DEPRECATED. Please use the `post_finish_migration_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Memorystore server but before
+        it is returned to user code. This `post_finish_migration` interceptor runs
+        before the `post_finish_migration_with_metadata` interceptor.
+        """
+        return response
+
+    def post_finish_migration_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for finish_migration
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Memorystore server but before it is returned to user code.
+
+        We recommend only using this `post_finish_migration_with_metadata`
+        interceptor in new development instead of the `post_finish_migration` interceptor.
+        When both interceptors are used, this `post_finish_migration_with_metadata` interceptor runs after the
+        `post_finish_migration` interceptor. The (possibly modified) response returned by
+        `post_finish_migration` will be passed to
+        `post_finish_migration_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_auth_token(
+        self,
+        request: memorystore.GetAuthTokenRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.GetAuthTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_auth_token
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Memorystore server.
+        """
+        return request, metadata
+
+    def post_get_auth_token(
+        self, response: memorystore.AuthToken
+    ) -> memorystore.AuthToken:
+        """Post-rpc interceptor for get_auth_token
+
+        DEPRECATED. Please use the `post_get_auth_token_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Memorystore server but before
+        it is returned to user code. This `post_get_auth_token` interceptor runs
+        before the `post_get_auth_token_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_auth_token_with_metadata(
+        self,
+        response: memorystore.AuthToken,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[memorystore.AuthToken, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_auth_token
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Memorystore server but before it is returned to user code.
+
+        We recommend only using this `post_get_auth_token_with_metadata`
+        interceptor in new development instead of the `post_get_auth_token` interceptor.
+        When both interceptors are used, this `post_get_auth_token_with_metadata` interceptor runs after the
+        `post_get_auth_token` interceptor. The (possibly modified) response returned by
+        `post_get_auth_token` will be passed to
+        `post_get_auth_token_with_metadata`.
         """
         return response, metadata
 
@@ -619,6 +994,156 @@ class MemorystoreRestInterceptor:
         """
         return response, metadata
 
+    def pre_get_shared_regional_certificate_authority(
+        self,
+        request: memorystore.GetSharedRegionalCertificateAuthorityRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.GetSharedRegionalCertificateAuthorityRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_shared_regional_certificate_authority
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Memorystore server.
+        """
+        return request, metadata
+
+    def post_get_shared_regional_certificate_authority(
+        self, response: memorystore.SharedRegionalCertificateAuthority
+    ) -> memorystore.SharedRegionalCertificateAuthority:
+        """Post-rpc interceptor for get_shared_regional_certificate_authority
+
+        DEPRECATED. Please use the `post_get_shared_regional_certificate_authority_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Memorystore server but before
+        it is returned to user code. This `post_get_shared_regional_certificate_authority` interceptor runs
+        before the `post_get_shared_regional_certificate_authority_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_shared_regional_certificate_authority_with_metadata(
+        self,
+        response: memorystore.SharedRegionalCertificateAuthority,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.SharedRegionalCertificateAuthority,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_shared_regional_certificate_authority
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Memorystore server but before it is returned to user code.
+
+        We recommend only using this `post_get_shared_regional_certificate_authority_with_metadata`
+        interceptor in new development instead of the `post_get_shared_regional_certificate_authority` interceptor.
+        When both interceptors are used, this `post_get_shared_regional_certificate_authority_with_metadata` interceptor runs after the
+        `post_get_shared_regional_certificate_authority` interceptor. The (possibly modified) response returned by
+        `post_get_shared_regional_certificate_authority` will be passed to
+        `post_get_shared_regional_certificate_authority_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_token_auth_user(
+        self,
+        request: memorystore.GetTokenAuthUserRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.GetTokenAuthUserRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for get_token_auth_user
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Memorystore server.
+        """
+        return request, metadata
+
+    def post_get_token_auth_user(
+        self, response: memorystore.TokenAuthUser
+    ) -> memorystore.TokenAuthUser:
+        """Post-rpc interceptor for get_token_auth_user
+
+        DEPRECATED. Please use the `post_get_token_auth_user_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Memorystore server but before
+        it is returned to user code. This `post_get_token_auth_user` interceptor runs
+        before the `post_get_token_auth_user_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_token_auth_user_with_metadata(
+        self,
+        response: memorystore.TokenAuthUser,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[memorystore.TokenAuthUser, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_token_auth_user
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Memorystore server but before it is returned to user code.
+
+        We recommend only using this `post_get_token_auth_user_with_metadata`
+        interceptor in new development instead of the `post_get_token_auth_user` interceptor.
+        When both interceptors are used, this `post_get_token_auth_user_with_metadata` interceptor runs after the
+        `post_get_token_auth_user` interceptor. The (possibly modified) response returned by
+        `post_get_token_auth_user` will be passed to
+        `post_get_token_auth_user_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_list_auth_tokens(
+        self,
+        request: memorystore.ListAuthTokensRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.ListAuthTokensRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_auth_tokens
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Memorystore server.
+        """
+        return request, metadata
+
+    def post_list_auth_tokens(
+        self, response: memorystore.ListAuthTokensResponse
+    ) -> memorystore.ListAuthTokensResponse:
+        """Post-rpc interceptor for list_auth_tokens
+
+        DEPRECATED. Please use the `post_list_auth_tokens_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Memorystore server but before
+        it is returned to user code. This `post_list_auth_tokens` interceptor runs
+        before the `post_list_auth_tokens_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_auth_tokens_with_metadata(
+        self,
+        response: memorystore.ListAuthTokensResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.ListAuthTokensResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_auth_tokens
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Memorystore server but before it is returned to user code.
+
+        We recommend only using this `post_list_auth_tokens_with_metadata`
+        interceptor in new development instead of the `post_list_auth_tokens` interceptor.
+        When both interceptors are used, this `post_list_auth_tokens_with_metadata` interceptor runs after the
+        `post_list_auth_tokens` interceptor. The (possibly modified) response returned by
+        `post_list_auth_tokens` will be passed to
+        `post_list_auth_tokens_with_metadata`.
+        """
+        return response, metadata
+
     def pre_list_backup_collections(
         self,
         request: memorystore.ListBackupCollectionsRequest,
@@ -769,6 +1294,56 @@ class MemorystoreRestInterceptor:
         """
         return response, metadata
 
+    def pre_list_token_auth_users(
+        self,
+        request: memorystore.ListTokenAuthUsersRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.ListTokenAuthUsersRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_token_auth_users
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Memorystore server.
+        """
+        return request, metadata
+
+    def post_list_token_auth_users(
+        self, response: memorystore.ListTokenAuthUsersResponse
+    ) -> memorystore.ListTokenAuthUsersResponse:
+        """Post-rpc interceptor for list_token_auth_users
+
+        DEPRECATED. Please use the `post_list_token_auth_users_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Memorystore server but before
+        it is returned to user code. This `post_list_token_auth_users` interceptor runs
+        before the `post_list_token_auth_users_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_token_auth_users_with_metadata(
+        self,
+        response: memorystore.ListTokenAuthUsersResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.ListTokenAuthUsersResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_token_auth_users
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Memorystore server but before it is returned to user code.
+
+        We recommend only using this `post_list_token_auth_users_with_metadata`
+        interceptor in new development instead of the `post_list_token_auth_users` interceptor.
+        When both interceptors are used, this `post_list_token_auth_users_with_metadata` interceptor runs after the
+        `post_list_token_auth_users` interceptor. The (possibly modified) response returned by
+        `post_list_token_auth_users` will be passed to
+        `post_list_token_auth_users_with_metadata`.
+        """
+        return response, metadata
+
     def pre_reschedule_maintenance(
         self,
         request: memorystore.RescheduleMaintenanceRequest,
@@ -815,6 +1390,54 @@ class MemorystoreRestInterceptor:
         `post_reschedule_maintenance` interceptor. The (possibly modified) response returned by
         `post_reschedule_maintenance` will be passed to
         `post_reschedule_maintenance_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_start_migration(
+        self,
+        request: memorystore.StartMigrationRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        memorystore.StartMigrationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for start_migration
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Memorystore server.
+        """
+        return request, metadata
+
+    def post_start_migration(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for start_migration
+
+        DEPRECATED. Please use the `post_start_migration_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Memorystore server but before
+        it is returned to user code. This `post_start_migration` interceptor runs
+        before the `post_start_migration_with_metadata` interceptor.
+        """
+        return response
+
+    def post_start_migration_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for start_migration
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Memorystore server but before it is returned to user code.
+
+        We recommend only using this `post_start_migration_with_metadata`
+        interceptor in new development instead of the `post_start_migration` interceptor.
+        When both interceptors are used, this `post_start_migration_with_metadata` interceptor runs after the
+        `post_start_migration` interceptor. The (possibly modified) response returned by
+        `post_start_migration` will be passed to
+        `post_start_migration_with_metadata`.
         """
         return response, metadata
 
@@ -1079,6 +1702,12 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
             url_scheme: the protocol scheme for the API endpoint.  Normally
                 "https", but for testing or local servers,
                 "http" can be specified.
+            interceptor (Optional[MemorystoreRestInterceptor]): Interceptor used
+                to manipulate requests, request metadata, and responses.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -1153,6 +1782,316 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
         # Return the client from cache.
         return self._operations_client
 
+    class _AddAuthToken(
+        _BaseMemorystoreRestTransport._BaseAddAuthToken, MemorystoreRestStub
+    ):
+        def __hash__(self):
+            return hash("MemorystoreRestTransport.AddAuthToken")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: memorystore.AddAuthTokenRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the add auth token method over HTTP.
+
+            Args:
+                request (~.memorystore.AddAuthTokenRequest):
+                    The request object. Request message for ``AddAuthToken``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseAddAuthToken._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_add_auth_token(request, metadata)
+            transcoded_request = (
+                _BaseMemorystoreRestTransport._BaseAddAuthToken._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = (
+                _BaseMemorystoreRestTransport._BaseAddAuthToken._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseMemorystoreRestTransport._BaseAddAuthToken._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.memorystore_v1.MemorystoreClient.AddAuthToken",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "AddAuthToken",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = MemorystoreRestTransport._AddAuthToken._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_add_auth_token(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_add_auth_token_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.memorystore_v1.MemorystoreClient.add_auth_token",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "AddAuthToken",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _AddTokenAuthUser(
+        _BaseMemorystoreRestTransport._BaseAddTokenAuthUser, MemorystoreRestStub
+    ):
+        def __hash__(self):
+            return hash("MemorystoreRestTransport.AddTokenAuthUser")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: memorystore.AddTokenAuthUserRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the add token auth user method over HTTP.
+
+            Args:
+                request (~.memorystore.AddTokenAuthUserRequest):
+                    The request object. Request message for ``AddTokenAuthUser``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseAddTokenAuthUser._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_add_token_auth_user(
+                request, metadata
+            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseAddTokenAuthUser._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseMemorystoreRestTransport._BaseAddTokenAuthUser._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseMemorystoreRestTransport._BaseAddTokenAuthUser._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.memorystore_v1.MemorystoreClient.AddTokenAuthUser",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "AddTokenAuthUser",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = MemorystoreRestTransport._AddTokenAuthUser._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_add_token_auth_user(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_add_token_auth_user_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.memorystore_v1.MemorystoreClient.add_token_auth_user",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "AddTokenAuthUser",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _BackupInstance(
         _BaseMemorystoreRestTransport._BaseBackupInstance, MemorystoreRestStub
     ):
@@ -1194,7 +2133,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Args:
                 request (~.memorystore.BackupInstanceRequest):
-                    The request object. Request for [BackupInstance].
+                    The request object. Request for ``BackupInstance``.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1455,6 +2394,153 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 )
             return resp
 
+    class _DeleteAuthToken(
+        _BaseMemorystoreRestTransport._BaseDeleteAuthToken, MemorystoreRestStub
+    ):
+        def __hash__(self):
+            return hash("MemorystoreRestTransport.DeleteAuthToken")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: memorystore.DeleteAuthTokenRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete auth token method over HTTP.
+
+            Args:
+                request (~.memorystore.DeleteAuthTokenRequest):
+                    The request object. Request message for ``DeleteAuthToken``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseDeleteAuthToken._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_auth_token(
+                request, metadata
+            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseDeleteAuthToken._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseMemorystoreRestTransport._BaseDeleteAuthToken._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.memorystore_v1.MemorystoreClient.DeleteAuthToken",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "DeleteAuthToken",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = MemorystoreRestTransport._DeleteAuthToken._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_auth_token(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_auth_token_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.memorystore_v1.MemorystoreClient.delete_auth_token",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "DeleteAuthToken",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _DeleteBackup(
         _BaseMemorystoreRestTransport._BaseDeleteBackup, MemorystoreRestStub
     ):
@@ -1495,7 +2581,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Args:
                 request (~.memorystore.DeleteBackupRequest):
-                    The request object. Request for [DeleteBackup].
+                    The request object. Request for ``DeleteBackup``.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1749,6 +2835,151 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 )
             return resp
 
+    class _DeleteTokenAuthUser(
+        _BaseMemorystoreRestTransport._BaseDeleteTokenAuthUser, MemorystoreRestStub
+    ):
+        def __hash__(self):
+            return hash("MemorystoreRestTransport.DeleteTokenAuthUser")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: memorystore.DeleteTokenAuthUserRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete token auth user method over HTTP.
+
+            Args:
+                request (~.memorystore.DeleteTokenAuthUserRequest):
+                    The request object. Request message for ``DeleteTokenAuthUser``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = _BaseMemorystoreRestTransport._BaseDeleteTokenAuthUser._get_http_options()
+
+            request, metadata = self._interceptor.pre_delete_token_auth_user(
+                request, metadata
+            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseDeleteTokenAuthUser._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseMemorystoreRestTransport._BaseDeleteTokenAuthUser._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.memorystore_v1.MemorystoreClient.DeleteTokenAuthUser",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "DeleteTokenAuthUser",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = MemorystoreRestTransport._DeleteTokenAuthUser._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_token_auth_user(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_token_auth_user_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.memorystore_v1.MemorystoreClient.delete_token_auth_user",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "DeleteTokenAuthUser",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ExportBackup(
         _BaseMemorystoreRestTransport._BaseExportBackup, MemorystoreRestStub
     ):
@@ -1790,7 +3021,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Args:
                 request (~.memorystore.ExportBackupRequest):
-                    The request object. Request for [ExportBackup].
+                    The request object. Request for ``ExportBackup``.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1906,6 +3137,307 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 )
             return resp
 
+    class _FinishMigration(
+        _BaseMemorystoreRestTransport._BaseFinishMigration, MemorystoreRestStub
+    ):
+        def __hash__(self):
+            return hash("MemorystoreRestTransport.FinishMigration")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: memorystore.FinishMigrationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the finish migration method over HTTP.
+
+            Args:
+                request (~.memorystore.FinishMigrationRequest):
+                    The request object. Request for ``FinishMigration``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseFinishMigration._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_finish_migration(
+                request, metadata
+            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseFinishMigration._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseMemorystoreRestTransport._BaseFinishMigration._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseMemorystoreRestTransport._BaseFinishMigration._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.memorystore_v1.MemorystoreClient.FinishMigration",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "FinishMigration",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = MemorystoreRestTransport._FinishMigration._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_finish_migration(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_finish_migration_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.memorystore_v1.MemorystoreClient.finish_migration",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "FinishMigration",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetAuthToken(
+        _BaseMemorystoreRestTransport._BaseGetAuthToken, MemorystoreRestStub
+    ):
+        def __hash__(self):
+            return hash("MemorystoreRestTransport.GetAuthToken")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: memorystore.GetAuthTokenRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> memorystore.AuthToken:
+            r"""Call the get auth token method over HTTP.
+
+            Args:
+                request (~.memorystore.GetAuthTokenRequest):
+                    The request object. Request message for ``GetAuthToken``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.memorystore.AuthToken:
+                    Auth token for the instance.
+            """
+
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseGetAuthToken._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_auth_token(request, metadata)
+            transcoded_request = (
+                _BaseMemorystoreRestTransport._BaseGetAuthToken._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseMemorystoreRestTransport._BaseGetAuthToken._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.memorystore_v1.MemorystoreClient.GetAuthToken",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "GetAuthToken",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = MemorystoreRestTransport._GetAuthToken._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = memorystore.AuthToken()
+            pb_resp = memorystore.AuthToken.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_auth_token(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_auth_token_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = memorystore.AuthToken.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.memorystore_v1.MemorystoreClient.get_auth_token",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "GetAuthToken",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetBackup(_BaseMemorystoreRestTransport._BaseGetBackup, MemorystoreRestStub):
         def __hash__(self):
             return hash("MemorystoreRestTransport.GetBackup")
@@ -1944,7 +3476,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Args:
                 request (~.memorystore.GetBackupRequest):
-                    The request object. Request for [GetBackup].
+                    The request object. Request for ``GetBackup``.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2092,7 +3624,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Args:
                 request (~.memorystore.GetBackupCollectionRequest):
-                    The request object. Request for [GetBackupCollection].
+                    The request object. Request for ``GetBackupCollection``.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2236,7 +3768,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Args:
                 request (~.memorystore.GetCertificateAuthorityRequest):
-                    The request object. Request message for [GetCertificateAuthority][].
+                    The request object. Request message for ``GetCertificateAuthority``.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2492,6 +4024,460 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 )
             return resp
 
+    class _GetSharedRegionalCertificateAuthority(
+        _BaseMemorystoreRestTransport._BaseGetSharedRegionalCertificateAuthority,
+        MemorystoreRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "MemorystoreRestTransport.GetSharedRegionalCertificateAuthority"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: memorystore.GetSharedRegionalCertificateAuthorityRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> memorystore.SharedRegionalCertificateAuthority:
+            r"""Call the get shared regional
+            certificate authority method over HTTP.
+
+                Args:
+                    request (~.memorystore.GetSharedRegionalCertificateAuthorityRequest):
+                        The request object. Request for ``GetSharedRegionalCertificateAuthority``.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.memorystore.SharedRegionalCertificateAuthority:
+                        Shared regional certificate authority
+                    for an instance.
+
+            """
+
+            http_options = _BaseMemorystoreRestTransport._BaseGetSharedRegionalCertificateAuthority._get_http_options()
+
+            request, metadata = (
+                self._interceptor.pre_get_shared_regional_certificate_authority(
+                    request, metadata
+                )
+            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseGetSharedRegionalCertificateAuthority._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseMemorystoreRestTransport._BaseGetSharedRegionalCertificateAuthority._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.memorystore_v1.MemorystoreClient.GetSharedRegionalCertificateAuthority",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "GetSharedRegionalCertificateAuthority",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = MemorystoreRestTransport._GetSharedRegionalCertificateAuthority._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = memorystore.SharedRegionalCertificateAuthority()
+            pb_resp = memorystore.SharedRegionalCertificateAuthority.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_shared_regional_certificate_authority(
+                resp
+            )
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_get_shared_regional_certificate_authority_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        memorystore.SharedRegionalCertificateAuthority.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.memorystore_v1.MemorystoreClient.get_shared_regional_certificate_authority",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "GetSharedRegionalCertificateAuthority",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _GetTokenAuthUser(
+        _BaseMemorystoreRestTransport._BaseGetTokenAuthUser, MemorystoreRestStub
+    ):
+        def __hash__(self):
+            return hash("MemorystoreRestTransport.GetTokenAuthUser")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: memorystore.GetTokenAuthUserRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> memorystore.TokenAuthUser:
+            r"""Call the get token auth user method over HTTP.
+
+            Args:
+                request (~.memorystore.GetTokenAuthUserRequest):
+                    The request object. Request message for ``GetTokenAuthUser``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.memorystore.TokenAuthUser:
+                    Token based auth user for the
+                instance.
+
+            """
+
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseGetTokenAuthUser._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_token_auth_user(
+                request, metadata
+            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseGetTokenAuthUser._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseMemorystoreRestTransport._BaseGetTokenAuthUser._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.memorystore_v1.MemorystoreClient.GetTokenAuthUser",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "GetTokenAuthUser",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = MemorystoreRestTransport._GetTokenAuthUser._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = memorystore.TokenAuthUser()
+            pb_resp = memorystore.TokenAuthUser.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_token_auth_user(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_token_auth_user_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = memorystore.TokenAuthUser.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.memorystore_v1.MemorystoreClient.get_token_auth_user",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "GetTokenAuthUser",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListAuthTokens(
+        _BaseMemorystoreRestTransport._BaseListAuthTokens, MemorystoreRestStub
+    ):
+        def __hash__(self):
+            return hash("MemorystoreRestTransport.ListAuthTokens")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: memorystore.ListAuthTokensRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> memorystore.ListAuthTokensResponse:
+            r"""Call the list auth tokens method over HTTP.
+
+            Args:
+                request (~.memorystore.ListAuthTokensRequest):
+                    The request object. Request message for ``ListAuthTokens``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.memorystore.ListAuthTokensResponse:
+                    Response message for ``ListAuthTokens``.
+            """
+
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseListAuthTokens._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_auth_tokens(
+                request, metadata
+            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseListAuthTokens._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseMemorystoreRestTransport._BaseListAuthTokens._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.memorystore_v1.MemorystoreClient.ListAuthTokens",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "ListAuthTokens",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = MemorystoreRestTransport._ListAuthTokens._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = memorystore.ListAuthTokensResponse()
+            pb_resp = memorystore.ListAuthTokensResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_auth_tokens(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_auth_tokens_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = memorystore.ListAuthTokensResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.memorystore_v1.MemorystoreClient.list_auth_tokens",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "ListAuthTokens",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListBackupCollections(
         _BaseMemorystoreRestTransport._BaseListBackupCollections, MemorystoreRestStub
     ):
@@ -2532,7 +4518,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Args:
                 request (~.memorystore.ListBackupCollectionsRequest):
-                    The request object. Request for [ListBackupCollections]
+                    The request object. Request for ``ListBackupCollections``.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2543,7 +4529,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Returns:
                 ~.memorystore.ListBackupCollectionsResponse:
-                    Response for [ListBackupCollections].
+                    Response for ``ListBackupCollections``.
             """
 
             http_options = _BaseMemorystoreRestTransport._BaseListBackupCollections._get_http_options()
@@ -2678,7 +4664,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Args:
                 request (~.memorystore.ListBackupsRequest):
-                    The request object. Request for [ListBackups].
+                    The request object. Request for ``ListBackups``.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2689,7 +4675,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Returns:
                 ~.memorystore.ListBackupsResponse:
-                    Response for [ListBackups].
+                    Response for ``ListBackups``.
             """
 
             http_options = (
@@ -2837,7 +4823,7 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
 
             Returns:
                 ~.memorystore.ListInstancesResponse:
-                    Response message for [ListInstances][].
+                    Response message for ``ListInstances``.
             """
 
             http_options = (
@@ -2928,6 +4914,152 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                     extra={
                         "serviceName": "google.cloud.memorystore.v1.Memorystore",
                         "rpcName": "ListInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ListTokenAuthUsers(
+        _BaseMemorystoreRestTransport._BaseListTokenAuthUsers, MemorystoreRestStub
+    ):
+        def __hash__(self):
+            return hash("MemorystoreRestTransport.ListTokenAuthUsers")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: memorystore.ListTokenAuthUsersRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> memorystore.ListTokenAuthUsersResponse:
+            r"""Call the list token auth users method over HTTP.
+
+            Args:
+                request (~.memorystore.ListTokenAuthUsersRequest):
+                    The request object. Request message for ``ListTokenAuthUsers``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.memorystore.ListTokenAuthUsersResponse:
+                    Response message for ``ListTokenAuthUsers``.
+            """
+
+            http_options = _BaseMemorystoreRestTransport._BaseListTokenAuthUsers._get_http_options()
+
+            request, metadata = self._interceptor.pre_list_token_auth_users(
+                request, metadata
+            )
+            transcoded_request = _BaseMemorystoreRestTransport._BaseListTokenAuthUsers._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseMemorystoreRestTransport._BaseListTokenAuthUsers._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.memorystore_v1.MemorystoreClient.ListTokenAuthUsers",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "ListTokenAuthUsers",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = MemorystoreRestTransport._ListTokenAuthUsers._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = memorystore.ListTokenAuthUsersResponse()
+            pb_resp = memorystore.ListTokenAuthUsersResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_token_auth_users(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_token_auth_users_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = memorystore.ListTokenAuthUsersResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.memorystore_v1.MemorystoreClient.list_token_auth_users",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "ListTokenAuthUsers",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -3086,6 +5218,157 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
                 )
             return resp
 
+    class _StartMigration(
+        _BaseMemorystoreRestTransport._BaseStartMigration, MemorystoreRestStub
+    ):
+        def __hash__(self):
+            return hash("MemorystoreRestTransport.StartMigration")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: memorystore.StartMigrationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the start migration method over HTTP.
+
+            Args:
+                request (~.memorystore.StartMigrationRequest):
+                    The request object. Request for ``StartMigration``.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseMemorystoreRestTransport._BaseStartMigration._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_start_migration(request, metadata)
+            transcoded_request = _BaseMemorystoreRestTransport._BaseStartMigration._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseMemorystoreRestTransport._BaseStartMigration._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseMemorystoreRestTransport._BaseStartMigration._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.memorystore_v1.MemorystoreClient.StartMigration",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "StartMigration",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = MemorystoreRestTransport._StartMigration._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_start_migration(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_start_migration_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.memorystore_v1.MemorystoreClient.start_migration",
+                    extra={
+                        "serviceName": "google.cloud.memorystore.v1.Memorystore",
+                        "rpcName": "StartMigration",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateInstance(
         _BaseMemorystoreRestTransport._BaseUpdateInstance, MemorystoreRestStub
     ):
@@ -3238,6 +5521,22 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
             return resp
 
     @property
+    def add_auth_token(
+        self,
+    ) -> Callable[[memorystore.AddAuthTokenRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._AddAuthToken(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def add_token_auth_user(
+        self,
+    ) -> Callable[[memorystore.AddTokenAuthUserRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._AddTokenAuthUser(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def backup_instance(
         self,
     ) -> Callable[[memorystore.BackupInstanceRequest], operations_pb2.Operation]:
@@ -3252,6 +5551,14 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateInstance(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_auth_token(
+        self,
+    ) -> Callable[[memorystore.DeleteAuthTokenRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteAuthToken(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_backup(
@@ -3270,12 +5577,36 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
         return self._DeleteInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_token_auth_user(
+        self,
+    ) -> Callable[[memorystore.DeleteTokenAuthUserRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteTokenAuthUser(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def export_backup(
         self,
     ) -> Callable[[memorystore.ExportBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportBackup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def finish_migration(
+        self,
+    ) -> Callable[[memorystore.FinishMigrationRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._FinishMigration(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_auth_token(
+        self,
+    ) -> Callable[[memorystore.GetAuthTokenRequest], memorystore.AuthToken]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAuthToken(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_backup(
@@ -3316,6 +5647,37 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
         return self._GetInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_shared_regional_certificate_authority(
+        self,
+    ) -> Callable[
+        [memorystore.GetSharedRegionalCertificateAuthorityRequest],
+        memorystore.SharedRegionalCertificateAuthority,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetSharedRegionalCertificateAuthority(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def get_token_auth_user(
+        self,
+    ) -> Callable[[memorystore.GetTokenAuthUserRequest], memorystore.TokenAuthUser]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetTokenAuthUser(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_auth_tokens(
+        self,
+    ) -> Callable[
+        [memorystore.ListAuthTokensRequest], memorystore.ListAuthTokensResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAuthTokens(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_backup_collections(
         self,
     ) -> Callable[
@@ -3345,12 +5707,30 @@ class MemorystoreRestTransport(_BaseMemorystoreRestTransport):
         return self._ListInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_token_auth_users(
+        self,
+    ) -> Callable[
+        [memorystore.ListTokenAuthUsersRequest], memorystore.ListTokenAuthUsersResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListTokenAuthUsers(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def reschedule_maintenance(
         self,
     ) -> Callable[[memorystore.RescheduleMaintenanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RescheduleMaintenance(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def start_migration(
+        self,
+    ) -> Callable[[memorystore.StartMigrationRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._StartMigration(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_instance(

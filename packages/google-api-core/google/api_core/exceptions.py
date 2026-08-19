@@ -18,13 +18,11 @@ This module provides base classes for all errors raised by libraries based
 on :mod:`google.api_core`, including both HTTP and gRPC clients.
 """
 
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
 import http.client
-from typing import Optional, Dict
-from typing import Union
 import warnings
+from typing import Dict, Optional
 
 from google.rpc import error_details_pb2
 
@@ -121,7 +119,7 @@ class GoogleAPICallError(GoogleAPIError, metaclass=_GoogleAPICallErrorMeta):
             (google.rpc.error_details.ErrorInfo).
     """
 
-    code: Union[int, None] = None
+    code: Optional[int] = None
     """Optional[int]: The HTTP status code associated with this error.
 
     This may be ``None`` if the exception does not have a direct mapping
@@ -130,7 +128,7 @@ class GoogleAPICallError(GoogleAPIError, metaclass=_GoogleAPICallErrorMeta):
     See http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
     """
 
-    grpc_status_code = None
+    grpc_status_code: Optional["grpc.StatusCode"] = None
     """Optional[grpc.StatusCode]: The gRPC status code associated with this
     error.
 
@@ -658,9 +656,20 @@ def from_grpc_error(rpc_exc):
         grpc is not None and isinstance(rpc_exc, grpc.Call)
     ) or _is_informative_grpc_error(rpc_exc):
         details, err_info = _parse_grpc_error_details(rpc_exc)
+        message = rpc_exc.details()
+        if (
+            grpc is not None
+            and rpc_exc.code() == grpc.StatusCode.UNIMPLEMENTED
+            and "Received http2 header with status: 404" in message
+        ):
+            message = (
+                f"{message}. This usually indicates that the 'api_endpoint' "
+                "configuration in ClientOptions is incorrect, contains a typo, "
+                "or is an invalid regional endpoint for this service."
+            )
         return from_grpc_status(
             rpc_exc.code(),
-            rpc_exc.details(),
+            message,
             errors=(rpc_exc,),
             details=details,
             response=rpc_exc,

@@ -65,9 +65,10 @@ def dns_access_direct(request, project_id):
 
     # Apply the default credentials to the headers to make the request.
     headers = {}
-    credentials.apply(headers)
+    url = "https://dns.googleapis.com/dns/v1/projects/{}".format(project_id)
+    credentials.before_request(request, "GET", url, headers)
     response = request(
-        url="https://dns.googleapis.com/dns/v1/projects/{}".format(project_id),
+        url=url,
         headers=headers,
     )
 
@@ -213,8 +214,15 @@ def test_configurable_token_lifespan(oidc_credentials, http_request):
             request=http_request,
         )
 
-        utcmax = _helpers.utcnow() + datetime.timedelta(seconds=TOKEN_LIFETIME_SECONDS)
-        utcmin = utcmax - datetime.timedelta(seconds=BUFFER_SECONDS)
+        credentials.refresh(http_request)
+
+        now = _helpers.utcnow()
+        utcmax = now + datetime.timedelta(
+            seconds=TOKEN_LIFETIME_SECONDS + BUFFER_SECONDS
+        )
+        utcmin = now + datetime.timedelta(
+            seconds=TOKEN_LIFETIME_SECONDS - BUFFER_SECONDS
+        )
         assert utcmin < credentials._impersonated_credentials.expiry <= utcmax
 
         return True

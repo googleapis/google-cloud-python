@@ -25,9 +25,10 @@ try:
 except ImportError:  # pragma: NO COVER
     grpc = rpc_status = None
 
-from google.api_core import exceptions
 from google.protobuf import any_pb2, json_format
 from google.rpc import error_details_pb2, status_pb2
+
+from google.api_core import exceptions
 
 
 def test_create_google_cloud_error():
@@ -393,3 +394,18 @@ def test_error_details_from_grpc_response_unknown_error():
         and exception.domain is None
         and exception.metadata is None
     )
+
+
+@pytest.mark.skipif(grpc is None, reason="No grpc")
+def test_from_grpc_error_misleading_404():
+    message = "Received http2 header with status: 404"
+    error = mock.create_autospec(grpc.Call, instance=True)
+    error.code.return_value = grpc.StatusCode.UNIMPLEMENTED
+    error.details.return_value = message
+
+    exception = exceptions.from_grpc_error(error)
+
+    assert isinstance(exception, exceptions.MethodNotImplemented)
+    assert exception.grpc_status_code == grpc.StatusCode.UNIMPLEMENTED
+    assert "Received http2 header with status: 404" in exception.message
+    assert "api_endpoint" in exception.message

@@ -62,22 +62,24 @@ class PublishMessageWrapper:
         tracer = trace.get_tracer(self._OPEN_TELEMETRY_TRACER_NAME)
         assert len(topic.split("/")) == 4
         topic_short_name = topic.split("/")[3]
-        with tracer.start_as_current_span(
-            name=f"{topic_short_name} create",
-            attributes={
-                "messaging.system": self._OPEN_TELEMETRY_MESSAGING_SYSTEM,
-                "messaging.destination.name": topic_short_name,
-                "code.function": "publish",
-                "messaging.gcp_pubsub.message.ordering_key": ordering_key,
-                "messaging.operation": "create",
-                "gcp.project_id": topic.split("/")[1],
-                "messaging.message.body.size": sys.getsizeof(
-                    self._message.data
-                ),  # sys.getsizeof() used since the attribute expects size of message body in bytes
-            },
-            kind=trace.SpanKind.PRODUCER,
-            end_on_exit=False,
-        ) as create_span:
+        with (
+            tracer.start_as_current_span(
+                name=f"{topic_short_name} create",
+                attributes={
+                    "messaging.system": self._OPEN_TELEMETRY_MESSAGING_SYSTEM,
+                    "messaging.destination.name": topic_short_name,
+                    "code.function": "publish",
+                    "messaging.gcp_pubsub.message.ordering_key": ordering_key,
+                    "messaging.operation": "create",
+                    "gcp.project_id": topic.split("/")[1],
+                    "messaging.message.body.size": sys.getsizeof(
+                        self._message.data
+                    ),  # sys.getsizeof() used since the attribute expects size of message body in bytes
+                },
+                kind=trace.SpanKind.PRODUCER,
+                end_on_exit=False,
+            ) as create_span
+        ):
             create_span.add_event(
                 name=self._PUBLISH_START_EVENT,
                 attributes={

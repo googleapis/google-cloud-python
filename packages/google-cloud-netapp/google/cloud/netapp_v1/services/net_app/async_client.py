@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,6 +48,7 @@ import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
@@ -62,6 +63,7 @@ from google.cloud.netapp_v1.types import (
     common,
     host_group,
     kms,
+    ontap,
     quota_rule,
     replication,
     snapshot,
@@ -229,7 +231,7 @@ class NetAppAsyncClient:
         return self._client.transport
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -505,11 +507,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_storage_pool(request=request)
+                operation = await client.create_storage_pool(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -776,11 +778,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_storage_pool(request=request)
+                operation = await client.update_storage_pool(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -917,11 +919,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_storage_pool(request=request)
+                operation = await client.delete_storage_pool(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1051,11 +1053,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.validate_directory_service(request=request)
+                operation = await client.validate_directory_service(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1163,11 +1165,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.switch_active_replica_zone(request=request)
+                operation = await client.switch_active_replica_zone(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1511,11 +1513,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_volume(request=request)
+                operation = await client.create_volume(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1661,11 +1663,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_volume(request=request)
+                operation = await client.update_volume(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1799,11 +1801,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_volume(request=request)
+                operation = await client.delete_volume(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1931,11 +1933,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.revert_volume(request=request)
+                operation = await client.revert_volume(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1971,6 +1973,114 @@ class NetAppAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.revert_volume
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            volume.Volume,
+            metadata_type=cloud_netapp_service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def establish_volume_peering(
+        self,
+        request: Optional[Union[volume.EstablishVolumePeeringRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Establish volume peering. This is used to establish
+        cluster and svm peerings between the GCNV and OnPrem
+        clusters.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            async def sample_establish_volume_peering():
+                # Create a client
+                client = netapp_v1.NetAppAsyncClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.EstablishVolumePeeringRequest(
+                    name="name_value",
+                    peer_cluster_name="peer_cluster_name_value",
+                    peer_svm_name="peer_svm_name_value",
+                    peer_volume_name="peer_volume_name_value",
+                )
+
+                # Make the request
+                operation = await client.establish_volume_peering(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = await operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.netapp_v1.types.EstablishVolumePeeringRequest, dict]]):
+                The request object. EstablishVolumePeeringRequest
+                establishes cluster and svm peerings
+                between the source and destination
+                clusters.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.netapp_v1.types.Volume` Volume
+                provides a filesystem that you can mount.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, volume.EstablishVolumePeeringRequest):
+            request = volume.EstablishVolumePeeringRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.establish_volume_peering
         ]
 
         # Certain fields should be provided within the metadata header;
@@ -2273,11 +2383,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_snapshot(request=request)
+                operation = await client.create_snapshot(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2420,11 +2530,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_snapshot(request=request)
+                operation = await client.delete_snapshot(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2553,11 +2663,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_snapshot(request=request)
+                operation = await client.update_snapshot(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2946,11 +3056,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_active_directory(request=request)
+                operation = await client.create_active_directory(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3104,11 +3214,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_active_directory(request=request)
+                operation = await client.update_active_directory(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3247,11 +3357,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_active_directory(request=request)
+                operation = await client.delete_active_directory(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3512,11 +3622,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_kms_config(request=request)
+                operation = await client.create_kms_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3774,11 +3884,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_kms_config(request=request)
+                operation = await client.update_kms_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -3914,11 +4024,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.encrypt_volumes(request=request)
+                operation = await client.encrypt_volumes(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4105,11 +4215,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_kms_config(request=request)
+                operation = await client.delete_kms_config(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4484,11 +4594,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_replication(request=request)
+                operation = await client.create_replication(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4631,11 +4741,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_replication(request=request)
+                operation = await client.delete_replication(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4769,11 +4879,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_replication(request=request)
+                operation = await client.update_replication(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -4905,11 +5015,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.stop_replication(request=request)
+                operation = await client.stop_replication(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5006,11 +5116,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.resume_replication(request=request)
+                operation = await client.resume_replication(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5110,11 +5220,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.reverse_replication_direction(request=request)
+                operation = await client.reverse_replication_direction(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5216,11 +5326,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.establish_peering(request=request)
+                operation = await client.establish_peering(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5319,11 +5429,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.sync_replication(request=request)
+                operation = await client.sync_replication(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5426,11 +5536,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_backup_vault(request=request)
+                operation = await client.create_backup_vault(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5812,11 +5922,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_backup_vault(request=request)
+                operation = await client.update_backup_vault(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -5955,11 +6065,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_backup_vault(request=request)
+                operation = await client.delete_backup_vault(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6095,11 +6205,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_backup(request=request)
+                operation = await client.create_backup(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6486,11 +6596,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_backup(request=request)
+                operation = await client.delete_backup(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6618,11 +6728,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_backup(request=request)
+                operation = await client.update_backup(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -6762,11 +6872,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_backup_policy(request=request)
+                operation = await client.create_backup_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7148,11 +7258,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_backup_policy(request=request)
+                operation = await client.update_backup_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7290,11 +7400,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_backup_policy(request=request)
+                operation = await client.delete_backup_policy(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7668,11 +7778,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_quota_rule(request=request)
+                operation = await client.create_quota_rule(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7822,11 +7932,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_quota_rule(request=request)
+                operation = await client.update_quota_rule(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -7963,11 +8073,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_quota_rule(request=request)
+                operation = await client.delete_quota_rule(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -8095,11 +8205,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.restore_backup_files(request=request)
+                operation = await client.restore_backup_files(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -8446,11 +8556,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.create_host_group(request=request)
+                operation = await client.create_host_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -8600,11 +8710,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.update_host_group(request=request)
+                operation = await client.update_host_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -8738,11 +8848,11 @@ class NetAppAsyncClient:
                 )
 
                 # Make the request
-                operation = client.delete_host_group(request=request)
+                operation = await client.delete_host_group(request=request)
 
                 print("Waiting for operation to complete...")
 
-                response = (await operation).result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -8839,9 +8949,353 @@ class NetAppAsyncClient:
         # Done; return the response.
         return response
 
+    async def execute_ontap_post(
+        self,
+        request: Optional[Union[ontap.ExecuteOntapPostRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> ontap.ExecuteOntapPostResponse:
+        r"""``ExecuteOntapPost`` dispatches the ONTAP ``POST`` request to
+        the ``StoragePool`` cluster.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            async def sample_execute_ontap_post():
+                # Create a client
+                client = netapp_v1.NetAppAsyncClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.ExecuteOntapPostRequest(
+                    ontap_path="ontap_path_value",
+                )
+
+                # Make the request
+                response = await client.execute_ontap_post(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.netapp_v1.types.ExecuteOntapPostRequest, dict]]):
+                The request object. Request message for ``ExecuteOntapPost`` API.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.netapp_v1.types.ExecuteOntapPostResponse:
+                Response message for ExecuteOntapPost API.
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, ontap.ExecuteOntapPostRequest):
+            request = ontap.ExecuteOntapPostRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.execute_ontap_post
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("ontap_path", request.ontap_path),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def execute_ontap_get(
+        self,
+        request: Optional[Union[ontap.ExecuteOntapGetRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> ontap.ExecuteOntapGetResponse:
+        r"""``ExecuteOntapGet`` dispatches the ONTAP ``GET`` request to the
+        ``StoragePool`` cluster.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            async def sample_execute_ontap_get():
+                # Create a client
+                client = netapp_v1.NetAppAsyncClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.ExecuteOntapGetRequest(
+                    ontap_path="ontap_path_value",
+                )
+
+                # Make the request
+                response = await client.execute_ontap_get(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.netapp_v1.types.ExecuteOntapGetRequest, dict]]):
+                The request object. Request message for ``ExecuteOntapGet`` API.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.netapp_v1.types.ExecuteOntapGetResponse:
+                Response message for ExecuteOntapGet API.
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, ontap.ExecuteOntapGetRequest):
+            request = ontap.ExecuteOntapGetRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.execute_ontap_get
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("ontap_path", request.ontap_path),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def execute_ontap_delete(
+        self,
+        request: Optional[Union[ontap.ExecuteOntapDeleteRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> ontap.ExecuteOntapDeleteResponse:
+        r"""``ExecuteOntapDelete`` dispatches the ONTAP ``DELETE`` request
+        to the ``StoragePool`` cluster.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            async def sample_execute_ontap_delete():
+                # Create a client
+                client = netapp_v1.NetAppAsyncClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.ExecuteOntapDeleteRequest(
+                    ontap_path="ontap_path_value",
+                )
+
+                # Make the request
+                response = await client.execute_ontap_delete(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.netapp_v1.types.ExecuteOntapDeleteRequest, dict]]):
+                The request object. Request message for ``ExecuteOntapDelete`` API.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.netapp_v1.types.ExecuteOntapDeleteResponse:
+                Response message for ExecuteOntapDelete API.
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, ontap.ExecuteOntapDeleteRequest):
+            request = ontap.ExecuteOntapDeleteRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.execute_ontap_delete
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("ontap_path", request.ontap_path),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def execute_ontap_patch(
+        self,
+        request: Optional[Union[ontap.ExecuteOntapPatchRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> ontap.ExecuteOntapPatchResponse:
+        r"""``ExecuteOntapPatch`` dispatches the ONTAP ``PATCH`` request to
+        the ``StoragePool`` cluster.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import netapp_v1
+
+            async def sample_execute_ontap_patch():
+                # Create a client
+                client = netapp_v1.NetAppAsyncClient()
+
+                # Initialize request argument(s)
+                request = netapp_v1.ExecuteOntapPatchRequest(
+                    ontap_path="ontap_path_value",
+                )
+
+                # Make the request
+                response = await client.execute_ontap_patch(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.netapp_v1.types.ExecuteOntapPatchRequest, dict]]):
+                The request object. Request message for ``ExecuteOntapPatch`` API.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.netapp_v1.types.ExecuteOntapPatchResponse:
+                Response message for ExecuteOntapPatch API.
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, ontap.ExecuteOntapPatchRequest):
+            request = ontap.ExecuteOntapPatchRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.execute_ontap_patch
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("ontap_path", request.ontap_path),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def list_operations(
         self,
-        request: Optional[operations_pb2.ListOperationsRequest] = None,
+        request: Optional[Union[operations_pb2.ListOperationsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -8867,8 +9321,12 @@ class NetAppAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.ListOperationsRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.ListOperationsRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.ListOperationsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -8877,7 +9335,7 @@ class NetAppAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -8885,7 +9343,7 @@ class NetAppAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -8896,7 +9354,7 @@ class NetAppAsyncClient:
 
     async def get_operation(
         self,
-        request: Optional[operations_pb2.GetOperationRequest] = None,
+        request: Optional[Union[operations_pb2.GetOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -8922,8 +9380,12 @@ class NetAppAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.GetOperationRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.GetOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.GetOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -8932,7 +9394,7 @@ class NetAppAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -8940,7 +9402,7 @@ class NetAppAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -8951,7 +9413,7 @@ class NetAppAsyncClient:
 
     async def delete_operation(
         self,
-        request: Optional[operations_pb2.DeleteOperationRequest] = None,
+        request: Optional[Union[operations_pb2.DeleteOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -8981,8 +9443,12 @@ class NetAppAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.DeleteOperationRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.DeleteOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.DeleteOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -8991,7 +9457,7 @@ class NetAppAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -8999,7 +9465,7 @@ class NetAppAsyncClient:
 
         # Send the request.
         await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -9007,7 +9473,7 @@ class NetAppAsyncClient:
 
     async def cancel_operation(
         self,
-        request: Optional[operations_pb2.CancelOperationRequest] = None,
+        request: Optional[Union[operations_pb2.CancelOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -9036,8 +9502,12 @@ class NetAppAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.CancelOperationRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.CancelOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.CancelOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -9046,7 +9516,7 @@ class NetAppAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -9054,7 +9524,7 @@ class NetAppAsyncClient:
 
         # Send the request.
         await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -9062,7 +9532,7 @@ class NetAppAsyncClient:
 
     async def get_location(
         self,
-        request: Optional[locations_pb2.GetLocationRequest] = None,
+        request: Optional[Union[locations_pb2.GetLocationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -9088,8 +9558,12 @@ class NetAppAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = locations_pb2.GetLocationRequest(**request)
+        if request is None:
+            request_pb = locations_pb2.GetLocationRequest()
+        elif isinstance(request, dict):
+            request_pb = locations_pb2.GetLocationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -9098,7 +9572,7 @@ class NetAppAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -9106,7 +9580,7 @@ class NetAppAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -9117,7 +9591,7 @@ class NetAppAsyncClient:
 
     async def list_locations(
         self,
-        request: Optional[locations_pb2.ListLocationsRequest] = None,
+        request: Optional[Union[locations_pb2.ListLocationsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -9143,8 +9617,12 @@ class NetAppAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = locations_pb2.ListLocationsRequest(**request)
+        if request is None:
+            request_pb = locations_pb2.ListLocationsRequest()
+        elif isinstance(request, dict):
+            request_pb = locations_pb2.ListLocationsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -9153,7 +9631,7 @@ class NetAppAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -9161,7 +9639,7 @@ class NetAppAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -9180,9 +9658,7 @@ class NetAppAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("NetAppAsyncClient",)

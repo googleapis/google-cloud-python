@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -361,6 +361,7 @@ from .trace import (
     Event,
     ExceptionDetail,
     FlowInvocation,
+    FlowTraceMetadata,
     FlowTransition,
     LlmCall,
     NamedMetric,
@@ -368,11 +369,14 @@ from .trace import (
     PlaybookInput,
     PlaybookInvocation,
     PlaybookOutput,
+    PlaybookTraceMetadata,
     PlaybookTransition,
     RetrievalStrategy,
     Span,
+    SpeechProcessingMetadata,
     Status,
     ToolUse,
+    TraceBlock,
     UserUtterance,
 )
 from .transition_route_group import (
@@ -700,16 +704,20 @@ __all__ = (
     "Event",
     "ExceptionDetail",
     "FlowInvocation",
+    "FlowTraceMetadata",
     "FlowTransition",
     "LlmCall",
     "NamedMetric",
     "PlaybookInput",
     "PlaybookInvocation",
     "PlaybookOutput",
+    "PlaybookTraceMetadata",
     "PlaybookTransition",
     "Span",
+    "SpeechProcessingMetadata",
     "Status",
     "ToolUse",
+    "TraceBlock",
     "UserUtterance",
     "OutputState",
     "RetrievalStrategy",

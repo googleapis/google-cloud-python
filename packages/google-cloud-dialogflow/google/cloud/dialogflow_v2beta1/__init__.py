@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,12 +21,70 @@ from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER
-    from importlib import metadata
-else:  # pragma: NO COVER
-    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
-    # this code path once we drop support for Python 3.7
-    import importlib_metadata as metadata
+from importlib import metadata
+
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.dialogflow_v2beta1.services.agents",
+    "google.cloud.dialogflow_v2beta1.services.answer_records",
+    "google.cloud.dialogflow_v2beta1.services.contexts",
+    "google.cloud.dialogflow_v2beta1.services.conversation_profiles",
+    "google.cloud.dialogflow_v2beta1.services.conversations",
+    "google.cloud.dialogflow_v2beta1.services.documents",
+    "google.cloud.dialogflow_v2beta1.services.encryption_spec_service",
+    "google.cloud.dialogflow_v2beta1.services.entity_types",
+    "google.cloud.dialogflow_v2beta1.services.environments",
+    "google.cloud.dialogflow_v2beta1.services.fulfillments",
+    "google.cloud.dialogflow_v2beta1.services.generator_evaluations",
+    "google.cloud.dialogflow_v2beta1.services.generators",
+    "google.cloud.dialogflow_v2beta1.services.intents",
+    "google.cloud.dialogflow_v2beta1.services.knowledge_bases",
+    "google.cloud.dialogflow_v2beta1.services.participants",
+    "google.cloud.dialogflow_v2beta1.services.phone_numbers",
+    "google.cloud.dialogflow_v2beta1.services.session_entity_types",
+    "google.cloud.dialogflow_v2beta1.services.sessions",
+    "google.cloud.dialogflow_v2beta1.services.sip_trunks",
+    "google.cloud.dialogflow_v2beta1.services.tools",
+    "google.cloud.dialogflow_v2beta1.services.versions",
+    "google.cloud.dialogflow_v2beta1.types.agent",
+    "google.cloud.dialogflow_v2beta1.types.agent_coaching_instruction",
+    "google.cloud.dialogflow_v2beta1.types.answer_record",
+    "google.cloud.dialogflow_v2beta1.types.audio_config",
+    "google.cloud.dialogflow_v2beta1.types.ces_app",
+    "google.cloud.dialogflow_v2beta1.types.ces_tool",
+    "google.cloud.dialogflow_v2beta1.types.context",
+    "google.cloud.dialogflow_v2beta1.types.conversation",
+    "google.cloud.dialogflow_v2beta1.types.conversation_event",
+    "google.cloud.dialogflow_v2beta1.types.conversation_profile",
+    "google.cloud.dialogflow_v2beta1.types.document",
+    "google.cloud.dialogflow_v2beta1.types.encryption_spec",
+    "google.cloud.dialogflow_v2beta1.types.entity_type",
+    "google.cloud.dialogflow_v2beta1.types.environment",
+    "google.cloud.dialogflow_v2beta1.types.fulfillment",
+    "google.cloud.dialogflow_v2beta1.types.gcs",
+    "google.cloud.dialogflow_v2beta1.types.generator",
+    "google.cloud.dialogflow_v2beta1.types.generator_evaluation",
+    "google.cloud.dialogflow_v2beta1.types.human_agent_assistant_event",
+    "google.cloud.dialogflow_v2beta1.types.intent",
+    "google.cloud.dialogflow_v2beta1.types.knowledge_base",
+    "google.cloud.dialogflow_v2beta1.types.operations",
+    "google.cloud.dialogflow_v2beta1.types.participant",
+    "google.cloud.dialogflow_v2beta1.types.phone_number",
+    "google.cloud.dialogflow_v2beta1.types.session",
+    "google.cloud.dialogflow_v2beta1.types.session_entity_type",
+    "google.cloud.dialogflow_v2beta1.types.sip_trunk",
+    "google.cloud.dialogflow_v2beta1.types.tool",
+    "google.cloud.dialogflow_v2beta1.types.tool_call",
+    "google.cloud.dialogflow_v2beta1.types.toolset",
+    "google.cloud.dialogflow_v2beta1.types.validation_result",
+    "google.cloud.dialogflow_v2beta1.types.version",
+    "google.cloud.dialogflow_v2beta1.types.webhook",
+}
 
 
 from .services.agents import AgentsAsyncClient, AgentsClient
@@ -105,6 +163,8 @@ from .types.audio_config import (
     TelephonyDtmfEvents,
     VoiceSelectionParams,
 )
+from .types.ces_app import CesAppSpec
+from .types.ces_tool import CesToolSpec
 from .types.context import (
     Context,
     CreateContextRequest,
@@ -136,6 +196,7 @@ from .types.conversation import (
     ListMessagesRequest,
     ListMessagesResponse,
     SearchKnowledgeAnswer,
+    SearchKnowledgeDebugInfo,
     SearchKnowledgeRequest,
     SearchKnowledgeResponse,
     SuggestConversationSummaryRequest,
@@ -158,6 +219,7 @@ from .types.conversation_profile import (
     NotificationConfig,
     SetSuggestionFeatureConfigOperationMetadata,
     SetSuggestionFeatureConfigRequest,
+    SipConfig,
     UpdateConversationProfileRequest,
 )
 from .types.document import (
@@ -290,15 +352,18 @@ from .types.participant import (
     CompileSuggestionRequest,
     CompileSuggestionResponse,
     CreateParticipantRequest,
+    DatastoreResponseReason,
     DialogflowAssistAnswer,
     DtmfParameters,
     FaqAnswer,
     GenerateSuggestionsResponse,
     GetParticipantRequest,
+    IngestedContextReferenceDebugInfo,
     InputTextConfig,
     IntentInput,
     IntentSuggestion,
     KnowledgeAssistAnswer,
+    KnowledgeAssistDebugInfo,
     ListParticipantsRequest,
     ListParticipantsResponse,
     ListSuggestionsRequest,
@@ -308,6 +373,7 @@ from .types.participant import (
     OutputAudio,
     Participant,
     ResponseMessage,
+    ServiceLatency,
     SmartReplyAnswer,
     StreamingAnalyzeContentRequest,
     StreamingAnalyzeContentResponse,
@@ -367,6 +433,8 @@ from .types.sip_trunk import (
     GetSipTrunkRequest,
     ListSipTrunksRequest,
     ListSipTrunksResponse,
+    ProbeDetails,
+    SipHostname,
     SipTrunk,
     UpdateSipTrunkRequest,
 )
@@ -380,6 +448,7 @@ from .types.tool import (
     UpdateToolRequest,
 )
 from .types.tool_call import ToolCall, ToolCallResult
+from .types.toolset import ToolsetTool
 from .types.validation_result import ValidationError, ValidationResult
 from .types.version import (
     CreateVersionRequest,
@@ -401,34 +470,23 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import sys
         import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.dialogflow_v2beta1"
-        if sys.version_info < (3, 9):
+        if sys.version_info < (3, 10):
             warnings.warn(
                 "You are using a non-supported Python version "
                 + f"({_py_version_str}).  Google will not post any further "
                 + f"updates to {_package_label} supporting this Python version. "
                 + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.9, and then update {_package_label}.",
-                FutureWarning,
-            )
-        if sys.version_info[:2] == (3, 9):
-            warnings.warn(
-                f"You are using a Python version ({_py_version_str}) "
-                + f"which Google will stop supporting in {_package_label} in "
-                + "January 2026. Please "
-                + "upgrade to the latest Python version, or at "
-                + "least to Python 3.10, before then, and "
-                + f"then update {_package_label}.",
+                + f"least to Python 3.10, and then update {_package_label}.",
                 FutureWarning,
             )
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -457,9 +515,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -541,6 +599,8 @@ __all__ = (
     "BatchUpdateIntentsResponse",
     "BidiStreamingAnalyzeContentRequest",
     "BidiStreamingAnalyzeContentResponse",
+    "CesAppSpec",
+    "CesToolSpec",
     "ClearSuggestionFeatureConfigOperationMetadata",
     "ClearSuggestionFeatureConfigRequest",
     "CloudConversationDebuggingInfo",
@@ -574,6 +634,7 @@ __all__ = (
     "CreateToolRequest",
     "CreateVersionRequest",
     "CustomPronunciationParams",
+    "DatastoreResponseReason",
     "DeleteAgentRequest",
     "DeleteAllContextsRequest",
     "DeleteContextRequest",
@@ -662,6 +723,7 @@ __all__ = (
     "InferenceParameter",
     "IngestContextReferencesRequest",
     "IngestContextReferencesResponse",
+    "IngestedContextReferenceDebugInfo",
     "InitializeEncryptionSpecMetadata",
     "InitializeEncryptionSpecRequest",
     "InitializeEncryptionSpecResponse",
@@ -675,6 +737,7 @@ __all__ = (
     "IntentsClient",
     "KnowledgeAnswers",
     "KnowledgeAssistAnswer",
+    "KnowledgeAssistDebugInfo",
     "KnowledgeBase",
     "KnowledgeBasesClient",
     "KnowledgeOperationMetadata",
@@ -729,6 +792,7 @@ __all__ = (
     "ParticipantsClient",
     "PhoneNumber",
     "PhoneNumbersClient",
+    "ProbeDetails",
     "QueryInput",
     "QueryParameters",
     "QueryResult",
@@ -739,17 +803,21 @@ __all__ = (
     "SearchAgentsRequest",
     "SearchAgentsResponse",
     "SearchKnowledgeAnswer",
+    "SearchKnowledgeDebugInfo",
     "SearchKnowledgeRequest",
     "SearchKnowledgeResponse",
     "Sentiment",
     "SentimentAnalysisRequestConfig",
     "SentimentAnalysisResult",
+    "ServiceLatency",
     "SessionEntityType",
     "SessionEntityTypesClient",
     "SessionsClient",
     "SetAgentRequest",
     "SetSuggestionFeatureConfigOperationMetadata",
     "SetSuggestionFeatureConfigRequest",
+    "SipConfig",
+    "SipHostname",
     "SipTrunk",
     "SipTrunksClient",
     "SmartReplyAnswer",
@@ -794,6 +862,7 @@ __all__ = (
     "ToolCall",
     "ToolCallResult",
     "ToolsClient",
+    "ToolsetTool",
     "TrainAgentRequest",
     "TriggerEvent",
     "UndeletePhoneNumberRequest",

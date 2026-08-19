@@ -481,17 +481,16 @@ def test_custom_expression(
         assert len(result) > 0
 
 
-@pytest.mark.skipif(
-    SQLALCHEMY_VERSION >= packaging.version.parse("2.0"),
-    reason="Needs to be revisited as part of ensuring full SQL 2.0 compliance.",
-)
 def test_compiled_query_literal_binds(
     engine, engine_using_test_dataset, table, table_using_test_dataset, query
 ):
     q = query(table)
     compiled = q.compile(engine, compile_kwargs={"literal_binds": True})
     with engine.connect() as conn:
-        result = conn.execute(compiled).fetchall()
+        if hasattr(conn, "exec_driver_sql"):
+            result = conn.exec_driver_sql(str(compiled)).fetchall()
+        else:
+            result = conn.execute(compiled).fetchall()
         assert len(result) > 0
 
     q = query(table_using_test_dataset)
@@ -499,7 +498,10 @@ def test_compiled_query_literal_binds(
         engine_using_test_dataset, compile_kwargs={"literal_binds": True}
     )
     with engine_using_test_dataset.connect() as conn:
-        result = conn.execute(compiled).fetchall()
+        if hasattr(conn, "exec_driver_sql"):
+            result = conn.exec_driver_sql(str(compiled)).fetchall()
+        else:
+            result = conn.execute(compiled).fetchall()
         assert len(result) > 0
 
 

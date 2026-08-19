@@ -2,6 +2,28 @@
 
 [1]: https://pypi.org/project/google-auth-httplib2/#history
 
+## [0.4.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-httplib2-v0.4.0...google-auth-httplib2-v0.4.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-httplib2-v0.3.1...google-auth-httplib2-v0.4.0) (2026-05-06)
+
+
+### Bug Fixes
+
+* Drop support for Python 3.7, 3.8, and 3.9 (#16937) ([b4fa220048f78a76da9d07c4c367e4cbc79360e6](https://github.com/googleapis/google-cloud-python/commit/b4fa220048f78a76da9d07c4c367e4cbc79360e6))
+
+## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-httplib2-v0.3.0...google-auth-httplib2-v0.3.1) (2026-03-26)
+
+
+### Bug Fixes
+
+* Allow Protobuf 7.x, require Python 3.9 (#16102) ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+* Require Python 3.9 ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+
 ## [0.3.0](https://github.com/googleapis/google-auth-library-python-httplib2/compare/v0.2.1...v0.3.0) (2025-12-12)
 
 

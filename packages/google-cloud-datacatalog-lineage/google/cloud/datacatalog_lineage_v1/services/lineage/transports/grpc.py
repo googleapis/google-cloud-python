@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -91,7 +91,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -190,6 +190,10 @@ class LineageGrpcTransport(LineageTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
           google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -818,6 +822,61 @@ class LineageGrpcTransport(LineageTransport):
                 )
             )
         return self._stubs["batch_search_link_processes"]
+
+    @property
+    def search_lineage_streaming(
+        self,
+    ) -> Callable[
+        [lineage.SearchLineageStreamingRequest], lineage.SearchLineageStreamingResponse
+    ]:
+        r"""Return a callable for the search lineage streaming method over gRPC.
+
+        Retrieves a streaming response of lineage links connected to the
+        requested assets by performing a breadth-first search in the
+        given direction. Links represent the data flow between
+        **source** (upstream) and **target** (downstream) assets in
+        transformation pipelines. Links are stored in the same project
+        as the Lineage Events that create them. This method retrieves
+        links from all valid locations provided in the request. This
+        method supports Column-Level Lineage (CLL) along with wildcard
+        support to retrieve all CLL for an Entity FQN.
+
+        Following permissions are required to retrieve links:
+
+        - ``datalineage.events.get`` permission for the project where
+          the link is stored for entity-level lineage.
+        - ``datalineage.events.getFields`` permission for the project
+          where the link is stored for column-level lineage.
+
+        This method also returns processes that created the links if
+        explicitly requested by setting
+        `max_process_per_link <google.cloud.datacatalog.lineage.v1.SearchLineageStreamingRequest.limits.max_process_per_link>`__
+        is non-zero and full process details are requested via
+        ``links.processes.process`` in the
+        `FieldMask <https://developers.google.com/workspace/docs/api/how-tos/field-masks#read_with_a_field_mask>`__.
+
+        Permission required to retrieve processes:
+
+        - ``datalineage.processes.get`` permission for the project where
+          the process is stored.
+
+        Returns:
+            Callable[[~.SearchLineageStreamingRequest],
+                    ~.SearchLineageStreamingResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "search_lineage_streaming" not in self._stubs:
+            self._stubs["search_lineage_streaming"] = self._logged_channel.unary_stream(
+                "/google.cloud.datacatalog.lineage.v1.Lineage/SearchLineageStreaming",
+                request_serializer=lineage.SearchLineageStreamingRequest.serialize,
+                response_deserializer=lineage.SearchLineageStreamingResponse.deserialize,
+            )
+        return self._stubs["search_lineage_streaming"]
 
     def close(self):
         self._logged_channel.close()

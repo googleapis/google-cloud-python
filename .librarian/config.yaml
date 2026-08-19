@@ -1,6 +1,0 @@
-global_files_allowlist:
-  # Allow the container to read and write the root `CHANGELOG.md`
-  # file during the `release` step to update the latest client library
-  # versions which are hardcoded in the file.
-  - path: "CHANGELOG.md"
-    permissions: "read-write"

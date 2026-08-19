@@ -1,12 +1,9 @@
-Python Client for Google APIs Common Protos
-===========================================
+Python Client for Service Config
+================================
 
 |stable| |pypi| |versions|
 
-`Google APIs Common Protos`_: 
-
 - `Client Library Documentation`_
-- `Product Documentation`_
 
 .. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#stability-levels
@@ -14,9 +11,7 @@ Python Client for Google APIs Common Protos
    :target: https://pypi.org/project/googleapis-common-protos/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/googleapis-common-protos.svg
    :target: https://pypi.org/project/googleapis-common-protos/
-.. _Google APIs Common Protos: https://github.com/googleapis/googleapis/tree/master/google
 .. _Client Library Documentation: https://github.com/googleapis/google-cloud-python/tree/main/packages/googleapis-common-protos/summary_overview
-.. _Product Documentation:  https://github.com/googleapis/googleapis/tree/master/google
 
 Quick Start
 -----------
@@ -25,12 +20,10 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google APIs Common Protos.`_
-4. `Set up Authentication.`_
+3. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google APIs Common Protos.:  https://github.com/googleapis/googleapis/tree/master/google
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +54,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -97,14 +91,11 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google APIs Common Protos
+-  Read the `Client Library Documentation`_ for Service Config
    to see other available methods on the client.
--  Read the `Google APIs Common Protos Product documentation`_ to learn
-   more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Google APIs Common Protos Product documentation:  https://github.com/googleapis/googleapis/tree/master/google
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

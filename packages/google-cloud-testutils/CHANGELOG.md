@@ -4,6 +4,42 @@
 
 [1]: https://pypi.org/project/google-cloud-testutils/#history
 
+## [1.9.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-testutils-v1.9.1...google-cloud-testutils-v1.9.2) (2026-08-06)
+
+
+### Bug Fixes
+
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
+## [1.9.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-testutils-v1.9.0...google-cloud-testutils-v1.9.1) (2026-06-22)
+
+
+### Bug Fixes
+
+* make test_utils unique_resource_id parallel-safe ([#17440](https://github.com/googleapis/google-cloud-python/issues/17440)) ([ac1f5d5](https://github.com/googleapis/google-cloud-python/commit/ac1f5d55900d4787f2ced6b5350ef530f700794b))
+
+## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-testutils-v1.8.0...google-cloud-testutils-v1.9.0) (2026-06-02)
+
+
+### Bug Fixes
+
+* support != exclusion constraints in lower-bound-checker (#17269) ([65da31654ad41065132fecbcf7646e0f2b336256](https://github.com/googleapis/google-cloud-python/commit/65da31654ad41065132fecbcf7646e0f2b336256))
+
+## [1.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-testutils-v1.7.1...google-cloud-testutils-v1.8.0) (2026-05-06)
+
+
+### Bug Fixes
+
+* Drop support for Python 3.9 (#16948) ([cdc5dd5da9afc73fd7f9d0466a72b469d439aa78](https://github.com/googleapis/google-cloud-python/commit/cdc5dd5da9afc73fd7f9d0466a72b469d439aa78))
+
+## [1.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-testutils-v1.7.0...google-cloud-testutils-v1.7.1) (2026-03-26)
+
+
+### Bug Fixes
+
+* Allow Protobuf 7.x, require Python 3.9 (#16102) ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+* Require Python 3.9 ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+
 ## [1.7.0](https://github.com/googleapis/python-test-utils/compare/v1.6.4...v1.7.0) (2025-10-29)
 
 

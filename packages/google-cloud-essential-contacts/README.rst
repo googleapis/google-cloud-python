@@ -3,7 +3,7 @@ Python Client for Essential Contacts
 
 |stable| |pypi| |versions|
 
-`Essential Contacts`_: helps you customize who receives notifications by providing your own list of contacts in many Google Cloud services.
+`Essential Contacts`_: Essential Contacts helps you direct critical Google Cloud notifications to the appropriate personnel across your projects, folders, and organization resources.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for Essential Contacts
    :target: https://pypi.org/project/google-cloud-essential-contacts/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-essential-contacts.svg
    :target: https://pypi.org/project/google-cloud-essential-contacts/
-.. _Essential Contacts: https://cloud.google.com/resource-manager/docs/managing-notification-contacts/
+.. _Essential Contacts: https://cloud.google.com/resource-manager/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/essentialcontacts/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/resource-manager/docs/managing-notification-contacts/
+.. _Product Documentation:  https://cloud.google.com/resource-manager/
 
 Quick Start
 -----------
@@ -30,7 +30,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Essential Contacts.:  https://cloud.google.com/resource-manager/docs/managing-notification-contacts/
+.. _Enable the Essential Contacts.:  https://cloud.google.com/resource-manager/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +61,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -104,7 +105,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Essential Contacts Product documentation:  https://cloud.google.com/resource-manager/docs/managing-notification-contacts/
+.. _Essential Contacts Product documentation:  https://cloud.google.com/resource-manager/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

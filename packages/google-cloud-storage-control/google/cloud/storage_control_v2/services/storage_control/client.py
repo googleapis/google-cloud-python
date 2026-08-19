@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -66,10 +66,12 @@ import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.interval_pb2 as interval_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.storage_control_v2.services.storage_control import pagers
@@ -122,7 +124,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
     """
 
     @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint):
+    def _get_default_mtls_endpoint(api_endpoint) -> Optional[str]:
         """Converts api endpoint to mTLS endpoint.
 
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
@@ -130,7 +132,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
         Args:
             api_endpoint (Optional[str]): the api endpoint to convert.
         Returns:
-            str: converted mTLS api endpoint.
+            Optional[str]: converted mTLS api endpoint.
         """
         if not api_endpoint:
             return api_endpoint
@@ -140,6 +142,10 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
         )
 
         m = mtls_endpoint_re.match(api_endpoint)
+        if m is None:
+            # Could not parse api_endpoint; return as-is.
+            return api_endpoint
+
         name, mtls, sandbox, googledomain = m.groups()
         if mtls or not googledomain:
             return api_endpoint
@@ -258,6 +264,23 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def bucket_path(
+        project: str,
+        bucket: str,
+    ) -> str:
+        """Returns a fully-qualified bucket string."""
+        return "projects/{project}/buckets/{bucket}".format(
+            project=project,
+            bucket=bucket,
+        )
+
+    @staticmethod
+    def parse_bucket_path(path: str) -> Dict[str, str]:
+        """Parses a bucket path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/buckets/(?P<bucket>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def folder_path(
         project: str,
         bucket: str,
@@ -300,6 +323,52 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def intelligence_finding_path(
+        project: str,
+        location: str,
+        intelligence_finding: str,
+    ) -> str:
+        """Returns a fully-qualified intelligence_finding string."""
+        return "projects/{project}/locations/{location}/intelligenceFindings/{intelligence_finding}".format(
+            project=project,
+            location=location,
+            intelligence_finding=intelligence_finding,
+        )
+
+    @staticmethod
+    def parse_intelligence_finding_path(path: str) -> Dict[str, str]:
+        """Parses a intelligence_finding path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/intelligenceFindings/(?P<intelligence_finding>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def intelligence_finding_revision_path(
+        project: str,
+        location: str,
+        intelligence_finding: str,
+        revision: str,
+    ) -> str:
+        """Returns a fully-qualified intelligence_finding_revision string."""
+        return "projects/{project}/locations/{location}/intelligenceFindings/{intelligence_finding}/revisions/{revision}".format(
+            project=project,
+            location=location,
+            intelligence_finding=intelligence_finding,
+            revision=revision,
+        )
+
+    @staticmethod
+    def parse_intelligence_finding_revision_path(path: str) -> Dict[str, str]:
+        """Parses a intelligence_finding_revision path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/intelligenceFindings/(?P<intelligence_finding>.+?)/revisions/(?P<revision>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def managed_folder_path(
         project: str,
         bucket: str,
@@ -317,6 +386,50 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
         """Parses a managed_folder path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/buckets/(?P<bucket>.+?)/managedFolders/(?P<managed_folder>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def object_path(
+        project: str,
+        bucket: str,
+        object: str,
+    ) -> str:
+        """Returns a fully-qualified object string."""
+        return "projects/{project}/buckets/{bucket}/objects/{object}".format(
+            project=project,
+            bucket=bucket,
+            object=object,
+        )
+
+    @staticmethod
+    def parse_object_path(path: str) -> Dict[str, str]:
+        """Parses a object path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/buckets/(?P<bucket>.+?)/objects/(?P<object>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def rapid_cache_path(
+        project: str,
+        bucket: str,
+        rapid_cache: str,
+    ) -> str:
+        """Returns a fully-qualified rapid_cache string."""
+        return "projects/{project}/buckets/{bucket}/rapidCaches/{rapid_cache}".format(
+            project=project,
+            bucket=bucket,
+            rapid_cache=rapid_cache,
+        )
+
+    @staticmethod
+    def parse_rapid_cache_path(path: str) -> Dict[str, str]:
+        """Parses a rapid_cache path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/buckets/(?P<bucket>.+?)/rapidCaches/(?P<rapid_cache>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -530,7 +643,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
     @staticmethod
     def _get_api_endpoint(
         api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ):
+    ) -> str:
         """Return the API endpoint used by the client.
 
         Args:
@@ -599,6 +712,36 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
         # NOTE (b/349488459): universe validation is disabled until further notice.
         return True
 
+    @staticmethod
+    def _setup_request_id(request, field_name: str, is_proto3_optional: bool):
+        """Populate a UUID4 field in the request if it is not already set.
+
+        Args:
+            request (Union[google.protobuf.message.Message, dict]): The request object.
+            field_name (str): The name of the field to populate.
+            is_proto3_optional (bool): Whether the field is proto3 optional.
+        """
+        if isinstance(request, dict):
+            if is_proto3_optional:
+                if field_name not in request:
+                    request[field_name] = str(uuid.uuid4())
+            elif not request.get(field_name):
+                request[field_name] = str(uuid.uuid4())
+            return
+
+        if is_proto3_optional:
+            try:
+                # Pure protobuf messages
+                if not request.HasField(field_name):
+                    setattr(request, field_name, str(uuid.uuid4()))
+            except (AttributeError, ValueError):
+                # Proto-plus messages or other objects
+                if field_name not in request:
+                    setattr(request, field_name, str(uuid.uuid4()))
+        else:
+            if not getattr(request, field_name):
+                setattr(request, field_name, str(uuid.uuid4()))
+
     def _add_cred_info_for_auth_errors(
         self, error: core_exceptions.GoogleAPICallError
     ) -> None:
@@ -627,7 +770,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
             error._details.append(json.dumps(cred_info))
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -723,7 +866,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
         self._universe_domain = StorageControlClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
-        self._api_endpoint = None  # updated below, depending on `transport`
+        self._api_endpoint: str = ""  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
@@ -951,8 +1094,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1064,8 +1206,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1184,8 +1325,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1456,8 +1596,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1601,8 +1740,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1729,8 +1867,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1871,8 +2008,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1983,8 +2119,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2096,8 +2231,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2220,8 +2354,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2240,6 +2373,141 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_managed_folder(
+        self,
+        request: Optional[
+            Union[storage_control.UpdateManagedFolderRequest, dict]
+        ] = None,
+        *,
+        managed_folder: Optional[storage_control.ManagedFolder] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> storage_control.ManagedFolder:
+        r"""Updates a managed folder. Currently, this RPC only supports
+        updating the ``rapid_cache_config`` field.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_control_v2
+
+            def sample_update_managed_folder():
+                # Create a client
+                client = storage_control_v2.StorageControlClient()
+
+                # Initialize request argument(s)
+                request = storage_control_v2.UpdateManagedFolderRequest(
+                )
+
+                # Make the request
+                response = client.update_managed_folder(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.storage_control_v2.types.UpdateManagedFolderRequest, dict]):
+                The request object. Request message for
+                UpdateManagedFolder.
+            managed_folder (google.cloud.storage_control_v2.types.ManagedFolder):
+                Required. Properties of the managed folder being
+                updated. Currently, this RPC only supports updating the
+                ``rapid_cache_config`` field in ``managed_folder``.
+
+                This corresponds to the ``managed_folder`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Optional. Update mask for managed_folder. Currently,
+                this RPC only supports updating the
+                ``rapid_cache_config`` field in ``managed_folder``. This
+                field also supports update mask for the subfields in the
+                map of ``rapid_cache_config``. The user can specify the
+                update mask for ``rapid_cache_config.policies`` and
+                ``rapid_cache_config.policies.<key>``, but patching is
+                not supported for a field within
+                ``RapidCachePolicy.policies.<key>``, like
+                rapid_cache_config.policies.[key].ingest_on_write.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.storage_control_v2.types.ManagedFolder:
+                A managed folder.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [managed_folder, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_control.UpdateManagedFolderRequest):
+            request = storage_control.UpdateManagedFolderRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if managed_folder is not None:
+                request.managed_folder = managed_folder
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_managed_folder]
+
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
+        )
+        regex_match = routing_param_regex.match(request.managed_folder.name)
+        if regex_match and regex_match.group("bucket"):
+            header_params["bucket"] = regex_match.group("bucket")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -2370,8 +2638,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2525,8 +2792,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2656,8 +2922,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2775,8 +3040,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2894,8 +3158,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3010,8 +3273,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3133,8 +3395,7 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        if not request.request_id:
-            request.request_id = str(uuid.uuid4())
+        self._setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3150,6 +3411,532 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListAnywhereCachesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_rapid_cache(
+        self,
+        request: Optional[Union[storage_control.CreateRapidCacheRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        rapid_cache: Optional[storage_control.RapidCache] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Creates a Rapid Cache instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_control_v2
+
+            def sample_create_rapid_cache():
+                # Create a client
+                client = storage_control_v2.StorageControlClient()
+
+                # Initialize request argument(s)
+                request = storage_control_v2.CreateRapidCacheRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.create_rapid_cache(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.storage_control_v2.types.CreateRapidCacheRequest, dict]):
+                The request object. Request message for CreateRapidCache.
+            parent (str):
+                Required. The bucket to which this cache belongs.
+                Format: ``projects/{project}/buckets/{bucket}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            rapid_cache (google.cloud.storage_control_v2.types.RapidCache):
+                Required. The RapidCache to create. Default values for
+                ingest_on_write, ttl and admission_policy will be
+                applied if not specified in the request.
+
+                This corresponds to the ``rapid_cache`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.storage_control_v2.types.RapidCache`
+                A Rapid Cache Instance.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, rapid_cache]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_control.CreateRapidCacheRequest):
+            request = storage_control.CreateRapidCacheRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if rapid_cache is not None:
+                request.rapid_cache = rapid_cache
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_rapid_cache]
+
+        header_params = {}
+
+        routing_param_regex = re.compile("^(?P<bucket>.*)$")
+        regex_match = routing_param_regex.match(request.parent)
+        if regex_match and regex_match.group("bucket"):
+            header_params["bucket"] = regex_match.group("bucket")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            storage_control.RapidCache,
+            metadata_type=storage_control.CreateRapidCacheMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_rapid_cache(
+        self,
+        request: Optional[Union[storage_control.UpdateRapidCacheRequest, dict]] = None,
+        *,
+        rapid_cache: Optional[storage_control.RapidCache] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation.Operation:
+        r"""Updates a Rapid Cache instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_control_v2
+
+            def sample_update_rapid_cache():
+                # Create a client
+                client = storage_control_v2.StorageControlClient()
+
+                # Initialize request argument(s)
+                request = storage_control_v2.UpdateRapidCacheRequest(
+                )
+
+                # Make the request
+                operation = client.update_rapid_cache(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.storage_control_v2.types.UpdateRapidCacheRequest, dict]):
+                The request object. Request message for UpdateRapidCache.
+            rapid_cache (google.cloud.storage_control_v2.types.RapidCache):
+                Required. The RapidCache to update.
+                This corresponds to the ``rapid_cache`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. List of fields to be updated. Mutable fields
+                of RapidCache include ``ttl``, ``admission_policy`` and
+                ``ingest_on_write``.
+
+                To specify ALL fields, specify a single field with the
+                value ``*``. Note: We recommend against doing this. If a
+                new field is introduced at a later time, an older client
+                updating with the ``*`` may accidentally reset the new
+                field's value.
+
+                Not specifying any fields is an error.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.storage_control_v2.types.RapidCache`
+                A Rapid Cache Instance.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [rapid_cache, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_control.UpdateRapidCacheRequest):
+            request = storage_control.UpdateRapidCacheRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if rapid_cache is not None:
+                request.rapid_cache = rapid_cache
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_rapid_cache]
+
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
+        )
+        regex_match = routing_param_regex.match(request.rapid_cache.name)
+        if regex_match and regex_match.group("bucket"):
+            header_params["bucket"] = regex_match.group("bucket")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            storage_control.RapidCache,
+            metadata_type=storage_control.UpdateRapidCacheMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_rapid_cache(
+        self,
+        request: Optional[Union[storage_control.GetRapidCacheRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> storage_control.RapidCache:
+        r"""Gets a Rapid Cache instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_control_v2
+
+            def sample_get_rapid_cache():
+                # Create a client
+                client = storage_control_v2.StorageControlClient()
+
+                # Initialize request argument(s)
+                request = storage_control_v2.GetRapidCacheRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_rapid_cache(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.storage_control_v2.types.GetRapidCacheRequest, dict]):
+                The request object. Request message for GetRapidCache.
+            name (str):
+                Required. The name field in the request should be:
+                ``projects/{project}/buckets/{bucket}/rapidCaches/{rapid_cache}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.storage_control_v2.types.RapidCache:
+                A Rapid Cache Instance.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_control.GetRapidCacheRequest):
+            request = storage_control.GetRapidCacheRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_rapid_cache]
+
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
+        )
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("bucket"):
+            header_params["bucket"] = regex_match.group("bucket")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_rapid_caches(
+        self,
+        request: Optional[Union[storage_control.ListRapidCachesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListRapidCachesPager:
+        r"""Lists Rapid Cache instances for a given bucket.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_control_v2
+
+            def sample_list_rapid_caches():
+                # Create a client
+                client = storage_control_v2.StorageControlClient()
+
+                # Initialize request argument(s)
+                request = storage_control_v2.ListRapidCachesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_rapid_caches(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.storage_control_v2.types.ListRapidCachesRequest, dict]):
+                The request object. Request message for ListRapidCaches.
+            parent (str):
+                Required. The bucket to which this
+                cache belongs.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.storage_control_v2.services.storage_control.pagers.ListRapidCachesPager:
+                Response message for ListRapidCaches.
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_control.ListRapidCachesRequest):
+            request = storage_control.ListRapidCachesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_rapid_caches]
+
+        header_params = {}
+
+        routing_param_regex = re.compile("^(?P<bucket>.*)$")
+        regex_match = routing_param_regex.match(request.parent)
+        if regex_match and regex_match.group("bucket"):
+            header_params["bucket"] = regex_match.group("bucket")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListRapidCachesPager(
             method=rpc,
             request=request,
             response=response,
@@ -3205,12 +3992,6 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
             request (Union[google.cloud.storage_control_v2.types.GetProjectIntelligenceConfigRequest, dict]):
                 The request object. Request message to get the ``IntelligenceConfig``
                 resource associated with your project.
-
-                **IAM Permissions**:
-
-                Requires ``storage.intelligenceConfigs.get``
-                `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-                permission on the project.
             name (str):
                 Required. The name of the ``IntelligenceConfig``
                 resource associated with your project.
@@ -3327,12 +4108,6 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
             request (Union[google.cloud.storage_control_v2.types.UpdateProjectIntelligenceConfigRequest, dict]):
                 The request object. Request message to update the ``IntelligenceConfig``
                 resource associated with your project.
-
-                **IAM Permissions**:
-
-                Requires ``storage.intelligenceConfigs.update``
-                `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-                permission on the folder.
             intelligence_config (google.cloud.storage_control_v2.types.IntelligenceConfig):
                 Required. The ``IntelligenceConfig`` resource to be
                 updated.
@@ -3461,12 +4236,6 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
             request (Union[google.cloud.storage_control_v2.types.GetFolderIntelligenceConfigRequest, dict]):
                 The request object. Request message to get the ``IntelligenceConfig``
                 resource associated with your folder.
-
-                **IAM Permissions**
-
-                Requires ``storage.intelligenceConfigs.get``
-                `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-                permission on the folder.
             name (str):
                 Required. The name of the ``IntelligenceConfig``
                 resource associated with your folder.
@@ -3583,12 +4352,6 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
             request (Union[google.cloud.storage_control_v2.types.UpdateFolderIntelligenceConfigRequest, dict]):
                 The request object. Request message to update the ``IntelligenceConfig``
                 resource associated with your folder.
-
-                **IAM Permissions**:
-
-                Requires ``storage.intelligenceConfigs.update``
-                `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-                permission on the folder.
             intelligence_config (google.cloud.storage_control_v2.types.IntelligenceConfig):
                 Required. The ``IntelligenceConfig`` resource to be
                 updated.
@@ -3717,12 +4480,6 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
             request (Union[google.cloud.storage_control_v2.types.GetOrganizationIntelligenceConfigRequest, dict]):
                 The request object. Request message to get the ``IntelligenceConfig``
                 resource associated with your organization.
-
-                **IAM Permissions**
-
-                Requires ``storage.intelligenceConfigs.get``
-                `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-                permission on the organization.
             name (str):
                 Required. The name of the ``IntelligenceConfig``
                 resource associated with your organization.
@@ -3841,12 +4598,6 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
             request (Union[google.cloud.storage_control_v2.types.UpdateOrganizationIntelligenceConfigRequest, dict]):
                 The request object. Request message to update the ``IntelligenceConfig``
                 resource associated with your organization.
-
-                **IAM Permissions**:
-
-                Requires ``storage.intelligenceConfigs.update``
-                `IAM <https://cloud.google.com/iam/docs/overview#permissions>`__
-                permission on the organization.
             intelligence_config (google.cloud.storage_control_v2.types.IntelligenceConfig):
                 Required. The ``IntelligenceConfig`` resource to be
                 updated.
@@ -4394,6 +5145,791 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
         # Done; return the response.
         return response
 
+    def get_intelligence_finding(
+        self,
+        request: Optional[
+            Union[storage_control.GetIntelligenceFindingRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> storage_control.IntelligenceFinding:
+        r"""Gets the ``IntelligenceFinding`` for a project.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_control_v2
+
+            def sample_get_intelligence_finding():
+                # Create a client
+                client = storage_control_v2.StorageControlClient()
+
+                # Initialize request argument(s)
+                request = storage_control_v2.GetIntelligenceFindingRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_intelligence_finding(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.storage_control_v2.types.GetIntelligenceFindingRequest, dict]):
+                The request object. Request message to get the ``IntelligenceFinding``
+                resource associated with a project.
+            name (str):
+                Required. The name of the ``IntelligenceFinding``
+                resource.
+
+                Format:
+                ``projects/{project}/locations/{location}/intelligenceFindings/{intelligence_finding}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.storage_control_v2.types.IntelligenceFinding:
+                The IntelligenceFinding resource that represents a security, performance,
+                   or cost-related finding about a project or bucket.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_control.GetIntelligenceFindingRequest):
+            request = storage_control.GetIntelligenceFindingRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_intelligence_finding]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_intelligence_findings(
+        self,
+        request: Optional[
+            Union[storage_control.ListIntelligenceFindingsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListIntelligenceFindingsPager:
+        r"""Lists the ``IntelligenceFinding`` resources for the specified
+        the project.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_control_v2
+
+            def sample_list_intelligence_findings():
+                # Create a client
+                client = storage_control_v2.StorageControlClient()
+
+                # Initialize request argument(s)
+                request = storage_control_v2.ListIntelligenceFindingsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_intelligence_findings(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.storage_control_v2.types.ListIntelligenceFindingsRequest, dict]):
+                The request object. Request message to list ``IntelligenceFinding``
+                resources associated with a project.
+            parent (str):
+                Required. The parent of the ``IntelligenceFinding``
+                resource.
+
+                Format: ``projects/{project}/locations/{location}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.storage_control_v2.services.storage_control.pagers.ListIntelligenceFindingsPager:
+                Response message to list the IntelligenceFinding resources associated with
+                   a project.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_control.ListIntelligenceFindingsRequest):
+            request = storage_control.ListIntelligenceFindingsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_intelligence_findings
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListIntelligenceFindingsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def summarize_intelligence_findings(
+        self,
+        request: Optional[
+            Union[storage_control.SummarizeIntelligenceFindingsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.SummarizeIntelligenceFindingsPager:
+        r"""Summarizes the intelligence findings for the
+        specified scope (organization, folder or project).
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_control_v2
+
+            def sample_summarize_intelligence_findings():
+                # Create a client
+                client = storage_control_v2.StorageControlClient()
+
+                # Initialize request argument(s)
+                request = storage_control_v2.SummarizeIntelligenceFindingsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.summarize_intelligence_findings(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.storage_control_v2.types.SummarizeIntelligenceFindingsRequest, dict]):
+                The request object. Request message to summarize the
+                intelligence findings for the specified
+                scope (organization, folder or project).
+            parent (str):
+                Required. The scope to summarize the findings for.
+                Format:
+
+                - ``organizations/{organization}/locations/{location}``
+                - ``folders/{folder}/locations/{location}``
+                - ``projects/{project}/locations/{location}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.storage_control_v2.services.storage_control.pagers.SummarizeIntelligenceFindingsPager:
+                Response message to summarize the
+                intelligence findings for a specified
+                scope (organization, folder or project).
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, storage_control.SummarizeIntelligenceFindingsRequest
+        ):
+            request = storage_control.SummarizeIntelligenceFindingsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.summarize_intelligence_findings
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.SummarizeIntelligenceFindingsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_intelligence_finding_revision(
+        self,
+        request: Optional[
+            Union[storage_control.GetIntelligenceFindingRevisionRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> storage_control.IntelligenceFindingRevision:
+        r"""Gets the ``IntelligenceFindingRevision`` resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_control_v2
+
+            def sample_get_intelligence_finding_revision():
+                # Create a client
+                client = storage_control_v2.StorageControlClient()
+
+                # Initialize request argument(s)
+                request = storage_control_v2.GetIntelligenceFindingRevisionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_intelligence_finding_revision(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.storage_control_v2.types.GetIntelligenceFindingRevisionRequest, dict]):
+                The request object. Request message to get the
+                ``IntelligenceFindingRevision`` resource associated with
+                a project.
+            name (str):
+                Required. The name of the
+                ``IntelligenceFindingRevision`` resource.
+
+                Format:
+                -------
+
+                ``projects/{project}/locations/{location}/intelligenceFindings/{intelligence_finding}/revisions/{revision}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.storage_control_v2.types.IntelligenceFindingRevision:
+                An IntelligenceFindingRevision represents a specific revision of an
+                   IntelligenceFinding resource.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, storage_control.GetIntelligenceFindingRevisionRequest
+        ):
+            request = storage_control.GetIntelligenceFindingRevisionRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_intelligence_finding_revision
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_intelligence_finding_revisions(
+        self,
+        request: Optional[
+            Union[storage_control.ListIntelligenceFindingRevisionsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListIntelligenceFindingRevisionsPager:
+        r"""Lists all the revisions of an ``IntelligenceFinding`` resource.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_control_v2
+
+            def sample_list_intelligence_finding_revisions():
+                # Create a client
+                client = storage_control_v2.StorageControlClient()
+
+                # Initialize request argument(s)
+                request = storage_control_v2.ListIntelligenceFindingRevisionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_intelligence_finding_revisions(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.storage_control_v2.types.ListIntelligenceFindingRevisionsRequest, dict]):
+                The request object. Request message to list ``IntelligenceFindingRevision``
+                resources associated with a project.
+            parent (str):
+                Required. The parent of the
+                ``IntelligenceFindingRevision`` resource.
+
+                Format:
+                -------
+
+                ``projects/{project}/locations/{location}/intelligenceFindings/{intelligence_finding}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.storage_control_v2.services.storage_control.pagers.ListIntelligenceFindingRevisionsPager:
+                Response message to list IntelligenceFindingRevision resources associated
+                   with a project.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, storage_control.ListIntelligenceFindingRevisionsRequest
+        ):
+            request = storage_control.ListIntelligenceFindingRevisionsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_intelligence_finding_revisions
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListIntelligenceFindingRevisionsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def view_object_full_context(
+        self,
+        request: Optional[
+            Union[storage_control.ViewObjectFullContextRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        context_key: Optional[str] = None,
+        generation: Optional[int] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> storage_control.ObjectFullContext:
+        r"""Retrieves the full content of an object context, including its
+        key, value, and any associated extended data for a given context
+        key.
+
+        Object contexts can optionally contain extended data. If an
+        object context contains extended data, the metadata payload
+        structure will contain only its type URL. To retrieve the full
+        extended data, call this method.
+
+        Returns the complete representation of the context as an
+        [``ObjectFullContext``][google.storage.control.v2.ObjectFullContext].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import storage_control_v2
+
+            def sample_view_object_full_context():
+                # Create a client
+                client = storage_control_v2.StorageControlClient()
+
+                # Initialize request argument(s)
+                request = storage_control_v2.ViewObjectFullContextRequest(
+                    context_key="context_key_value",
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.view_object_full_context(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.storage_control_v2.types.ViewObjectFullContextRequest, dict]):
+                The request object. Request message for
+                ViewObjectFullContext.
+            name (str):
+                Required. The name of the object. Format:
+                ``projects/{project}/buckets/{bucket}/objects/{object}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            context_key (str):
+                Required. The key of the object
+                context to retrieve.
+
+                This corresponds to the ``context_key`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            generation (int):
+                Optional. If present, selects a
+                specific revision of this object (as
+                opposed to the latest version, the
+                default).
+
+                This corresponds to the ``generation`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.storage_control_v2.types.ObjectFullContext:
+                A full representation of an object
+                context.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name, context_key, generation]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, storage_control.ViewObjectFullContextRequest):
+            request = storage_control.ViewObjectFullContextRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+            if context_key is not None:
+                request.context_key = context_key
+            if generation is not None:
+                request.generation = generation
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.view_object_full_context]
+
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
+        )
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("bucket"):
+            header_params["bucket"] = regex_match.group("bucket")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def __enter__(self) -> "StorageControlClient":
         return self
 
@@ -4411,8 +5947,6 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("StorageControlClient",)

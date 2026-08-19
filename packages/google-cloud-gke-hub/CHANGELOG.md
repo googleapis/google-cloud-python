@@ -4,6 +4,36 @@
 
 [1]: https://pypi.org/project/google-cloud-gke-hub/#history
 
+## [1.25.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.25.0...google-cloud-gke-hub-v1.25.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
+## [1.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.24.0...google-cloud-gke-hub-v1.25.0) (2026-06-22)
+
+
+### Features
+
+* regenerate google-cloud-[e-i] packages ([#17079](https://github.com/googleapis/google-cloud-python/issues/17079)) ([5239b18](https://github.com/googleapis/google-cloud-python/commit/5239b1814f216676bf02dea08726313ad355439d))
+
+## [1.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.23.0...google-cloud-gke-hub-v1.24.0) (2026-05-06)
+
+## [1.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.22.0...google-cloud-gke-hub-v1.23.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
 ## [1.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-hub-v1.21.0...google-cloud-gke-hub-v1.22.0) (2026-03-12)
 
 

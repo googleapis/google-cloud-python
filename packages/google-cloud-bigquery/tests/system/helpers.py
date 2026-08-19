@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import contextlib
 import datetime
 import decimal
 import uuid
@@ -20,7 +21,6 @@ import google.api_core.exceptions
 import test_utils.retry
 
 from google.cloud._helpers import UTC
-
 
 _naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
 _naive_microseconds = datetime.datetime(2016, 12, 5, 12, 41, 9, 250000)
@@ -104,3 +104,29 @@ retry_403 = test_utils.retry.RetryErrors(
     google.api_core.exceptions.Forbidden,
     error_predicate=_rate_limit_exceeded,
 )
+
+
+@contextlib.contextmanager
+def patch_tracked_requests():
+    """Context manager to patch google-auth requests and track/close their HTTP sessions.
+
+    This prevents socket leaks in system tests that use Workload Identity or metadata server auth.
+    """
+    import google.auth.transport.requests
+
+    original_init = google.auth.transport.requests.Request.__init__
+    tracked_requests = []
+
+    def patched_init(self, session=None):
+        original_init(self, session=session)
+        if session is None:
+            tracked_requests.append(self)
+
+    google.auth.transport.requests.Request.__init__ = patched_init
+    try:
+        yield tracked_requests
+    finally:
+        google.auth.transport.requests.Request.__init__ = original_init
+        for req in tracked_requests:
+            if hasattr(req, "session") and req.session is not None:
+                req.session.close()

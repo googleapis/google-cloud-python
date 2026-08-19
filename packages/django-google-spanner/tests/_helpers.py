@@ -5,8 +5,7 @@
 # https://developers.google.com/open-source/licenses/bsd
 
 import unittest
-
-import mock
+from unittest import mock
 
 try:
     from opentelemetry import trace

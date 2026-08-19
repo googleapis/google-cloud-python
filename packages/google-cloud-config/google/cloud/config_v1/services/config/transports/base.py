@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,9 +38,7 @@ from google.cloud.config_v1.types import config
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ConfigTransport(abc.ABC):
@@ -87,6 +85,10 @@ class ConfigTransport(abc.ABC):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
 
         # Save the scopes.
@@ -135,6 +137,8 @@ class ConfigTransport(abc.ABC):
         if ":" not in host:
             host += ":443"
         self._host = host
+
+        self._wrapped_methods: Dict[Callable, Callable] = {}
 
     @property
     def host(self):
@@ -285,6 +289,51 @@ class ConfigTransport(abc.ABC):
             ),
             self.update_auto_migration_config: gapic_v1.method.wrap_method(
                 self.update_auto_migration_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_deployment_group: gapic_v1.method.wrap_method(
+                self.get_deployment_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_deployment_group: gapic_v1.method.wrap_method(
+                self.create_deployment_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_deployment_group: gapic_v1.method.wrap_method(
+                self.update_deployment_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_deployment_group: gapic_v1.method.wrap_method(
+                self.delete_deployment_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_deployment_groups: gapic_v1.method.wrap_method(
+                self.list_deployment_groups,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.provision_deployment_group: gapic_v1.method.wrap_method(
+                self.provision_deployment_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.deprovision_deployment_group: gapic_v1.method.wrap_method(
+                self.deprovision_deployment_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_deployment_group_revision: gapic_v1.method.wrap_method(
+                self.get_deployment_group_revision,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_deployment_group_revisions: gapic_v1.method.wrap_method(
+                self.list_deployment_group_revisions,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -618,6 +667,95 @@ class ConfigTransport(abc.ABC):
     ) -> Callable[
         [config.UpdateAutoMigrationConfigRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_deployment_group(
+        self,
+    ) -> Callable[
+        [config.GetDeploymentGroupRequest],
+        Union[config.DeploymentGroup, Awaitable[config.DeploymentGroup]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_deployment_group(
+        self,
+    ) -> Callable[
+        [config.CreateDeploymentGroupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_deployment_group(
+        self,
+    ) -> Callable[
+        [config.UpdateDeploymentGroupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_deployment_group(
+        self,
+    ) -> Callable[
+        [config.DeleteDeploymentGroupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_deployment_groups(
+        self,
+    ) -> Callable[
+        [config.ListDeploymentGroupsRequest],
+        Union[
+            config.ListDeploymentGroupsResponse,
+            Awaitable[config.ListDeploymentGroupsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def provision_deployment_group(
+        self,
+    ) -> Callable[
+        [config.ProvisionDeploymentGroupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def deprovision_deployment_group(
+        self,
+    ) -> Callable[
+        [config.DeprovisionDeploymentGroupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_deployment_group_revision(
+        self,
+    ) -> Callable[
+        [config.GetDeploymentGroupRevisionRequest],
+        Union[
+            config.DeploymentGroupRevision, Awaitable[config.DeploymentGroupRevision]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_deployment_group_revisions(
+        self,
+    ) -> Callable[
+        [config.ListDeploymentGroupRevisionsRequest],
+        Union[
+            config.ListDeploymentGroupRevisionsResponse,
+            Awaitable[config.ListDeploymentGroupRevisionsResponse],
+        ],
     ]:
         raise NotImplementedError()
 

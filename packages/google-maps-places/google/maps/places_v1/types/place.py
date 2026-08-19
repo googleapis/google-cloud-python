@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,7 +27,13 @@ import proto  # type: ignore
 from google.geo.type.types import viewport as ggt_viewport
 
 from google.maps.places_v1.types import address_descriptor as gmp_address_descriptor
-from google.maps.places_v1.types import content_block, ev_charging, photo, review
+from google.maps.places_v1.types import (
+    content_block,
+    ev_charging,
+    photo,
+    review,
+    transit,
+)
 from google.maps.places_v1.types import fuel_options as gmp_fuel_options
 from google.maps.places_v1.types import price_range as gmp_price_range
 
@@ -204,6 +210,9 @@ class Place(proto.Message):
             http://microformats.org/wiki/adr.
         business_status (google.maps.places_v1.types.Place.BusinessStatus):
             The business status for the place.
+        opening_date (google.type.date_pb2.Date):
+            The date this place will open in the future. This field is
+            only populated if the business status is FUTURE_OPENING.
         price_level (google.maps.places_v1.types.PriceLevel):
             Price level of the place.
         attributions (MutableSequence[google.maps.places_v1.types.Place.Attribution]):
@@ -421,6 +430,9 @@ class Place(proto.Message):
             multiple times, this field will represent the
             first moved Place. This field will not be
             populated if this Place has not moved.
+        transit_station (google.maps.places_v1.types.TransitStation):
+            The transit station information for the
+            place.
     """
 
     class BusinessStatus(proto.Enum):
@@ -436,12 +448,15 @@ class Place(proto.Message):
                 The establishment is temporarily closed.
             CLOSED_PERMANENTLY (3):
                 The establishment is permanently closed.
+            FUTURE_OPENING (4):
+                The establishment will open in the future.
         """
 
         BUSINESS_STATUS_UNSPECIFIED = 0
         OPERATIONAL = 1
         CLOSED_TEMPORARILY = 2
         CLOSED_PERMANENTLY = 3
+        FUTURE_OPENING = 4
 
     class AddressComponent(proto.Message):
         r"""The structured components that form the formatted address, if
@@ -1392,6 +1407,11 @@ class Place(proto.Message):
         number=25,
         enum=BusinessStatus,
     )
+    opening_date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=95,
+        message=date_pb2.Date,
+    )
     price_level: "PriceLevel" = proto.Field(
         proto.ENUM,
         number=26,
@@ -1642,6 +1662,11 @@ class Place(proto.Message):
     moved_place_id: str = proto.Field(
         proto.STRING,
         number=94,
+    )
+    transit_station: transit.TransitStation = proto.Field(
+        proto.MESSAGE,
+        number=98,
+        message=transit.TransitStation,
     )
 
 

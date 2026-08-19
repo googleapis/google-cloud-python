@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ class AccountLabel(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the label.
+            Identifier. The resource name of the label.
             Format: accounts/{account}/labels/{label}
         label_id (int):
             Output only. The ID of the label.

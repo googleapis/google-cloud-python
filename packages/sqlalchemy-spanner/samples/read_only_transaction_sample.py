@@ -15,11 +15,10 @@
 import datetime
 import uuid
 
-from sqlalchemy import create_engine, Engine
-from sqlalchemy.orm import Session
-
+from model import Concert, Singer, Venue
 from sample_helper import run_sample
-from model import Singer, Concert, Venue
+from sqlalchemy import Engine, create_engine
+from sqlalchemy.orm import Session
 
 
 # Shows how to execute a read-only transaction on Spanner using SQLAlchemy.

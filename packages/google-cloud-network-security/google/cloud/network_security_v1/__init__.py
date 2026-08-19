@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,22 +21,82 @@ from google.cloud.network_security_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER
-    from importlib import metadata
-else:  # pragma: NO COVER
-    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
-    # this code path once we drop support for Python 3.7
-    import importlib_metadata as metadata
+from importlib import metadata
+
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.network_security_v1.services.address_group_service",
+    "google.cloud.network_security_v1.services.dns_threat_detector_service",
+    "google.cloud.network_security_v1.services.firewall_activation",
+    "google.cloud.network_security_v1.services.intercept",
+    "google.cloud.network_security_v1.services.mirroring",
+    "google.cloud.network_security_v1.services.network_security",
+    "google.cloud.network_security_v1.services.organization_address_group_service",
+    "google.cloud.network_security_v1.services.organization_security_profile_group_service",
+    "google.cloud.network_security_v1.services.security_profile_group_service",
+    "google.cloud.network_security_v1.services.sse_realm_service",
+    "google.cloud.network_security_v1.types.address_group",
+    "google.cloud.network_security_v1.types.authorization_policy",
+    "google.cloud.network_security_v1.types.authz_policy",
+    "google.cloud.network_security_v1.types.backend_authentication_config",
+    "google.cloud.network_security_v1.types.client_tls_policy",
+    "google.cloud.network_security_v1.types.common",
+    "google.cloud.network_security_v1.types.dns_threat_detector",
+    "google.cloud.network_security_v1.types.firewall_activation",
+    "google.cloud.network_security_v1.types.gateway_security_policy",
+    "google.cloud.network_security_v1.types.gateway_security_policy_rule",
+    "google.cloud.network_security_v1.types.intercept",
+    "google.cloud.network_security_v1.types.mirroring",
+    "google.cloud.network_security_v1.types.network_security",
+    "google.cloud.network_security_v1.types.security_profile_group",
+    "google.cloud.network_security_v1.types.security_profile_group_intercept",
+    "google.cloud.network_security_v1.types.security_profile_group_mirroring",
+    "google.cloud.network_security_v1.types.security_profile_group_service",
+    "google.cloud.network_security_v1.types.security_profile_group_threatprevention",
+    "google.cloud.network_security_v1.types.security_profile_group_urlfiltering",
+    "google.cloud.network_security_v1.types.server_tls_policy",
+    "google.cloud.network_security_v1.types.sse_realm",
+    "google.cloud.network_security_v1.types.tls",
+    "google.cloud.network_security_v1.types.tls_inspection_policy",
+    "google.cloud.network_security_v1.types.url_list",
+}
 
 
 from .services.address_group_service import (
     AddressGroupServiceAsyncClient,
     AddressGroupServiceClient,
 )
+from .services.dns_threat_detector_service import (
+    DnsThreatDetectorServiceAsyncClient,
+    DnsThreatDetectorServiceClient,
+)
+from .services.firewall_activation import (
+    FirewallActivationAsyncClient,
+    FirewallActivationClient,
+)
+from .services.intercept import InterceptAsyncClient, InterceptClient
+from .services.mirroring import MirroringAsyncClient, MirroringClient
 from .services.network_security import NetworkSecurityAsyncClient, NetworkSecurityClient
 from .services.organization_address_group_service import (
     OrganizationAddressGroupServiceAsyncClient,
     OrganizationAddressGroupServiceClient,
+)
+from .services.organization_security_profile_group_service import (
+    OrganizationSecurityProfileGroupServiceAsyncClient,
+    OrganizationSecurityProfileGroupServiceClient,
+)
+from .services.security_profile_group_service import (
+    SecurityProfileGroupServiceAsyncClient,
+    SecurityProfileGroupServiceClient,
+)
+from .services.sse_realm_service import (
+    SSERealmServiceAsyncClient,
+    SSERealmServiceClient,
 )
 from .types.address_group import (
     AddAddressGroupItemsRequest,
@@ -61,6 +121,24 @@ from .types.authorization_policy import (
     ListAuthorizationPoliciesResponse,
     UpdateAuthorizationPolicyRequest,
 )
+from .types.authz_policy import (
+    AuthzPolicy,
+    CreateAuthzPolicyRequest,
+    DeleteAuthzPolicyRequest,
+    GetAuthzPolicyRequest,
+    ListAuthzPoliciesRequest,
+    ListAuthzPoliciesResponse,
+    UpdateAuthzPolicyRequest,
+)
+from .types.backend_authentication_config import (
+    BackendAuthenticationConfig,
+    CreateBackendAuthenticationConfigRequest,
+    DeleteBackendAuthenticationConfigRequest,
+    GetBackendAuthenticationConfigRequest,
+    ListBackendAuthenticationConfigsRequest,
+    ListBackendAuthenticationConfigsResponse,
+    UpdateBackendAuthenticationConfigRequest,
+)
 from .types.client_tls_policy import (
     ClientTlsPolicy,
     CreateClientTlsPolicyRequest,
@@ -71,6 +149,139 @@ from .types.client_tls_policy import (
     UpdateClientTlsPolicyRequest,
 )
 from .types.common import OperationMetadata
+from .types.dns_threat_detector import (
+    CreateDnsThreatDetectorRequest,
+    DeleteDnsThreatDetectorRequest,
+    DnsThreatDetector,
+    GetDnsThreatDetectorRequest,
+    ListDnsThreatDetectorsRequest,
+    ListDnsThreatDetectorsResponse,
+    UpdateDnsThreatDetectorRequest,
+)
+from .types.firewall_activation import (
+    CreateFirewallEndpointAssociationRequest,
+    CreateFirewallEndpointRequest,
+    DeleteFirewallEndpointAssociationRequest,
+    DeleteFirewallEndpointRequest,
+    FirewallEndpoint,
+    FirewallEndpointAssociation,
+    GetFirewallEndpointAssociationRequest,
+    GetFirewallEndpointRequest,
+    ListFirewallEndpointAssociationsRequest,
+    ListFirewallEndpointAssociationsResponse,
+    ListFirewallEndpointsRequest,
+    ListFirewallEndpointsResponse,
+    UpdateFirewallEndpointAssociationRequest,
+    UpdateFirewallEndpointRequest,
+)
+from .types.gateway_security_policy import (
+    CreateGatewaySecurityPolicyRequest,
+    DeleteGatewaySecurityPolicyRequest,
+    GatewaySecurityPolicy,
+    GetGatewaySecurityPolicyRequest,
+    ListGatewaySecurityPoliciesRequest,
+    ListGatewaySecurityPoliciesResponse,
+    UpdateGatewaySecurityPolicyRequest,
+)
+from .types.gateway_security_policy_rule import (
+    CreateGatewaySecurityPolicyRuleRequest,
+    DeleteGatewaySecurityPolicyRuleRequest,
+    GatewaySecurityPolicyRule,
+    GetGatewaySecurityPolicyRuleRequest,
+    ListGatewaySecurityPolicyRulesRequest,
+    ListGatewaySecurityPolicyRulesResponse,
+    UpdateGatewaySecurityPolicyRuleRequest,
+)
+from .types.intercept import (
+    CreateInterceptDeploymentGroupRequest,
+    CreateInterceptDeploymentRequest,
+    CreateInterceptEndpointGroupAssociationRequest,
+    CreateInterceptEndpointGroupRequest,
+    DeleteInterceptDeploymentGroupRequest,
+    DeleteInterceptDeploymentRequest,
+    DeleteInterceptEndpointGroupAssociationRequest,
+    DeleteInterceptEndpointGroupRequest,
+    GetInterceptDeploymentGroupRequest,
+    GetInterceptDeploymentRequest,
+    GetInterceptEndpointGroupAssociationRequest,
+    GetInterceptEndpointGroupRequest,
+    InterceptDeployment,
+    InterceptDeploymentGroup,
+    InterceptEndpointGroup,
+    InterceptEndpointGroupAssociation,
+    InterceptLocation,
+    ListInterceptDeploymentGroupsRequest,
+    ListInterceptDeploymentGroupsResponse,
+    ListInterceptDeploymentsRequest,
+    ListInterceptDeploymentsResponse,
+    ListInterceptEndpointGroupAssociationsRequest,
+    ListInterceptEndpointGroupAssociationsResponse,
+    ListInterceptEndpointGroupsRequest,
+    ListInterceptEndpointGroupsResponse,
+    UpdateInterceptDeploymentGroupRequest,
+    UpdateInterceptDeploymentRequest,
+    UpdateInterceptEndpointGroupAssociationRequest,
+    UpdateInterceptEndpointGroupRequest,
+)
+from .types.mirroring import (
+    CreateMirroringDeploymentGroupRequest,
+    CreateMirroringDeploymentRequest,
+    CreateMirroringEndpointGroupAssociationRequest,
+    CreateMirroringEndpointGroupRequest,
+    DeleteMirroringDeploymentGroupRequest,
+    DeleteMirroringDeploymentRequest,
+    DeleteMirroringEndpointGroupAssociationRequest,
+    DeleteMirroringEndpointGroupRequest,
+    GetMirroringDeploymentGroupRequest,
+    GetMirroringDeploymentRequest,
+    GetMirroringEndpointGroupAssociationRequest,
+    GetMirroringEndpointGroupRequest,
+    ListMirroringDeploymentGroupsRequest,
+    ListMirroringDeploymentGroupsResponse,
+    ListMirroringDeploymentsRequest,
+    ListMirroringDeploymentsResponse,
+    ListMirroringEndpointGroupAssociationsRequest,
+    ListMirroringEndpointGroupAssociationsResponse,
+    ListMirroringEndpointGroupsRequest,
+    ListMirroringEndpointGroupsResponse,
+    MirroringDeployment,
+    MirroringDeploymentGroup,
+    MirroringEndpointGroup,
+    MirroringEndpointGroupAssociation,
+    MirroringLocation,
+    UpdateMirroringDeploymentGroupRequest,
+    UpdateMirroringDeploymentRequest,
+    UpdateMirroringEndpointGroupAssociationRequest,
+    UpdateMirroringEndpointGroupRequest,
+)
+from .types.security_profile_group import SecurityProfile, SecurityProfileGroup
+from .types.security_profile_group_intercept import CustomInterceptProfile
+from .types.security_profile_group_mirroring import CustomMirroringProfile
+from .types.security_profile_group_service import (
+    CreateSecurityProfileGroupRequest,
+    CreateSecurityProfileRequest,
+    DeleteSecurityProfileGroupRequest,
+    DeleteSecurityProfileRequest,
+    GetSecurityProfileGroupRequest,
+    GetSecurityProfileRequest,
+    ListSecurityProfileGroupsRequest,
+    ListSecurityProfileGroupsResponse,
+    ListSecurityProfilesRequest,
+    ListSecurityProfilesResponse,
+    UpdateSecurityProfileGroupRequest,
+    UpdateSecurityProfileRequest,
+)
+from .types.security_profile_group_threatprevention import (
+    AntivirusOverride,
+    Protocol,
+    Severity,
+    SeverityOverride,
+    ThreatAction,
+    ThreatOverride,
+    ThreatPreventionProfile,
+    ThreatType,
+)
+from .types.security_profile_group_urlfiltering import UrlFilter, UrlFilteringProfile
 from .types.server_tls_policy import (
     CreateServerTlsPolicyRequest,
     DeleteServerTlsPolicyRequest,
@@ -80,11 +291,43 @@ from .types.server_tls_policy import (
     ServerTlsPolicy,
     UpdateServerTlsPolicyRequest,
 )
+from .types.sse_realm import (
+    CreateSACAttachmentRequest,
+    CreateSACRealmRequest,
+    DeleteSACAttachmentRequest,
+    DeleteSACRealmRequest,
+    GetSACAttachmentRequest,
+    GetSACRealmRequest,
+    ListSACAttachmentsRequest,
+    ListSACAttachmentsResponse,
+    ListSACRealmsRequest,
+    ListSACRealmsResponse,
+    SACAttachment,
+    SACRealm,
+)
 from .types.tls import (
     CertificateProvider,
     CertificateProviderInstance,
     GrpcEndpoint,
     ValidationCA,
+)
+from .types.tls_inspection_policy import (
+    CreateTlsInspectionPolicyRequest,
+    DeleteTlsInspectionPolicyRequest,
+    GetTlsInspectionPolicyRequest,
+    ListTlsInspectionPoliciesRequest,
+    ListTlsInspectionPoliciesResponse,
+    TlsInspectionPolicy,
+    UpdateTlsInspectionPolicyRequest,
+)
+from .types.url_list import (
+    CreateUrlListRequest,
+    DeleteUrlListRequest,
+    GetUrlListRequest,
+    ListUrlListsRequest,
+    ListUrlListsResponse,
+    UpdateUrlListRequest,
+    UrlList,
 )
 
 if hasattr(api_core, "check_python_version") and hasattr(
@@ -96,34 +339,23 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import sys
         import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.network_security_v1"
-        if sys.version_info < (3, 9):
+        if sys.version_info < (3, 10):
             warnings.warn(
                 "You are using a non-supported Python version "
                 + f"({_py_version_str}).  Google will not post any further "
                 + f"updates to {_package_label} supporting this Python version. "
                 + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.9, and then update {_package_label}.",
-                FutureWarning,
-            )
-        if sys.version_info[:2] == (3, 9):
-            warnings.warn(
-                f"You are using a Python version ({_py_version_str}) "
-                + f"which Google will stop supporting in {_package_label} in "
-                + "January 2026. Please "
-                + "upgrade to the latest Python version, or at "
-                + "least to Python 3.10, before then, and "
-                + f"then update {_package_label}.",
+                + f"least to Python 3.10, and then update {_package_label}.",
                 FutureWarning,
             )
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -152,9 +384,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -183,47 +415,220 @@ else:  # pragma: NO COVER
 
 __all__ = (
     "AddressGroupServiceAsyncClient",
+    "DnsThreatDetectorServiceAsyncClient",
+    "FirewallActivationAsyncClient",
+    "InterceptAsyncClient",
+    "MirroringAsyncClient",
     "NetworkSecurityAsyncClient",
     "OrganizationAddressGroupServiceAsyncClient",
+    "OrganizationSecurityProfileGroupServiceAsyncClient",
+    "SSERealmServiceAsyncClient",
+    "SecurityProfileGroupServiceAsyncClient",
     "AddAddressGroupItemsRequest",
     "AddressGroup",
     "AddressGroupServiceClient",
+    "AntivirusOverride",
     "AuthorizationPolicy",
+    "AuthzPolicy",
+    "BackendAuthenticationConfig",
     "CertificateProvider",
     "CertificateProviderInstance",
     "ClientTlsPolicy",
     "CloneAddressGroupItemsRequest",
     "CreateAddressGroupRequest",
     "CreateAuthorizationPolicyRequest",
+    "CreateAuthzPolicyRequest",
+    "CreateBackendAuthenticationConfigRequest",
     "CreateClientTlsPolicyRequest",
+    "CreateDnsThreatDetectorRequest",
+    "CreateFirewallEndpointAssociationRequest",
+    "CreateFirewallEndpointRequest",
+    "CreateGatewaySecurityPolicyRequest",
+    "CreateGatewaySecurityPolicyRuleRequest",
+    "CreateInterceptDeploymentGroupRequest",
+    "CreateInterceptDeploymentRequest",
+    "CreateInterceptEndpointGroupAssociationRequest",
+    "CreateInterceptEndpointGroupRequest",
+    "CreateMirroringDeploymentGroupRequest",
+    "CreateMirroringDeploymentRequest",
+    "CreateMirroringEndpointGroupAssociationRequest",
+    "CreateMirroringEndpointGroupRequest",
+    "CreateSACAttachmentRequest",
+    "CreateSACRealmRequest",
+    "CreateSecurityProfileGroupRequest",
+    "CreateSecurityProfileRequest",
     "CreateServerTlsPolicyRequest",
+    "CreateTlsInspectionPolicyRequest",
+    "CreateUrlListRequest",
+    "CustomInterceptProfile",
+    "CustomMirroringProfile",
     "DeleteAddressGroupRequest",
     "DeleteAuthorizationPolicyRequest",
+    "DeleteAuthzPolicyRequest",
+    "DeleteBackendAuthenticationConfigRequest",
     "DeleteClientTlsPolicyRequest",
+    "DeleteDnsThreatDetectorRequest",
+    "DeleteFirewallEndpointAssociationRequest",
+    "DeleteFirewallEndpointRequest",
+    "DeleteGatewaySecurityPolicyRequest",
+    "DeleteGatewaySecurityPolicyRuleRequest",
+    "DeleteInterceptDeploymentGroupRequest",
+    "DeleteInterceptDeploymentRequest",
+    "DeleteInterceptEndpointGroupAssociationRequest",
+    "DeleteInterceptEndpointGroupRequest",
+    "DeleteMirroringDeploymentGroupRequest",
+    "DeleteMirroringDeploymentRequest",
+    "DeleteMirroringEndpointGroupAssociationRequest",
+    "DeleteMirroringEndpointGroupRequest",
+    "DeleteSACAttachmentRequest",
+    "DeleteSACRealmRequest",
+    "DeleteSecurityProfileGroupRequest",
+    "DeleteSecurityProfileRequest",
     "DeleteServerTlsPolicyRequest",
+    "DeleteTlsInspectionPolicyRequest",
+    "DeleteUrlListRequest",
+    "DnsThreatDetector",
+    "DnsThreatDetectorServiceClient",
+    "FirewallActivationClient",
+    "FirewallEndpoint",
+    "FirewallEndpointAssociation",
+    "GatewaySecurityPolicy",
+    "GatewaySecurityPolicyRule",
     "GetAddressGroupRequest",
     "GetAuthorizationPolicyRequest",
+    "GetAuthzPolicyRequest",
+    "GetBackendAuthenticationConfigRequest",
     "GetClientTlsPolicyRequest",
+    "GetDnsThreatDetectorRequest",
+    "GetFirewallEndpointAssociationRequest",
+    "GetFirewallEndpointRequest",
+    "GetGatewaySecurityPolicyRequest",
+    "GetGatewaySecurityPolicyRuleRequest",
+    "GetInterceptDeploymentGroupRequest",
+    "GetInterceptDeploymentRequest",
+    "GetInterceptEndpointGroupAssociationRequest",
+    "GetInterceptEndpointGroupRequest",
+    "GetMirroringDeploymentGroupRequest",
+    "GetMirroringDeploymentRequest",
+    "GetMirroringEndpointGroupAssociationRequest",
+    "GetMirroringEndpointGroupRequest",
+    "GetSACAttachmentRequest",
+    "GetSACRealmRequest",
+    "GetSecurityProfileGroupRequest",
+    "GetSecurityProfileRequest",
     "GetServerTlsPolicyRequest",
+    "GetTlsInspectionPolicyRequest",
+    "GetUrlListRequest",
     "GrpcEndpoint",
+    "InterceptClient",
+    "InterceptDeployment",
+    "InterceptDeploymentGroup",
+    "InterceptEndpointGroup",
+    "InterceptEndpointGroupAssociation",
+    "InterceptLocation",
     "ListAddressGroupReferencesRequest",
     "ListAddressGroupReferencesResponse",
     "ListAddressGroupsRequest",
     "ListAddressGroupsResponse",
     "ListAuthorizationPoliciesRequest",
     "ListAuthorizationPoliciesResponse",
+    "ListAuthzPoliciesRequest",
+    "ListAuthzPoliciesResponse",
+    "ListBackendAuthenticationConfigsRequest",
+    "ListBackendAuthenticationConfigsResponse",
     "ListClientTlsPoliciesRequest",
     "ListClientTlsPoliciesResponse",
+    "ListDnsThreatDetectorsRequest",
+    "ListDnsThreatDetectorsResponse",
+    "ListFirewallEndpointAssociationsRequest",
+    "ListFirewallEndpointAssociationsResponse",
+    "ListFirewallEndpointsRequest",
+    "ListFirewallEndpointsResponse",
+    "ListGatewaySecurityPoliciesRequest",
+    "ListGatewaySecurityPoliciesResponse",
+    "ListGatewaySecurityPolicyRulesRequest",
+    "ListGatewaySecurityPolicyRulesResponse",
+    "ListInterceptDeploymentGroupsRequest",
+    "ListInterceptDeploymentGroupsResponse",
+    "ListInterceptDeploymentsRequest",
+    "ListInterceptDeploymentsResponse",
+    "ListInterceptEndpointGroupAssociationsRequest",
+    "ListInterceptEndpointGroupAssociationsResponse",
+    "ListInterceptEndpointGroupsRequest",
+    "ListInterceptEndpointGroupsResponse",
+    "ListMirroringDeploymentGroupsRequest",
+    "ListMirroringDeploymentGroupsResponse",
+    "ListMirroringDeploymentsRequest",
+    "ListMirroringDeploymentsResponse",
+    "ListMirroringEndpointGroupAssociationsRequest",
+    "ListMirroringEndpointGroupAssociationsResponse",
+    "ListMirroringEndpointGroupsRequest",
+    "ListMirroringEndpointGroupsResponse",
+    "ListSACAttachmentsRequest",
+    "ListSACAttachmentsResponse",
+    "ListSACRealmsRequest",
+    "ListSACRealmsResponse",
+    "ListSecurityProfileGroupsRequest",
+    "ListSecurityProfileGroupsResponse",
+    "ListSecurityProfilesRequest",
+    "ListSecurityProfilesResponse",
     "ListServerTlsPoliciesRequest",
     "ListServerTlsPoliciesResponse",
+    "ListTlsInspectionPoliciesRequest",
+    "ListTlsInspectionPoliciesResponse",
+    "ListUrlListsRequest",
+    "ListUrlListsResponse",
+    "MirroringClient",
+    "MirroringDeployment",
+    "MirroringDeploymentGroup",
+    "MirroringEndpointGroup",
+    "MirroringEndpointGroupAssociation",
+    "MirroringLocation",
     "NetworkSecurityClient",
     "OperationMetadata",
     "OrganizationAddressGroupServiceClient",
+    "OrganizationSecurityProfileGroupServiceClient",
+    "Protocol",
     "RemoveAddressGroupItemsRequest",
+    "SACAttachment",
+    "SACRealm",
+    "SSERealmServiceClient",
+    "SecurityProfile",
+    "SecurityProfileGroup",
+    "SecurityProfileGroupServiceClient",
     "ServerTlsPolicy",
+    "Severity",
+    "SeverityOverride",
+    "ThreatAction",
+    "ThreatOverride",
+    "ThreatPreventionProfile",
+    "ThreatType",
+    "TlsInspectionPolicy",
     "UpdateAddressGroupRequest",
     "UpdateAuthorizationPolicyRequest",
+    "UpdateAuthzPolicyRequest",
+    "UpdateBackendAuthenticationConfigRequest",
     "UpdateClientTlsPolicyRequest",
+    "UpdateDnsThreatDetectorRequest",
+    "UpdateFirewallEndpointAssociationRequest",
+    "UpdateFirewallEndpointRequest",
+    "UpdateGatewaySecurityPolicyRequest",
+    "UpdateGatewaySecurityPolicyRuleRequest",
+    "UpdateInterceptDeploymentGroupRequest",
+    "UpdateInterceptDeploymentRequest",
+    "UpdateInterceptEndpointGroupAssociationRequest",
+    "UpdateInterceptEndpointGroupRequest",
+    "UpdateMirroringDeploymentGroupRequest",
+    "UpdateMirroringDeploymentRequest",
+    "UpdateMirroringEndpointGroupAssociationRequest",
+    "UpdateMirroringEndpointGroupRequest",
+    "UpdateSecurityProfileGroupRequest",
+    "UpdateSecurityProfileRequest",
     "UpdateServerTlsPolicyRequest",
+    "UpdateTlsInspectionPolicyRequest",
+    "UpdateUrlListRequest",
+    "UrlFilter",
+    "UrlFilteringProfile",
+    "UrlList",
     "ValidationCA",
 )

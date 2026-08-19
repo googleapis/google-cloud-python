@@ -4,6 +4,43 @@
 
 [1]: https://pypi.org/project/google-cloud-network-services/#history
 
+## [0.10.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.10.1...google-cloud-network-services-v0.10.2) (2026-08-06)
+
+
+### Features
+
+* update googleapis and regenerate ([#17893](https://github.com/googleapis/google-cloud-python/issues/17893)) ([e70ab6f](https://github.com/googleapis/google-cloud-python/commit/e70ab6fd45edfec5ca0c865e01876f0ea4f09cae))
+* update googleapis and regenerate ([#17933](https://github.com/googleapis/google-cloud-python/issues/17933)) ([f7a23a0](https://github.com/googleapis/google-cloud-python/commit/f7a23a0ffe3fac77bf9f53bc74aa3cea4ef8051e))
+
+## [0.10.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.10.0...google-cloud-network-services-v0.10.1) (2026-06-25)
+
+
+### Features
+
+* update googleapis and regenerate ([#17554](https://github.com/googleapis/google-cloud-python/issues/17554)) ([03d0574](https://github.com/googleapis/google-cloud-python/commit/03d0574da8485e918f16e90666928f5c7b7f1c92))
+
+## [0.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.9.0...google-cloud-network-services-v0.10.0) (2026-06-11)
+
+
+### Features
+
+* update API sources and regenerate (#17431) ([2e75c78cdd09d4472ed412a2e925196effaea9fd](https://github.com/googleapis/google-cloud-python/commit/2e75c78cdd09d4472ed412a2e925196effaea9fd))
+
+## [0.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.8.0...google-cloud-network-services-v0.9.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* update image to us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:f5426423676c75008c2135037e7b98f78cbb99f78b3c46fe043b6897be92d836 ([3654fe76d755dd8db62ece81d5770ec58b3624df](https://github.com/googleapis/google-cloud-python/commit/3654fe76d755dd8db62ece81d5770ec58b3624df))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
 ## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-services-v0.7.0...google-cloud-network-services-v0.8.0) (2026-01-09)
 
 

@@ -4,6 +4,37 @@
 
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
+## [2.28.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.28.0...google-cloud-firestore-v2.28.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* **firestore:** BulkWriter pop from an empty deque ([#17490](https://github.com/googleapis/google-cloud-python/issues/17490)) ([8e826f0](https://github.com/googleapis/google-cloud-python/commit/8e826f078efaa0b5c9372ab8444864026abe4727))
+* **firestore:** preserve async limit_to_last ordering ([#17879](https://github.com/googleapis/google-cloud-python/issues/17879)) ([caf2fdb](https://github.com/googleapis/google-cloud-python/commit/caf2fdb646714f07cf039b0dbb88d0ce594f6567))
+
+## [2.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.27.0...google-cloud-firestore-v2.28.0) (2026-06-25)
+
+
+### Features
+
+* **firestore:** drop Python 3.7-3.9 support and regenerate  ([#17247](https://github.com/googleapis/google-cloud-python/issues/17247)) ([b11224f](https://github.com/googleapis/google-cloud-python/commit/b11224ff3ed76718b079dd9a44226cfea52c6562))
+* regenerate google-cloud-[e-i] packages ([#17079](https://github.com/googleapis/google-cloud-python/issues/17079)) ([5239b18](https://github.com/googleapis/google-cloud-python/commit/5239b1814f216676bf02dea08726313ad355439d))
+* regenerate google-cloud-firestore ([#17577](https://github.com/googleapis/google-cloud-python/issues/17577)) ([57ebaa3](https://github.com/googleapis/google-cloud-python/commit/57ebaa3c244a9fa97d3e6db206126c504f4b954f))
+
+
+### Bug Fixes
+
+* **firestore:** Imropve improper pipeline aliases ([#16651](https://github.com/googleapis/google-cloud-python/issues/16651)) ([f728bd6](https://github.com/googleapis/google-cloud-python/commit/f728bd6120c47f45f8e380a1e8c8d763e5e0c361))
+* **firestore:** remove usage of typing_extensions ([#17357](https://github.com/googleapis/google-cloud-python/issues/17357)) ([cdaf213](https://github.com/googleapis/google-cloud-python/commit/cdaf2139d26fab2a063b8cc530c7d1a61544e097))
+* make test_utils unique_resource_id parallel-safe ([#17440](https://github.com/googleapis/google-cloud-python/issues/17440)) ([ac1f5d5](https://github.com/googleapis/google-cloud-python/commit/ac1f5d55900d4787f2ced6b5350ef530f700794b))
+
+## [2.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.25.0...google-cloud-firestore-v2.26.0) (2026-03-23)
+
+
+### Features
+
+* Add `Rand` and `Trunc` expressions (#16037) ([7538aa5d2e6002f8acda2f1dc2faa690ab2c94d0](https://github.com/googleapis/google-cloud-python/commit/7538aa5d2e6002f8acda2f1dc2faa690ab2c94d0))
+
 ## [2.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.24.0...google-cloud-firestore-v2.25.0) (2026-03-12)
 
 

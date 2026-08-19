@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -198,7 +198,7 @@ class CloudQuotasAsyncClient:
         return self._client.transport
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -350,9 +350,9 @@ class CloudQuotasAsyncClient:
                 The request object. Message for requesting list of
                 QuotaInfos
             parent (:class:`str`):
-                Required. Parent value of QuotaInfo resources. Listing
-                across different resource containers (such as
-                'projects/-') is not allowed.
+                Required. Identifier. Parent value of QuotaInfo
+                resources. Listing across different resource containers
+                (such as 'projects/-') is not allowed.
 
                 Example names:
                 ``projects/123/locations/global/services/compute.googleapis.com``
@@ -481,7 +481,8 @@ class CloudQuotasAsyncClient:
             request (Optional[Union[google.cloud.cloudquotas_v1.types.GetQuotaInfoRequest, dict]]):
                 The request object. Message for getting a QuotaInfo
             name (:class:`str`):
-                Required. The resource name of the quota info.
+                Required. Identifier. The resource name of the quota
+                info.
 
                 An example name:
                 ``projects/123/locations/global/services/compute.googleapis.com/quotaInfos/CpusPerProjectPerRegion``
@@ -597,9 +598,9 @@ class CloudQuotasAsyncClient:
                 The request object. Message for requesting list of
                 QuotaPreferences
             parent (:class:`str`):
-                Required. Parent value of QuotaPreference resources.
-                Listing across different resource containers (such as
-                'projects/-') is not allowed.
+                Required. Identifier. Parent value of QuotaPreference
+                resources. Listing across different resource containers
+                (such as 'projects/-') is not allowed.
 
                 When the value starts with 'folders' or 'organizations',
                 it lists the QuotaPreferences for org quotas in the
@@ -729,7 +730,7 @@ class CloudQuotasAsyncClient:
             request (Optional[Union[google.cloud.cloudquotas_v1.types.GetQuotaPreferenceRequest, dict]]):
                 The request object. Message for getting a QuotaPreference
             name (:class:`str`):
-                Required. Name of the resource
+                Required. Identifier. Name of the resource
 
                 Example name:
                 ``projects/123/locations/global/quota_preferences/my-config-for-us-east1``
@@ -855,7 +856,7 @@ class CloudQuotasAsyncClient:
                 The request object. Message for creating a
                 QuotaPreference
             parent (:class:`str`):
-                Required. Value for parent.
+                Required. Identifier. Value for parent.
 
                 Example: ``projects/123/locations/global``
 
@@ -1094,9 +1095,7 @@ class CloudQuotasAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("CloudQuotasAsyncClient",)

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""AsyncIO helpers for :mod:`grpc` supporting 3.7+.
+"""AsyncIO helpers for :mod:`grpc`.
 
 Please combine more detailed docstring in grpc_helpers.py to use following
 functions. This module is implementing the same surface with AsyncIO semantics.
@@ -21,7 +21,6 @@ functions. This module is implementing the same surface with AsyncIO semantics.
 import asyncio
 import functools
 import warnings
-
 from typing import AsyncGenerator, Generic, Iterator, Optional, TypeVar
 
 import grpc

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -61,10 +61,16 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.ads.admanager_v1.services.content_service import pagers
-from google.ads.admanager_v1.types import content_messages, content_service
+from google.ads.admanager_v1.types import (
+    content_enums,
+    content_messages,
+    content_service,
+)
 
 from .transports.base import DEFAULT_CLIENT_INFO, ContentServiceTransport
 from .transports.rest import ContentServiceRestTransport
@@ -107,7 +113,7 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
     """Provides methods for handling ``Content`` objects."""
 
     @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint):
+    def _get_default_mtls_endpoint(api_endpoint) -> Optional[str]:
         """Converts api endpoint to mTLS endpoint.
 
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
@@ -115,7 +121,7 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
         Args:
             api_endpoint (Optional[str]): the api endpoint to convert.
         Returns:
-            str: converted mTLS api endpoint.
+            Optional[str]: converted mTLS api endpoint.
         """
         if not api_endpoint:
             return api_endpoint
@@ -125,6 +131,10 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
         )
 
         m = mtls_endpoint_re.match(api_endpoint)
+        if m is None:
+            # Could not parse api_endpoint; return as-is.
+            return api_endpoint
+
         name, mtls, sandbox, googledomain = m.groups()
         if mtls or not googledomain:
             return api_endpoint
@@ -221,6 +231,26 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
         return self._transport
 
     @staticmethod
+    def cms_metadata_value_path(
+        network_code: str,
+        cms_metadata_value: str,
+    ) -> str:
+        """Returns a fully-qualified cms_metadata_value string."""
+        return "networks/{network_code}/cmsMetadataValues/{cms_metadata_value}".format(
+            network_code=network_code,
+            cms_metadata_value=cms_metadata_value,
+        )
+
+    @staticmethod
+    def parse_cms_metadata_value_path(path: str) -> Dict[str, str]:
+        """Parses a cms_metadata_value path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/cmsMetadataValues/(?P<cms_metadata_value>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def content_path(
         network_code: str,
         content: str,
@@ -235,6 +265,46 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
     def parse_content_path(path: str) -> Dict[str, str]:
         """Parses a content path into its component segments."""
         m = re.match(r"^networks/(?P<network_code>.+?)/content/(?P<content>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def content_bundle_path(
+        network_code: str,
+        content_bundle: str,
+    ) -> str:
+        """Returns a fully-qualified content_bundle string."""
+        return "networks/{network_code}/contentBundles/{content_bundle}".format(
+            network_code=network_code,
+            content_bundle=content_bundle,
+        )
+
+    @staticmethod
+    def parse_content_bundle_path(path: str) -> Dict[str, str]:
+        """Parses a content_bundle path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/contentBundles/(?P<content_bundle>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def content_source_path(
+        network_code: str,
+        content_source: str,
+    ) -> str:
+        """Returns a fully-qualified content_source string."""
+        return "networks/{network_code}/contentSources/{content_source}".format(
+            network_code=network_code,
+            content_source=content_source,
+        )
+
+    @staticmethod
+    def parse_content_source_path(path: str) -> Dict[str, str]:
+        """Parses a content_source path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/contentSources/(?P<content_source>.+?)$",
+            path,
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -442,7 +512,7 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
     @staticmethod
     def _get_api_endpoint(
         api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ):
+    ) -> str:
         """Return the API endpoint used by the client.
 
         Args:
@@ -539,7 +609,7 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
             error._details.append(json.dumps(cred_info))
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -635,7 +705,7 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
         self._universe_domain = ContentServiceClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
-        self._api_endpoint = None  # updated below, depending on `transport`
+        self._api_endpoint: str = ""  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
@@ -740,7 +810,7 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> content_messages.Content:
-        r"""API to retrieve a ``Content`` object.
+        r"""Retrieves a ``Content`` object.
 
         .. code-block:: python
 
@@ -788,9 +858,7 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
 
         Returns:
             google.ads.admanager_v1.types.Content:
-                A piece of content from a Publisher's
-                CMS.
-
+                A piece of Content from a Publisher's CMS.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -847,7 +915,7 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListContentPager:
-        r"""API to retrieve a list of ``Content`` objects.
+        r"""Lists ``Content`` objects.
 
         .. code-block:: python
 
@@ -975,7 +1043,7 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
 
     def get_operation(
         self,
-        request: Optional[operations_pb2.GetOperationRequest] = None,
+        request: Optional[Union[operations_pb2.GetOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1001,8 +1069,12 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.GetOperationRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.GetOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.GetOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1011,7 +1083,7 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -1020,7 +1092,7 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
+                request_pb,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata,
@@ -1032,12 +1104,69 @@ class ContentServiceClient(metaclass=ContentServiceClientMeta):
             self._add_cred_info_for_auth_errors(e)
             raise e
 
+    def cancel_operation(
+        self,
+        request: Optional[Union[operations_pb2.CancelOperationRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
+        r"""Starts asynchronous cancellation on a long-running operation.
+
+        The server makes a best effort to cancel the operation, but success
+        is not guaranteed.  If the server doesn't support this method, it returns
+        `google.rpc.Code.UNIMPLEMENTED`.
+
+        Args:
+            request (:class:`~.operations_pb2.CancelOperationRequest`):
+                The request object. Request message for
+                `CancelOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        Returns:
+            None
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if request is None:
+            request_pb = operations_pb2.CancelOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.CancelOperationRequest(**request)
+        else:
+            request_pb = request
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.cancel_operation]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        rpc(
+            request_pb,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("ContentServiceClient",)

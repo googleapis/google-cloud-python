@@ -3,7 +3,9 @@ Python Client for Data Analytics API with Gemini
 
 |preview| |pypi| |versions|
 
-`Data Analytics API with Gemini`_: Developers can use the Conversational Analytics API, accessed through geminidataanalytics.googleapis.com, to build an artificial intelligence (AI)-powered chat interface, or data agent, that answers questions about structured data in BigQuery, Looker, and Looker Studio using natural language.
+`Data Analytics API with Gemini`_: The Gemini Data Analytics API enables developers to build intelligent data
+analytics applications. Leverage AI-powered chat interfaces to allow users
+to interact with and analyze structured data using natural language.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +16,9 @@ Python Client for Data Analytics API with Gemini
    :target: https://pypi.org/project/google-cloud-geminidataanalytics/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-geminidataanalytics.svg
    :target: https://pypi.org/project/google-cloud-geminidataanalytics/
-.. _Data Analytics API with Gemini: https://cloud.google.com/gemini/docs/conversational-analytics-api/overview
+.. _Data Analytics API with Gemini: https://cloud.google.com/gemini/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-geminidataanalytics/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/gemini/docs/conversational-analytics-api/overview
+.. _Product Documentation:  https://cloud.google.com/gemini/
 
 Quick Start
 -----------
@@ -30,7 +32,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Data Analytics API with Gemini.:  https://cloud.google.com/gemini/docs/conversational-analytics-api/overview
+.. _Enable the Data Analytics API with Gemini.:  https://cloud.google.com/gemini/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +63,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -104,7 +107,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Data Analytics API with Gemini Product documentation:  https://cloud.google.com/gemini/docs/conversational-analytics-api/overview
+.. _Data Analytics API with Gemini Product documentation:  https://cloud.google.com/gemini/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

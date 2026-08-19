@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import threading
-
 from unittest import mock
 
 import pytest

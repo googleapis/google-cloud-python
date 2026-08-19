@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -63,8 +63,7 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     rest_version=f"requests@{requests_version}",
 )
 
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class ConversationalSearchServiceRestInterceptor:
@@ -159,6 +158,14 @@ class ConversationalSearchServiceRestInterceptor:
                 return request, metadata
 
             def post_list_sessions(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_stream_answer_query(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_stream_answer_query(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -659,6 +666,57 @@ class ConversationalSearchServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_stream_answer_query(
+        self,
+        request: conversational_search_service.AnswerQueryRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        conversational_search_service.AnswerQueryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for stream_answer_query
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ConversationalSearchService server.
+        """
+        return request, metadata
+
+    def post_stream_answer_query(
+        self, response: rest_streaming.ResponseIterator
+    ) -> rest_streaming.ResponseIterator:
+        """Post-rpc interceptor for stream_answer_query
+
+        DEPRECATED. Please use the `post_stream_answer_query_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ConversationalSearchService server but before
+        it is returned to user code. This `post_stream_answer_query` interceptor runs
+        before the `post_stream_answer_query_with_metadata` interceptor.
+        """
+        return response
+
+    def post_stream_answer_query_with_metadata(
+        self,
+        response: rest_streaming.ResponseIterator,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        rest_streaming.ResponseIterator, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for stream_answer_query
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ConversationalSearchService server but before it is returned to user code.
+
+        We recommend only using this `post_stream_answer_query_with_metadata`
+        interceptor in new development instead of the `post_stream_answer_query` interceptor.
+        When both interceptors are used, this `post_stream_answer_query_with_metadata` interceptor runs after the
+        `post_stream_answer_query` interceptor. The (possibly modified) response returned by
+        `post_stream_answer_query` will be passed to
+        `post_stream_answer_query_with_metadata`.
+        """
+        return response, metadata
+
     def pre_update_conversation(
         self,
         request: conversational_search_service.UpdateConversationRequest,
@@ -897,6 +955,12 @@ class ConversationalSearchServiceRestTransport(
             url_scheme: the protocol scheme for the API endpoint.  Normally
                 "https", but for testing or local servers,
                 "http" can be specified.
+            interceptor (Optional[ConversationalSearchServiceRestInterceptor]): Interceptor used
+                to manipulate requests, request metadata, and responses.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
@@ -2497,6 +2561,157 @@ class ConversationalSearchServiceRestTransport(
                 )
             return resp
 
+    class _StreamAnswerQuery(
+        _BaseConversationalSearchServiceRestTransport._BaseStreamAnswerQuery,
+        ConversationalSearchServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ConversationalSearchServiceRestTransport.StreamAnswerQuery")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                stream=True,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: conversational_search_service.AnswerQueryRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> rest_streaming.ResponseIterator:
+            r"""Call the stream answer query method over HTTP.
+
+            Args:
+                request (~.conversational_search_service.AnswerQueryRequest):
+                    The request object. Request message for
+                [ConversationalSearchService.AnswerQuery][google.cloud.discoveryengine.v1beta.ConversationalSearchService.AnswerQuery]
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.conversational_search_service.AnswerQueryResponse:
+                    Response message for
+                [ConversationalSearchService.AnswerQuery][google.cloud.discoveryengine.v1beta.ConversationalSearchService.AnswerQuery]
+                method.
+
+            """
+
+            http_options = _BaseConversationalSearchServiceRestTransport._BaseStreamAnswerQuery._get_http_options()
+
+            request, metadata = self._interceptor.pre_stream_answer_query(
+                request, metadata
+            )
+            transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseStreamAnswerQuery._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseConversationalSearchServiceRestTransport._BaseStreamAnswerQuery._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseConversationalSearchServiceRestTransport._BaseStreamAnswerQuery._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.StreamAnswerQuery",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "StreamAnswerQuery",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ConversationalSearchServiceRestTransport._StreamAnswerQuery._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = rest_streaming.ResponseIterator(
+                response, conversational_search_service.AnswerQueryResponse
+            )
+
+            resp = self._interceptor.post_stream_answer_query(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_stream_answer_query_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                http_response = {
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.discoveryengine_v1beta.ConversationalSearchServiceClient.stream_answer_query",
+                    extra={
+                        "serviceName": "google.cloud.discoveryengine.v1beta.ConversationalSearchService",
+                        "rpcName": "StreamAnswerQuery",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateConversation(
         _BaseConversationalSearchServiceRestTransport._BaseUpdateConversation,
         ConversationalSearchServiceRestStub,
@@ -2913,6 +3128,17 @@ class ConversationalSearchServiceRestTransport(
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSessions(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def stream_answer_query(
+        self,
+    ) -> Callable[
+        [conversational_search_service.AnswerQueryRequest],
+        conversational_search_service.AnswerQueryResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._StreamAnswerQuery(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_conversation(

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,8 +38,8 @@ class GetCssProductRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the CSS product to
-            retrieve.
+            Required. The name of the CSS product to retrieve. Format:
+            ``accounts/{account}/cssProducts/{css_product}``
     """
 
     name: str = proto.Field(

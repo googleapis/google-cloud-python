@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,6 +38,7 @@ from google.protobuf.json_format import MessageToJson
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.network_services_v1.types import (
+    agent_gateway,
     endpoint_policy,
     extensibility,
     gateway,
@@ -50,6 +51,7 @@ from google.cloud.network_services_v1.types import (
     tcp_route,
     tls_route,
 )
+from google.cloud.network_services_v1.types import agent_gateway as gcn_agent_gateway
 from google.cloud.network_services_v1.types import (
     endpoint_policy as gcn_endpoint_policy,
 )
@@ -93,7 +95,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -128,7 +130,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -268,6 +270,10 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -2018,6 +2024,150 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
             )
         return self._stubs["list_mesh_route_views"]
 
+    @property
+    def list_agent_gateways(
+        self,
+    ) -> Callable[
+        [agent_gateway.ListAgentGatewaysRequest],
+        Awaitable[agent_gateway.ListAgentGatewaysResponse],
+    ]:
+        r"""Return a callable for the list agent gateways method over gRPC.
+
+        Lists AgentGateways in a given project and location.
+
+        Returns:
+            Callable[[~.ListAgentGatewaysRequest],
+                    Awaitable[~.ListAgentGatewaysResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_agent_gateways" not in self._stubs:
+            self._stubs["list_agent_gateways"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.NetworkServices/ListAgentGateways",
+                request_serializer=agent_gateway.ListAgentGatewaysRequest.serialize,
+                response_deserializer=agent_gateway.ListAgentGatewaysResponse.deserialize,
+            )
+        return self._stubs["list_agent_gateways"]
+
+    @property
+    def get_agent_gateway(
+        self,
+    ) -> Callable[
+        [agent_gateway.GetAgentGatewayRequest], Awaitable[agent_gateway.AgentGateway]
+    ]:
+        r"""Return a callable for the get agent gateway method over gRPC.
+
+        Gets details of a single AgentGateway.
+
+        Returns:
+            Callable[[~.GetAgentGatewayRequest],
+                    Awaitable[~.AgentGateway]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_agent_gateway" not in self._stubs:
+            self._stubs["get_agent_gateway"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.NetworkServices/GetAgentGateway",
+                request_serializer=agent_gateway.GetAgentGatewayRequest.serialize,
+                response_deserializer=agent_gateway.AgentGateway.deserialize,
+            )
+        return self._stubs["get_agent_gateway"]
+
+    @property
+    def create_agent_gateway(
+        self,
+    ) -> Callable[
+        [gcn_agent_gateway.CreateAgentGatewayRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create agent gateway method over gRPC.
+
+        Creates a new AgentGateway in a given project and
+        location.
+
+        Returns:
+            Callable[[~.CreateAgentGatewayRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_agent_gateway" not in self._stubs:
+            self._stubs["create_agent_gateway"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.NetworkServices/CreateAgentGateway",
+                request_serializer=gcn_agent_gateway.CreateAgentGatewayRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_agent_gateway"]
+
+    @property
+    def update_agent_gateway(
+        self,
+    ) -> Callable[
+        [gcn_agent_gateway.UpdateAgentGatewayRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the update agent gateway method over gRPC.
+
+        Updates the parameters of a single AgentGateway.
+
+        Returns:
+            Callable[[~.UpdateAgentGatewayRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_agent_gateway" not in self._stubs:
+            self._stubs["update_agent_gateway"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.NetworkServices/UpdateAgentGateway",
+                request_serializer=gcn_agent_gateway.UpdateAgentGatewayRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_agent_gateway"]
+
+    @property
+    def delete_agent_gateway(
+        self,
+    ) -> Callable[
+        [agent_gateway.DeleteAgentGatewayRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete agent gateway method over gRPC.
+
+        Deletes a single AgentGateway.
+
+        Returns:
+            Callable[[~.DeleteAgentGatewayRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_agent_gateway" not in self._stubs:
+            self._stubs["delete_agent_gateway"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkservices.v1.NetworkServices/DeleteAgentGateway",
+                request_serializer=agent_gateway.DeleteAgentGatewayRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_agent_gateway"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -2308,6 +2458,31 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
             ),
             self.list_mesh_route_views: self._wrap_method(
                 self.list_mesh_route_views,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_agent_gateways: self._wrap_method(
+                self.list_agent_gateways,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_agent_gateway: self._wrap_method(
+                self.get_agent_gateway,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_agent_gateway: self._wrap_method(
+                self.create_agent_gateway,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_agent_gateway: self._wrap_method(
+                self.update_agent_gateway,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_agent_gateway: self._wrap_method(
+                self.delete_agent_gateway,
                 default_timeout=None,
                 client_info=client_info,
             ),

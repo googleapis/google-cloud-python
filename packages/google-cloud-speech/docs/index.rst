@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Cloud Speech.
+This package includes clients for multiple versions of Cloud Speech-to-Text.
 By default, you will get version ``speech_v1``.
 
 

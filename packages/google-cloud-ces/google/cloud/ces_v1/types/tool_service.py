@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.ces_v1.types import schema
+from google.cloud.ces_v1.types import schema, search_suggestions, session_service
 from google.cloud.ces_v1.types import tool as gcc_tool
 from google.cloud.ces_v1.types import toolset_tool as gcc_toolset_tool
 
@@ -62,6 +62,17 @@ class ExecuteToolRequest(proto.Message):
             toolset. Otherwise, an error will be returned.
 
             This field is a member of `oneof`_ ``tool_identifier``.
+        variables (google.protobuf.struct_pb2.Struct):
+            Optional. The variables that are available
+            for the tool execution.
+
+            This field is a member of `oneof`_ ``tool_execution_context``.
+        context (google.protobuf.struct_pb2.Struct):
+            Optional. The
+            [ToolCallContext](https://docs.cloud.google.com/customer-engagement-ai/conversational-agents/ps/tool/python#environment
+            for details) to be passed to the Python tool.
+
+            This field is a member of `oneof`_ ``tool_execution_context``.
         parent (str):
             Required. The resource name of the app which the
             tool/toolset belongs to. Format:
@@ -69,6 +80,11 @@ class ExecuteToolRequest(proto.Message):
         args (google.protobuf.struct_pb2.Struct):
             Optional. The input parameters and values for
             the tool in JSON object format.
+        mock_config (google.cloud.ces_v1.types.MockConfig):
+            Optional. Mock configuration for the tool
+            execution. If this field is set, tools that call
+            other tools will be mocked based on the provided
+            patterns and responses.
     """
 
     tool: str = proto.Field(
@@ -82,6 +98,18 @@ class ExecuteToolRequest(proto.Message):
         oneof="tool_identifier",
         message=gcc_toolset_tool.ToolsetTool,
     )
+    variables: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="tool_execution_context",
+        message=struct_pb2.Struct,
+    )
+    context: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="tool_execution_context",
+        message=struct_pb2.Struct,
+    )
     parent: str = proto.Field(
         proto.STRING,
         number=4,
@@ -90,6 +118,11 @@ class ExecuteToolRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=struct_pb2.Struct,
+    )
+    mock_config: session_service.MockConfig = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=session_service.MockConfig,
     )
 
 
@@ -115,12 +148,22 @@ class ExecuteToolResponse(proto.Message):
 
             This field is a member of `oneof`_ ``tool_identifier``.
         response (google.protobuf.struct_pb2.Struct):
-            Required. The tool execution result in JSON
-            object format. Use "output" key to specify tool
+            The tool execution result in JSON object
+            format. Use "output" key to specify tool
             response and "error" key to specify error
             details (if any). If "output" and "error" keys
             are not specified, then whole "response" is
             treated as tool execution result.
+        variables (google.protobuf.struct_pb2.Struct):
+            The variable values at the end of the tool
+            execution.
+        citations (google.cloud.ces_v1.types.Citations):
+            Citations that provide the source information
+            for the tool's execution.
+        google_search_suggestions (google.cloud.ces_v1.types.GoogleSearchSuggestions):
+            The suggestions returned from Google Search
+            as a result of invoking the Google Search Tool
+            during the tool execution.
     """
 
     tool: str = proto.Field(
@@ -138,6 +181,21 @@ class ExecuteToolResponse(proto.Message):
         proto.MESSAGE,
         number=2,
         message=struct_pb2.Struct,
+    )
+    variables: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=struct_pb2.Struct,
+    )
+    citations: session_service.Citations = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=session_service.Citations,
+    )
+    google_search_suggestions: search_suggestions.GoogleSearchSuggestions = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=search_suggestions.GoogleSearchSuggestions,
     )
 
 
@@ -212,11 +270,9 @@ class RetrieveToolSchemaResponse(proto.Message):
 
             This field is a member of `oneof`_ ``tool_identifier``.
         input_schema (google.cloud.ces_v1.types.Schema):
-            Required. The schema of the tool input
-            parameters.
+            The schema of the tool input parameters.
         output_schema (google.cloud.ces_v1.types.Schema):
-            Required. The schema of the tool output
-            parameters.
+            The schema of the tool output parameters.
     """
 
     tool: str = proto.Field(
@@ -255,6 +311,12 @@ class RetrieveToolsRequest(proto.Message):
             Optional. The identifiers of the tools to
             retrieve from the toolset. If empty, all tools
             in the toolset will be returned.
+        bypass_persistence_config (bool):
+            Optional. If true, the returned tools will
+            contain raw descriptions and schemas directly
+            from the server, bypassing any stored
+            persistence configurations
+            (overrides/snapshots).
     """
 
     toolset: str = proto.Field(
@@ -265,6 +327,10 @@ class RetrieveToolsRequest(proto.Message):
         proto.STRING,
         number=3,
     )
+    bypass_persistence_config: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class RetrieveToolsResponse(proto.Message):
@@ -273,8 +339,8 @@ class RetrieveToolsResponse(proto.Message):
 
     Attributes:
         tools (MutableSequence[google.cloud.ces_v1.types.Tool]):
-            Required. The list of tools that are included
-            in the specified toolset.
+            The list of tools that are included in the
+            specified toolset.
     """
 
     tools: MutableSequence[gcc_tool.Tool] = proto.RepeatedField(

@@ -336,9 +336,13 @@ class Test_Connection(unittest.TestCase):
         )
         now = time.monotonic()
         later = now + writer._DEFAULT_TIMEOUT + 1
-        with mock.patch.object(writer.time, "sleep"), mock.patch.object(
-            writer.time, "monotonic", mock.MagicMock(side_effect=(now, later))
-        ), pytest.raises(exceptions.Unknown):
+        with (
+            mock.patch.object(writer.time, "sleep"),
+            mock.patch.object(
+                writer.time, "monotonic", mock.MagicMock(side_effect=(now, later))
+            ),
+            pytest.raises(exceptions.Unknown),
+        ):
             connection.send(initial_request)
 
     @mock.patch("google.api_core.bidi.BidiRpc", autospec=True)

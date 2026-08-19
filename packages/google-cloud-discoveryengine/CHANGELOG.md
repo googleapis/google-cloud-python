@@ -4,6 +4,41 @@
 
 [1]: https://pypi.org/project/google-cloud-discoveryengine/#history
 
+## [0.20.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.20.1...google-cloud-discoveryengine-v0.20.2) (2026-07-16)
+
+
+### Features
+
+* update googleapis and regenerate ([#17725](https://github.com/googleapis/google-cloud-python/issues/17725)) ([35e16da](https://github.com/googleapis/google-cloud-python/commit/35e16daf25480d66e9fc3443fe485ae2b0241ae3))
+
+## [0.20.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.20.0...google-cloud-discoveryengine-v0.20.1) (2026-06-25)
+
+
+### Features
+
+* update googleapis and regenerate ([#17554](https://github.com/googleapis/google-cloud-python/issues/17554)) ([03d0574](https://github.com/googleapis/google-cloud-python/commit/03d0574da8485e918f16e90666928f5c7b7f1c92))
+
+## [0.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.19.0...google-cloud-discoveryengine-v0.20.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-cloud-d packages (#17092) ([d49a2b9412b4ee9105125db36104a3e18344e0ad](https://github.com/googleapis/google-cloud-python/commit/d49a2b9412b4ee9105125db36104a3e18344e0ad))
+
+## [0.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.18.0...google-cloud-discoveryengine-v0.19.0) (2026-05-06)
+
+## [0.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.17.0...google-cloud-discoveryengine-v0.18.0) (2026-03-26)
+
+
+### Documentation
+
+* Clarify project number requirement for data_store field ([4b400faca2fcd40f68a812dc6f47a79d0cbf7433](https://github.com/googleapis/google-cloud-python/commit/4b400faca2fcd40f68a812dc6f47a79d0cbf7433))
+
+
+### Features
+
+* Update DataStoreSpec and add BoostSpec to SearchService ([4b400faca2fcd40f68a812dc6f47a79d0cbf7433](https://github.com/googleapis/google-cloud-python/commit/4b400faca2fcd40f68a812dc6f47a79d0cbf7433))
+
 ## [0.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.16.0...google-cloud-discoveryengine-v0.17.0) (2026-02-12)
 
 

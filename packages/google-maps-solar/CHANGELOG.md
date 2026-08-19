@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-maps-solar/#history
 
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-solar-v0.5.0...google-maps-solar-v0.6.0) (2026-06-02)
+
+
+### Features
+
+* regenerate google-maps packages (#17073) ([bd31a8c7fd338723ac201ad1b5d0f2a1861f8925](https://github.com/googleapis/google-cloud-python/commit/bd31a8c7fd338723ac201ad1b5d0f2a1861f8925))
+
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-solar-v0.4.0...google-maps-solar-v0.5.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-solar-v0.3.0...google-maps-solar-v0.4.0) (2026-02-12)
 
 

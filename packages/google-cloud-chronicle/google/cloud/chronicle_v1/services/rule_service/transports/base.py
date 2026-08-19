@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,15 +34,17 @@ from google.cloud.chronicle_v1.types import rule as gcc_rule
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class RuleServiceTransport(abc.ABC):
     """Abstract transport class for RuleService."""
 
-    AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/chronicle",
+        "https://www.googleapis.com/auth/chronicle.readonly",
+        "https://www.googleapis.com/auth/cloud-platform",
+    )
 
     DEFAULT_HOST: str = "chronicle.googleapis.com"
 
@@ -83,6 +85,10 @@ class RuleServiceTransport(abc.ABC):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
 
         # Save the scopes.
@@ -132,6 +138,8 @@ class RuleServiceTransport(abc.ABC):
             host += ":443"
         self._host = host
 
+        self._wrapped_methods: Dict[Callable, Callable] = {}
+
     @property
     def host(self):
         return self._host
@@ -179,6 +187,20 @@ class RuleServiceTransport(abc.ABC):
             ),
             self.delete_rule: gapic_v1.method.wrap_method(
                 self.delete_rule,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.verify_rule_text: gapic_v1.method.wrap_method(
+                self.verify_rule_text,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
                 default_timeout=60.0,
                 client_info=client_info,
             ),
@@ -334,6 +356,15 @@ class RuleServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [rule.DeleteRuleRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def verify_rule_text(
+        self,
+    ) -> Callable[
+        [rule.VerifyRuleTextRequest],
+        Union[rule.VerifyRuleTextResponse, Awaitable[rule.VerifyRuleTextResponse]],
     ]:
         raise NotImplementedError()
 

@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Google Cloud Text-to-Speech.
+This package includes clients for multiple versions of Cloud Text-to-Speech.
 By default, you will get version ``texttospeech_v1``.
 
 

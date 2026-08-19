@@ -13,28 +13,38 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+
 import os
+import pathlib
 import re
 import shutil
 
 import nox
 
-
 BLACK_VERSION = "black==23.7.0"
+RUFF_VERSION = "ruff==0.14.14"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 UNIT_TEST_PYTHON_VERSIONS = [
-    "3.7",
-    "3.8",
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
-CURRENT_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
+CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
 
 # Error if a python version is missing
 nox.options.error_on_missing_interpreters = True
@@ -64,7 +74,14 @@ def mypy(session):
         "types-mock",
         "types-protobuf!=4.24.0.20240106",
     )
-    session.run("mypy", "-p", "google", "-p", "tests")
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "google",
+        "-p",
+        "tests",
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -75,6 +92,36 @@ def blacken(session):
     """
     session.install(BLACK_VERSION)
     session.run("black", *BLACK_PATHS)
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def format(session):
+    """
+    Run ruff to sort imports and format code.
+    """
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
+        *BLACK_PATHS,
+    )
+
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{UNIT_TEST_PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
+        *BLACK_PATHS,
+    )
 
 
 def default(session):
@@ -222,18 +269,10 @@ def docfx(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",
-    ["python", "upb", "cpp"],
+    ["python", "upb"],
 )
 def prerelease_deps(session, protobuf_implementation):
     """Run all tests with prerelease versions of dependencies installed."""
-
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all test dependencies, then install local packages in-place.
     session.install("pytest", "pytest-cov")
@@ -315,20 +354,12 @@ def prerelease_deps(session, protobuf_implementation):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",
-    ["python", "upb", "cpp"],
+    ["python", "upb"],
 )
 def core_deps_from_source(session, protobuf_implementation):
     """Run all tests with core dependencies installed from source
     rather than pulling the dependencies from PyPI.
     """
-
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all test dependencies, then install local packages in-place.
     session.install("pytest", "pytest-cov")
@@ -356,11 +387,11 @@ def core_deps_from_source(session, protobuf_implementation):
     # Note: If a dependency is added to the `core_dependencies_from_source` list,
     # the `prerel_deps` list in the `prerelease_deps` nox session should also be updated.
     core_dependencies_from_source = [
-        "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
-        "google-api-core @ git+https://github.com/googleapis/python-api-core.git",
-        "google-auth @ git+https://github.com/googleapis/google-auth-library-python.git",
-        "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
-        "proto-plus @ git+https://github.com/googleapis/proto-plus-python.git",
+        f"{CURRENT_DIRECTORY}/../googleapis-common-protos",
+        f"{CURRENT_DIRECTORY}/../google-api-core",
+        f"{CURRENT_DIRECTORY}/../google-auth",
+        f"{CURRENT_DIRECTORY}/../grpc-google-iam-v1",
+        f"{CURRENT_DIRECTORY}/../proto-plus",
     ]
 
     for dep in core_dependencies_from_source:

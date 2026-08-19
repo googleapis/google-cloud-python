@@ -3,7 +3,9 @@ Python Client for Cloud Optimization
 
 |stable| |pypi| |versions|
 
-`Cloud Optimization`_: is a managed routing service that takes your list of orders, vehicles, constraints, and objectives and returns the most efficient plan for your entire fleet in near real-time.
+`Cloud Optimization`_: Cloud Optimization API provides a portfolio of solvers to address common
+optimization use cases starting with optimal route planning for vehicle
+fleets.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -61,14 +63,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.

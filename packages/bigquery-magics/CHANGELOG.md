@@ -4,6 +4,37 @@
 
 [1]: https://pypi.org/project/bigquery-magics/#history
 
+## [0.15.1](https://github.com/googleapis/google-cloud-python/compare/bigquery-magics-v0.15.0...bigquery-magics-v0.15.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
+## [0.15.0](https://github.com/googleapis/google-cloud-python/compare/bigquery-magics-v0.14.0...bigquery-magics-v0.15.0) (2026-05-06)
+
+
+### Bug Fixes
+
+* Drop support for Python 3.9 (#16949) ([fab4e7123cd7f7b5d5fef3e8eb923a37d8999388](https://github.com/googleapis/google-cloud-python/commit/fab4e7123cd7f7b5d5fef3e8eb923a37d8999388))
+
+## [0.13.0](https://github.com/googleapis/google-cloud-python/compare/bigquery-magics-v0.12.2...bigquery-magics-v0.13.0) (2026-04-09)
+
+
+### Features
+
+* drop support for Python 3.9 (#16587) ([961eacd039a2583bc019e0502bc4c1c1d88ab410](https://github.com/googleapis/google-cloud-python/commit/961eacd039a2583bc019e0502bc4c1c1d88ab410))
+* deprecate `--engine=bigframes`, run `%load_ext bigframes` and use `%%bqsql` magics instead (#16573) ([dbaf8f54db13d66bc0a2311bff6085615ee38958](https://github.com/googleapis/google-cloud-python/commit/dbaf8f54db13d66bc0a2311bff6085615ee38958))
+
+## [0.12.2](https://github.com/googleapis/google-cloud-python/compare/bigquery-magics-v0.12.1...bigquery-magics-v0.12.2) (2026-03-26)
+
+
+### Bug Fixes
+
+* Allow Protobuf 7.x, require Python 3.9 (#16102) ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+* Require Python 3.9 ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+
 ## [0.12.1](https://github.com/googleapis/python-bigquery-magics/compare/v0.12.0...v0.12.1) (2026-02-25)
 
 

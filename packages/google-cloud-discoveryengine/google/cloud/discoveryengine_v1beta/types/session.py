@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.types import answer as gcd_answer
+from google.cloud.discoveryengine_v1beta.types import assist_answer
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1beta",
@@ -50,6 +51,9 @@ class Session(proto.Message):
             A unique identifier for tracking users.
         turns (MutableSequence[google.cloud.discoveryengine_v1beta.types.Session.Turn]):
             Turns.
+        labels (MutableSequence[str]):
+            Optional. The labels for the session.
+            Can be set as filter in ListSessionsRequest.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the session started.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -58,6 +62,11 @@ class Session(proto.Message):
             Optional. Whether the session is pinned,
             pinned session will be displayed on the top of
             the session list.
+        pending_async_assist_operation_id (str):
+            Output only. Full resource name of an in-progress
+            AsyncAssist operation for this session, e.g.
+            ``projects/*/locations/*/collections/*/engines/*/sessions/*/operations/*``.
+            Set when the operation starts and cleared when it finishes.
     """
 
     class State(proto.Enum):
@@ -94,12 +103,22 @@ class Session(proto.Message):
                 [GetSessionRequest.include_answer_details][google.cloud.discoveryengine.v1beta.GetSessionRequest.include_answer_details]
                 is set to true, this field will be populated when getting
                 answer query session.
+            detailed_assist_answer (google.cloud.discoveryengine_v1beta.types.AssistAnswer):
+                Output only. In
+                [ConversationalSearchService.GetSession][google.cloud.discoveryengine.v1beta.ConversationalSearchService.GetSession]
+                API, if
+                [GetSessionRequest.include_answer_details][google.cloud.discoveryengine.v1beta.GetSessionRequest.include_answer_details]
+                is set to true, this field will be populated when getting
+                assistant session.
             query_config (MutableMapping[str, str]):
                 Optional. Represents metadata related to the
                 query config, for example LLM model and version
                 used, model parameters (temperature, grounding
                 parameters, etc.). The prefix "google." is
                 reserved for Google-developed functionality.
+            live (bool):
+                Optional. Indicates whether this turn is a
+                live turn.
         """
 
         query: "Query" = proto.Field(
@@ -116,10 +135,19 @@ class Session(proto.Message):
             number=7,
             message=gcd_answer.Answer,
         )
+        detailed_assist_answer: assist_answer.AssistAnswer = proto.Field(
+            proto.MESSAGE,
+            number=8,
+            message=assist_answer.AssistAnswer,
+        )
         query_config: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
             proto.STRING,
             number=16,
+        )
+        live: bool = proto.Field(
+            proto.BOOL,
+            number=20,
         )
 
     name: str = proto.Field(
@@ -144,6 +172,10 @@ class Session(proto.Message):
         number=4,
         message=Turn,
     )
+    labels: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=9,
+    )
     start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
@@ -157,6 +189,10 @@ class Session(proto.Message):
     is_pinned: bool = proto.Field(
         proto.BOOL,
         number=8,
+    )
+    pending_async_assist_operation_id: str = proto.Field(
+        proto.STRING,
+        number=22,
     )
 
 

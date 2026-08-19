@@ -13,10 +13,10 @@ import google.oauth2.credentials
 import psutil
 
 import pandas_gbq.constants
-import pandas_gbq.core.read
 import pandas_gbq.core.biglake
-import pandas_gbq.gbq_connector
+import pandas_gbq.core.read
 import pandas_gbq.core.resource_references
+import pandas_gbq.gbq_connector
 
 # Only import at module-level at type checking time to avoid circular
 # dependencies in the pandas package, which has an optional dependency on

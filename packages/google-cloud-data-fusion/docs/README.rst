@@ -3,7 +3,13 @@ Python Client for Cloud Data Fusion
 
 |stable| |pypi| |versions|
 
-`Cloud Data Fusion`_: is a fully managed, cloud-native, enterprise data integration service for quickly building and managing data pipelines.
+`Cloud Data Fusion`_: Cloud Data Fusion is a fully-managed, cloud native, enterprise data
+integration service for     quickly building and managing data pipelines.
+It provides a graphical interface to increase     time efficiency and
+reduce complexity, and allows business users, developers, and data
+scientists to easily and reliably build scalable data integration
+solutions to cleanse,     prepare, blend, transfer and transform data
+without having to wrestle with infrastructure.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -61,14 +67,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,6 +38,13 @@ from google.cloud.oracledatabase_v1.types import (
     exadata_infra,
     exadb_vm_cluster,
     exascale_db_storage_vault,
+    goldengate_connection,
+    goldengate_connection_assignment,
+    goldengate_connection_type,
+    goldengate_deployment,
+    goldengate_deployment_environment,
+    goldengate_deployment_type,
+    goldengate_deployment_version,
     minor_version,
     odb_network,
     odb_subnet,
@@ -49,15 +56,22 @@ from google.cloud.oracledatabase_v1.types import db_system as gco_db_system
 from google.cloud.oracledatabase_v1.types import (
     exascale_db_storage_vault as gco_exascale_db_storage_vault,
 )
+from google.cloud.oracledatabase_v1.types import (
+    goldengate_connection as gco_goldengate_connection,
+)
+from google.cloud.oracledatabase_v1.types import (
+    goldengate_connection_assignment as gco_goldengate_connection_assignment,
+)
+from google.cloud.oracledatabase_v1.types import (
+    goldengate_deployment as gco_goldengate_deployment,
+)
 from google.cloud.oracledatabase_v1.types import odb_network as gco_odb_network
 from google.cloud.oracledatabase_v1.types import odb_subnet as gco_odb_subnet
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class OracleDatabaseTransport(abc.ABC):
@@ -104,6 +118,10 @@ class OracleDatabaseTransport(abc.ABC):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
         """
 
         # Save the scopes.
@@ -153,6 +171,8 @@ class OracleDatabaseTransport(abc.ABC):
             host += ":443"
         self._host = host
 
+        self._wrapped_methods: Dict[Callable, Callable] = {}
+
     @property
     def host(self):
         return self._host
@@ -197,6 +217,11 @@ class OracleDatabaseTransport(abc.ABC):
             ),
             self.delete_cloud_exadata_infrastructure: gapic_v1.method.wrap_method(
                 self.delete_cloud_exadata_infrastructure,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.configure_exascale_cloud_exadata_infrastructure: gapic_v1.method.wrap_method(
+                self.configure_exascale_cloud_exadata_infrastructure,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -452,6 +477,16 @@ class OracleDatabaseTransport(abc.ABC):
             ),
             self.failover_autonomous_database: gapic_v1.method.wrap_method(
                 self.failover_autonomous_database,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.refresh_autonomous_database: gapic_v1.method.wrap_method(
+                self.refresh_autonomous_database,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_autonomous_database_refreshable_clones: gapic_v1.method.wrap_method(
+                self.get_autonomous_database_refreshable_clones,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -740,6 +775,156 @@ class OracleDatabaseTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_goldengate_deployments: gapic_v1.method.wrap_method(
+                self.list_goldengate_deployments,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_goldengate_deployment: gapic_v1.method.wrap_method(
+                self.get_goldengate_deployment,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_goldengate_deployment: gapic_v1.method.wrap_method(
+                self.create_goldengate_deployment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_goldengate_deployment: gapic_v1.method.wrap_method(
+                self.delete_goldengate_deployment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.stop_goldengate_deployment: gapic_v1.method.wrap_method(
+                self.stop_goldengate_deployment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.start_goldengate_deployment: gapic_v1.method.wrap_method(
+                self.start_goldengate_deployment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_goldengate_connections: gapic_v1.method.wrap_method(
+                self.list_goldengate_connections,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_goldengate_connection: gapic_v1.method.wrap_method(
+                self.get_goldengate_connection,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_goldengate_connection: gapic_v1.method.wrap_method(
+                self.create_goldengate_connection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_goldengate_connection: gapic_v1.method.wrap_method(
+                self.delete_goldengate_connection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_goldengate_deployment_versions: gapic_v1.method.wrap_method(
+                self.list_goldengate_deployment_versions,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_goldengate_deployment_types: gapic_v1.method.wrap_method(
+                self.list_goldengate_deployment_types,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_goldengate_deployment_environments: gapic_v1.method.wrap_method(
+                self.list_goldengate_deployment_environments,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_goldengate_connection_types: gapic_v1.method.wrap_method(
+                self.list_goldengate_connection_types,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.list_db_versions: gapic_v1.method.wrap_method(
                 self.list_db_versions,
                 default_retry=retries.Retry(
@@ -768,6 +953,51 @@ class OracleDatabaseTransport(abc.ABC):
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_goldengate_connection_assignments: gapic_v1.method.wrap_method(
+                self.list_goldengate_connection_assignments,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_goldengate_connection_assignment: gapic_v1.method.wrap_method(
+                self.get_goldengate_connection_assignment,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_goldengate_connection_assignment: gapic_v1.method.wrap_method(
+                self.create_goldengate_connection_assignment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_goldengate_connection_assignment: gapic_v1.method.wrap_method(
+                self.delete_goldengate_connection_assignment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_goldengate_connection_assignment: gapic_v1.method.wrap_method(
+                self.test_goldengate_connection_assignment,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_location: gapic_v1.method.wrap_method(
@@ -854,6 +1084,15 @@ class OracleDatabaseTransport(abc.ABC):
         self,
     ) -> Callable[
         [oracledatabase.DeleteCloudExadataInfrastructureRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def configure_exascale_cloud_exadata_infrastructure(
+        self,
+    ) -> Callable[
+        [exadata_infra.ConfigureExascaleCloudExadataInfrastructureRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
@@ -1119,6 +1358,27 @@ class OracleDatabaseTransport(abc.ABC):
     ) -> Callable[
         [oracledatabase.FailoverAutonomousDatabaseRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def refresh_autonomous_database(
+        self,
+    ) -> Callable[
+        [oracledatabase.RefreshAutonomousDatabaseRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_autonomous_database_refreshable_clones(
+        self,
+    ) -> Callable[
+        [oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest],
+        Union[
+            oracledatabase.AutonomousDatabaseRefreshableClones,
+            Awaitable[oracledatabase.AutonomousDatabaseRefreshableClones],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -1398,6 +1658,160 @@ class OracleDatabaseTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def list_goldengate_deployments(
+        self,
+    ) -> Callable[
+        [goldengate_deployment.ListGoldengateDeploymentsRequest],
+        Union[
+            goldengate_deployment.ListGoldengateDeploymentsResponse,
+            Awaitable[goldengate_deployment.ListGoldengateDeploymentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_goldengate_deployment(
+        self,
+    ) -> Callable[
+        [goldengate_deployment.GetGoldengateDeploymentRequest],
+        Union[
+            goldengate_deployment.GoldengateDeployment,
+            Awaitable[goldengate_deployment.GoldengateDeployment],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_goldengate_deployment(
+        self,
+    ) -> Callable[
+        [gco_goldengate_deployment.CreateGoldengateDeploymentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_goldengate_deployment(
+        self,
+    ) -> Callable[
+        [goldengate_deployment.DeleteGoldengateDeploymentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def stop_goldengate_deployment(
+        self,
+    ) -> Callable[
+        [goldengate_deployment.StopGoldengateDeploymentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def start_goldengate_deployment(
+        self,
+    ) -> Callable[
+        [goldengate_deployment.StartGoldengateDeploymentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_goldengate_connections(
+        self,
+    ) -> Callable[
+        [goldengate_connection.ListGoldengateConnectionsRequest],
+        Union[
+            goldengate_connection.ListGoldengateConnectionsResponse,
+            Awaitable[goldengate_connection.ListGoldengateConnectionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_goldengate_connection(
+        self,
+    ) -> Callable[
+        [goldengate_connection.GetGoldengateConnectionRequest],
+        Union[
+            goldengate_connection.GoldengateConnection,
+            Awaitable[goldengate_connection.GoldengateConnection],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_goldengate_connection(
+        self,
+    ) -> Callable[
+        [gco_goldengate_connection.CreateGoldengateConnectionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_goldengate_connection(
+        self,
+    ) -> Callable[
+        [goldengate_connection.DeleteGoldengateConnectionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_goldengate_deployment_versions(
+        self,
+    ) -> Callable[
+        [goldengate_deployment_version.ListGoldengateDeploymentVersionsRequest],
+        Union[
+            goldengate_deployment_version.ListGoldengateDeploymentVersionsResponse,
+            Awaitable[
+                goldengate_deployment_version.ListGoldengateDeploymentVersionsResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_goldengate_deployment_types(
+        self,
+    ) -> Callable[
+        [goldengate_deployment_type.ListGoldengateDeploymentTypesRequest],
+        Union[
+            goldengate_deployment_type.ListGoldengateDeploymentTypesResponse,
+            Awaitable[goldengate_deployment_type.ListGoldengateDeploymentTypesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_goldengate_deployment_environments(
+        self,
+    ) -> Callable[
+        [goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsRequest],
+        Union[
+            goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsResponse,
+            Awaitable[
+                goldengate_deployment_environment.ListGoldengateDeploymentEnvironmentsResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_goldengate_connection_types(
+        self,
+    ) -> Callable[
+        [goldengate_connection_type.ListGoldengateConnectionTypesRequest],
+        Union[
+            goldengate_connection_type.ListGoldengateConnectionTypesResponse,
+            Awaitable[goldengate_connection_type.ListGoldengateConnectionTypesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def list_db_versions(
         self,
     ) -> Callable[
@@ -1417,6 +1831,66 @@ class OracleDatabaseTransport(abc.ABC):
         Union[
             database_character_set.ListDatabaseCharacterSetsResponse,
             Awaitable[database_character_set.ListDatabaseCharacterSetsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_goldengate_connection_assignments(
+        self,
+    ) -> Callable[
+        [goldengate_connection_assignment.ListGoldengateConnectionAssignmentsRequest],
+        Union[
+            goldengate_connection_assignment.ListGoldengateConnectionAssignmentsResponse,
+            Awaitable[
+                goldengate_connection_assignment.ListGoldengateConnectionAssignmentsResponse
+            ],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_goldengate_connection_assignment(
+        self,
+    ) -> Callable[
+        [goldengate_connection_assignment.GetGoldengateConnectionAssignmentRequest],
+        Union[
+            goldengate_connection_assignment.GoldengateConnectionAssignment,
+            Awaitable[goldengate_connection_assignment.GoldengateConnectionAssignment],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_goldengate_connection_assignment(
+        self,
+    ) -> Callable[
+        [
+            gco_goldengate_connection_assignment.CreateGoldengateConnectionAssignmentRequest
+        ],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_goldengate_connection_assignment(
+        self,
+    ) -> Callable[
+        [goldengate_connection_assignment.DeleteGoldengateConnectionAssignmentRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def test_goldengate_connection_assignment(
+        self,
+    ) -> Callable[
+        [goldengate_connection_assignment.TestGoldengateConnectionAssignmentRequest],
+        Union[
+            goldengate_connection_assignment.TestGoldengateConnectionAssignmentResponse,
+            Awaitable[
+                goldengate_connection_assignment.TestGoldengateConnectionAssignmentResponse
+            ],
         ],
     ]:
         raise NotImplementedError()

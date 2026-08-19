@@ -14,10 +14,11 @@
 
 # Helpful notes for local usage:
 #   unset PYENV_VERSION
-#   pyenv local 3.14.1 3.13.10 3.12.11 3.11.4 3.10.12 3.9.17
+#   pyenv local 3.14.1 3.13.10 3.12.11 3.11.4 3.10.12
 #   PIP_INDEX_URL=https://pypi.org/simple nox
 
 from __future__ import absolute_import
+
 import os
 import pathlib
 import re
@@ -27,17 +28,23 @@ import unittest
 # https://github.com/google/importlab/issues/25
 import nox
 
+RUFF_VERSION = "ruff==0.14.14"
+LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
-BLACK_VERSION = "black==23.7.0"
-BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
-# Black and flake8 clash on the syntax for ignoring flake8's F401 in this file.
-BLACK_EXCLUDES = ["--exclude", "^/google/api_core/operations_v1/__init__.py"]
-
-ALL_PYTHON = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
-SUPPORTED_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+ALL_PYTHON = ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
 
 
 # Error if a python version is missing
@@ -51,25 +58,66 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", BLACK_VERSION)
-    session.install(".")
+    session.install("flake8", RUFF_VERSION)
+
     session.run(
-        "black",
+        "ruff",
+        "format",
         "--check",
-        *BLACK_EXCLUDES,
-        *BLACK_PATHS,
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
     )
+
     session.run("flake8", "google", "tests")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
-    """Run black.
+    """(Deprecated) Legacy session. Please use 'nox -s format'."""
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
+    )
 
-    Format code to uniform standard.
+    # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
+    session.install(RUFF_VERSION)
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def format(session):
     """
-    session.install(BLACK_VERSION)
-    session.run("black", *BLACK_EXCLUDES, *BLACK_PATHS)
+    Run ruff to sort imports and format code.
+    """
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
+
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_PYTHON[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
 
 
 def install_prerelease_dependencies(session, constraints_path):
@@ -123,10 +171,10 @@ def install_core_deps_dependencies(session, constraints_path):
         # Note: If a dependency is added to the `core_dependencies_from_source` list,
         # the `prerel_deps` list in the `install_prerelease_dependencies` method should also be updated.
         core_dependencies_from_source = [
-            "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
-            "google-auth @ git+https://github.com/googleapis/google-auth-library-python.git",
-            "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
-            "proto-plus @ git+https://github.com/googleapis/proto-plus-python.git",
+            f"{CURRENT_DIRECTORY}/../googleapis-common-protos",
+            f"{CURRENT_DIRECTORY}/../google-auth",
+            f"{CURRENT_DIRECTORY}/../grpc-google-iam-v1",
+            f"{CURRENT_DIRECTORY}/../proto-plus",
         ]
 
         for dep in core_dependencies_from_source:
@@ -182,14 +230,14 @@ def default(
     if prerelease:
         install_prerelease_dependencies(
             session,
-            f"{constraints_dir}/constraints-{constraints_type}{SUPPORTED_PYTHON_VERSIONS[0]}.txt",
+            f"{constraints_dir}/constraints-{constraints_type}{ALL_PYTHON[0]}.txt",
         )
         # This *must* be the last install command to get the package from source.
         session.install("-e", lib_with_extras, "--no-deps")
     elif install_deps_from_source:
         install_core_deps_dependencies(
             session,
-            f"{constraints_dir}/constraints-{constraints_type}{SUPPORTED_PYTHON_VERSIONS[0]}.txt",
+            f"{constraints_dir}/constraints-{constraints_type}{ALL_PYTHON[0]}.txt",
         )
         # This *must* be the last install command to get the package from source.
         session.install("-e", lib_with_extras, "--no-deps")
@@ -258,55 +306,27 @@ def default(
 
 @nox.session(python=ALL_PYTHON)
 @nox.parametrize(
-    ["install_grpc", "install_async_rest", "python_versions", "legacy_proto"],
+    ["install_grpc", "install_async_rest", "python_versions"],
     [
-        (True, False, None, None),  # Run unit tests with grpcio installed
-        (False, False, None, None),  # Run unit tests without grpcio installed
+        (True, False, None),  # Run unit tests with grpcio installed
+        (False, False, None),  # Run unit tests without grpcio installed
         (
             True,
             True,
-            None,
             None,
         ),  # Run unit tests with grpcio and async rest installed
-        # TODO: Remove once we stop support for protobuf 4.x.
-        (
-            True,
-            False,
-            ["3.9", "3.10", "3.11"],
-            4,
-        ),  # Run proto4 tests with grpcio/grpcio-gcp installed
     ],
 )
-def unit(
-    session, install_grpc, install_async_rest, python_versions=None, legacy_proto=None
-):
+def unit(session, install_grpc, install_async_rest, python_versions=None):
     """Run the unit test suite with the given configuration parameters.
 
     If `python_versions` is provided, the test suite only runs when the Python version (xx.yy) is
     one of the values in `python_versions`.
-
-    If `legacy_proto` is provided, this test suite will explicitly install the proto library at
-    that major version. Only a few values are supported at any one time; the intent is to test
-    deprecated but noyet abandoned versions.
     """
-    if session.python in (
-        "3.7",
-        "3.8",
-    ):
-        session.skip("Python 3.7/3.8 is no longer supported")
 
     if python_versions and session.python not in python_versions:
         session.log(f"Skipping session for Python {session.python}")
         session.skip()
-
-    # TODO: consider converting the following into a `match` statement once
-    # we drop Python 3.9 support.
-    if legacy_proto:
-        if legacy_proto == 4:
-            # Pin protobuf to a 4.x version to ensure coverage for the legacy code path.
-            session.install("protobuf>=4.25.8,<5.0.0")
-        else:
-            assert False, f"Unknown legacy_proto: {legacy_proto}"
 
     default(
         session=session,
@@ -344,7 +364,7 @@ def mypy(session):
         "types-requests",
         "types-protobuf",
     )
-    session.run("mypy", "google", "tests")
+    session.run("mypy", f"--config-file={MYPY_CONFIG_FILE}", "google", "tests")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -355,7 +375,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=100")
+    session.run("coverage", "report", "--show-missing")
     session.run("coverage", "erase")
 
 

@@ -4,6 +4,43 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [3.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.15.0...google-cloud-kms-v3.16.0) (2026-07-16)
+
+
+### Features
+
+* update googleapis and regenerate ([#17725](https://github.com/googleapis/google-cloud-python/issues/17725)) ([35e16da](https://github.com/googleapis/google-cloud-python/commit/35e16daf25480d66e9fc3443fe485ae2b0241ae3))
+
+## [3.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.14.0...google-cloud-kms-v3.15.0) (2026-07-07)
+
+
+### Features
+
+* update googleapis and regenerate ([#17635](https://github.com/googleapis/google-cloud-python/issues/17635)) ([9638879](https://github.com/googleapis/google-cloud-python/commit/96388796440b226440f885c04ce565782b1d9190))
+
+## [3.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.13.0...google-cloud-kms-v3.14.0) (2026-06-22)
+
+
+### Features
+
+* regenerate google-cloud-[k-n] packages ([#17074](https://github.com/googleapis/google-cloud-python/issues/17074)) ([ec54f78](https://github.com/googleapis/google-cloud-python/commit/ec54f78e37bb3b48e0794d544784b99fa13d6f85))
+
+## [3.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.12.0...google-cloud-kms-v3.13.0) (2026-05-06)
+
+## [3.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.11.0...google-cloud-kms-v3.12.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
 ## [3.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.10.0...google-cloud-kms-v3.11.0) (2026-02-19)
 
 

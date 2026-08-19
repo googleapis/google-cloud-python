@@ -1,9 +1,9 @@
-Python Client for Audit Manager API
-===================================
+Python Client for Audit Manager
+===============================
 
 |preview| |pypi| |versions|
 
-`Audit Manager API`_: 
+`Audit Manager`_: The Audit Manager API allows customers to manage compliance audits.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Audit Manager API
    :target: https://pypi.org/project/google-cloud-auditmanager/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-auditmanager.svg
    :target: https://pypi.org/project/google-cloud-auditmanager/
-.. _Audit Manager API: https://cloud.google.com/audit-manager/docs
+.. _Audit Manager: https://cloud.google.com/audit-manager/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-auditmanager/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/audit-manager/docs
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Audit Manager API.`_
+3. `Enable the Audit Manager.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Audit Manager API.:  https://cloud.google.com/audit-manager/docs
+.. _Enable the Audit Manager.:  https://cloud.google.com/audit-manager/docs
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +61,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -97,14 +98,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Audit Manager API
+-  Read the `Client Library Documentation`_ for Audit Manager
    to see other available methods on the client.
--  Read the `Audit Manager API Product documentation`_ to learn
+-  Read the `Audit Manager Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Audit Manager API Product documentation:  https://cloud.google.com/audit-manager/docs
+.. _Audit Manager Product documentation:  https://cloud.google.com/audit-manager/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

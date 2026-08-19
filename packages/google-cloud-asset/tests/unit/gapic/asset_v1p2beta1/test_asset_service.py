@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -114,12 +109,28 @@ def modify_default_endpoint_template(client):
     )
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert AssetServiceClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -138,6 +149,10 @@ def test__get_default_mtls_endpoint():
         == sandbox_mtls_endpoint
     )
     assert AssetServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert (
+        AssetServiceClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
+    )
 
 
 def test__read_environment_variables():
@@ -923,7 +938,14 @@ def test_asset_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -970,7 +992,14 @@ def test_asset_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1258,11 +1287,13 @@ def test_asset_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1287,8 +1318,8 @@ def test_asset_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.CreateFeedRequest,
-        dict,
+        asset_service.CreateFeedRequest(),
+        {},
     ],
 )
 def test_create_feed(request_type, transport: str = "grpc"):
@@ -1299,7 +1330,7 @@ def test_create_feed(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_feed), "__call__") as call:
@@ -1350,10 +1381,11 @@ def test_create_feed_non_empty_request_with_auto_populated_field():
         client.create_feed(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.CreateFeedRequest(
+        request_msg = asset_service.CreateFeedRequest(
             parent="parent_value",
             feed_id="feed_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_feed_use_cached_wrapped_rpc():
@@ -1434,9 +1466,14 @@ async def test_create_feed_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_feed_async(
-    transport: str = "grpc_asyncio", request_type=asset_service.CreateFeedRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.CreateFeedRequest(),
+        {},
+    ],
+)
+async def test_create_feed_async(request_type, transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1444,7 +1481,7 @@ async def test_create_feed_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_feed), "__call__") as call:
@@ -1471,11 +1508,6 @@ async def test_create_feed_async(
     assert response.asset_names == ["asset_names_value"]
     assert response.asset_types == ["asset_types_value"]
     assert response.content_type == asset_service.ContentType.RESOURCE
-
-
-@pytest.mark.asyncio
-async def test_create_feed_async_from_dict():
-    await test_create_feed_async(request_type=dict)
 
 
 def test_create_feed_field_headers():
@@ -1620,8 +1652,8 @@ async def test_create_feed_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.GetFeedRequest,
-        dict,
+        asset_service.GetFeedRequest(),
+        {},
     ],
 )
 def test_get_feed(request_type, transport: str = "grpc"):
@@ -1632,7 +1664,7 @@ def test_get_feed(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_feed), "__call__") as call:
@@ -1682,9 +1714,10 @@ def test_get_feed_non_empty_request_with_auto_populated_field():
         client.get_feed(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.GetFeedRequest(
+        request_msg = asset_service.GetFeedRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_feed_use_cached_wrapped_rpc():
@@ -1763,9 +1796,14 @@ async def test_get_feed_async_use_cached_wrapped_rpc(transport: str = "grpc_asyn
 
 
 @pytest.mark.asyncio
-async def test_get_feed_async(
-    transport: str = "grpc_asyncio", request_type=asset_service.GetFeedRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.GetFeedRequest(),
+        {},
+    ],
+)
+async def test_get_feed_async(request_type, transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1773,7 +1811,7 @@ async def test_get_feed_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_feed), "__call__") as call:
@@ -1800,11 +1838,6 @@ async def test_get_feed_async(
     assert response.asset_names == ["asset_names_value"]
     assert response.asset_types == ["asset_types_value"]
     assert response.content_type == asset_service.ContentType.RESOURCE
-
-
-@pytest.mark.asyncio
-async def test_get_feed_async_from_dict():
-    await test_get_feed_async(request_type=dict)
 
 
 def test_get_feed_field_headers():
@@ -1949,8 +1982,8 @@ async def test_get_feed_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.ListFeedsRequest,
-        dict,
+        asset_service.ListFeedsRequest(),
+        {},
     ],
 )
 def test_list_feeds(request_type, transport: str = "grpc"):
@@ -1961,7 +1994,7 @@ def test_list_feeds(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_feeds), "__call__") as call:
@@ -2002,9 +2035,10 @@ def test_list_feeds_non_empty_request_with_auto_populated_field():
         client.list_feeds(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.ListFeedsRequest(
+        request_msg = asset_service.ListFeedsRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_feeds_use_cached_wrapped_rpc():
@@ -2083,9 +2117,14 @@ async def test_list_feeds_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_list_feeds_async(
-    transport: str = "grpc_asyncio", request_type=asset_service.ListFeedsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.ListFeedsRequest(),
+        {},
+    ],
+)
+async def test_list_feeds_async(request_type, transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2093,7 +2132,7 @@ async def test_list_feeds_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_feeds), "__call__") as call:
@@ -2111,11 +2150,6 @@ async def test_list_feeds_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, asset_service.ListFeedsResponse)
-
-
-@pytest.mark.asyncio
-async def test_list_feeds_async_from_dict():
-    await test_list_feeds_async(request_type=dict)
 
 
 def test_list_feeds_field_headers():
@@ -2264,8 +2298,8 @@ async def test_list_feeds_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.UpdateFeedRequest,
-        dict,
+        asset_service.UpdateFeedRequest(),
+        {},
     ],
 )
 def test_update_feed(request_type, transport: str = "grpc"):
@@ -2276,7 +2310,7 @@ def test_update_feed(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_feed), "__call__") as call:
@@ -2324,7 +2358,8 @@ def test_update_feed_non_empty_request_with_auto_populated_field():
         client.update_feed(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.UpdateFeedRequest()
+        request_msg = asset_service.UpdateFeedRequest()
+        assert args[0] == request_msg
 
 
 def test_update_feed_use_cached_wrapped_rpc():
@@ -2405,9 +2440,14 @@ async def test_update_feed_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_feed_async(
-    transport: str = "grpc_asyncio", request_type=asset_service.UpdateFeedRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.UpdateFeedRequest(),
+        {},
+    ],
+)
+async def test_update_feed_async(request_type, transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2415,7 +2455,7 @@ async def test_update_feed_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_feed), "__call__") as call:
@@ -2442,11 +2482,6 @@ async def test_update_feed_async(
     assert response.asset_names == ["asset_names_value"]
     assert response.asset_types == ["asset_types_value"]
     assert response.content_type == asset_service.ContentType.RESOURCE
-
-
-@pytest.mark.asyncio
-async def test_update_feed_async_from_dict():
-    await test_update_feed_async(request_type=dict)
 
 
 def test_update_feed_field_headers():
@@ -2591,8 +2626,8 @@ async def test_update_feed_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        asset_service.DeleteFeedRequest,
-        dict,
+        asset_service.DeleteFeedRequest(),
+        {},
     ],
 )
 def test_delete_feed(request_type, transport: str = "grpc"):
@@ -2603,7 +2638,7 @@ def test_delete_feed(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_feed), "__call__") as call:
@@ -2644,9 +2679,10 @@ def test_delete_feed_non_empty_request_with_auto_populated_field():
         client.delete_feed(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == asset_service.DeleteFeedRequest(
+        request_msg = asset_service.DeleteFeedRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_feed_use_cached_wrapped_rpc():
@@ -2727,9 +2763,14 @@ async def test_delete_feed_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_feed_async(
-    transport: str = "grpc_asyncio", request_type=asset_service.DeleteFeedRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        asset_service.DeleteFeedRequest(),
+        {},
+    ],
+)
+async def test_delete_feed_async(request_type, transport: str = "grpc_asyncio"):
     client = AssetServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2737,7 +2778,7 @@ async def test_delete_feed_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_feed), "__call__") as call:
@@ -2753,11 +2794,6 @@ async def test_delete_feed_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_feed_async_from_dict():
-    await test_delete_feed_async(request_type=dict)
 
 
 def test_delete_feed_field_headers():
@@ -3010,7 +3046,7 @@ def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_feed_rest_unset_required_fields():
@@ -3193,7 +3229,7 @@ def test_get_feed_rest_required_fields(request_type=asset_service.GetFeedRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_feed_rest_unset_required_fields():
@@ -3367,7 +3403,7 @@ def test_list_feeds_rest_required_fields(request_type=asset_service.ListFeedsReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_feeds_rest_unset_required_fields():
@@ -3537,7 +3573,7 @@ def test_update_feed_rest_required_fields(request_type=asset_service.UpdateFeedR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_feed_rest_unset_required_fields():
@@ -3716,7 +3752,7 @@ def test_delete_feed_rest_required_fields(request_type=asset_service.DeleteFeedR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_feed_rest_unset_required_fields():
@@ -3905,7 +3941,6 @@ def test_create_feed_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.CreateFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -3926,7 +3961,6 @@ def test_get_feed_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.GetFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -3947,7 +3981,6 @@ def test_list_feeds_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListFeedsRequest()
-
         assert args[0] == request_msg
 
 
@@ -3968,7 +4001,6 @@ def test_update_feed_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.UpdateFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -3989,7 +4021,6 @@ def test_delete_feed_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.DeleteFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -4033,7 +4064,6 @@ async def test_create_feed_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.CreateFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -4063,7 +4093,6 @@ async def test_get_feed_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.GetFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -4088,7 +4117,6 @@ async def test_list_feeds_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListFeedsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4118,7 +4146,6 @@ async def test_update_feed_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.UpdateFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -4141,7 +4168,6 @@ async def test_delete_feed_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.DeleteFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -4161,8 +4187,9 @@ def test_create_feed_rest_bad_request(request_type=asset_service.CreateFeedReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4231,17 +4258,19 @@ def test_create_feed_rest_interceptors(null_interceptor):
     )
     client = AssetServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AssetServiceRestInterceptor, "post_create_feed"
-    ) as post, mock.patch.object(
-        transports.AssetServiceRestInterceptor, "post_create_feed_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AssetServiceRestInterceptor, "pre_create_feed"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AssetServiceRestInterceptor, "post_create_feed"
+        ) as post,
+        mock.patch.object(
+            transports.AssetServiceRestInterceptor, "post_create_feed_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AssetServiceRestInterceptor, "pre_create_feed"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4292,8 +4321,9 @@ def test_get_feed_rest_bad_request(request_type=asset_service.GetFeedRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4362,17 +4392,19 @@ def test_get_feed_rest_interceptors(null_interceptor):
     )
     client = AssetServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AssetServiceRestInterceptor, "post_get_feed"
-    ) as post, mock.patch.object(
-        transports.AssetServiceRestInterceptor, "post_get_feed_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AssetServiceRestInterceptor, "pre_get_feed"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AssetServiceRestInterceptor, "post_get_feed"
+        ) as post,
+        mock.patch.object(
+            transports.AssetServiceRestInterceptor, "post_get_feed_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AssetServiceRestInterceptor, "pre_get_feed"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4421,8 +4453,9 @@ def test_list_feeds_rest_bad_request(request_type=asset_service.ListFeedsRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4482,17 +4515,19 @@ def test_list_feeds_rest_interceptors(null_interceptor):
     )
     client = AssetServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AssetServiceRestInterceptor, "post_list_feeds"
-    ) as post, mock.patch.object(
-        transports.AssetServiceRestInterceptor, "post_list_feeds_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AssetServiceRestInterceptor, "pre_list_feeds"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AssetServiceRestInterceptor, "post_list_feeds"
+        ) as post,
+        mock.patch.object(
+            transports.AssetServiceRestInterceptor, "post_list_feeds_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AssetServiceRestInterceptor, "pre_list_feeds"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4543,8 +4578,9 @@ def test_update_feed_rest_bad_request(request_type=asset_service.UpdateFeedReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4613,17 +4649,19 @@ def test_update_feed_rest_interceptors(null_interceptor):
     )
     client = AssetServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AssetServiceRestInterceptor, "post_update_feed"
-    ) as post, mock.patch.object(
-        transports.AssetServiceRestInterceptor, "post_update_feed_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AssetServiceRestInterceptor, "pre_update_feed"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AssetServiceRestInterceptor, "post_update_feed"
+        ) as post,
+        mock.patch.object(
+            transports.AssetServiceRestInterceptor, "post_update_feed_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AssetServiceRestInterceptor, "pre_update_feed"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4674,8 +4712,9 @@ def test_delete_feed_rest_bad_request(request_type=asset_service.DeleteFeedReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4732,13 +4771,13 @@ def test_delete_feed_rest_interceptors(null_interceptor):
     )
     client = AssetServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AssetServiceRestInterceptor, "pre_delete_feed"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AssetServiceRestInterceptor, "pre_delete_feed"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = asset_service.DeleteFeedRequest.pb(
             asset_service.DeleteFeedRequest()
@@ -4785,8 +4824,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -4857,7 +4897,6 @@ def test_create_feed_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.CreateFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -4877,7 +4916,6 @@ def test_get_feed_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.GetFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -4897,7 +4935,6 @@ def test_list_feeds_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.ListFeedsRequest()
-
         assert args[0] == request_msg
 
 
@@ -4917,7 +4954,6 @@ def test_update_feed_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.UpdateFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -4937,7 +4973,6 @@ def test_delete_feed_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = asset_service.DeleteFeedRequest()
-
         assert args[0] == request_msg
 
 
@@ -4999,11 +5034,14 @@ def test_asset_service_base_transport():
 
 def test_asset_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.asset_v1p2beta1.services.asset_service.transports.AssetServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.asset_v1p2beta1.services.asset_service.transports.AssetServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AssetServiceTransport(
@@ -5020,9 +5058,12 @@ def test_asset_service_base_transport_with_credentials_file():
 
 def test_asset_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.asset_v1p2beta1.services.asset_service.transports.AssetServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.asset_v1p2beta1.services.asset_service.transports.AssetServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AssetServiceTransport()
@@ -5094,11 +5135,12 @@ def test_asset_service_transport_auth_gdch_credentials(transport_class):
 def test_asset_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -5663,6 +5705,40 @@ async def test_get_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_operation_flattened():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = AssetServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
 
 
 def test_transport_close_grpc():

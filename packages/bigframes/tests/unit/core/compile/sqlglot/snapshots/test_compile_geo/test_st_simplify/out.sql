@@ -1,0 +1,10 @@
+WITH `bfcte_0` AS (
+  SELECT
+    *
+  FROM UNNEST(ARRAY<STRUCT<`bfcol_0` GEOGRAPHY, `bfcol_1` INT64>>[STRUCT(ST_GEOGFROMTEXT('LINESTRING(0 0, 1 1, 2 0)'), 0)])
+)
+SELECT
+  ST_SIMPLIFY(`bfcol_0`, 123.125) AS `0`
+FROM `bfcte_0`
+ORDER BY
+  `bfcol_1` ASC NULLS LAST

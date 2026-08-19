@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -91,7 +91,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -187,6 +187,10 @@ class ReferenceListServiceGrpcTransport(ReferenceListServiceTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
           google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -438,6 +442,36 @@ class ReferenceListServiceGrpcTransport(ReferenceListServiceTransport):
                 response_deserializer=gcc_reference_list.ReferenceList.deserialize,
             )
         return self._stubs["update_reference_list"]
+
+    @property
+    def verify_reference_list(
+        self,
+    ) -> Callable[
+        [reference_list.VerifyReferenceListRequest],
+        reference_list.VerifyReferenceListResponse,
+    ]:
+        r"""Return a callable for the verify reference list method over gRPC.
+
+        VerifyReferenceList validates list content and
+        returns line errors, if any.
+
+        Returns:
+            Callable[[~.VerifyReferenceListRequest],
+                    ~.VerifyReferenceListResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "verify_reference_list" not in self._stubs:
+            self._stubs["verify_reference_list"] = self._logged_channel.unary_unary(
+                "/google.cloud.chronicle.v1.ReferenceListService/VerifyReferenceList",
+                request_serializer=reference_list.VerifyReferenceListRequest.serialize,
+                response_deserializer=reference_list.VerifyReferenceListResponse.deserialize,
+            )
+        return self._stubs["verify_reference_list"]
 
     def close(self):
         self._logged_channel.close()

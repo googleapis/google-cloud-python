@@ -35,6 +35,11 @@
                 "create_compilation_result"
               ]
             },
+            "CreateFolder": {
+              "methods": [
+                "create_folder"
+              ]
+            },
             "CreateReleaseConfig": {
               "methods": [
                 "create_release_config"
@@ -43,6 +48,11 @@
             "CreateRepository": {
               "methods": [
                 "create_repository"
+              ]
+            },
+            "CreateTeamFolder": {
+              "methods": [
+                "create_team_folder"
               ]
             },
             "CreateWorkflowConfig": {
@@ -60,6 +70,16 @@
                 "create_workspace"
               ]
             },
+            "DeleteFolder": {
+              "methods": [
+                "delete_folder"
+              ]
+            },
+            "DeleteFolderTree": {
+              "methods": [
+                "delete_folder_tree"
+              ]
+            },
             "DeleteReleaseConfig": {
               "methods": [
                 "delete_release_config"
@@ -68,6 +88,16 @@
             "DeleteRepository": {
               "methods": [
                 "delete_repository"
+              ]
+            },
+            "DeleteTeamFolder": {
+              "methods": [
+                "delete_team_folder"
+              ]
+            },
+            "DeleteTeamFolderTree": {
+              "methods": [
+                "delete_team_folder_tree"
               ]
             },
             "DeleteWorkflowConfig": {
@@ -120,6 +150,16 @@
                 "get_config"
               ]
             },
+            "GetFolder": {
+              "methods": [
+                "get_folder"
+              ]
+            },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
             "GetReleaseConfig": {
               "methods": [
                 "get_release_config"
@@ -128,6 +168,11 @@
             "GetRepository": {
               "methods": [
                 "get_repository"
+              ]
+            },
+            "GetTeamFolder": {
+              "methods": [
+                "get_team_folder"
               ]
             },
             "GetWorkflowConfig": {
@@ -195,6 +240,16 @@
                 "move_file"
               ]
             },
+            "MoveFolder": {
+              "methods": [
+                "move_folder"
+              ]
+            },
+            "MoveRepository": {
+              "methods": [
+                "move_repository"
+              ]
+            },
             "PullGitCommits": {
               "methods": [
                 "pull_git_commits"
@@ -215,9 +270,24 @@
                 "query_directory_contents"
               ]
             },
+            "QueryFolderContents": {
+              "methods": [
+                "query_folder_contents"
+              ]
+            },
             "QueryRepositoryDirectoryContents": {
               "methods": [
                 "query_repository_directory_contents"
+              ]
+            },
+            "QueryTeamFolderContents": {
+              "methods": [
+                "query_team_folder_contents"
+              ]
+            },
+            "QueryUserRootContents": {
+              "methods": [
+                "query_user_root_contents"
               ]
             },
             "QueryWorkflowInvocationActions": {
@@ -255,9 +325,29 @@
                 "search_files"
               ]
             },
+            "SearchTeamFolders": {
+              "methods": [
+                "search_team_folders"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
+              ]
+            },
             "UpdateConfig": {
               "methods": [
                 "update_config"
+              ]
+            },
+            "UpdateFolder": {
+              "methods": [
+                "update_folder"
               ]
             },
             "UpdateReleaseConfig": {
@@ -268,6 +358,11 @@
             "UpdateRepository": {
               "methods": [
                 "update_repository"
+              ]
+            },
+            "UpdateTeamFolder": {
+              "methods": [
+                "update_team_folder"
               ]
             },
             "UpdateWorkflowConfig": {
@@ -310,6 +405,11 @@
                 "create_compilation_result"
               ]
             },
+            "CreateFolder": {
+              "methods": [
+                "create_folder"
+              ]
+            },
             "CreateReleaseConfig": {
               "methods": [
                 "create_release_config"
@@ -318,6 +418,11 @@
             "CreateRepository": {
               "methods": [
                 "create_repository"
+              ]
+            },
+            "CreateTeamFolder": {
+              "methods": [
+                "create_team_folder"
               ]
             },
             "CreateWorkflowConfig": {
@@ -335,6 +440,16 @@
                 "create_workspace"
               ]
             },
+            "DeleteFolder": {
+              "methods": [
+                "delete_folder"
+              ]
+            },
+            "DeleteFolderTree": {
+              "methods": [
+                "delete_folder_tree"
+              ]
+            },
             "DeleteReleaseConfig": {
               "methods": [
                 "delete_release_config"
@@ -343,6 +458,16 @@
             "DeleteRepository": {
               "methods": [
                 "delete_repository"
+              ]
+            },
+            "DeleteTeamFolder": {
+              "methods": [
+                "delete_team_folder"
+              ]
+            },
+            "DeleteTeamFolderTree": {
+              "methods": [
+                "delete_team_folder_tree"
               ]
             },
             "DeleteWorkflowConfig": {
@@ -395,6 +520,16 @@
                 "get_config"
               ]
             },
+            "GetFolder": {
+              "methods": [
+                "get_folder"
+              ]
+            },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
             "GetReleaseConfig": {
               "methods": [
                 "get_release_config"
@@ -403,6 +538,11 @@
             "GetRepository": {
               "methods": [
                 "get_repository"
+              ]
+            },
+            "GetTeamFolder": {
+              "methods": [
+                "get_team_folder"
               ]
             },
             "GetWorkflowConfig": {
@@ -470,6 +610,16 @@
                 "move_file"
               ]
             },
+            "MoveFolder": {
+              "methods": [
+                "move_folder"
+              ]
+            },
+            "MoveRepository": {
+              "methods": [
+                "move_repository"
+              ]
+            },
             "PullGitCommits": {
               "methods": [
                 "pull_git_commits"
@@ -490,9 +640,24 @@
                 "query_directory_contents"
               ]
             },
+            "QueryFolderContents": {
+              "methods": [
+                "query_folder_contents"
+              ]
+            },
             "QueryRepositoryDirectoryContents": {
               "methods": [
                 "query_repository_directory_contents"
+              ]
+            },
+            "QueryTeamFolderContents": {
+              "methods": [
+                "query_team_folder_contents"
+              ]
+            },
+            "QueryUserRootContents": {
+              "methods": [
+                "query_user_root_contents"
               ]
             },
             "QueryWorkflowInvocationActions": {
@@ -530,9 +695,29 @@
                 "search_files"
               ]
             },
+            "SearchTeamFolders": {
+              "methods": [
+                "search_team_folders"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
+              ]
+            },
             "UpdateConfig": {
               "methods": [
                 "update_config"
+              ]
+            },
+            "UpdateFolder": {
+              "methods": [
+                "update_folder"
               ]
             },
             "UpdateReleaseConfig": {
@@ -543,6 +728,11 @@
             "UpdateRepository": {
               "methods": [
                 "update_repository"
+              ]
+            },
+            "UpdateTeamFolder": {
+              "methods": [
+                "update_team_folder"
               ]
             },
             "UpdateWorkflowConfig": {
@@ -585,6 +775,11 @@
                 "create_compilation_result"
               ]
             },
+            "CreateFolder": {
+              "methods": [
+                "create_folder"
+              ]
+            },
             "CreateReleaseConfig": {
               "methods": [
                 "create_release_config"
@@ -593,6 +788,11 @@
             "CreateRepository": {
               "methods": [
                 "create_repository"
+              ]
+            },
+            "CreateTeamFolder": {
+              "methods": [
+                "create_team_folder"
               ]
             },
             "CreateWorkflowConfig": {
@@ -610,6 +810,16 @@
                 "create_workspace"
               ]
             },
+            "DeleteFolder": {
+              "methods": [
+                "delete_folder"
+              ]
+            },
+            "DeleteFolderTree": {
+              "methods": [
+                "delete_folder_tree"
+              ]
+            },
             "DeleteReleaseConfig": {
               "methods": [
                 "delete_release_config"
@@ -618,6 +828,16 @@
             "DeleteRepository": {
               "methods": [
                 "delete_repository"
+              ]
+            },
+            "DeleteTeamFolder": {
+              "methods": [
+                "delete_team_folder"
+              ]
+            },
+            "DeleteTeamFolderTree": {
+              "methods": [
+                "delete_team_folder_tree"
               ]
             },
             "DeleteWorkflowConfig": {
@@ -670,6 +890,16 @@
                 "get_config"
               ]
             },
+            "GetFolder": {
+              "methods": [
+                "get_folder"
+              ]
+            },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
             "GetReleaseConfig": {
               "methods": [
                 "get_release_config"
@@ -678,6 +908,11 @@
             "GetRepository": {
               "methods": [
                 "get_repository"
+              ]
+            },
+            "GetTeamFolder": {
+              "methods": [
+                "get_team_folder"
               ]
             },
             "GetWorkflowConfig": {
@@ -745,6 +980,16 @@
                 "move_file"
               ]
             },
+            "MoveFolder": {
+              "methods": [
+                "move_folder"
+              ]
+            },
+            "MoveRepository": {
+              "methods": [
+                "move_repository"
+              ]
+            },
             "PullGitCommits": {
               "methods": [
                 "pull_git_commits"
@@ -765,9 +1010,24 @@
                 "query_directory_contents"
               ]
             },
+            "QueryFolderContents": {
+              "methods": [
+                "query_folder_contents"
+              ]
+            },
             "QueryRepositoryDirectoryContents": {
               "methods": [
                 "query_repository_directory_contents"
+              ]
+            },
+            "QueryTeamFolderContents": {
+              "methods": [
+                "query_team_folder_contents"
+              ]
+            },
+            "QueryUserRootContents": {
+              "methods": [
+                "query_user_root_contents"
               ]
             },
             "QueryWorkflowInvocationActions": {
@@ -805,9 +1065,29 @@
                 "search_files"
               ]
             },
+            "SearchTeamFolders": {
+              "methods": [
+                "search_team_folders"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
+              ]
+            },
             "UpdateConfig": {
               "methods": [
                 "update_config"
+              ]
+            },
+            "UpdateFolder": {
+              "methods": [
+                "update_folder"
               ]
             },
             "UpdateReleaseConfig": {
@@ -818,6 +1098,11 @@
             "UpdateRepository": {
               "methods": [
                 "update_repository"
+              ]
+            },
+            "UpdateTeamFolder": {
+              "methods": [
+                "update_team_folder"
               ]
             },
             "UpdateWorkflowConfig": {

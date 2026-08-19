@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,12 +16,16 @@
 from .common import (
     Aggregate,
     Blueprint,
+    SaasCondition,
     UnitCondition,
     UnitOperationCondition,
     UnitOperationErrorCategory,
     UnitVariable,
 )
 from .deployments_resources import (
+    AppParams,
+    ComponentRef,
+    CompositeRef,
     Dependency,
     Deprovision,
     FromMapping,
@@ -103,10 +107,14 @@ from .rollouts_service import (
 __all__ = (
     "Aggregate",
     "Blueprint",
+    "SaasCondition",
     "UnitCondition",
     "UnitOperationCondition",
     "UnitVariable",
     "UnitOperationErrorCategory",
+    "AppParams",
+    "ComponentRef",
+    "CompositeRef",
     "Dependency",
     "Deprovision",
     "FromMapping",

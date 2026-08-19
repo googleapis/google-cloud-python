@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
         "SubjectRequestMode",
         "CertificateAuthority",
         "CaPool",
+        "EncryptionSpec",
         "CertificateRevocationList",
         "Certificate",
         "CertificateTemplate",
@@ -656,6 +657,14 @@ class CaPool(proto.Message):
             from any
             [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
             in this [CaPool][google.cloud.security.privateca.v1.CaPool].
+        encryption_spec (google.cloud.security.privateca_v1.types.EncryptionSpec):
+            Optional. When
+            [EncryptionSpec][google.cloud.security.privateca.v1.EncryptionSpec]
+            is provided, the
+            [Subject][google.cloud.security.privateca.v1.Subject],
+            [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames],
+            and the PEM-encoded certificate fields will be encrypted at
+            rest.
         labels (MutableMapping[str, str]):
             Optional. Labels with user-defined metadata.
     """
@@ -761,16 +770,30 @@ class CaPool(proto.Message):
                 match one of the key types listed here. Otherwise, any key
                 may be used.
             backdate_duration (google.protobuf.duration_pb2.Duration):
-                Optional. The duration to backdate all certificates issued
-                from this
-                [CaPool][google.cloud.security.privateca.v1.CaPool]. If not
-                set, the certificates will be issued with a not_before_time
-                of the issuance time (i.e. the current time). If set, the
-                certificates will be issued with a not_before_time of the
-                issuance time minus the backdate_duration. The
-                not_after_time will be adjusted to preserve the requested
-                lifetime. The backdate_duration must be less than or equal
-                to 48 hours.
+                Optional. If set, all certificates issued from this
+                [CaPool][google.cloud.security.privateca.v1.CaPool] will be
+                backdated by this duration. The 'not_before_time' will be
+                the issuance time minus this
+                [backdate_duration][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.backdate_duration],
+                and the 'not_after_time' will be adjusted to preserve the
+                requested lifetime. The maximum duration that a certificate
+                can be backdated with these options is 48 hours in the past.
+                This option cannot be set if
+                [allow_requester_specified_not_before_time][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.allow_requester_specified_not_before_time]
+                is set.
+            allow_requester_specified_not_before_time (bool):
+                Optional. If set to true, allows requesters to specify the
+                [requested_not_before_time][google.cloud.security.privateca.v1.Certificate.requested_not_before_time]
+                field when creating a
+                [Certificate][google.cloud.security.privateca.v1.Certificate].
+                Certificates requested with this option enabled will have a
+                'not_before_time' equal to the value specified in the
+                request. The 'not_after_time' will be adjusted to preserve
+                the requested lifetime. The maximum time that a certificate
+                can be backdated with these options is 48 hours in the past.
+                This option cannot be set if
+                [backdate_duration][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.backdate_duration]
+                is set.
             maximum_lifetime (google.protobuf.duration_pb2.Duration):
                 Optional. The maximum lifetime allowed for issued
                 [Certificates][google.cloud.security.privateca.v1.Certificate].
@@ -983,6 +1006,10 @@ class CaPool(proto.Message):
             number=7,
             message=duration_pb2.Duration,
         )
+        allow_requester_specified_not_before_time: bool = proto.Field(
+            proto.BOOL,
+            number=8,
+        )
         maximum_lifetime: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,
             number=2,
@@ -1028,10 +1055,30 @@ class CaPool(proto.Message):
         number=4,
         message=PublishingOptions,
     )
+    encryption_spec: "EncryptionSpec" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="EncryptionSpec",
+    )
     labels: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=5,
+    )
+
+
+class EncryptionSpec(proto.Message):
+    r"""The configuration used for encrypting data at rest.
+
+    Attributes:
+        cloud_kms_key (str):
+            The resource name for a Cloud KMS key in the format
+            ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
+    """
+
+    cloud_kms_key: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -1261,6 +1308,24 @@ class Certificate(proto.Message):
             was updated.
         labels (MutableMapping[str, str]):
             Optional. Labels with user-defined metadata.
+        requested_not_before_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. The requested
+            [not_before_time][google.cloud.security.privateca.v1.CertificateDescription.SubjectDescription.not_before_time]
+            of this
+            [Certificate][google.cloud.security.privateca.v1.Certificate].
+            This field may only be set if the
+            [CaPool.IssuancePolicy.allow_requester_specified_not_before_time][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.allow_requester_specified_not_before_time]
+            field is set to true for the issuing
+            [CaPool][google.cloud.security.privateca.v1.CaPool].
+
+            If this field is specified, the certificate will be issued
+            with this 'not_before_time'. If this is not specified, the
+            'not_before_time' will be set to the issuance time or
+            issuance time minus
+            [backdate_duration][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.backdate_duration]
+            depending on the
+            [CaPool][google.cloud.security.privateca.v1.CaPool]
+            configuration.
     """
 
     class RevocationDetails(proto.Message):
@@ -1354,6 +1419,11 @@ class Certificate(proto.Message):
         proto.STRING,
         proto.STRING,
         number=14,
+    )
+    requested_not_before_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message=timestamp_pb2.Timestamp,
     )
 
 

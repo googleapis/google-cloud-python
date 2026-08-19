@@ -1,9 +1,18 @@
-Python Client for BigLake API
-=============================
+Python Client for Lakehouse
+===========================
 
 |preview| |pypi| |versions|
 
-`BigLake API`_: The BigLake API provides access to BigLake Metastore, a serverless, fully managed, and highly available metastore for open-source data that can be used for querying Apache Iceberg tables in BigQuery.
+`Lakehouse`_: The Lakehouse API (formerly BigLake API) provides access to a serverless,
+fully managed, and highly available metastore that provides a single
+source of truth for your data lakehouse. It lets multiple
+engines—including Apache Spark, Google Managed Spark, Apache Flink, Trino
+and BigQuery—share tables and metadata for key open formats (Apache
+Iceberg, Apache Hive), and query the same copy of data. Plus, through the
+Lakehouse runtime catalog federation seamlessly unite your lakehouse
+ecosystem, letting Iceberg compatible engines on Google Cloud (BigQuery,
+Google Managed Spark) discover and analyze enterprise data across
+Snowflake, Databricks, and AWS Glue.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +23,9 @@ Python Client for BigLake API
    :target: https://pypi.org/project/google-cloud-biglake/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-biglake.svg
    :target: https://pypi.org/project/google-cloud-biglake/
-.. _BigLake API: https://cloud.google.com/bigquery/docs/iceberg-tables#create-using-biglake-metastore
+.. _Lakehouse: https://cloud.google.com/bigquery/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-biglake/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/bigquery/docs/iceberg-tables#create-using-biglake-metastore
+.. _Product Documentation:  https://cloud.google.com/bigquery/
 
 Quick Start
 -----------
@@ -25,12 +34,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the BigLake API.`_
+3. `Enable the Lakehouse.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the BigLake API.:  https://cloud.google.com/bigquery/docs/iceberg-tables#create-using-biglake-metastore
+.. _Enable the Lakehouse.:  https://cloud.google.com/bigquery/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +70,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -97,14 +107,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for BigLake API
+-  Read the `Client Library Documentation`_ for Lakehouse
    to see other available methods on the client.
--  Read the `BigLake API Product documentation`_ to learn
+-  Read the `Lakehouse Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _BigLake API Product documentation:  https://cloud.google.com/bigquery/docs/iceberg-tables#create-using-biglake-metastore
+.. _Lakehouse Product documentation:  https://cloud.google.com/bigquery/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

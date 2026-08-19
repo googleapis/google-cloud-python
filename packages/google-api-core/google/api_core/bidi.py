@@ -113,7 +113,7 @@ class _RequestQueueGenerator(object):
             except queue_module.Empty:
                 if not self._is_active():
                     _LOGGER.debug(
-                        "Empty queue and inactive call, exiting request " "generator."
+                        "Empty queue and inactive call, exiting request generator."
                     )
                     return
                 else:

@@ -20,10 +20,8 @@ import warnings
 
 from google.api_core import retry as core_retry
 
-from google.cloud.ndb import _batch
+from google.cloud.ndb import _batch, tasklets, utils
 from google.cloud.ndb import context as context_module
-from google.cloud.ndb import tasklets
-from google.cloud.ndb import utils
 
 _LOCKED_FOR_READ = b"0-"
 _LOCKED_FOR_WRITE = b"00"
@@ -117,18 +115,18 @@ class _GlobalCacheBatch(object):
         """
         exception = cache_call.exception()
         if exception:
-            for future in self.futures:
+            for future in self.futures:  # type: ignore[attr-defined]
                 future.set_exception(exception)
 
         else:
-            for future in self.futures:
+            for future in self.futures:  # type: ignore[attr-defined]
                 future.set_result(None)
 
     def make_call(self):
         """Make the actual call to the global cache. To be overridden."""
         raise NotImplementedError
 
-    def future_info(self, key):
+    def future_info(self, key, value=None):
         """Generate info string for Future. To be overridden."""
         raise NotImplementedError
 
@@ -279,7 +277,7 @@ class _GlobalCacheGetBatch(_GlobalCacheBatch):
         """Call :method:`GlobalCache.get`."""
         return _global_cache().get(self.keys)
 
-    def future_info(self, key):
+    def future_info(self, key, value=None):
         """Generate info string for Future."""
         return "GlobalCache.get({})".format(key)
 
@@ -373,7 +371,7 @@ class _GlobalCacheSetBatch(_GlobalCacheBatch):
         """Call :method:`GlobalCache.set`."""
         return _global_cache().set(self.todo, expires=self.expires)
 
-    def future_info(self, key, value):
+    def future_info(self, key, value=None):
         """Generate info string for Future."""
         return "GlobalCache.set({}, {})".format(key, value)
 
@@ -436,7 +434,7 @@ class _GlobalCacheSetIfNotExistsBatch(_GlobalCacheSetBatch):
         """Call :method:`GlobalCache.set`."""
         return _global_cache().set_if_not_exists(self.todo, expires=self.expires)
 
-    def future_info(self, key, value):
+    def future_info(self, key, value=None):
         """Generate info string for Future."""
         return "GlobalCache.set_if_not_exists({}, {})".format(key, value)
 
@@ -482,7 +480,7 @@ class _GlobalCacheDeleteBatch(_GlobalCacheBatch):
         """Call :method:`GlobalCache.delete`."""
         return _global_cache().delete(self.keys)
 
-    def future_info(self, key):
+    def future_info(self, key, value=None):
         """Generate info string for Future."""
         return "GlobalCache.delete({})".format(key)
 
@@ -513,7 +511,7 @@ class _GlobalCacheWatchBatch(_GlobalCacheSetBatch):
         """Call :method:`GlobalCache.watch`."""
         return _global_cache().watch(self.todo)
 
-    def future_info(self, key, value):
+    def future_info(self, key, value=None):
         """Generate info string for Future."""
         return "GlobalCache.watch({}, {})".format(key, value)
 
@@ -543,7 +541,7 @@ class _GlobalCacheUnwatchBatch(_GlobalCacheDeleteBatch):
         """Call :method:`GlobalCache.unwatch`."""
         return _global_cache().unwatch(self.keys)
 
-    def future_info(self, key):
+    def future_info(self, key, value=None):
         """Generate info string for Future."""
         return "GlobalCache.unwatch({})".format(key)
 
@@ -580,7 +578,7 @@ class _GlobalCacheCompareAndSwapBatch(_GlobalCacheSetBatch):
         """Call :method:`GlobalCache.compare_and_swap`."""
         return _global_cache().compare_and_swap(self.todo, expires=self.expires)
 
-    def future_info(self, key, value):
+    def future_info(self, key, value=None):
         """Generate info string for Future."""
         return "GlobalCache.compare_and_swap({}, {})".format(key, value)
 
@@ -627,8 +625,7 @@ def global_lock_for_write(key):
         tasklets.Future: Eventual result will be a lock value to be used later with
             :func:`global_unlock`.
     """
-    lock = "." + str(uuid.uuid4())
-    lock = lock.encode("ascii")
+    lock = ("." + str(uuid.uuid4())).encode("ascii")
     utils.logging_debug(log, "lock for write: {}", lock)
 
     def new_value(old_value):

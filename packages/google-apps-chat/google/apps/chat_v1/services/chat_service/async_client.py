@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,6 +51,7 @@ from google.apps.chat_v1.services.chat_service import pagers
 from google.apps.chat_v1.types import (
     annotation,
     attachment,
+    availability,
     contextual_addon,
     deletion_metadata,
     event_payload,
@@ -60,6 +61,7 @@ from google.apps.chat_v1.types import (
     membership,
     message,
     reaction,
+    section,
     slash_command,
     space,
     space_event,
@@ -69,9 +71,11 @@ from google.apps.chat_v1.types import (
     thread_read_state,
     user,
 )
+from google.apps.chat_v1.types import availability as gc_availability
 from google.apps.chat_v1.types import membership as gc_membership
 from google.apps.chat_v1.types import message as gc_message
 from google.apps.chat_v1.types import reaction as gc_reaction
+from google.apps.chat_v1.types import section as gc_section
 from google.apps.chat_v1.types import space as gc_space
 from google.apps.chat_v1.types import (
     space_notification_setting as gc_space_notification_setting,
@@ -108,6 +112,8 @@ class ChatServiceAsyncClient:
 
     attachment_path = staticmethod(ChatServiceClient.attachment_path)
     parse_attachment_path = staticmethod(ChatServiceClient.parse_attachment_path)
+    availability_path = staticmethod(ChatServiceClient.availability_path)
+    parse_availability_path = staticmethod(ChatServiceClient.parse_availability_path)
     custom_emoji_path = staticmethod(ChatServiceClient.custom_emoji_path)
     parse_custom_emoji_path = staticmethod(ChatServiceClient.parse_custom_emoji_path)
     membership_path = staticmethod(ChatServiceClient.membership_path)
@@ -122,6 +128,10 @@ class ChatServiceAsyncClient:
     )
     reaction_path = staticmethod(ChatServiceClient.reaction_path)
     parse_reaction_path = staticmethod(ChatServiceClient.parse_reaction_path)
+    section_path = staticmethod(ChatServiceClient.section_path)
+    parse_section_path = staticmethod(ChatServiceClient.parse_section_path)
+    section_item_path = staticmethod(ChatServiceClient.section_item_path)
+    parse_section_item_path = staticmethod(ChatServiceClient.parse_section_item_path)
     space_path = staticmethod(ChatServiceClient.space_path)
     parse_space_path = staticmethod(ChatServiceClient.parse_space_path)
     space_event_path = staticmethod(ChatServiceClient.space_event_path)
@@ -142,6 +152,8 @@ class ChatServiceAsyncClient:
     parse_thread_read_state_path = staticmethod(
         ChatServiceClient.parse_thread_read_state_path
     )
+    user_path = staticmethod(ChatServiceClient.user_path)
+    parse_user_path = staticmethod(ChatServiceClient.parse_user_path)
     common_billing_account_path = staticmethod(
         ChatServiceClient.common_billing_account_path
     )
@@ -248,7 +260,7 @@ class ChatServiceAsyncClient:
         return self._client.transport
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -398,7 +410,7 @@ class ChatServiceAsyncClient:
         (``text``), cards (``cardsV2``), and accessory widgets
         (``accessoryWidgets``).
 
-        |Message sent with app authentication async|
+        |Message sent with app authentication|
 
         The following image shows how Chat attributes a message when you
         use user authentication. Chat displays the user as the message
@@ -406,7 +418,7 @@ class ChatServiceAsyncClient:
         its name. The content of message can only contain text
         (``text``).
 
-        |Message sent with user authentication async|
+        |Message sent with user authentication|
 
         The maximum message size, including the message contents, is
         32,000 bytes.
@@ -417,8 +429,8 @@ class ChatServiceAsyncClient:
         response only populates the ``name`` and ``thread.name`` fields
         in addition to the information that was in the request.
 
-        .. |Message sent with app authentication async| image:: https://developers.google.com/workspace/chat/images/message-app-auth.svg
-        .. |Message sent with user authentication async| image:: https://developers.google.com/workspace/chat/images/message-user-auth.svg
+        .. |Message sent with app authentication| image:: https://developers.google.com/workspace/chat/images/message-app-auth.svg
+        .. |Message sent with user authentication| image:: https://developers.google.com/workspace/chat/images/message-user-auth.svg
 
         .. code-block:: python
 
@@ -575,9 +587,7 @@ class ChatServiceAsyncClient:
         - `App
           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
           with `administrator
-          approval <https://support.google.com/a?p=chat-app-auth>`__ in
-          `Developer
-          Preview <https://developers.google.com/workspace/preview>`__
+          approval <https://support.google.com/a?p=chat-app-auth>`__
           with the authorization scope:
 
           - ``https://www.googleapis.com/auth/chat.app.messages.readonly``.
@@ -1059,9 +1069,7 @@ class ChatServiceAsyncClient:
             that invoke the Chat app.
           - ``https://www.googleapis.com/auth/chat.app.messages.readonly``
             with `administrator
-            approval <https://support.google.com/a?p=chat-app-auth>`__
-            (available in `Developer
-            Preview <https://developers.google.com/workspace/preview>`__).
+            approval <https://support.google.com/a?p=chat-app-auth>`__.
             When using this authentication scope, this method returns
             details about a public message in a space.
 
@@ -1465,6 +1473,322 @@ class ChatServiceAsyncClient:
             metadata=metadata,
         )
 
+    async def search_messages(
+        self,
+        request: Optional[Union[message.SearchMessagesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        filter: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.SearchMessagesAsyncPager:
+        r"""Searches for messages in Google Chat that the calling user has
+        access to. Returns a list of messages matching the search
+        criteria.
+
+        To search across all spaces the user has access to, set
+        ``parent`` to ``spaces/-``. Using any other value for ``parent``
+        results in an ``INVALID_ARGUMENT`` error. The returned messages
+        have their ``name`` field populated with the full resource name,
+        which includes the specific ``space`` in which the message
+        resides.
+
+        This API doesn't return all message types. The types of messages
+        listed below aren't included in the response. Use
+        [ListMessages][google.chat.v1.ChatService.ListMessages] to list
+        all messages.
+
+        - Private Messages that are visible to the authenticated user.
+        - Messages posted by Chat apps in spaces or group chats.
+        - Messages in a Chat app DM.
+        - Messages from blocked users.
+        - Messages in spaces that the caller has muted.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with one of the following `authorization
+        scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.messages.readonly``
+        - ``https://www.googleapis.com/auth/chat.messages``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_search_messages():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.SearchMessagesRequest(
+                    parent="parent_value",
+                    filter="filter_value",
+                )
+
+                # Make the request
+                page_result = client.search_messages(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.SearchMessagesRequest, dict]]):
+                The request object. Request message for searching
+                messages.
+            parent (:class:`str`):
+                Required. The resource name of the space to search
+                within.
+
+                To search across all spaces the user has access to, set
+                this field to ``spaces/-``. Using any other value for
+                ``parent`` results in an ``INVALID_ARGUMENT`` error.
+
+                To limit the search to one or more spaces, use
+                ``space.name`` or ``space.display_name`` in the
+                ``filter``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            filter (:class:`str`):
+                Required. A search query.
+
+                The query can specify one or more search keywords, which
+                are used to filter the results,
+
+                You can also filter the results using the following
+                message fields:
+
+                - ``create_time``: Accepts a timestamp in
+                  `RFC-3339 <https://www.rfc-editor.org/rfc/rfc3339>`__
+                  format and the supported comparison operators are:
+                  ``<`` and ``>=``.
+                - ``sender.name``: The resource name of the sender
+                  (``users/{user}``). Only supports ``=``. You can use
+                  the e-mail as an alias for ``{user}``. For example,
+                  ``users/example@gmail.com``, where
+                  ``example@gmail.com`` is the e-mail of the Google Chat
+                  user.
+                - ``space.name``: The resource name of the space where
+                  the message is posted. (``spaces/{space}``). Only
+                  supports ``=``. If this filter is not set, the search
+                  is performed across all direct messages and spaces the
+                  user has access to as a space member.
+                - ``space.display_name``: Supports the operator ``:``
+                  (has) and filters spaces based on a partial match of
+                  their display name. Results are limited to the top
+                  five space matches. For example,
+                  ``space.display_name:Project`` searches for messages
+                  in the top five spaces that contain the word "Project"
+                  in their display names.
+                - ``attachment``: Supports the operator ``:*`` (has any)
+                  to check for the presence of attachments. If
+                  ``attachment:*`` is specified, only messages that have
+                  at least one attachment are returned.
+                - ``annotations.user_mentions.user.name``: The resource
+                  name of the mentioned user (``users/{user}``). Only
+                  supports ``:`` (has). For example:
+                  ``annotations.user_mentions.user.name:"users/1234567890"``
+                  returns only messages that contain a mention to the
+                  specified user. Alternatively, the alias ``me`` can be
+                  used to filter for messages that mention the caller
+                  user, for example:
+                  ``annotations.user_mentions.user.name:users/me``. You
+                  can also use the e-mail as an alias for ``{user}``,
+                  for example, ``users/example@gmail.com``.
+
+                For advanced filtering, the following functions are also
+                available:
+
+                - ``has_link()``: Returns only messages that have at
+                  least one hyperlink in the message text.
+                - ``is_unread()``: Filters out messages that have been
+                  read by the calling user.
+
+                Using the ``space.display_name`` filter requires that
+                the calling credentials include one of the following
+                `authorization
+                scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+                - ``https://www.googleapis.com/auth/chat.spaces.readonly``
+                - ``https://www.googleapis.com/auth/chat.spaces``
+
+                Using the ``is_unread()`` filter requires that the
+                calling credentials include one of the following
+                `authorization
+                scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+                - ``https://www.googleapis.com/auth/chat.users.readstate.readonly``
+                - ``https://www.googleapis.com/auth/chat.users.readstate``
+
+                Across different fields, only ``AND`` operators are
+                supported. A valid example is
+                ``sender.name = "users/1234567890" AND is_unread()``.
+                The word ``AND`` is optional and is implied if omitted.
+                For example,
+                ``sender.name = "users/1234567890" is_unread()`` is
+                valid and is equivalent to the previous example. An
+                invalid example is
+                ``sender.name = "users/1234567890" OR is_unread()``
+                because ``OR`` is not supported between different
+                fields.
+
+                Among the same field:
+
+                - ``create_time`` supports only ``AND``, and can only be
+                  used to represent an interval, such as
+                  ``create_time >= "2022-01-01T00:00:00+00:00" AND create_time < "2023-01-01T00:00:00+00:00"``.
+                - ``sender.name`` supports only the ``OR`` operator, for
+                  example:
+                  ``sender.name = "users/1234567890" OR sender.name = "users/0987654321"``.
+                - ``space.name`` supports only the ``OR`` operator, for
+                  example:
+                  ``space.name = "spaces/ABCDEFGH" OR space.name = "spaces/QWERTYUI"``.
+                - ``space.display_name`` supports the operators ``AND``
+                  and ``OR``, but not a mix of both. For example:
+                  ``space.display_name:Project AND space.display_name:Tasks``
+                  returns messages that are in spaces with display names
+                  containing both ``Project`` and ``Tasks``, whereas
+                  ``space.display_name:Project OR space.display_name:Tasks``
+                  returns messages that are in spaces with display names
+                  containing either ``Project`` or ``Tasks`` or both.
+                - ``annotations.user_mentions.user.name`` supports the
+                  operators ``AND`` and ``OR``, but not a mix of both.
+                  For example:
+                  ``annotations.user_mentions.user.name:"users/1234567890" AND annotations.user_mentions.user.name:"users/0987654321"``
+                  returns only messages that mentions both users,
+                  whereas
+                  ``annotations.user_mentions.user.name:"users/1234567890" OR annotations.user_mentions.user.name:"users/0987654321"``
+                  returns messages that mention either user or both.
+
+                Parentheses are required to disambiguate operator
+                precedence when combining ``AND`` and ``OR`` operators
+                in the same query. For example:
+                ``(sender.name="users/me" OR sender.name="users/123456") AND is_unread()``.
+                Otherwise, parentheses are optional.
+
+                The following example queries are valid:
+
+                ::
+
+                   "Pending reports" AND create_time >= "2023-01-01T00:00:00Z"
+
+                   sender.name = "users/example@gmail.com"
+
+                   annotations.user_mentions.user.name:"users/0987654321"
+
+                   attachment:* AND space.name = "spaces/ABCDEFGH"
+
+                   tasks AND is_unread() AND sender.name = "users/1234567890"
+
+                   "things to do" "urgent"
+
+                   (sender.name = "users/1234567890")
+                   AND (create_time < "2023-05-01T00:00:00Z")
+
+                   tasks AND space.name = "spaces/ABCDEFGH" AND has_link()
+
+                   "project one" is_unread()
+
+                   space.display_name:Project tasks
+
+                The maximum query length is 1,000 characters.
+
+                Invalid queries are rejected by the server with an
+                ``INVALID_ARGUMENT`` error.
+
+                This corresponds to the ``filter`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.apps.chat_v1.services.chat_service.pagers.SearchMessagesAsyncPager:
+                Response message for searching
+                messages.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, filter]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, message.SearchMessagesRequest):
+            request = message.SearchMessagesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if filter is not None:
+            request.filter = filter
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.search_messages
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.SearchMessagesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def get_attachment(
         self,
         request: Optional[Union[attachment.GetAttachmentRequest, dict]] = None,
@@ -1810,19 +2134,32 @@ class ChatServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.SearchSpacesAsyncPager:
-        r"""Returns a list of spaces in a Google Workspace organization
-        based on an administrator's search. In the request, set
-        ``use_admin_access`` to ``true``. For an example, see `Search
-        for and manage
+        r"""Returns a list of spaces in a Google Workspace organization. For
+        an example, see `Search for and manage
         spaces <https://developers.google.com/workspace/chat/search-manage-admin>`__.
 
-        Requires `user authentication with administrator
-        privileges <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user#admin-privileges>`__
-        and one of the following `authorization
-        scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+        When ``use_admin_access`` is set to ``false``, the results are
+        limited to spaces where the calling user is a joined member. To
+        search with administrator privileges, set ``use_admin_access``
+        to ``true``.
 
-        - ``https://www.googleapis.com/auth/chat.admin.spaces.readonly``
-        - ``https://www.googleapis.com/auth/chat.admin.spaces``
+        Supports the following types of
+        `authentication <https://developers.google.com/workspace/chat/authenticate-authorize>`__:
+
+        - `User
+          authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+          with one of the following authorization scopes:
+
+          - ``https://www.googleapis.com/auth/chat.spaces.readonly``
+          - ``https://www.googleapis.com/auth/chat.spaces``
+
+        - `User authentication with administrator
+          privileges <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user#admin-privileges>`__
+          and one of the following `authorization
+          scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+          - ``https://www.googleapis.com/auth/chat.admin.spaces.readonly``
+          - ``https://www.googleapis.com/auth/chat.admin.spaces``
 
         .. code-block:: python
 
@@ -2527,6 +2864,27 @@ class ChatServiceAsyncClient:
                 ``access_settings.audience`` is not supported with
                 ``useAdminAccess``.
 
+                ``access_settings.access_permission_settings``: Updates
+                the `access permission
+                settings <https://support.google.com/chat/answer/11971020>`__
+                of who can discover and join the space where
+                ``spaceType`` field is ``SPACE``. Principals allowed to
+                join the space must also be allowed to discover it. To
+                update access permission settings for a space, the
+                authenticating user must be a space manager or assistant
+                manager and omit all other field masks in the request.
+                You can't update this field if the space is in `import
+                mode <https://developers.google.com/workspace/chat/import-data-overview>`__.
+                To learn more, see `Make a space discoverable to
+                specific
+                users <https://developers.google.com/workspace/chat/space-target-audience>`__.
+                ``access_settings.access_permission_settings`` is not
+                supported with ``useAdminAccess``. The supported field
+                masks include:
+
+                - ``access_settings.access_permission_settings.discoverSpaceSetting``
+                - ``access_settings.access_permission_settings.joinSpaceSetting``
+
                 ``permission_settings``: Supports changing the
                 `permission
                 settings <https://support.google.com/chat/answer/13340792>`__
@@ -2944,6 +3302,124 @@ class ChatServiceAsyncClient:
         # Send the request.
         response = await rpc(
             request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def find_group_chats(
+        self,
+        request: Optional[Union[space.FindGroupChatsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.FindGroupChatsAsyncPager:
+        r"""Returns all spaces with ``spaceType == GROUP_CHAT``, whose human
+        memberships contain exactly the calling user, and the users
+        specified in ``FindGroupChatsRequest.users``. Only members that
+        have joined the conversation are supported. For an example, see
+        `Find group
+        chats <https://developers.google.com/workspace/chat/find-group-chats>`__.
+
+        If the calling user blocks, or is blocked by, some users, and no
+        spaces with the entire specified set of users are found, this
+        method returns spaces that don't include the blocked or blocking
+        users.
+
+        The specified set of users must contain only human (non-app)
+        memberships. A request that contains non-human users doesn't
+        return any spaces.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with one of the following `authorization
+        scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.memberships.readonly``
+        - ``https://www.googleapis.com/auth/chat.memberships``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_find_group_chats():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.FindGroupChatsRequest(
+                )
+
+                # Make the request
+                page_result = client.find_group_chats(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.FindGroupChatsRequest, dict]]):
+                The request object. A request to get group chat spaces
+                based on user resources.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.apps.chat_v1.services.chat_service.pagers.FindGroupChatsAsyncPager:
+                A response containing group chat
+                spaces with exactly the calling user and
+                the requested users.
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, space.FindGroupChatsRequest):
+            request = space.FindGroupChatsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.find_group_chats
+        ]
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.FindGroupChatsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -4807,6 +5283,580 @@ class ChatServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def get_availability(
+        self,
+        request: Optional[Union[availability.GetAvailabilityRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> availability.Availability:
+        r"""Returns availability information for a human user in Google
+        Chat. For example, this can be used to check if a user is online
+        or away, or to retrieve their custom status message.
+
+        This method only retrieves the authenticated user's
+        availability.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with one of the following `authorization
+        scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.availability.readonly``
+        - ``https://www.googleapis.com/auth/chat.users.availability``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_get_availability():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.GetAvailabilityRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_availability(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.GetAvailabilityRequest, dict]]):
+                The request object. Request message for the ``GetAvailability`` method.
+            name (:class:`str`):
+                Required. The resource name of the availability to
+                retrieve.
+
+                Format: users/{user}/availability
+
+                ``{user}`` is the id for the Person in the People API or
+                Admin SDK directory API. For example,
+                ``users/123456789``.
+
+                The user's email address or ``me`` can also be used as
+                an alias to refer to the caller. For example,
+                ``users/user@example.com`` or ``users/me``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.apps.chat_v1.types.Availability:
+                Represents a user's current
+                availability information in Google Chat,
+                including their state (for example,
+                Active, Away, Do Not Disturb) and any
+                custom status.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, availability.GetAvailabilityRequest):
+            request = availability.GetAvailabilityRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_availability
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def mark_as_active(
+        self,
+        request: Optional[Union[availability.MarkAsActiveRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> availability.Availability:
+        r"""Marks user as ``ACTIVE`` in Google Chat.
+
+        Sets the user's availability state to ``ACTIVE``. The ``ACTIVE``
+        state lasts until the specified expiration, at which point the
+        user's state becomes ``AWAY``. Note that if the user is actively
+        using Chat, the ``ACTIVE`` state duration may extend beyond the
+        provided expiration.
+
+        This method only updates the authenticated user's availability.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.availability``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_mark_as_active():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.MarkAsActiveRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.mark_as_active(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.MarkAsActiveRequest, dict]]):
+                The request object. Request message for the ``MarkAsActive`` method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.apps.chat_v1.types.Availability:
+                Represents a user's current
+                availability information in Google Chat,
+                including their state (for example,
+                Active, Away, Do Not Disturb) and any
+                custom status.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, availability.MarkAsActiveRequest):
+            request = availability.MarkAsActiveRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.mark_as_active
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def mark_as_away(
+        self,
+        request: Optional[Union[availability.MarkAsAwayRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> availability.Availability:
+        r"""Marks user as ``AWAY`` in Google Chat.
+
+        Sets the user's state to away and is not affected by the user's
+        activity.
+
+        This method only updates the authenticated user's availability.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.availability``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_mark_as_away():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.MarkAsAwayRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.mark_as_away(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.MarkAsAwayRequest, dict]]):
+                The request object. Request message for the ``MarkAsAway`` method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.apps.chat_v1.types.Availability:
+                Represents a user's current
+                availability information in Google Chat,
+                including their state (for example,
+                Active, Away, Do Not Disturb) and any
+                custom status.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, availability.MarkAsAwayRequest):
+            request = availability.MarkAsAwayRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.mark_as_away
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def mark_as_do_not_disturb(
+        self,
+        request: Optional[Union[availability.MarkAsDoNotDisturbRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> availability.Availability:
+        r"""Marks user as ``DO_NOT_DISTURB`` in Google Chat.
+
+        Sets a user's availability state to ``DO_NOT_DISTURB`` until a
+        specified expiration time. When in ``DO_NOT_DISTURB``, users
+        typically won't receive notifications.
+
+        This method only updates the authenticated user's availability.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.availability``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_mark_as_do_not_disturb():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.MarkAsDoNotDisturbRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.mark_as_do_not_disturb(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.MarkAsDoNotDisturbRequest, dict]]):
+                The request object. Request message for the ``MarkAsDoNotDisturb`` method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.apps.chat_v1.types.Availability:
+                Represents a user's current
+                availability information in Google Chat,
+                including their state (for example,
+                Active, Away, Do Not Disturb) and any
+                custom status.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, availability.MarkAsDoNotDisturbRequest):
+            request = availability.MarkAsDoNotDisturbRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.mark_as_do_not_disturb
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_availability(
+        self,
+        request: Optional[
+            Union[gc_availability.UpdateAvailabilityRequest, dict]
+        ] = None,
+        *,
+        availability: Optional[gc_availability.Availability] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> gc_availability.Availability:
+        r"""Updates availability information for a human user. Only the
+        ``custom_status`` field can be updated through this method.
+
+        This method only updates the authenticated user's availability.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with one of the following `authorization
+        scopes <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.availability``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_update_availability():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.UpdateAvailabilityRequest(
+                )
+
+                # Make the request
+                response = await client.update_availability(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.UpdateAvailabilityRequest, dict]]):
+                The request object. Request message for the ``UpdateAvailability`` method.
+            availability (:class:`google.apps.chat_v1.types.Availability`):
+                Required. The availability to update.
+                This corresponds to the ``availability`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. The list of fields to update. The only field
+                that can be updated is ``custom_status``.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.apps.chat_v1.types.Availability:
+                Represents a user's current
+                availability information in Google Chat,
+                including their state (for example,
+                Active, Away, Do Not Disturb) and any
+                custom status.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [availability, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gc_availability.UpdateAvailabilityRequest):
+            request = gc_availability.UpdateAvailabilityRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if availability is not None:
+            request.availability = availability
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_availability
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("availability.name", request.availability.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def get_space_event(
         self,
         request: Optional[Union[space_event.GetSpaceEventRequest, dict]] = None,
@@ -4835,14 +5885,14 @@ class ChatServiceAsyncClient:
         - `App
           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
           with `administrator
-          approval <https://support.google.com/a?p=chat-app-auth>`__ in
-          `Developer
-          Preview <https://developers.google.com/workspace/preview>`__
+          approval <https://support.google.com/a?p=chat-app-auth>`__
           with one of the following authorization scopes:
 
           - ``https://www.googleapis.com/auth/chat.app.spaces``
+          - ``https://www.googleapis.com/auth/chat.app.spaces.readonly``
           - ``https://www.googleapis.com/auth/chat.app.messages.readonly``
           - ``https://www.googleapis.com/auth/chat.app.memberships``
+          - ``https://www.googleapis.com/auth/chat.app.memberships.readonly``
 
         - `User
           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
@@ -4994,14 +6044,14 @@ class ChatServiceAsyncClient:
         - `App
           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>`__
           with `administrator
-          approval <https://support.google.com/a?p=chat-app-auth>`__ in
-          `Developer
-          Preview <https://developers.google.com/workspace/preview>`__
+          approval <https://support.google.com/a?p=chat-app-auth>`__
           with one of the following authorization scopes:
 
           - ``https://www.googleapis.com/auth/chat.app.spaces``
+          - ``https://www.googleapis.com/auth/chat.app.spaces.readonly``
           - ``https://www.googleapis.com/auth/chat.app.messages.readonly``
           - ``https://www.googleapis.com/auth/chat.app.memberships``
+          - ``https://www.googleapis.com/auth/chat.app.memberships.readonly``
 
         - `User
           authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
@@ -5499,6 +6549,948 @@ class ChatServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def create_section(
+        self,
+        request: Optional[Union[gc_section.CreateSectionRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        section: Optional[gc_section.Section] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> gc_section.Section:
+        r"""Creates a section in Google Chat. Sections help users group
+        conversations and customize the list of spaces displayed in Chat
+        navigation panel. Only sections of type ``CUSTOM_SECTION`` can
+        be created. For details, see `Create and organize sections in
+        Google
+        Chat <https://support.google.com/chat/answer/16059854>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with the `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.sections``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_create_section():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                section = chat_v1.Section()
+                section.type_ = "DEFAULT_APPS"
+
+                request = chat_v1.CreateSectionRequest(
+                    parent="parent_value",
+                    section=section,
+                )
+
+                # Make the request
+                response = await client.create_section(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.CreateSectionRequest, dict]]):
+                The request object. Request message for creating a
+                section.
+            parent (:class:`str`):
+                Required. The parent resource name where the section is
+                created.
+
+                Format: ``users/{user}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            section (:class:`google.apps.chat_v1.types.Section`):
+                Required. The section to create.
+                This corresponds to the ``section`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.apps.chat_v1.types.Section:
+                Represents a [section](https://support.google.com/chat/answer/16059854) in
+                   Google Chat. Sections help users organize their
+                   spaces. There are two types of sections:
+
+                   1. **System Sections:** These are predefined sections
+                   managed by Google Chat. Their resource names are
+                   fixed, and they cannot be created, deleted, or have
+                   their display_name modified. Examples include: \*
+                   users/{user}/sections/default-direct-messages \*
+                   users/{user}/sections/default-spaces \*
+                   users/{user}/sections/default-apps
+
+                   2. **Custom Sections:** These are sections created
+                      and managed by the user. Creating a custom section
+                      using CreateSection **requires** a display_name.
+                      Custom sections can be updated using UpdateSection
+                      and deleted using DeleteSection.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, section]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gc_section.CreateSectionRequest):
+            request = gc_section.CreateSectionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if section is not None:
+            request.section = section
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_section
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_section(
+        self,
+        request: Optional[Union[section.DeleteSectionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
+        r"""Deletes a section of type ``CUSTOM_SECTION``.
+
+        If the section contains items, such as spaces, the items are
+        moved to Google Chat's default sections and are not deleted.
+
+        For details, see `Create and organize sections in Google
+        Chat <https://support.google.com/chat/answer/16059854>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with the `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.sections``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_delete_section():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.DeleteSectionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_section(request=request)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.DeleteSectionRequest, dict]]):
+                The request object. Request message for deleting a section. `Developer
+                Preview <https://developers.google.com/workspace/preview>`__.
+            name (:class:`str`):
+                Required. The name of the section to delete.
+
+                Format: ``users/{user}/sections/{section}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, section.DeleteSectionRequest):
+            request = section.DeleteSectionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_section
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def update_section(
+        self,
+        request: Optional[Union[gc_section.UpdateSectionRequest, dict]] = None,
+        *,
+        section: Optional[gc_section.Section] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> gc_section.Section:
+        r"""Updates a section. Only sections of type ``CUSTOM_SECTION`` can
+        be updated. For details, see `Create and organize sections in
+        Google
+        Chat <https://support.google.com/chat/answer/16059854>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with the `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.sections``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_update_section():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                section = chat_v1.Section()
+                section.type_ = "DEFAULT_APPS"
+
+                request = chat_v1.UpdateSectionRequest(
+                    section=section,
+                )
+
+                # Make the request
+                response = await client.update_section(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.UpdateSectionRequest, dict]]):
+                The request object. Request message for updating a
+                section.
+            section (:class:`google.apps.chat_v1.types.Section`):
+                Required. The section to update.
+                This corresponds to the ``section`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Required. The mask to specify which fields to update.
+
+                Currently supported field paths:
+
+                - ``display_name``
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.apps.chat_v1.types.Section:
+                Represents a [section](https://support.google.com/chat/answer/16059854) in
+                   Google Chat. Sections help users organize their
+                   spaces. There are two types of sections:
+
+                   1. **System Sections:** These are predefined sections
+                   managed by Google Chat. Their resource names are
+                   fixed, and they cannot be created, deleted, or have
+                   their display_name modified. Examples include: \*
+                   users/{user}/sections/default-direct-messages \*
+                   users/{user}/sections/default-spaces \*
+                   users/{user}/sections/default-apps
+
+                   2. **Custom Sections:** These are sections created
+                      and managed by the user. Creating a custom section
+                      using CreateSection **requires** a display_name.
+                      Custom sections can be updated using UpdateSection
+                      and deleted using DeleteSection.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [section, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, gc_section.UpdateSectionRequest):
+            request = gc_section.UpdateSectionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if section is not None:
+            request.section = section
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_section
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("section.name", request.section.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_sections(
+        self,
+        request: Optional[Union[section.ListSectionsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListSectionsAsyncPager:
+        r"""Lists sections available to the Chat user. Sections help users
+        group their conversations and customize the list of spaces
+        displayed in Chat navigation panel. For details, see `Create and
+        organize sections in Google
+        Chat <https://support.google.com/chat/answer/16059854>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with the `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.sections``
+        - ``https://www.googleapis.com/auth/chat.users.sections.readonly``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_list_sections():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.ListSectionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_sections(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.ListSectionsRequest, dict]]):
+                The request object. Request message for listing sections.
+            parent (:class:`str`):
+                Required. The parent, which is the user resource name
+                that owns this collection of sections. Only supports
+                listing sections for the calling user. To refer to the
+                calling user, set one of the following:
+
+                - The ``me`` alias. For example, ``users/me``.
+
+                - Their Workspace email address. For example,
+                  ``users/user@example.com``.
+
+                - Their user id. For example, ``users/123456789``.
+
+                Format: ``users/{user}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.apps.chat_v1.services.chat_service.pagers.ListSectionsAsyncPager:
+                Response message for listing
+                sections.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, section.ListSectionsRequest):
+            request = section.ListSectionsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_sections
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListSectionsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def position_section(
+        self,
+        request: Optional[Union[section.PositionSectionRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> section.PositionSectionResponse:
+        r"""Changes the sort order of a section. For details, see `Create
+        and organize sections in Google
+        Chat <https://support.google.com/chat/answer/16059854>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with the `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.sections``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_position_section():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.PositionSectionRequest(
+                    sort_order=1091,
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.position_section(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.PositionSectionRequest, dict]]):
+                The request object. Request message for positioning a
+                section.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.apps.chat_v1.types.PositionSectionResponse:
+                Response message for positioning a
+                section.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, section.PositionSectionRequest):
+            request = section.PositionSectionRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.position_section
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_section_items(
+        self,
+        request: Optional[Union[section.ListSectionItemsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.ListSectionItemsAsyncPager:
+        r"""Lists items in a section.
+
+        Only spaces can be section items. For details, see `Create and
+        organize sections in Google
+        Chat <https://support.google.com/chat/answer/16059854>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with the `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.sections``
+        - ``https://www.googleapis.com/auth/chat.users.sections.readonly``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_list_section_items():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.ListSectionItemsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_section_items(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.ListSectionItemsRequest, dict]]):
+                The request object. Request message for listing section
+                items.
+            parent (:class:`str`):
+                Required. The parent, which is the section resource name
+                that owns this collection of section items. Only
+                supports listing section items for the calling user.
+
+                When you're filtering by space, use the wildcard ``-``
+                to search across all sections. For example,
+                ``users/{user}/sections/-``.
+
+                Format: ``users/{user}/sections/{section}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.apps.chat_v1.services.chat_service.pagers.ListSectionItemsAsyncPager:
+                Response message for listing section
+                items.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, section.ListSectionItemsRequest):
+            request = section.ListSectionItemsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_section_items
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListSectionItemsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def move_section_item(
+        self,
+        request: Optional[Union[section.MoveSectionItemRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        target_section: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> section.MoveSectionItemResponse:
+        r"""Moves an item from one section to another. For example, if a
+        section contains spaces, this method can be used to move a space
+        to a different section. For details, see `Create and organize
+        sections in Google
+        Chat <https://support.google.com/chat/answer/16059854>`__.
+
+        Requires `user
+        authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__
+        with the `authorization
+        scope <https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes>`__:
+
+        - ``https://www.googleapis.com/auth/chat.users.sections``
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.apps import chat_v1
+
+            async def sample_move_section_item():
+                # Create a client
+                client = chat_v1.ChatServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = chat_v1.MoveSectionItemRequest(
+                    name="name_value",
+                    target_section="target_section_value",
+                )
+
+                # Make the request
+                response = await client.move_section_item(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.apps.chat_v1.types.MoveSectionItemRequest, dict]]):
+                The request object. Request message for moving a section
+                item across sections.
+            name (:class:`str`):
+                Required. The resource name of the section item to move.
+
+                Format: ``users/{user}/sections/{section}/items/{item}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            target_section (:class:`str`):
+                Required. The resource name of the section to move the
+                section item to.
+
+                Format: ``users/{user}/sections/{section}``
+
+                This corresponds to the ``target_section`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.apps.chat_v1.types.MoveSectionItemResponse:
+                Response message for moving a section
+                item.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name, target_section]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, section.MoveSectionItemRequest):
+            request = section.MoveSectionItemRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+        if target_section is not None:
+            request.target_section = target_section
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.move_section_item
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def __aenter__(self) -> "ChatServiceAsyncClient":
         return self
 
@@ -5509,9 +7501,7 @@ class ChatServiceAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("ChatServiceAsyncClient",)

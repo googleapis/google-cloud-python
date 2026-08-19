@@ -20,7 +20,6 @@ such as the library and Python version, to API services.
 
 from google.api_core import client_info
 
-
 METRICS_METADATA_KEY = "x-goog-api-client"
 
 
@@ -33,7 +32,7 @@ class ClientInfo(client_info.ClientInfo):
 
     Args:
         python_version (str): The Python interpreter version, for example,
-            ``'3.9.6'``.
+            ``'3.10.0'``.
         grpc_version (Optional[str]): The gRPC library version.
         api_core_version (str): The google-api-core library version.
         gapic_version (Optional[str]): The version of gapic-generated client

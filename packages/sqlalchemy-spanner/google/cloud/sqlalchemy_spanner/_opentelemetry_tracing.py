@@ -16,7 +16,6 @@
 
 import collections
 import os
-
 from contextlib import contextmanager
 
 from google.api_core.exceptions import GoogleAPICallError

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -272,20 +272,20 @@ class TlsConfig(proto.Message):
                 certificates. This can be used to disambiguate
                 the custom CA certificates.
             cert (bytes):
-                Required. The allowed custom CA certificates
-                (in DER format) for HTTPS verification. This
-                overrides the default SSL trust store. If this
-                is empty or unspecified, CES will use Google's
-                default trust store to verify certificates. N.B.
-                Make sure the HTTPS server certificates are
-                signed with "subject alt name". For instance a
-                certificate can be self-signed using the
-                following command,    openssl x509 -req -days
-                200 -in example.com.csr \      -signkey
-                example.com.key \
-                     -out example.com.crt \
-                     -extfile <(printf
-                "\nsubjectAltName='DNS:www.example.com'")
+                Required. The allowed custom CA certificates (in DER format)
+                for HTTPS verification. This overrides the default SSL trust
+                store. If this is empty or unspecified, CES will use
+                Google's default trust store to verify certificates. N.B.
+                Make sure the HTTPS server certificates are signed with
+                "subject alt name". For instance a certificate can be
+                self-signed using the following command:
+
+                ::
+
+                      openssl x509 -req -days 200 -in example.com.csr \
+                        -signkey example.com.key \
+                        -out example.com.crt \
+                        -extfile <(printf "\nsubjectAltName='DNS:www.example.com'")
         """
 
         display_name: str = proto.Field(
@@ -354,6 +354,12 @@ class ChannelProfile(proto.Message):
             Optional. The noise suppression level of the channel
             profile. Available values are "low", "moderate", "high",
             "very_high".
+        whatsapp_config (google.cloud.ces_v1.types.ChannelProfile.WhatsAppConfig):
+            Optional. Configuration specific to WhatsApp
+            deployments.
+        instagram_config (google.cloud.ces_v1.types.ChannelProfile.InstagramConfig):
+            Optional. Configuration specific to Instagram
+            deployments.
     """
 
     class ChannelType(proto.Enum):
@@ -372,8 +378,18 @@ class ChannelProfile(proto.Message):
                 Google Telephony Platform channel.
             CONTACT_CENTER_AS_A_SERVICE (6):
                 Contact Center as a Service (CCaaS) channel.
+            CONTACT_CENTER_AS_A_SERVICE_CHAT (11):
+                Contact Center as a Service (CCaaS Chat)
+                channel.
             FIVE9 (7):
                 Five9 channel.
+            CONTACT_CENTER_INTEGRATION (8):
+                Third party contact center integration
+                channel.
+            WHATSAPP (9):
+                WhatsApp channel.
+            INSTAGRAM (10):
+                Instagram channel.
         """
 
         UNKNOWN = 0
@@ -382,7 +398,11 @@ class ChannelProfile(proto.Message):
         TWILIO = 4
         GOOGLE_TELEPHONY_PLATFORM = 5
         CONTACT_CENTER_AS_A_SERVICE = 6
+        CONTACT_CENTER_AS_A_SERVICE_CHAT = 11
         FIVE9 = 7
+        CONTACT_CENTER_INTEGRATION = 8
+        WHATSAPP = 9
+        INSTAGRAM = 10
 
     class PersonaProperty(proto.Message):
         r"""Represents the persona property of a channel.
@@ -443,12 +463,15 @@ class ChannelProfile(proto.Message):
                     Widget supports only voice input.
                 CHAT_ONLY (3):
                     Widget supports only chat input.
+                CHAT_VOICE_AND_VIDEO (4):
+                    Widget supports chat, voice, and video input.
             """
 
             MODALITY_UNSPECIFIED = 0
             CHAT_AND_VOICE = 1
             VOICE_ONLY = 2
             CHAT_ONLY = 3
+            CHAT_VOICE_AND_VIDEO = 4
 
         class Theme(proto.Enum):
             r"""Theme of the web widget.
@@ -532,6 +555,86 @@ class ChannelProfile(proto.Message):
             )
         )
 
+    class WhatsAppConfig(proto.Message):
+        r"""Configuration specific to WhatsApp deployments.
+
+        Attributes:
+            waba_id (str):
+                Required. The WhatsApp Business Account ID.
+            phone_number_id (str):
+                Required. The Meta phone number ID.
+            phone_number (str):
+                Optional. The phone number in E.164 format.
+            display_name (str):
+                Output only. The fetched Meta business page
+                name.
+            thumbnail_url (str):
+                Output only. The fetched Meta business
+                profile thumbnail URL.
+            description (str):
+                Output only. The description of the Meta
+                business page or profile.
+        """
+
+        waba_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        phone_number_id: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        phone_number: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        display_name: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        thumbnail_url: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+        description: str = proto.Field(
+            proto.STRING,
+            number=6,
+        )
+
+    class InstagramConfig(proto.Message):
+        r"""Configuration specific to Instagram deployments.
+
+        Attributes:
+            instagram_account_id (str):
+                Required. The Instagram Account ID.
+            display_name (str):
+                Output only. The fetched Meta business page
+                name.
+            thumbnail_url (str):
+                Output only. The fetched Meta business
+                profile thumbnail URL.
+            description (str):
+                Output only. The description of the Meta
+                business page or profile.
+        """
+
+        instagram_account_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        display_name: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        thumbnail_url: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        description: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+
     profile_id: str = proto.Field(
         proto.STRING,
         number=1,
@@ -562,6 +665,16 @@ class ChannelProfile(proto.Message):
     noise_suppression_level: str = proto.Field(
         proto.STRING,
         number=8,
+    )
+    whatsapp_config: WhatsAppConfig = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=WhatsAppConfig,
+    )
+    instagram_config: InstagramConfig = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=InstagramConfig,
     )
 
 

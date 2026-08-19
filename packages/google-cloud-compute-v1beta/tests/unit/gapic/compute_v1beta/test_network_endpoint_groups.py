@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -114,12 +109,28 @@ def modify_default_endpoint_template(client):
     )
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert NetworkEndpointGroupsClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -141,6 +152,10 @@ def test__get_default_mtls_endpoint():
     assert (
         NetworkEndpointGroupsClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        NetworkEndpointGroupsClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -928,7 +943,14 @@ def test_network_endpoint_groups_client_get_mtls_endpoint_and_cert_source(client
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -975,7 +997,14 @@ def test_network_endpoint_groups_client_get_mtls_endpoint_and_cert_source(client
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1309,7 +1338,7 @@ def test_aggregated_list_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_aggregated_list_rest_unset_required_fields():
@@ -1445,6 +1474,9 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1"}
 
         pager = client.aggregated_list(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         assert isinstance(pager.get("a"), compute.NetworkEndpointGroupsScopedList)
         assert pager.get("h") is None
@@ -1595,7 +1627,7 @@ def test_attach_network_endpoints_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_attach_network_endpoints_rest_unset_required_fields():
@@ -1821,7 +1853,7 @@ def test_attach_network_endpoints_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_attach_network_endpoints_unary_rest_unset_required_fields():
@@ -2041,7 +2073,7 @@ def test_delete_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_rest_unset_required_fields():
@@ -2250,7 +2282,7 @@ def test_delete_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_unary_rest_unset_required_fields():
@@ -2465,7 +2497,7 @@ def test_detach_network_endpoints_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_detach_network_endpoints_rest_unset_required_fields():
@@ -2691,7 +2723,7 @@ def test_detach_network_endpoints_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_detach_network_endpoints_unary_rest_unset_required_fields():
@@ -2903,7 +2935,7 @@ def test_get_rest_required_fields(request_type=compute.GetNetworkEndpointGroupRe
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_rest_unset_required_fields():
@@ -3109,7 +3141,7 @@ def test_insert_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_rest_unset_required_fields():
@@ -3315,7 +3347,7 @@ def test_insert_unary_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_insert_unary_rest_unset_required_fields():
@@ -3524,7 +3556,7 @@ def test_list_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_rest_unset_required_fields():
@@ -3663,6 +3695,9 @@ def test_list_rest_pager(transport: str = "rest"):
         sample_request = {"project": "sample1", "zone": "sample2"}
 
         pager = client.list(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -3807,7 +3842,7 @@ def test_list_network_endpoints_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_network_endpoints_rest_unset_required_fields():
@@ -3993,6 +4028,9 @@ def test_list_network_endpoints_rest_pager(transport: str = "rest"):
 
         pager = client.list_network_endpoints(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -4125,7 +4163,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             expected_params = []
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_test_iam_permissions_rest_unset_required_fields():
@@ -4312,8 +4350,9 @@ def test_aggregated_list_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4384,18 +4423,20 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
     )
     client = NetworkEndpointGroupsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "post_aggregated_list"
-    ) as post, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor,
-        "post_aggregated_list_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "pre_aggregated_list"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor, "post_aggregated_list"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor,
+            "post_aggregated_list_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor, "pre_aggregated_list"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4457,8 +4498,9 @@ def test_attach_network_endpoints_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4662,18 +4704,22 @@ def test_attach_network_endpoints_rest_interceptors(null_interceptor):
     )
     client = NetworkEndpointGroupsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "post_attach_network_endpoints"
-    ) as post, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor,
-        "post_attach_network_endpoints_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "pre_attach_network_endpoints"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor,
+            "post_attach_network_endpoints",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor,
+            "post_attach_network_endpoints_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor,
+            "pre_attach_network_endpoints",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4730,8 +4776,9 @@ def test_delete_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4840,17 +4887,19 @@ def test_delete_rest_interceptors(null_interceptor):
     )
     client = NetworkEndpointGroupsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "post_delete"
-    ) as post, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "post_delete_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "pre_delete"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor, "post_delete"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor, "post_delete_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor, "pre_delete"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4907,8 +4956,9 @@ def test_detach_network_endpoints_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5112,18 +5162,22 @@ def test_detach_network_endpoints_rest_interceptors(null_interceptor):
     )
     client = NetworkEndpointGroupsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "post_detach_network_endpoints"
-    ) as post, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor,
-        "post_detach_network_endpoints_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "pre_detach_network_endpoints"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor,
+            "post_detach_network_endpoints",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor,
+            "post_detach_network_endpoints_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor,
+            "pre_detach_network_endpoints",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5178,8 +5232,9 @@ def test_get_rest_bad_request(request_type=compute.GetNetworkEndpointGroupReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5272,17 +5327,19 @@ def test_get_rest_interceptors(null_interceptor):
     )
     client = NetworkEndpointGroupsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "post_get"
-    ) as post, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "post_get_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "pre_get"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor, "post_get"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor, "post_get_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor, "pre_get"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5337,8 +5394,9 @@ def test_insert_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5564,17 +5622,19 @@ def test_insert_rest_interceptors(null_interceptor):
     )
     client = NetworkEndpointGroupsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "post_insert"
-    ) as post, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "post_insert_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "pre_insert"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor, "post_insert"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor, "post_insert_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor, "pre_insert"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5625,8 +5685,9 @@ def test_list_rest_bad_request(request_type=compute.ListNetworkEndpointGroupsReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5695,17 +5756,19 @@ def test_list_rest_interceptors(null_interceptor):
     )
     client = NetworkEndpointGroupsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "post_list"
-    ) as post, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "post_list_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "pre_list"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor, "post_list"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor, "post_list_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor, "pre_list"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -5764,8 +5827,9 @@ def test_list_network_endpoints_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -5936,18 +6000,22 @@ def test_list_network_endpoints_rest_interceptors(null_interceptor):
     )
     client = NetworkEndpointGroupsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "post_list_network_endpoints"
-    ) as post, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor,
-        "post_list_network_endpoints_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "pre_list_network_endpoints"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor,
+            "post_list_network_endpoints",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor,
+            "post_list_network_endpoints_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor,
+            "pre_list_network_endpoints",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -6005,8 +6073,9 @@ def test_test_iam_permissions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6147,18 +6216,20 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     )
     client = NetworkEndpointGroupsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "post_test_iam_permissions"
-    ) as post, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor,
-        "post_test_iam_permissions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkEndpointGroupsRestInterceptor, "pre_test_iam_permissions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor, "post_test_iam_permissions"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor,
+            "post_test_iam_permissions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkEndpointGroupsRestInterceptor, "pre_test_iam_permissions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -6225,7 +6296,6 @@ def test_aggregated_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AggregatedListNetworkEndpointGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6247,7 +6317,6 @@ def test_attach_network_endpoints_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.AttachNetworkEndpointsNetworkEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -6267,7 +6336,6 @@ def test_delete_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DeleteNetworkEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -6289,7 +6357,6 @@ def test_detach_network_endpoints_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.DetachNetworkEndpointsNetworkEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -6309,7 +6376,6 @@ def test_get_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.GetNetworkEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -6329,7 +6395,6 @@ def test_insert_unary_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.InsertNetworkEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -6349,7 +6414,6 @@ def test_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListNetworkEndpointGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6371,7 +6435,6 @@ def test_list_network_endpoints_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.ListNetworkEndpointsNetworkEndpointGroupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -6393,7 +6456,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = compute.TestIamPermissionsNetworkEndpointGroupRequest()
-
         assert args[0] == request_msg
 
 
@@ -6447,11 +6509,14 @@ def test_network_endpoint_groups_base_transport():
 
 def test_network_endpoint_groups_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.compute_v1beta.services.network_endpoint_groups.transports.NetworkEndpointGroupsTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.compute_v1beta.services.network_endpoint_groups.transports.NetworkEndpointGroupsTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.NetworkEndpointGroupsTransport(
@@ -6471,9 +6536,12 @@ def test_network_endpoint_groups_base_transport_with_credentials_file():
 
 def test_network_endpoint_groups_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.compute_v1beta.services.network_endpoint_groups.transports.NetworkEndpointGroupsTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.compute_v1beta.services.network_endpoint_groups.transports.NetworkEndpointGroupsTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.NetworkEndpointGroupsTransport()

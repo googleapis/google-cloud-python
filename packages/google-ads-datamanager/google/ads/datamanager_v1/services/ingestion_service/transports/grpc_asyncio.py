@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(request, google.protobuf.message.Message):
                 request_payload = MessageToJson(request)
             else:
-                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)!r}"
 
             request_metadata = {
                 key: value.decode("utf-8") if isinstance(value, bytes) else value
@@ -95,7 +95,7 @@ class _LoggingClientAIOInterceptor(
             elif isinstance(result, google.protobuf.message.Message):
                 response_payload = MessageToJson(result)
             else:
-                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)!r}"
             grpc_response = {
                 "payload": response_payload,
                 "metadata": metadata,
@@ -235,6 +235,10 @@ class IngestionServiceGrpcAsyncIOTransport(IngestionServiceTransport):
                 your own client library.
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
+            api_audience (Optional[str]): The intended audience for the API calls
+                to the service that will be set when using certain 3rd party
+                authentication flows. Audience is typically a resource identifier.
+                If not set, the host value will be used as a default.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -394,6 +398,38 @@ class IngestionServiceGrpcAsyncIOTransport(IngestionServiceTransport):
         return self._stubs["remove_audience_members"]
 
     @property
+    def remove_all_audience_members(
+        self,
+    ) -> Callable[
+        [ingestion_service.RemoveAllAudienceMembersRequest],
+        Awaitable[ingestion_service.RemoveAllAudienceMembersResponse],
+    ]:
+        r"""Return a callable for the remove all audience members method over gRPC.
+
+        Removes all audience members from the provided
+        destinations.
+
+        Returns:
+            Callable[[~.RemoveAllAudienceMembersRequest],
+                    Awaitable[~.RemoveAllAudienceMembersResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "remove_all_audience_members" not in self._stubs:
+            self._stubs["remove_all_audience_members"] = (
+                self._logged_channel.unary_unary(
+                    "/google.ads.datamanager.v1.IngestionService/RemoveAllAudienceMembers",
+                    request_serializer=ingestion_service.RemoveAllAudienceMembersRequest.serialize,
+                    response_deserializer=ingestion_service.RemoveAllAudienceMembersResponse.deserialize,
+                )
+            )
+        return self._stubs["remove_all_audience_members"]
+
+    @property
     def ingest_events(
         self,
     ) -> Callable[
@@ -423,6 +459,38 @@ class IngestionServiceGrpcAsyncIOTransport(IngestionServiceTransport):
                 response_deserializer=ingestion_service.IngestEventsResponse.deserialize,
             )
         return self._stubs["ingest_events"]
+
+    @property
+    def ingest_ad_events(
+        self,
+    ) -> Callable[
+        [ingestion_service.IngestAdEventsRequest],
+        Awaitable[ingestion_service.IngestAdEventsResponse],
+    ]:
+        r"""Return a callable for the ingest ad events method over gRPC.
+
+        Uploads a list of [AdEvent][google.ads.datamanager.v1.AdEvent]
+        resources to Google Analytics.
+
+        This feature is only available to accounts on an allowlist.
+
+        Returns:
+            Callable[[~.IngestAdEventsRequest],
+                    Awaitable[~.IngestAdEventsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "ingest_ad_events" not in self._stubs:
+            self._stubs["ingest_ad_events"] = self._logged_channel.unary_unary(
+                "/google.ads.datamanager.v1.IngestionService/IngestAdEvents",
+                request_serializer=ingestion_service.IngestAdEventsRequest.serialize,
+                response_deserializer=ingestion_service.IngestAdEventsResponse.deserialize,
+            )
+        return self._stubs["ingest_ad_events"]
 
     @property
     def retrieve_request_status(
@@ -466,8 +534,18 @@ class IngestionServiceGrpcAsyncIOTransport(IngestionServiceTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.remove_all_audience_members: self._wrap_method(
+                self.remove_all_audience_members,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.ingest_events: self._wrap_method(
                 self.ingest_events,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.ingest_ad_events: self._wrap_method(
+                self.ingest_ad_events,
                 default_timeout=None,
                 client_info=client_info,
             ),

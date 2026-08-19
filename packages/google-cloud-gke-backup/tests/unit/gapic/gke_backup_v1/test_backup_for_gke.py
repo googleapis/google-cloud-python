@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -149,12 +144,28 @@ def modify_default_endpoint_template(client):
     )
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert BackupForGKEClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -173,6 +184,10 @@ def test__get_default_mtls_endpoint():
         == sandbox_mtls_endpoint
     )
     assert BackupForGKEClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert (
+        BackupForGKEClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
+    )
 
 
 def test__read_environment_variables():
@@ -958,7 +973,14 @@ def test_backup_for_gke_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1005,7 +1027,14 @@ def test_backup_for_gke_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1293,11 +1322,13 @@ def test_backup_for_gke_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1322,8 +1353,8 @@ def test_backup_for_gke_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.CreateBackupPlanRequest,
-        dict,
+        gkebackup.CreateBackupPlanRequest(),
+        {},
     ],
 )
 def test_create_backup_plan(request_type, transport: str = "grpc"):
@@ -1334,7 +1365,7 @@ def test_create_backup_plan(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1380,10 +1411,11 @@ def test_create_backup_plan_non_empty_request_with_auto_populated_field():
         client.create_backup_plan(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.CreateBackupPlanRequest(
+        request_msg = gkebackup.CreateBackupPlanRequest(
             parent="parent_value",
             backup_plan_id="backup_plan_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_backup_plan_use_cached_wrapped_rpc():
@@ -1478,9 +1510,14 @@ async def test_create_backup_plan_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_backup_plan_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.CreateBackupPlanRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.CreateBackupPlanRequest(),
+        {},
+    ],
+)
+async def test_create_backup_plan_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1488,7 +1525,7 @@ async def test_create_backup_plan_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1508,11 +1545,6 @@ async def test_create_backup_plan_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_backup_plan_async_from_dict():
-    await test_create_backup_plan_async(request_type=dict)
 
 
 def test_create_backup_plan_field_headers():
@@ -1689,8 +1721,8 @@ async def test_create_backup_plan_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.ListBackupPlansRequest,
-        dict,
+        gkebackup.ListBackupPlansRequest(),
+        {},
     ],
 )
 def test_list_backup_plans(request_type, transport: str = "grpc"):
@@ -1701,7 +1733,7 @@ def test_list_backup_plans(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1754,12 +1786,13 @@ def test_list_backup_plans_non_empty_request_with_auto_populated_field():
         client.list_backup_plans(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListBackupPlansRequest(
+        request_msg = gkebackup.ListBackupPlansRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_backup_plans_use_cached_wrapped_rpc():
@@ -1842,9 +1875,14 @@ async def test_list_backup_plans_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_backup_plans_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.ListBackupPlansRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.ListBackupPlansRequest(),
+        {},
+    ],
+)
+async def test_list_backup_plans_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1852,7 +1890,7 @@ async def test_list_backup_plans_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1877,11 +1915,6 @@ async def test_list_backup_plans_async(
     assert isinstance(response, pagers.ListBackupPlansAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_backup_plans_async_from_dict():
-    await test_list_backup_plans_async(request_type=dict)
 
 
 def test_list_backup_plans_field_headers():
@@ -2086,6 +2119,9 @@ def test_list_backup_plans_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, backup_plan.BackupPlan) for i in results)
@@ -2178,6 +2214,8 @@ async def test_list_backup_plans_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2227,11 +2265,7 @@ async def test_list_backup_plans_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_backup_plans(request={})
-        ).pages:
+        async for page_ in (await client.list_backup_plans(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2240,8 +2274,8 @@ async def test_list_backup_plans_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.GetBackupPlanRequest,
-        dict,
+        gkebackup.GetBackupPlanRequest(),
+        {},
     ],
 )
 def test_get_backup_plan(request_type, transport: str = "grpc"):
@@ -2252,7 +2286,7 @@ def test_get_backup_plan(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup_plan), "__call__") as call:
@@ -2318,9 +2352,10 @@ def test_get_backup_plan_non_empty_request_with_auto_populated_field():
         client.get_backup_plan(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetBackupPlanRequest(
+        request_msg = gkebackup.GetBackupPlanRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_backup_plan_use_cached_wrapped_rpc():
@@ -2401,9 +2436,14 @@ async def test_get_backup_plan_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_backup_plan_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.GetBackupPlanRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.GetBackupPlanRequest(),
+        {},
+    ],
+)
+async def test_get_backup_plan_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2411,7 +2451,7 @@ async def test_get_backup_plan_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup_plan), "__call__") as call:
@@ -2454,11 +2494,6 @@ async def test_get_backup_plan_async(
     assert response.rpo_risk_level == 1504
     assert response.rpo_risk_reason == "rpo_risk_reason_value"
     assert response.backup_channel == "backup_channel_value"
-
-
-@pytest.mark.asyncio
-async def test_get_backup_plan_async_from_dict():
-    await test_get_backup_plan_async(request_type=dict)
 
 
 def test_get_backup_plan_field_headers():
@@ -2607,8 +2642,8 @@ async def test_get_backup_plan_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.UpdateBackupPlanRequest,
-        dict,
+        gkebackup.UpdateBackupPlanRequest(),
+        {},
     ],
 )
 def test_update_backup_plan(request_type, transport: str = "grpc"):
@@ -2619,7 +2654,7 @@ def test_update_backup_plan(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2662,7 +2697,8 @@ def test_update_backup_plan_non_empty_request_with_auto_populated_field():
         client.update_backup_plan(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.UpdateBackupPlanRequest()
+        request_msg = gkebackup.UpdateBackupPlanRequest()
+        assert args[0] == request_msg
 
 
 def test_update_backup_plan_use_cached_wrapped_rpc():
@@ -2757,9 +2793,14 @@ async def test_update_backup_plan_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_backup_plan_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.UpdateBackupPlanRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.UpdateBackupPlanRequest(),
+        {},
+    ],
+)
+async def test_update_backup_plan_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2767,7 +2808,7 @@ async def test_update_backup_plan_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2787,11 +2828,6 @@ async def test_update_backup_plan_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_backup_plan_async_from_dict():
-    await test_update_backup_plan_async(request_type=dict)
 
 
 def test_update_backup_plan_field_headers():
@@ -2958,8 +2994,8 @@ async def test_update_backup_plan_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.DeleteBackupPlanRequest,
-        dict,
+        gkebackup.DeleteBackupPlanRequest(),
+        {},
     ],
 )
 def test_delete_backup_plan(request_type, transport: str = "grpc"):
@@ -2970,7 +3006,7 @@ def test_delete_backup_plan(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3016,10 +3052,11 @@ def test_delete_backup_plan_non_empty_request_with_auto_populated_field():
         client.delete_backup_plan(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.DeleteBackupPlanRequest(
+        request_msg = gkebackup.DeleteBackupPlanRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_backup_plan_use_cached_wrapped_rpc():
@@ -3114,9 +3151,14 @@ async def test_delete_backup_plan_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_backup_plan_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.DeleteBackupPlanRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.DeleteBackupPlanRequest(),
+        {},
+    ],
+)
+async def test_delete_backup_plan_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3124,7 +3166,7 @@ async def test_delete_backup_plan_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3144,11 +3186,6 @@ async def test_delete_backup_plan_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_backup_plan_async_from_dict():
-    await test_delete_backup_plan_async(request_type=dict)
 
 
 def test_delete_backup_plan_field_headers():
@@ -3305,8 +3342,8 @@ async def test_delete_backup_plan_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.CreateBackupChannelRequest,
-        dict,
+        gkebackup.CreateBackupChannelRequest(),
+        {},
     ],
 )
 def test_create_backup_channel(request_type, transport: str = "grpc"):
@@ -3317,7 +3354,7 @@ def test_create_backup_channel(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3363,10 +3400,11 @@ def test_create_backup_channel_non_empty_request_with_auto_populated_field():
         client.create_backup_channel(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.CreateBackupChannelRequest(
+        request_msg = gkebackup.CreateBackupChannelRequest(
             parent="parent_value",
             backup_channel_id="backup_channel_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_backup_channel_use_cached_wrapped_rpc():
@@ -3462,8 +3500,15 @@ async def test_create_backup_channel_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.CreateBackupChannelRequest(),
+        {},
+    ],
+)
 async def test_create_backup_channel_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.CreateBackupChannelRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3472,7 +3517,7 @@ async def test_create_backup_channel_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3492,11 +3537,6 @@ async def test_create_backup_channel_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_backup_channel_async_from_dict():
-    await test_create_backup_channel_async(request_type=dict)
 
 
 def test_create_backup_channel_field_headers():
@@ -3673,8 +3713,8 @@ async def test_create_backup_channel_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.ListBackupChannelsRequest,
-        dict,
+        gkebackup.ListBackupChannelsRequest(),
+        {},
     ],
 )
 def test_list_backup_channels(request_type, transport: str = "grpc"):
@@ -3685,7 +3725,7 @@ def test_list_backup_channels(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3738,12 +3778,13 @@ def test_list_backup_channels_non_empty_request_with_auto_populated_field():
         client.list_backup_channels(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListBackupChannelsRequest(
+        request_msg = gkebackup.ListBackupChannelsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_backup_channels_use_cached_wrapped_rpc():
@@ -3828,8 +3869,15 @@ async def test_list_backup_channels_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.ListBackupChannelsRequest(),
+        {},
+    ],
+)
 async def test_list_backup_channels_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.ListBackupChannelsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3838,7 +3886,7 @@ async def test_list_backup_channels_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3863,11 +3911,6 @@ async def test_list_backup_channels_async(
     assert isinstance(response, pagers.ListBackupChannelsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_backup_channels_async_from_dict():
-    await test_list_backup_channels_async(request_type=dict)
 
 
 def test_list_backup_channels_field_headers():
@@ -4072,6 +4115,9 @@ def test_list_backup_channels_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, backup_channel.BackupChannel) for i in results)
@@ -4164,6 +4210,8 @@ async def test_list_backup_channels_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4213,11 +4261,7 @@ async def test_list_backup_channels_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_backup_channels(request={})
-        ).pages:
+        async for page_ in (await client.list_backup_channels(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4226,8 +4270,8 @@ async def test_list_backup_channels_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.GetBackupChannelRequest,
-        dict,
+        gkebackup.GetBackupChannelRequest(),
+        {},
     ],
 )
 def test_get_backup_channel(request_type, transport: str = "grpc"):
@@ -4238,7 +4282,7 @@ def test_get_backup_channel(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4296,9 +4340,10 @@ def test_get_backup_channel_non_empty_request_with_auto_populated_field():
         client.get_backup_channel(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetBackupChannelRequest(
+        request_msg = gkebackup.GetBackupChannelRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_backup_channel_use_cached_wrapped_rpc():
@@ -4383,9 +4428,14 @@ async def test_get_backup_channel_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_backup_channel_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.GetBackupChannelRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.GetBackupChannelRequest(),
+        {},
+    ],
+)
+async def test_get_backup_channel_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4393,7 +4443,7 @@ async def test_get_backup_channel_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4426,11 +4476,6 @@ async def test_get_backup_channel_async(
     assert response.description == "description_value"
     assert response.etag == "etag_value"
     assert response.destination_project_id == "destination_project_id_value"
-
-
-@pytest.mark.asyncio
-async def test_get_backup_channel_async_from_dict():
-    await test_get_backup_channel_async(request_type=dict)
 
 
 def test_get_backup_channel_field_headers():
@@ -4587,8 +4632,8 @@ async def test_get_backup_channel_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.UpdateBackupChannelRequest,
-        dict,
+        gkebackup.UpdateBackupChannelRequest(),
+        {},
     ],
 )
 def test_update_backup_channel(request_type, transport: str = "grpc"):
@@ -4599,7 +4644,7 @@ def test_update_backup_channel(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4642,7 +4687,8 @@ def test_update_backup_channel_non_empty_request_with_auto_populated_field():
         client.update_backup_channel(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.UpdateBackupChannelRequest()
+        request_msg = gkebackup.UpdateBackupChannelRequest()
+        assert args[0] == request_msg
 
 
 def test_update_backup_channel_use_cached_wrapped_rpc():
@@ -4738,8 +4784,15 @@ async def test_update_backup_channel_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.UpdateBackupChannelRequest(),
+        {},
+    ],
+)
 async def test_update_backup_channel_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.UpdateBackupChannelRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4748,7 +4801,7 @@ async def test_update_backup_channel_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4768,11 +4821,6 @@ async def test_update_backup_channel_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_backup_channel_async_from_dict():
-    await test_update_backup_channel_async(request_type=dict)
 
 
 def test_update_backup_channel_field_headers():
@@ -4939,8 +4987,8 @@ async def test_update_backup_channel_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.DeleteBackupChannelRequest,
-        dict,
+        gkebackup.DeleteBackupChannelRequest(),
+        {},
     ],
 )
 def test_delete_backup_channel(request_type, transport: str = "grpc"):
@@ -4951,7 +4999,7 @@ def test_delete_backup_channel(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4997,10 +5045,11 @@ def test_delete_backup_channel_non_empty_request_with_auto_populated_field():
         client.delete_backup_channel(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.DeleteBackupChannelRequest(
+        request_msg = gkebackup.DeleteBackupChannelRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_backup_channel_use_cached_wrapped_rpc():
@@ -5096,8 +5145,15 @@ async def test_delete_backup_channel_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.DeleteBackupChannelRequest(),
+        {},
+    ],
+)
 async def test_delete_backup_channel_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.DeleteBackupChannelRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5106,7 +5162,7 @@ async def test_delete_backup_channel_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5126,11 +5182,6 @@ async def test_delete_backup_channel_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_backup_channel_async_from_dict():
-    await test_delete_backup_channel_async(request_type=dict)
 
 
 def test_delete_backup_channel_field_headers():
@@ -5287,8 +5338,8 @@ async def test_delete_backup_channel_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.ListBackupPlanBindingsRequest,
-        dict,
+        gkebackup.ListBackupPlanBindingsRequest(),
+        {},
     ],
 )
 def test_list_backup_plan_bindings(request_type, transport: str = "grpc"):
@@ -5299,7 +5350,7 @@ def test_list_backup_plan_bindings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5352,12 +5403,13 @@ def test_list_backup_plan_bindings_non_empty_request_with_auto_populated_field()
         client.list_backup_plan_bindings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListBackupPlanBindingsRequest(
+        request_msg = gkebackup.ListBackupPlanBindingsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_backup_plan_bindings_use_cached_wrapped_rpc():
@@ -5443,9 +5495,15 @@ async def test_list_backup_plan_bindings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.ListBackupPlanBindingsRequest(),
+        {},
+    ],
+)
 async def test_list_backup_plan_bindings_async(
-    transport: str = "grpc_asyncio",
-    request_type=gkebackup.ListBackupPlanBindingsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5454,7 +5512,7 @@ async def test_list_backup_plan_bindings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5479,11 +5537,6 @@ async def test_list_backup_plan_bindings_async(
     assert isinstance(response, pagers.ListBackupPlanBindingsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_backup_plan_bindings_async_from_dict():
-    await test_list_backup_plan_bindings_async(request_type=dict)
 
 
 def test_list_backup_plan_bindings_field_headers():
@@ -5690,6 +5743,9 @@ def test_list_backup_plan_bindings_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -5784,6 +5840,8 @@ async def test_list_backup_plan_bindings_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5835,11 +5893,7 @@ async def test_list_backup_plan_bindings_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_backup_plan_bindings(request={})
-        ).pages:
+        async for page_ in (await client.list_backup_plan_bindings(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5848,8 +5902,8 @@ async def test_list_backup_plan_bindings_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.GetBackupPlanBindingRequest,
-        dict,
+        gkebackup.GetBackupPlanBindingRequest(),
+        {},
     ],
 )
 def test_get_backup_plan_binding(request_type, transport: str = "grpc"):
@@ -5860,7 +5914,7 @@ def test_get_backup_plan_binding(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5916,9 +5970,10 @@ def test_get_backup_plan_binding_non_empty_request_with_auto_populated_field():
         client.get_backup_plan_binding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetBackupPlanBindingRequest(
+        request_msg = gkebackup.GetBackupPlanBindingRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_backup_plan_binding_use_cached_wrapped_rpc():
@@ -6004,8 +6059,15 @@ async def test_get_backup_plan_binding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.GetBackupPlanBindingRequest(),
+        {},
+    ],
+)
 async def test_get_backup_plan_binding_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.GetBackupPlanBindingRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6014,7 +6076,7 @@ async def test_get_backup_plan_binding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6045,11 +6107,6 @@ async def test_get_backup_plan_binding_async(
     assert response.backup_plan == "backup_plan_value"
     assert response.cluster == "cluster_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_backup_plan_binding_async_from_dict():
-    await test_get_backup_plan_binding_async(request_type=dict)
 
 
 def test_get_backup_plan_binding_field_headers():
@@ -6206,8 +6263,8 @@ async def test_get_backup_plan_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.CreateBackupRequest,
-        dict,
+        gkebackup.CreateBackupRequest(),
+        {},
     ],
 )
 def test_create_backup(request_type, transport: str = "grpc"):
@@ -6218,7 +6275,7 @@ def test_create_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
@@ -6260,10 +6317,11 @@ def test_create_backup_non_empty_request_with_auto_populated_field():
         client.create_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.CreateBackupRequest(
+        request_msg = gkebackup.CreateBackupRequest(
             parent="parent_value",
             backup_id="backup_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_backup_use_cached_wrapped_rpc():
@@ -6354,9 +6412,14 @@ async def test_create_backup_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_backup_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.CreateBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.CreateBackupRequest(),
+        {},
+    ],
+)
+async def test_create_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6364,7 +6427,7 @@ async def test_create_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
@@ -6382,11 +6445,6 @@ async def test_create_backup_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_backup_async_from_dict():
-    await test_create_backup_async(request_type=dict)
 
 
 def test_create_backup_field_headers():
@@ -6555,8 +6613,8 @@ async def test_create_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.ListBackupsRequest,
-        dict,
+        gkebackup.ListBackupsRequest(),
+        {},
     ],
 )
 def test_list_backups(request_type, transport: str = "grpc"):
@@ -6567,7 +6625,7 @@ def test_list_backups(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
@@ -6616,12 +6674,13 @@ def test_list_backups_non_empty_request_with_auto_populated_field():
         client.list_backups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListBackupsRequest(
+        request_msg = gkebackup.ListBackupsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_backups_use_cached_wrapped_rpc():
@@ -6702,9 +6761,14 @@ async def test_list_backups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_backups_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.ListBackupsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.ListBackupsRequest(),
+        {},
+    ],
+)
+async def test_list_backups_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6712,7 +6776,7 @@ async def test_list_backups_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
@@ -6735,11 +6799,6 @@ async def test_list_backups_async(
     assert isinstance(response, pagers.ListBackupsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_backups_async_from_dict():
-    await test_list_backups_async(request_type=dict)
 
 
 def test_list_backups_field_headers():
@@ -6934,6 +6993,9 @@ def test_list_backups_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, backup.Backup) for i in results)
@@ -7022,6 +7084,8 @@ async def test_list_backups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7069,11 +7133,7 @@ async def test_list_backups_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_backups(request={})
-        ).pages:
+        async for page_ in (await client.list_backups(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7082,8 +7142,8 @@ async def test_list_backups_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.GetBackupRequest,
-        dict,
+        gkebackup.GetBackupRequest(),
+        {},
     ],
 )
 def test_get_backup(request_type, transport: str = "grpc"):
@@ -7094,7 +7154,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
@@ -7175,9 +7235,10 @@ def test_get_backup_non_empty_request_with_auto_populated_field():
         client.get_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetBackupRequest(
+        request_msg = gkebackup.GetBackupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_backup_use_cached_wrapped_rpc():
@@ -7256,9 +7317,14 @@ async def test_get_backup_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_backup_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.GetBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.GetBackupRequest(),
+        {},
+    ],
+)
+async def test_get_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7266,7 +7332,7 @@ async def test_get_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
@@ -7323,11 +7389,6 @@ async def test_get_backup_async(
     assert response.permissive_mode is True
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
-
-
-@pytest.mark.asyncio
-async def test_get_backup_async_from_dict():
-    await test_get_backup_async(request_type=dict)
 
 
 def test_get_backup_field_headers():
@@ -7472,8 +7533,8 @@ async def test_get_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.UpdateBackupRequest,
-        dict,
+        gkebackup.UpdateBackupRequest(),
+        {},
     ],
 )
 def test_update_backup(request_type, transport: str = "grpc"):
@@ -7484,7 +7545,7 @@ def test_update_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
@@ -7523,7 +7584,8 @@ def test_update_backup_non_empty_request_with_auto_populated_field():
         client.update_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.UpdateBackupRequest()
+        request_msg = gkebackup.UpdateBackupRequest()
+        assert args[0] == request_msg
 
 
 def test_update_backup_use_cached_wrapped_rpc():
@@ -7614,9 +7676,14 @@ async def test_update_backup_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_backup_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.UpdateBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.UpdateBackupRequest(),
+        {},
+    ],
+)
+async def test_update_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7624,7 +7691,7 @@ async def test_update_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
@@ -7642,11 +7709,6 @@ async def test_update_backup_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_backup_async_from_dict():
-    await test_update_backup_async(request_type=dict)
 
 
 def test_update_backup_field_headers():
@@ -7805,8 +7867,8 @@ async def test_update_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.DeleteBackupRequest,
-        dict,
+        gkebackup.DeleteBackupRequest(),
+        {},
     ],
 )
 def test_delete_backup(request_type, transport: str = "grpc"):
@@ -7817,7 +7879,7 @@ def test_delete_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
@@ -7859,10 +7921,11 @@ def test_delete_backup_non_empty_request_with_auto_populated_field():
         client.delete_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.DeleteBackupRequest(
+        request_msg = gkebackup.DeleteBackupRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_backup_use_cached_wrapped_rpc():
@@ -7953,9 +8016,14 @@ async def test_delete_backup_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_backup_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.DeleteBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.DeleteBackupRequest(),
+        {},
+    ],
+)
+async def test_delete_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7963,7 +8031,7 @@ async def test_delete_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
@@ -7981,11 +8049,6 @@ async def test_delete_backup_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_backup_async_from_dict():
-    await test_delete_backup_async(request_type=dict)
 
 
 def test_delete_backup_field_headers():
@@ -8134,8 +8197,8 @@ async def test_delete_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.ListVolumeBackupsRequest,
-        dict,
+        gkebackup.ListVolumeBackupsRequest(),
+        {},
     ],
 )
 def test_list_volume_backups(request_type, transport: str = "grpc"):
@@ -8146,7 +8209,7 @@ def test_list_volume_backups(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8197,12 +8260,13 @@ def test_list_volume_backups_non_empty_request_with_auto_populated_field():
         client.list_volume_backups(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListVolumeBackupsRequest(
+        request_msg = gkebackup.ListVolumeBackupsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_volume_backups_use_cached_wrapped_rpc():
@@ -8287,9 +8351,14 @@ async def test_list_volume_backups_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_volume_backups_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.ListVolumeBackupsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.ListVolumeBackupsRequest(),
+        {},
+    ],
+)
+async def test_list_volume_backups_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8297,7 +8366,7 @@ async def test_list_volume_backups_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8320,11 +8389,6 @@ async def test_list_volume_backups_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVolumeBackupsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_volume_backups_async_from_dict():
-    await test_list_volume_backups_async(request_type=dict)
 
 
 def test_list_volume_backups_field_headers():
@@ -8529,6 +8593,9 @@ def test_list_volume_backups_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, volume.VolumeBackup) for i in results)
@@ -8621,6 +8688,8 @@ async def test_list_volume_backups_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8670,11 +8739,7 @@ async def test_list_volume_backups_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_volume_backups(request={})
-        ).pages:
+        async for page_ in (await client.list_volume_backups(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8683,8 +8748,8 @@ async def test_list_volume_backups_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.GetVolumeBackupRequest,
-        dict,
+        gkebackup.GetVolumeBackupRequest(),
+        {},
     ],
 )
 def test_get_volume_backup(request_type, transport: str = "grpc"):
@@ -8695,7 +8760,7 @@ def test_get_volume_backup(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8765,9 +8830,10 @@ def test_get_volume_backup_non_empty_request_with_auto_populated_field():
         client.get_volume_backup(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetVolumeBackupRequest(
+        request_msg = gkebackup.GetVolumeBackupRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_volume_backup_use_cached_wrapped_rpc():
@@ -8850,9 +8916,14 @@ async def test_get_volume_backup_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_volume_backup_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.GetVolumeBackupRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.GetVolumeBackupRequest(),
+        {},
+    ],
+)
+async def test_get_volume_backup_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8860,7 +8931,7 @@ async def test_get_volume_backup_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8905,11 +8976,6 @@ async def test_get_volume_backup_async(
     assert response.etag == "etag_value"
     assert response.satisfies_pzs is True
     assert response.satisfies_pzi is True
-
-
-@pytest.mark.asyncio
-async def test_get_volume_backup_async_from_dict():
-    await test_get_volume_backup_async(request_type=dict)
 
 
 def test_get_volume_backup_field_headers():
@@ -9062,8 +9128,8 @@ async def test_get_volume_backup_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.CreateRestorePlanRequest,
-        dict,
+        gkebackup.CreateRestorePlanRequest(),
+        {},
     ],
 )
 def test_create_restore_plan(request_type, transport: str = "grpc"):
@@ -9074,7 +9140,7 @@ def test_create_restore_plan(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9120,10 +9186,11 @@ def test_create_restore_plan_non_empty_request_with_auto_populated_field():
         client.create_restore_plan(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.CreateRestorePlanRequest(
+        request_msg = gkebackup.CreateRestorePlanRequest(
             parent="parent_value",
             restore_plan_id="restore_plan_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_restore_plan_use_cached_wrapped_rpc():
@@ -9218,9 +9285,14 @@ async def test_create_restore_plan_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_restore_plan_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.CreateRestorePlanRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.CreateRestorePlanRequest(),
+        {},
+    ],
+)
+async def test_create_restore_plan_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9228,7 +9300,7 @@ async def test_create_restore_plan_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9248,11 +9320,6 @@ async def test_create_restore_plan_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_restore_plan_async_from_dict():
-    await test_create_restore_plan_async(request_type=dict)
 
 
 def test_create_restore_plan_field_headers():
@@ -9429,8 +9496,8 @@ async def test_create_restore_plan_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.ListRestorePlansRequest,
-        dict,
+        gkebackup.ListRestorePlansRequest(),
+        {},
     ],
 )
 def test_list_restore_plans(request_type, transport: str = "grpc"):
@@ -9441,7 +9508,7 @@ def test_list_restore_plans(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9494,12 +9561,13 @@ def test_list_restore_plans_non_empty_request_with_auto_populated_field():
         client.list_restore_plans(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListRestorePlansRequest(
+        request_msg = gkebackup.ListRestorePlansRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_restore_plans_use_cached_wrapped_rpc():
@@ -9584,9 +9652,14 @@ async def test_list_restore_plans_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_restore_plans_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.ListRestorePlansRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.ListRestorePlansRequest(),
+        {},
+    ],
+)
+async def test_list_restore_plans_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9594,7 +9667,7 @@ async def test_list_restore_plans_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9619,11 +9692,6 @@ async def test_list_restore_plans_async(
     assert isinstance(response, pagers.ListRestorePlansAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_restore_plans_async_from_dict():
-    await test_list_restore_plans_async(request_type=dict)
 
 
 def test_list_restore_plans_field_headers():
@@ -9828,6 +9896,9 @@ def test_list_restore_plans_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, restore_plan.RestorePlan) for i in results)
@@ -9920,6 +9991,8 @@ async def test_list_restore_plans_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -9969,11 +10042,7 @@ async def test_list_restore_plans_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_restore_plans(request={})
-        ).pages:
+        async for page_ in (await client.list_restore_plans(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -9982,8 +10051,8 @@ async def test_list_restore_plans_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.GetRestorePlanRequest,
-        dict,
+        gkebackup.GetRestorePlanRequest(),
+        {},
     ],
 )
 def test_get_restore_plan(request_type, transport: str = "grpc"):
@@ -9994,7 +10063,7 @@ def test_get_restore_plan(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_restore_plan), "__call__") as call:
@@ -10054,9 +10123,10 @@ def test_get_restore_plan_non_empty_request_with_auto_populated_field():
         client.get_restore_plan(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetRestorePlanRequest(
+        request_msg = gkebackup.GetRestorePlanRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_restore_plan_use_cached_wrapped_rpc():
@@ -10139,9 +10209,14 @@ async def test_get_restore_plan_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_restore_plan_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.GetRestorePlanRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.GetRestorePlanRequest(),
+        {},
+    ],
+)
+async def test_get_restore_plan_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10149,7 +10224,7 @@ async def test_get_restore_plan_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_restore_plan), "__call__") as call:
@@ -10186,11 +10261,6 @@ async def test_get_restore_plan_async(
     assert response.state == restore_plan.RestorePlan.State.CLUSTER_PENDING
     assert response.state_reason == "state_reason_value"
     assert response.restore_channel == "restore_channel_value"
-
-
-@pytest.mark.asyncio
-async def test_get_restore_plan_async_from_dict():
-    await test_get_restore_plan_async(request_type=dict)
 
 
 def test_get_restore_plan_field_headers():
@@ -10339,8 +10409,8 @@ async def test_get_restore_plan_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.UpdateRestorePlanRequest,
-        dict,
+        gkebackup.UpdateRestorePlanRequest(),
+        {},
     ],
 )
 def test_update_restore_plan(request_type, transport: str = "grpc"):
@@ -10351,7 +10421,7 @@ def test_update_restore_plan(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10394,7 +10464,8 @@ def test_update_restore_plan_non_empty_request_with_auto_populated_field():
         client.update_restore_plan(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.UpdateRestorePlanRequest()
+        request_msg = gkebackup.UpdateRestorePlanRequest()
+        assert args[0] == request_msg
 
 
 def test_update_restore_plan_use_cached_wrapped_rpc():
@@ -10489,9 +10560,14 @@ async def test_update_restore_plan_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_restore_plan_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.UpdateRestorePlanRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.UpdateRestorePlanRequest(),
+        {},
+    ],
+)
+async def test_update_restore_plan_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10499,7 +10575,7 @@ async def test_update_restore_plan_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10519,11 +10595,6 @@ async def test_update_restore_plan_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_restore_plan_async_from_dict():
-    await test_update_restore_plan_async(request_type=dict)
 
 
 def test_update_restore_plan_field_headers():
@@ -10690,8 +10761,8 @@ async def test_update_restore_plan_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.DeleteRestorePlanRequest,
-        dict,
+        gkebackup.DeleteRestorePlanRequest(),
+        {},
     ],
 )
 def test_delete_restore_plan(request_type, transport: str = "grpc"):
@@ -10702,7 +10773,7 @@ def test_delete_restore_plan(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10748,10 +10819,11 @@ def test_delete_restore_plan_non_empty_request_with_auto_populated_field():
         client.delete_restore_plan(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.DeleteRestorePlanRequest(
+        request_msg = gkebackup.DeleteRestorePlanRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_restore_plan_use_cached_wrapped_rpc():
@@ -10846,9 +10918,14 @@ async def test_delete_restore_plan_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_restore_plan_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.DeleteRestorePlanRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.DeleteRestorePlanRequest(),
+        {},
+    ],
+)
+async def test_delete_restore_plan_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10856,7 +10933,7 @@ async def test_delete_restore_plan_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10876,11 +10953,6 @@ async def test_delete_restore_plan_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_restore_plan_async_from_dict():
-    await test_delete_restore_plan_async(request_type=dict)
 
 
 def test_delete_restore_plan_field_headers():
@@ -11037,8 +11109,8 @@ async def test_delete_restore_plan_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.CreateRestoreChannelRequest,
-        dict,
+        gkebackup.CreateRestoreChannelRequest(),
+        {},
     ],
 )
 def test_create_restore_channel(request_type, transport: str = "grpc"):
@@ -11049,7 +11121,7 @@ def test_create_restore_channel(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11095,10 +11167,11 @@ def test_create_restore_channel_non_empty_request_with_auto_populated_field():
         client.create_restore_channel(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.CreateRestoreChannelRequest(
+        request_msg = gkebackup.CreateRestoreChannelRequest(
             parent="parent_value",
             restore_channel_id="restore_channel_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_restore_channel_use_cached_wrapped_rpc():
@@ -11194,8 +11267,15 @@ async def test_create_restore_channel_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.CreateRestoreChannelRequest(),
+        {},
+    ],
+)
 async def test_create_restore_channel_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.CreateRestoreChannelRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11204,7 +11284,7 @@ async def test_create_restore_channel_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11224,11 +11304,6 @@ async def test_create_restore_channel_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_restore_channel_async_from_dict():
-    await test_create_restore_channel_async(request_type=dict)
 
 
 def test_create_restore_channel_field_headers():
@@ -11405,8 +11480,8 @@ async def test_create_restore_channel_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.ListRestoreChannelsRequest,
-        dict,
+        gkebackup.ListRestoreChannelsRequest(),
+        {},
     ],
 )
 def test_list_restore_channels(request_type, transport: str = "grpc"):
@@ -11417,7 +11492,7 @@ def test_list_restore_channels(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11470,12 +11545,13 @@ def test_list_restore_channels_non_empty_request_with_auto_populated_field():
         client.list_restore_channels(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListRestoreChannelsRequest(
+        request_msg = gkebackup.ListRestoreChannelsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_restore_channels_use_cached_wrapped_rpc():
@@ -11561,8 +11637,15 @@ async def test_list_restore_channels_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.ListRestoreChannelsRequest(),
+        {},
+    ],
+)
 async def test_list_restore_channels_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.ListRestoreChannelsRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11571,7 +11654,7 @@ async def test_list_restore_channels_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11596,11 +11679,6 @@ async def test_list_restore_channels_async(
     assert isinstance(response, pagers.ListRestoreChannelsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_restore_channels_async_from_dict():
-    await test_list_restore_channels_async(request_type=dict)
 
 
 def test_list_restore_channels_field_headers():
@@ -11805,6 +11883,9 @@ def test_list_restore_channels_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, restore_channel.RestoreChannel) for i in results)
@@ -11897,6 +11978,8 @@ async def test_list_restore_channels_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -11946,11 +12029,7 @@ async def test_list_restore_channels_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_restore_channels(request={})
-        ).pages:
+        async for page_ in (await client.list_restore_channels(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -11959,8 +12038,8 @@ async def test_list_restore_channels_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.GetRestoreChannelRequest,
-        dict,
+        gkebackup.GetRestoreChannelRequest(),
+        {},
     ],
 )
 def test_get_restore_channel(request_type, transport: str = "grpc"):
@@ -11971,7 +12050,7 @@ def test_get_restore_channel(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12029,9 +12108,10 @@ def test_get_restore_channel_non_empty_request_with_auto_populated_field():
         client.get_restore_channel(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetRestoreChannelRequest(
+        request_msg = gkebackup.GetRestoreChannelRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_restore_channel_use_cached_wrapped_rpc():
@@ -12116,9 +12196,14 @@ async def test_get_restore_channel_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_restore_channel_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.GetRestoreChannelRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.GetRestoreChannelRequest(),
+        {},
+    ],
+)
+async def test_get_restore_channel_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -12126,7 +12211,7 @@ async def test_get_restore_channel_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12159,11 +12244,6 @@ async def test_get_restore_channel_async(
     assert response.description == "description_value"
     assert response.etag == "etag_value"
     assert response.destination_project_id == "destination_project_id_value"
-
-
-@pytest.mark.asyncio
-async def test_get_restore_channel_async_from_dict():
-    await test_get_restore_channel_async(request_type=dict)
 
 
 def test_get_restore_channel_field_headers():
@@ -12320,8 +12400,8 @@ async def test_get_restore_channel_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.UpdateRestoreChannelRequest,
-        dict,
+        gkebackup.UpdateRestoreChannelRequest(),
+        {},
     ],
 )
 def test_update_restore_channel(request_type, transport: str = "grpc"):
@@ -12332,7 +12412,7 @@ def test_update_restore_channel(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12375,7 +12455,8 @@ def test_update_restore_channel_non_empty_request_with_auto_populated_field():
         client.update_restore_channel(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.UpdateRestoreChannelRequest()
+        request_msg = gkebackup.UpdateRestoreChannelRequest()
+        assert args[0] == request_msg
 
 
 def test_update_restore_channel_use_cached_wrapped_rpc():
@@ -12471,8 +12552,15 @@ async def test_update_restore_channel_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.UpdateRestoreChannelRequest(),
+        {},
+    ],
+)
 async def test_update_restore_channel_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.UpdateRestoreChannelRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12481,7 +12569,7 @@ async def test_update_restore_channel_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12501,11 +12589,6 @@ async def test_update_restore_channel_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_restore_channel_async_from_dict():
-    await test_update_restore_channel_async(request_type=dict)
 
 
 def test_update_restore_channel_field_headers():
@@ -12672,8 +12755,8 @@ async def test_update_restore_channel_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.DeleteRestoreChannelRequest,
-        dict,
+        gkebackup.DeleteRestoreChannelRequest(),
+        {},
     ],
 )
 def test_delete_restore_channel(request_type, transport: str = "grpc"):
@@ -12684,7 +12767,7 @@ def test_delete_restore_channel(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12730,10 +12813,11 @@ def test_delete_restore_channel_non_empty_request_with_auto_populated_field():
         client.delete_restore_channel(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.DeleteRestoreChannelRequest(
+        request_msg = gkebackup.DeleteRestoreChannelRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_restore_channel_use_cached_wrapped_rpc():
@@ -12829,8 +12913,15 @@ async def test_delete_restore_channel_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.DeleteRestoreChannelRequest(),
+        {},
+    ],
+)
 async def test_delete_restore_channel_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.DeleteRestoreChannelRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12839,7 +12930,7 @@ async def test_delete_restore_channel_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12859,11 +12950,6 @@ async def test_delete_restore_channel_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_restore_channel_async_from_dict():
-    await test_delete_restore_channel_async(request_type=dict)
 
 
 def test_delete_restore_channel_field_headers():
@@ -13020,8 +13106,8 @@ async def test_delete_restore_channel_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.ListRestorePlanBindingsRequest,
-        dict,
+        gkebackup.ListRestorePlanBindingsRequest(),
+        {},
     ],
 )
 def test_list_restore_plan_bindings(request_type, transport: str = "grpc"):
@@ -13032,7 +13118,7 @@ def test_list_restore_plan_bindings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13085,12 +13171,13 @@ def test_list_restore_plan_bindings_non_empty_request_with_auto_populated_field(
         client.list_restore_plan_bindings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListRestorePlanBindingsRequest(
+        request_msg = gkebackup.ListRestorePlanBindingsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_restore_plan_bindings_use_cached_wrapped_rpc():
@@ -13176,9 +13263,15 @@ async def test_list_restore_plan_bindings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.ListRestorePlanBindingsRequest(),
+        {},
+    ],
+)
 async def test_list_restore_plan_bindings_async(
-    transport: str = "grpc_asyncio",
-    request_type=gkebackup.ListRestorePlanBindingsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13187,7 +13280,7 @@ async def test_list_restore_plan_bindings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13212,11 +13305,6 @@ async def test_list_restore_plan_bindings_async(
     assert isinstance(response, pagers.ListRestorePlanBindingsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_restore_plan_bindings_async_from_dict():
-    await test_list_restore_plan_bindings_async(request_type=dict)
 
 
 def test_list_restore_plan_bindings_field_headers():
@@ -13423,6 +13511,9 @@ def test_list_restore_plan_bindings_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -13517,6 +13608,8 @@ async def test_list_restore_plan_bindings_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -13568,11 +13661,7 @@ async def test_list_restore_plan_bindings_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_restore_plan_bindings(request={})
-        ).pages:
+        async for page_ in (await client.list_restore_plan_bindings(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -13581,8 +13670,8 @@ async def test_list_restore_plan_bindings_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.GetRestorePlanBindingRequest,
-        dict,
+        gkebackup.GetRestorePlanBindingRequest(),
+        {},
     ],
 )
 def test_get_restore_plan_binding(request_type, transport: str = "grpc"):
@@ -13593,7 +13682,7 @@ def test_get_restore_plan_binding(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13649,9 +13738,10 @@ def test_get_restore_plan_binding_non_empty_request_with_auto_populated_field():
         client.get_restore_plan_binding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetRestorePlanBindingRequest(
+        request_msg = gkebackup.GetRestorePlanBindingRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_restore_plan_binding_use_cached_wrapped_rpc():
@@ -13737,8 +13827,15 @@ async def test_get_restore_plan_binding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.GetRestorePlanBindingRequest(),
+        {},
+    ],
+)
 async def test_get_restore_plan_binding_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.GetRestorePlanBindingRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13747,7 +13844,7 @@ async def test_get_restore_plan_binding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13778,11 +13875,6 @@ async def test_get_restore_plan_binding_async(
     assert response.restore_plan == "restore_plan_value"
     assert response.etag == "etag_value"
     assert response.backup_plan == "backup_plan_value"
-
-
-@pytest.mark.asyncio
-async def test_get_restore_plan_binding_async_from_dict():
-    await test_get_restore_plan_binding_async(request_type=dict)
 
 
 def test_get_restore_plan_binding_field_headers():
@@ -13939,8 +14031,8 @@ async def test_get_restore_plan_binding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.CreateRestoreRequest,
-        dict,
+        gkebackup.CreateRestoreRequest(),
+        {},
     ],
 )
 def test_create_restore(request_type, transport: str = "grpc"):
@@ -13951,7 +14043,7 @@ def test_create_restore(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_restore), "__call__") as call:
@@ -13993,10 +14085,11 @@ def test_create_restore_non_empty_request_with_auto_populated_field():
         client.create_restore(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.CreateRestoreRequest(
+        request_msg = gkebackup.CreateRestoreRequest(
             parent="parent_value",
             restore_id="restore_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_restore_use_cached_wrapped_rpc():
@@ -14087,9 +14180,14 @@ async def test_create_restore_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_restore_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.CreateRestoreRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.CreateRestoreRequest(),
+        {},
+    ],
+)
+async def test_create_restore_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14097,7 +14195,7 @@ async def test_create_restore_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_restore), "__call__") as call:
@@ -14115,11 +14213,6 @@ async def test_create_restore_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_restore_async_from_dict():
-    await test_create_restore_async(request_type=dict)
 
 
 def test_create_restore_field_headers():
@@ -14288,8 +14381,8 @@ async def test_create_restore_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.ListRestoresRequest,
-        dict,
+        gkebackup.ListRestoresRequest(),
+        {},
     ],
 )
 def test_list_restores(request_type, transport: str = "grpc"):
@@ -14300,7 +14393,7 @@ def test_list_restores(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_restores), "__call__") as call:
@@ -14349,12 +14442,13 @@ def test_list_restores_non_empty_request_with_auto_populated_field():
         client.list_restores(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListRestoresRequest(
+        request_msg = gkebackup.ListRestoresRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_restores_use_cached_wrapped_rpc():
@@ -14435,9 +14529,14 @@ async def test_list_restores_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_restores_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.ListRestoresRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.ListRestoresRequest(),
+        {},
+    ],
+)
+async def test_list_restores_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14445,7 +14544,7 @@ async def test_list_restores_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_restores), "__call__") as call:
@@ -14468,11 +14567,6 @@ async def test_list_restores_async(
     assert isinstance(response, pagers.ListRestoresAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_restores_async_from_dict():
-    await test_list_restores_async(request_type=dict)
 
 
 def test_list_restores_field_headers():
@@ -14667,6 +14761,9 @@ def test_list_restores_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, restore.Restore) for i in results)
@@ -14755,6 +14852,8 @@ async def test_list_restores_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -14802,11 +14901,7 @@ async def test_list_restores_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_restores(request={})
-        ).pages:
+        async for page_ in (await client.list_restores(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -14815,8 +14910,8 @@ async def test_list_restores_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.GetRestoreRequest,
-        dict,
+        gkebackup.GetRestoreRequest(),
+        {},
     ],
 )
 def test_get_restore(request_type, transport: str = "grpc"):
@@ -14827,7 +14922,7 @@ def test_get_restore(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_restore), "__call__") as call:
@@ -14893,9 +14988,10 @@ def test_get_restore_non_empty_request_with_auto_populated_field():
         client.get_restore(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetRestoreRequest(
+        request_msg = gkebackup.GetRestoreRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_restore_use_cached_wrapped_rpc():
@@ -14976,9 +15072,14 @@ async def test_get_restore_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_restore_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.GetRestoreRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.GetRestoreRequest(),
+        {},
+    ],
+)
+async def test_get_restore_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14986,7 +15087,7 @@ async def test_get_restore_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_restore), "__call__") as call:
@@ -15029,11 +15130,6 @@ async def test_get_restore_async(
     assert response.resources_failed_count == 2343
     assert response.volumes_restored_count == 2394
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_restore_async_from_dict():
-    await test_get_restore_async(request_type=dict)
 
 
 def test_get_restore_field_headers():
@@ -15178,8 +15274,8 @@ async def test_get_restore_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.UpdateRestoreRequest,
-        dict,
+        gkebackup.UpdateRestoreRequest(),
+        {},
     ],
 )
 def test_update_restore(request_type, transport: str = "grpc"):
@@ -15190,7 +15286,7 @@ def test_update_restore(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_restore), "__call__") as call:
@@ -15229,7 +15325,8 @@ def test_update_restore_non_empty_request_with_auto_populated_field():
         client.update_restore(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.UpdateRestoreRequest()
+        request_msg = gkebackup.UpdateRestoreRequest()
+        assert args[0] == request_msg
 
 
 def test_update_restore_use_cached_wrapped_rpc():
@@ -15320,9 +15417,14 @@ async def test_update_restore_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_restore_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.UpdateRestoreRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.UpdateRestoreRequest(),
+        {},
+    ],
+)
+async def test_update_restore_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15330,7 +15432,7 @@ async def test_update_restore_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_restore), "__call__") as call:
@@ -15348,11 +15450,6 @@ async def test_update_restore_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_restore_async_from_dict():
-    await test_update_restore_async(request_type=dict)
 
 
 def test_update_restore_field_headers():
@@ -15511,8 +15608,8 @@ async def test_update_restore_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.DeleteRestoreRequest,
-        dict,
+        gkebackup.DeleteRestoreRequest(),
+        {},
     ],
 )
 def test_delete_restore(request_type, transport: str = "grpc"):
@@ -15523,7 +15620,7 @@ def test_delete_restore(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_restore), "__call__") as call:
@@ -15565,10 +15662,11 @@ def test_delete_restore_non_empty_request_with_auto_populated_field():
         client.delete_restore(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.DeleteRestoreRequest(
+        request_msg = gkebackup.DeleteRestoreRequest(
             name="name_value",
             etag="etag_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_restore_use_cached_wrapped_rpc():
@@ -15659,9 +15757,14 @@ async def test_delete_restore_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_restore_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.DeleteRestoreRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.DeleteRestoreRequest(),
+        {},
+    ],
+)
+async def test_delete_restore_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15669,7 +15772,7 @@ async def test_delete_restore_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_restore), "__call__") as call:
@@ -15687,11 +15790,6 @@ async def test_delete_restore_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_restore_async_from_dict():
-    await test_delete_restore_async(request_type=dict)
 
 
 def test_delete_restore_field_headers():
@@ -15840,8 +15938,8 @@ async def test_delete_restore_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.ListVolumeRestoresRequest,
-        dict,
+        gkebackup.ListVolumeRestoresRequest(),
+        {},
     ],
 )
 def test_list_volume_restores(request_type, transport: str = "grpc"):
@@ -15852,7 +15950,7 @@ def test_list_volume_restores(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15903,12 +16001,13 @@ def test_list_volume_restores_non_empty_request_with_auto_populated_field():
         client.list_volume_restores(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.ListVolumeRestoresRequest(
+        request_msg = gkebackup.ListVolumeRestoresRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_volume_restores_use_cached_wrapped_rpc():
@@ -15993,8 +16092,15 @@ async def test_list_volume_restores_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.ListVolumeRestoresRequest(),
+        {},
+    ],
+)
 async def test_list_volume_restores_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.ListVolumeRestoresRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -16003,7 +16109,7 @@ async def test_list_volume_restores_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16026,11 +16132,6 @@ async def test_list_volume_restores_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVolumeRestoresAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_volume_restores_async_from_dict():
-    await test_list_volume_restores_async(request_type=dict)
 
 
 def test_list_volume_restores_field_headers():
@@ -16235,6 +16336,9 @@ def test_list_volume_restores_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, volume.VolumeRestore) for i in results)
@@ -16327,6 +16431,8 @@ async def test_list_volume_restores_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -16376,11 +16482,7 @@ async def test_list_volume_restores_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_volume_restores(request={})
-        ).pages:
+        async for page_ in (await client.list_volume_restores(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -16389,8 +16491,8 @@ async def test_list_volume_restores_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.GetVolumeRestoreRequest,
-        dict,
+        gkebackup.GetVolumeRestoreRequest(),
+        {},
     ],
 )
 def test_get_volume_restore(request_type, transport: str = "grpc"):
@@ -16401,7 +16503,7 @@ def test_get_volume_restore(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16463,9 +16565,10 @@ def test_get_volume_restore_non_empty_request_with_auto_populated_field():
         client.get_volume_restore(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetVolumeRestoreRequest(
+        request_msg = gkebackup.GetVolumeRestoreRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_volume_restore_use_cached_wrapped_rpc():
@@ -16550,9 +16653,14 @@ async def test_get_volume_restore_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_volume_restore_async(
-    transport: str = "grpc_asyncio", request_type=gkebackup.GetVolumeRestoreRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.GetVolumeRestoreRequest(),
+        {},
+    ],
+)
+async def test_get_volume_restore_async(request_type, transport: str = "grpc_asyncio"):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -16560,7 +16668,7 @@ async def test_get_volume_restore_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16597,11 +16705,6 @@ async def test_get_volume_restore_async(
     assert response.state == volume.VolumeRestore.State.CREATING
     assert response.state_message == "state_message_value"
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_volume_restore_async_from_dict():
-    await test_get_volume_restore_async(request_type=dict)
 
 
 def test_get_volume_restore_field_headers():
@@ -16758,8 +16861,8 @@ async def test_get_volume_restore_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gkebackup.GetBackupIndexDownloadUrlRequest,
-        dict,
+        gkebackup.GetBackupIndexDownloadUrlRequest(),
+        {},
     ],
 )
 def test_get_backup_index_download_url(request_type, transport: str = "grpc"):
@@ -16770,7 +16873,7 @@ def test_get_backup_index_download_url(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16818,9 +16921,10 @@ def test_get_backup_index_download_url_non_empty_request_with_auto_populated_fie
         client.get_backup_index_download_url(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gkebackup.GetBackupIndexDownloadUrlRequest(
+        request_msg = gkebackup.GetBackupIndexDownloadUrlRequest(
             backup="backup_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_backup_index_download_url_use_cached_wrapped_rpc():
@@ -16906,9 +17010,15 @@ async def test_get_backup_index_download_url_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gkebackup.GetBackupIndexDownloadUrlRequest(),
+        {},
+    ],
+)
 async def test_get_backup_index_download_url_async(
-    transport: str = "grpc_asyncio",
-    request_type=gkebackup.GetBackupIndexDownloadUrlRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = BackupForGKEAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -16917,7 +17027,7 @@ async def test_get_backup_index_download_url_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16940,11 +17050,6 @@ async def test_get_backup_index_download_url_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, gkebackup.GetBackupIndexDownloadUrlResponse)
     assert response.signed_url == "signed_url_value"
-
-
-@pytest.mark.asyncio
-async def test_get_backup_index_download_url_async_from_dict():
-    await test_get_backup_index_download_url_async(request_type=dict)
 
 
 def test_get_backup_index_download_url_field_headers():
@@ -17227,7 +17332,7 @@ def test_create_backup_plan_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_backup_plan_rest_unset_required_fields():
@@ -17427,7 +17532,7 @@ def test_list_backup_plans_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_backup_plans_rest_unset_required_fields():
@@ -17559,6 +17664,9 @@ def test_list_backup_plans_rest_pager(transport: str = "rest"):
 
         pager = client.list_backup_plans(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, backup_plan.BackupPlan) for i in results)
@@ -17676,7 +17784,7 @@ def test_get_backup_plan_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_backup_plan_rest_unset_required_fields():
@@ -17859,7 +17967,7 @@ def test_update_backup_plan_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_backup_plan_rest_unset_required_fields():
@@ -18048,7 +18156,7 @@ def test_delete_backup_plan_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_backup_plan_rest_unset_required_fields():
@@ -18235,7 +18343,7 @@ def test_create_backup_channel_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_backup_channel_rest_unset_required_fields():
@@ -18436,7 +18544,7 @@ def test_list_backup_channels_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_backup_channels_rest_unset_required_fields():
@@ -18570,6 +18678,9 @@ def test_list_backup_channels_rest_pager(transport: str = "rest"):
 
         pager = client.list_backup_channels(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, backup_channel.BackupChannel) for i in results)
@@ -18691,7 +18802,7 @@ def test_get_backup_channel_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_backup_channel_rest_unset_required_fields():
@@ -18875,7 +18986,7 @@ def test_update_backup_channel_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_backup_channel_rest_unset_required_fields():
@@ -19070,7 +19181,7 @@ def test_delete_backup_channel_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_backup_channel_rest_unset_required_fields():
@@ -19270,7 +19381,7 @@ def test_list_backup_plan_bindings_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_backup_plan_bindings_rest_unset_required_fields():
@@ -19408,6 +19519,9 @@ def test_list_backup_plan_bindings_rest_pager(transport: str = "rest"):
 
         pager = client.list_backup_plan_bindings(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -19532,7 +19646,7 @@ def test_get_backup_plan_binding_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_backup_plan_binding_rest_unset_required_fields():
@@ -19714,7 +19828,7 @@ def test_create_backup_rest_required_fields(request_type=gkebackup.CreateBackupR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_backup_rest_unset_required_fields():
@@ -19904,7 +20018,7 @@ def test_list_backups_rest_required_fields(request_type=gkebackup.ListBackupsReq
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_backups_rest_unset_required_fields():
@@ -20041,6 +20155,9 @@ def test_list_backups_rest_pager(transport: str = "rest"):
 
         pager = client.list_backups(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, backup.Backup) for i in results)
@@ -20156,7 +20273,7 @@ def test_get_backup_rest_required_fields(request_type=gkebackup.GetBackupRequest
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_backup_rest_unset_required_fields():
@@ -20333,7 +20450,7 @@ def test_update_backup_rest_required_fields(request_type=gkebackup.UpdateBackupR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_backup_rest_unset_required_fields():
@@ -20521,7 +20638,7 @@ def test_delete_backup_rest_required_fields(request_type=gkebackup.DeleteBackupR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_backup_rest_unset_required_fields():
@@ -20720,7 +20837,7 @@ def test_list_volume_backups_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_volume_backups_rest_unset_required_fields():
@@ -20858,6 +20975,9 @@ def test_list_volume_backups_rest_pager(transport: str = "rest"):
 
         pager = client.list_volume_backups(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, volume.VolumeBackup) for i in results)
@@ -20977,7 +21097,7 @@ def test_get_volume_backup_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_volume_backup_rest_unset_required_fields():
@@ -21178,7 +21298,7 @@ def test_create_restore_plan_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_restore_plan_rest_unset_required_fields():
@@ -21380,7 +21500,7 @@ def test_list_restore_plans_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_restore_plans_rest_unset_required_fields():
@@ -21514,6 +21634,9 @@ def test_list_restore_plans_rest_pager(transport: str = "rest"):
 
         pager = client.list_restore_plans(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, restore_plan.RestorePlan) for i in results)
@@ -21633,7 +21756,7 @@ def test_get_restore_plan_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_restore_plan_rest_unset_required_fields():
@@ -21816,7 +21939,7 @@ def test_update_restore_plan_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_restore_plan_rest_unset_required_fields():
@@ -22010,7 +22133,7 @@ def test_delete_restore_plan_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_restore_plan_rest_unset_required_fields():
@@ -22205,7 +22328,7 @@ def test_create_restore_channel_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_restore_channel_rest_unset_required_fields():
@@ -22407,7 +22530,7 @@ def test_list_restore_channels_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_restore_channels_rest_unset_required_fields():
@@ -22541,6 +22664,9 @@ def test_list_restore_channels_rest_pager(transport: str = "rest"):
 
         pager = client.list_restore_channels(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, restore_channel.RestoreChannel) for i in results)
@@ -22662,7 +22788,7 @@ def test_get_restore_channel_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_restore_channel_rest_unset_required_fields():
@@ -22846,7 +22972,7 @@ def test_update_restore_channel_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_restore_channel_rest_unset_required_fields():
@@ -23036,7 +23162,7 @@ def test_delete_restore_channel_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_restore_channel_rest_unset_required_fields():
@@ -23228,7 +23354,7 @@ def test_list_restore_plan_bindings_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_restore_plan_bindings_rest_unset_required_fields():
@@ -23366,6 +23492,9 @@ def test_list_restore_plan_bindings_rest_pager(transport: str = "rest"):
 
         pager = client.list_restore_plan_bindings(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -23490,7 +23619,7 @@ def test_get_restore_plan_binding_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_restore_plan_binding_rest_unset_required_fields():
@@ -23687,7 +23816,7 @@ def test_create_restore_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_restore_rest_unset_required_fields():
@@ -23885,7 +24014,7 @@ def test_list_restores_rest_required_fields(request_type=gkebackup.ListRestoresR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_restores_rest_unset_required_fields():
@@ -24021,6 +24150,9 @@ def test_list_restores_rest_pager(transport: str = "rest"):
 
         pager = client.list_restores(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, restore.Restore) for i in results)
@@ -24136,7 +24268,7 @@ def test_get_restore_rest_required_fields(request_type=gkebackup.GetRestoreReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_restore_rest_unset_required_fields():
@@ -24315,7 +24447,7 @@ def test_update_restore_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_restore_rest_unset_required_fields():
@@ -24505,7 +24637,7 @@ def test_delete_restore_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_restore_rest_unset_required_fields():
@@ -24704,7 +24836,7 @@ def test_list_volume_restores_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_volume_restores_rest_unset_required_fields():
@@ -24842,6 +24974,9 @@ def test_list_volume_restores_rest_pager(transport: str = "rest"):
 
         pager = client.list_volume_restores(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, volume.VolumeRestore) for i in results)
@@ -24963,7 +25098,7 @@ def test_get_volume_restore_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_volume_restore_rest_unset_required_fields():
@@ -25148,7 +25283,7 @@ def test_get_backup_index_download_url_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_backup_index_download_url_rest_unset_required_fields():
@@ -25347,7 +25482,6 @@ def test_create_backup_plan_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.CreateBackupPlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -25370,7 +25504,6 @@ def test_list_backup_plans_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListBackupPlansRequest()
-
         assert args[0] == request_msg
 
 
@@ -25391,7 +25524,6 @@ def test_get_backup_plan_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetBackupPlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -25414,7 +25546,6 @@ def test_update_backup_plan_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.UpdateBackupPlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -25437,7 +25568,6 @@ def test_delete_backup_plan_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.DeleteBackupPlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -25460,7 +25590,6 @@ def test_create_backup_channel_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.CreateBackupChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -25483,7 +25612,6 @@ def test_list_backup_channels_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListBackupChannelsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25506,7 +25634,6 @@ def test_get_backup_channel_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetBackupChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -25529,7 +25656,6 @@ def test_update_backup_channel_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.UpdateBackupChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -25552,7 +25678,6 @@ def test_delete_backup_channel_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.DeleteBackupChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -25575,7 +25700,6 @@ def test_list_backup_plan_bindings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListBackupPlanBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25598,7 +25722,6 @@ def test_get_backup_plan_binding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetBackupPlanBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -25619,7 +25742,6 @@ def test_create_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.CreateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -25640,7 +25762,6 @@ def test_list_backups_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25661,7 +25782,6 @@ def test_get_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -25682,7 +25802,6 @@ def test_update_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.UpdateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -25703,7 +25822,6 @@ def test_delete_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.DeleteBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -25726,7 +25844,6 @@ def test_list_volume_backups_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListVolumeBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25749,7 +25866,6 @@ def test_get_volume_backup_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetVolumeBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -25772,7 +25888,6 @@ def test_create_restore_plan_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.CreateRestorePlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -25795,7 +25910,6 @@ def test_list_restore_plans_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListRestorePlansRequest()
-
         assert args[0] == request_msg
 
 
@@ -25816,7 +25930,6 @@ def test_get_restore_plan_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetRestorePlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -25839,7 +25952,6 @@ def test_update_restore_plan_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.UpdateRestorePlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -25862,7 +25974,6 @@ def test_delete_restore_plan_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.DeleteRestorePlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -25885,7 +25996,6 @@ def test_create_restore_channel_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.CreateRestoreChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -25908,7 +26018,6 @@ def test_list_restore_channels_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListRestoreChannelsRequest()
-
         assert args[0] == request_msg
 
 
@@ -25931,7 +26040,6 @@ def test_get_restore_channel_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetRestoreChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -25954,7 +26062,6 @@ def test_update_restore_channel_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.UpdateRestoreChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -25977,7 +26084,6 @@ def test_delete_restore_channel_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.DeleteRestoreChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -26000,7 +26106,6 @@ def test_list_restore_plan_bindings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListRestorePlanBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -26023,7 +26128,6 @@ def test_get_restore_plan_binding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetRestorePlanBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -26044,7 +26148,6 @@ def test_create_restore_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.CreateRestoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -26065,7 +26168,6 @@ def test_list_restores_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListRestoresRequest()
-
         assert args[0] == request_msg
 
 
@@ -26086,7 +26188,6 @@ def test_get_restore_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetRestoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -26107,7 +26208,6 @@ def test_update_restore_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.UpdateRestoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -26128,7 +26228,6 @@ def test_delete_restore_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.DeleteRestoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -26151,7 +26250,6 @@ def test_list_volume_restores_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListVolumeRestoresRequest()
-
         assert args[0] == request_msg
 
 
@@ -26174,7 +26272,6 @@ def test_get_volume_restore_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetVolumeRestoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -26197,7 +26294,6 @@ def test_get_backup_index_download_url_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetBackupIndexDownloadUrlRequest()
-
         assert args[0] == request_msg
 
 
@@ -26238,7 +26334,6 @@ async def test_create_backup_plan_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.CreateBackupPlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -26268,7 +26363,6 @@ async def test_list_backup_plans_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListBackupPlansRequest()
-
         assert args[0] == request_msg
 
 
@@ -26306,7 +26400,6 @@ async def test_get_backup_plan_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetBackupPlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -26333,7 +26426,6 @@ async def test_update_backup_plan_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.UpdateBackupPlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -26360,7 +26452,6 @@ async def test_delete_backup_plan_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.DeleteBackupPlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -26387,7 +26478,6 @@ async def test_create_backup_channel_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.CreateBackupChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -26417,7 +26507,6 @@ async def test_list_backup_channels_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListBackupChannelsRequest()
-
         assert args[0] == request_msg
 
 
@@ -26451,7 +26540,6 @@ async def test_get_backup_channel_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetBackupChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -26478,7 +26566,6 @@ async def test_update_backup_channel_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.UpdateBackupChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -26505,7 +26592,6 @@ async def test_delete_backup_channel_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.DeleteBackupChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -26535,7 +26621,6 @@ async def test_list_backup_plan_bindings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListBackupPlanBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -26568,7 +26653,6 @@ async def test_get_backup_plan_binding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetBackupPlanBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -26593,7 +26677,6 @@ async def test_create_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.CreateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -26621,7 +26704,6 @@ async def test_list_backups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -26666,7 +26748,6 @@ async def test_get_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -26691,7 +26772,6 @@ async def test_update_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.UpdateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -26716,7 +26796,6 @@ async def test_delete_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.DeleteBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -26745,7 +26824,6 @@ async def test_list_volume_backups_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListVolumeBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -26784,7 +26862,6 @@ async def test_get_volume_backup_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetVolumeBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -26811,7 +26888,6 @@ async def test_create_restore_plan_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.CreateRestorePlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -26841,7 +26917,6 @@ async def test_list_restore_plans_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListRestorePlansRequest()
-
         assert args[0] == request_msg
 
 
@@ -26876,7 +26951,6 @@ async def test_get_restore_plan_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetRestorePlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -26903,7 +26977,6 @@ async def test_update_restore_plan_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.UpdateRestorePlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -26930,7 +27003,6 @@ async def test_delete_restore_plan_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.DeleteRestorePlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -26957,7 +27029,6 @@ async def test_create_restore_channel_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.CreateRestoreChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -26987,7 +27058,6 @@ async def test_list_restore_channels_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListRestoreChannelsRequest()
-
         assert args[0] == request_msg
 
 
@@ -27021,7 +27091,6 @@ async def test_get_restore_channel_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetRestoreChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -27048,7 +27117,6 @@ async def test_update_restore_channel_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.UpdateRestoreChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -27075,7 +27143,6 @@ async def test_delete_restore_channel_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.DeleteRestoreChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -27105,7 +27172,6 @@ async def test_list_restore_plan_bindings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListRestorePlanBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -27138,7 +27204,6 @@ async def test_get_restore_plan_binding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetRestorePlanBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -27163,7 +27228,6 @@ async def test_create_restore_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.CreateRestoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -27191,7 +27255,6 @@ async def test_list_restores_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListRestoresRequest()
-
         assert args[0] == request_msg
 
 
@@ -27229,7 +27292,6 @@ async def test_get_restore_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetRestoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -27254,7 +27316,6 @@ async def test_update_restore_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.UpdateRestoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -27279,7 +27340,6 @@ async def test_delete_restore_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.DeleteRestoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -27308,7 +27368,6 @@ async def test_list_volume_restores_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListVolumeRestoresRequest()
-
         assert args[0] == request_msg
 
 
@@ -27344,7 +27403,6 @@ async def test_get_volume_restore_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetVolumeRestoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -27373,7 +27431,6 @@ async def test_get_backup_index_download_url_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetBackupIndexDownloadUrlRequest()
-
         assert args[0] == request_msg
 
 
@@ -27395,8 +27452,9 @@ def test_create_backup_plan_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27586,19 +27644,21 @@ def test_create_backup_plan_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_create_backup_plan"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_create_backup_plan_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_create_backup_plan"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_create_backup_plan"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_create_backup_plan_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_create_backup_plan"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27651,8 +27711,9 @@ def test_list_backup_plans_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27717,17 +27778,20 @@ def test_list_backup_plans_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_list_backup_plans"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_list_backup_plans_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_list_backup_plans"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_list_backup_plans"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_list_backup_plans_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_list_backup_plans"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27780,8 +27844,9 @@ def test_get_backup_plan_rest_bad_request(request_type=gkebackup.GetBackupPlanRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27866,17 +27931,19 @@ def test_get_backup_plan_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_get_backup_plan"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_get_backup_plan_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_get_backup_plan"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_get_backup_plan"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_get_backup_plan_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_get_backup_plan"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27931,8 +27998,9 @@ def test_update_backup_plan_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28126,19 +28194,21 @@ def test_update_backup_plan_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_update_backup_plan"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_update_backup_plan_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_update_backup_plan"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_update_backup_plan"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_update_backup_plan_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_update_backup_plan"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28191,8 +28261,9 @@ def test_delete_backup_plan_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28249,19 +28320,21 @@ def test_delete_backup_plan_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_delete_backup_plan"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_delete_backup_plan_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_delete_backup_plan"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_delete_backup_plan"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_delete_backup_plan_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_delete_backup_plan"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28314,8 +28387,9 @@ def test_create_backup_channel_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28450,20 +28524,21 @@ def test_create_backup_channel_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_create_backup_channel"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor,
-        "post_create_backup_channel_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_create_backup_channel"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_create_backup_channel"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_create_backup_channel_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_create_backup_channel"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28516,8 +28591,9 @@ def test_list_backup_channels_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28582,18 +28658,20 @@ def test_list_backup_channels_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_list_backup_channels"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor,
-        "post_list_backup_channels_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_list_backup_channels"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_list_backup_channels"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_list_backup_channels_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_list_backup_channels"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28651,8 +28729,9 @@ def test_get_backup_channel_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28725,17 +28804,20 @@ def test_get_backup_channel_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_get_backup_channel"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_get_backup_channel_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_get_backup_channel"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_get_backup_channel"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_get_backup_channel_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_get_backup_channel"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28794,8 +28876,9 @@ def test_update_backup_channel_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28934,20 +29017,21 @@ def test_update_backup_channel_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_update_backup_channel"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor,
-        "post_update_backup_channel_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_update_backup_channel"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_update_backup_channel"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_update_backup_channel_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_update_backup_channel"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29000,8 +29084,9 @@ def test_delete_backup_channel_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29058,20 +29143,21 @@ def test_delete_backup_channel_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_delete_backup_channel"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor,
-        "post_delete_backup_channel_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_delete_backup_channel"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_delete_backup_channel"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_delete_backup_channel_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_delete_backup_channel"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29126,8 +29212,9 @@ def test_list_backup_plan_bindings_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29194,18 +29281,20 @@ def test_list_backup_plan_bindings_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_list_backup_plan_bindings"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor,
-        "post_list_backup_plan_bindings_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_list_backup_plan_bindings"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_list_backup_plan_bindings"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_list_backup_plan_bindings_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_list_backup_plan_bindings"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29265,8 +29354,9 @@ def test_get_backup_plan_binding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29339,18 +29429,20 @@ def test_get_backup_plan_binding_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_get_backup_plan_binding"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor,
-        "post_get_backup_plan_binding_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_get_backup_plan_binding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_get_backup_plan_binding"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_get_backup_plan_binding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_get_backup_plan_binding"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29406,8 +29498,9 @@ def test_create_backup_rest_bad_request(request_type=gkebackup.CreateBackupReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29573,19 +29666,20 @@ def test_create_backup_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_create_backup"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_create_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_create_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_create_backup"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_create_backup_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_create_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29634,8 +29728,9 @@ def test_list_backups_rest_bad_request(request_type=gkebackup.ListBackupsRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29700,17 +29795,19 @@ def test_list_backups_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_list_backups"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_list_backups_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_list_backups"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_list_backups"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_list_backups_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_list_backups"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29763,8 +29860,9 @@ def test_get_backup_rest_bad_request(request_type=gkebackup.GetBackupRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29866,17 +29964,19 @@ def test_get_backup_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_get_backup"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_get_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_get_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_get_backup"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_get_backup_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_get_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29929,8 +30029,9 @@ def test_update_backup_rest_bad_request(request_type=gkebackup.UpdateBackupReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30100,19 +30201,20 @@ def test_update_backup_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_update_backup"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_update_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_update_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_update_backup"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_update_backup_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_update_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30163,8 +30265,9 @@ def test_delete_backup_rest_bad_request(request_type=gkebackup.DeleteBackupReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30223,19 +30326,20 @@ def test_delete_backup_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_delete_backup"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_delete_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_delete_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_delete_backup"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_delete_backup_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_delete_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30288,8 +30392,9 @@ def test_list_volume_backups_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30354,17 +30459,20 @@ def test_list_volume_backups_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_list_volume_backups"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_list_volume_backups_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_list_volume_backups"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_list_volume_backups"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_list_volume_backups_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_list_volume_backups"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30424,8 +30532,9 @@ def test_get_volume_backup_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30512,17 +30621,20 @@ def test_get_volume_backup_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_get_volume_backup"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_get_volume_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_get_volume_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_get_volume_backup"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_get_volume_backup_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_get_volume_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30575,8 +30687,9 @@ def test_create_restore_plan_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30775,19 +30888,21 @@ def test_create_restore_plan_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_create_restore_plan"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_create_restore_plan_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_create_restore_plan"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_create_restore_plan"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_create_restore_plan_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_create_restore_plan"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30840,8 +30955,9 @@ def test_list_restore_plans_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30906,17 +31022,20 @@ def test_list_restore_plans_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_list_restore_plans"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_list_restore_plans_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_list_restore_plans"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_list_restore_plans"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_list_restore_plans_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_list_restore_plans"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30971,8 +31090,9 @@ def test_get_restore_plan_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31051,17 +31171,20 @@ def test_get_restore_plan_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_get_restore_plan"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_get_restore_plan_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_get_restore_plan"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_get_restore_plan"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_get_restore_plan_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_get_restore_plan"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31118,8 +31241,9 @@ def test_update_restore_plan_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31322,19 +31446,21 @@ def test_update_restore_plan_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_update_restore_plan"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_update_restore_plan_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_update_restore_plan"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_update_restore_plan"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_update_restore_plan_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_update_restore_plan"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31387,8 +31513,9 @@ def test_delete_restore_plan_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31445,19 +31572,21 @@ def test_delete_restore_plan_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_delete_restore_plan"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_delete_restore_plan_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_delete_restore_plan"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_delete_restore_plan"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_delete_restore_plan_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_delete_restore_plan"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31510,8 +31639,9 @@ def test_create_restore_channel_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31646,20 +31776,21 @@ def test_create_restore_channel_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_create_restore_channel"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor,
-        "post_create_restore_channel_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_create_restore_channel"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_create_restore_channel"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_create_restore_channel_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_create_restore_channel"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31712,8 +31843,9 @@ def test_list_restore_channels_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31778,18 +31910,20 @@ def test_list_restore_channels_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_list_restore_channels"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor,
-        "post_list_restore_channels_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_list_restore_channels"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_list_restore_channels"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_list_restore_channels_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_list_restore_channels"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31849,8 +31983,9 @@ def test_get_restore_channel_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31925,17 +32060,20 @@ def test_get_restore_channel_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_get_restore_channel"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_get_restore_channel_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_get_restore_channel"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_get_restore_channel"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_get_restore_channel_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_get_restore_channel"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31994,8 +32132,9 @@ def test_update_restore_channel_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32134,20 +32273,21 @@ def test_update_restore_channel_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_update_restore_channel"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor,
-        "post_update_restore_channel_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_update_restore_channel"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_update_restore_channel"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_update_restore_channel_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_update_restore_channel"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32202,8 +32342,9 @@ def test_delete_restore_channel_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32262,20 +32403,21 @@ def test_delete_restore_channel_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_delete_restore_channel"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor,
-        "post_delete_restore_channel_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_delete_restore_channel"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_delete_restore_channel"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_delete_restore_channel_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_delete_restore_channel"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32330,8 +32472,9 @@ def test_list_restore_plan_bindings_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32398,18 +32541,20 @@ def test_list_restore_plan_bindings_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_list_restore_plan_bindings"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor,
-        "post_list_restore_plan_bindings_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_list_restore_plan_bindings"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_list_restore_plan_bindings"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_list_restore_plan_bindings_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_list_restore_plan_bindings"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32469,8 +32614,9 @@ def test_get_restore_plan_binding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32543,18 +32689,20 @@ def test_get_restore_plan_binding_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_get_restore_plan_binding"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor,
-        "post_get_restore_plan_binding_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_get_restore_plan_binding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_get_restore_plan_binding"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_get_restore_plan_binding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_get_restore_plan_binding"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32610,8 +32758,9 @@ def test_create_restore_rest_bad_request(request_type=gkebackup.CreateRestoreReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32826,19 +32975,20 @@ def test_create_restore_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_create_restore"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_create_restore_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_create_restore"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_create_restore"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_create_restore_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_create_restore"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32887,8 +33037,9 @@ def test_list_restores_rest_bad_request(request_type=gkebackup.ListRestoresReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32953,17 +33104,19 @@ def test_list_restores_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_list_restores"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_list_restores_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_list_restores"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_list_restores"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_list_restores_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_list_restores"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33016,8 +33169,9 @@ def test_get_restore_rest_bad_request(request_type=gkebackup.GetRestoreRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33104,17 +33258,19 @@ def test_get_restore_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_get_restore"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_get_restore_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_get_restore"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_get_restore"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_get_restore_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_get_restore"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33167,8 +33323,9 @@ def test_update_restore_rest_bad_request(request_type=gkebackup.UpdateRestoreReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33387,19 +33544,20 @@ def test_update_restore_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_update_restore"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_update_restore_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_update_restore"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_update_restore"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_update_restore_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_update_restore"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33450,8 +33608,9 @@ def test_delete_restore_rest_bad_request(request_type=gkebackup.DeleteRestoreReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33510,19 +33669,20 @@ def test_delete_restore_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_delete_restore"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_delete_restore_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_delete_restore"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_delete_restore"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_delete_restore_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_delete_restore"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33575,8 +33735,9 @@ def test_list_volume_restores_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33641,18 +33802,20 @@ def test_list_volume_restores_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_list_volume_restores"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor,
-        "post_list_volume_restores_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_list_volume_restores"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_list_volume_restores"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_list_volume_restores_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_list_volume_restores"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33712,8 +33875,9 @@ def test_get_volume_restore_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33792,17 +33956,20 @@ def test_get_volume_restore_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_get_volume_restore"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_get_volume_restore_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_get_volume_restore"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_get_volume_restore"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_get_volume_restore_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_get_volume_restore"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33857,8 +34024,9 @@ def test_get_backup_index_download_url_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33923,18 +34091,20 @@ def test_get_backup_index_download_url_rest_interceptors(null_interceptor):
     )
     client = BackupForGKEClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "post_get_backup_index_download_url"
-    ) as post, mock.patch.object(
-        transports.BackupForGKERestInterceptor,
-        "post_get_backup_index_download_url_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.BackupForGKERestInterceptor, "pre_get_backup_index_download_url"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "post_get_backup_index_download_url"
+        ) as post,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor,
+            "post_get_backup_index_download_url_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.BackupForGKERestInterceptor, "pre_get_backup_index_download_url"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33992,8 +34162,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -34052,8 +34223,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -34114,8 +34286,9 @@ def test_get_iam_policy_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -34178,8 +34351,9 @@ def test_set_iam_policy_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -34242,8 +34416,9 @@ def test_test_iam_permissions_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -34306,8 +34481,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -34368,8 +34544,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -34430,8 +34607,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -34492,8 +34670,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -34566,7 +34745,6 @@ def test_create_backup_plan_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.CreateBackupPlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -34588,7 +34766,6 @@ def test_list_backup_plans_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListBackupPlansRequest()
-
         assert args[0] == request_msg
 
 
@@ -34608,7 +34785,6 @@ def test_get_backup_plan_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetBackupPlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -34630,7 +34806,6 @@ def test_update_backup_plan_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.UpdateBackupPlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -34652,7 +34827,6 @@ def test_delete_backup_plan_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.DeleteBackupPlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -34674,7 +34848,6 @@ def test_create_backup_channel_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.CreateBackupChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -34696,7 +34869,6 @@ def test_list_backup_channels_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListBackupChannelsRequest()
-
         assert args[0] == request_msg
 
 
@@ -34718,7 +34890,6 @@ def test_get_backup_channel_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetBackupChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -34740,7 +34911,6 @@ def test_update_backup_channel_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.UpdateBackupChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -34762,7 +34932,6 @@ def test_delete_backup_channel_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.DeleteBackupChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -34784,7 +34953,6 @@ def test_list_backup_plan_bindings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListBackupPlanBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -34806,7 +34974,6 @@ def test_get_backup_plan_binding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetBackupPlanBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -34826,7 +34993,6 @@ def test_create_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.CreateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -34846,7 +35012,6 @@ def test_list_backups_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -34866,7 +35031,6 @@ def test_get_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -34886,7 +35050,6 @@ def test_update_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.UpdateBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -34906,7 +35069,6 @@ def test_delete_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.DeleteBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -34928,7 +35090,6 @@ def test_list_volume_backups_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListVolumeBackupsRequest()
-
         assert args[0] == request_msg
 
 
@@ -34950,7 +35111,6 @@ def test_get_volume_backup_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetVolumeBackupRequest()
-
         assert args[0] == request_msg
 
 
@@ -34972,7 +35132,6 @@ def test_create_restore_plan_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.CreateRestorePlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -34994,7 +35153,6 @@ def test_list_restore_plans_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListRestorePlansRequest()
-
         assert args[0] == request_msg
 
 
@@ -35014,7 +35172,6 @@ def test_get_restore_plan_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetRestorePlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -35036,7 +35193,6 @@ def test_update_restore_plan_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.UpdateRestorePlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -35058,7 +35214,6 @@ def test_delete_restore_plan_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.DeleteRestorePlanRequest()
-
         assert args[0] == request_msg
 
 
@@ -35080,7 +35235,6 @@ def test_create_restore_channel_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.CreateRestoreChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -35102,7 +35256,6 @@ def test_list_restore_channels_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListRestoreChannelsRequest()
-
         assert args[0] == request_msg
 
 
@@ -35124,7 +35277,6 @@ def test_get_restore_channel_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetRestoreChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -35146,7 +35298,6 @@ def test_update_restore_channel_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.UpdateRestoreChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -35168,7 +35319,6 @@ def test_delete_restore_channel_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.DeleteRestoreChannelRequest()
-
         assert args[0] == request_msg
 
 
@@ -35190,7 +35340,6 @@ def test_list_restore_plan_bindings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListRestorePlanBindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -35212,7 +35361,6 @@ def test_get_restore_plan_binding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetRestorePlanBindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -35232,7 +35380,6 @@ def test_create_restore_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.CreateRestoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -35252,7 +35399,6 @@ def test_list_restores_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListRestoresRequest()
-
         assert args[0] == request_msg
 
 
@@ -35272,7 +35418,6 @@ def test_get_restore_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetRestoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -35292,7 +35437,6 @@ def test_update_restore_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.UpdateRestoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -35312,7 +35456,6 @@ def test_delete_restore_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.DeleteRestoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -35334,7 +35477,6 @@ def test_list_volume_restores_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.ListVolumeRestoresRequest()
-
         assert args[0] == request_msg
 
 
@@ -35356,7 +35498,6 @@ def test_get_volume_restore_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetVolumeRestoreRequest()
-
         assert args[0] == request_msg
 
 
@@ -35378,7 +35519,6 @@ def test_get_backup_index_download_url_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gkebackup.GetBackupIndexDownloadUrlRequest()
-
         assert args[0] == request_msg
 
 
@@ -35504,11 +35644,14 @@ def test_backup_for_gke_base_transport():
 
 def test_backup_for_gke_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.gke_backup_v1.services.backup_for_gke.transports.BackupForGKETransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.gke_backup_v1.services.backup_for_gke.transports.BackupForGKETransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.BackupForGKETransport(
@@ -35525,9 +35668,12 @@ def test_backup_for_gke_base_transport_with_credentials_file():
 
 def test_backup_for_gke_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.gke_backup_v1.services.backup_for_gke.transports.BackupForGKETransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.gke_backup_v1.services.backup_for_gke.transports.BackupForGKETransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.BackupForGKETransport()
@@ -35599,11 +35745,12 @@ def test_backup_for_gke_transport_auth_gdch_credentials(transport_class):
 def test_backup_for_gke_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -36628,6 +36775,38 @@ async def test_delete_operation_from_dict_async():
         call.assert_called()
 
 
+def test_delete_operation_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = BackupForGKEAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
 def test_cancel_operation(transport: str = "grpc"):
     client = BackupForGKEClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -36765,6 +36944,38 @@ async def test_cancel_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_cancel_operation_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = BackupForGKEAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
 
 
 def test_get_operation(transport: str = "grpc"):
@@ -36912,6 +37123,40 @@ async def test_get_operation_from_dict_async():
         call.assert_called()
 
 
+def test_get_operation_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = BackupForGKEAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
 def test_list_operations(transport: str = "grpc"):
     client = BackupForGKEClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -37055,6 +37300,40 @@ async def test_list_operations_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = BackupForGKEAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
 
 
 def test_list_locations(transport: str = "grpc"):
@@ -37202,6 +37481,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = BackupForGKEAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = BackupForGKEClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -37341,6 +37654,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = BackupForGKEAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_set_iam_policy(transport: str = "grpc"):
@@ -37505,6 +37852,41 @@ async def test_set_iam_policy_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_set_iam_policy_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        client.set_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_flattened_async():
+    client = BackupForGKEAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.set_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
 
 
 def test_get_iam_policy(transport: str = "grpc"):
@@ -37672,6 +38054,41 @@ async def test_get_iam_policy_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_iam_policy_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        client.get_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_flattened_async():
+    client = BackupForGKEAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.get_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
 
 
 def test_test_iam_permissions(transport: str = "grpc"):
@@ -37849,6 +38266,47 @@ async def test_test_iam_permissions_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_test_iam_permissions_flattened():
+    client = BackupForGKEClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        client.test_iam_permissions()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_flattened_async():
+    client = BackupForGKEAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+
+        await client.test_iam_permissions()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
 
 
 def test_transport_close_grpc():

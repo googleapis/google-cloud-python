@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -128,12 +123,28 @@ def modify_default_endpoint_template(client):
     )
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert RegistrationServiceClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -155,6 +166,10 @@ def test__get_default_mtls_endpoint():
     assert (
         RegistrationServiceClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        RegistrationServiceClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1003,7 +1018,14 @@ def test_registration_service_client_get_mtls_endpoint_and_cert_source(client_cl
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1050,7 +1072,14 @@ def test_registration_service_client_get_mtls_endpoint_and_cert_source(client_cl
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1355,11 +1384,13 @@ def test_registration_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1384,8 +1415,8 @@ def test_registration_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        registration_service.CreateNamespaceRequest,
-        dict,
+        registration_service.CreateNamespaceRequest(),
+        {},
     ],
 )
 def test_create_namespace(request_type, transport: str = "grpc"):
@@ -1396,7 +1427,7 @@ def test_create_namespace(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_namespace), "__call__") as call:
@@ -1443,10 +1474,11 @@ def test_create_namespace_non_empty_request_with_auto_populated_field():
         client.create_namespace(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registration_service.CreateNamespaceRequest(
+        request_msg = registration_service.CreateNamespaceRequest(
             parent="parent_value",
             namespace_id="namespace_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_namespace_use_cached_wrapped_rpc():
@@ -1529,10 +1561,14 @@ async def test_create_namespace_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_namespace_async(
-    transport: str = "grpc_asyncio",
-    request_type=registration_service.CreateNamespaceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registration_service.CreateNamespaceRequest(),
+        {},
+    ],
+)
+async def test_create_namespace_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1540,7 +1576,7 @@ async def test_create_namespace_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_namespace), "__call__") as call:
@@ -1563,11 +1599,6 @@ async def test_create_namespace_async(
     assert isinstance(response, gcs_namespace.Namespace)
     assert response.name == "name_value"
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_create_namespace_async_from_dict():
-    await test_create_namespace_async(request_type=dict)
 
 
 def test_create_namespace_field_headers():
@@ -1736,8 +1767,8 @@ async def test_create_namespace_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registration_service.ListNamespacesRequest,
-        dict,
+        registration_service.ListNamespacesRequest(),
+        {},
     ],
 )
 def test_list_namespaces(request_type, transport: str = "grpc"):
@@ -1748,7 +1779,7 @@ def test_list_namespaces(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_namespaces), "__call__") as call:
@@ -1795,12 +1826,13 @@ def test_list_namespaces_non_empty_request_with_auto_populated_field():
         client.list_namespaces(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registration_service.ListNamespacesRequest(
+        request_msg = registration_service.ListNamespacesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_namespaces_use_cached_wrapped_rpc():
@@ -1881,10 +1913,14 @@ async def test_list_namespaces_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_namespaces_async(
-    transport: str = "grpc_asyncio",
-    request_type=registration_service.ListNamespacesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registration_service.ListNamespacesRequest(),
+        {},
+    ],
+)
+async def test_list_namespaces_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1892,7 +1928,7 @@ async def test_list_namespaces_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_namespaces), "__call__") as call:
@@ -1913,11 +1949,6 @@ async def test_list_namespaces_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNamespacesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_namespaces_async_from_dict():
-    await test_list_namespaces_async(request_type=dict)
 
 
 def test_list_namespaces_field_headers():
@@ -2112,6 +2143,9 @@ def test_list_namespaces_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, namespace.Namespace) for i in results)
@@ -2200,6 +2234,8 @@ async def test_list_namespaces_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -2247,11 +2283,7 @@ async def test_list_namespaces_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_namespaces(request={})
-        ).pages:
+        async for page_ in (await client.list_namespaces(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2260,8 +2292,8 @@ async def test_list_namespaces_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registration_service.GetNamespaceRequest,
-        dict,
+        registration_service.GetNamespaceRequest(),
+        {},
     ],
 )
 def test_get_namespace(request_type, transport: str = "grpc"):
@@ -2272,7 +2304,7 @@ def test_get_namespace(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_namespace), "__call__") as call:
@@ -2318,9 +2350,10 @@ def test_get_namespace_non_empty_request_with_auto_populated_field():
         client.get_namespace(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registration_service.GetNamespaceRequest(
+        request_msg = registration_service.GetNamespaceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_namespace_use_cached_wrapped_rpc():
@@ -2401,10 +2434,14 @@ async def test_get_namespace_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_namespace_async(
-    transport: str = "grpc_asyncio",
-    request_type=registration_service.GetNamespaceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registration_service.GetNamespaceRequest(),
+        {},
+    ],
+)
+async def test_get_namespace_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2412,7 +2449,7 @@ async def test_get_namespace_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_namespace), "__call__") as call:
@@ -2435,11 +2472,6 @@ async def test_get_namespace_async(
     assert isinstance(response, namespace.Namespace)
     assert response.name == "name_value"
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_namespace_async_from_dict():
-    await test_get_namespace_async(request_type=dict)
 
 
 def test_get_namespace_field_headers():
@@ -2584,8 +2616,8 @@ async def test_get_namespace_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registration_service.UpdateNamespaceRequest,
-        dict,
+        registration_service.UpdateNamespaceRequest(),
+        {},
     ],
 )
 def test_update_namespace(request_type, transport: str = "grpc"):
@@ -2596,7 +2628,7 @@ def test_update_namespace(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_namespace), "__call__") as call:
@@ -2640,7 +2672,8 @@ def test_update_namespace_non_empty_request_with_auto_populated_field():
         client.update_namespace(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registration_service.UpdateNamespaceRequest()
+        request_msg = registration_service.UpdateNamespaceRequest()
+        assert args[0] == request_msg
 
 
 def test_update_namespace_use_cached_wrapped_rpc():
@@ -2723,10 +2756,14 @@ async def test_update_namespace_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_namespace_async(
-    transport: str = "grpc_asyncio",
-    request_type=registration_service.UpdateNamespaceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registration_service.UpdateNamespaceRequest(),
+        {},
+    ],
+)
+async def test_update_namespace_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2734,7 +2771,7 @@ async def test_update_namespace_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_namespace), "__call__") as call:
@@ -2757,11 +2794,6 @@ async def test_update_namespace_async(
     assert isinstance(response, gcs_namespace.Namespace)
     assert response.name == "name_value"
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_update_namespace_async_from_dict():
-    await test_update_namespace_async(request_type=dict)
 
 
 def test_update_namespace_field_headers():
@@ -2920,8 +2952,8 @@ async def test_update_namespace_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registration_service.DeleteNamespaceRequest,
-        dict,
+        registration_service.DeleteNamespaceRequest(),
+        {},
     ],
 )
 def test_delete_namespace(request_type, transport: str = "grpc"):
@@ -2932,7 +2964,7 @@ def test_delete_namespace(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_namespace), "__call__") as call:
@@ -2973,9 +3005,10 @@ def test_delete_namespace_non_empty_request_with_auto_populated_field():
         client.delete_namespace(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registration_service.DeleteNamespaceRequest(
+        request_msg = registration_service.DeleteNamespaceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_namespace_use_cached_wrapped_rpc():
@@ -3058,10 +3091,14 @@ async def test_delete_namespace_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_namespace_async(
-    transport: str = "grpc_asyncio",
-    request_type=registration_service.DeleteNamespaceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registration_service.DeleteNamespaceRequest(),
+        {},
+    ],
+)
+async def test_delete_namespace_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3069,7 +3106,7 @@ async def test_delete_namespace_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_namespace), "__call__") as call:
@@ -3085,11 +3122,6 @@ async def test_delete_namespace_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_namespace_async_from_dict():
-    await test_delete_namespace_async(request_type=dict)
 
 
 def test_delete_namespace_field_headers():
@@ -3234,8 +3266,8 @@ async def test_delete_namespace_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registration_service.CreateServiceRequest,
-        dict,
+        registration_service.CreateServiceRequest(),
+        {},
     ],
 )
 def test_create_service(request_type, transport: str = "grpc"):
@@ -3246,7 +3278,7 @@ def test_create_service(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_service), "__call__") as call:
@@ -3293,10 +3325,11 @@ def test_create_service_non_empty_request_with_auto_populated_field():
         client.create_service(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registration_service.CreateServiceRequest(
+        request_msg = registration_service.CreateServiceRequest(
             parent="parent_value",
             service_id="service_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_service_use_cached_wrapped_rpc():
@@ -3377,10 +3410,14 @@ async def test_create_service_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_service_async(
-    transport: str = "grpc_asyncio",
-    request_type=registration_service.CreateServiceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registration_service.CreateServiceRequest(),
+        {},
+    ],
+)
+async def test_create_service_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3388,7 +3425,7 @@ async def test_create_service_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_service), "__call__") as call:
@@ -3411,11 +3448,6 @@ async def test_create_service_async(
     assert isinstance(response, gcs_service.Service)
     assert response.name == "name_value"
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_create_service_async_from_dict():
-    await test_create_service_async(request_type=dict)
 
 
 def test_create_service_field_headers():
@@ -3580,8 +3612,8 @@ async def test_create_service_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registration_service.ListServicesRequest,
-        dict,
+        registration_service.ListServicesRequest(),
+        {},
     ],
 )
 def test_list_services(request_type, transport: str = "grpc"):
@@ -3592,7 +3624,7 @@ def test_list_services(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_services), "__call__") as call:
@@ -3639,12 +3671,13 @@ def test_list_services_non_empty_request_with_auto_populated_field():
         client.list_services(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registration_service.ListServicesRequest(
+        request_msg = registration_service.ListServicesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_services_use_cached_wrapped_rpc():
@@ -3725,10 +3758,14 @@ async def test_list_services_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_services_async(
-    transport: str = "grpc_asyncio",
-    request_type=registration_service.ListServicesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registration_service.ListServicesRequest(),
+        {},
+    ],
+)
+async def test_list_services_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3736,7 +3773,7 @@ async def test_list_services_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_services), "__call__") as call:
@@ -3757,11 +3794,6 @@ async def test_list_services_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServicesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_services_async_from_dict():
-    await test_list_services_async(request_type=dict)
 
 
 def test_list_services_field_headers():
@@ -3956,6 +3988,9 @@ def test_list_services_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, service.Service) for i in results)
@@ -4044,6 +4079,8 @@ async def test_list_services_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4091,11 +4128,7 @@ async def test_list_services_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_services(request={})
-        ).pages:
+        async for page_ in (await client.list_services(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4104,8 +4137,8 @@ async def test_list_services_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registration_service.GetServiceRequest,
-        dict,
+        registration_service.GetServiceRequest(),
+        {},
     ],
 )
 def test_get_service(request_type, transport: str = "grpc"):
@@ -4116,7 +4149,7 @@ def test_get_service(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_service), "__call__") as call:
@@ -4162,9 +4195,10 @@ def test_get_service_non_empty_request_with_auto_populated_field():
         client.get_service(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registration_service.GetServiceRequest(
+        request_msg = registration_service.GetServiceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_service_use_cached_wrapped_rpc():
@@ -4245,9 +4279,14 @@ async def test_get_service_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_service_async(
-    transport: str = "grpc_asyncio", request_type=registration_service.GetServiceRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registration_service.GetServiceRequest(),
+        {},
+    ],
+)
+async def test_get_service_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4255,7 +4294,7 @@ async def test_get_service_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_service), "__call__") as call:
@@ -4278,11 +4317,6 @@ async def test_get_service_async(
     assert isinstance(response, service.Service)
     assert response.name == "name_value"
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_service_async_from_dict():
-    await test_get_service_async(request_type=dict)
 
 
 def test_get_service_field_headers():
@@ -4427,8 +4461,8 @@ async def test_get_service_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registration_service.UpdateServiceRequest,
-        dict,
+        registration_service.UpdateServiceRequest(),
+        {},
     ],
 )
 def test_update_service(request_type, transport: str = "grpc"):
@@ -4439,7 +4473,7 @@ def test_update_service(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_service), "__call__") as call:
@@ -4483,7 +4517,8 @@ def test_update_service_non_empty_request_with_auto_populated_field():
         client.update_service(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registration_service.UpdateServiceRequest()
+        request_msg = registration_service.UpdateServiceRequest()
+        assert args[0] == request_msg
 
 
 def test_update_service_use_cached_wrapped_rpc():
@@ -4564,10 +4599,14 @@ async def test_update_service_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_service_async(
-    transport: str = "grpc_asyncio",
-    request_type=registration_service.UpdateServiceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registration_service.UpdateServiceRequest(),
+        {},
+    ],
+)
+async def test_update_service_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4575,7 +4614,7 @@ async def test_update_service_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_service), "__call__") as call:
@@ -4598,11 +4637,6 @@ async def test_update_service_async(
     assert isinstance(response, gcs_service.Service)
     assert response.name == "name_value"
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_update_service_async_from_dict():
-    await test_update_service_async(request_type=dict)
 
 
 def test_update_service_field_headers():
@@ -4757,8 +4791,8 @@ async def test_update_service_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registration_service.DeleteServiceRequest,
-        dict,
+        registration_service.DeleteServiceRequest(),
+        {},
     ],
 )
 def test_delete_service(request_type, transport: str = "grpc"):
@@ -4769,7 +4803,7 @@ def test_delete_service(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
@@ -4810,9 +4844,10 @@ def test_delete_service_non_empty_request_with_auto_populated_field():
         client.delete_service(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registration_service.DeleteServiceRequest(
+        request_msg = registration_service.DeleteServiceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_service_use_cached_wrapped_rpc():
@@ -4893,10 +4928,14 @@ async def test_delete_service_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_service_async(
-    transport: str = "grpc_asyncio",
-    request_type=registration_service.DeleteServiceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registration_service.DeleteServiceRequest(),
+        {},
+    ],
+)
+async def test_delete_service_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4904,7 +4943,7 @@ async def test_delete_service_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
@@ -4920,11 +4959,6 @@ async def test_delete_service_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_service_async_from_dict():
-    await test_delete_service_async(request_type=dict)
 
 
 def test_delete_service_field_headers():
@@ -5069,8 +5103,8 @@ async def test_delete_service_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registration_service.CreateEndpointRequest,
-        dict,
+        registration_service.CreateEndpointRequest(),
+        {},
     ],
 )
 def test_create_endpoint(request_type, transport: str = "grpc"):
@@ -5081,7 +5115,7 @@ def test_create_endpoint(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_endpoint), "__call__") as call:
@@ -5134,10 +5168,11 @@ def test_create_endpoint_non_empty_request_with_auto_populated_field():
         client.create_endpoint(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registration_service.CreateEndpointRequest(
+        request_msg = registration_service.CreateEndpointRequest(
             parent="parent_value",
             endpoint_id="endpoint_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_endpoint_use_cached_wrapped_rpc():
@@ -5218,10 +5253,14 @@ async def test_create_endpoint_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_endpoint_async(
-    transport: str = "grpc_asyncio",
-    request_type=registration_service.CreateEndpointRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registration_service.CreateEndpointRequest(),
+        {},
+    ],
+)
+async def test_create_endpoint_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5229,7 +5268,7 @@ async def test_create_endpoint_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_endpoint), "__call__") as call:
@@ -5258,11 +5297,6 @@ async def test_create_endpoint_async(
     assert response.port == 453
     assert response.network == "network_value"
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_create_endpoint_async_from_dict():
-    await test_create_endpoint_async(request_type=dict)
 
 
 def test_create_endpoint_field_headers():
@@ -5431,8 +5465,8 @@ async def test_create_endpoint_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registration_service.ListEndpointsRequest,
-        dict,
+        registration_service.ListEndpointsRequest(),
+        {},
     ],
 )
 def test_list_endpoints(request_type, transport: str = "grpc"):
@@ -5443,7 +5477,7 @@ def test_list_endpoints(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_endpoints), "__call__") as call:
@@ -5490,12 +5524,13 @@ def test_list_endpoints_non_empty_request_with_auto_populated_field():
         client.list_endpoints(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registration_service.ListEndpointsRequest(
+        request_msg = registration_service.ListEndpointsRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_endpoints_use_cached_wrapped_rpc():
@@ -5576,10 +5611,14 @@ async def test_list_endpoints_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_endpoints_async(
-    transport: str = "grpc_asyncio",
-    request_type=registration_service.ListEndpointsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registration_service.ListEndpointsRequest(),
+        {},
+    ],
+)
+async def test_list_endpoints_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5587,7 +5626,7 @@ async def test_list_endpoints_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_endpoints), "__call__") as call:
@@ -5608,11 +5647,6 @@ async def test_list_endpoints_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEndpointsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_endpoints_async_from_dict():
-    await test_list_endpoints_async(request_type=dict)
 
 
 def test_list_endpoints_field_headers():
@@ -5807,6 +5841,9 @@ def test_list_endpoints_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, endpoint.Endpoint) for i in results)
@@ -5895,6 +5932,8 @@ async def test_list_endpoints_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5942,11 +5981,7 @@ async def test_list_endpoints_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_endpoints(request={})
-        ).pages:
+        async for page_ in (await client.list_endpoints(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5955,8 +5990,8 @@ async def test_list_endpoints_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registration_service.GetEndpointRequest,
-        dict,
+        registration_service.GetEndpointRequest(),
+        {},
     ],
 )
 def test_get_endpoint(request_type, transport: str = "grpc"):
@@ -5967,7 +6002,7 @@ def test_get_endpoint(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_endpoint), "__call__") as call:
@@ -6019,9 +6054,10 @@ def test_get_endpoint_non_empty_request_with_auto_populated_field():
         client.get_endpoint(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registration_service.GetEndpointRequest(
+        request_msg = registration_service.GetEndpointRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_endpoint_use_cached_wrapped_rpc():
@@ -6102,10 +6138,14 @@ async def test_get_endpoint_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_endpoint_async(
-    transport: str = "grpc_asyncio",
-    request_type=registration_service.GetEndpointRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registration_service.GetEndpointRequest(),
+        {},
+    ],
+)
+async def test_get_endpoint_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6113,7 +6153,7 @@ async def test_get_endpoint_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_endpoint), "__call__") as call:
@@ -6142,11 +6182,6 @@ async def test_get_endpoint_async(
     assert response.port == 453
     assert response.network == "network_value"
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_get_endpoint_async_from_dict():
-    await test_get_endpoint_async(request_type=dict)
 
 
 def test_get_endpoint_field_headers():
@@ -6291,8 +6326,8 @@ async def test_get_endpoint_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registration_service.UpdateEndpointRequest,
-        dict,
+        registration_service.UpdateEndpointRequest(),
+        {},
     ],
 )
 def test_update_endpoint(request_type, transport: str = "grpc"):
@@ -6303,7 +6338,7 @@ def test_update_endpoint(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_endpoint), "__call__") as call:
@@ -6353,7 +6388,8 @@ def test_update_endpoint_non_empty_request_with_auto_populated_field():
         client.update_endpoint(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registration_service.UpdateEndpointRequest()
+        request_msg = registration_service.UpdateEndpointRequest()
+        assert args[0] == request_msg
 
 
 def test_update_endpoint_use_cached_wrapped_rpc():
@@ -6434,10 +6470,14 @@ async def test_update_endpoint_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_endpoint_async(
-    transport: str = "grpc_asyncio",
-    request_type=registration_service.UpdateEndpointRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registration_service.UpdateEndpointRequest(),
+        {},
+    ],
+)
+async def test_update_endpoint_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6445,7 +6485,7 @@ async def test_update_endpoint_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_endpoint), "__call__") as call:
@@ -6474,11 +6514,6 @@ async def test_update_endpoint_async(
     assert response.port == 453
     assert response.network == "network_value"
     assert response.uid == "uid_value"
-
-
-@pytest.mark.asyncio
-async def test_update_endpoint_async_from_dict():
-    await test_update_endpoint_async(request_type=dict)
 
 
 def test_update_endpoint_field_headers():
@@ -6637,8 +6672,8 @@ async def test_update_endpoint_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        registration_service.DeleteEndpointRequest,
-        dict,
+        registration_service.DeleteEndpointRequest(),
+        {},
     ],
 )
 def test_delete_endpoint(request_type, transport: str = "grpc"):
@@ -6649,7 +6684,7 @@ def test_delete_endpoint(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_endpoint), "__call__") as call:
@@ -6690,9 +6725,10 @@ def test_delete_endpoint_non_empty_request_with_auto_populated_field():
         client.delete_endpoint(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == registration_service.DeleteEndpointRequest(
+        request_msg = registration_service.DeleteEndpointRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_endpoint_use_cached_wrapped_rpc():
@@ -6773,10 +6809,14 @@ async def test_delete_endpoint_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_endpoint_async(
-    transport: str = "grpc_asyncio",
-    request_type=registration_service.DeleteEndpointRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        registration_service.DeleteEndpointRequest(),
+        {},
+    ],
+)
+async def test_delete_endpoint_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6784,7 +6824,7 @@ async def test_delete_endpoint_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_endpoint), "__call__") as call:
@@ -6800,11 +6840,6 @@ async def test_delete_endpoint_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_endpoint_async_from_dict():
-    await test_delete_endpoint_async(request_type=dict)
 
 
 def test_delete_endpoint_field_headers():
@@ -6949,8 +6984,8 @@ async def test_delete_endpoint_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
     ],
 )
 def test_get_iam_policy(request_type, transport: str = "grpc"):
@@ -6961,7 +6996,7 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -7007,9 +7042,10 @@ def test_get_iam_policy_non_empty_request_with_auto_populated_field():
         client.get_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+        request_msg = iam_policy_pb2.GetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_iam_policy_use_cached_wrapped_rpc():
@@ -7090,9 +7126,14 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7100,7 +7141,7 @@ async def test_get_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -7123,11 +7164,6 @@ async def test_get_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_async_from_dict():
-    await test_get_iam_policy_async(request_type=dict)
 
 
 def test_get_iam_policy_field_headers():
@@ -7209,8 +7245,8 @@ def test_get_iam_policy_from_dict_foreign():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
     ],
 )
 def test_set_iam_policy(request_type, transport: str = "grpc"):
@@ -7221,7 +7257,7 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -7267,9 +7303,10 @@ def test_set_iam_policy_non_empty_request_with_auto_populated_field():
         client.set_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+        request_msg = iam_policy_pb2.SetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_iam_policy_use_cached_wrapped_rpc():
@@ -7350,9 +7387,14 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_set_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = RegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7360,7 +7402,7 @@ async def test_set_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -7383,11 +7425,6 @@ async def test_set_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_async_from_dict():
-    await test_set_iam_policy_async(request_type=dict)
 
 
 def test_set_iam_policy_field_headers():
@@ -7470,8 +7507,8 @@ def test_set_iam_policy_from_dict_foreign():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
     ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
@@ -7482,7 +7519,7 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7530,9 +7567,10 @@ def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
         client.test_iam_permissions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_test_iam_permissions_use_cached_wrapped_rpc():
@@ -7617,9 +7655,15 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
+    ],
+)
 async def test_test_iam_permissions_async(
-    transport: str = "grpc_asyncio",
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = RegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7628,7 +7672,7 @@ async def test_test_iam_permissions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7651,11 +7695,6 @@ async def test_test_iam_permissions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_async_from_dict():
-    await test_test_iam_permissions_async(request_type=dict)
 
 
 def test_test_iam_permissions_field_headers():
@@ -7868,7 +7907,7 @@ def test_create_namespace_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_namespace_rest_unset_required_fields():
@@ -8068,7 +8107,7 @@ def test_list_namespaces_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_namespaces_rest_unset_required_fields():
@@ -8202,6 +8241,9 @@ def test_list_namespaces_rest_pager(transport: str = "rest"):
 
         pager = client.list_namespaces(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, namespace.Namespace) for i in results)
@@ -8319,7 +8361,7 @@ def test_get_namespace_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_namespace_rest_unset_required_fields():
@@ -8499,7 +8541,7 @@ def test_update_namespace_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_namespace_rest_unset_required_fields():
@@ -8690,7 +8732,7 @@ def test_delete_namespace_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_namespace_rest_unset_required_fields():
@@ -8884,7 +8926,7 @@ def test_create_service_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_service_rest_unset_required_fields():
@@ -9086,7 +9128,7 @@ def test_list_services_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_services_rest_unset_required_fields():
@@ -9224,6 +9266,9 @@ def test_list_services_rest_pager(transport: str = "rest"):
 
         pager = client.list_services(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, service.Service) for i in results)
@@ -9341,7 +9386,7 @@ def test_get_service_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_service_rest_unset_required_fields():
@@ -9519,7 +9564,7 @@ def test_update_service_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_service_rest_unset_required_fields():
@@ -9708,7 +9753,7 @@ def test_delete_service_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_service_rest_unset_required_fields():
@@ -9902,7 +9947,7 @@ def test_create_endpoint_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_endpoint_rest_unset_required_fields():
@@ -10104,7 +10149,7 @@ def test_list_endpoints_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_endpoints_rest_unset_required_fields():
@@ -10242,6 +10287,9 @@ def test_list_endpoints_rest_pager(transport: str = "rest"):
 
         pager = client.list_endpoints(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, endpoint.Endpoint) for i in results)
@@ -10359,7 +10407,7 @@ def test_get_endpoint_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_endpoint_rest_unset_required_fields():
@@ -10537,7 +10585,7 @@ def test_update_endpoint_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_endpoint_rest_unset_required_fields():
@@ -10726,7 +10774,7 @@ def test_delete_endpoint_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_endpoint_rest_unset_required_fields():
@@ -10903,7 +10951,7 @@ def test_get_iam_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_iam_policy_rest_unset_required_fields():
@@ -11022,7 +11070,7 @@ def test_set_iam_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_iam_policy_rest_unset_required_fields():
@@ -11157,7 +11205,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_test_iam_permissions_rest_unset_required_fields():
@@ -11300,7 +11348,6 @@ def test_create_namespace_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.CreateNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11321,7 +11368,6 @@ def test_list_namespaces_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.ListNamespacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11342,7 +11388,6 @@ def test_get_namespace_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.GetNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11363,7 +11408,6 @@ def test_update_namespace_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.UpdateNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11384,7 +11428,6 @@ def test_delete_namespace_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.DeleteNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11405,7 +11448,6 @@ def test_create_service_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.CreateServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11426,7 +11468,6 @@ def test_list_services_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.ListServicesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11447,7 +11488,6 @@ def test_get_service_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.GetServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11468,7 +11508,6 @@ def test_update_service_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.UpdateServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11489,7 +11528,6 @@ def test_delete_service_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.DeleteServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11510,7 +11548,6 @@ def test_create_endpoint_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.CreateEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -11531,7 +11568,6 @@ def test_list_endpoints_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.ListEndpointsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11552,7 +11588,6 @@ def test_get_endpoint_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.GetEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -11573,7 +11608,6 @@ def test_update_endpoint_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.UpdateEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -11594,7 +11628,6 @@ def test_delete_endpoint_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.DeleteEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -11615,7 +11648,6 @@ def test_get_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -11636,7 +11668,6 @@ def test_set_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -11659,7 +11690,6 @@ def test_test_iam_permissions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11701,7 +11731,6 @@ async def test_create_namespace_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.CreateNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11728,7 +11757,6 @@ async def test_list_namespaces_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.ListNamespacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11756,7 +11784,6 @@ async def test_get_namespace_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.GetNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11784,7 +11811,6 @@ async def test_update_namespace_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.UpdateNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11807,7 +11833,6 @@ async def test_delete_namespace_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.DeleteNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11835,7 +11860,6 @@ async def test_create_service_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.CreateServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11862,7 +11886,6 @@ async def test_list_services_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.ListServicesRequest()
-
         assert args[0] == request_msg
 
 
@@ -11890,7 +11913,6 @@ async def test_get_service_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.GetServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11918,7 +11940,6 @@ async def test_update_service_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.UpdateServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11941,7 +11962,6 @@ async def test_delete_service_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.DeleteServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11972,7 +11992,6 @@ async def test_create_endpoint_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.CreateEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -11999,7 +12018,6 @@ async def test_list_endpoints_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.ListEndpointsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12030,7 +12048,6 @@ async def test_get_endpoint_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.GetEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -12061,7 +12078,6 @@ async def test_update_endpoint_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.UpdateEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -12084,7 +12100,6 @@ async def test_delete_endpoint_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.DeleteEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -12112,7 +12127,6 @@ async def test_get_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -12140,7 +12154,6 @@ async def test_set_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -12169,7 +12182,6 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12191,8 +12203,9 @@ def test_create_namespace_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12331,18 +12344,20 @@ def test_create_namespace_rest_interceptors(null_interceptor):
     )
     client = RegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "post_create_namespace"
-    ) as post, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor,
-        "post_create_namespace_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "pre_create_namespace"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "post_create_namespace"
+        ) as post,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor,
+            "post_create_namespace_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "pre_create_namespace"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12395,8 +12410,9 @@ def test_list_namespaces_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12459,18 +12475,20 @@ def test_list_namespaces_rest_interceptors(null_interceptor):
     )
     client = RegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "post_list_namespaces"
-    ) as post, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor,
-        "post_list_namespaces_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "pre_list_namespaces"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "post_list_namespaces"
+        ) as post,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor,
+            "post_list_namespaces_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "pre_list_namespaces"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12528,8 +12546,9 @@ def test_get_namespace_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12594,18 +12613,20 @@ def test_get_namespace_rest_interceptors(null_interceptor):
     )
     client = RegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "post_get_namespace"
-    ) as post, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor,
-        "post_get_namespace_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "pre_get_namespace"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "post_get_namespace"
+        ) as post,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor,
+            "post_get_namespace_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "pre_get_namespace"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12660,8 +12681,9 @@ def test_update_namespace_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12802,18 +12824,20 @@ def test_update_namespace_rest_interceptors(null_interceptor):
     )
     client = RegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "post_update_namespace"
-    ) as post, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor,
-        "post_update_namespace_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "pre_update_namespace"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "post_update_namespace"
+        ) as post,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor,
+            "post_update_namespace_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "pre_update_namespace"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12866,8 +12890,9 @@ def test_delete_namespace_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12924,13 +12949,13 @@ def test_delete_namespace_rest_interceptors(null_interceptor):
     )
     client = RegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "pre_delete_namespace"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "pre_delete_namespace"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = registration_service.DeleteNamespaceRequest.pb(
             registration_service.DeleteNamespaceRequest()
@@ -12975,8 +13000,9 @@ def test_create_service_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13127,18 +13153,20 @@ def test_create_service_rest_interceptors(null_interceptor):
     )
     client = RegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "post_create_service"
-    ) as post, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor,
-        "post_create_service_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "pre_create_service"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "post_create_service"
+        ) as post,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor,
+            "post_create_service_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "pre_create_service"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13191,8 +13219,9 @@ def test_list_services_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13255,18 +13284,20 @@ def test_list_services_rest_interceptors(null_interceptor):
     )
     client = RegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "post_list_services"
-    ) as post, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor,
-        "post_list_services_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "pre_list_services"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "post_list_services"
+        ) as post,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor,
+            "post_list_services_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "pre_list_services"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13326,8 +13357,9 @@ def test_get_service_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13394,17 +13426,20 @@ def test_get_service_rest_interceptors(null_interceptor):
     )
     client = RegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "post_get_service"
-    ) as post, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "post_get_service_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "pre_get_service"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "post_get_service"
+        ) as post,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor,
+            "post_get_service_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "pre_get_service"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13461,8 +13496,9 @@ def test_update_service_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13617,18 +13653,20 @@ def test_update_service_rest_interceptors(null_interceptor):
     )
     client = RegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "post_update_service"
-    ) as post, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor,
-        "post_update_service_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "pre_update_service"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "post_update_service"
+        ) as post,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor,
+            "post_update_service_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "pre_update_service"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13683,8 +13721,9 @@ def test_delete_service_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13743,13 +13782,13 @@ def test_delete_service_rest_interceptors(null_interceptor):
     )
     client = RegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "pre_delete_service"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "pre_delete_service"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = registration_service.DeleteServiceRequest.pb(
             registration_service.DeleteServiceRequest()
@@ -13796,8 +13835,9 @@ def test_create_endpoint_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13947,18 +13987,20 @@ def test_create_endpoint_rest_interceptors(null_interceptor):
     )
     client = RegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "post_create_endpoint"
-    ) as post, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor,
-        "post_create_endpoint_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "pre_create_endpoint"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "post_create_endpoint"
+        ) as post,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor,
+            "post_create_endpoint_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "pre_create_endpoint"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14013,8 +14055,9 @@ def test_list_endpoints_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14079,18 +14122,20 @@ def test_list_endpoints_rest_interceptors(null_interceptor):
     )
     client = RegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "post_list_endpoints"
-    ) as post, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor,
-        "post_list_endpoints_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "pre_list_endpoints"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "post_list_endpoints"
+        ) as post,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor,
+            "post_list_endpoints_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "pre_list_endpoints"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14150,8 +14195,9 @@ def test_get_endpoint_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14224,17 +14270,20 @@ def test_get_endpoint_rest_interceptors(null_interceptor):
     )
     client = RegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "post_get_endpoint"
-    ) as post, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "post_get_endpoint_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "pre_get_endpoint"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "post_get_endpoint"
+        ) as post,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor,
+            "post_get_endpoint_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "pre_get_endpoint"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14291,8 +14340,9 @@ def test_update_endpoint_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14444,18 +14494,20 @@ def test_update_endpoint_rest_interceptors(null_interceptor):
     )
     client = RegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "post_update_endpoint"
-    ) as post, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor,
-        "post_update_endpoint_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "pre_update_endpoint"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "post_update_endpoint"
+        ) as post,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor,
+            "post_update_endpoint_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "pre_update_endpoint"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14510,8 +14562,9 @@ def test_delete_endpoint_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14570,13 +14623,13 @@ def test_delete_endpoint_rest_interceptors(null_interceptor):
     )
     client = RegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "pre_delete_endpoint"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "pre_delete_endpoint"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = registration_service.DeleteEndpointRequest.pb(
             registration_service.DeleteEndpointRequest()
@@ -14621,8 +14674,9 @@ def test_get_iam_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14684,18 +14738,20 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     )
     client = RegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "post_get_iam_policy"
-    ) as post, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor,
-        "post_get_iam_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "pre_get_iam_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "post_get_iam_policy"
+        ) as post,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor,
+            "post_get_iam_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "pre_get_iam_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14746,8 +14802,9 @@ def test_set_iam_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14809,18 +14866,20 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     )
     client = RegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "post_set_iam_policy"
-    ) as post, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor,
-        "post_set_iam_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "pre_set_iam_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "post_set_iam_policy"
+        ) as post,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor,
+            "post_set_iam_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "pre_set_iam_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14871,8 +14930,9 @@ def test_test_iam_permissions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14932,18 +14992,20 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     )
     client = RegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "post_test_iam_permissions"
-    ) as post, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor,
-        "post_test_iam_permissions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistrationServiceRestInterceptor, "pre_test_iam_permissions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "post_test_iam_permissions"
+        ) as post,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor,
+            "post_test_iam_permissions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistrationServiceRestInterceptor, "pre_test_iam_permissions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14999,8 +15061,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -15059,8 +15122,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -15131,7 +15195,6 @@ def test_create_namespace_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.CreateNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -15151,7 +15214,6 @@ def test_list_namespaces_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.ListNamespacesRequest()
-
         assert args[0] == request_msg
 
 
@@ -15171,7 +15233,6 @@ def test_get_namespace_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.GetNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -15191,7 +15252,6 @@ def test_update_namespace_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.UpdateNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -15211,7 +15271,6 @@ def test_delete_namespace_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.DeleteNamespaceRequest()
-
         assert args[0] == request_msg
 
 
@@ -15231,7 +15290,6 @@ def test_create_service_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.CreateServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -15251,7 +15309,6 @@ def test_list_services_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.ListServicesRequest()
-
         assert args[0] == request_msg
 
 
@@ -15271,7 +15328,6 @@ def test_get_service_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.GetServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -15291,7 +15347,6 @@ def test_update_service_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.UpdateServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -15311,7 +15366,6 @@ def test_delete_service_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.DeleteServiceRequest()
-
         assert args[0] == request_msg
 
 
@@ -15331,7 +15385,6 @@ def test_create_endpoint_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.CreateEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -15351,7 +15404,6 @@ def test_list_endpoints_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.ListEndpointsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15371,7 +15423,6 @@ def test_get_endpoint_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.GetEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -15391,7 +15442,6 @@ def test_update_endpoint_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.UpdateEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -15411,7 +15461,6 @@ def test_delete_endpoint_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = registration_service.DeleteEndpointRequest()
-
         assert args[0] == request_msg
 
 
@@ -15431,7 +15480,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -15451,7 +15499,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -15473,7 +15520,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15549,11 +15595,14 @@ def test_registration_service_base_transport():
 
 def test_registration_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.servicedirectory_v1beta1.services.registration_service.transports.RegistrationServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.servicedirectory_v1beta1.services.registration_service.transports.RegistrationServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RegistrationServiceTransport(
@@ -15570,9 +15619,12 @@ def test_registration_service_base_transport_with_credentials_file():
 
 def test_registration_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.servicedirectory_v1beta1.services.registration_service.transports.RegistrationServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.servicedirectory_v1beta1.services.registration_service.transports.RegistrationServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RegistrationServiceTransport()
@@ -15644,11 +15696,12 @@ def test_registration_service_transport_auth_gdch_credentials(transport_class):
 def test_registration_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -16358,6 +16411,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = RegistrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = RegistrationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = RegistrationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16499,6 +16586,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = RegistrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = RegistrationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():

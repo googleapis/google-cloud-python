@@ -8,15 +8,18 @@ import decimal
 import io
 from typing import Any, Callable, Dict, List, Optional
 
-import db_dtypes
-from google.cloud import bigquery
+# db-dtypes does not have type hints nor stubs that mypy uses for type checking.
+# Remove this comment and the ignore pragma upon completing:
+# https://github.com/googleapis/google-cloud-python/issues/17045
+import db_dtypes  # type: ignore[import-untyped]
 import pandas
 import pyarrow.lib
+from google.cloud import bigquery
 
-from pandas_gbq import exceptions
 import pandas_gbq.schema
 import pandas_gbq.schema.bigquery
 import pandas_gbq.schema.pandas_to_bigquery
+from pandas_gbq import exceptions
 
 
 def encode_chunk(dataframe):
@@ -38,8 +41,8 @@ def encode_chunk(dataframe):
     # Convert to a BytesIO buffer so that unicode text is properly handled.
     # See: https://github.com/pydata/pandas-gbq/issues/106
     body = csv_buffer.getvalue()
-    body = body.encode("utf-8")
-    return io.BytesIO(body)
+    body_bytes = body.encode("utf-8")
+    return io.BytesIO(body_bytes)
 
 
 def split_dataframe(dataframe, chunksize=None):
@@ -68,7 +71,7 @@ def cast_dataframe_for_parquet(
     See: https://github.com/googleapis/python-bigquery-pandas/issues/421
     """
 
-    columns = schema.get("fields", [])
+    columns = schema.get("fields", []) if schema is not None else []
 
     # Protect against an explicit None in the dictionary.
     columns = columns if columns is not None else []
@@ -130,7 +133,7 @@ def cast_dataframe_for_csv(
 ) -> pandas.DataFrame:
     """Cast columns to needed dtype when writing CSV files."""
 
-    columns = schema.get("fields", [])
+    columns = schema.get("fields", []) if schema is not None else []
 
     # Protect against an explicit None in the dictionary.
     columns = columns if columns is not None else []
@@ -280,7 +283,9 @@ def load_csv_from_file(
         finally:
             chunk_buffer.close()
 
-    return load_csv(dataframe, write_disposition, chunksize, bq_schema, load_chunk)
+    return load_csv(
+        dataframe, write_disposition, chunksize, list(bq_schema), load_chunk
+    )
 
 
 def load_chunks(

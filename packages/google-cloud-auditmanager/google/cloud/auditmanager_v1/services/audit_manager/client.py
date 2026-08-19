@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -115,7 +115,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
     """Service describing handlers for resources"""
 
     @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint):
+    def _get_default_mtls_endpoint(api_endpoint) -> Optional[str]:
         """Converts api endpoint to mTLS endpoint.
 
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
@@ -123,7 +123,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         Args:
             api_endpoint (Optional[str]): the api endpoint to convert.
         Returns:
-            str: converted mTLS api endpoint.
+            Optional[str]: converted mTLS api endpoint.
         """
         if not api_endpoint:
             return api_endpoint
@@ -133,6 +133,10 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         )
 
         m = mtls_endpoint_re.match(api_endpoint)
+        if m is None:
+            # Could not parse api_endpoint; return as-is.
+            return api_endpoint
+
         name, mtls, sandbox, googledomain = m.groups()
         if mtls or not googledomain:
             return api_endpoint
@@ -547,7 +551,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
     @staticmethod
     def _get_api_endpoint(
         api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ):
+    ) -> str:
         """Return the API endpoint used by the client.
 
         Args:
@@ -644,7 +648,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
             error._details.append(json.dumps(cred_info))
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -740,7 +744,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         self._universe_domain = AuditManagerClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
-        self._api_endpoint = None  # updated below, depending on `transport`
+        self._api_endpoint: str = ""  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
@@ -845,14 +849,12 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> auditmanager.Enrollment:
-        r"""Enrolls the customer
-        resource(folder/project/organization) to the audit
-        manager service by creating the audit managers Service
-        Agent in customers workload and granting required
-        permissions to the Service Agent. Please note that if
-        enrollment request is made on the already enrolled
-        workload then enrollment is executed overriding the
-        existing set of destinations.
+        r"""Adds your project, folder, or organization to Audit
+        Manager. This method creates the Audit Manager service
+        agent in your workload and grants required permissions
+        to the service agent. If you make this request on a
+        workload that's already enrolled, then this method
+        overrides the existing set of destinations.
 
         .. code-block:: python
 
@@ -886,33 +888,33 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
         Args:
             request (Union[google.cloud.auditmanager_v1.types.EnrollResourceRequest, dict]):
-                The request object. Request message to subscribe the
-                Audit Manager service for given
-                resource.
+                The request object. Request message for
+                [EnrollResource][google.cloud.auditmanager.v1.AuditManager.EnrollResource].
             scope (str):
-                Required. The resource to be enrolled to the audit
-                manager. Scope format should be
-                resource_type/resource_identifier Eg:
-                projects/{project}/locations/{location},
-                folders/{folder}/locations/{location}
-                organizations/{organization}/locations/{location}
+                Required. Organization, folder, or project to enroll in
+                Audit Manager, in one of the following formats:
+
+                - ``projects/{project}/locations/{location}``
+                - ``folders/{folder}/locations/{location}``
+                - ``organizations/{organization}/locations/{location}``
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             destinations (MutableSequence[google.cloud.auditmanager_v1.types.EnrollResourceRequest.EligibleDestination]):
-                Required. List of destination among
-                which customer can choose to upload
-                their reports during the audit process.
-                While enrolling at a organization/folder
-                level, customer can choose Cloud storage
-                bucket in any project. If the audit is
-                triggered at project level using the
-                service agent at organization/folder
-                level, all the destination options
-                associated with respective
-                organization/folder level service agent
-                will be available to auditing projects.
+                Required. Cloud Storage buckets that
+                you can upload your audit reports to
+                during the audit process.
+
+                When you enroll an organization or
+                folder, you can choose a Cloud Storage
+                bucket from any project in the
+                organization or folder. If you run an
+                audit at the project level using the
+                service agent at the organization or
+                folder level, all the buckets that are
+                associated with the service agent are
+                available.
 
                 This corresponds to the ``destinations`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -927,7 +929,9 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
         Returns:
             google.cloud.auditmanager_v1.types.Enrollment:
-                The enrollment resource.
+                Organization, folder, or project to
+                enroll for audit reports.
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -992,10 +996,14 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> auditmanager.AuditScopeReport:
-        r"""Generates a demo report highlighting different
-        responsibilities (Google/Customer/ shared) required to
-        be fulfilled for the customer's workload to be compliant
-        with the given standard.
+        r"""Generates an audit scope report for the given standard.
+
+        The report includes the following:
+
+        - The technical attributes and constraints that Audit Manager
+          uses to verify your compliance with a framework.
+        - A list of Google Cloud services and resources that are within
+          the scope of the framework.
 
         .. code-block:: python
 
@@ -1015,7 +1023,6 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
                 # Initialize request argument(s)
                 request = auditmanager_v1.GenerateAuditScopeReportRequest(
                     scope="scope_value",
-                    compliance_standard="compliance_standard_value",
                     report_format="AUDIT_SCOPE_REPORT_FORMAT_ODF",
                     compliance_framework="compliance_framework_value",
                 )
@@ -1028,28 +1035,32 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
         Args:
             request (Union[google.cloud.auditmanager_v1.types.GenerateAuditScopeReportRequest, dict]):
-                The request object. Message for requesting audit scope
-                report.
+                The request object. Request message for
+                [GenerateAuditScopeReport][google.cloud.auditmanager.v1.AuditManager.GenerateAuditScopeReport].
             scope (str):
-                Required. Scope for which the AuditScopeReport is
-                required. Must be of format
-                resource_type/resource_identifier Eg:
-                projects/{project}/locations/{location},
-                folders/{folder}/locations/{location}
+                Required. Project or folder that the audit scope report
+                is generated for, in one of the following formats:
+
+                - ``projects/{project}/locations/{location}``
+                - ``folders/{folder}/locations/{location}``
+                - ``organizations/{organization}/locations/{location}``
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             compliance_standard (str):
-                Required. Compliance Standard against which the Scope
-                Report must be generated. Eg: FEDRAMP_MODERATE
+                Optional. Deprecated. The standard (industry or
+                regulatory requirements) that the audit scope report is
+                run against.
+
+                Use the ``compliance_framework`` field instead.
 
                 This corresponds to the ``compliance_standard`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             report_format (google.cloud.auditmanager_v1.types.GenerateAuditScopeReportRequest.AuditScopeReportFormat):
-                Required. The format in which the
-                Scope report bytes should be returned.
+                Required. Format for the audit scope
+                report.
 
                 This corresponds to the ``report_format`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1064,7 +1075,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
         Returns:
             google.cloud.auditmanager_v1.types.AuditScopeReport:
-                The audit scope report.
+                Audit scope report.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1132,9 +1143,9 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Register the Audit Report generation requests and
-        returns the OperationId using which the customer can
-        track the report generation progress.
+        r"""Registers audit report generation requests. This
+        method returns the operation identifier that you can use
+        to track the report generation progress.
 
         .. code-block:: python
 
@@ -1155,7 +1166,6 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
                 request = auditmanager_v1.GenerateAuditReportRequest(
                     gcs_uri="gcs_uri_value",
                     scope="scope_value",
-                    compliance_standard="compliance_standard_value",
                     report_format="AUDIT_REPORT_FORMAT_ODF",
                     compliance_framework="compliance_framework_value",
                 )
@@ -1172,39 +1182,41 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
         Args:
             request (Union[google.cloud.auditmanager_v1.types.GenerateAuditReportRequest, dict]):
-                The request object. Message for requesting the Audit
-                Report.
+                The request object. Request message for
+                [GenerateAuditReport][google.cloud.auditmanager.v1.AuditManager.GenerateAuditReport].
             scope (str):
-                Required. Scope for which the AuditScopeReport is
-                required. Must be of format
-                resource_type/resource_identifier Eg:
-                projects/{project}/locations/{location},
-                folders/{folder}/locations/{location}
+                Required. Organization, folder, or project that the
+                audit applies to, in one of the following formats:
+
+                - ``projects/{project}/locations/{location}``
+                - ``folders/{folder}/locations/{location}``
+                - ``organizations/{organization}/locations/{location}``
 
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             gcs_uri (str):
-                Destination Cloud storage bucket
-                where report and evidence must be
-                uploaded. The Cloud storage bucket
-                provided here must be selected among the
-                buckets entered during the enrollment
+                URL for the Cloud Storage bucket
+                where the report and evidence is
+                uploaded. You must select a bucket that
+                was provided during the enrollment
                 process.
 
                 This corresponds to the ``gcs_uri`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             compliance_standard (str):
-                Required. Compliance Standard against which the Scope
-                Report must be generated. Eg: FEDRAMP_MODERATE
+                Optional. Deprecated. Compliance standard for the audit
+                report.
+
+                Use the ``compliance_framework`` field instead.
 
                 This corresponds to the ``compliance_standard`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             report_format (google.cloud.auditmanager_v1.types.GenerateAuditReportRequest.AuditReportFormat):
-                Required. The format in which the
-                audit report should be created.
+                Required. Format for the audit
+                report.
 
                 This corresponds to the ``report_format`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1295,7 +1307,8 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListAuditReportsPager:
-        r"""Lists audit reports in the selected parent scope
+        r"""Lists the audit reports for the organization, folder,
+        or project that you specify as the parent scope.
 
         .. code-block:: python
 
@@ -1326,11 +1339,15 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
         Args:
             request (Union[google.cloud.auditmanager_v1.types.ListAuditReportsRequest, dict]):
-                The request object. Message for requesting to list the
-                audit reports.
+                The request object. Request message for
+                [ListAuditReports][google.cloud.auditmanager.v1.AuditManager.ListAuditReports].
             parent (str):
-                Required. The parent scope for which
-                to list the reports.
+                Required. Parent organization, folder, or project to
+                list reports for, in one of the following formats:
+
+                - ``projects/{project}/locations/{location}``
+                - ``folders/{folder}/locations/{location}``
+                - ``organizations/{organization}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1345,11 +1362,11 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
         Returns:
             google.cloud.auditmanager_v1.services.audit_manager.pagers.ListAuditReportsPager:
-                Response message with all the audit
-                reports.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
+                Response message for
+                   [ListAuditReports][google.cloud.auditmanager.v1.AuditManager.ListAuditReports].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1418,7 +1435,8 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> auditmanager.AuditReport:
-        r"""Get the overall audit report
+        r"""Gets the full metadata and findings for an audit
+        report.
 
         .. code-block:: python
 
@@ -1448,12 +1466,15 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
         Args:
             request (Union[google.cloud.auditmanager_v1.types.GetAuditReportRequest, dict]):
-                The request object. Message for requesting the overall
-                audit report for an audit report name.
+                The request object. Request message for
+                [GetAuditReport][google.cloud.auditmanager.v1.AuditManager.GetAuditReport].
             name (str):
-                Required. Format
-                projects/{project}/locations/{location}/auditReports/{audit_report},
-                folders/{folder}/locations/{location}/auditReports/{audit_report}
+                Required. Name of the audit report, in one of the
+                following formats:
+
+                - ``projects/{project}/locations/{location}/auditReports/{audit_report}``
+                - ``folders/{folder}/locations/{location}/auditReports/{audit_report}``
+                - ``organizations/{organization}/locations/{location}/auditReports/{audit_report}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1527,7 +1548,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> auditmanager.ResourceEnrollmentStatus:
-        r"""Get a resource along with its enrollment status.
+        r"""Gets a resource and its enrollment status.
 
         .. code-block:: python
 
@@ -1557,13 +1578,15 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
         Args:
             request (Union[google.cloud.auditmanager_v1.types.GetResourceEnrollmentStatusRequest, dict]):
-                The request object. Message for getting the enrollment
-                status of a resource.
+                The request object. Request message for
+                [GetResourceEnrollmentStatus][google.cloud.auditmanager.v1.AuditManager.GetResourceEnrollmentStatus].
             name (str):
-                Required. Format
-                folders/{folder}/locations/{location}/resourceEnrollmentStatuses/{resource_enrollment_status},
-                projects/{project}/locations/{location}/resourceEnrollmentStatuses/{resource_enrollment_status},
-                organizations/{organization}/locations/{location}/resourceEnrollmentStatuses/{resource_enrollment_status}
+                Required. Name of the resource enrollment status, in one
+                of the following formats:
+
+                - ``folders/{folder}/locations/{location}/resourceEnrollmentStatuses/{resource_enrollment_status}``
+                - ``projects/{project}/locations/{location}/resourceEnrollmentStatuses/{resource_enrollment_status}``
+                - ``organizations/{organization}/locations/{location}/resourceEnrollmentStatuses/{resource_enrollment_status}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1578,8 +1601,8 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
         Returns:
             google.cloud.auditmanager_v1.types.ResourceEnrollmentStatus:
-                A resource with its enrollment
-                status.
+                An organization, folder, or project
+                with its enrollment status.
 
         """
         # Create or coerce a protobuf request object.
@@ -1641,8 +1664,8 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListResourceEnrollmentStatusesPager:
-        r"""Fetches all resources under the parent along with
-        their enrollment.
+        r"""Lists all the folders and projects in an organization
+        or folder, along with their enrollments.
 
         .. code-block:: python
 
@@ -1673,13 +1696,15 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
         Args:
             request (Union[google.cloud.auditmanager_v1.types.ListResourceEnrollmentStatusesRequest, dict]):
-                The request object. Message for listing all the
-                descendent resources under parent with
-                enrollment.
+                The request object. Request message for
+                [ListResourceEnrollmentStatuses][google.cloud.auditmanager.v1.AuditManager.ListResourceEnrollmentStatuses].
             parent (str):
-                Required. The parent scope for which
-                the list of resources with enrollments
-                are required.
+                Required. Parent organization or folder to list
+                enrollment statuses for, in one of the following
+                formats:
+
+                - ``folders/{folder}/locations/{location}``
+                - ``organizations/{organization}/locations/{location}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1694,11 +1719,11 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
         Returns:
             google.cloud.auditmanager_v1.services.audit_manager.pagers.ListResourceEnrollmentStatusesPager:
-                Response message with all the
-                descendent resources with enrollment.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
+                Response message for
+                   [ListResourceEnrollmentStatuses][google.cloud.auditmanager.v1.AuditManager.ListResourceEnrollmentStatuses].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1769,8 +1794,8 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListControlsPager:
-        r"""Gets controls needed to be implemented to be
-        compliant to a standard.
+        r"""Lists the controls that you must implement to become
+        compliant to a regulatory standard.
 
         .. code-block:: python
 
@@ -1801,12 +1826,15 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
         Args:
             request (Union[google.cloud.auditmanager_v1.types.ListControlsRequest, dict]):
-                The request object. Message for requesting all the
-                controls for a compliance standard.
+                The request object. Request message for
+                [ListControls][google.cloud.auditmanager.v1.AuditManager.ListControls].
             parent (str):
-                Required. Format
-                projects/{project}/locations/{location}/standards/{standard},
-                folders/{folder}/locations/{location}/standards/{standard}
+                Required. Standard to list controls for, in one of the
+                following formats:
+
+                - ``projects/{project}/locations/{location}/standards/{standard}``
+                - ``folders/{folder}/locations/{location}/standards/{standard}``
+                - ``organizations/{organization}/locations/{location}/standards/{standard}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1821,11 +1849,11 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
         Returns:
             google.cloud.auditmanager_v1.services.audit_manager.pagers.ListControlsPager:
-                Response message with all the
-                controls for a compliance standard.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
+                Response message for
+                   [ListControls][google.cloud.auditmanager.v1.AuditManager.ListControls].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1900,7 +1928,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
     def list_operations(
         self,
-        request: Optional[operations_pb2.ListOperationsRequest] = None,
+        request: Optional[Union[operations_pb2.ListOperationsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1926,8 +1954,12 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.ListOperationsRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.ListOperationsRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.ListOperationsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1936,7 +1968,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -1945,7 +1977,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
+                request_pb,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata,
@@ -1959,7 +1991,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
     def get_operation(
         self,
-        request: Optional[operations_pb2.GetOperationRequest] = None,
+        request: Optional[Union[operations_pb2.GetOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1985,8 +2017,12 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.GetOperationRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.GetOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.GetOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1995,7 +2031,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -2004,7 +2040,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
+                request_pb,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata,
@@ -2018,7 +2054,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
     def delete_operation(
         self,
-        request: Optional[operations_pb2.DeleteOperationRequest] = None,
+        request: Optional[Union[operations_pb2.DeleteOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2048,8 +2084,12 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.DeleteOperationRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.DeleteOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.DeleteOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2058,7 +2098,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -2066,7 +2106,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
         # Send the request.
         rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -2074,7 +2114,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
     def cancel_operation(
         self,
-        request: Optional[operations_pb2.CancelOperationRequest] = None,
+        request: Optional[Union[operations_pb2.CancelOperationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2103,8 +2143,12 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = operations_pb2.CancelOperationRequest(**request)
+        if request is None:
+            request_pb = operations_pb2.CancelOperationRequest()
+        elif isinstance(request, dict):
+            request_pb = operations_pb2.CancelOperationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2113,7 +2157,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -2121,7 +2165,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
         # Send the request.
         rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -2129,7 +2173,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
     def get_location(
         self,
-        request: Optional[locations_pb2.GetLocationRequest] = None,
+        request: Optional[Union[locations_pb2.GetLocationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2155,8 +2199,12 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = locations_pb2.GetLocationRequest(**request)
+        if request is None:
+            request_pb = locations_pb2.GetLocationRequest()
+        elif isinstance(request, dict):
+            request_pb = locations_pb2.GetLocationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2165,7 +2213,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -2174,7 +2222,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
+                request_pb,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata,
@@ -2188,7 +2236,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 
     def list_locations(
         self,
-        request: Optional[locations_pb2.ListLocationsRequest] = None,
+        request: Optional[Union[locations_pb2.ListLocationsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2214,8 +2262,12 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = locations_pb2.ListLocationsRequest(**request)
+        if request is None:
+            request_pb = locations_pb2.ListLocationsRequest()
+        elif isinstance(request, dict):
+            request_pb = locations_pb2.ListLocationsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2224,7 +2276,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -2233,7 +2285,7 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
+                request_pb,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata,
@@ -2249,8 +2301,6 @@ class AuditManagerClient(metaclass=AuditManagerClientMeta):
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("AuditManagerClient",)

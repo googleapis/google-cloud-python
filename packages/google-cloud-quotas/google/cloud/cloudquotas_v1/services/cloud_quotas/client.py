@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -122,7 +122,7 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
     """
 
     @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint):
+    def _get_default_mtls_endpoint(api_endpoint) -> Optional[str]:
         """Converts api endpoint to mTLS endpoint.
 
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
@@ -130,7 +130,7 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
         Args:
             api_endpoint (Optional[str]): the api endpoint to convert.
         Returns:
-            str: converted mTLS api endpoint.
+            Optional[str]: converted mTLS api endpoint.
         """
         if not api_endpoint:
             return api_endpoint
@@ -140,6 +140,10 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
         )
 
         m = mtls_endpoint_re.match(api_endpoint)
+        if m is None:
+            # Could not parse api_endpoint; return as-is.
+            return api_endpoint
+
         name, mtls, sandbox, googledomain = m.groups()
         if mtls or not googledomain:
             return api_endpoint
@@ -471,7 +475,7 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
     @staticmethod
     def _get_api_endpoint(
         api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ):
+    ) -> str:
         """Return the API endpoint used by the client.
 
         Args:
@@ -568,7 +572,7 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
             error._details.append(json.dumps(cred_info))
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -664,7 +668,7 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
         self._universe_domain = CloudQuotasClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
-        self._api_endpoint = None  # updated below, depending on `transport`
+        self._api_endpoint: str = ""  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
@@ -801,9 +805,9 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
                 The request object. Message for requesting list of
                 QuotaInfos
             parent (str):
-                Required. Parent value of QuotaInfo resources. Listing
-                across different resource containers (such as
-                'projects/-') is not allowed.
+                Required. Identifier. Parent value of QuotaInfo
+                resources. Listing across different resource containers
+                (such as 'projects/-') is not allowed.
 
                 Example names:
                 ``projects/123/locations/global/services/compute.googleapis.com``
@@ -929,7 +933,8 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
             request (Union[google.cloud.cloudquotas_v1.types.GetQuotaInfoRequest, dict]):
                 The request object. Message for getting a QuotaInfo
             name (str):
-                Required. The resource name of the quota info.
+                Required. Identifier. The resource name of the quota
+                info.
 
                 An example name:
                 ``projects/123/locations/global/services/compute.googleapis.com/quotaInfos/CpusPerProjectPerRegion``
@@ -1042,9 +1047,9 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
                 The request object. Message for requesting list of
                 QuotaPreferences
             parent (str):
-                Required. Parent value of QuotaPreference resources.
-                Listing across different resource containers (such as
-                'projects/-') is not allowed.
+                Required. Identifier. Parent value of QuotaPreference
+                resources. Listing across different resource containers
+                (such as 'projects/-') is not allowed.
 
                 When the value starts with 'folders' or 'organizations',
                 it lists the QuotaPreferences for org quotas in the
@@ -1171,7 +1176,7 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
             request (Union[google.cloud.cloudquotas_v1.types.GetQuotaPreferenceRequest, dict]):
                 The request object. Message for getting a QuotaPreference
             name (str):
-                Required. Name of the resource
+                Required. Identifier. Name of the resource
 
                 Example name:
                 ``projects/123/locations/global/quota_preferences/my-config-for-us-east1``
@@ -1294,7 +1299,7 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
                 The request object. Message for creating a
                 QuotaPreference
             parent (str):
-                Required. Value for parent.
+                Required. Identifier. Value for parent.
 
                 Example: ``projects/123/locations/global``
 
@@ -1534,8 +1539,6 @@ class CloudQuotasClient(metaclass=CloudQuotasClientMeta):
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("CloudQuotasClient",)

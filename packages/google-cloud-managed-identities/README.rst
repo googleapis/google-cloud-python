@@ -3,7 +3,9 @@ Python Client for Managed Service for Microsoft Active Directory
 
 |stable| |pypi| |versions|
 
-`Managed Service for Microsoft Active Directory`_: is a highly available, hardened Google Cloud service running actual Microsoft AD that enables you to manage authentication and authorization for your AD-dependent workloads, automate AD server maintenance and security configuration, and connect your on-premises AD domain to the cloud.
+`Managed Service for Microsoft Active Directory`_: The Managed Service for Microsoft Active Directory API is used for managing
+a highly available, hardened service running Microsoft Active Directory
+(AD).
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -61,14 +63,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,11 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.dataplex_v1.types import datascans_common, processing
+from google.cloud.dataplex_v1.types import (
+    data_quality_rule_template,
+    datascans_common,
+    processing,
+)
 
 __protobuf__ = proto.module(
     package="google.cloud.dataplex.v1",
@@ -67,6 +71,34 @@ class DataQualitySpec(proto.Message):
             Optional. If set, the latest DataScan job
             result will be published as Dataplex Universal
             Catalog metadata.
+        enable_catalog_based_rules (bool):
+            Optional. If enabled, the data scan will
+            retrieve rules defined in the
+            dataplex-types.global.data-rules aspect on all
+            paths of the catalog entry corresponding to the
+            BigQuery table resource and all attached
+            glossary terms. The path that data-rules aspect
+            is attached on the table entry defines the
+            column that the rule will be evaluated against.
+            For glossary terms, the path that the terms are
+            attached on the table entry defines the column
+            that the rule will be evaluated against. At the
+            start of scan execution, the rules reflect the
+            latest state retrieved from the catalog entry
+            and any updates on the rules thereafter are
+            ignored for that execution. The updates will be
+            reflected from the next execution. Rules defined
+            in the datascan must be empty if this field is
+            enabled.
+        filter (str):
+            Optional. Filter for selectively running a subset of rules.
+            You can filter the request by the name or attribute
+            key-value pairs defined on the rule. If not specified, all
+            rules are run. The filter is applicable to both, the rules
+            retrieved from catalog and explicitly defined rules in the
+            scan. Please see `filter
+            syntax <https://docs.cloud.google.com/dataplex/docs/auto-data-quality-overview#rule-filtering>`__
+            for more details.
     """
 
     class PostScanActions(proto.Message):
@@ -215,6 +247,14 @@ class DataQualitySpec(proto.Message):
     catalog_publishing_enabled: bool = proto.Field(
         proto.BOOL,
         number=8,
+    )
+    enable_catalog_based_rules: bool = proto.Field(
+        proto.BOOL,
+        number=10,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=11,
     )
 
 
@@ -465,7 +505,58 @@ class DataQualityRuleResult(proto.Message):
 
             This field is only valid for SQL assertion
             rules.
+        debug_queries_result_sets (MutableSequence[google.cloud.dataplex_v1.types.DataQualityRuleResult.DebugQueryResultSet]):
+            Output only. Contains the results of all debug queries for
+            this rule. The number of result sets will correspond to the
+            number of
+            [debug_queries][google.cloud.dataplex.v1.DataQualityRule.debug_queries].
     """
+
+    class DebugQueryResult(proto.Message):
+        r"""Contains a single result from the debug query.
+
+        Attributes:
+            name (str):
+                Specifies the name of the result. Available if provided with
+                an explicit alias using ``[AS] alias``.
+            type_ (str):
+                Indicates the data type of the result. For more information,
+                see `BigQuery data
+                types <https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types>`__.
+            value (str):
+                Represents the value of the result as a
+                string.
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        type_: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        value: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    class DebugQueryResultSet(proto.Message):
+        r"""Contains all results from a debug query.
+
+        Attributes:
+            results (MutableSequence[google.cloud.dataplex_v1.types.DataQualityRuleResult.DebugQueryResult]):
+                Output only. Contains all results. Up to 10
+                results can be returned.
+        """
+
+        results: MutableSequence["DataQualityRuleResult.DebugQueryResult"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="DataQualityRuleResult.DebugQueryResult",
+            )
+        )
 
     rule: "DataQualityRule" = proto.Field(
         proto.MESSAGE,
@@ -499,6 +590,13 @@ class DataQualityRuleResult(proto.Message):
     assertion_row_count: int = proto.Field(
         proto.INT64,
         number=11,
+    )
+    debug_queries_result_sets: MutableSequence[DebugQueryResultSet] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=13,
+            message=DebugQueryResultSet,
+        )
     )
 
 
@@ -618,6 +716,13 @@ class DataQualityRule(proto.Message):
             rows are returned, this rule fails.
 
             This field is a member of `oneof`_ ``rule_type``.
+        template_reference (google.cloud.dataplex_v1.types.DataQualityRule.TemplateReference):
+            Aggregate rule which references a rule
+            template and provides the parameters to be
+            substituted in the template. If any rows are
+            returned, this rule fails.
+
+            This field is a member of `oneof`_ ``rule_type``.
         column (str):
             Optional. The unnested column which this rule
             is evaluated against.
@@ -633,7 +738,7 @@ class DataQualityRule(proto.Message):
             - SetExpectation
             - UniquenessExpectation
         dimension (str):
-            Required. The dimension a rule belongs to.
+            Optional. The dimension a rule belongs to.
             Results are also aggregated at the dimension
             level. Custom dimension name is supported with
             all uppercase letters and maximum length of 30
@@ -660,6 +765,21 @@ class DataQualityRule(proto.Message):
         suspended (bool):
             Optional. Whether the Rule is active or
             suspended. Default is false.
+        attributes (MutableMapping[str, str]):
+            Optional. Map of attribute name and value
+            linked to the rule. The rules to evaluate can be
+            filtered based on attributes provided here and a
+            filter expression provided in the
+            DataQualitySpec.filter field.
+        rule_source (google.cloud.dataplex_v1.types.DataQualityRule.RuleSource):
+            Output only. Contains information about the
+            source of the rule and its relationship with the
+            BigQuery table, where applicable.
+        debug_queries (MutableSequence[google.cloud.dataplex_v1.types.DataQualityRule.DebugQuery]):
+            Optional. Specifies the debug queries for
+            this rule. Currently, only one query is
+            supported, but this may be expanded in the
+            future.
     """
 
     class RangeExpectation(proto.Message):
@@ -884,6 +1004,227 @@ class DataQualityRule(proto.Message):
             number=1,
         )
 
+    class TemplateReference(proto.Message):
+        r"""A rule that constructs a SQL statement to evaluate using a
+        rule template and parameter values. If the constructed statement
+        returns any rows, this rule fails
+
+        Attributes:
+            name (str):
+                Required. The template entry name. Entry must be of
+                EntryType
+                ``projects/dataplex-types/locations/global/entryTypes/data-quality-rule-template``
+                and contains top-level aspect of AspectType
+                ``projects/dataplex-types/locations/global/aspectTypes/data-quality-rule-template``.
+                The format is:
+                ``projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entries/{entry_id}``
+            values (MutableMapping[str, google.cloud.dataplex_v1.types.DataQualityRule.TemplateReference.ParameterValue]):
+                Optional. Provides the map of parameter name
+                and value. The maximum size of the field is
+                120KB (encoded as UTF-8).
+            resolved_sql (str):
+                Output only. The resolved SQL statement
+                generated from the template with parameters
+                substituted. It is only populated in the result.
+            rule_template (google.cloud.dataplex_v1.types.DataQualityRuleTemplate):
+                Output only. The rule template used to
+                resolve the rule. It is only populated in the
+                result.
+        """
+
+        class ParameterValue(proto.Message):
+            r"""Represents a parameter value.
+
+            Attributes:
+                value (str):
+                    Required. Represents the string value of the
+                    parameter.
+            """
+
+            value: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        values: MutableMapping[
+            str, "DataQualityRule.TemplateReference.ParameterValue"
+        ] = proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=5,
+            message="DataQualityRule.TemplateReference.ParameterValue",
+        )
+        resolved_sql: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        rule_template: data_quality_rule_template.DataQualityRuleTemplate = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=data_quality_rule_template.DataQualityRuleTemplate,
+        )
+
+    class RuleSource(proto.Message):
+        r"""Represents the rule source information from Catalog.
+
+        Attributes:
+            rule_path_elements (MutableSequence[google.cloud.dataplex_v1.types.DataQualityRule.RuleSource.RulePathElement]):
+                Output only. Rule path elements represent
+                information about the individual items in the
+                relationship path between the scan resource and
+                rule origin in that order.
+        """
+
+        class RulePathElement(proto.Message):
+            r"""Path Element represents the direct relationship between the
+            rule origin (aspects) to the BigQuery Entry. Ordering of the
+            rule relationship will be maintained such that the first entry
+            in the list is the closest ancestor (BigQuery table itself). A
+            blank source denotes that the rule is derived directly from the
+            DataScan itself.
+
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                entry_source (google.cloud.dataplex_v1.types.DataQualityRule.RuleSource.RulePathElement.EntrySource):
+                    Output only. Entry source represents
+                    information about the related source entry.
+
+                    This field is a member of `oneof`_ ``source_type``.
+                entry_link_source (google.cloud.dataplex_v1.types.DataQualityRule.RuleSource.RulePathElement.EntryLinkSource):
+                    Output only. Entry link source represents
+                    information about the entry link.
+
+                    This field is a member of `oneof`_ ``source_type``.
+            """
+
+            class EntrySource(proto.Message):
+                r"""Entry source represents information about the related source
+                entry.
+
+                Attributes:
+                    entry_type (str):
+                        Output only. The entry type to represent the current
+                        characteristics of the entry in the form of:
+                        ``projects/{project_id_or_number}/locations/{location_id}/entryTypes/{entry-type-id}``.
+                    entry (str):
+                        Output only. The entry name in the form of:
+                        ``projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entries/{entry_id}``
+                    display_name (str):
+                        Output only. The display name of the entry.
+                """
+
+                entry_type: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                entry: str = proto.Field(
+                    proto.STRING,
+                    number=2,
+                )
+                display_name: str = proto.Field(
+                    proto.STRING,
+                    number=3,
+                )
+
+            class EntryLinkSource(proto.Message):
+                r"""Entry link source represents information about the entry
+                link.
+
+                Attributes:
+                    entry_link_type (str):
+                        Output only. The entry link type to represent the current
+                        relationship between the entry and the next entry in the
+                        path. In the form of:
+                        ``projects/{project_id_or_number}/locations/{location_id}/entryLinkTypes/{entry_link_type_id}``
+                    entry_link (str):
+                        Output only. The entry link name in the form of:
+                        ``projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entryLinks/{entry_link_id}``
+                """
+
+                entry_link_type: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                entry_link: str = proto.Field(
+                    proto.STRING,
+                    number=2,
+                )
+
+            entry_source: "DataQualityRule.RuleSource.RulePathElement.EntrySource" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=1,
+                    oneof="source_type",
+                    message="DataQualityRule.RuleSource.RulePathElement.EntrySource",
+                )
+            )
+            entry_link_source: "DataQualityRule.RuleSource.RulePathElement.EntryLinkSource" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="source_type",
+                message="DataQualityRule.RuleSource.RulePathElement.EntryLinkSource",
+            )
+
+        rule_path_elements: MutableSequence[
+            "DataQualityRule.RuleSource.RulePathElement"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="DataQualityRule.RuleSource.RulePathElement",
+        )
+
+    class DebugQuery(proto.Message):
+        r"""Specifies a SQL statement that is evaluated to return up to 10
+        scalar values that are used to debug rules. If the rule fails, the
+        values can help diagnose the cause of the failure.
+
+        The SQL statement must use `GoogleSQL
+        syntax <https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax>`__,
+        and must not contain any semicolons.
+
+        You can use the data reference parameter ``${data()}`` to reference
+        the source table with all of its precondition filters applied.
+        Examples of precondition filters include row filters, incremental
+        data filters, and sampling. For more information, see `Data
+        reference
+        parameter <https://cloud.google.com/dataplex/docs/auto-data-quality-overview#data-reference-parameter>`__.
+
+        You can also name results with an explicit alias using
+        ``[AS] alias``. For more information, see `BigQuery explicit
+        aliases <https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#explicit_alias_syntax>`__.
+
+        Example:
+        ``SELECT MIN(col1) AS min_col1, MAX(col1) AS max_col1 FROM ${data()}``
+
+        Attributes:
+            description (str):
+                Optional. Specifies the description of the debug query.
+
+                - The maximum length is 1,024 characters.
+            sql_statement (str):
+                Required. Specifies the SQL statement to be
+                executed.
+        """
+
+        description: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        sql_statement: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
     range_expectation: RangeExpectation = proto.Field(
         proto.MESSAGE,
         number=1,
@@ -938,6 +1279,12 @@ class DataQualityRule(proto.Message):
         oneof="rule_type",
         message=SqlAssertion,
     )
+    template_reference: TemplateReference = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="rule_type",
+        message=TemplateReference,
+    )
     column: str = proto.Field(
         proto.STRING,
         number=500,
@@ -965,6 +1312,21 @@ class DataQualityRule(proto.Message):
     suspended: bool = proto.Field(
         proto.BOOL,
         number=506,
+    )
+    attributes: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=507,
+    )
+    rule_source: RuleSource = proto.Field(
+        proto.MESSAGE,
+        number=508,
+        message=RuleSource,
+    )
+    debug_queries: MutableSequence[DebugQuery] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=510,
+        message=DebugQuery,
     )
 
 

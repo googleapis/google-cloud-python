@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,12 +21,71 @@ from google.cloud.dialogflowcx_v3 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER
-    from importlib import metadata
-else:  # pragma: NO COVER
-    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
-    # this code path once we drop support for Python 3.7
-    import importlib_metadata as metadata
+from importlib import metadata
+
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.dialogflowcx_v3.services.agents",
+    "google.cloud.dialogflowcx_v3.services.changelogs",
+    "google.cloud.dialogflowcx_v3.services.deployments",
+    "google.cloud.dialogflowcx_v3.services.entity_types",
+    "google.cloud.dialogflowcx_v3.services.environments",
+    "google.cloud.dialogflowcx_v3.services.examples",
+    "google.cloud.dialogflowcx_v3.services.experiments",
+    "google.cloud.dialogflowcx_v3.services.flows",
+    "google.cloud.dialogflowcx_v3.services.generators",
+    "google.cloud.dialogflowcx_v3.services.intents",
+    "google.cloud.dialogflowcx_v3.services.pages",
+    "google.cloud.dialogflowcx_v3.services.playbooks",
+    "google.cloud.dialogflowcx_v3.services.security_settings_service",
+    "google.cloud.dialogflowcx_v3.services.session_entity_types",
+    "google.cloud.dialogflowcx_v3.services.sessions",
+    "google.cloud.dialogflowcx_v3.services.test_cases",
+    "google.cloud.dialogflowcx_v3.services.tools",
+    "google.cloud.dialogflowcx_v3.services.transition_route_groups",
+    "google.cloud.dialogflowcx_v3.services.versions",
+    "google.cloud.dialogflowcx_v3.services.webhooks",
+    "google.cloud.dialogflowcx_v3.types.advanced_settings",
+    "google.cloud.dialogflowcx_v3.types.agent",
+    "google.cloud.dialogflowcx_v3.types.audio_config",
+    "google.cloud.dialogflowcx_v3.types.changelog",
+    "google.cloud.dialogflowcx_v3.types.code_block",
+    "google.cloud.dialogflowcx_v3.types.data_store_connection",
+    "google.cloud.dialogflowcx_v3.types.deployment",
+    "google.cloud.dialogflowcx_v3.types.entity_type",
+    "google.cloud.dialogflowcx_v3.types.environment",
+    "google.cloud.dialogflowcx_v3.types.example",
+    "google.cloud.dialogflowcx_v3.types.experiment",
+    "google.cloud.dialogflowcx_v3.types.flow",
+    "google.cloud.dialogflowcx_v3.types.fulfillment",
+    "google.cloud.dialogflowcx_v3.types.gcs",
+    "google.cloud.dialogflowcx_v3.types.generative_settings",
+    "google.cloud.dialogflowcx_v3.types.generator",
+    "google.cloud.dialogflowcx_v3.types.import_strategy",
+    "google.cloud.dialogflowcx_v3.types.inline",
+    "google.cloud.dialogflowcx_v3.types.intent",
+    "google.cloud.dialogflowcx_v3.types.page",
+    "google.cloud.dialogflowcx_v3.types.parameter_definition",
+    "google.cloud.dialogflowcx_v3.types.playbook",
+    "google.cloud.dialogflowcx_v3.types.response_message",
+    "google.cloud.dialogflowcx_v3.types.safety_settings",
+    "google.cloud.dialogflowcx_v3.types.security_settings",
+    "google.cloud.dialogflowcx_v3.types.session",
+    "google.cloud.dialogflowcx_v3.types.session_entity_type",
+    "google.cloud.dialogflowcx_v3.types.test_case",
+    "google.cloud.dialogflowcx_v3.types.tool",
+    "google.cloud.dialogflowcx_v3.types.tool_call",
+    "google.cloud.dialogflowcx_v3.types.trace",
+    "google.cloud.dialogflowcx_v3.types.transition_route_group",
+    "google.cloud.dialogflowcx_v3.types.validation_message",
+    "google.cloud.dialogflowcx_v3.types.version",
+    "google.cloud.dialogflowcx_v3.types.webhook",
+}
 
 
 from .services.agents import AgentsAsyncClient, AgentsClient
@@ -367,13 +426,17 @@ from .types.trace import (
     Action,
     AgentUtterance,
     FlowInvocation,
+    FlowTraceMetadata,
     FlowTransition,
     OutputState,
     PlaybookInput,
     PlaybookInvocation,
     PlaybookOutput,
+    PlaybookTraceMetadata,
     PlaybookTransition,
+    SpeechProcessingMetadata,
     ToolUse,
+    TraceBlock,
     UserUtterance,
 )
 from .types.transition_route_group import (
@@ -423,34 +486,23 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import sys
         import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.dialogflowcx_v3"
-        if sys.version_info < (3, 9):
+        if sys.version_info < (3, 10):
             warnings.warn(
                 "You are using a non-supported Python version "
                 + f"({_py_version_str}).  Google will not post any further "
                 + f"updates to {_package_label} supporting this Python version. "
                 + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.9, and then update {_package_label}.",
-                FutureWarning,
-            )
-        if sys.version_info[:2] == (3, 9):
-            warnings.warn(
-                f"You are using a Python version ({_py_version_str}) "
-                + f"which Google will stop supporting in {_package_label} in "
-                + "January 2026. Please "
-                + "upgrade to the latest Python version, or at "
-                + "least to Python 3.10, before then, and "
-                + f"then update {_package_label}.",
+                + f"least to Python 3.10, and then update {_package_label}.",
                 FutureWarning,
             )
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -479,9 +531,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(
@@ -636,6 +688,7 @@ __all__ = (
     "Flow",
     "FlowImportStrategy",
     "FlowInvocation",
+    "FlowTraceMetadata",
     "FlowTransition",
     "FlowValidationResult",
     "FlowsClient",
@@ -765,6 +818,7 @@ __all__ = (
     "PlaybookInput",
     "PlaybookInvocation",
     "PlaybookOutput",
+    "PlaybookTraceMetadata",
     "PlaybookTransition",
     "PlaybookVersion",
     "PlaybooksClient",
@@ -796,6 +850,7 @@ __all__ = (
     "SessionInfo",
     "SessionsClient",
     "SpeechModelVariant",
+    "SpeechProcessingMetadata",
     "SpeechToTextSettings",
     "SpeechWordInfo",
     "SsmlVoiceGender",
@@ -822,6 +877,7 @@ __all__ = (
     "ToolUse",
     "ToolVersion",
     "ToolsClient",
+    "TraceBlock",
     "TrainFlowRequest",
     "TransitionCoverage",
     "TransitionRoute",

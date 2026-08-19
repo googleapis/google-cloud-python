@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,7 +34,8 @@ class TermsOfServiceKind(proto.Enum):
         TERMS_OF_SERVICE_KIND_UNSPECIFIED (0):
             Default value. This value is unused.
         MERCHANT_CENTER (1):
-            Merchant Center application.
+            Terms of service for the Merchant Center
+            application.
     """
 
     TERMS_OF_SERVICE_KIND_UNSPECIFIED = 0

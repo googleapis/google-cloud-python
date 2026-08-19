@@ -14,30 +14,31 @@
 
 import datetime
 import pickle
-import pytz
 import types
 import zlib
-
 from unittest import mock
 
-from google.cloud import datastore
+import pytest
+import pytz
 from google.cloud.datastore import entity as entity_module
-from google.cloud.datastore import key as ds_key_module
 from google.cloud.datastore import helpers
+from google.cloud.datastore import key as ds_key_module
 from google.cloud.datastore_v1 import types as ds_types
 from google.cloud.datastore_v1.types import entity as entity_pb2
-import pytest
 
-from google.cloud.ndb import _datastore_types
-from google.cloud.ndb import exceptions
+from google.cloud import datastore
+from google.cloud.ndb import (
+    _datastore_types,
+    _legacy_entity_pb,
+    _options,
+    exceptions,
+    model,
+    polymodel,
+    tasklets,
+)
 from google.cloud.ndb import key as key_module
-from google.cloud.ndb import model
-from google.cloud.ndb import _options
-from google.cloud.ndb import polymodel
 from google.cloud.ndb import query as query_module
-from google.cloud.ndb import tasklets
 from google.cloud.ndb import utils as ndb_utils
-from google.cloud.ndb import _legacy_entity_pb
 
 from . import utils
 
@@ -2286,7 +2287,7 @@ class TestCompressedTextProperty:
     def test__to_base_type_converted():
         prop = model.CompressedTextProperty(name="text")
         value = b"\xe2\x98\x83"
-        assert prop._to_base_type("\N{snowman}") == value
+        assert prop._to_base_type("\N{SNOWMAN}") == value
 
     @staticmethod
     def test__from_base_type():
@@ -2297,7 +2298,7 @@ class TestCompressedTextProperty:
     def test__from_base_type_converted():
         prop = model.CompressedTextProperty(name="text")
         value = b"\xe2\x98\x83"
-        assert prop._from_base_type(value) == "\N{snowman}"
+        assert prop._from_base_type(value) == "\N{SNOWMAN}"
 
     @staticmethod
     def test__from_base_type_cannot_convert():
@@ -2366,7 +2367,7 @@ class TestTextProperty:
     @staticmethod
     def test__to_base_type_converted():
         prop = model.TextProperty(name="text")
-        value = "\N{snowman}"
+        value = "\N{SNOWMAN}"
         assert prop._to_base_type(b"\xe2\x98\x83") == value
 
     @staticmethod
@@ -2378,7 +2379,7 @@ class TestTextProperty:
     def test__from_base_type_converted():
         prop = model.TextProperty(name="text")
         value = b"\xe2\x98\x83"
-        assert prop._from_base_type(value) == "\N{snowman}"
+        assert prop._from_base_type(value) == "\N{SNOWMAN}"
 
     @staticmethod
     def test__from_base_type_cannot_convert():
@@ -2529,7 +2530,7 @@ class TestJsonProperty:
     @staticmethod
     def test__to_base_type():
         prop = model.JsonProperty(name="json-val")
-        value = [14, [15, 16], {"seventeen": 18}, "\N{snowman}"]
+        value = [14, [15, 16], {"seventeen": 18}, "\N{SNOWMAN}"]
         expected = b'[14,[15,16],{"seventeen":18},"\\u2603"]'
         assert prop._to_base_type(value) == expected
 
@@ -2537,14 +2538,14 @@ class TestJsonProperty:
     def test__from_base_type():
         prop = model.JsonProperty(name="json-val")
         value = b'[14,true,{"a":null,"b":"\\u2603"}]'
-        expected = [14, True, {"a": None, "b": "\N{snowman}"}]
+        expected = [14, True, {"a": None, "b": "\N{SNOWMAN}"}]
         assert prop._from_base_type(value) == expected
 
     @staticmethod
     def test__from_base_type_str():
         prop = model.JsonProperty(name="json-val")
         value = '[14,true,{"a":null,"b":"\\u2603"}]'
-        expected = [14, True, {"a": None, "b": "\N{snowman}"}]
+        expected = [14, True, {"a": None, "b": "\N{SNOWMAN}"}]
         assert prop._from_base_type(value) == expected
 
 
@@ -4330,7 +4331,7 @@ class TestMetaModel:
             second = model.StringProperty()
 
         expected = (
-            "Mine<first=IntegerProperty('first'), " "second=StringProperty('second')>"
+            "Mine<first=IntegerProperty('first'), second=StringProperty('second')>"
         )
         assert repr(Mine) == expected
 
@@ -4549,7 +4550,7 @@ class TestModel:
         ManyFields = ManyFieldsFactory()
         entity = ManyFields(self=909, id="hi", value=None, _id=78)
         expected = (
-            "ManyFields(_key=Key('ManyFields', 78), id='hi', " "self=909, value=None)"
+            "ManyFields(_key=Key('ManyFields', 78), id='hi', self=909, value=None)"
         )
         assert repr(entity) == expected
 
@@ -6657,3 +6658,17 @@ def ManyFieldsFactory():
         unused = model.FloatProperty()
 
     return ManyFields
+
+
+def test_model_set_projection_branches():
+    class Child(model.Model):
+        val = model.StringProperty()
+
+    class Parent(model.Model):
+        child = model.StructuredProperty(Child)
+        children = model.StructuredProperty(Child, repeated=True)
+
+    parent = Parent(child=Child(val="a"), children=[Child(val="b")])
+    parent._set_projection(["child.val", "children.val", "nonexistent.subprop"])
+    parent._properties = None
+    parent._set_projection(["child.val"])

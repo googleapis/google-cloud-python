@@ -48,8 +48,8 @@ You can also pass a mapping object.
 
 """
 
-from typing import Callable, Mapping, Optional, Sequence, Tuple
 import warnings
+from typing import Callable, Mapping, Optional, Sequence, Tuple
 
 from google.api_core import general_helpers
 

@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from sqlalchemy import create_engine, select, text
 from sample_helper import run_sample
+from sqlalchemy import create_engine, select, text
 
 
 def quickstart():

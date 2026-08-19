@@ -46,12 +46,8 @@ SCOPES_AS_STRING = (
     " https://www.googleapis.com/auth/logging.write"
 )
 
-ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/sa"
-)
-ID_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
-    "gl-python/3.7 auth/1.1 auth-request-type/it cred-type/sa"
-)
+ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version> auth-request-type/at cred-type/sa"
+ID_TOKEN_REQUEST_METRICS_HEADER_VALUE = "gl-python/<python-version> auth/<library-version> auth-request-type/it cred-type/sa"
 
 
 @pytest.mark.parametrize("retryable", [True, False])
@@ -185,7 +181,8 @@ def test__token_endpoint_request_error():
         _client._token_endpoint_request(request, "http://example.com", {})
 
 
-def test__token_endpoint_request_internal_failure_error():
+@mock.patch("time.sleep", return_value=None)
+def test__token_endpoint_request_internal_failure_error(mock_sleep):
     request = make_request(
         {"error_description": "internal_failure"}, status=http_client.BAD_REQUEST
     )
@@ -207,9 +204,11 @@ def test__token_endpoint_request_internal_failure_error():
         )
     # request with 2 retries
     assert request.call_count == 3
+    assert mock_sleep.call_count == 4
 
 
-def test__token_endpoint_request_internal_failure_and_retry_failure_error():
+@mock.patch("time.sleep", return_value=None)
+def test__token_endpoint_request_internal_failure_and_retry_failure_error(mock_sleep):
     retryable_error = mock.create_autospec(transport.Response, instance=True)
     retryable_error.status = http_client.BAD_REQUEST
     retryable_error.data = json.dumps({"error_description": "internal_failure"}).encode(
@@ -233,9 +232,11 @@ def test__token_endpoint_request_internal_failure_and_retry_failure_error():
     # request should be called three times. Two retryable errors and one
     # unretryable error to break the retry loop.
     assert request.call_count == 3
+    assert mock_sleep.call_count == 2
 
 
-def test__token_endpoint_request_internal_failure_and_retry_succeeds():
+@mock.patch("time.sleep", return_value=None)
+def test__token_endpoint_request_internal_failure_and_retry_succeeds(mock_sleep):
     retryable_error = mock.create_autospec(transport.Response, instance=True)
     retryable_error.status = http_client.BAD_REQUEST
     retryable_error.data = json.dumps({"error_description": "internal_failure"}).encode(
@@ -255,6 +256,7 @@ def test__token_endpoint_request_internal_failure_and_retry_succeeds():
     )
 
     assert request.call_count == 2
+    assert mock_sleep.call_count == 1
 
 
 def test__token_endpoint_request_string_error():
@@ -611,7 +613,8 @@ def test_refresh_grant_retry_with_retry(
 
 
 @pytest.mark.parametrize("can_retry", [True, False])
-def test__token_endpoint_request_no_throw_with_retry(can_retry):
+@mock.patch("time.sleep", return_value=None)
+def test__token_endpoint_request_no_throw_with_retry(mock_sleep, can_retry):
     response_data = {"error": "help", "error_description": "I'm alive"}
     body = "dummy body"
 
@@ -628,11 +631,13 @@ def test__token_endpoint_request_no_throw_with_retry(can_retry):
 
     if can_retry:
         assert mock_request.call_count == 3
+        assert mock_sleep.call_count == 2
     else:
         assert mock_request.call_count == 1
+        mock_sleep.assert_not_called()
 
 
-def test_lookup_trust_boundary():
+def test_lookup_regional_access_boundary():
     response_data = {
         "locations": ["us-central1", "us-east1"],
         "encodedLocations": "0x80080000000000",
@@ -647,55 +652,19 @@ def test_lookup_trust_boundary():
 
     url = "http://example.com"
     headers = {"Authorization": "Bearer access_token"}
-    response = _client._lookup_trust_boundary(mock_request, url, headers=headers)
+    response = _client._lookup_regional_access_boundary(
+        mock_request, url, headers=headers
+    )
 
     assert response["encodedLocations"] == "0x80080000000000"
     assert response["locations"] == ["us-central1", "us-east1"]
 
-    mock_request.assert_called_once_with(method="GET", url=url, headers=headers)
+    mock_request.assert_called_once_with(
+        method="GET", url=url, headers=headers, timeout=None
+    )
 
 
-def test_lookup_trust_boundary_no_op_response_without_locations():
-    response_data = {"encodedLocations": "0x0"}
-
-    mock_response = mock.create_autospec(transport.Response, instance=True)
-    mock_response.status = http_client.OK
-    mock_response.data = json.dumps(response_data).encode("utf-8")
-
-    mock_request = mock.create_autospec(transport.Request)
-    mock_request.return_value = mock_response
-
-    url = "http://example.com"
-    headers = {"Authorization": "Bearer access_token"}
-    # for the response to be valid, we only need encodedLocations to be present.
-    response = _client._lookup_trust_boundary(mock_request, url, headers=headers)
-    assert response["encodedLocations"] == "0x0"
-    assert "locations" not in response
-
-    mock_request.assert_called_once_with(method="GET", url=url, headers=headers)
-
-
-def test_lookup_trust_boundary_no_op_response():
-    response_data = {"locations": [], "encodedLocations": "0x0"}
-
-    mock_response = mock.create_autospec(transport.Response, instance=True)
-    mock_response.status = http_client.OK
-    mock_response.data = json.dumps(response_data).encode("utf-8")
-
-    mock_request = mock.create_autospec(transport.Request)
-    mock_request.return_value = mock_response
-
-    url = "http://example.com"
-    headers = {"Authorization": "Bearer access_token"}
-    response = _client._lookup_trust_boundary(mock_request, url, headers=headers)
-
-    assert response["encodedLocations"] == "0x0"
-    assert response["locations"] == []
-
-    mock_request.assert_called_once_with(method="GET", url=url, headers=headers)
-
-
-def test_lookup_trust_boundary_error():
+def test_lookup_regional_access_boundary_error():
     mock_response = mock.create_autospec(transport.Response, instance=True)
     mock_response.status = http_client.INTERNAL_SERVER_ERROR
     mock_response.data = "this is an error message"
@@ -705,33 +674,47 @@ def test_lookup_trust_boundary_error():
 
     url = "http://example.com"
     headers = {"Authorization": "Bearer access_token"}
-    with pytest.raises(exceptions.RefreshError) as excinfo:
-        _client._lookup_trust_boundary(mock_request, url, headers=headers)
-    assert excinfo.match("this is an error message")
+    result = _client._lookup_regional_access_boundary(
+        mock_request, url, headers=headers
+    )
+    assert result is None
 
-    mock_request.assert_called_with(method="GET", url=url, headers=headers)
+    mock_request.assert_called_with(
+        method="GET", url=url, headers=headers, timeout=None
+    )
 
 
-def test_lookup_trust_boundary_missing_encoded_locations():
-    response_data = {"locations": [], "bad_field": "0x0"}
-
+@pytest.mark.parametrize(
+    "status_code",
+    [
+        http_client.NOT_FOUND,
+        http_client.FORBIDDEN,
+    ],
+)
+def test_lookup_regional_access_boundary_non_retryable_error(status_code):
     mock_response = mock.create_autospec(transport.Response, instance=True)
-    mock_response.status = http_client.OK
-    mock_response.data = json.dumps(response_data).encode("utf-8")
+    mock_response.status = status_code
+    mock_response.data = "Error"
 
     mock_request = mock.create_autospec(transport.Request)
     mock_request.return_value = mock_response
 
     url = "http://example.com"
     headers = {"Authorization": "Bearer access_token"}
-    with pytest.raises(exceptions.MalformedError) as excinfo:
-        _client._lookup_trust_boundary(mock_request, url, headers=headers)
-    assert excinfo.match("Invalid trust boundary info")
+    result = _client._lookup_regional_access_boundary(
+        mock_request, url, headers=headers
+    )
+    assert result is None
+    # Non-retryable errors should only be called once.
+    mock_request.assert_called_once_with(
+        method="GET", url=url, headers=headers, timeout=None
+    )
 
-    mock_request.assert_called_once_with(method="GET", url=url, headers=headers)
 
-
-def test_lookup_trust_boundary_internal_failure_and_retry_failure_error():
+@mock.patch("time.sleep", return_value=None)
+def test_lookup_regional_access_boundary_internal_failure_and_retry_failure_error(
+    mock_sleep,
+):
     retryable_error = mock.create_autospec(transport.Response, instance=True)
     retryable_error.status = http_client.BAD_REQUEST
     retryable_error.data = json.dumps({"error_description": "internal_failure"}).encode(
@@ -749,25 +732,32 @@ def test_lookup_trust_boundary_internal_failure_and_retry_failure_error():
     request.side_effect = [retryable_error, retryable_error, unretryable_error]
     headers = {"Authorization": "Bearer access_token"}
 
-    with pytest.raises(exceptions.RefreshError):
-        _client._lookup_trust_boundary_request(
-            request, "http://example.com", headers=headers
-        )
+    result = _client._lookup_regional_access_boundary_request(
+        request, "http://example.com", headers=headers
+    )
+    assert result is None
     # request should be called three times. Two retryable errors and one
     # unretryable error to break the retry loop.
     assert request.call_count == 3
+    assert mock_sleep.call_count == 2
     for call in request.call_args_list:
         assert call[1]["headers"] == headers
 
 
-def test_lookup_trust_boundary_internal_failure_and_retry_succeeds():
+@mock.patch("time.sleep", return_value=None)
+def test_lookup_regional_access_boundary_internal_failure_and_retry_succeeds(
+    mock_sleep,
+):
     retryable_error = mock.create_autospec(transport.Response, instance=True)
     retryable_error.status = http_client.BAD_REQUEST
     retryable_error.data = json.dumps({"error_description": "internal_failure"}).encode(
         "utf-8"
     )
 
-    response_data = {"locations": [], "encodedLocations": "0x0"}
+    response_data = {
+        "locations": ["us-central1", "us-east1"],
+        "encodedLocations": "0xVALIDHEX",
+    }
     response = mock.create_autospec(transport.Response, instance=True)
     response.status = http_client.OK
     response.data = json.dumps(response_data).encode("utf-8")
@@ -777,16 +767,17 @@ def test_lookup_trust_boundary_internal_failure_and_retry_succeeds():
     headers = {"Authorization": "Bearer access_token"}
     request.side_effect = [retryable_error, response]
 
-    _ = _client._lookup_trust_boundary_request(
+    _ = _client._lookup_regional_access_boundary_request(
         request, "http://example.com", headers=headers
     )
 
     assert request.call_count == 2
+    assert mock_sleep.call_count == 1
     for call in request.call_args_list:
         assert call[1]["headers"] == headers
 
 
-def test_lookup_trust_boundary_with_headers():
+def test_lookup_regional_access_boundary_with_headers():
     response_data = {
         "locations": ["us-central1", "us-east1"],
         "encodedLocations": "0x80080000000000",
@@ -800,8 +791,56 @@ def test_lookup_trust_boundary_with_headers():
     mock_request.return_value = mock_response
     headers = {"Authorization": "Bearer access_token", "x-test-header": "test-value"}
 
-    _client._lookup_trust_boundary(mock_request, "http://example.com", headers=headers)
+    _client._lookup_regional_access_boundary(
+        mock_request, "http://example.com", headers=headers
+    )
 
     mock_request.assert_called_once_with(
-        method="GET", url="http://example.com", headers=headers
+        method="GET", url="http://example.com", headers=headers, timeout=None
+    )
+
+
+def test_lookup_regional_access_boundary_blocking():
+    response_data = {
+        "locations": ["us-central1"],
+        "encodedLocations": "0xABC",
+    }
+
+    mock_response = mock.create_autospec(transport.Response, instance=True)
+    mock_response.status = http_client.OK
+    mock_response.data = json.dumps(response_data).encode("utf-8")
+
+    mock_request = mock.create_autospec(transport.Request)
+    mock_request.return_value = mock_response
+
+    url = "http://example.com"
+    headers = {"Authorization": "Bearer access_token"}
+    response = _client._lookup_regional_access_boundary(
+        mock_request, url, headers=headers, fail_fast=True
+    )
+
+    assert response["encodedLocations"] == "0xABC"
+    mock_request.assert_called_once_with(
+        method="GET", url=url, headers=headers, timeout=3
+    )
+
+
+def test_lookup_regional_access_boundary_blocking_error():
+    mock_response = mock.create_autospec(transport.Response, instance=True)
+    mock_response.status = http_client.INTERNAL_SERVER_ERROR
+    mock_response.data = "this is an error message"
+
+    mock_request = mock.create_autospec(transport.Request)
+    mock_request.return_value = mock_response
+
+    url = "http://example.com"
+    headers = {"Authorization": "Bearer access_token"}
+    # Even if the error is retryable, fail_fast=True should prevent retries.
+    result = _client._lookup_regional_access_boundary(
+        mock_request, url, headers=headers, fail_fast=True
+    )
+    assert result is None
+
+    mock_request.assert_called_once_with(
+        method="GET", url=url, headers=headers, timeout=3
     )

@@ -20,20 +20,15 @@ import functools
 import logging
 import os
 
-from google.cloud import environment_vars
-
+from google.cloud.datastore import Key, helpers
 from google.cloud.datastore_v1.types import datastore as datastore_pb2
 from google.cloud.datastore_v1.types import entity as entity_pb2
 from google.cloud.datastore_v1.types import query as query_pb2
-from google.cloud.datastore import helpers, Key
 
+from google.cloud import environment_vars
+from google.cloud.ndb import _datastore_api, exceptions, model, tasklets, utils
 from google.cloud.ndb import context as context_module
-from google.cloud.ndb import _datastore_api
-from google.cloud.ndb import exceptions
 from google.cloud.ndb import key as key_module
-from google.cloud.ndb import model
-from google.cloud.ndb import tasklets
-from google.cloud.ndb import utils
 
 log = logging.getLogger(__name__)
 
@@ -342,6 +337,10 @@ class _QueryIteratorImpl(QueryIterator):
         if self._batch is None:
             yield self._next_batch()  # First time
 
+        if self._batch is None:
+            raise TypeError("self._batch cannot be None")
+        if self._index is None:
+            raise TypeError("self._index cannot be None")
         if self._index < len(self._batch):
             raise tasklets.Return(True)
 
@@ -359,7 +358,9 @@ class _QueryIteratorImpl(QueryIterator):
         return (
             self._batch is None  # Haven't even started yet
             or self._has_next_batch  # There's another batch to fetch
-            or self._index < len(self._batch)  # Not done with current batch
+            or (
+                self._index is not None and self._index < len(self._batch)
+            )  # Not done with current batch
         )
 
     @tasklets.tasklet
@@ -421,6 +422,10 @@ class _QueryIteratorImpl(QueryIterator):
             self._cursor_before = None
             raise StopIteration
 
+        if self._batch is None:
+            raise TypeError("self._batch cannot be None")
+        if self._index is None:
+            raise TypeError("self._index cannot be None")
         # Won't block
         next_result = self._batch[self._index]
         self._index += 1
@@ -446,7 +451,7 @@ class _QueryIteratorImpl(QueryIterator):
         batch = self._batch
         index = self._index
 
-        if batch and index < len(batch):
+        if batch and index is not None and index < len(batch):
             return batch[index]
 
         raise KeyError(index)
@@ -554,6 +559,8 @@ class _PostFilterQueryIteratorImpl(QueryIterator):
         if not self.has_next():
             raise StopIteration()
 
+        if self._next_result is None:
+            raise TypeError("self._next_result cannot be None")
         # Won't block
         next_result = self._next_result
         self._next_result = None
@@ -718,6 +725,8 @@ class _MultiQueryIteratorImpl(QueryIterator):
         if not self.has_next():
             raise StopIteration()
 
+        if self._next_result is None:
+            raise TypeError("self._next_result cannot be None")
         # Won't block
         next_result = self._next_result
         self._next_result = None
@@ -949,7 +958,7 @@ def _query_to_protobuf(query):
             filter_pb = ancestor_filter_pb
 
         elif isinstance(filter_pb, query_pb2.CompositeFilter):
-            filter_pb.filters._pb.add(property_filter=ancestor_filter_pb._pb)
+            filter_pb.filters._pb.add(property_filter=ancestor_filter_pb._pb)  # type: ignore[attr-defined]
 
         else:
             filter_pb = query_pb2.CompositeFilter(

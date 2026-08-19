@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -189,7 +189,7 @@ class PartnerLinkServiceAsyncClient:
         return self._client.transport
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -324,10 +324,6 @@ class PartnerLinkServiceAsyncClient:
           where the Google Account of the credentials is a user. If not
           set, defaults to the account of the request. Format:
           ``accountTypes/{loginAccountType}/accounts/{loginAccountId}``
-        - ``linked-account``: (Optional) The resource name of the
-          account with an established product link to the
-          ``login-account``. Format:
-          ``accountTypes/{linkedAccountType}/accounts/{linkedAccountId}``
 
         .. code-block:: python
 
@@ -347,7 +343,9 @@ class PartnerLinkServiceAsyncClient:
                 # Initialize request argument(s)
                 partner_link = datamanager_v1.PartnerLink()
                 partner_link.owning_account.account_id = "account_id_value"
+                partner_link.owning_account.account_type = "FLOODLIGHT_CONFIG"
                 partner_link.partner_account.account_id = "account_id_value"
+                partner_link.partner_account.account_type = "FLOODLIGHT_CONFIG"
 
                 request = datamanager_v1.CreatePartnerLinkRequest(
                     parent="parent_value",
@@ -466,10 +464,6 @@ class PartnerLinkServiceAsyncClient:
           where the Google Account of the credentials is a user. If not
           set, defaults to the account of the request. Format:
           ``accountTypes/{loginAccountType}/accounts/{loginAccountId}``
-        - ``linked-account``: (Optional) The resource name of the
-          account with an established product link to the
-          ``login-account``. Format:
-          ``accountTypes/{linkedAccountType}/accounts/{linkedAccountId}``
 
         .. code-block:: python
 
@@ -584,10 +578,6 @@ class PartnerLinkServiceAsyncClient:
           where the Google Account of the credentials is a user. If not
           set, defaults to the account of the request. Format:
           ``accountTypes/{loginAccountType}/accounts/{loginAccountId}``
-        - ``linked-account``: (Optional) The resource name of the
-          account with an established product link to the
-          ``login-account``. Format:
-          ``accountTypes/{linkedAccountType}/accounts/{linkedAccountId}``
 
         .. code-block:: python
 
@@ -721,9 +711,7 @@ class PartnerLinkServiceAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("PartnerLinkServiceAsyncClient",)

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -123,7 +123,7 @@ class Evaluation(proto.Message):
 
                 This field is a member of `oneof`_ ``search_spec``.
             query_set_spec (google.cloud.discoveryengine_v1beta.types.Evaluation.EvaluationSpec.QuerySetSpec):
-                Required. The specification of the query set.
+                Optional. The specification of the query set.
         """
 
         class QuerySetSpec(proto.Message):
@@ -131,7 +131,7 @@ class Evaluation(proto.Message):
 
             Attributes:
                 sample_query_set (str):
-                    Required. The full resource name of the
+                    Optional. The full resource name of the
                     [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]
                     used for the evaluation, in the format of
                     ``projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}``.

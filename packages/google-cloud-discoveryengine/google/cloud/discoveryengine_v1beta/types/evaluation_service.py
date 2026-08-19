@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -79,7 +79,7 @@ class ListEvaluationsRequest(proto.Message):
             under this location, regardless of whether or not this
             location exists, a ``PERMISSION_DENIED`` error is returned.
         page_size (int):
-            Maximum number of
+            Optional. Maximum number of
             [Evaluation][google.cloud.discoveryengine.v1beta.Evaluation]s
             to return. If unspecified, defaults to 100. The maximum
             allowed value is 1000. Values above 1000 will be coerced to
@@ -88,7 +88,7 @@ class ListEvaluationsRequest(proto.Message):
             If this field is negative, an ``INVALID_ARGUMENT`` error is
             returned.
         page_token (str):
-            A page token
+            Optional. A page token
             [ListEvaluationsResponse.next_page_token][google.cloud.discoveryengine.v1beta.ListEvaluationsResponse.next_page_token],
             received from a previous
             [EvaluationService.ListEvaluations][google.cloud.discoveryengine.v1beta.EvaluationService.ListEvaluations]
@@ -190,18 +190,21 @@ class ListEvaluationResultsRequest(proto.Message):
             ``projects/{project}/locations/{location}/evaluations/{evaluation}``.
 
             If the caller does not have permission to list
-            [EvaluationResult][] under this evaluation, regardless of
-            whether or not this evaluation set exists, a
-            ``PERMISSION_DENIED`` error is returned.
+            [ListEvaluationResultsResponse.EvaluationResult][google.cloud.discoveryengine.v1beta.ListEvaluationResultsResponse.EvaluationResult]
+            under this evaluation, regardless of whether or not this
+            evaluation set exists, a ``PERMISSION_DENIED`` error is
+            returned.
         page_size (int):
-            Maximum number of [EvaluationResult][] to return. If
-            unspecified, defaults to 100. The maximum allowed value is
-            1000. Values above 1000 will be coerced to 1000.
+            Optional. Maximum number of
+            [ListEvaluationResultsResponse.EvaluationResult][google.cloud.discoveryengine.v1beta.ListEvaluationResultsResponse.EvaluationResult]
+            to return. If unspecified, defaults to 100. The maximum
+            allowed value is 1000. Values above 1000 will be coerced to
+            1000.
 
             If this field is negative, an ``INVALID_ARGUMENT`` error is
             returned.
         page_token (str):
-            A page token
+            Optional. A page token
             [ListEvaluationResultsResponse.next_page_token][google.cloud.discoveryengine.v1beta.ListEvaluationResultsResponse.next_page_token],
             received from a previous
             [EvaluationService.ListEvaluationResults][google.cloud.discoveryengine.v1beta.EvaluationService.ListEvaluationResults]
@@ -234,8 +237,8 @@ class ListEvaluationResultsResponse(proto.Message):
 
     Attributes:
         evaluation_results (MutableSequence[google.cloud.discoveryengine_v1beta.types.ListEvaluationResultsResponse.EvaluationResult]):
-            The
-            [EvaluationResult][google.cloud.discoveryengine.v1beta.ListEvaluationResultsResponse.EvaluationResult]s.
+            The evaluation results for the
+            [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]s.
         next_page_token (str):
             A token that can be sent as
             [ListEvaluationResultsRequest.page_token][google.cloud.discoveryengine.v1beta.ListEvaluationResultsRequest.page_token]

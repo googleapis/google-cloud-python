@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import google.rpc.error_details_pb2 as error_details_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.bigquery_migration_v2.types import (
+    assessment_task,
     migration_error_details,
     migration_metrics,
     translation_config,
@@ -65,9 +66,11 @@ class MigrationWorkflow(proto.Message):
         state (google.cloud.bigquery_migration_v2.types.MigrationWorkflow.State):
             Output only. That status of the workflow.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Time when the workflow was created.
+            Output only. Time when the workflow was
+            created.
         last_update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Time when the workflow was last updated.
+            Output only. Time when the workflow was last
+            updated.
     """
 
     class State(proto.Enum):
@@ -142,6 +145,10 @@ class MigrationTask(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        assessment_task_details (google.cloud.bigquery_migration_v2.types.AssessmentTaskDetails):
+            Task configuration for Assessment.
+
+            This field is a member of `oneof`_ ``task_details``.
         translation_config_details (google.cloud.bigquery_migration_v2.types.TranslationConfigDetails):
             Task configuration for CW Batch/Offline SQL
             Translation.
@@ -157,44 +164,52 @@ class MigrationTask(proto.Message):
             server-generated.
         type_ (str):
             The type of the task. This must be one of the supported task
-            types: Translation_Teradata2BQ, Translation_Redshift2BQ,
-            Translation_Bteq2BQ, Translation_Oracle2BQ,
-            Translation_HiveQL2BQ, Translation_SparkSQL2BQ,
-            Translation_Snowflake2BQ, Translation_Netezza2BQ,
-            Translation_AzureSynapse2BQ, Translation_Vertica2BQ,
-            Translation_SQLServer2BQ, Translation_Presto2BQ,
-            Translation_MySQL2BQ, Translation_Postgresql2BQ,
-            Translation_SQLite2BQ, Translation_Greenplum2BQ.
+            types.
+
+            Assessment:
+
+            - ``Assessment_Hive`` - Assessment for Hive.
+            - ``Assessment_Redshift`` - Assessment for Redshift.
+            - ``Assessment_Snowflake`` - Assessment for Snowflake.
+            - ``Assessment_Teradata_v2`` - Assessment for Teradata.
+            - ``Assessment_Oracle`` - Assessment for Oracle.
+            - ``Assessment_Hadoop`` - Assessment for Hadoop.
+            - ``Assessment_Informatica`` - Assessment for Informatica.
+
+            Translation: See `Supported Task
+            Types <https://docs.cloud.google.com/bigquery/docs/api-sql-translator#supported_task_types>`__
+            for a list of supported task types.
         state (google.cloud.bigquery_migration_v2.types.MigrationTask.State):
             Output only. The current state of the task.
         processing_error (google.rpc.error_details_pb2.ErrorInfo):
             Output only. An explanation that may be
             populated when the task is in FAILED state.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Time when the task was created.
+            Output only. Time when the task was created.
         last_update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Time when the task was last updated.
+            Output only. Time when the task was last
+            updated.
         resource_error_details (MutableSequence[google.cloud.bigquery_migration_v2.types.ResourceErrorDetail]):
             Output only. Provides details to errors and
             issues encountered while processing the task.
             Presence of error details does not mean that the
             task failed.
         resource_error_count (int):
-            The number or resources with errors. Note: This is not the
-            total number of errors as each resource can have more than
-            one error. This is used to indicate truncation by having a
-            ``resource_error_count`` that is higher than the size of
-            ``resource_error_details``.
+            Output only. The number or resources with errors. Note: This
+            is not the total number of errors as each resource can have
+            more than one error. This is used to indicate truncation by
+            having a ``resource_error_count`` that is higher than the
+            size of ``resource_error_details``.
         metrics (MutableSequence[google.cloud.bigquery_migration_v2.types.TimeSeries]):
-            The metrics for the task.
+            Output only. The metrics for the task.
         task_result (google.cloud.bigquery_migration_v2.types.MigrationTaskResult):
             Output only. The result of the task.
         total_processing_error_count (int):
-            Count of all the processing errors in this
-            task and its subtasks.
+            Output only. Count of all the processing
+            errors in this task and its subtasks.
         total_resource_error_count (int):
-            Count of all the resource errors in this task
-            and its subtasks.
+            Output only. Count of all the resource errors
+            in this task and its subtasks.
     """
 
     class State(proto.Enum):
@@ -211,7 +226,7 @@ class MigrationTask(proto.Message):
                 The task is running, i.e. its subtasks are
                 ready for execution.
             PAUSED (4):
-                Tha task is paused. Assigned subtasks can
+                The task is paused. Assigned subtasks can
                 continue, but no new subtasks will be scheduled.
             SUCCEEDED (5):
                 The task finished successfully.
@@ -227,6 +242,12 @@ class MigrationTask(proto.Message):
         SUCCEEDED = 5
         FAILED = 6
 
+    assessment_task_details: assessment_task.AssessmentTaskDetails = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="task_details",
+        message=assessment_task.AssessmentTaskDetails,
+    )
     translation_config_details: translation_config.TranslationConfigDetails = (
         proto.Field(
             proto.MESSAGE,
@@ -335,17 +356,19 @@ class MigrationSubtask(proto.Message):
             Presence of error details does not mean that the
             subtask failed.
         resource_error_count (int):
-            The number or resources with errors. Note: This is not the
-            total number of errors as each resource can have more than
-            one error. This is used to indicate truncation by having a
-            ``resource_error_count`` that is higher than the size of
-            ``resource_error_details``.
+            Output only. The number or resources with errors. Note: This
+            is not the total number of errors as each resource can have
+            more than one error. This is used to indicate truncation by
+            having a ``resource_error_count`` that is higher than the
+            size of ``resource_error_details``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Time when the subtask was created.
+            Output only. Time when the subtask was
+            created.
         last_update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Time when the subtask was last updated.
+            Output only. Time when the subtask was last
+            updated.
         metrics (MutableSequence[google.cloud.bigquery_migration_v2.types.TimeSeries]):
-            The metrics for the subtask.
+            Output only. The metrics for the subtask.
     """
 
     class State(proto.Enum):
@@ -461,6 +484,9 @@ class TranslationTaskResult(proto.Message):
         report_log_messages (MutableSequence[google.cloud.bigquery_migration_v2.types.GcsReportLogMessage]):
             The records from the aggregate CSV report for
             a migration workflow.
+        console_uri (str):
+            The Cloud Console URI for the migration
+            workflow.
     """
 
     translated_literals: MutableSequence[gcbm_translation_details.Literal] = (
@@ -476,6 +502,10 @@ class TranslationTaskResult(proto.Message):
             number=2,
             message=translation_usability.GcsReportLogMessage,
         )
+    )
+    console_uri: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

@@ -41,9 +41,9 @@ In order to use this library, you first need to go through the following steps:
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 This package provides a `3rd-party database backend
-<https://docs.djangoproject.com/en/4.2/ref/databases/#using-a-3rd-party-database-backend>`__
+<https://docs.djangoproject.com/en/5.2/ref/databases/#using-a-3rd-party-database-backend>`__
 for using `Cloud Spanner <https://cloud.google.com/spanner>`__ with the `Django
-ORM <https://docs.djangoproject.com/en/4.2/topics/db/>`__. It uses the `Cloud
+ORM <https://docs.djangoproject.com/en/5.2/topics/db/>`__. It uses the `Cloud
 Spanner Python client library <https://github.com/googleapis/python-spanner>`__
 under the hood.
 
@@ -64,16 +64,13 @@ dependencies.
 Supported versions
 ~~~~~~~~~~~~~~~~~~
 
-The library supports `Django 3.2
-<https://docs.djangoproject.com/en/3.2/>`_, and `Django 4.2
-<https://docs.djangoproject.com/en/4.2/>`_.
-Both versions are long-term support (LTS) releases for the
-`Django project<https://www.djangoproject.com/download/#supported-versions>_`.
-The minimum required Python version is 3.6.
+The library supports `Django 5.2
+<https://docs.djangoproject.com/en/5.2/>`_.
+The minimum required Python version is 3.10.
 
 .. code:: shell
 
-    pip3 install django==3.2
+    pip3 install django==5.2
 
 
 Installing the package
@@ -165,16 +162,11 @@ disable this behavior with the RANDOM_ID_GENERATION_ENABLED setting:
 Transaction support in autocommit mode
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Django version 4.2 and higher by default supports transactions in autocommit mode.
+Django supports transactions in autocommit mode by default.
 A transaction is automatically started if you define an
-[atomic block](https://docs.djangoproject.com/en/4.2/topics/db/transactions/#controlling-transactions-explicitly).
+`atomic block <https://docs.djangoproject.com/en/5.2/topics/db/transactions/#controlling-transactions-explicitly>`__.
 
-Django version 3.2 and earlier did not support transactions in autocommit mode with Spanner.
-You can enable transactions in autocommit mode with Spanner with the
-`ALLOW_TRANSACTIONS_IN_AUTO_COMMIT` configuration option.
-
-- To enable transactions in autocommit mode in V3.2, set the flag `ALLOW_TRANSACTIONS_IN_AUTO_COMMIT` to True in your settings.py file.
-- To disable transactions in autocommit mode in V4.2, set the flag `ALLOW_TRANSACTIONS_IN_AUTO_COMMIT` to False in your settings.py file.
+To disable transactions in autocommit mode, set the flag `ALLOW_TRANSACTIONS_IN_AUTO_COMMIT` to False in your ``settings.py`` file.
 
 
 Set credentials and project environment variables
@@ -231,7 +223,7 @@ Then visit http://127.0.0.1:8000/admin/
 Create and register your first model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Please follow the guides in https://docs.djangoproject.com/en/4.2/intro/tutorial02/#creating-models
+Please follow the guides in https://docs.djangoproject.com/en/5.2/intro/tutorial02/#creating-models
 to create and register the model to the Django’s automatically-generated admin site.
 
 How it works

@@ -14,30 +14,40 @@
 
 from __future__ import absolute_import
 
-import shutil
-import nox
 import os
 import pathlib
+import shutil
 
+import nox
 
 BLACK_VERSION = "black[jupyter]==23.7.0"
 ISORT_VERSION = "isort==5.11.0"
+RUFF_VERSION = "ruff==0.14.14"
 
 LINT_PATHS = ["docs", "proto", "tests", "noxfile.py", "setup.py"]
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
 PYTHON_VERSIONS = [
-    "3.7",
-    "3.8",
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 
 # Error if a python version is missing
@@ -45,19 +55,9 @@ nox.options.error_on_missing_interpreters = True
 
 
 @nox.session(python=PYTHON_VERSIONS)
-@nox.parametrize("implementation", ["cpp", "upb", "python"])
+@nox.parametrize("implementation", ["upb", "python"])
 def unit(session, implementation):
     """Run the unit test suite."""
-
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
-    # Remove this check once support for Protobuf 3.x is dropped.
-    if implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
@@ -66,11 +66,6 @@ def unit(session, implementation):
     session.env["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = implementation
     session.install("coverage", "pytest", "pytest-cov", "pytz")
     session.install("-e", ".[testing]", "-c", constraints_path)
-    # TODO(https://github.com/googleapis/proto-plus-python/issues/389):
-    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
-    # The 'cpp' implementation requires Protobuf<4.
-    if implementation == "cpp":
-        session.install("protobuf<4")
 
     # TODO(https://github.com/googleapis/proto-plus-python/issues/403): re-enable `-W=error`
     # The warnings-as-errors flag `-W=error` was removed in
@@ -84,6 +79,7 @@ def unit(session, implementation):
             session.posargs  # Coverage info when running individual tests is annoying.
             or [
                 "--cov=proto",
+                "--cov-append",
                 "--cov-config=.coveragerc",
                 "--cov-report=term",
                 "--cov-report=html",
@@ -308,6 +304,21 @@ def mypy(session):
     # Enable mypy once this bug is fixed.
     session.skip("Skip mypy since this library doesn't have py.typed")
 
+    session.install("-e", ".")
+    session.install(
+        "mypy",
+        "types-setuptools",
+        "types-protobuf",
+        "types-requests",
+    )
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "proto",
+        *session.posargs,
+    )
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):
@@ -324,3 +335,33 @@ def lint(session):
     )
 
     session.run("flake8", "proto", "tests")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def format(session):
+    """
+    Run ruff to sort imports and format code.
+    """
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        f"--target-version=py{PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
+
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{PYTHON_VERSIONS[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )

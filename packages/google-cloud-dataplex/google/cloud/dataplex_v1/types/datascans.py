@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,9 +45,12 @@ __protobuf__ = proto.module(
         "GetDataScanJobRequest",
         "ListDataScanJobsRequest",
         "ListDataScanJobsResponse",
+        "CancelDataScanJobRequest",
+        "CancelDataScanJobResponse",
         "GenerateDataQualityRulesRequest",
         "GenerateDataQualityRulesResponse",
         "DataScan",
+        "ExecutionIdentity",
         "DataScanJob",
     },
 )
@@ -88,7 +91,8 @@ class CreateDataScanRequest(proto.Message):
         data_scan (google.cloud.dataplex_v1.types.DataScan):
             Required. DataScan resource.
         data_scan_id (str):
-            Required. DataScan identifier.
+            Optional. DataScan identifier. If not provided, a unique ID
+            will be generated with the prefix "data-scan-".
 
             - Must contain only lowercase letters, numbers and hyphens.
             - Must start with a letter.
@@ -469,6 +473,28 @@ class ListDataScanJobsResponse(proto.Message):
     )
 
 
+class CancelDataScanJobRequest(proto.Message):
+    r"""Request message for the ``CancelDataScanJob`` method.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the DataScanJob:
+            ``projects/{project_id_or_number}/locations/{location_id}/dataScans/{data_scan_id}/jobs/{data_scan_job_id}``
+            where ``project_id_or_number`` refers to a *project_id* or
+            *project_number* and ``location_id`` refers to a Google
+            Cloud region.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CancelDataScanJobResponse(proto.Message):
+    r"""Response message for the ``CancelDataScanJob`` method."""
+
+
 class GenerateDataQualityRulesRequest(proto.Message):
     r"""Request details for generating data quality rule
     recommendations.
@@ -525,9 +551,11 @@ class DataScan(proto.Message):
       then catalog metadata. For more information, see `Discover and
       catalog Cloud Storage
       data <https://cloud.google.com/bigquery/docs/automatic-discovery>`__.
-    - Data documentation: analyzes the table details and generates
-      insights including descriptions and sample SQL queries for the
-      table. For more information, see `Generate data insights in
+    - Data documentation: analyzes the table or dataset metadata and
+      generates insights. For tables, insights include descriptions and
+      sample SQL queries. For datasets, insights include descriptions,
+      schema relationships and sample SQL queries. For more information,
+      see `Generate data insights in
       BigQuery <https://cloud.google.com/bigquery/docs/data-insights>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
@@ -616,6 +644,10 @@ class DataScan(proto.Message):
             documentation scan.
 
             This field is a member of `oneof`_ ``result``.
+        execution_identity (google.cloud.dataplex_v1.types.ExecutionIdentity):
+            Optional. Immutable. The identity to run the
+            datascan. If not specified, defaults to the
+            Dataplex Service Agent.
     """
 
     class ExecutionSpec(proto.Message):
@@ -788,6 +820,87 @@ class DataScan(proto.Message):
         oneof="result",
         message=data_documentation.DataDocumentationResult,
     )
+    execution_identity: "ExecutionIdentity" = proto.Field(
+        proto.MESSAGE,
+        number=300,
+        message="ExecutionIdentity",
+    )
+
+
+class ExecutionIdentity(proto.Message):
+    r"""The identity to run the datascan.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        dataplex_service_agent (google.cloud.dataplex_v1.types.ExecutionIdentity.DataplexServiceAgent):
+            Optional. The Dataplex service agent
+            associated with the user's project.
+
+            This field is a member of `oneof`_ ``identity``.
+        user_credential (google.cloud.dataplex_v1.types.ExecutionIdentity.UserCredential):
+            Optional. The credential of the calling user. Supports only
+            ONE_TIME trigger type.
+
+            This field is a member of `oneof`_ ``identity``.
+        service_account (google.cloud.dataplex_v1.types.ExecutionIdentity.ServiceAccount):
+            Optional. The provided service account.
+
+            This field is a member of `oneof`_ ``identity``.
+    """
+
+    class DataplexServiceAgent(proto.Message):
+        r"""The Dataplex service agent associated with the user's
+        project.
+
+        """
+
+    class UserCredential(proto.Message):
+        r"""The credential of the calling user."""
+
+    class ServiceAccount(proto.Message):
+        r"""The service account
+
+        Attributes:
+            email (str):
+                Required. Service account email. The datascan
+                will execute with this service account's
+                credentials. The user calling this API must have
+                permissions to act as this service account.
+                Dataplex service agent must be granted
+                iam.serviceAccounts.getAccessToken permission on
+                this service account, for example, through the
+                iam.serviceAccountTokenCreator role .
+        """
+
+        email: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    dataplex_service_agent: DataplexServiceAgent = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="identity",
+        message=DataplexServiceAgent,
+    )
+    user_credential: UserCredential = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="identity",
+        message=UserCredential,
+    )
+    service_account: ServiceAccount = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="identity",
+        message=ServiceAccount,
+    )
 
 
 class DataScanJob(proto.Message):
@@ -814,6 +927,9 @@ class DataScanJob(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the DataScanJob
             was created.
+        partial_failure_message (str):
+            Output only. A message indicating partial
+            failure details.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the DataScanJob
             was started.
@@ -890,6 +1006,8 @@ class DataScanJob(proto.Message):
             PENDING (7):
                 The DataScanJob has been created but not
                 started to run yet.
+            SUCCEEDED_WITH_ERRORS (8):
+                The DataScanJob succeeded with errors.
         """
 
         STATE_UNSPECIFIED = 0
@@ -899,6 +1017,7 @@ class DataScanJob(proto.Message):
         SUCCEEDED = 4
         FAILED = 5
         PENDING = 7
+        SUCCEEDED_WITH_ERRORS = 8
 
     name: str = proto.Field(
         proto.STRING,
@@ -912,6 +1031,10 @@ class DataScanJob(proto.Message):
         proto.MESSAGE,
         number=8,
         message=timestamp_pb2.Timestamp,
+    )
+    partial_failure_message: str = proto.Field(
+        proto.STRING,
+        number=9,
     )
     start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,

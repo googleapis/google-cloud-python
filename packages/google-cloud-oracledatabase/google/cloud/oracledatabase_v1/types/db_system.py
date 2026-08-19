@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -169,20 +169,28 @@ class DbSystemProperties(proto.Message):
         ocid (str):
             Output only. OCID of the DbSystem.
         memory_size_gb (int):
-            Optional. The memory size in GB.
+            Optional. The memory size in GB. This value
+            can not be set and is automatically calculated
+            based on the number of ECPUs allocated to the
+            DbSystem.
         compute_model (google.cloud.oracledatabase_v1.types.DbSystemProperties.ComputeModel):
             Optional. The compute model of the DbSystem.
         data_storage_size_gb (int):
-            Optional. The data storage size in GB that is
-            currently available to DbSystems.
+            Optional. The data storage size in GB that is currently
+            available to DbSystems. The value is same as
+            initial_data_storage_size_gb. This can be modified from OCI
+            console.
         reco_storage_size_gb (int):
             Optional. The reco/redo storage size in GB.
+            The value for recovery storage size is based on
+            the available data storage size.
         domain (str):
             Optional. The host domain name of the
             DbSystem.
         node_count (int):
-            Optional. The number of nodes in the
-            DbSystem.
+            Optional. The number of nodes to launch for a
+            virtual machine DbSystem. By default this will
+            be set to 1.
         db_system_options (google.cloud.oracledatabase_v1.types.DbSystemOptions):
             Optional. The options for the DbSystem.
     """
@@ -279,7 +287,9 @@ class DbSystemProperties(proto.Message):
             ECPU (1):
                 The compute model is virtual.
             OCPU (2):
-                The compute model is physical.
+                Deprecated: This option is not supported.
+                Please use ECPU instead. The compute model is
+                physical.
         """
 
         COMPUTE_MODEL_UNSPECIFIED = 0
@@ -418,7 +428,8 @@ class DbSystemOptions(proto.Message):
             STORAGE_MANAGEMENT_UNSPECIFIED (0):
                 The storage management is unspecified.
             ASM (1):
-                Automatic storage management.
+                Automatic storage management. This option is
+                not supported. Only LVM is supported.
             LVM (2):
                 Logical Volume management.
         """
@@ -630,6 +641,10 @@ class ListDbSystemsResponse(proto.Message):
         next_page_token (str):
             A token identifying a page of results the
             server should return.
+        unreachable (MutableSequence[str]):
+            Unreachable locations when listing resources
+            across all locations using wildcard location
+            '-'.
     """
 
     @property
@@ -644,6 +659,10 @@ class ListDbSystemsResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,12 +21,83 @@ from google.cloud.discoveryengine_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
-if sys.version_info >= (3, 8):  # pragma: NO COVER
-    from importlib import metadata
-else:  # pragma: NO COVER
-    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
-    # this code path once we drop support for Python 3.7
-    import importlib_metadata as metadata
+from importlib import metadata
+
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.discoveryengine_v1.services.assistant_service",
+    "google.cloud.discoveryengine_v1.services.cmek_config_service",
+    "google.cloud.discoveryengine_v1.services.completion_service",
+    "google.cloud.discoveryengine_v1.services.control_service",
+    "google.cloud.discoveryengine_v1.services.conversational_search_service",
+    "google.cloud.discoveryengine_v1.services.data_store_service",
+    "google.cloud.discoveryengine_v1.services.document_service",
+    "google.cloud.discoveryengine_v1.services.engine_service",
+    "google.cloud.discoveryengine_v1.services.grounded_generation_service",
+    "google.cloud.discoveryengine_v1.services.identity_mapping_store_service",
+    "google.cloud.discoveryengine_v1.services.project_service",
+    "google.cloud.discoveryengine_v1.services.rank_service",
+    "google.cloud.discoveryengine_v1.services.recommendation_service",
+    "google.cloud.discoveryengine_v1.services.schema_service",
+    "google.cloud.discoveryengine_v1.services.search_service",
+    "google.cloud.discoveryengine_v1.services.search_tuning_service",
+    "google.cloud.discoveryengine_v1.services.serving_config_service",
+    "google.cloud.discoveryengine_v1.services.session_service",
+    "google.cloud.discoveryengine_v1.services.site_search_engine_service",
+    "google.cloud.discoveryengine_v1.services.user_event_service",
+    "google.cloud.discoveryengine_v1.services.user_license_service",
+    "google.cloud.discoveryengine_v1.types.answer",
+    "google.cloud.discoveryengine_v1.types.assist_answer",
+    "google.cloud.discoveryengine_v1.types.assistant",
+    "google.cloud.discoveryengine_v1.types.assistant_service",
+    "google.cloud.discoveryengine_v1.types.chunk",
+    "google.cloud.discoveryengine_v1.types.cmek_config_service",
+    "google.cloud.discoveryengine_v1.types.common",
+    "google.cloud.discoveryengine_v1.types.completion",
+    "google.cloud.discoveryengine_v1.types.completion_service",
+    "google.cloud.discoveryengine_v1.types.control",
+    "google.cloud.discoveryengine_v1.types.control_service",
+    "google.cloud.discoveryengine_v1.types.conversation",
+    "google.cloud.discoveryengine_v1.types.conversational_search_service",
+    "google.cloud.discoveryengine_v1.types.custom_tuning_model",
+    "google.cloud.discoveryengine_v1.types.data_store",
+    "google.cloud.discoveryengine_v1.types.data_store_service",
+    "google.cloud.discoveryengine_v1.types.document",
+    "google.cloud.discoveryengine_v1.types.document_processing_config",
+    "google.cloud.discoveryengine_v1.types.document_service",
+    "google.cloud.discoveryengine_v1.types.engine",
+    "google.cloud.discoveryengine_v1.types.engine_service",
+    "google.cloud.discoveryengine_v1.types.grounded_generation_service",
+    "google.cloud.discoveryengine_v1.types.grounding",
+    "google.cloud.discoveryengine_v1.types.identity_mapping_store",
+    "google.cloud.discoveryengine_v1.types.identity_mapping_store_service",
+    "google.cloud.discoveryengine_v1.types.import_config",
+    "google.cloud.discoveryengine_v1.types.project",
+    "google.cloud.discoveryengine_v1.types.project_service",
+    "google.cloud.discoveryengine_v1.types.purge_config",
+    "google.cloud.discoveryengine_v1.types.rank_service",
+    "google.cloud.discoveryengine_v1.types.recommendation_service",
+    "google.cloud.discoveryengine_v1.types.safety",
+    "google.cloud.discoveryengine_v1.types.schema",
+    "google.cloud.discoveryengine_v1.types.schema_service",
+    "google.cloud.discoveryengine_v1.types.search_service",
+    "google.cloud.discoveryengine_v1.types.search_tuning_service",
+    "google.cloud.discoveryengine_v1.types.serving_config",
+    "google.cloud.discoveryengine_v1.types.serving_config_service",
+    "google.cloud.discoveryengine_v1.types.session",
+    "google.cloud.discoveryengine_v1.types.session_service",
+    "google.cloud.discoveryengine_v1.types.site_search_engine",
+    "google.cloud.discoveryengine_v1.types.site_search_engine_service",
+    "google.cloud.discoveryengine_v1.types.user_event",
+    "google.cloud.discoveryengine_v1.types.user_event_service",
+    "google.cloud.discoveryengine_v1.types.user_license",
+    "google.cloud.discoveryengine_v1.types.user_license_service",
+}
 
 
 from .services.assistant_service import (
@@ -365,34 +436,23 @@ else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.
     try:
-        import sys
         import warnings
 
         _py_version_str = sys.version.split()[0]
         _package_label = "google.cloud.discoveryengine_v1"
-        if sys.version_info < (3, 9):
+        if sys.version_info < (3, 10):
             warnings.warn(
                 "You are using a non-supported Python version "
                 + f"({_py_version_str}).  Google will not post any further "
                 + f"updates to {_package_label} supporting this Python version. "
                 + "Please upgrade to the latest Python version, or at "
-                + f"least to Python 3.9, and then update {_package_label}.",
-                FutureWarning,
-            )
-        if sys.version_info[:2] == (3, 9):
-            warnings.warn(
-                f"You are using a Python version ({_py_version_str}) "
-                + f"which Google will stop supporting in {_package_label} in "
-                + "January 2026. Please "
-                + "upgrade to the latest Python version, or at "
-                + "least to Python 3.10, before then, and "
-                + f"then update {_package_label}.",
+                + f"least to Python 3.10, and then update {_package_label}.",
                 FutureWarning,
             )
 
         def parse_version_to_tuple(version_string: str):
             """Safely converts a semantic version string to a comparable tuple of integers.
-            Example: "4.25.8" -> (4, 25, 8)
+            Example: "6.33.5" -> (6, 33, 5)
             Ignores non-numeric parts and handles common version formats.
             Args:
                 version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
@@ -421,9 +481,9 @@ else:  # pragma: NO COVER
                 return (None, "--")
 
         _dependency_package = "google.protobuf"
-        _next_supported_version = "4.25.8"
-        _next_supported_version_tuple = (4, 25, 8)
-        _recommendation = " (we recommend 6.x)"
+        _next_supported_version = "6.33.5"
+        _next_supported_version_tuple = (6, 33, 5)
+        _recommendation = " (we recommend 7.x)"
         (_version_used, _version_used_string) = _get_version(_dependency_package)
         if _version_used and _version_used < _next_supported_version_tuple:
             warnings.warn(

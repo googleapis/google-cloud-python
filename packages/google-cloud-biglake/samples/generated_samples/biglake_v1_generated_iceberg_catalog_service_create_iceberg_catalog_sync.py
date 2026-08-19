@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ def sample_create_iceberg_catalog():
 
     # Initialize request argument(s)
     iceberg_catalog = biglake_v1.IcebergCatalog()
-    iceberg_catalog.catalog_type = "CATALOG_TYPE_GCS_BUCKET"
+    iceberg_catalog.catalog_type = "CATALOG_TYPE_FEDERATED"
 
     request = biglake_v1.CreateIcebergCatalogRequest(
         parent="parent_value",

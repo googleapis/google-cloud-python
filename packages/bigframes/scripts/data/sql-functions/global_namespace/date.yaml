@@ -1,0 +1,277 @@
+urn: extension:google:bq_scalar_functions
+scalar_functions:
+  - name: "current_date"
+    description: "Returns the current date as a DATE object. Parentheses are optional when called with no arguments."
+    impls:
+      # Signature: current_date:str
+      - args:
+          - name: "time_zone_expression"
+            value: string
+            optional: true
+            keyword_only: false
+        return: date
+  - name: "date"
+    description: "Constructs or extracts a date."
+    series_accessor_arg: expression
+    impls:
+      # Signature: date:pts_str
+      - args:
+          - name: "expression"
+            value: timestamp
+            optional: false
+            keyword_only: false
+          - name: "time_zone_expression"
+            value: string
+            optional: true
+            keyword_only: false
+        return: date
+      # Signature: date:pts
+      - args:
+          - name: "expression"
+            value: timestamp
+            optional: false
+            keyword_only: false
+        return: date
+      # Signature: date:i64_i64_i64
+      - args:
+          - name: "year"
+            value: i64
+            optional: false
+            keyword_only: false
+          - name: "month"
+            value: i64
+            optional: false
+            keyword_only: false
+          - name: "day"
+            value: i64
+            optional: false
+            keyword_only: false
+        return: date
+      # Signature: date:date
+      - args:
+          - name: "expression"
+            value: date
+            optional: false
+            keyword_only: false
+        return: date
+      # Signature: date:str
+      - args:
+          - name: "expression"
+            value: string
+            optional: false
+            keyword_only: false
+        return: date
+  - name: "date_add"
+    description: "Adds a specified time interval to a DATE."
+    series_accessor_arg: date_expression
+    impls:
+      # Signature: date_add:date_i64_any
+      - args:
+          - name: "date_expression"
+            value: date
+            optional: false
+            keyword_only: false
+          - name: "int64_expression"
+            value: i64
+            optional: false
+            keyword_only: false
+          - name: "date_part"
+            value: any1
+            optional: false
+            keyword_only: false
+        return: date
+  # TODO(b/527093666): add support for date_bucket when we add an INTERVAL dtype
+  - name: "date_diff"
+    description: "Gets the number of unit boundaries between two DATE values (end_date - start_date) at a particular time granularity."
+    series_accessor_arg: end_date
+    impls:
+      # Signature: date_diff:date_date_any
+      - args:
+          - name: "end_date"
+            value: date
+            optional: false
+            keyword_only: false
+          - name: "start_date"
+            value: date
+            optional: false
+            keyword_only: false
+          - name: "granularity"
+            value: any1
+            optional: false
+            keyword_only: false
+        return: i64
+  - name: "date_from_unix_date"
+    description: "Interprets an INT64 expression as the number of days since 1970-01-01."
+    series_accessor_arg: int64_expression
+    impls:
+      # Signature: date_from_unix_date:i64
+      - args:
+          - name: "int64_expression"
+            value: i64
+            optional: false
+            keyword_only: false
+        return: date
+  - name: "date_sub"
+    description: "Subtracts a specified time interval from a DATE."
+    series_accessor_arg: date_expression
+    impls:
+      # Signature: date_sub:date_i64_any
+      - args:
+          - name: "date_expression"
+            value: date
+            optional: false
+            keyword_only: false
+          - name: "int64_expression"
+            value: i64
+            optional: false
+            keyword_only: false
+          - name: "date_part"
+            value: any1
+            optional: false
+            keyword_only: false
+        return: date
+  - name: "date_trunc"
+    description: "Truncates a DATE, DATETIME, or TIMESTAMP value at a particular granularity."
+    series_accessor_arg: date_value
+    impls:
+      # Signature: date_trunc:date_any
+      - args:
+          - name: "date_value"
+            value: date
+            optional: false
+            keyword_only: false
+          - name: "granularity"
+            value: any1
+            optional: false
+            keyword_only: false
+        return: date
+  - name: "extract"
+    description: "Returns the value corresponding to the specified date part."
+    series_accessor_arg: date_expression
+    impls:
+      # Signature: extract:date_any
+      - args:
+          - name: "date_expression"
+            value: date
+            optional: false
+            keyword_only: false
+          - name: "part"
+            value: any1
+            optional: false
+            keyword_only: false
+        return: i64
+      # Signature: extract:pts_any_str
+      - args:
+          - name: "date_expression"
+            value: timestamp
+            optional: false
+            keyword_only: false
+          - name: "part"
+            value: any1
+            optional: false
+            keyword_only: false
+          - name: "time_zone"
+            value: string
+            optional: true
+            keyword_only: false
+        return: i64
+      # Signature: extract:pts_any
+      - args:
+          - name: "date_expression"
+            value: timestamp
+            optional: false
+            keyword_only: false
+          - name: "part"
+            value: any1
+            optional: false
+            keyword_only: false
+        return: i64
+      # Signature: extract:pt_any
+      - args:
+          - name: "date_expression"
+            value: time
+            optional: false
+            keyword_only: false
+          - name: "part"
+            value: any1
+            optional: false
+            keyword_only: false
+        return: i64
+  - name: "format_date"
+    description: "Formats a DATE value according to a specified format string."
+    series_accessor_arg: date_expr
+    impls:
+      # Signature: format_date:str_date
+      - args:
+          - name: "format_string"
+            value: string
+            optional: false
+            keyword_only: false
+          - name: "date_expr"
+            value: date
+            optional: false
+            keyword_only: false
+        return: string
+  - name: "generate_date_array"
+    description: "Generates an array of dates in a range."
+    impls:
+      # Signature: generate_date_array:date_date_i64_any
+      - args:
+          - name: "start_date"
+            value: date
+            optional: false
+            keyword_only: false
+          - name: "end_date"
+            value: date
+            optional: false
+            keyword_only: false
+          - name: "int64_expression"
+            value: i64
+            optional: true
+            keyword_only: false
+          - name: "date_part"
+            value: any1
+            optional: true
+            keyword_only: false
+        return: list<date>
+  - name: "last_day"
+    description: "Returns the last day from a date expression. This is commonly used to return the last day of the month."
+    series_accessor_arg: date_expression
+    impls:
+      # Signature: last_day:date_any
+      - args:
+          - name: "date_expression"
+            value: date
+            optional: false
+            keyword_only: false
+          - name: "date_part"
+            value: any1
+            optional: true
+            keyword_only: false
+        return: date
+  - name: "parse_date"
+    description: "Converts a STRING value to a DATE value."
+    series_accessor_arg: date_string
+    impls:
+      # Signature: parse_date:str_str
+      - args:
+          - name: "format_string"
+            value: string
+            optional: false
+            keyword_only: false
+          - name: "date_string"
+            value: string
+            optional: false
+            keyword_only: false
+        return: date
+  - name: "unix_date"
+    description: "Returns the number of days since 1970-01-01."
+    series_accessor_arg: date_expression
+    impls:
+      # Signature: unix_date:date
+      - args:
+          - name: "date_expression"
+            value: date
+            optional: false
+            keyword_only: false
+        return: i64

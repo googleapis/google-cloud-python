@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,6 +28,8 @@ from google.cloud.ces_v1beta.types import evaluation as gcc_evaluation
 __protobuf__ = proto.module(
     package="google.cloud.ces.v1beta",
     manifest={
+        "RunEvaluationResultMetricsRequest",
+        "RunEvaluationResultMetricsResponse",
         "RunEvaluationResponse",
         "RunEvaluationOperationMetadata",
         "GenerateEvaluationOperationMetadata",
@@ -72,8 +74,51 @@ __protobuf__ = proto.module(
         "GetEvaluationExpectationRequest",
         "ListEvaluationExpectationsRequest",
         "ListEvaluationExpectationsResponse",
+        "ExportOptions",
+        "ExportEvaluationsRequest",
+        "ExportEvaluationsResponse",
+        "ExportEvaluationResultsRequest",
+        "ExportEvaluationResultsResponse",
+        "ExportEvaluationRunsRequest",
+        "ExportEvaluationRunsResponse",
+        "ExportEvaluationRunsOperationMetadata",
+        "ExportEvaluationResultsOperationMetadata",
+        "RunEvaluationResultMetricsOperationMetadata",
     },
 )
+
+
+class RunEvaluationResultMetricsRequest(proto.Message):
+    r"""Request message for
+    [EvaluationService.RunEvaluationResultMetrics][google.cloud.ces.v1beta.EvaluationService.RunEvaluationResultMetrics].
+
+    Attributes:
+        evaluation_result_id (str):
+            Required. The evaluation result to run metrics for. Format:
+            ``projects/{project}/locations/{location}/apps/{app}/evaluations/{evaluation}/results/{evaluation_result_id}``
+    """
+
+    evaluation_result_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class RunEvaluationResultMetricsResponse(proto.Message):
+    r"""Response message for
+    [EvaluationService.RunEvaluationResultMetrics][google.cloud.ces.v1beta.EvaluationService.RunEvaluationResultMetrics].
+
+    Attributes:
+        status (google.cloud.ces_v1beta.types.EvaluationResult.Outcome):
+            Output only. The status of the evaluation
+            result metrics calculation.
+    """
+
+    status: gcc_evaluation.EvaluationResult.Outcome = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=gcc_evaluation.EvaluationResult.Outcome,
+    )
 
 
 class RunEvaluationResponse(proto.Message):
@@ -94,7 +139,7 @@ class RunEvaluationResponse(proto.Message):
 
 class RunEvaluationOperationMetadata(proto.Message):
     r"""Operation metadata for
-    [EvaluationService.RunEvaluation][google.cloud.ces.v1beta.EvaluationService.RunEvaluation]
+    [EvaluationService.RunEvaluation][google.cloud.ces.v1beta.EvaluationService.RunEvaluation].
 
     Attributes:
         evaluations (MutableSequence[str]):
@@ -209,7 +254,26 @@ class GenerateEvaluationRequest(proto.Message):
             Optional. Indicate the source of the
             conversation. If not set, all sources will be
             searched.
+        evaluation_type (google.cloud.ces_v1beta.types.GenerateEvaluationRequest.EvaluationType):
+            Optional. The type of evaluation to generate.
+            Defaults to GOLDEN if unspecified.
     """
+
+    class EvaluationType(proto.Enum):
+        r"""The type of evaluation to generate.
+
+        Values:
+            EVALUATION_TYPE_UNSPECIFIED (0):
+                Unspecified type. Defaults to GOLDEN.
+            GOLDEN (1):
+                Golden evaluation.
+            SCENARIO (2):
+                Scenario evaluation.
+        """
+
+        EVALUATION_TYPE_UNSPECIFIED = 0
+        GOLDEN = 1
+        SCENARIO = 2
 
     conversation: str = proto.Field(
         proto.STRING,
@@ -219,6 +283,11 @@ class GenerateEvaluationRequest(proto.Message):
         proto.ENUM,
         number=2,
         enum=gcc_conversation.Conversation.Source,
+    )
+    evaluation_type: EvaluationType = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=EvaluationType,
     )
 
 
@@ -349,18 +418,47 @@ class ImportEvaluationsResponse(proto.Message):
         evaluations (MutableSequence[google.cloud.ces_v1beta.types.Evaluation]):
             The list of evaluations that were imported
             into the app.
+        evaluation_results (MutableSequence[google.cloud.ces_v1beta.types.EvaluationResult]):
+            The list of evaluation results that were
+            imported into the app.
+        evaluation_runs (MutableSequence[google.cloud.ces_v1beta.types.EvaluationRun]):
+            The list of evaluation runs that were
+            imported into the app.
         error_messages (MutableSequence[str]):
             Optional. A list of error messages associated
             with evaluations that failed to be imported.
         import_failure_count (int):
-            The number of evaluations that were not
-            imported due to errors.
+            The number of evaluations that either failed
+            to import entirely or completed import with one
+            or more errors.
+        evaluation_result_import_failure_count (int):
+            The number of evaluation results that either
+            failed to import entirely or completed import
+            with one or more errors.
+        evaluation_run_import_failure_count (int):
+            The number of evaluation runs that either
+            failed to import entirely or completed import
+            with one or more errors.
     """
 
     evaluations: MutableSequence[gcc_evaluation.Evaluation] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcc_evaluation.Evaluation,
+    )
+    evaluation_results: MutableSequence[gcc_evaluation.EvaluationResult] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message=gcc_evaluation.EvaluationResult,
+        )
+    )
+    evaluation_runs: MutableSequence[gcc_evaluation.EvaluationRun] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=gcc_evaluation.EvaluationRun,
+        )
     )
     error_messages: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -369,6 +467,14 @@ class ImportEvaluationsResponse(proto.Message):
     import_failure_count: int = proto.Field(
         proto.INT32,
         number=3,
+    )
+    evaluation_result_import_failure_count: int = proto.Field(
+        proto.INT32,
+        number=6,
+    )
+    evaluation_run_import_failure_count: int = proto.Field(
+        proto.INT32,
+        number=7,
     )
 
 
@@ -1499,6 +1605,299 @@ class ListEvaluationExpectationsResponse(proto.Message):
         proto.STRING,
         number=2,
     )
+
+
+class ExportOptions(proto.Message):
+    r"""Options for exporting CES evaluation resources.
+
+    Attributes:
+        export_format (google.cloud.ces_v1beta.types.ExportOptions.ExportFormat):
+            Optional. The format to export the evaluation
+            results in. Defaults to JSON if not specified.
+        gcs_uri (str):
+            Optional. The Google Cloud Storage URI to
+            write the exported Evaluation Results to.
+    """
+
+    class ExportFormat(proto.Enum):
+        r"""The format to export the items in. Defaults to JSON if not
+        specified.
+
+        Values:
+            EXPORT_FORMAT_UNSPECIFIED (0):
+                Unspecified format.
+            JSON (1):
+                JSON format.
+            YAML (2):
+                YAML format.
+        """
+
+        EXPORT_FORMAT_UNSPECIFIED = 0
+        JSON = 1
+        YAML = 2
+
+    export_format: ExportFormat = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=ExportFormat,
+    )
+    gcs_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ExportEvaluationsRequest(proto.Message):
+    r"""Request message for
+    [EvaluationService.ExportEvaluations][google.cloud.ces.v1beta.EvaluationService.ExportEvaluations].
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the app to export evaluations
+            from. Format:
+            ``projects/{project}/locations/{location}/apps/{app}``
+        names (MutableSequence[str]):
+            Required. The resource names of the
+            evaluations to export.
+        export_options (google.cloud.ces_v1beta.types.ExportOptions):
+            Optional. The export options for the
+            evaluations.
+        include_evaluation_results (bool):
+            Optional. Includes evaluation results in the export. At
+            least one of include_evaluation_results or
+            include_evaluations must be set.
+        include_evaluations (bool):
+            Optional. Includes evaluations in the export. At least one
+            of include_evaluation_results or include_evaluations must be
+            set.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    export_options: "ExportOptions" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ExportOptions",
+    )
+    include_evaluation_results: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    include_evaluations: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+
+
+class ExportEvaluationsResponse(proto.Message):
+    r"""Response message for
+    [EvaluationService.ExportEvaluations][google.cloud.ces.v1beta.EvaluationService.ExportEvaluations].
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        evaluations_content (bytes):
+            The content of the exported Evaluations. This will be
+            populated if gcs_uri was not specified in the request.
+
+            This field is a member of `oneof`_ ``evaluations``.
+        evaluations_uri (str):
+            The Google Cloud Storage URI folder where the exported
+            evaluations were written. This will be populated if gcs_uri
+            was specified in the request.
+
+            This field is a member of `oneof`_ ``evaluations``.
+        failed_evaluations (MutableMapping[str, str]):
+            Output only. A map of evaluation resource
+            names that could not be exported, to the reason
+            why they failed.
+    """
+
+    evaluations_content: bytes = proto.Field(
+        proto.BYTES,
+        number=1,
+        oneof="evaluations",
+    )
+    evaluations_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="evaluations",
+    )
+    failed_evaluations: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
+    )
+
+
+class ExportEvaluationResultsRequest(proto.Message):
+    r"""Request message for
+    [EvaluationService.ExportEvaluationResults][google.cloud.ces.v1beta.EvaluationService.ExportEvaluationResults].
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the evaluation to export
+            evaluation results from. Format:
+            ``projects/{project}/locations/{location}/apps/{app}/evaluations/{evaluation}``
+        names (MutableSequence[str]):
+            Required. The resource names of the
+            evaluation results to export.
+        export_options (google.cloud.ces_v1beta.types.ExportOptions):
+            Optional. The export options for the
+            evaluation results.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    export_options: "ExportOptions" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ExportOptions",
+    )
+
+
+class ExportEvaluationResultsResponse(proto.Message):
+    r"""Response message for
+    [EvaluationService.ExportEvaluationResults][google.cloud.ces.v1beta.EvaluationService.ExportEvaluationResults].
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        evaluation_results_content (bytes):
+            The content of the exported Evaluation Results. This will be
+            populated if gcs_uri was not specified in the request.
+
+            This field is a member of `oneof`_ ``evaluation_results``.
+        evaluation_results_uri (str):
+            The Google Cloud Storage URI folder where the exported
+            Evaluation Results were written. This will be populated if
+            gcs_uri was specified in the request.
+
+            This field is a member of `oneof`_ ``evaluation_results``.
+    """
+
+    evaluation_results_content: bytes = proto.Field(
+        proto.BYTES,
+        number=1,
+        oneof="evaluation_results",
+    )
+    evaluation_results_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="evaluation_results",
+    )
+
+
+class ExportEvaluationRunsRequest(proto.Message):
+    r"""Request message for
+    [EvaluationService.ExportEvaluationRuns][google.cloud.ces.v1beta.EvaluationService.ExportEvaluationRuns].
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the app to export evaluation
+            runs from. Format:
+            ``projects/{project}/locations/{location}/apps/{app}``
+        names (MutableSequence[str]):
+            Required. The resource names of the
+            evaluation runs to export.
+        export_options (google.cloud.ces_v1beta.types.ExportOptions):
+            Optional. The export options for the
+            evaluation runs.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    export_options: "ExportOptions" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ExportOptions",
+    )
+
+
+class ExportEvaluationRunsResponse(proto.Message):
+    r"""Response message for
+    [EvaluationService.ExportEvaluationRuns][google.cloud.ces.v1beta.EvaluationService.ExportEvaluationRuns].
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        evaluation_runs_content (bytes):
+            The content of the exported Evaluation Runs. This will be
+            populated if gcs_uri was not specified in the request.
+
+            This field is a member of `oneof`_ ``evaluation_runs``.
+        evaluation_runs_uri (str):
+            The Google Cloud Storage URI folder where the exported
+            Evaluation Runs were written. This will be populated if
+            gcs_uri was specified in the request.
+
+            This field is a member of `oneof`_ ``evaluation_runs``.
+    """
+
+    evaluation_runs_content: bytes = proto.Field(
+        proto.BYTES,
+        number=1,
+        oneof="evaluation_runs",
+    )
+    evaluation_runs_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="evaluation_runs",
+    )
+
+
+class ExportEvaluationRunsOperationMetadata(proto.Message):
+    r"""Operation metadata for
+    [EvaluationService.ExportEvaluationRuns][google.cloud.ces.v1beta.EvaluationService.ExportEvaluationRuns].
+
+    """
+
+
+class ExportEvaluationResultsOperationMetadata(proto.Message):
+    r"""Operation metadata for
+    [EvaluationService.ExportEvaluationResults][google.cloud.ces.v1beta.EvaluationService.ExportEvaluationResults].
+
+    """
+
+
+class RunEvaluationResultMetricsOperationMetadata(proto.Message):
+    r"""Operation metadata for
+    [EvaluationService.RunEvaluationResultMetrics][google.cloud.ces.v1beta.EvaluationService.RunEvaluationResultMetrics].
+
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

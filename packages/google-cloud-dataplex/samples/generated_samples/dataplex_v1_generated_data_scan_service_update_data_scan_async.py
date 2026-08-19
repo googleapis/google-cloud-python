@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,6 @@ async def sample_update_data_scan():
 
     # Initialize request argument(s)
     data_scan = dataplex_v1.DataScan()
-    data_scan.data_quality_spec.rules.dimension = "dimension_value"
     data_scan.data.entity = "entity_value"
 
     request = dataplex_v1.UpdateDataScanRequest(
@@ -48,11 +47,11 @@ async def sample_update_data_scan():
     )
 
     # Make the request
-    operation = client.update_data_scan(request=request)
+    operation = await client.update_data_scan(request=request)
 
     print("Waiting for operation to complete...")
 
-    response = (await operation).result()
+    response = await operation.result()
 
     # Handle the response
     print(response)

@@ -4,6 +4,85 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.34.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.33.0...google-api-core-v2.34.0) (2026-08-06)
+
+
+### Features
+
+* Add Feature Gating configuration helpers. ([#17524](https://github.com/googleapis/google-cloud-python/issues/17524)) ([eceea95](https://github.com/googleapis/google-cloud-python/commit/eceea95be8f528afac4fe352ae6dbac913b6a202))
+* **api-core:** centralize rest transcoding helpers ([#17765](https://github.com/googleapis/google-cloud-python/issues/17765)) ([4f21b8b](https://github.com/googleapis/google-cloud-python/commit/4f21b8b07bab99e9ee92bf3c8a9e0f8da5350cf9))
+
+
+### Bug Fixes
+
+* **api-core:** use truthiness check in setup_request_id to support proto-plus messages ([#18000](https://github.com/googleapis/google-cloud-python/issues/18000)) ([ad8f93c](https://github.com/googleapis/google-cloud-python/commit/ad8f93c3211b3ae9d9b234a5b2fa52a8cbf4b206))
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+* deduplicate x-goog-api-client headers ([#17616](https://github.com/googleapis/google-cloud-python/issues/17616)) ([6167e41](https://github.com/googleapis/google-cloud-python/commit/6167e4136e24a40fa6fc77be5987ba9cab8ac5e8))
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
+## [2.33.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.32.0...google-api-core-v2.33.0) (2026-07-22)
+
+
+### Features
+
+* **api_core:** add request-id auto-population logic to gapic_v1 public helpers ([#17738](https://github.com/googleapis/google-cloud-python/issues/17738)) ([68e1313](https://github.com/googleapis/google-cloud-python/commit/68e131341bd5d20ee50d7be3ed0410af4c12a46d))
+* **api-core:** add get_universe_domain helper to universe.py ([#17799](https://github.com/googleapis/google-cloud-python/issues/17799)) ([d461da7](https://github.com/googleapis/google-cloud-python/commit/d461da7bde04f2a698469f413116873633aa1f12))
+
+
+### Bug Fixes
+
+* **api-core:** prevent overwriting explicit empty strings for optional request_id ([#17798](https://github.com/googleapis/google-cloud-python/issues/17798)) ([07f7503](https://github.com/googleapis/google-cloud-python/commit/07f7503437f495dbce19b4f346ea17efcd738a65))
+
+## [2.32.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.31.0...google-api-core-v2.32.0) (2026-07-16)
+
+
+### Features
+
+* implement PEP 0810 lazy loading in operations_v1 ([#17724](https://github.com/googleapis/google-cloud-python/issues/17724)) ([22c5304](https://github.com/googleapis/google-cloud-python/commit/22c5304f2a4d292f09784a83903883099bd1ea3b))
+
+
+### Bug Fixes
+
+* **api_core:** clarify misleading http 404 unimplemented error message ([#17681](https://github.com/googleapis/google-cloud-python/issues/17681)) ([00b9040](https://github.com/googleapis/google-cloud-python/commit/00b90401e5c8023c8bd3b19ede4ee0d33b9ebedb))
+
+## [2.31.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.30.3...google-api-core-v2.31.0) (2026-06-02)
+
+
+### Documentation
+
+* fix FAQ grammar in httplib2 example</li> <li><a href="https://github.com/psf/requests/commit/774a0b837a194ee885d4fdd9ca947900cc3daf71"><code>774a0b8</code></a> ([b79b3ea0c28e4b2d16aef8da14ad87c5735b1328](https://github.com/googleapis/google-cloud-python/commit/b79b3ea0c28e4b2d16aef8da14ad87c5735b1328))
+* same block as other sections</li> <li><a href="https://github.com/psf/requests/commit/9c72a41bec8597f948c9d8caa5dc3f12273b3303"><code>9c72a41</code></a> Bump github/codeql-action from 4.33.0 to 4.34.1</li> <li><a href="https://github.com/psf/requests/commit/ebf71906798ec82f34e07d3168f8b8aecaf8a3be"><code>ebf7190</code></a> Bump github/codeql-action from 4.32.0 to 4.33.0</li> <li><a href="https://github.com/psf/requests/commit/0e4ae38f0c93d4f92a96c774bd52c069d12a4798"><code>0e4ae38</code></a> ([b79b3ea0c28e4b2d16aef8da14ad87c5735b1328](https://github.com/googleapis/google-cloud-python/commit/b79b3ea0c28e4b2d16aef8da14ad87c5735b1328))
+* exclude Response.is_permanent_redirect from API docs (<a href="https://redirect.github.com/psf/requests/issues/7244">#7244</a>)</li> <li><a href="https://github.com/psf/requests/commit/d568f47278492e630cc990a259047c67991d007a"><code>d568f47</code></a> ([b79b3ea0c28e4b2d16aef8da14ad87c5735b1328](https://github.com/googleapis/google-cloud-python/commit/b79b3ea0c28e4b2d16aef8da14ad87c5735b1328))
+* clarify Quickstart POST example (<a href="https://redirect.github.com/psf/requests/issues/6960">#6960</a>)</li> <li>Additional commits viewable in <a href="https://github.com/psf/requests/compare/v2.25.0...v2.33.0">compare view</a></li> </ul> </details> <br /> ([b79b3ea0c28e4b2d16aef8da14ad87c5735b1328](https://github.com/googleapis/google-cloud-python/commit/b79b3ea0c28e4b2d16aef8da14ad87c5735b1328))
+
+
+### Bug Fixes
+
+* bump protobuf from 4.25.8 to 5.29.6 (#17021) ([8f52e9ad30b58436480e35d462e9367172bd6656](https://github.com/googleapis/google-cloud-python/commit/8f52e9ad30b58436480e35d462e9367172bd6656))
+* drop support for Python 3.9 (#16980) ([e5ed47205cb478a4b6ba8f602b7c7198911d086e](https://github.com/googleapis/google-cloud-python/commit/e5ed47205cb478a4b6ba8f602b7c7198911d086e))
+
+## [2.30.3](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.30.2...google-api-core-v2.30.3) (2026-04-09)
+
+
+### Bug Fixes
+
+* avoid repeated scan of entire venv via packages_distributions() at import time (#16579) ([c5728b24fac3363c10a8cfb315b96d3e6459cf06](https://github.com/googleapis/google-cloud-python/commit/c5728b24fac3363c10a8cfb315b96d3e6459cf06))
+
+## [2.30.2](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.30.1...google-api-core-v2.30.2) (2026-04-02)
+
+
+### Bug Fixes
+
+* allow Protobuf 7.x (#16532) ([ffb4b712121d04a38399e0bd3dc9773e96798564](https://github.com/googleapis/google-cloud-python/commit/ffb4b712121d04a38399e0bd3dc9773e96798564))
+
+## [2.30.1](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.30.0...google-api-core-v2.30.1) (2026-03-26)
+
+
+### Bug Fixes
+
+* Allow Protobuf 7.x, require Python 3.9 (#16102) ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+* Require Python 3.9 ([ec9262c45055d3d2b596cdde1649d3ce90b4347d](https://github.com/googleapis/google-cloud-python/commit/ec9262c45055d3d2b596cdde1649d3ce90b4347d))
+
 ## [2.30.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.29.0...google-api-core-v2.30.0) (2026-02-17)
 
 

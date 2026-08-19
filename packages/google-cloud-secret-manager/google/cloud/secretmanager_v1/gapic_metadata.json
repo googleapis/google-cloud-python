@@ -40,6 +40,11 @@
                 "disable_secret_version"
               ]
             },
+            "EnableManagedRotation": {
+              "methods": [
+                "enable_managed_rotation"
+              ]
+            },
             "EnableSecretVersion": {
               "methods": [
                 "enable_secret_version"
@@ -68,6 +73,11 @@
             "ListSecrets": {
               "methods": [
                 "list_secrets"
+              ]
+            },
+            "RotateSecret": {
+              "methods": [
+                "rotate_secret"
               ]
             },
             "SetIamPolicy": {
@@ -120,6 +130,11 @@
                 "disable_secret_version"
               ]
             },
+            "EnableManagedRotation": {
+              "methods": [
+                "enable_managed_rotation"
+              ]
+            },
             "EnableSecretVersion": {
               "methods": [
                 "enable_secret_version"
@@ -148,6 +163,11 @@
             "ListSecrets": {
               "methods": [
                 "list_secrets"
+              ]
+            },
+            "RotateSecret": {
+              "methods": [
+                "rotate_secret"
               ]
             },
             "SetIamPolicy": {
@@ -200,6 +220,11 @@
                 "disable_secret_version"
               ]
             },
+            "EnableManagedRotation": {
+              "methods": [
+                "enable_managed_rotation"
+              ]
+            },
             "EnableSecretVersion": {
               "methods": [
                 "enable_secret_version"
@@ -228,6 +253,11 @@
             "ListSecrets": {
               "methods": [
                 "list_secrets"
+              ]
+            },
+            "RotateSecret": {
+              "methods": [
+                "rotate_secret"
               ]
             },
             "SetIamPolicy": {

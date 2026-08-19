@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -116,12 +111,28 @@ def modify_default_endpoint_template(client):
     )
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert ModelArmorClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -140,6 +151,9 @@ def test__get_default_mtls_endpoint():
         == sandbox_mtls_endpoint
     )
     assert ModelArmorClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    assert (
+        ModelArmorClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
+    )
 
 
 def test__read_environment_variables():
@@ -917,7 +931,14 @@ def test_model_armor_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -964,7 +985,14 @@ def test_model_armor_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1242,11 +1270,13 @@ def test_model_armor_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1271,8 +1301,8 @@ def test_model_armor_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.ListTemplatesRequest,
-        dict,
+        service.ListTemplatesRequest(),
+        {},
     ],
 )
 def test_list_templates(request_type, transport: str = "grpc"):
@@ -1283,7 +1313,7 @@ def test_list_templates(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_templates), "__call__") as call:
@@ -1332,12 +1362,13 @@ def test_list_templates_non_empty_request_with_auto_populated_field():
         client.list_templates(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListTemplatesRequest(
+        request_msg = service.ListTemplatesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_templates_use_cached_wrapped_rpc():
@@ -1418,9 +1449,14 @@ async def test_list_templates_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_templates_async(
-    transport: str = "grpc_asyncio", request_type=service.ListTemplatesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListTemplatesRequest(),
+        {},
+    ],
+)
+async def test_list_templates_async(request_type, transport: str = "grpc_asyncio"):
     client = ModelArmorAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1428,7 +1464,7 @@ async def test_list_templates_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_templates), "__call__") as call:
@@ -1451,11 +1487,6 @@ async def test_list_templates_async(
     assert isinstance(response, pagers.ListTemplatesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_templates_async_from_dict():
-    await test_list_templates_async(request_type=dict)
 
 
 def test_list_templates_field_headers():
@@ -1650,6 +1681,9 @@ def test_list_templates_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, service.Template) for i in results)
@@ -1738,6 +1772,8 @@ async def test_list_templates_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1785,11 +1821,7 @@ async def test_list_templates_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_templates(request={})
-        ).pages:
+        async for page_ in (await client.list_templates(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1798,8 +1830,8 @@ async def test_list_templates_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetTemplateRequest,
-        dict,
+        service.GetTemplateRequest(),
+        {},
     ],
 )
 def test_get_template(request_type, transport: str = "grpc"):
@@ -1810,7 +1842,7 @@ def test_get_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_template), "__call__") as call:
@@ -1854,9 +1886,10 @@ def test_get_template_non_empty_request_with_auto_populated_field():
         client.get_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetTemplateRequest(
+        request_msg = service.GetTemplateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_template_use_cached_wrapped_rpc():
@@ -1937,9 +1970,14 @@ async def test_get_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_template_async(
-    transport: str = "grpc_asyncio", request_type=service.GetTemplateRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetTemplateRequest(),
+        {},
+    ],
+)
+async def test_get_template_async(request_type, transport: str = "grpc_asyncio"):
     client = ModelArmorAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1947,7 +1985,7 @@ async def test_get_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_template), "__call__") as call:
@@ -1968,11 +2006,6 @@ async def test_get_template_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Template)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_template_async_from_dict():
-    await test_get_template_async(request_type=dict)
 
 
 def test_get_template_field_headers():
@@ -2117,8 +2150,8 @@ async def test_get_template_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.CreateTemplateRequest,
-        dict,
+        service.CreateTemplateRequest(),
+        {},
     ],
 )
 def test_create_template(request_type, transport: str = "grpc"):
@@ -2129,7 +2162,7 @@ def test_create_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_template), "__call__") as call:
@@ -2174,10 +2207,11 @@ def test_create_template_non_empty_request_with_auto_populated_field():
         client.create_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateTemplateRequest(
+        request_msg = service.CreateTemplateRequest(
             parent="parent_value",
             template_id="template_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_template_use_cached_wrapped_rpc():
@@ -2258,9 +2292,14 @@ async def test_create_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_template_async(
-    transport: str = "grpc_asyncio", request_type=service.CreateTemplateRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateTemplateRequest(),
+        {},
+    ],
+)
+async def test_create_template_async(request_type, transport: str = "grpc_asyncio"):
     client = ModelArmorAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2268,7 +2307,7 @@ async def test_create_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_template), "__call__") as call:
@@ -2289,11 +2328,6 @@ async def test_create_template_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Template)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_create_template_async_from_dict():
-    await test_create_template_async(request_type=dict)
 
 
 def test_create_template_field_headers():
@@ -2458,8 +2492,8 @@ async def test_create_template_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateTemplateRequest,
-        dict,
+        service.UpdateTemplateRequest(),
+        {},
     ],
 )
 def test_update_template(request_type, transport: str = "grpc"):
@@ -2470,7 +2504,7 @@ def test_update_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_template), "__call__") as call:
@@ -2512,7 +2546,8 @@ def test_update_template_non_empty_request_with_auto_populated_field():
         client.update_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateTemplateRequest()
+        request_msg = service.UpdateTemplateRequest()
+        assert args[0] == request_msg
 
 
 def test_update_template_use_cached_wrapped_rpc():
@@ -2593,9 +2628,14 @@ async def test_update_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_template_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateTemplateRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateTemplateRequest(),
+        {},
+    ],
+)
+async def test_update_template_async(request_type, transport: str = "grpc_asyncio"):
     client = ModelArmorAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2603,7 +2643,7 @@ async def test_update_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_template), "__call__") as call:
@@ -2624,11 +2664,6 @@ async def test_update_template_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Template)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_template_async_from_dict():
-    await test_update_template_async(request_type=dict)
 
 
 def test_update_template_field_headers():
@@ -2783,8 +2818,8 @@ async def test_update_template_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.DeleteTemplateRequest,
-        dict,
+        service.DeleteTemplateRequest(),
+        {},
     ],
 )
 def test_delete_template(request_type, transport: str = "grpc"):
@@ -2795,7 +2830,7 @@ def test_delete_template(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_template), "__call__") as call:
@@ -2836,9 +2871,10 @@ def test_delete_template_non_empty_request_with_auto_populated_field():
         client.delete_template(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteTemplateRequest(
+        request_msg = service.DeleteTemplateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_template_use_cached_wrapped_rpc():
@@ -2919,9 +2955,14 @@ async def test_delete_template_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_template_async(
-    transport: str = "grpc_asyncio", request_type=service.DeleteTemplateRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteTemplateRequest(),
+        {},
+    ],
+)
+async def test_delete_template_async(request_type, transport: str = "grpc_asyncio"):
     client = ModelArmorAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2929,7 +2970,7 @@ async def test_delete_template_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_template), "__call__") as call:
@@ -2945,11 +2986,6 @@ async def test_delete_template_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_template_async_from_dict():
-    await test_delete_template_async(request_type=dict)
 
 
 def test_delete_template_field_headers():
@@ -3094,8 +3130,8 @@ async def test_delete_template_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.GetFloorSettingRequest,
-        dict,
+        service.GetFloorSettingRequest(),
+        {},
     ],
 )
 def test_get_floor_setting(request_type, transport: str = "grpc"):
@@ -3106,7 +3142,7 @@ def test_get_floor_setting(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3160,9 +3196,10 @@ def test_get_floor_setting_non_empty_request_with_auto_populated_field():
         client.get_floor_setting(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetFloorSettingRequest(
+        request_msg = service.GetFloorSettingRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_floor_setting_use_cached_wrapped_rpc():
@@ -3245,9 +3282,14 @@ async def test_get_floor_setting_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_floor_setting_async(
-    transport: str = "grpc_asyncio", request_type=service.GetFloorSettingRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetFloorSettingRequest(),
+        {},
+    ],
+)
+async def test_get_floor_setting_async(request_type, transport: str = "grpc_asyncio"):
     client = ModelArmorAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3255,7 +3297,7 @@ async def test_get_floor_setting_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3286,11 +3328,6 @@ async def test_get_floor_setting_async(
     assert response.integrated_services == [
         service.FloorSetting.IntegratedService.AI_PLATFORM
     ]
-
-
-@pytest.mark.asyncio
-async def test_get_floor_setting_async_from_dict():
-    await test_get_floor_setting_async(request_type=dict)
 
 
 def test_get_floor_setting_field_headers():
@@ -3447,8 +3484,8 @@ async def test_get_floor_setting_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.UpdateFloorSettingRequest,
-        dict,
+        service.UpdateFloorSettingRequest(),
+        {},
     ],
 )
 def test_update_floor_setting(request_type, transport: str = "grpc"):
@@ -3459,7 +3496,7 @@ def test_update_floor_setting(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3511,7 +3548,8 @@ def test_update_floor_setting_non_empty_request_with_auto_populated_field():
         client.update_floor_setting(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateFloorSettingRequest()
+        request_msg = service.UpdateFloorSettingRequest()
+        assert args[0] == request_msg
 
 
 def test_update_floor_setting_use_cached_wrapped_rpc():
@@ -3596,8 +3634,15 @@ async def test_update_floor_setting_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateFloorSettingRequest(),
+        {},
+    ],
+)
 async def test_update_floor_setting_async(
-    transport: str = "grpc_asyncio", request_type=service.UpdateFloorSettingRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ModelArmorAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3606,7 +3651,7 @@ async def test_update_floor_setting_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3637,11 +3682,6 @@ async def test_update_floor_setting_async(
     assert response.integrated_services == [
         service.FloorSetting.IntegratedService.AI_PLATFORM
     ]
-
-
-@pytest.mark.asyncio
-async def test_update_floor_setting_async_from_dict():
-    await test_update_floor_setting_async(request_type=dict)
 
 
 def test_update_floor_setting_field_headers():
@@ -3808,8 +3848,8 @@ async def test_update_floor_setting_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.SanitizeUserPromptRequest,
-        dict,
+        service.SanitizeUserPromptRequest(),
+        {},
     ],
 )
 def test_sanitize_user_prompt(request_type, transport: str = "grpc"):
@@ -3820,7 +3860,7 @@ def test_sanitize_user_prompt(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3865,9 +3905,10 @@ def test_sanitize_user_prompt_non_empty_request_with_auto_populated_field():
         client.sanitize_user_prompt(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.SanitizeUserPromptRequest(
+        request_msg = service.SanitizeUserPromptRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_sanitize_user_prompt_use_cached_wrapped_rpc():
@@ -3952,8 +3993,15 @@ async def test_sanitize_user_prompt_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SanitizeUserPromptRequest(),
+        {},
+    ],
+)
 async def test_sanitize_user_prompt_async(
-    transport: str = "grpc_asyncio", request_type=service.SanitizeUserPromptRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ModelArmorAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3962,7 +4010,7 @@ async def test_sanitize_user_prompt_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3982,11 +4030,6 @@ async def test_sanitize_user_prompt_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.SanitizeUserPromptResponse)
-
-
-@pytest.mark.asyncio
-async def test_sanitize_user_prompt_async_from_dict():
-    await test_sanitize_user_prompt_async(request_type=dict)
 
 
 def test_sanitize_user_prompt_field_headers():
@@ -4057,8 +4100,8 @@ async def test_sanitize_user_prompt_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        service.SanitizeModelResponseRequest,
-        dict,
+        service.SanitizeModelResponseRequest(),
+        {},
     ],
 )
 def test_sanitize_model_response(request_type, transport: str = "grpc"):
@@ -4069,7 +4112,7 @@ def test_sanitize_model_response(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4115,10 +4158,11 @@ def test_sanitize_model_response_non_empty_request_with_auto_populated_field():
         client.sanitize_model_response(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.SanitizeModelResponseRequest(
+        request_msg = service.SanitizeModelResponseRequest(
             name="name_value",
             user_prompt="user_prompt_value",
         )
+        assert args[0] == request_msg
 
 
 def test_sanitize_model_response_use_cached_wrapped_rpc():
@@ -4204,8 +4248,15 @@ async def test_sanitize_model_response_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SanitizeModelResponseRequest(),
+        {},
+    ],
+)
 async def test_sanitize_model_response_async(
-    transport: str = "grpc_asyncio", request_type=service.SanitizeModelResponseRequest
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = ModelArmorAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4214,7 +4265,7 @@ async def test_sanitize_model_response_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4234,11 +4285,6 @@ async def test_sanitize_model_response_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.SanitizeModelResponseResponse)
-
-
-@pytest.mark.asyncio
-async def test_sanitize_model_response_async_from_dict():
-    await test_sanitize_model_response_async(request_type=dict)
 
 
 def test_sanitize_model_response_field_headers():
@@ -4304,6 +4350,326 @@ async def test_sanitize_model_response_field_headers_async():
         "x-goog-request-params",
         "name=name_value",
     ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SanitizeUserPromptRequest(),
+        {},
+    ],
+)
+def test_stream_sanitize_user_prompt(request_type, transport: str = "grpc"):
+    client = ModelArmorClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stream_sanitize_user_prompt), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iter([service.SanitizeUserPromptResponse()])
+        response = client.stream_sanitize_user_prompt(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    for message in response:
+        assert isinstance(message, service.SanitizeUserPromptResponse)
+
+
+def test_stream_sanitize_user_prompt_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ModelArmorClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.stream_sanitize_user_prompt
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.stream_sanitize_user_prompt
+        ] = mock_rpc
+        request = [{}]
+        client.stream_sanitize_user_prompt(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.stream_sanitize_user_prompt(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_stream_sanitize_user_prompt_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ModelArmorAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.stream_sanitize_user_prompt
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.stream_sanitize_user_prompt
+        ] = mock_rpc
+
+        request = [{}]
+        await client.stream_sanitize_user_prompt(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.stream_sanitize_user_prompt(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SanitizeUserPromptRequest(),
+        {},
+    ],
+)
+async def test_stream_sanitize_user_prompt_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = ModelArmorAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stream_sanitize_user_prompt), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = mock.Mock(aio.StreamStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[service.SanitizeUserPromptResponse()]
+        )
+        response = await client.stream_sanitize_user_prompt(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    message = await response.read()
+    assert isinstance(message, service.SanitizeUserPromptResponse)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SanitizeModelResponseRequest(),
+        {},
+    ],
+)
+def test_stream_sanitize_model_response(request_type, transport: str = "grpc"):
+    client = ModelArmorClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stream_sanitize_model_response), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iter([service.SanitizeModelResponseResponse()])
+        response = client.stream_sanitize_model_response(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    for message in response:
+        assert isinstance(message, service.SanitizeModelResponseResponse)
+
+
+def test_stream_sanitize_model_response_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ModelArmorClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.stream_sanitize_model_response
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.stream_sanitize_model_response
+        ] = mock_rpc
+        request = [{}]
+        client.stream_sanitize_model_response(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.stream_sanitize_model_response(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_stream_sanitize_model_response_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ModelArmorAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.stream_sanitize_model_response
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.stream_sanitize_model_response
+        ] = mock_rpc
+
+        request = [{}]
+        await client.stream_sanitize_model_response(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.stream_sanitize_model_response(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.SanitizeModelResponseRequest(),
+        {},
+    ],
+)
+async def test_stream_sanitize_model_response_async(
+    request_type, transport: str = "grpc_asyncio"
+):
+    client = ModelArmorAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stream_sanitize_model_response), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = mock.Mock(aio.StreamStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[service.SanitizeModelResponseResponse()]
+        )
+        response = await client.stream_sanitize_model_response(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    message = await response.read()
+    assert isinstance(message, service.SanitizeModelResponseResponse)
 
 
 def test_list_templates_rest_use_cached_wrapped_rpc():
@@ -4421,7 +4787,7 @@ def test_list_templates_rest_required_fields(request_type=service.ListTemplatesR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_templates_rest_unset_required_fields():
@@ -4552,6 +4918,9 @@ def test_list_templates_rest_pager(transport: str = "rest"):
 
         pager = client.list_templates(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, service.Template) for i in results)
@@ -4667,7 +5036,7 @@ def test_get_template_rest_required_fields(request_type=service.GetTemplateReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_template_rest_unset_required_fields():
@@ -4867,7 +5236,7 @@ def test_create_template_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_template_rest_unset_required_fields():
@@ -5065,7 +5434,7 @@ def test_update_template_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_template_rest_unset_required_fields():
@@ -5259,7 +5628,7 @@ def test_delete_template_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_template_rest_unset_required_fields():
@@ -5438,7 +5807,7 @@ def test_get_floor_setting_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_floor_setting_rest_unset_required_fields():
@@ -5617,7 +5986,7 @@ def test_update_floor_setting_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_floor_setting_rest_unset_required_fields():
@@ -5804,7 +6173,7 @@ def test_sanitize_user_prompt_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_sanitize_user_prompt_rest_unset_required_fields():
@@ -5938,7 +6307,7 @@ def test_sanitize_model_response_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_sanitize_model_response_rest_unset_required_fields():
@@ -5955,6 +6324,56 @@ def test_sanitize_model_response_rest_unset_required_fields():
                 "modelResponseData",
             )
         )
+    )
+
+
+def test_stream_sanitize_user_prompt_rest_no_http_options():
+    client = ModelArmorClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = service.SanitizeUserPromptRequest()
+    requests = [request]
+    with pytest.raises(RuntimeError):
+        client.stream_sanitize_user_prompt(requests)
+
+
+def test_stream_sanitize_model_response_rest_no_http_options():
+    client = ModelArmorClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = service.SanitizeModelResponseRequest()
+    requests = [request]
+    with pytest.raises(RuntimeError):
+        client.stream_sanitize_model_response(requests)
+
+
+def test_stream_sanitize_user_prompt_rest_error():
+    client = ModelArmorClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.stream_sanitize_user_prompt({})
+    assert (
+        "Method StreamSanitizeUserPrompt is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+def test_stream_sanitize_model_response_rest_error():
+    client = ModelArmorClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.stream_sanitize_model_response({})
+    assert (
+        "Method StreamSanitizeModelResponse is not available over REST transport"
+        in str(not_implemented_error.value)
     )
 
 
@@ -6081,7 +6500,6 @@ def test_list_templates_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListTemplatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -6102,7 +6520,6 @@ def test_get_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -6123,7 +6540,6 @@ def test_create_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -6144,7 +6560,6 @@ def test_update_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -6165,7 +6580,6 @@ def test_delete_template_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -6188,7 +6602,6 @@ def test_get_floor_setting_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetFloorSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -6211,7 +6624,6 @@ def test_update_floor_setting_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateFloorSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -6234,7 +6646,6 @@ def test_sanitize_user_prompt_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SanitizeUserPromptRequest()
-
         assert args[0] == request_msg
 
 
@@ -6257,7 +6668,6 @@ def test_sanitize_model_response_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SanitizeModelResponseRequest()
-
         assert args[0] == request_msg
 
 
@@ -6299,7 +6709,6 @@ async def test_list_templates_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListTemplatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -6326,7 +6735,6 @@ async def test_get_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -6353,7 +6761,6 @@ async def test_create_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -6380,7 +6787,6 @@ async def test_update_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -6403,7 +6809,6 @@ async def test_delete_template_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -6436,7 +6841,6 @@ async def test_get_floor_setting_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetFloorSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -6469,7 +6873,6 @@ async def test_update_floor_setting_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateFloorSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -6496,7 +6899,6 @@ async def test_sanitize_user_prompt_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SanitizeUserPromptRequest()
-
         assert args[0] == request_msg
 
 
@@ -6523,7 +6925,6 @@ async def test_sanitize_model_response_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SanitizeModelResponseRequest()
-
         assert args[0] == request_msg
 
 
@@ -6543,8 +6944,9 @@ def test_list_templates_rest_bad_request(request_type=service.ListTemplatesReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6609,17 +7011,19 @@ def test_list_templates_rest_interceptors(null_interceptor):
     )
     client = ModelArmorClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "post_list_templates"
-    ) as post, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "post_list_templates_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "pre_list_templates"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "post_list_templates"
+        ) as post,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "post_list_templates_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "pre_list_templates"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -6670,8 +7074,9 @@ def test_get_template_rest_bad_request(request_type=service.GetTemplateRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6734,17 +7139,19 @@ def test_get_template_rest_interceptors(null_interceptor):
     )
     client = ModelArmorClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "post_get_template"
-    ) as post, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "post_get_template_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "pre_get_template"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "post_get_template"
+        ) as post,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "post_get_template_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "pre_get_template"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -6793,8 +7200,9 @@ def test_create_template_rest_bad_request(request_type=service.CreateTemplateReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6853,6 +7261,7 @@ def test_create_template_rest_call_success(request_type):
             "log_sanitize_operations": True,
             "enforcement_type": 1,
             "multi_language_detection": {"enable_multi_language_detection": True},
+            "modalities": [1],
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -6958,17 +7367,19 @@ def test_create_template_rest_interceptors(null_interceptor):
     )
     client = ModelArmorClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "post_create_template"
-    ) as post, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "post_create_template_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "pre_create_template"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "post_create_template"
+        ) as post,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "post_create_template_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "pre_create_template"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7019,8 +7430,9 @@ def test_update_template_rest_bad_request(request_type=service.UpdateTemplateReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7081,6 +7493,7 @@ def test_update_template_rest_call_success(request_type):
             "log_sanitize_operations": True,
             "enforcement_type": 1,
             "multi_language_detection": {"enable_multi_language_detection": True},
+            "modalities": [1],
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -7186,17 +7599,19 @@ def test_update_template_rest_interceptors(null_interceptor):
     )
     client = ModelArmorClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "post_update_template"
-    ) as post, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "post_update_template_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "pre_update_template"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "post_update_template"
+        ) as post,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "post_update_template_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "pre_update_template"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7245,8 +7660,9 @@ def test_delete_template_rest_bad_request(request_type=service.DeleteTemplateReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7303,13 +7719,13 @@ def test_delete_template_rest_interceptors(null_interceptor):
     )
     client = ModelArmorClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "pre_delete_template"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "pre_delete_template"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = service.DeleteTemplateRequest.pb(service.DeleteTemplateRequest())
         transcode.return_value = {
@@ -7352,8 +7768,9 @@ def test_get_floor_setting_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7422,17 +7839,19 @@ def test_get_floor_setting_rest_interceptors(null_interceptor):
     )
     client = ModelArmorClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "post_get_floor_setting"
-    ) as post, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "post_get_floor_setting_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "pre_get_floor_setting"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "post_get_floor_setting"
+        ) as post,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "post_get_floor_setting_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "pre_get_floor_setting"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7485,8 +7904,9 @@ def test_update_floor_setting_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7656,17 +8076,20 @@ def test_update_floor_setting_rest_interceptors(null_interceptor):
     )
     client = ModelArmorClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "post_update_floor_setting"
-    ) as post, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "post_update_floor_setting_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "pre_update_floor_setting"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "post_update_floor_setting"
+        ) as post,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor,
+            "post_update_floor_setting_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "pre_update_floor_setting"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7719,8 +8142,9 @@ def test_sanitize_user_prompt_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7780,17 +8204,20 @@ def test_sanitize_user_prompt_rest_interceptors(null_interceptor):
     )
     client = ModelArmorClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "post_sanitize_user_prompt"
-    ) as post, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "post_sanitize_user_prompt_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "pre_sanitize_user_prompt"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "post_sanitize_user_prompt"
+        ) as post,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor,
+            "post_sanitize_user_prompt_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "pre_sanitize_user_prompt"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7845,8 +8272,9 @@ def test_sanitize_model_response_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7906,18 +8334,20 @@ def test_sanitize_model_response_rest_interceptors(null_interceptor):
     )
     client = ModelArmorClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "post_sanitize_model_response"
-    ) as post, mock.patch.object(
-        transports.ModelArmorRestInterceptor,
-        "post_sanitize_model_response_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ModelArmorRestInterceptor, "pre_sanitize_model_response"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "post_sanitize_model_response"
+        ) as post,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor,
+            "post_sanitize_model_response_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ModelArmorRestInterceptor, "pre_sanitize_model_response"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7964,6 +8394,32 @@ def test_sanitize_model_response_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_stream_sanitize_user_prompt_rest_error():
+    client = ModelArmorClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.stream_sanitize_user_prompt({})
+    assert (
+        "Method StreamSanitizeUserPrompt is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
+def test_stream_sanitize_model_response_rest_error():
+    client = ModelArmorClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.stream_sanitize_model_response({})
+    assert (
+        "Method StreamSanitizeModelResponse is not available over REST transport"
+        in str(not_implemented_error.value)
+    )
+
+
 def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
     client = ModelArmorClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7975,8 +8431,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -8035,8 +8492,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -8107,7 +8565,6 @@ def test_list_templates_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.ListTemplatesRequest()
-
         assert args[0] == request_msg
 
 
@@ -8127,7 +8584,6 @@ def test_get_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -8147,7 +8603,6 @@ def test_create_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.CreateTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -8167,7 +8622,6 @@ def test_update_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -8187,7 +8641,6 @@ def test_delete_template_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.DeleteTemplateRequest()
-
         assert args[0] == request_msg
 
 
@@ -8209,7 +8662,6 @@ def test_get_floor_setting_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.GetFloorSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -8231,7 +8683,6 @@ def test_update_floor_setting_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.UpdateFloorSettingRequest()
-
         assert args[0] == request_msg
 
 
@@ -8253,7 +8704,6 @@ def test_sanitize_user_prompt_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SanitizeUserPromptRequest()
-
         assert args[0] == request_msg
 
 
@@ -8275,7 +8725,6 @@ def test_sanitize_model_response_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.SanitizeModelResponseRequest()
-
         assert args[0] == request_msg
 
 
@@ -8321,6 +8770,8 @@ def test_model_armor_base_transport():
         "update_floor_setting",
         "sanitize_user_prompt",
         "sanitize_model_response",
+        "stream_sanitize_user_prompt",
+        "stream_sanitize_model_response",
         "get_location",
         "list_locations",
     )
@@ -8342,11 +8793,14 @@ def test_model_armor_base_transport():
 
 def test_model_armor_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.modelarmor_v1.services.model_armor.transports.ModelArmorTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.modelarmor_v1.services.model_armor.transports.ModelArmorTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ModelArmorTransport(
@@ -8363,9 +8817,12 @@ def test_model_armor_base_transport_with_credentials_file():
 
 def test_model_armor_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.modelarmor_v1.services.model_armor.transports.ModelArmorTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.modelarmor_v1.services.model_armor.transports.ModelArmorTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ModelArmorTransport()
@@ -8437,11 +8894,12 @@ def test_model_armor_transport_auth_gdch_credentials(transport_class):
 def test_model_armor_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -8604,6 +9062,12 @@ def test_model_armor_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.sanitize_model_response._session
     session2 = client2.transport.sanitize_model_response._session
+    assert session1 != session2
+    session1 = client1.transport.stream_sanitize_user_prompt._session
+    session2 = client2.transport.stream_sanitize_user_prompt._session
+    assert session1 != session2
+    session1 = client1.transport.stream_sanitize_model_response._session
+    session2 = client2.transport.stream_sanitize_model_response._session
     assert session1 != session2
 
 
@@ -9046,6 +9510,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = ModelArmorClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = ModelArmorAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = ModelArmorClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9185,6 +9683,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = ModelArmorClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = ModelArmorAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_transport_close_grpc():

@@ -35,32 +35,8 @@ Note that the extras pyopenssl and enterprise_cert should not be used together b
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.8
+Python >= 3.10
 
-**NOTE**:
-Python 3.8 and Python 3.9 were marked as `unsupported`_ by the python community in 
-October 2024 and October 2025, respectively.
-We recommend that all developers upgrade to Python 3.10 and newer as soon as
-they can. Support for end-of-life Python runtimes will be removed from this
-library in future updates.
-Previous releases that support end-of-life Python versions will continue to be available
-for download, but future releases will only target supported versions.
-
-.. _unsupported: https://devguide.python.org/versions/#unsupported-versions
-
-Unsupported Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-- Python == 2.7:  The last version of this library with support for Python 2.7
-  was `google.auth == 1.34.0`.
-
-- Python 3.5:   The last version of this library with support for Python 3.5
-  was `google.auth == 1.23.0`.
-
-- Python 3.6:   The last version of this library with support for Python 3.6
-  was `google.auth == 2.22.0`.
-
-- Python 3.7:   The last version of this library with support for Python 3.7
-  was `google.auth == 2.45.0`.
 
 
 Documentation

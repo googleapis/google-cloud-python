@@ -16,35 +16,36 @@ import datetime
 
 from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
 from google.cloud.spanner_dbapi.parsed_statement import AutocommitDmlMode
-from sqlalchemy import (
-    create_engine,
-    select,
-    MetaData,
-    Table,
-    Column,
-    Index,
-    Integer,
-    String,
-    func,
-    text,
-    BigInteger,
-    Enum,
-)
-from sqlalchemy.orm import Session, DeclarativeBase, Mapped, mapped_column
-from sqlalchemy.testing import eq_, is_instance_of
 from google.cloud.spanner_v1 import (
     CreateSessionRequest,
     ExecuteSqlRequest,
     ResultSet,
     TypeCode,
 )
+from sqlalchemy import (
+    BigInteger,
+    Column,
+    Enum,
+    Index,
+    Integer,
+    MetaData,
+    String,
+    Table,
+    create_engine,
+    func,
+    select,
+    text,
+)
+from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
+from sqlalchemy.testing import eq_, is_instance_of
+
 from tests.mockserver_tests.mock_server_test_base import (
     MockServerTestBase,
-    add_select1_result,
     add_result,
+    add_select1_result,
+    add_singer_query_result,
     add_single_result,
     add_update_count,
-    add_singer_query_result,
 )
 
 

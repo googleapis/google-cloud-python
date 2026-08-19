@@ -1,12 +1,17 @@
+permissions:
+  contents: read
+
 on:
   pull_request:
     paths:
       - 'packages/django-google-spanner/**'
+      - '.github/workflows/django-spanner-integration-tests-against-emulator-3.10.yml'
   push:
     branches:
       - main
     paths:
       - 'packages/django-google-spanner/**'
+      - '.github/workflows/django-spanner-integration-tests-against-emulator-3.10.yml'
 
 defaults:
   run:
@@ -14,21 +19,41 @@ defaults:
 
 name: Run Django Spanner integration tests against emulator 3.10
 jobs:
+  check_changes:
+    runs-on: ubuntu-latest
+    outputs:
+      run_django_spanner: ${{ steps.filter.outputs.django_spanner }}
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+      - uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d # v4.0.1
+        id: filter
+        with:
+          filters: |
+            django_spanner:
+              - 'packages/django-google-spanner/**'
+              - '.github/workflows/django-spanner-integration-tests-against-emulator-3.10.yml'
+
   system-tests:
+    needs: check_changes
+    if: ${{ needs.check_changes.outputs.run_django_spanner == 'true' }}
     runs-on: ubuntu-latest
 
     services:
       emulator:
-        image: gcr.io/cloud-spanner-emulator/emulator:latest
+        image: gcr.io/cloud-spanner-emulator/emulator:latest # zizmor: ignore[unpinned-images]
         ports:
           - 9010:9010
           - 9020:9020
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Set up Python 3.20
-        uses: actions/setup-python@v5
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+      - name: Set up Python 3.10
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: "3.10"
       - name: Install nox

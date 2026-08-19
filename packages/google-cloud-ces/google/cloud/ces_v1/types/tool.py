@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,11 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.ces_v1.types import agent_card, common, fakes
+from google.cloud.ces_v1.types import agent_tool as gcc_agent_tool
 from google.cloud.ces_v1.types import client_function as gcc_client_function
-from google.cloud.ces_v1.types import common, fakes
 from google.cloud.ces_v1.types import connector_tool as gcc_connector_tool
 from google.cloud.ces_v1.types import data_store_tool as gcc_data_store_tool
 from google.cloud.ces_v1.types import file_search_tool as gcc_file_search_tool
@@ -90,23 +92,28 @@ class Tool(proto.Message):
             Optional. The system tool.
 
             This field is a member of `oneof`_ ``tool_type``.
+        agent_tool (google.cloud.ces_v1.types.AgentTool):
+            Optional. The agent tool.
+
+            This field is a member of `oneof`_ ``tool_type``.
         widget_tool (google.cloud.ces_v1.types.WidgetTool):
             Optional. The widget tool.
 
             This field is a member of `oneof`_ ``tool_type``.
+        remote_agent_tool (google.cloud.ces_v1.types.RemoteAgentTool):
+            Optional. The remote agent tool.
+
+            This field is a member of `oneof`_ ``tool_type``.
         name (str):
-            Identifier. The unique identifier of the tool. Format:
+            Identifier. The resource name of the tool. Format:
 
             - ``projects/{project}/locations/{location}/apps/{app}/tools/{tool}``
-              for
+              for standalone tools.
+            - ``projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}/tools/{tool}``
+              for tools retrieved from a toolset.
 
-            standalone tools.
-            -----------------
-
-            ``projects/{project}/locations/{location}/apps/{app}/toolsets/{toolset}/tools/{tool}``
-            for tools retrieved from a toolset. These tools are dynamic
-            and output-only, they cannot be referenced directly where a
-            tool is expected.
+            These tools are dynamic and output-only; they cannot be
+            referenced directly where a tool is expected.
         display_name (str):
             Output only. The display name of the tool, derived based on
             the tool's type. For example, display name of a
@@ -114,6 +121,10 @@ class Tool(proto.Message):
             ``name`` property.
         execution_type (google.cloud.ces_v1.types.ExecutionType):
             Optional. The execution type of the tool.
+        timeout (google.protobuf.duration_pb2.Duration):
+            Optional. The timeout for the tool execution. If not set,
+            the default timeout is 30 seconds for ``SYNCHRONOUS`` tools
+            and 60 seconds for ``ASYNCHRONOUS`` tools.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp when the tool was
             created.
@@ -188,11 +199,23 @@ class Tool(proto.Message):
         oneof="tool_type",
         message=gcc_system_tool.SystemTool,
     )
+    agent_tool: gcc_agent_tool.AgentTool = proto.Field(
+        proto.MESSAGE,
+        number=23,
+        oneof="tool_type",
+        message=gcc_agent_tool.AgentTool,
+    )
     widget_tool: gcc_widget_tool.WidgetTool = proto.Field(
         proto.MESSAGE,
         number=24,
         oneof="tool_type",
         message=gcc_widget_tool.WidgetTool,
+    )
+    remote_agent_tool: agent_card.RemoteAgentTool = proto.Field(
+        proto.MESSAGE,
+        number=25,
+        oneof="tool_type",
+        message=agent_card.RemoteAgentTool,
     )
     name: str = proto.Field(
         proto.STRING,
@@ -206,6 +229,11 @@ class Tool(proto.Message):
         proto.ENUM,
         number=12,
         enum=common.ExecutionType,
+    )
+    timeout: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        message=duration_pb2.Duration,
     )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,

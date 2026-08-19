@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -164,12 +159,28 @@ def modify_default_endpoint_template(client):
     )
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert NetworkSecurityClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -190,6 +201,10 @@ def test__get_default_mtls_endpoint():
     )
     assert (
         NetworkSecurityClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    )
+    assert (
+        NetworkSecurityClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1016,7 +1031,14 @@ def test_network_security_client_get_mtls_endpoint_and_cert_source(client_class)
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1063,7 +1085,14 @@ def test_network_security_client_get_mtls_endpoint_and_cert_source(client_class)
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1355,11 +1384,13 @@ def test_network_security_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1384,8 +1415,8 @@ def test_network_security_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        authorization_policy.ListAuthorizationPoliciesRequest,
-        dict,
+        authorization_policy.ListAuthorizationPoliciesRequest(),
+        {},
     ],
 )
 def test_list_authorization_policies(request_type, transport: str = "grpc"):
@@ -1396,7 +1427,7 @@ def test_list_authorization_policies(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1445,10 +1476,11 @@ def test_list_authorization_policies_non_empty_request_with_auto_populated_field
         client.list_authorization_policies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == authorization_policy.ListAuthorizationPoliciesRequest(
+        request_msg = authorization_policy.ListAuthorizationPoliciesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_authorization_policies_use_cached_wrapped_rpc():
@@ -1534,9 +1566,15 @@ async def test_list_authorization_policies_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        authorization_policy.ListAuthorizationPoliciesRequest(),
+        {},
+    ],
+)
 async def test_list_authorization_policies_async(
-    transport: str = "grpc_asyncio",
-    request_type=authorization_policy.ListAuthorizationPoliciesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1545,7 +1583,7 @@ async def test_list_authorization_policies_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1568,11 +1606,6 @@ async def test_list_authorization_policies_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAuthorizationPoliciesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_authorization_policies_async_from_dict():
-    await test_list_authorization_policies_async(request_type=dict)
 
 
 def test_list_authorization_policies_field_headers():
@@ -1779,6 +1812,9 @@ def test_list_authorization_policies_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -1873,6 +1909,8 @@ async def test_list_authorization_policies_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -1924,11 +1962,7 @@ async def test_list_authorization_policies_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_authorization_policies(request={})
-        ).pages:
+        async for page_ in (await client.list_authorization_policies(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1937,8 +1971,8 @@ async def test_list_authorization_policies_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        authorization_policy.GetAuthorizationPolicyRequest,
-        dict,
+        authorization_policy.GetAuthorizationPolicyRequest(),
+        {},
     ],
 )
 def test_get_authorization_policy(request_type, transport: str = "grpc"):
@@ -1949,7 +1983,7 @@ def test_get_authorization_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2001,9 +2035,10 @@ def test_get_authorization_policy_non_empty_request_with_auto_populated_field():
         client.get_authorization_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == authorization_policy.GetAuthorizationPolicyRequest(
+        request_msg = authorization_policy.GetAuthorizationPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_authorization_policy_use_cached_wrapped_rpc():
@@ -2089,9 +2124,15 @@ async def test_get_authorization_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        authorization_policy.GetAuthorizationPolicyRequest(),
+        {},
+    ],
+)
 async def test_get_authorization_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=authorization_policy.GetAuthorizationPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2100,7 +2141,7 @@ async def test_get_authorization_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2127,11 +2168,6 @@ async def test_get_authorization_policy_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.action == authorization_policy.AuthorizationPolicy.Action.ALLOW
-
-
-@pytest.mark.asyncio
-async def test_get_authorization_policy_async_from_dict():
-    await test_get_authorization_policy_async(request_type=dict)
 
 
 def test_get_authorization_policy_field_headers():
@@ -2288,8 +2324,8 @@ async def test_get_authorization_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_authorization_policy.CreateAuthorizationPolicyRequest,
-        dict,
+        gcn_authorization_policy.CreateAuthorizationPolicyRequest(),
+        {},
     ],
 )
 def test_create_authorization_policy(request_type, transport: str = "grpc"):
@@ -2300,7 +2336,7 @@ def test_create_authorization_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2346,10 +2382,11 @@ def test_create_authorization_policy_non_empty_request_with_auto_populated_field
         client.create_authorization_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_authorization_policy.CreateAuthorizationPolicyRequest(
+        request_msg = gcn_authorization_policy.CreateAuthorizationPolicyRequest(
             parent="parent_value",
             authorization_policy_id="authorization_policy_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_authorization_policy_use_cached_wrapped_rpc():
@@ -2445,9 +2482,15 @@ async def test_create_authorization_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_authorization_policy.CreateAuthorizationPolicyRequest(),
+        {},
+    ],
+)
 async def test_create_authorization_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_authorization_policy.CreateAuthorizationPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2456,7 +2499,7 @@ async def test_create_authorization_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2476,11 +2519,6 @@ async def test_create_authorization_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_authorization_policy_async_from_dict():
-    await test_create_authorization_policy_async(request_type=dict)
 
 
 def test_create_authorization_policy_field_headers():
@@ -2665,8 +2703,8 @@ async def test_create_authorization_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_authorization_policy.UpdateAuthorizationPolicyRequest,
-        dict,
+        gcn_authorization_policy.UpdateAuthorizationPolicyRequest(),
+        {},
     ],
 )
 def test_update_authorization_policy(request_type, transport: str = "grpc"):
@@ -2677,7 +2715,7 @@ def test_update_authorization_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2720,7 +2758,8 @@ def test_update_authorization_policy_non_empty_request_with_auto_populated_field
         client.update_authorization_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_authorization_policy.UpdateAuthorizationPolicyRequest()
+        request_msg = gcn_authorization_policy.UpdateAuthorizationPolicyRequest()
+        assert args[0] == request_msg
 
 
 def test_update_authorization_policy_use_cached_wrapped_rpc():
@@ -2816,9 +2855,15 @@ async def test_update_authorization_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_authorization_policy.UpdateAuthorizationPolicyRequest(),
+        {},
+    ],
+)
 async def test_update_authorization_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_authorization_policy.UpdateAuthorizationPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2827,7 +2872,7 @@ async def test_update_authorization_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2847,11 +2892,6 @@ async def test_update_authorization_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_authorization_policy_async_from_dict():
-    await test_update_authorization_policy_async(request_type=dict)
 
 
 def test_update_authorization_policy_field_headers():
@@ -3026,8 +3066,8 @@ async def test_update_authorization_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        authorization_policy.DeleteAuthorizationPolicyRequest,
-        dict,
+        authorization_policy.DeleteAuthorizationPolicyRequest(),
+        {},
     ],
 )
 def test_delete_authorization_policy(request_type, transport: str = "grpc"):
@@ -3038,7 +3078,7 @@ def test_delete_authorization_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3083,9 +3123,10 @@ def test_delete_authorization_policy_non_empty_request_with_auto_populated_field
         client.delete_authorization_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == authorization_policy.DeleteAuthorizationPolicyRequest(
+        request_msg = authorization_policy.DeleteAuthorizationPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_authorization_policy_use_cached_wrapped_rpc():
@@ -3181,9 +3222,15 @@ async def test_delete_authorization_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        authorization_policy.DeleteAuthorizationPolicyRequest(),
+        {},
+    ],
+)
 async def test_delete_authorization_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=authorization_policy.DeleteAuthorizationPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3192,7 +3239,7 @@ async def test_delete_authorization_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3212,11 +3259,6 @@ async def test_delete_authorization_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_authorization_policy_async_from_dict():
-    await test_delete_authorization_policy_async(request_type=dict)
 
 
 def test_delete_authorization_policy_field_headers():
@@ -3373,8 +3415,8 @@ async def test_delete_authorization_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        backend_authentication_config.ListBackendAuthenticationConfigsRequest,
-        dict,
+        backend_authentication_config.ListBackendAuthenticationConfigsRequest(),
+        {},
     ],
 )
 def test_list_backend_authentication_configs(request_type, transport: str = "grpc"):
@@ -3385,7 +3427,7 @@ def test_list_backend_authentication_configs(request_type, transport: str = "grp
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3440,12 +3482,13 @@ def test_list_backend_authentication_configs_non_empty_request_with_auto_populat
         client.list_backend_authentication_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == backend_authentication_config.ListBackendAuthenticationConfigsRequest(
-            parent="parent_value",
-            page_token="page_token_value",
+        request_msg = (
+            backend_authentication_config.ListBackendAuthenticationConfigsRequest(
+                parent="parent_value",
+                page_token="page_token_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_list_backend_authentication_configs_use_cached_wrapped_rpc():
@@ -3531,9 +3574,15 @@ async def test_list_backend_authentication_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        backend_authentication_config.ListBackendAuthenticationConfigsRequest(),
+        {},
+    ],
+)
 async def test_list_backend_authentication_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=backend_authentication_config.ListBackendAuthenticationConfigsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -3542,7 +3591,7 @@ async def test_list_backend_authentication_configs_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3569,11 +3618,6 @@ async def test_list_backend_authentication_configs_async(
     assert isinstance(response, pagers.ListBackendAuthenticationConfigsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_backend_authentication_configs_async_from_dict():
-    await test_list_backend_authentication_configs_async(request_type=dict)
 
 
 def test_list_backend_authentication_configs_field_headers():
@@ -3786,6 +3830,9 @@ def test_list_backend_authentication_configs_pager(transport_name: str = "grpc")
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -3881,6 +3928,8 @@ async def test_list_backend_authentication_configs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3933,9 +3982,7 @@ async def test_list_backend_authentication_configs_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_backend_authentication_configs(request={})
         ).pages:
             pages.append(page_)
@@ -3946,8 +3993,8 @@ async def test_list_backend_authentication_configs_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        backend_authentication_config.GetBackendAuthenticationConfigRequest,
-        dict,
+        backend_authentication_config.GetBackendAuthenticationConfigRequest(),
+        {},
     ],
 )
 def test_get_backend_authentication_config(request_type, transport: str = "grpc"):
@@ -3958,7 +4005,7 @@ def test_get_backend_authentication_config(request_type, transport: str = "grpc"
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4021,11 +4068,12 @@ def test_get_backend_authentication_config_non_empty_request_with_auto_populated
         client.get_backend_authentication_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == backend_authentication_config.GetBackendAuthenticationConfigRequest(
-            name="name_value",
+        request_msg = (
+            backend_authentication_config.GetBackendAuthenticationConfigRequest(
+                name="name_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_get_backend_authentication_config_use_cached_wrapped_rpc():
@@ -4111,9 +4159,15 @@ async def test_get_backend_authentication_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        backend_authentication_config.GetBackendAuthenticationConfigRequest(),
+        {},
+    ],
+)
 async def test_get_backend_authentication_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=backend_authentication_config.GetBackendAuthenticationConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4122,7 +4176,7 @@ async def test_get_backend_authentication_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4160,11 +4214,6 @@ async def test_get_backend_authentication_config_async(
         == backend_authentication_config.BackendAuthenticationConfig.WellKnownRoots.NONE
     )
     assert response.etag == "etag_value"
-
-
-@pytest.mark.asyncio
-async def test_get_backend_authentication_config_async_from_dict():
-    await test_get_backend_authentication_config_async(request_type=dict)
 
 
 def test_get_backend_authentication_config_field_headers():
@@ -4321,8 +4370,8 @@ async def test_get_backend_authentication_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_backend_authentication_config.CreateBackendAuthenticationConfigRequest,
-        dict,
+        gcn_backend_authentication_config.CreateBackendAuthenticationConfigRequest(),
+        {},
     ],
 )
 def test_create_backend_authentication_config(request_type, transport: str = "grpc"):
@@ -4333,7 +4382,7 @@ def test_create_backend_authentication_config(request_type, transport: str = "gr
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4383,12 +4432,11 @@ def test_create_backend_authentication_config_non_empty_request_with_auto_popula
         client.create_backend_authentication_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == gcn_backend_authentication_config.CreateBackendAuthenticationConfigRequest(
+        request_msg = gcn_backend_authentication_config.CreateBackendAuthenticationConfigRequest(
             parent="parent_value",
             backend_authentication_config_id="backend_authentication_config_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_backend_authentication_config_use_cached_wrapped_rpc():
@@ -4484,9 +4532,15 @@ async def test_create_backend_authentication_config_async_use_cached_wrapped_rpc
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_backend_authentication_config.CreateBackendAuthenticationConfigRequest(),
+        {},
+    ],
+)
 async def test_create_backend_authentication_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_backend_authentication_config.CreateBackendAuthenticationConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4495,7 +4549,7 @@ async def test_create_backend_authentication_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4517,11 +4571,6 @@ async def test_create_backend_authentication_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_backend_authentication_config_async_from_dict():
-    await test_create_backend_authentication_config_async(request_type=dict)
 
 
 def test_create_backend_authentication_config_field_headers():
@@ -4714,8 +4763,8 @@ async def test_create_backend_authentication_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_backend_authentication_config.UpdateBackendAuthenticationConfigRequest,
-        dict,
+        gcn_backend_authentication_config.UpdateBackendAuthenticationConfigRequest(),
+        {},
     ],
 )
 def test_update_backend_authentication_config(request_type, transport: str = "grpc"):
@@ -4726,7 +4775,7 @@ def test_update_backend_authentication_config(request_type, transport: str = "gr
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4773,10 +4822,10 @@ def test_update_backend_authentication_config_non_empty_request_with_auto_popula
         client.update_backend_authentication_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == gcn_backend_authentication_config.UpdateBackendAuthenticationConfigRequest()
+        request_msg = (
+            gcn_backend_authentication_config.UpdateBackendAuthenticationConfigRequest()
         )
+        assert args[0] == request_msg
 
 
 def test_update_backend_authentication_config_use_cached_wrapped_rpc():
@@ -4872,9 +4921,15 @@ async def test_update_backend_authentication_config_async_use_cached_wrapped_rpc
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_backend_authentication_config.UpdateBackendAuthenticationConfigRequest(),
+        {},
+    ],
+)
 async def test_update_backend_authentication_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_backend_authentication_config.UpdateBackendAuthenticationConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -4883,7 +4938,7 @@ async def test_update_backend_authentication_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4905,11 +4960,6 @@ async def test_update_backend_authentication_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_backend_authentication_config_async_from_dict():
-    await test_update_backend_authentication_config_async(request_type=dict)
 
 
 def test_update_backend_authentication_config_field_headers():
@@ -5092,8 +5142,8 @@ async def test_update_backend_authentication_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        backend_authentication_config.DeleteBackendAuthenticationConfigRequest,
-        dict,
+        backend_authentication_config.DeleteBackendAuthenticationConfigRequest(),
+        {},
     ],
 )
 def test_delete_backend_authentication_config(request_type, transport: str = "grpc"):
@@ -5104,7 +5154,7 @@ def test_delete_backend_authentication_config(request_type, transport: str = "gr
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5152,12 +5202,13 @@ def test_delete_backend_authentication_config_non_empty_request_with_auto_popula
         client.delete_backend_authentication_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == backend_authentication_config.DeleteBackendAuthenticationConfigRequest(
-            name="name_value",
-            etag="etag_value",
+        request_msg = (
+            backend_authentication_config.DeleteBackendAuthenticationConfigRequest(
+                name="name_value",
+                etag="etag_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_delete_backend_authentication_config_use_cached_wrapped_rpc():
@@ -5253,9 +5304,15 @@ async def test_delete_backend_authentication_config_async_use_cached_wrapped_rpc
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        backend_authentication_config.DeleteBackendAuthenticationConfigRequest(),
+        {},
+    ],
+)
 async def test_delete_backend_authentication_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=backend_authentication_config.DeleteBackendAuthenticationConfigRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5264,7 +5321,7 @@ async def test_delete_backend_authentication_config_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5286,11 +5343,6 @@ async def test_delete_backend_authentication_config_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_backend_authentication_config_async_from_dict():
-    await test_delete_backend_authentication_config_async(request_type=dict)
 
 
 def test_delete_backend_authentication_config_field_headers():
@@ -5447,8 +5499,8 @@ async def test_delete_backend_authentication_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        server_tls_policy.ListServerTlsPoliciesRequest,
-        dict,
+        server_tls_policy.ListServerTlsPoliciesRequest(),
+        {},
     ],
 )
 def test_list_server_tls_policies(request_type, transport: str = "grpc"):
@@ -5459,7 +5511,7 @@ def test_list_server_tls_policies(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5510,10 +5562,11 @@ def test_list_server_tls_policies_non_empty_request_with_auto_populated_field():
         client.list_server_tls_policies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == server_tls_policy.ListServerTlsPoliciesRequest(
+        request_msg = server_tls_policy.ListServerTlsPoliciesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_server_tls_policies_use_cached_wrapped_rpc():
@@ -5599,9 +5652,15 @@ async def test_list_server_tls_policies_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        server_tls_policy.ListServerTlsPoliciesRequest(),
+        {},
+    ],
+)
 async def test_list_server_tls_policies_async(
-    transport: str = "grpc_asyncio",
-    request_type=server_tls_policy.ListServerTlsPoliciesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -5610,7 +5669,7 @@ async def test_list_server_tls_policies_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5635,11 +5694,6 @@ async def test_list_server_tls_policies_async(
     assert isinstance(response, pagers.ListServerTlsPoliciesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_server_tls_policies_async_from_dict():
-    await test_list_server_tls_policies_async(request_type=dict)
 
 
 def test_list_server_tls_policies_field_headers():
@@ -5846,6 +5900,9 @@ def test_list_server_tls_policies_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, server_tls_policy.ServerTlsPolicy) for i in results)
@@ -5938,6 +5995,8 @@ async def test_list_server_tls_policies_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5987,11 +6046,7 @@ async def test_list_server_tls_policies_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_server_tls_policies(request={})
-        ).pages:
+        async for page_ in (await client.list_server_tls_policies(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6000,8 +6055,8 @@ async def test_list_server_tls_policies_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        server_tls_policy.GetServerTlsPolicyRequest,
-        dict,
+        server_tls_policy.GetServerTlsPolicyRequest(),
+        {},
     ],
 )
 def test_get_server_tls_policy(request_type, transport: str = "grpc"):
@@ -6012,7 +6067,7 @@ def test_get_server_tls_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6064,9 +6119,10 @@ def test_get_server_tls_policy_non_empty_request_with_auto_populated_field():
         client.get_server_tls_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == server_tls_policy.GetServerTlsPolicyRequest(
+        request_msg = server_tls_policy.GetServerTlsPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_server_tls_policy_use_cached_wrapped_rpc():
@@ -6152,9 +6208,15 @@ async def test_get_server_tls_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        server_tls_policy.GetServerTlsPolicyRequest(),
+        {},
+    ],
+)
 async def test_get_server_tls_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=server_tls_policy.GetServerTlsPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6163,7 +6225,7 @@ async def test_get_server_tls_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6190,11 +6252,6 @@ async def test_get_server_tls_policy_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.allow_open is True
-
-
-@pytest.mark.asyncio
-async def test_get_server_tls_policy_async_from_dict():
-    await test_get_server_tls_policy_async(request_type=dict)
 
 
 def test_get_server_tls_policy_field_headers():
@@ -6351,8 +6408,8 @@ async def test_get_server_tls_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_server_tls_policy.CreateServerTlsPolicyRequest,
-        dict,
+        gcn_server_tls_policy.CreateServerTlsPolicyRequest(),
+        {},
     ],
 )
 def test_create_server_tls_policy(request_type, transport: str = "grpc"):
@@ -6363,7 +6420,7 @@ def test_create_server_tls_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6409,10 +6466,11 @@ def test_create_server_tls_policy_non_empty_request_with_auto_populated_field():
         client.create_server_tls_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_server_tls_policy.CreateServerTlsPolicyRequest(
+        request_msg = gcn_server_tls_policy.CreateServerTlsPolicyRequest(
             parent="parent_value",
             server_tls_policy_id="server_tls_policy_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_server_tls_policy_use_cached_wrapped_rpc():
@@ -6508,9 +6566,15 @@ async def test_create_server_tls_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_server_tls_policy.CreateServerTlsPolicyRequest(),
+        {},
+    ],
+)
 async def test_create_server_tls_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_server_tls_policy.CreateServerTlsPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6519,7 +6583,7 @@ async def test_create_server_tls_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6539,11 +6603,6 @@ async def test_create_server_tls_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_server_tls_policy_async_from_dict():
-    await test_create_server_tls_policy_async(request_type=dict)
 
 
 def test_create_server_tls_policy_field_headers():
@@ -6720,8 +6779,8 @@ async def test_create_server_tls_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_server_tls_policy.UpdateServerTlsPolicyRequest,
-        dict,
+        gcn_server_tls_policy.UpdateServerTlsPolicyRequest(),
+        {},
     ],
 )
 def test_update_server_tls_policy(request_type, transport: str = "grpc"):
@@ -6732,7 +6791,7 @@ def test_update_server_tls_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6775,7 +6834,8 @@ def test_update_server_tls_policy_non_empty_request_with_auto_populated_field():
         client.update_server_tls_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_server_tls_policy.UpdateServerTlsPolicyRequest()
+        request_msg = gcn_server_tls_policy.UpdateServerTlsPolicyRequest()
+        assert args[0] == request_msg
 
 
 def test_update_server_tls_policy_use_cached_wrapped_rpc():
@@ -6871,9 +6931,15 @@ async def test_update_server_tls_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_server_tls_policy.UpdateServerTlsPolicyRequest(),
+        {},
+    ],
+)
 async def test_update_server_tls_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_server_tls_policy.UpdateServerTlsPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6882,7 +6948,7 @@ async def test_update_server_tls_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6902,11 +6968,6 @@ async def test_update_server_tls_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_server_tls_policy_async_from_dict():
-    await test_update_server_tls_policy_async(request_type=dict)
 
 
 def test_update_server_tls_policy_field_headers():
@@ -7073,8 +7134,8 @@ async def test_update_server_tls_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        server_tls_policy.DeleteServerTlsPolicyRequest,
-        dict,
+        server_tls_policy.DeleteServerTlsPolicyRequest(),
+        {},
     ],
 )
 def test_delete_server_tls_policy(request_type, transport: str = "grpc"):
@@ -7085,7 +7146,7 @@ def test_delete_server_tls_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7130,9 +7191,10 @@ def test_delete_server_tls_policy_non_empty_request_with_auto_populated_field():
         client.delete_server_tls_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == server_tls_policy.DeleteServerTlsPolicyRequest(
+        request_msg = server_tls_policy.DeleteServerTlsPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_server_tls_policy_use_cached_wrapped_rpc():
@@ -7228,9 +7290,15 @@ async def test_delete_server_tls_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        server_tls_policy.DeleteServerTlsPolicyRequest(),
+        {},
+    ],
+)
 async def test_delete_server_tls_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=server_tls_policy.DeleteServerTlsPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7239,7 +7307,7 @@ async def test_delete_server_tls_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7259,11 +7327,6 @@ async def test_delete_server_tls_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_server_tls_policy_async_from_dict():
-    await test_delete_server_tls_policy_async(request_type=dict)
 
 
 def test_delete_server_tls_policy_field_headers():
@@ -7420,8 +7483,8 @@ async def test_delete_server_tls_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        client_tls_policy.ListClientTlsPoliciesRequest,
-        dict,
+        client_tls_policy.ListClientTlsPoliciesRequest(),
+        {},
     ],
 )
 def test_list_client_tls_policies(request_type, transport: str = "grpc"):
@@ -7432,7 +7495,7 @@ def test_list_client_tls_policies(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7481,10 +7544,11 @@ def test_list_client_tls_policies_non_empty_request_with_auto_populated_field():
         client.list_client_tls_policies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == client_tls_policy.ListClientTlsPoliciesRequest(
+        request_msg = client_tls_policy.ListClientTlsPoliciesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_client_tls_policies_use_cached_wrapped_rpc():
@@ -7570,9 +7634,15 @@ async def test_list_client_tls_policies_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        client_tls_policy.ListClientTlsPoliciesRequest(),
+        {},
+    ],
+)
 async def test_list_client_tls_policies_async(
-    transport: str = "grpc_asyncio",
-    request_type=client_tls_policy.ListClientTlsPoliciesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7581,7 +7651,7 @@ async def test_list_client_tls_policies_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7604,11 +7674,6 @@ async def test_list_client_tls_policies_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListClientTlsPoliciesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_client_tls_policies_async_from_dict():
-    await test_list_client_tls_policies_async(request_type=dict)
 
 
 def test_list_client_tls_policies_field_headers():
@@ -7815,6 +7880,9 @@ def test_list_client_tls_policies_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, client_tls_policy.ClientTlsPolicy) for i in results)
@@ -7907,6 +7975,8 @@ async def test_list_client_tls_policies_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -7956,11 +8026,7 @@ async def test_list_client_tls_policies_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_client_tls_policies(request={})
-        ).pages:
+        async for page_ in (await client.list_client_tls_policies(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7969,8 +8035,8 @@ async def test_list_client_tls_policies_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        client_tls_policy.GetClientTlsPolicyRequest,
-        dict,
+        client_tls_policy.GetClientTlsPolicyRequest(),
+        {},
     ],
 )
 def test_get_client_tls_policy(request_type, transport: str = "grpc"):
@@ -7981,7 +8047,7 @@ def test_get_client_tls_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8033,9 +8099,10 @@ def test_get_client_tls_policy_non_empty_request_with_auto_populated_field():
         client.get_client_tls_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == client_tls_policy.GetClientTlsPolicyRequest(
+        request_msg = client_tls_policy.GetClientTlsPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_client_tls_policy_use_cached_wrapped_rpc():
@@ -8121,9 +8188,15 @@ async def test_get_client_tls_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        client_tls_policy.GetClientTlsPolicyRequest(),
+        {},
+    ],
+)
 async def test_get_client_tls_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=client_tls_policy.GetClientTlsPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8132,7 +8205,7 @@ async def test_get_client_tls_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8159,11 +8232,6 @@ async def test_get_client_tls_policy_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.sni == "sni_value"
-
-
-@pytest.mark.asyncio
-async def test_get_client_tls_policy_async_from_dict():
-    await test_get_client_tls_policy_async(request_type=dict)
 
 
 def test_get_client_tls_policy_field_headers():
@@ -8320,8 +8388,8 @@ async def test_get_client_tls_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_client_tls_policy.CreateClientTlsPolicyRequest,
-        dict,
+        gcn_client_tls_policy.CreateClientTlsPolicyRequest(),
+        {},
     ],
 )
 def test_create_client_tls_policy(request_type, transport: str = "grpc"):
@@ -8332,7 +8400,7 @@ def test_create_client_tls_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8378,10 +8446,11 @@ def test_create_client_tls_policy_non_empty_request_with_auto_populated_field():
         client.create_client_tls_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_client_tls_policy.CreateClientTlsPolicyRequest(
+        request_msg = gcn_client_tls_policy.CreateClientTlsPolicyRequest(
             parent="parent_value",
             client_tls_policy_id="client_tls_policy_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_client_tls_policy_use_cached_wrapped_rpc():
@@ -8477,9 +8546,15 @@ async def test_create_client_tls_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_client_tls_policy.CreateClientTlsPolicyRequest(),
+        {},
+    ],
+)
 async def test_create_client_tls_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_client_tls_policy.CreateClientTlsPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8488,7 +8563,7 @@ async def test_create_client_tls_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8508,11 +8583,6 @@ async def test_create_client_tls_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_client_tls_policy_async_from_dict():
-    await test_create_client_tls_policy_async(request_type=dict)
 
 
 def test_create_client_tls_policy_field_headers():
@@ -8689,8 +8759,8 @@ async def test_create_client_tls_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_client_tls_policy.UpdateClientTlsPolicyRequest,
-        dict,
+        gcn_client_tls_policy.UpdateClientTlsPolicyRequest(),
+        {},
     ],
 )
 def test_update_client_tls_policy(request_type, transport: str = "grpc"):
@@ -8701,7 +8771,7 @@ def test_update_client_tls_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8744,7 +8814,8 @@ def test_update_client_tls_policy_non_empty_request_with_auto_populated_field():
         client.update_client_tls_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_client_tls_policy.UpdateClientTlsPolicyRequest()
+        request_msg = gcn_client_tls_policy.UpdateClientTlsPolicyRequest()
+        assert args[0] == request_msg
 
 
 def test_update_client_tls_policy_use_cached_wrapped_rpc():
@@ -8840,9 +8911,15 @@ async def test_update_client_tls_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_client_tls_policy.UpdateClientTlsPolicyRequest(),
+        {},
+    ],
+)
 async def test_update_client_tls_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_client_tls_policy.UpdateClientTlsPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8851,7 +8928,7 @@ async def test_update_client_tls_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8871,11 +8948,6 @@ async def test_update_client_tls_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_client_tls_policy_async_from_dict():
-    await test_update_client_tls_policy_async(request_type=dict)
 
 
 def test_update_client_tls_policy_field_headers():
@@ -9042,8 +9114,8 @@ async def test_update_client_tls_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        client_tls_policy.DeleteClientTlsPolicyRequest,
-        dict,
+        client_tls_policy.DeleteClientTlsPolicyRequest(),
+        {},
     ],
 )
 def test_delete_client_tls_policy(request_type, transport: str = "grpc"):
@@ -9054,7 +9126,7 @@ def test_delete_client_tls_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9099,9 +9171,10 @@ def test_delete_client_tls_policy_non_empty_request_with_auto_populated_field():
         client.delete_client_tls_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == client_tls_policy.DeleteClientTlsPolicyRequest(
+        request_msg = client_tls_policy.DeleteClientTlsPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_client_tls_policy_use_cached_wrapped_rpc():
@@ -9197,9 +9270,15 @@ async def test_delete_client_tls_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        client_tls_policy.DeleteClientTlsPolicyRequest(),
+        {},
+    ],
+)
 async def test_delete_client_tls_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=client_tls_policy.DeleteClientTlsPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9208,7 +9287,7 @@ async def test_delete_client_tls_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9228,11 +9307,6 @@ async def test_delete_client_tls_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_client_tls_policy_async_from_dict():
-    await test_delete_client_tls_policy_async(request_type=dict)
 
 
 def test_delete_client_tls_policy_field_headers():
@@ -9389,8 +9463,8 @@ async def test_delete_client_tls_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gateway_security_policy.ListGatewaySecurityPoliciesRequest,
-        dict,
+        gateway_security_policy.ListGatewaySecurityPoliciesRequest(),
+        {},
     ],
 )
 def test_list_gateway_security_policies(request_type, transport: str = "grpc"):
@@ -9401,7 +9475,7 @@ def test_list_gateway_security_policies(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9452,10 +9526,11 @@ def test_list_gateway_security_policies_non_empty_request_with_auto_populated_fi
         client.list_gateway_security_policies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gateway_security_policy.ListGatewaySecurityPoliciesRequest(
+        request_msg = gateway_security_policy.ListGatewaySecurityPoliciesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_gateway_security_policies_use_cached_wrapped_rpc():
@@ -9541,9 +9616,15 @@ async def test_list_gateway_security_policies_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gateway_security_policy.ListGatewaySecurityPoliciesRequest(),
+        {},
+    ],
+)
 async def test_list_gateway_security_policies_async(
-    transport: str = "grpc_asyncio",
-    request_type=gateway_security_policy.ListGatewaySecurityPoliciesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -9552,7 +9633,7 @@ async def test_list_gateway_security_policies_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9577,11 +9658,6 @@ async def test_list_gateway_security_policies_async(
     assert isinstance(response, pagers.ListGatewaySecurityPoliciesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_gateway_security_policies_async_from_dict():
-    await test_list_gateway_security_policies_async(request_type=dict)
 
 
 def test_list_gateway_security_policies_field_headers():
@@ -9794,6 +9870,9 @@ def test_list_gateway_security_policies_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -9889,6 +9968,8 @@ async def test_list_gateway_security_policies_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -9941,9 +10022,7 @@ async def test_list_gateway_security_policies_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_gateway_security_policies(request={})
         ).pages:
             pages.append(page_)
@@ -9954,8 +10033,8 @@ async def test_list_gateway_security_policies_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gateway_security_policy.GetGatewaySecurityPolicyRequest,
-        dict,
+        gateway_security_policy.GetGatewaySecurityPolicyRequest(),
+        {},
     ],
 )
 def test_get_gateway_security_policy(request_type, transport: str = "grpc"):
@@ -9966,7 +10045,7 @@ def test_get_gateway_security_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10018,9 +10097,10 @@ def test_get_gateway_security_policy_non_empty_request_with_auto_populated_field
         client.get_gateway_security_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gateway_security_policy.GetGatewaySecurityPolicyRequest(
+        request_msg = gateway_security_policy.GetGatewaySecurityPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_gateway_security_policy_use_cached_wrapped_rpc():
@@ -10106,9 +10186,15 @@ async def test_get_gateway_security_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gateway_security_policy.GetGatewaySecurityPolicyRequest(),
+        {},
+    ],
+)
 async def test_get_gateway_security_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=gateway_security_policy.GetGatewaySecurityPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10117,7 +10203,7 @@ async def test_get_gateway_security_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10144,11 +10230,6 @@ async def test_get_gateway_security_policy_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.tls_inspection_policy == "tls_inspection_policy_value"
-
-
-@pytest.mark.asyncio
-async def test_get_gateway_security_policy_async_from_dict():
-    await test_get_gateway_security_policy_async(request_type=dict)
 
 
 def test_get_gateway_security_policy_field_headers():
@@ -10305,8 +10386,8 @@ async def test_get_gateway_security_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_gateway_security_policy.CreateGatewaySecurityPolicyRequest,
-        dict,
+        gcn_gateway_security_policy.CreateGatewaySecurityPolicyRequest(),
+        {},
     ],
 )
 def test_create_gateway_security_policy(request_type, transport: str = "grpc"):
@@ -10317,7 +10398,7 @@ def test_create_gateway_security_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10363,12 +10444,11 @@ def test_create_gateway_security_policy_non_empty_request_with_auto_populated_fi
         client.create_gateway_security_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == gcn_gateway_security_policy.CreateGatewaySecurityPolicyRequest(
+        request_msg = gcn_gateway_security_policy.CreateGatewaySecurityPolicyRequest(
             parent="parent_value",
             gateway_security_policy_id="gateway_security_policy_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_gateway_security_policy_use_cached_wrapped_rpc():
@@ -10464,9 +10544,15 @@ async def test_create_gateway_security_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_gateway_security_policy.CreateGatewaySecurityPolicyRequest(),
+        {},
+    ],
+)
 async def test_create_gateway_security_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_gateway_security_policy.CreateGatewaySecurityPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10475,7 +10561,7 @@ async def test_create_gateway_security_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10495,11 +10581,6 @@ async def test_create_gateway_security_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_gateway_security_policy_async_from_dict():
-    await test_create_gateway_security_policy_async(request_type=dict)
 
 
 def test_create_gateway_security_policy_field_headers():
@@ -10684,8 +10765,8 @@ async def test_create_gateway_security_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_gateway_security_policy.UpdateGatewaySecurityPolicyRequest,
-        dict,
+        gcn_gateway_security_policy.UpdateGatewaySecurityPolicyRequest(),
+        {},
     ],
 )
 def test_update_gateway_security_policy(request_type, transport: str = "grpc"):
@@ -10696,7 +10777,7 @@ def test_update_gateway_security_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10739,9 +10820,8 @@ def test_update_gateway_security_policy_non_empty_request_with_auto_populated_fi
         client.update_gateway_security_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0] == gcn_gateway_security_policy.UpdateGatewaySecurityPolicyRequest()
-        )
+        request_msg = gcn_gateway_security_policy.UpdateGatewaySecurityPolicyRequest()
+        assert args[0] == request_msg
 
 
 def test_update_gateway_security_policy_use_cached_wrapped_rpc():
@@ -10837,9 +10917,15 @@ async def test_update_gateway_security_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_gateway_security_policy.UpdateGatewaySecurityPolicyRequest(),
+        {},
+    ],
+)
 async def test_update_gateway_security_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_gateway_security_policy.UpdateGatewaySecurityPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -10848,7 +10934,7 @@ async def test_update_gateway_security_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10868,11 +10954,6 @@ async def test_update_gateway_security_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_gateway_security_policy_async_from_dict():
-    await test_update_gateway_security_policy_async(request_type=dict)
 
 
 def test_update_gateway_security_policy_field_headers():
@@ -11047,8 +11128,8 @@ async def test_update_gateway_security_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gateway_security_policy.DeleteGatewaySecurityPolicyRequest,
-        dict,
+        gateway_security_policy.DeleteGatewaySecurityPolicyRequest(),
+        {},
     ],
 )
 def test_delete_gateway_security_policy(request_type, transport: str = "grpc"):
@@ -11059,7 +11140,7 @@ def test_delete_gateway_security_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11104,9 +11185,10 @@ def test_delete_gateway_security_policy_non_empty_request_with_auto_populated_fi
         client.delete_gateway_security_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gateway_security_policy.DeleteGatewaySecurityPolicyRequest(
+        request_msg = gateway_security_policy.DeleteGatewaySecurityPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_gateway_security_policy_use_cached_wrapped_rpc():
@@ -11202,9 +11284,15 @@ async def test_delete_gateway_security_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gateway_security_policy.DeleteGatewaySecurityPolicyRequest(),
+        {},
+    ],
+)
 async def test_delete_gateway_security_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=gateway_security_policy.DeleteGatewaySecurityPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11213,7 +11301,7 @@ async def test_delete_gateway_security_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11233,11 +11321,6 @@ async def test_delete_gateway_security_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_gateway_security_policy_async_from_dict():
-    await test_delete_gateway_security_policy_async(request_type=dict)
 
 
 def test_delete_gateway_security_policy_field_headers():
@@ -11394,8 +11477,8 @@ async def test_delete_gateway_security_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gateway_security_policy_rule.ListGatewaySecurityPolicyRulesRequest,
-        dict,
+        gateway_security_policy_rule.ListGatewaySecurityPolicyRulesRequest(),
+        {},
     ],
 )
 def test_list_gateway_security_policy_rules(request_type, transport: str = "grpc"):
@@ -11406,7 +11489,7 @@ def test_list_gateway_security_policy_rules(request_type, transport: str = "grpc
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11459,12 +11542,13 @@ def test_list_gateway_security_policy_rules_non_empty_request_with_auto_populate
         client.list_gateway_security_policy_rules(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == gateway_security_policy_rule.ListGatewaySecurityPolicyRulesRequest(
-            parent="parent_value",
-            page_token="page_token_value",
+        request_msg = (
+            gateway_security_policy_rule.ListGatewaySecurityPolicyRulesRequest(
+                parent="parent_value",
+                page_token="page_token_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_list_gateway_security_policy_rules_use_cached_wrapped_rpc():
@@ -11550,9 +11634,15 @@ async def test_list_gateway_security_policy_rules_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gateway_security_policy_rule.ListGatewaySecurityPolicyRulesRequest(),
+        {},
+    ],
+)
 async def test_list_gateway_security_policy_rules_async(
-    transport: str = "grpc_asyncio",
-    request_type=gateway_security_policy_rule.ListGatewaySecurityPolicyRulesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -11561,7 +11651,7 @@ async def test_list_gateway_security_policy_rules_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -11586,11 +11676,6 @@ async def test_list_gateway_security_policy_rules_async(
     assert isinstance(response, pagers.ListGatewaySecurityPolicyRulesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_gateway_security_policy_rules_async_from_dict():
-    await test_list_gateway_security_policy_rules_async(request_type=dict)
 
 
 def test_list_gateway_security_policy_rules_field_headers():
@@ -11803,6 +11888,9 @@ def test_list_gateway_security_policy_rules_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -11898,6 +11986,8 @@ async def test_list_gateway_security_policy_rules_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -11950,9 +12040,7 @@ async def test_list_gateway_security_policy_rules_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_gateway_security_policy_rules(request={})
         ).pages:
             pages.append(page_)
@@ -11963,8 +12051,8 @@ async def test_list_gateway_security_policy_rules_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gateway_security_policy_rule.GetGatewaySecurityPolicyRuleRequest,
-        dict,
+        gateway_security_policy_rule.GetGatewaySecurityPolicyRuleRequest(),
+        {},
     ],
 )
 def test_get_gateway_security_policy_rule(request_type, transport: str = "grpc"):
@@ -11975,7 +12063,7 @@ def test_get_gateway_security_policy_rule(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12036,11 +12124,10 @@ def test_get_gateway_security_policy_rule_non_empty_request_with_auto_populated_
         client.get_gateway_security_policy_rule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == gateway_security_policy_rule.GetGatewaySecurityPolicyRuleRequest(
+        request_msg = gateway_security_policy_rule.GetGatewaySecurityPolicyRuleRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_gateway_security_policy_rule_use_cached_wrapped_rpc():
@@ -12126,9 +12213,15 @@ async def test_get_gateway_security_policy_rule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gateway_security_policy_rule.GetGatewaySecurityPolicyRuleRequest(),
+        {},
+    ],
+)
 async def test_get_gateway_security_policy_rule_async(
-    transport: str = "grpc_asyncio",
-    request_type=gateway_security_policy_rule.GetGatewaySecurityPolicyRuleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12137,7 +12230,7 @@ async def test_get_gateway_security_policy_rule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12172,11 +12265,6 @@ async def test_get_gateway_security_policy_rule_async(
     assert response.session_matcher == "session_matcher_value"
     assert response.application_matcher == "application_matcher_value"
     assert response.tls_inspection_enabled is True
-
-
-@pytest.mark.asyncio
-async def test_get_gateway_security_policy_rule_async_from_dict():
-    await test_get_gateway_security_policy_rule_async(request_type=dict)
 
 
 def test_get_gateway_security_policy_rule_field_headers():
@@ -12333,8 +12421,8 @@ async def test_get_gateway_security_policy_rule_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_gateway_security_policy_rule.CreateGatewaySecurityPolicyRuleRequest,
-        dict,
+        gcn_gateway_security_policy_rule.CreateGatewaySecurityPolicyRuleRequest(),
+        {},
     ],
 )
 def test_create_gateway_security_policy_rule(request_type, transport: str = "grpc"):
@@ -12345,7 +12433,7 @@ def test_create_gateway_security_policy_rule(request_type, transport: str = "grp
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12393,12 +12481,13 @@ def test_create_gateway_security_policy_rule_non_empty_request_with_auto_populat
         client.create_gateway_security_policy_rule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == gcn_gateway_security_policy_rule.CreateGatewaySecurityPolicyRuleRequest(
-            parent="parent_value",
-            gateway_security_policy_rule_id="gateway_security_policy_rule_id_value",
+        request_msg = (
+            gcn_gateway_security_policy_rule.CreateGatewaySecurityPolicyRuleRequest(
+                parent="parent_value",
+                gateway_security_policy_rule_id="gateway_security_policy_rule_id_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_create_gateway_security_policy_rule_use_cached_wrapped_rpc():
@@ -12494,9 +12583,15 @@ async def test_create_gateway_security_policy_rule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_gateway_security_policy_rule.CreateGatewaySecurityPolicyRuleRequest(),
+        {},
+    ],
+)
 async def test_create_gateway_security_policy_rule_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_gateway_security_policy_rule.CreateGatewaySecurityPolicyRuleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12505,7 +12600,7 @@ async def test_create_gateway_security_policy_rule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12527,11 +12622,6 @@ async def test_create_gateway_security_policy_rule_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_gateway_security_policy_rule_async_from_dict():
-    await test_create_gateway_security_policy_rule_async(request_type=dict)
 
 
 def test_create_gateway_security_policy_rule_field_headers():
@@ -12720,8 +12810,8 @@ async def test_create_gateway_security_policy_rule_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_gateway_security_policy_rule.UpdateGatewaySecurityPolicyRuleRequest,
-        dict,
+        gcn_gateway_security_policy_rule.UpdateGatewaySecurityPolicyRuleRequest(),
+        {},
     ],
 )
 def test_update_gateway_security_policy_rule(request_type, transport: str = "grpc"):
@@ -12732,7 +12822,7 @@ def test_update_gateway_security_policy_rule(request_type, transport: str = "grp
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12777,10 +12867,10 @@ def test_update_gateway_security_policy_rule_non_empty_request_with_auto_populat
         client.update_gateway_security_policy_rule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert (
-            args[0]
-            == gcn_gateway_security_policy_rule.UpdateGatewaySecurityPolicyRuleRequest()
+        request_msg = (
+            gcn_gateway_security_policy_rule.UpdateGatewaySecurityPolicyRuleRequest()
         )
+        assert args[0] == request_msg
 
 
 def test_update_gateway_security_policy_rule_use_cached_wrapped_rpc():
@@ -12876,9 +12966,15 @@ async def test_update_gateway_security_policy_rule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_gateway_security_policy_rule.UpdateGatewaySecurityPolicyRuleRequest(),
+        {},
+    ],
+)
 async def test_update_gateway_security_policy_rule_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_gateway_security_policy_rule.UpdateGatewaySecurityPolicyRuleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -12887,7 +12983,7 @@ async def test_update_gateway_security_policy_rule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -12909,11 +13005,6 @@ async def test_update_gateway_security_policy_rule_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_gateway_security_policy_rule_async_from_dict():
-    await test_update_gateway_security_policy_rule_async(request_type=dict)
 
 
 def test_update_gateway_security_policy_rule_field_headers():
@@ -13092,8 +13183,8 @@ async def test_update_gateway_security_policy_rule_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gateway_security_policy_rule.DeleteGatewaySecurityPolicyRuleRequest,
-        dict,
+        gateway_security_policy_rule.DeleteGatewaySecurityPolicyRuleRequest(),
+        {},
     ],
 )
 def test_delete_gateway_security_policy_rule(request_type, transport: str = "grpc"):
@@ -13104,7 +13195,7 @@ def test_delete_gateway_security_policy_rule(request_type, transport: str = "grp
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13149,11 +13240,12 @@ def test_delete_gateway_security_policy_rule_non_empty_request_with_auto_populat
         client.delete_gateway_security_policy_rule(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == gateway_security_policy_rule.DeleteGatewaySecurityPolicyRuleRequest(
-            name="name_value",
+        request_msg = (
+            gateway_security_policy_rule.DeleteGatewaySecurityPolicyRuleRequest(
+                name="name_value",
+            )
         )
+        assert args[0] == request_msg
 
 
 def test_delete_gateway_security_policy_rule_use_cached_wrapped_rpc():
@@ -13249,9 +13341,15 @@ async def test_delete_gateway_security_policy_rule_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gateway_security_policy_rule.DeleteGatewaySecurityPolicyRuleRequest(),
+        {},
+    ],
+)
 async def test_delete_gateway_security_policy_rule_async(
-    transport: str = "grpc_asyncio",
-    request_type=gateway_security_policy_rule.DeleteGatewaySecurityPolicyRuleRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -13260,7 +13358,7 @@ async def test_delete_gateway_security_policy_rule_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13280,11 +13378,6 @@ async def test_delete_gateway_security_policy_rule_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_gateway_security_policy_rule_async_from_dict():
-    await test_delete_gateway_security_policy_rule_async(request_type=dict)
 
 
 def test_delete_gateway_security_policy_rule_field_headers():
@@ -13441,8 +13534,8 @@ async def test_delete_gateway_security_policy_rule_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        url_list.ListUrlListsRequest,
-        dict,
+        url_list.ListUrlListsRequest(),
+        {},
     ],
 )
 def test_list_url_lists(request_type, transport: str = "grpc"):
@@ -13453,7 +13546,7 @@ def test_list_url_lists(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_url_lists), "__call__") as call:
@@ -13500,10 +13593,11 @@ def test_list_url_lists_non_empty_request_with_auto_populated_field():
         client.list_url_lists(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == url_list.ListUrlListsRequest(
+        request_msg = url_list.ListUrlListsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_url_lists_use_cached_wrapped_rpc():
@@ -13584,9 +13678,14 @@ async def test_list_url_lists_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_url_lists_async(
-    transport: str = "grpc_asyncio", request_type=url_list.ListUrlListsRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        url_list.ListUrlListsRequest(),
+        {},
+    ],
+)
+async def test_list_url_lists_async(request_type, transport: str = "grpc_asyncio"):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -13594,7 +13693,7 @@ async def test_list_url_lists_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_url_lists), "__call__") as call:
@@ -13617,11 +13716,6 @@ async def test_list_url_lists_async(
     assert isinstance(response, pagers.ListUrlListsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_url_lists_async_from_dict():
-    await test_list_url_lists_async(request_type=dict)
 
 
 def test_list_url_lists_field_headers():
@@ -13816,6 +13910,9 @@ def test_list_url_lists_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, url_list.UrlList) for i in results)
@@ -13904,6 +14001,8 @@ async def test_list_url_lists_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -13951,11 +14050,7 @@ async def test_list_url_lists_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_url_lists(request={})
-        ).pages:
+        async for page_ in (await client.list_url_lists(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -13964,8 +14059,8 @@ async def test_list_url_lists_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        url_list.GetUrlListRequest,
-        dict,
+        url_list.GetUrlListRequest(),
+        {},
     ],
 )
 def test_get_url_list(request_type, transport: str = "grpc"):
@@ -13976,7 +14071,7 @@ def test_get_url_list(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_url_list), "__call__") as call:
@@ -14024,9 +14119,10 @@ def test_get_url_list_non_empty_request_with_auto_populated_field():
         client.get_url_list(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == url_list.GetUrlListRequest(
+        request_msg = url_list.GetUrlListRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_url_list_use_cached_wrapped_rpc():
@@ -14107,9 +14203,14 @@ async def test_get_url_list_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_url_list_async(
-    transport: str = "grpc_asyncio", request_type=url_list.GetUrlListRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        url_list.GetUrlListRequest(),
+        {},
+    ],
+)
+async def test_get_url_list_async(request_type, transport: str = "grpc_asyncio"):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14117,7 +14218,7 @@ async def test_get_url_list_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_url_list), "__call__") as call:
@@ -14142,11 +14243,6 @@ async def test_get_url_list_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.values == ["values_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_url_list_async_from_dict():
-    await test_get_url_list_async(request_type=dict)
 
 
 def test_get_url_list_field_headers():
@@ -14291,8 +14387,8 @@ async def test_get_url_list_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_url_list.CreateUrlListRequest,
-        dict,
+        gcn_url_list.CreateUrlListRequest(),
+        {},
     ],
 )
 def test_create_url_list(request_type, transport: str = "grpc"):
@@ -14303,7 +14399,7 @@ def test_create_url_list(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_url_list), "__call__") as call:
@@ -14345,10 +14441,11 @@ def test_create_url_list_non_empty_request_with_auto_populated_field():
         client.create_url_list(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_url_list.CreateUrlListRequest(
+        request_msg = gcn_url_list.CreateUrlListRequest(
             parent="parent_value",
             url_list_id="url_list_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_url_list_use_cached_wrapped_rpc():
@@ -14439,9 +14536,14 @@ async def test_create_url_list_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_url_list_async(
-    transport: str = "grpc_asyncio", request_type=gcn_url_list.CreateUrlListRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_url_list.CreateUrlListRequest(),
+        {},
+    ],
+)
+async def test_create_url_list_async(request_type, transport: str = "grpc_asyncio"):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14449,7 +14551,7 @@ async def test_create_url_list_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_url_list), "__call__") as call:
@@ -14467,11 +14569,6 @@ async def test_create_url_list_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_url_list_async_from_dict():
-    await test_create_url_list_async(request_type=dict)
 
 
 def test_create_url_list_field_headers():
@@ -14640,8 +14737,8 @@ async def test_create_url_list_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_url_list.UpdateUrlListRequest,
-        dict,
+        gcn_url_list.UpdateUrlListRequest(),
+        {},
     ],
 )
 def test_update_url_list(request_type, transport: str = "grpc"):
@@ -14652,7 +14749,7 @@ def test_update_url_list(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_url_list), "__call__") as call:
@@ -14691,7 +14788,8 @@ def test_update_url_list_non_empty_request_with_auto_populated_field():
         client.update_url_list(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_url_list.UpdateUrlListRequest()
+        request_msg = gcn_url_list.UpdateUrlListRequest()
+        assert args[0] == request_msg
 
 
 def test_update_url_list_use_cached_wrapped_rpc():
@@ -14782,9 +14880,14 @@ async def test_update_url_list_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_url_list_async(
-    transport: str = "grpc_asyncio", request_type=gcn_url_list.UpdateUrlListRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_url_list.UpdateUrlListRequest(),
+        {},
+    ],
+)
+async def test_update_url_list_async(request_type, transport: str = "grpc_asyncio"):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -14792,7 +14895,7 @@ async def test_update_url_list_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_url_list), "__call__") as call:
@@ -14810,11 +14913,6 @@ async def test_update_url_list_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_url_list_async_from_dict():
-    await test_update_url_list_async(request_type=dict)
 
 
 def test_update_url_list_field_headers():
@@ -14973,8 +15071,8 @@ async def test_update_url_list_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        url_list.DeleteUrlListRequest,
-        dict,
+        url_list.DeleteUrlListRequest(),
+        {},
     ],
 )
 def test_delete_url_list(request_type, transport: str = "grpc"):
@@ -14985,7 +15083,7 @@ def test_delete_url_list(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_url_list), "__call__") as call:
@@ -15026,9 +15124,10 @@ def test_delete_url_list_non_empty_request_with_auto_populated_field():
         client.delete_url_list(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == url_list.DeleteUrlListRequest(
+        request_msg = url_list.DeleteUrlListRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_url_list_use_cached_wrapped_rpc():
@@ -15119,9 +15218,14 @@ async def test_delete_url_list_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_url_list_async(
-    transport: str = "grpc_asyncio", request_type=url_list.DeleteUrlListRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        url_list.DeleteUrlListRequest(),
+        {},
+    ],
+)
+async def test_delete_url_list_async(request_type, transport: str = "grpc_asyncio"):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -15129,7 +15233,7 @@ async def test_delete_url_list_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_url_list), "__call__") as call:
@@ -15147,11 +15251,6 @@ async def test_delete_url_list_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_url_list_async_from_dict():
-    await test_delete_url_list_async(request_type=dict)
 
 
 def test_delete_url_list_field_headers():
@@ -15300,8 +15399,8 @@ async def test_delete_url_list_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tls_inspection_policy.ListTlsInspectionPoliciesRequest,
-        dict,
+        tls_inspection_policy.ListTlsInspectionPoliciesRequest(),
+        {},
     ],
 )
 def test_list_tls_inspection_policies(request_type, transport: str = "grpc"):
@@ -15312,7 +15411,7 @@ def test_list_tls_inspection_policies(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15363,10 +15462,11 @@ def test_list_tls_inspection_policies_non_empty_request_with_auto_populated_fiel
         client.list_tls_inspection_policies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tls_inspection_policy.ListTlsInspectionPoliciesRequest(
+        request_msg = tls_inspection_policy.ListTlsInspectionPoliciesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_tls_inspection_policies_use_cached_wrapped_rpc():
@@ -15452,9 +15552,15 @@ async def test_list_tls_inspection_policies_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tls_inspection_policy.ListTlsInspectionPoliciesRequest(),
+        {},
+    ],
+)
 async def test_list_tls_inspection_policies_async(
-    transport: str = "grpc_asyncio",
-    request_type=tls_inspection_policy.ListTlsInspectionPoliciesRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -15463,7 +15569,7 @@ async def test_list_tls_inspection_policies_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15488,11 +15594,6 @@ async def test_list_tls_inspection_policies_async(
     assert isinstance(response, pagers.ListTlsInspectionPoliciesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_tls_inspection_policies_async_from_dict():
-    await test_list_tls_inspection_policies_async(request_type=dict)
 
 
 def test_list_tls_inspection_policies_field_headers():
@@ -15699,6 +15800,9 @@ def test_list_tls_inspection_policies_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -15793,6 +15897,8 @@ async def test_list_tls_inspection_policies_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -15844,9 +15950,7 @@ async def test_list_tls_inspection_policies_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
+        async for page_ in (
             await client.list_tls_inspection_policies(request={})
         ).pages:
             pages.append(page_)
@@ -15857,8 +15961,8 @@ async def test_list_tls_inspection_policies_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tls_inspection_policy.GetTlsInspectionPolicyRequest,
-        dict,
+        tls_inspection_policy.GetTlsInspectionPolicyRequest(),
+        {},
     ],
 )
 def test_get_tls_inspection_policy(request_type, transport: str = "grpc"):
@@ -15869,7 +15973,7 @@ def test_get_tls_inspection_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -15937,9 +16041,10 @@ def test_get_tls_inspection_policy_non_empty_request_with_auto_populated_field()
         client.get_tls_inspection_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tls_inspection_policy.GetTlsInspectionPolicyRequest(
+        request_msg = tls_inspection_policy.GetTlsInspectionPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_tls_inspection_policy_use_cached_wrapped_rpc():
@@ -16025,9 +16130,15 @@ async def test_get_tls_inspection_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tls_inspection_policy.GetTlsInspectionPolicyRequest(),
+        {},
+    ],
+)
 async def test_get_tls_inspection_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=tls_inspection_policy.GetTlsInspectionPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -16036,7 +16147,7 @@ async def test_get_tls_inspection_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16079,11 +16190,6 @@ async def test_get_tls_inspection_policy_async(
         == tls_inspection_policy.TlsInspectionPolicy.Profile.PROFILE_COMPATIBLE
     )
     assert response.custom_tls_features == ["custom_tls_features_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_tls_inspection_policy_async_from_dict():
-    await test_get_tls_inspection_policy_async(request_type=dict)
 
 
 def test_get_tls_inspection_policy_field_headers():
@@ -16240,8 +16346,8 @@ async def test_get_tls_inspection_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_tls_inspection_policy.CreateTlsInspectionPolicyRequest,
-        dict,
+        gcn_tls_inspection_policy.CreateTlsInspectionPolicyRequest(),
+        {},
     ],
 )
 def test_create_tls_inspection_policy(request_type, transport: str = "grpc"):
@@ -16252,7 +16358,7 @@ def test_create_tls_inspection_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16298,10 +16404,11 @@ def test_create_tls_inspection_policy_non_empty_request_with_auto_populated_fiel
         client.create_tls_inspection_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_tls_inspection_policy.CreateTlsInspectionPolicyRequest(
+        request_msg = gcn_tls_inspection_policy.CreateTlsInspectionPolicyRequest(
             parent="parent_value",
             tls_inspection_policy_id="tls_inspection_policy_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_tls_inspection_policy_use_cached_wrapped_rpc():
@@ -16397,9 +16504,15 @@ async def test_create_tls_inspection_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_tls_inspection_policy.CreateTlsInspectionPolicyRequest(),
+        {},
+    ],
+)
 async def test_create_tls_inspection_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_tls_inspection_policy.CreateTlsInspectionPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -16408,7 +16521,7 @@ async def test_create_tls_inspection_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16428,11 +16541,6 @@ async def test_create_tls_inspection_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_tls_inspection_policy_async_from_dict():
-    await test_create_tls_inspection_policy_async(request_type=dict)
 
 
 def test_create_tls_inspection_policy_field_headers():
@@ -16617,8 +16725,8 @@ async def test_create_tls_inspection_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_tls_inspection_policy.UpdateTlsInspectionPolicyRequest,
-        dict,
+        gcn_tls_inspection_policy.UpdateTlsInspectionPolicyRequest(),
+        {},
     ],
 )
 def test_update_tls_inspection_policy(request_type, transport: str = "grpc"):
@@ -16629,7 +16737,7 @@ def test_update_tls_inspection_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16672,7 +16780,8 @@ def test_update_tls_inspection_policy_non_empty_request_with_auto_populated_fiel
         client.update_tls_inspection_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_tls_inspection_policy.UpdateTlsInspectionPolicyRequest()
+        request_msg = gcn_tls_inspection_policy.UpdateTlsInspectionPolicyRequest()
+        assert args[0] == request_msg
 
 
 def test_update_tls_inspection_policy_use_cached_wrapped_rpc():
@@ -16768,9 +16877,15 @@ async def test_update_tls_inspection_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_tls_inspection_policy.UpdateTlsInspectionPolicyRequest(),
+        {},
+    ],
+)
 async def test_update_tls_inspection_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_tls_inspection_policy.UpdateTlsInspectionPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -16779,7 +16894,7 @@ async def test_update_tls_inspection_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -16799,11 +16914,6 @@ async def test_update_tls_inspection_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_tls_inspection_policy_async_from_dict():
-    await test_update_tls_inspection_policy_async(request_type=dict)
 
 
 def test_update_tls_inspection_policy_field_headers():
@@ -16978,8 +17088,8 @@ async def test_update_tls_inspection_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        tls_inspection_policy.DeleteTlsInspectionPolicyRequest,
-        dict,
+        tls_inspection_policy.DeleteTlsInspectionPolicyRequest(),
+        {},
     ],
 )
 def test_delete_tls_inspection_policy(request_type, transport: str = "grpc"):
@@ -16990,7 +17100,7 @@ def test_delete_tls_inspection_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17035,9 +17145,10 @@ def test_delete_tls_inspection_policy_non_empty_request_with_auto_populated_fiel
         client.delete_tls_inspection_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tls_inspection_policy.DeleteTlsInspectionPolicyRequest(
+        request_msg = tls_inspection_policy.DeleteTlsInspectionPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_tls_inspection_policy_use_cached_wrapped_rpc():
@@ -17133,9 +17244,15 @@ async def test_delete_tls_inspection_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tls_inspection_policy.DeleteTlsInspectionPolicyRequest(),
+        {},
+    ],
+)
 async def test_delete_tls_inspection_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=tls_inspection_policy.DeleteTlsInspectionPolicyRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -17144,7 +17261,7 @@ async def test_delete_tls_inspection_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17164,11 +17281,6 @@ async def test_delete_tls_inspection_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_tls_inspection_policy_async_from_dict():
-    await test_delete_tls_inspection_policy_async(request_type=dict)
 
 
 def test_delete_tls_inspection_policy_field_headers():
@@ -17325,8 +17437,8 @@ async def test_delete_tls_inspection_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        authz_policy.ListAuthzPoliciesRequest,
-        dict,
+        authz_policy.ListAuthzPoliciesRequest(),
+        {},
     ],
 )
 def test_list_authz_policies(request_type, transport: str = "grpc"):
@@ -17337,7 +17449,7 @@ def test_list_authz_policies(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17390,12 +17502,13 @@ def test_list_authz_policies_non_empty_request_with_auto_populated_field():
         client.list_authz_policies(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == authz_policy.ListAuthzPoliciesRequest(
+        request_msg = authz_policy.ListAuthzPoliciesRequest(
             parent="parent_value",
             page_token="page_token_value",
             filter="filter_value",
             order_by="order_by_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_authz_policies_use_cached_wrapped_rpc():
@@ -17480,9 +17593,14 @@ async def test_list_authz_policies_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_authz_policies_async(
-    transport: str = "grpc_asyncio", request_type=authz_policy.ListAuthzPoliciesRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        authz_policy.ListAuthzPoliciesRequest(),
+        {},
+    ],
+)
+async def test_list_authz_policies_async(request_type, transport: str = "grpc_asyncio"):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -17490,7 +17608,7 @@ async def test_list_authz_policies_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -17515,11 +17633,6 @@ async def test_list_authz_policies_async(
     assert isinstance(response, pagers.ListAuthzPoliciesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-@pytest.mark.asyncio
-async def test_list_authz_policies_async_from_dict():
-    await test_list_authz_policies_async(request_type=dict)
 
 
 def test_list_authz_policies_field_headers():
@@ -17724,6 +17837,9 @@ def test_list_authz_policies_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, authz_policy.AuthzPolicy) for i in results)
@@ -17816,6 +17932,8 @@ async def test_list_authz_policies_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -17865,11 +17983,7 @@ async def test_list_authz_policies_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_authz_policies(request={})
-        ).pages:
+        async for page_ in (await client.list_authz_policies(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -17878,8 +17992,8 @@ async def test_list_authz_policies_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        authz_policy.GetAuthzPolicyRequest,
-        dict,
+        authz_policy.GetAuthzPolicyRequest(),
+        {},
     ],
 )
 def test_get_authz_policy(request_type, transport: str = "grpc"):
@@ -17890,7 +18004,7 @@ def test_get_authz_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_authz_policy), "__call__") as call:
@@ -17938,9 +18052,10 @@ def test_get_authz_policy_non_empty_request_with_auto_populated_field():
         client.get_authz_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == authz_policy.GetAuthzPolicyRequest(
+        request_msg = authz_policy.GetAuthzPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_authz_policy_use_cached_wrapped_rpc():
@@ -18023,9 +18138,14 @@ async def test_get_authz_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_authz_policy_async(
-    transport: str = "grpc_asyncio", request_type=authz_policy.GetAuthzPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        authz_policy.GetAuthzPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_authz_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -18033,7 +18153,7 @@ async def test_get_authz_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_authz_policy), "__call__") as call:
@@ -18058,11 +18178,6 @@ async def test_get_authz_policy_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.action == authz_policy.AuthzPolicy.AuthzAction.ALLOW
-
-
-@pytest.mark.asyncio
-async def test_get_authz_policy_async_from_dict():
-    await test_get_authz_policy_async(request_type=dict)
 
 
 def test_get_authz_policy_field_headers():
@@ -18211,8 +18326,8 @@ async def test_get_authz_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_authz_policy.CreateAuthzPolicyRequest,
-        dict,
+        gcn_authz_policy.CreateAuthzPolicyRequest(),
+        {},
     ],
 )
 def test_create_authz_policy(request_type, transport: str = "grpc"):
@@ -18223,7 +18338,7 @@ def test_create_authz_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18269,10 +18384,11 @@ def test_create_authz_policy_non_empty_request_with_auto_populated_field():
         client.create_authz_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_authz_policy.CreateAuthzPolicyRequest(
+        request_msg = gcn_authz_policy.CreateAuthzPolicyRequest(
             parent="parent_value",
             authz_policy_id="authz_policy_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_authz_policy_use_cached_wrapped_rpc():
@@ -18367,10 +18483,14 @@ async def test_create_authz_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_authz_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_authz_policy.CreateAuthzPolicyRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_authz_policy.CreateAuthzPolicyRequest(),
+        {},
+    ],
+)
+async def test_create_authz_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -18378,7 +18498,7 @@ async def test_create_authz_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18398,11 +18518,6 @@ async def test_create_authz_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_create_authz_policy_async_from_dict():
-    await test_create_authz_policy_async(request_type=dict)
 
 
 def test_create_authz_policy_field_headers():
@@ -18579,8 +18694,8 @@ async def test_create_authz_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        gcn_authz_policy.UpdateAuthzPolicyRequest,
-        dict,
+        gcn_authz_policy.UpdateAuthzPolicyRequest(),
+        {},
     ],
 )
 def test_update_authz_policy(request_type, transport: str = "grpc"):
@@ -18591,7 +18706,7 @@ def test_update_authz_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18634,7 +18749,8 @@ def test_update_authz_policy_non_empty_request_with_auto_populated_field():
         client.update_authz_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcn_authz_policy.UpdateAuthzPolicyRequest()
+        request_msg = gcn_authz_policy.UpdateAuthzPolicyRequest()
+        assert args[0] == request_msg
 
 
 def test_update_authz_policy_use_cached_wrapped_rpc():
@@ -18729,10 +18845,14 @@ async def test_update_authz_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_authz_policy_async(
-    transport: str = "grpc_asyncio",
-    request_type=gcn_authz_policy.UpdateAuthzPolicyRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcn_authz_policy.UpdateAuthzPolicyRequest(),
+        {},
+    ],
+)
+async def test_update_authz_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -18740,7 +18860,7 @@ async def test_update_authz_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18760,11 +18880,6 @@ async def test_update_authz_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_update_authz_policy_async_from_dict():
-    await test_update_authz_policy_async(request_type=dict)
 
 
 def test_update_authz_policy_field_headers():
@@ -18931,8 +19046,8 @@ async def test_update_authz_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        authz_policy.DeleteAuthzPolicyRequest,
-        dict,
+        authz_policy.DeleteAuthzPolicyRequest(),
+        {},
     ],
 )
 def test_delete_authz_policy(request_type, transport: str = "grpc"):
@@ -18943,7 +19058,7 @@ def test_delete_authz_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -18988,9 +19103,10 @@ def test_delete_authz_policy_non_empty_request_with_auto_populated_field():
         client.delete_authz_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == authz_policy.DeleteAuthzPolicyRequest(
+        request_msg = authz_policy.DeleteAuthzPolicyRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_delete_authz_policy_use_cached_wrapped_rpc():
@@ -19085,9 +19201,14 @@ async def test_delete_authz_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_authz_policy_async(
-    transport: str = "grpc_asyncio", request_type=authz_policy.DeleteAuthzPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        authz_policy.DeleteAuthzPolicyRequest(),
+        {},
+    ],
+)
+async def test_delete_authz_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = NetworkSecurityAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -19095,7 +19216,7 @@ async def test_delete_authz_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19115,11 +19236,6 @@ async def test_delete_authz_policy_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_delete_authz_policy_async_from_dict():
-    await test_delete_authz_policy_async(request_type=dict)
 
 
 def test_delete_authz_policy_field_headers():
@@ -19395,7 +19511,7 @@ def test_list_authorization_policies_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_authorization_policies_rest_unset_required_fields():
@@ -19530,6 +19646,9 @@ def test_list_authorization_policies_rest_pager(transport: str = "rest"):
 
         pager = client.list_authorization_policies(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -19654,7 +19773,7 @@ def test_get_authorization_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_authorization_policy_rest_unset_required_fields():
@@ -19859,7 +19978,7 @@ def test_create_authorization_policy_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_authorization_policy_rest_unset_required_fields():
@@ -20056,7 +20175,7 @@ def test_update_authorization_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_authorization_policy_rest_unset_required_fields():
@@ -20248,7 +20367,7 @@ def test_delete_authorization_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_authorization_policy_rest_unset_required_fields():
@@ -20442,7 +20561,7 @@ def test_list_backend_authentication_configs_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_backend_authentication_configs_rest_unset_required_fields():
@@ -20587,6 +20706,9 @@ def test_list_backend_authentication_configs_rest_pager(transport: str = "rest")
 
         pager = client.list_backend_authentication_configs(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -20716,7 +20838,7 @@ def test_get_backend_authentication_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_backend_authentication_config_rest_unset_required_fields():
@@ -20932,7 +21054,7 @@ def test_create_backend_authentication_config_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_backend_authentication_config_rest_unset_required_fields():
@@ -21133,7 +21255,7 @@ def test_update_backend_authentication_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_backend_authentication_config_rest_unset_required_fields():
@@ -21333,7 +21455,7 @@ def test_delete_backend_authentication_config_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_backend_authentication_config_rest_unset_required_fields():
@@ -21530,7 +21652,7 @@ def test_list_server_tls_policies_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_server_tls_policies_rest_unset_required_fields():
@@ -21663,6 +21785,9 @@ def test_list_server_tls_policies_rest_pager(transport: str = "rest"):
 
         pager = client.list_server_tls_policies(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, server_tls_policy.ServerTlsPolicy) for i in results)
@@ -21785,7 +21910,7 @@ def test_get_server_tls_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_server_tls_policy_rest_unset_required_fields():
@@ -21989,7 +22114,7 @@ def test_create_server_tls_policy_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_server_tls_policy_rest_unset_required_fields():
@@ -22182,7 +22307,7 @@ def test_update_server_tls_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_server_tls_policy_rest_unset_required_fields():
@@ -22370,7 +22495,7 @@ def test_delete_server_tls_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_server_tls_policy_rest_unset_required_fields():
@@ -22562,7 +22687,7 @@ def test_list_client_tls_policies_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_client_tls_policies_rest_unset_required_fields():
@@ -22694,6 +22819,9 @@ def test_list_client_tls_policies_rest_pager(transport: str = "rest"):
 
         pager = client.list_client_tls_policies(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, client_tls_policy.ClientTlsPolicy) for i in results)
@@ -22816,7 +22944,7 @@ def test_get_client_tls_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_client_tls_policy_rest_unset_required_fields():
@@ -23020,7 +23148,7 @@ def test_create_client_tls_policy_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_client_tls_policy_rest_unset_required_fields():
@@ -23213,7 +23341,7 @@ def test_update_client_tls_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_client_tls_policy_rest_unset_required_fields():
@@ -23401,7 +23529,7 @@ def test_delete_client_tls_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_client_tls_policy_rest_unset_required_fields():
@@ -23595,7 +23723,7 @@ def test_list_gateway_security_policies_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_gateway_security_policies_rest_unset_required_fields():
@@ -23732,6 +23860,9 @@ def test_list_gateway_security_policies_rest_pager(transport: str = "rest"):
 
         pager = client.list_gateway_security_policies(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -23861,7 +23992,7 @@ def test_get_gateway_security_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_gateway_security_policy_rest_unset_required_fields():
@@ -24069,7 +24200,7 @@ def test_create_gateway_security_policy_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_gateway_security_policy_rest_unset_required_fields():
@@ -24268,7 +24399,7 @@ def test_update_gateway_security_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_gateway_security_policy_rest_unset_required_fields():
@@ -24462,7 +24593,7 @@ def test_delete_gateway_security_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_gateway_security_policy_rest_unset_required_fields():
@@ -24658,7 +24789,7 @@ def test_list_gateway_security_policy_rules_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_gateway_security_policy_rules_rest_unset_required_fields():
@@ -24807,6 +24938,9 @@ def test_list_gateway_security_policy_rules_rest_pager(transport: str = "rest"):
 
         pager = client.list_gateway_security_policy_rules(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -24936,7 +25070,7 @@ def test_get_gateway_security_policy_rule_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_gateway_security_policy_rule_rest_unset_required_fields():
@@ -25129,7 +25263,7 @@ def test_create_gateway_security_policy_rule_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_gateway_security_policy_rule_rest_unset_required_fields():
@@ -25331,7 +25465,7 @@ def test_update_gateway_security_policy_rule_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_gateway_security_policy_rule_rest_unset_required_fields():
@@ -25529,7 +25663,7 @@ def test_delete_gateway_security_policy_rule_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_gateway_security_policy_rule_rest_unset_required_fields():
@@ -25716,7 +25850,7 @@ def test_list_url_lists_rest_required_fields(request_type=url_list.ListUrlListsR
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_url_lists_rest_unset_required_fields():
@@ -25846,6 +25980,9 @@ def test_list_url_lists_rest_pager(transport: str = "rest"):
 
         pager = client.list_url_lists(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, url_list.UrlList) for i in results)
@@ -25961,7 +26098,7 @@ def test_get_url_list_rest_required_fields(request_type=url_list.GetUrlListReque
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_url_list_rest_unset_required_fields():
@@ -26156,7 +26293,7 @@ def test_create_url_list_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_url_list_rest_unset_required_fields():
@@ -26344,7 +26481,7 @@ def test_update_url_list_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_url_list_rest_unset_required_fields():
@@ -26525,7 +26662,7 @@ def test_delete_url_list_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_url_list_rest_unset_required_fields():
@@ -26715,7 +26852,7 @@ def test_list_tls_inspection_policies_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_tls_inspection_policies_rest_unset_required_fields():
@@ -26850,6 +26987,9 @@ def test_list_tls_inspection_policies_rest_pager(transport: str = "rest"):
 
         pager = client.list_tls_inspection_policies(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -26974,7 +27114,7 @@ def test_get_tls_inspection_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_tls_inspection_policy_rest_unset_required_fields():
@@ -27181,7 +27321,7 @@ def test_create_tls_inspection_policy_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_tls_inspection_policy_rest_unset_required_fields():
@@ -27378,7 +27518,7 @@ def test_update_tls_inspection_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_tls_inspection_policy_rest_unset_required_fields():
@@ -27572,7 +27712,7 @@ def test_delete_tls_inspection_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_tls_inspection_policy_rest_unset_required_fields():
@@ -27763,7 +27903,7 @@ def test_list_authz_policies_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_authz_policies_rest_unset_required_fields():
@@ -27897,6 +28037,9 @@ def test_list_authz_policies_rest_pager(transport: str = "rest"):
 
         pager = client.list_authz_policies(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, authz_policy.AuthzPolicy) for i in results)
@@ -28016,7 +28159,7 @@ def test_get_authz_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_authz_policy_rest_unset_required_fields():
@@ -28222,7 +28365,7 @@ def test_create_authz_policy_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_authz_policy_rest_unset_required_fields():
@@ -28424,7 +28567,7 @@ def test_update_authz_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_authz_policy_rest_unset_required_fields():
@@ -28626,7 +28769,7 @@ def test_delete_authz_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_delete_authz_policy_rest_unset_required_fields():
@@ -28821,7 +28964,6 @@ def test_list_authorization_policies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authorization_policy.ListAuthorizationPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -28844,7 +28986,6 @@ def test_get_authorization_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authorization_policy.GetAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -28867,7 +29008,6 @@ def test_create_authorization_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_authorization_policy.CreateAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -28890,7 +29030,6 @@ def test_update_authorization_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_authorization_policy.UpdateAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -28913,7 +29052,6 @@ def test_delete_authorization_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authorization_policy.DeleteAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -28940,7 +29078,6 @@ def test_list_backend_authentication_configs_empty_call_grpc():
         request_msg = (
             backend_authentication_config.ListBackendAuthenticationConfigsRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -28965,7 +29102,6 @@ def test_get_backend_authentication_config_empty_call_grpc():
         request_msg = (
             backend_authentication_config.GetBackendAuthenticationConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -28990,7 +29126,6 @@ def test_create_backend_authentication_config_empty_call_grpc():
         request_msg = (
             gcn_backend_authentication_config.CreateBackendAuthenticationConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -29015,7 +29150,6 @@ def test_update_backend_authentication_config_empty_call_grpc():
         request_msg = (
             gcn_backend_authentication_config.UpdateBackendAuthenticationConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -29040,7 +29174,6 @@ def test_delete_backend_authentication_config_empty_call_grpc():
         request_msg = (
             backend_authentication_config.DeleteBackendAuthenticationConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -29063,7 +29196,6 @@ def test_list_server_tls_policies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = server_tls_policy.ListServerTlsPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -29086,7 +29218,6 @@ def test_get_server_tls_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = server_tls_policy.GetServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29109,7 +29240,6 @@ def test_create_server_tls_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_server_tls_policy.CreateServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29132,7 +29262,6 @@ def test_update_server_tls_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_server_tls_policy.UpdateServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29155,7 +29284,6 @@ def test_delete_server_tls_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = server_tls_policy.DeleteServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29178,7 +29306,6 @@ def test_list_client_tls_policies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = client_tls_policy.ListClientTlsPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -29201,7 +29328,6 @@ def test_get_client_tls_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = client_tls_policy.GetClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29224,7 +29350,6 @@ def test_create_client_tls_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_client_tls_policy.CreateClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29247,7 +29372,6 @@ def test_update_client_tls_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_client_tls_policy.UpdateClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29270,7 +29394,6 @@ def test_delete_client_tls_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = client_tls_policy.DeleteClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29295,7 +29418,6 @@ def test_list_gateway_security_policies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gateway_security_policy.ListGatewaySecurityPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -29318,7 +29440,6 @@ def test_get_gateway_security_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gateway_security_policy.GetGatewaySecurityPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29341,7 +29462,6 @@ def test_create_gateway_security_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_gateway_security_policy.CreateGatewaySecurityPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29364,7 +29484,6 @@ def test_update_gateway_security_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_gateway_security_policy.UpdateGatewaySecurityPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29387,7 +29506,6 @@ def test_delete_gateway_security_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gateway_security_policy.DeleteGatewaySecurityPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29414,7 +29532,6 @@ def test_list_gateway_security_policy_rules_empty_call_grpc():
         request_msg = (
             gateway_security_policy_rule.ListGatewaySecurityPolicyRulesRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -29437,7 +29554,6 @@ def test_get_gateway_security_policy_rule_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gateway_security_policy_rule.GetGatewaySecurityPolicyRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -29462,7 +29578,6 @@ def test_create_gateway_security_policy_rule_empty_call_grpc():
         request_msg = (
             gcn_gateway_security_policy_rule.CreateGatewaySecurityPolicyRuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -29487,7 +29602,6 @@ def test_update_gateway_security_policy_rule_empty_call_grpc():
         request_msg = (
             gcn_gateway_security_policy_rule.UpdateGatewaySecurityPolicyRuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -29512,7 +29626,6 @@ def test_delete_gateway_security_policy_rule_empty_call_grpc():
         request_msg = (
             gateway_security_policy_rule.DeleteGatewaySecurityPolicyRuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -29533,7 +29646,6 @@ def test_list_url_lists_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = url_list.ListUrlListsRequest()
-
         assert args[0] == request_msg
 
 
@@ -29554,7 +29666,6 @@ def test_get_url_list_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = url_list.GetUrlListRequest()
-
         assert args[0] == request_msg
 
 
@@ -29575,7 +29686,6 @@ def test_create_url_list_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_url_list.CreateUrlListRequest()
-
         assert args[0] == request_msg
 
 
@@ -29596,7 +29706,6 @@ def test_update_url_list_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_url_list.UpdateUrlListRequest()
-
         assert args[0] == request_msg
 
 
@@ -29617,7 +29726,6 @@ def test_delete_url_list_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = url_list.DeleteUrlListRequest()
-
         assert args[0] == request_msg
 
 
@@ -29640,7 +29748,6 @@ def test_list_tls_inspection_policies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tls_inspection_policy.ListTlsInspectionPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -29663,7 +29770,6 @@ def test_get_tls_inspection_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tls_inspection_policy.GetTlsInspectionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29686,7 +29792,6 @@ def test_create_tls_inspection_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_tls_inspection_policy.CreateTlsInspectionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29709,7 +29814,6 @@ def test_update_tls_inspection_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_tls_inspection_policy.UpdateTlsInspectionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29732,7 +29836,6 @@ def test_delete_tls_inspection_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tls_inspection_policy.DeleteTlsInspectionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29755,7 +29858,6 @@ def test_list_authz_policies_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authz_policy.ListAuthzPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -29776,7 +29878,6 @@ def test_get_authz_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authz_policy.GetAuthzPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29799,7 +29900,6 @@ def test_create_authz_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_authz_policy.CreateAuthzPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29822,7 +29922,6 @@ def test_update_authz_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_authz_policy.UpdateAuthzPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29845,7 +29944,6 @@ def test_delete_authz_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authz_policy.DeleteAuthzPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29888,7 +29986,6 @@ async def test_list_authorization_policies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authorization_policy.ListAuthorizationPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -29919,7 +30016,6 @@ async def test_get_authorization_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authorization_policy.GetAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29946,7 +30042,6 @@ async def test_create_authorization_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_authorization_policy.CreateAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -29973,7 +30068,6 @@ async def test_update_authorization_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_authorization_policy.UpdateAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -30000,7 +30094,6 @@ async def test_delete_authorization_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authorization_policy.DeleteAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -30032,7 +30125,6 @@ async def test_list_backend_authentication_configs_empty_call_grpc_asyncio():
         request_msg = (
             backend_authentication_config.ListBackendAuthenticationConfigsRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -30068,7 +30160,6 @@ async def test_get_backend_authentication_config_empty_call_grpc_asyncio():
         request_msg = (
             backend_authentication_config.GetBackendAuthenticationConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -30097,7 +30188,6 @@ async def test_create_backend_authentication_config_empty_call_grpc_asyncio():
         request_msg = (
             gcn_backend_authentication_config.CreateBackendAuthenticationConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -30126,7 +30216,6 @@ async def test_update_backend_authentication_config_empty_call_grpc_asyncio():
         request_msg = (
             gcn_backend_authentication_config.UpdateBackendAuthenticationConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -30155,7 +30244,6 @@ async def test_delete_backend_authentication_config_empty_call_grpc_asyncio():
         request_msg = (
             backend_authentication_config.DeleteBackendAuthenticationConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -30185,7 +30273,6 @@ async def test_list_server_tls_policies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = server_tls_policy.ListServerTlsPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -30216,7 +30303,6 @@ async def test_get_server_tls_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = server_tls_policy.GetServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -30243,7 +30329,6 @@ async def test_create_server_tls_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_server_tls_policy.CreateServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -30270,7 +30355,6 @@ async def test_update_server_tls_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_server_tls_policy.UpdateServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -30297,7 +30381,6 @@ async def test_delete_server_tls_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = server_tls_policy.DeleteServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -30326,7 +30409,6 @@ async def test_list_client_tls_policies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = client_tls_policy.ListClientTlsPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -30357,7 +30439,6 @@ async def test_get_client_tls_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = client_tls_policy.GetClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -30384,7 +30465,6 @@ async def test_create_client_tls_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_client_tls_policy.CreateClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -30411,7 +30491,6 @@ async def test_update_client_tls_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_client_tls_policy.UpdateClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -30438,7 +30517,6 @@ async def test_delete_client_tls_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = client_tls_policy.DeleteClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -30468,7 +30546,6 @@ async def test_list_gateway_security_policies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gateway_security_policy.ListGatewaySecurityPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -30499,7 +30576,6 @@ async def test_get_gateway_security_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gateway_security_policy.GetGatewaySecurityPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -30526,7 +30602,6 @@ async def test_create_gateway_security_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_gateway_security_policy.CreateGatewaySecurityPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -30553,7 +30628,6 @@ async def test_update_gateway_security_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_gateway_security_policy.UpdateGatewaySecurityPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -30580,7 +30654,6 @@ async def test_delete_gateway_security_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gateway_security_policy.DeleteGatewaySecurityPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -30612,7 +30685,6 @@ async def test_list_gateway_security_policy_rules_empty_call_grpc_asyncio():
         request_msg = (
             gateway_security_policy_rule.ListGatewaySecurityPolicyRulesRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -30647,7 +30719,6 @@ async def test_get_gateway_security_policy_rule_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gateway_security_policy_rule.GetGatewaySecurityPolicyRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -30676,7 +30747,6 @@ async def test_create_gateway_security_policy_rule_empty_call_grpc_asyncio():
         request_msg = (
             gcn_gateway_security_policy_rule.CreateGatewaySecurityPolicyRuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -30705,7 +30775,6 @@ async def test_update_gateway_security_policy_rule_empty_call_grpc_asyncio():
         request_msg = (
             gcn_gateway_security_policy_rule.UpdateGatewaySecurityPolicyRuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -30734,7 +30803,6 @@ async def test_delete_gateway_security_policy_rule_empty_call_grpc_asyncio():
         request_msg = (
             gateway_security_policy_rule.DeleteGatewaySecurityPolicyRuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -30762,7 +30830,6 @@ async def test_list_url_lists_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = url_list.ListUrlListsRequest()
-
         assert args[0] == request_msg
 
 
@@ -30791,7 +30858,6 @@ async def test_get_url_list_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = url_list.GetUrlListRequest()
-
         assert args[0] == request_msg
 
 
@@ -30816,7 +30882,6 @@ async def test_create_url_list_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_url_list.CreateUrlListRequest()
-
         assert args[0] == request_msg
 
 
@@ -30841,7 +30906,6 @@ async def test_update_url_list_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_url_list.UpdateUrlListRequest()
-
         assert args[0] == request_msg
 
 
@@ -30866,7 +30930,6 @@ async def test_delete_url_list_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = url_list.DeleteUrlListRequest()
-
         assert args[0] == request_msg
 
 
@@ -30896,7 +30959,6 @@ async def test_list_tls_inspection_policies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tls_inspection_policy.ListTlsInspectionPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -30932,7 +30994,6 @@ async def test_get_tls_inspection_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tls_inspection_policy.GetTlsInspectionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -30959,7 +31020,6 @@ async def test_create_tls_inspection_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_tls_inspection_policy.CreateTlsInspectionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -30986,7 +31046,6 @@ async def test_update_tls_inspection_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_tls_inspection_policy.UpdateTlsInspectionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -31013,7 +31072,6 @@ async def test_delete_tls_inspection_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tls_inspection_policy.DeleteTlsInspectionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -31043,7 +31101,6 @@ async def test_list_authz_policies_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authz_policy.ListAuthzPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -31072,7 +31129,6 @@ async def test_get_authz_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authz_policy.GetAuthzPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -31099,7 +31155,6 @@ async def test_create_authz_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_authz_policy.CreateAuthzPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -31126,7 +31181,6 @@ async def test_update_authz_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_authz_policy.UpdateAuthzPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -31153,7 +31207,6 @@ async def test_delete_authz_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authz_policy.DeleteAuthzPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -31175,8 +31228,9 @@ def test_list_authorization_policies_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31241,18 +31295,21 @@ def test_list_authorization_policies_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_list_authorization_policies"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_list_authorization_policies_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_list_authorization_policies"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_list_authorization_policies",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_list_authorization_policies_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_list_authorization_policies"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31312,8 +31369,9 @@ def test_get_authorization_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31382,18 +31440,20 @@ def test_get_authorization_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_get_authorization_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_get_authorization_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_get_authorization_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_get_authorization_policy"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_get_authorization_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_get_authorization_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31451,8 +31511,9 @@ def test_create_authorization_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31609,20 +31670,22 @@ def test_create_authorization_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_create_authorization_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_create_authorization_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_create_authorization_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_create_authorization_policy",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_create_authorization_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_create_authorization_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31679,8 +31742,9 @@ def test_update_authorization_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31841,20 +31905,22 @@ def test_update_authorization_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_update_authorization_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_update_authorization_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_update_authorization_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_update_authorization_policy",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_update_authorization_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_update_authorization_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31909,8 +31975,9 @@ def test_delete_authorization_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31969,20 +32036,22 @@ def test_delete_authorization_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_delete_authorization_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_delete_authorization_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_delete_authorization_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_delete_authorization_policy",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_delete_authorization_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_delete_authorization_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32035,8 +32104,9 @@ def test_list_backend_authentication_configs_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32107,20 +32177,22 @@ def test_list_backend_authentication_configs_rest_interceptors(null_interceptor)
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_list_backend_authentication_configs",
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_list_backend_authentication_configs_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "pre_list_backend_authentication_configs",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_list_backend_authentication_configs",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_list_backend_authentication_configs_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "pre_list_backend_authentication_configs",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32186,8 +32258,9 @@ def test_get_backend_authentication_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32269,20 +32342,22 @@ def test_get_backend_authentication_config_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_get_backend_authentication_config",
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_get_backend_authentication_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "pre_get_backend_authentication_config",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_get_backend_authentication_config",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_get_backend_authentication_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "pre_get_backend_authentication_config",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32344,8 +32419,9 @@ def test_create_backend_authentication_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32488,22 +32564,23 @@ def test_create_backend_authentication_config_rest_interceptors(null_interceptor
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_create_backend_authentication_config",
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_create_backend_authentication_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "pre_create_backend_authentication_config",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_create_backend_authentication_config",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_create_backend_authentication_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "pre_create_backend_authentication_config",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32562,8 +32639,9 @@ def test_update_backend_authentication_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32710,22 +32788,23 @@ def test_update_backend_authentication_config_rest_interceptors(null_interceptor
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_update_backend_authentication_config",
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_update_backend_authentication_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "pre_update_backend_authentication_config",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_update_backend_authentication_config",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_update_backend_authentication_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "pre_update_backend_authentication_config",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32782,8 +32861,9 @@ def test_delete_backend_authentication_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32842,22 +32922,23 @@ def test_delete_backend_authentication_config_rest_interceptors(null_interceptor
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_delete_backend_authentication_config",
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_delete_backend_authentication_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "pre_delete_backend_authentication_config",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_delete_backend_authentication_config",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_delete_backend_authentication_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "pre_delete_backend_authentication_config",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -32914,8 +32995,9 @@ def test_list_server_tls_policies_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -32980,18 +33062,20 @@ def test_list_server_tls_policies_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_list_server_tls_policies"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_list_server_tls_policies_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_list_server_tls_policies"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_list_server_tls_policies"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_list_server_tls_policies_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_list_server_tls_policies"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33051,8 +33135,9 @@ def test_get_server_tls_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33121,18 +33206,20 @@ def test_get_server_tls_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_get_server_tls_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_get_server_tls_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_get_server_tls_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_get_server_tls_policy"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_get_server_tls_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_get_server_tls_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33187,8 +33274,9 @@ def test_create_server_tls_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33343,20 +33431,21 @@ def test_create_server_tls_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_create_server_tls_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_create_server_tls_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_create_server_tls_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_create_server_tls_policy"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_create_server_tls_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_create_server_tls_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33413,8 +33502,9 @@ def test_update_server_tls_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33573,20 +33663,21 @@ def test_update_server_tls_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_update_server_tls_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_update_server_tls_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_update_server_tls_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_update_server_tls_policy"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_update_server_tls_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_update_server_tls_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33641,8 +33732,9 @@ def test_delete_server_tls_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33701,20 +33793,21 @@ def test_delete_server_tls_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_delete_server_tls_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_delete_server_tls_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_delete_server_tls_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_delete_server_tls_policy"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_delete_server_tls_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_delete_server_tls_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33767,8 +33860,9 @@ def test_list_client_tls_policies_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33831,18 +33925,20 @@ def test_list_client_tls_policies_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_list_client_tls_policies"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_list_client_tls_policies_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_list_client_tls_policies"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_list_client_tls_policies"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_list_client_tls_policies_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_list_client_tls_policies"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -33902,8 +33998,9 @@ def test_get_client_tls_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -33972,18 +34069,20 @@ def test_get_client_tls_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_get_client_tls_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_get_client_tls_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_get_client_tls_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_get_client_tls_policy"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_get_client_tls_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_get_client_tls_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -34038,8 +34137,9 @@ def test_create_client_tls_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -34190,20 +34290,21 @@ def test_create_client_tls_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_create_client_tls_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_create_client_tls_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_create_client_tls_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_create_client_tls_policy"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_create_client_tls_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_create_client_tls_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -34260,8 +34361,9 @@ def test_update_client_tls_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -34416,20 +34518,21 @@ def test_update_client_tls_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_update_client_tls_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_update_client_tls_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_update_client_tls_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_update_client_tls_policy"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_update_client_tls_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_update_client_tls_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -34484,8 +34587,9 @@ def test_delete_client_tls_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -34544,20 +34648,21 @@ def test_delete_client_tls_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_delete_client_tls_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_delete_client_tls_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_delete_client_tls_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_delete_client_tls_policy"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_delete_client_tls_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_delete_client_tls_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -34610,8 +34715,9 @@ def test_list_gateway_security_policies_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -34678,18 +34784,22 @@ def test_list_gateway_security_policies_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_list_gateway_security_policies"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_list_gateway_security_policies_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_list_gateway_security_policies"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_list_gateway_security_policies",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_list_gateway_security_policies_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "pre_list_gateway_security_policies",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -34753,8 +34863,9 @@ def test_get_gateway_security_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -34823,18 +34934,21 @@ def test_get_gateway_security_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_get_gateway_security_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_get_gateway_security_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_get_gateway_security_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_get_gateway_security_policy",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_get_gateway_security_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_get_gateway_security_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -34892,8 +35006,9 @@ def test_create_gateway_security_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35030,20 +35145,23 @@ def test_create_gateway_security_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_create_gateway_security_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_create_gateway_security_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_create_gateway_security_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_create_gateway_security_policy",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_create_gateway_security_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "pre_create_gateway_security_policy",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35100,8 +35218,9 @@ def test_update_gateway_security_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35242,20 +35361,23 @@ def test_update_gateway_security_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_update_gateway_security_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_update_gateway_security_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_update_gateway_security_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_update_gateway_security_policy",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_update_gateway_security_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "pre_update_gateway_security_policy",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35310,8 +35432,9 @@ def test_delete_gateway_security_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35370,20 +35493,23 @@ def test_delete_gateway_security_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_delete_gateway_security_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_delete_gateway_security_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_delete_gateway_security_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_delete_gateway_security_policy",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_delete_gateway_security_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "pre_delete_gateway_security_policy",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35438,8 +35564,9 @@ def test_list_gateway_security_policy_rules_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35512,20 +35639,22 @@ def test_list_gateway_security_policy_rules_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_list_gateway_security_policy_rules",
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_list_gateway_security_policy_rules_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "pre_list_gateway_security_policy_rules",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_list_gateway_security_policy_rules",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_list_gateway_security_policy_rules_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "pre_list_gateway_security_policy_rules",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35591,8 +35720,9 @@ def test_get_gateway_security_policy_rule_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35672,20 +35802,22 @@ def test_get_gateway_security_policy_rule_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_get_gateway_security_policy_rule",
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_get_gateway_security_policy_rule_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "pre_get_gateway_security_policy_rule",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_get_gateway_security_policy_rule",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_get_gateway_security_policy_rule_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "pre_get_gateway_security_policy_rule",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35747,8 +35879,9 @@ def test_create_gateway_security_policy_rule_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -35892,22 +36025,23 @@ def test_create_gateway_security_policy_rule_rest_interceptors(null_interceptor)
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_create_gateway_security_policy_rule",
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_create_gateway_security_policy_rule_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "pre_create_gateway_security_policy_rule",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_create_gateway_security_policy_rule",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_create_gateway_security_policy_rule_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "pre_create_gateway_security_policy_rule",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -35966,8 +36100,9 @@ def test_update_gateway_security_policy_rule_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -36113,22 +36248,23 @@ def test_update_gateway_security_policy_rule_rest_interceptors(null_interceptor)
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_update_gateway_security_policy_rule",
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_update_gateway_security_policy_rule_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "pre_update_gateway_security_policy_rule",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_update_gateway_security_policy_rule",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_update_gateway_security_policy_rule_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "pre_update_gateway_security_policy_rule",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -36185,8 +36321,9 @@ def test_delete_gateway_security_policy_rule_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -36245,22 +36382,23 @@ def test_delete_gateway_security_policy_rule_rest_interceptors(null_interceptor)
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_delete_gateway_security_policy_rule",
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_delete_gateway_security_policy_rule_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "pre_delete_gateway_security_policy_rule",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_delete_gateway_security_policy_rule",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_delete_gateway_security_policy_rule_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "pre_delete_gateway_security_policy_rule",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -36313,8 +36451,9 @@ def test_list_url_lists_rest_bad_request(request_type=url_list.ListUrlListsReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -36379,17 +36518,20 @@ def test_list_url_lists_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_list_url_lists"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_list_url_lists_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_list_url_lists"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_list_url_lists"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_list_url_lists_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_list_url_lists"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -36440,8 +36582,9 @@ def test_get_url_list_rest_bad_request(request_type=url_list.GetUrlListRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -36508,17 +36651,19 @@ def test_get_url_list_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_get_url_list"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_get_url_list_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_get_url_list"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_get_url_list"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_get_url_list_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_get_url_list"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -36569,8 +36714,9 @@ def test_create_url_list_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -36701,19 +36847,21 @@ def test_create_url_list_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_create_url_list"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_create_url_list_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_create_url_list"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_create_url_list"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_create_url_list_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_create_url_list"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -36768,8 +36916,9 @@ def test_update_url_list_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -36902,19 +37051,21 @@ def test_update_url_list_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_update_url_list"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_update_url_list_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_update_url_list"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_update_url_list"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_update_url_list_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_update_url_list"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -36965,8 +37116,9 @@ def test_delete_url_list_rest_bad_request(request_type=url_list.DeleteUrlListReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -37023,19 +37175,21 @@ def test_delete_url_list_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_delete_url_list"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_delete_url_list_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_delete_url_list"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_delete_url_list"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_delete_url_list_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_delete_url_list"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -37086,8 +37240,9 @@ def test_list_tls_inspection_policies_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -37154,18 +37309,22 @@ def test_list_tls_inspection_policies_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_list_tls_inspection_policies"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_list_tls_inspection_policies_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_list_tls_inspection_policies"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_list_tls_inspection_policies",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_list_tls_inspection_policies_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "pre_list_tls_inspection_policies",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -37225,8 +37384,9 @@ def test_get_tls_inspection_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -37311,18 +37471,20 @@ def test_get_tls_inspection_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_get_tls_inspection_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_get_tls_inspection_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_get_tls_inspection_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_get_tls_inspection_policy"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_get_tls_inspection_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_get_tls_inspection_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -37380,8 +37542,9 @@ def test_create_tls_inspection_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -37524,20 +37687,23 @@ def test_create_tls_inspection_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_create_tls_inspection_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_create_tls_inspection_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_create_tls_inspection_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_create_tls_inspection_policy",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_create_tls_inspection_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "pre_create_tls_inspection_policy",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -37594,8 +37760,9 @@ def test_update_tls_inspection_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -37742,20 +37909,23 @@ def test_update_tls_inspection_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_update_tls_inspection_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_update_tls_inspection_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_update_tls_inspection_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_update_tls_inspection_policy",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_update_tls_inspection_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "pre_update_tls_inspection_policy",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -37810,8 +37980,9 @@ def test_delete_tls_inspection_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -37870,20 +38041,23 @@ def test_delete_tls_inspection_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_delete_tls_inspection_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_delete_tls_inspection_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_delete_tls_inspection_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_delete_tls_inspection_policy",
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_delete_tls_inspection_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "pre_delete_tls_inspection_policy",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -37936,8 +38110,9 @@ def test_list_authz_policies_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -38002,18 +38177,20 @@ def test_list_authz_policies_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_list_authz_policies"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_list_authz_policies_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_list_authz_policies"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_list_authz_policies"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_list_authz_policies_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_list_authz_policies"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -38071,8 +38248,9 @@ def test_get_authz_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -38139,17 +38317,20 @@ def test_get_authz_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_get_authz_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_get_authz_policy_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_get_authz_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_get_authz_policy"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_get_authz_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_get_authz_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -38202,8 +38383,9 @@ def test_create_authz_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -38387,20 +38569,21 @@ def test_create_authz_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_create_authz_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_create_authz_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_create_authz_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_create_authz_policy"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_create_authz_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_create_authz_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -38457,8 +38640,9 @@ def test_update_authz_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -38646,20 +38830,21 @@ def test_update_authz_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_update_authz_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_update_authz_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_update_authz_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_update_authz_policy"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_update_authz_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_update_authz_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -38712,8 +38897,9 @@ def test_delete_authz_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -38770,20 +38956,21 @@ def test_delete_authz_policy_rest_interceptors(null_interceptor):
     )
     client = NetworkSecurityClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "post_delete_authz_policy"
-    ) as post, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor,
-        "post_delete_authz_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.NetworkSecurityRestInterceptor, "pre_delete_authz_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "post_delete_authz_policy"
+        ) as post,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor,
+            "post_delete_authz_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.NetworkSecurityRestInterceptor, "pre_delete_authz_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -38836,8 +39023,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -38896,8 +39084,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -38961,8 +39150,9 @@ def test_get_iam_policy_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -39028,8 +39218,9 @@ def test_set_iam_policy_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -39095,8 +39286,9 @@ def test_test_iam_permissions_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -39159,8 +39351,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -39221,8 +39414,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -39283,8 +39477,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -39345,8 +39540,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -39419,7 +39615,6 @@ def test_list_authorization_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authorization_policy.ListAuthorizationPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -39441,7 +39636,6 @@ def test_get_authorization_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authorization_policy.GetAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -39463,7 +39657,6 @@ def test_create_authorization_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_authorization_policy.CreateAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -39485,7 +39678,6 @@ def test_update_authorization_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_authorization_policy.UpdateAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -39507,7 +39699,6 @@ def test_delete_authorization_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authorization_policy.DeleteAuthorizationPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -39531,7 +39722,6 @@ def test_list_backend_authentication_configs_empty_call_rest():
         request_msg = (
             backend_authentication_config.ListBackendAuthenticationConfigsRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -39555,7 +39745,6 @@ def test_get_backend_authentication_config_empty_call_rest():
         request_msg = (
             backend_authentication_config.GetBackendAuthenticationConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -39579,7 +39768,6 @@ def test_create_backend_authentication_config_empty_call_rest():
         request_msg = (
             gcn_backend_authentication_config.CreateBackendAuthenticationConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -39603,7 +39791,6 @@ def test_update_backend_authentication_config_empty_call_rest():
         request_msg = (
             gcn_backend_authentication_config.UpdateBackendAuthenticationConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -39627,7 +39814,6 @@ def test_delete_backend_authentication_config_empty_call_rest():
         request_msg = (
             backend_authentication_config.DeleteBackendAuthenticationConfigRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -39649,7 +39835,6 @@ def test_list_server_tls_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = server_tls_policy.ListServerTlsPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -39671,7 +39856,6 @@ def test_get_server_tls_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = server_tls_policy.GetServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -39693,7 +39877,6 @@ def test_create_server_tls_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_server_tls_policy.CreateServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -39715,7 +39898,6 @@ def test_update_server_tls_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_server_tls_policy.UpdateServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -39737,7 +39919,6 @@ def test_delete_server_tls_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = server_tls_policy.DeleteServerTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -39759,7 +39940,6 @@ def test_list_client_tls_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = client_tls_policy.ListClientTlsPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -39781,7 +39961,6 @@ def test_get_client_tls_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = client_tls_policy.GetClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -39803,7 +39982,6 @@ def test_create_client_tls_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_client_tls_policy.CreateClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -39825,7 +40003,6 @@ def test_update_client_tls_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_client_tls_policy.UpdateClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -39847,7 +40024,6 @@ def test_delete_client_tls_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = client_tls_policy.DeleteClientTlsPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -39869,7 +40045,6 @@ def test_list_gateway_security_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gateway_security_policy.ListGatewaySecurityPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -39891,7 +40066,6 @@ def test_get_gateway_security_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gateway_security_policy.GetGatewaySecurityPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -39913,7 +40087,6 @@ def test_create_gateway_security_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_gateway_security_policy.CreateGatewaySecurityPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -39935,7 +40108,6 @@ def test_update_gateway_security_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_gateway_security_policy.UpdateGatewaySecurityPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -39957,7 +40129,6 @@ def test_delete_gateway_security_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gateway_security_policy.DeleteGatewaySecurityPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -39981,7 +40152,6 @@ def test_list_gateway_security_policy_rules_empty_call_rest():
         request_msg = (
             gateway_security_policy_rule.ListGatewaySecurityPolicyRulesRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -40003,7 +40173,6 @@ def test_get_gateway_security_policy_rule_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gateway_security_policy_rule.GetGatewaySecurityPolicyRuleRequest()
-
         assert args[0] == request_msg
 
 
@@ -40027,7 +40196,6 @@ def test_create_gateway_security_policy_rule_empty_call_rest():
         request_msg = (
             gcn_gateway_security_policy_rule.CreateGatewaySecurityPolicyRuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -40051,7 +40219,6 @@ def test_update_gateway_security_policy_rule_empty_call_rest():
         request_msg = (
             gcn_gateway_security_policy_rule.UpdateGatewaySecurityPolicyRuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -40075,7 +40242,6 @@ def test_delete_gateway_security_policy_rule_empty_call_rest():
         request_msg = (
             gateway_security_policy_rule.DeleteGatewaySecurityPolicyRuleRequest()
         )
-
         assert args[0] == request_msg
 
 
@@ -40095,7 +40261,6 @@ def test_list_url_lists_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = url_list.ListUrlListsRequest()
-
         assert args[0] == request_msg
 
 
@@ -40115,7 +40280,6 @@ def test_get_url_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = url_list.GetUrlListRequest()
-
         assert args[0] == request_msg
 
 
@@ -40135,7 +40299,6 @@ def test_create_url_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_url_list.CreateUrlListRequest()
-
         assert args[0] == request_msg
 
 
@@ -40155,7 +40318,6 @@ def test_update_url_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_url_list.UpdateUrlListRequest()
-
         assert args[0] == request_msg
 
 
@@ -40175,7 +40337,6 @@ def test_delete_url_list_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = url_list.DeleteUrlListRequest()
-
         assert args[0] == request_msg
 
 
@@ -40197,7 +40358,6 @@ def test_list_tls_inspection_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tls_inspection_policy.ListTlsInspectionPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -40219,7 +40379,6 @@ def test_get_tls_inspection_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tls_inspection_policy.GetTlsInspectionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -40241,7 +40400,6 @@ def test_create_tls_inspection_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_tls_inspection_policy.CreateTlsInspectionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -40263,7 +40421,6 @@ def test_update_tls_inspection_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_tls_inspection_policy.UpdateTlsInspectionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -40285,7 +40442,6 @@ def test_delete_tls_inspection_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = tls_inspection_policy.DeleteTlsInspectionPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -40307,7 +40463,6 @@ def test_list_authz_policies_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authz_policy.ListAuthzPoliciesRequest()
-
         assert args[0] == request_msg
 
 
@@ -40327,7 +40482,6 @@ def test_get_authz_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authz_policy.GetAuthzPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -40349,7 +40503,6 @@ def test_create_authz_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_authz_policy.CreateAuthzPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -40371,7 +40524,6 @@ def test_update_authz_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = gcn_authz_policy.UpdateAuthzPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -40393,7 +40545,6 @@ def test_delete_authz_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = authz_policy.DeleteAuthzPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -40525,11 +40676,14 @@ def test_network_security_base_transport():
 
 def test_network_security_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.network_security_v1alpha1.services.network_security.transports.NetworkSecurityTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.network_security_v1alpha1.services.network_security.transports.NetworkSecurityTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.NetworkSecurityTransport(
@@ -40546,9 +40700,12 @@ def test_network_security_base_transport_with_credentials_file():
 
 def test_network_security_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.network_security_v1alpha1.services.network_security.transports.NetworkSecurityTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.network_security_v1alpha1.services.network_security.transports.NetworkSecurityTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.NetworkSecurityTransport()
@@ -40620,11 +40777,12 @@ def test_network_security_transport_auth_gdch_credentials(transport_class):
 def test_network_security_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
@@ -41662,6 +41820,38 @@ async def test_delete_operation_from_dict_async():
         call.assert_called()
 
 
+def test_delete_operation_flattened():
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_operation_flattened_async():
+    client = NetworkSecurityAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.DeleteOperationRequest()
+
+
 def test_cancel_operation(transport: str = "grpc"):
     client = NetworkSecurityClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -41799,6 +41989,38 @@ async def test_cancel_operation_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_cancel_operation_flattened():
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_cancel_operation_flattened_async():
+    client = NetworkSecurityAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.CancelOperationRequest()
 
 
 def test_get_operation(transport: str = "grpc"):
@@ -41946,6 +42168,40 @@ async def test_get_operation_from_dict_async():
         call.assert_called()
 
 
+def test_get_operation_flattened():
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation()
+
+        client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_operation_flattened_async():
+    client = NetworkSecurityAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation()
+        )
+        await client.get_operation()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.GetOperationRequest()
+
+
 def test_list_operations(transport: str = "grpc"):
     client = NetworkSecurityClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -42089,6 +42345,40 @@ async def test_list_operations_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_list_operations_flattened():
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.ListOperationsResponse()
+
+        client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_operations_flattened_async():
+    client = NetworkSecurityAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.ListOperationsResponse()
+        )
+        await client.list_operations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == operations_pb2.ListOperationsRequest()
 
 
 def test_list_locations(transport: str = "grpc"):
@@ -42236,6 +42526,40 @@ async def test_list_locations_from_dict_async():
         call.assert_called()
 
 
+def test_list_locations_flattened():
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_flattened_async():
+    client = NetworkSecurityAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.ListLocationsRequest()
+
+
 def test_get_location(transport: str = "grpc"):
     client = NetworkSecurityClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -42375,6 +42699,40 @@ async def test_get_location_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_location_flattened():
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_location_flattened_async():
+    client = NetworkSecurityAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location()
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == locations_pb2.GetLocationRequest()
 
 
 def test_set_iam_policy(transport: str = "grpc"):
@@ -42539,6 +42897,41 @@ async def test_set_iam_policy_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_set_iam_policy_flattened():
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        client.set_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_flattened_async():
+    client = NetworkSecurityAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.set_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
 
 
 def test_get_iam_policy(transport: str = "grpc"):
@@ -42706,6 +43099,41 @@ async def test_get_iam_policy_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_get_iam_policy_flattened():
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = policy_pb2.Policy()
+
+        client.get_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_flattened_async():
+    client = NetworkSecurityAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy_pb2.Policy())
+
+        await client.get_iam_policy()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
 
 
 def test_test_iam_permissions(transport: str = "grpc"):
@@ -42883,6 +43311,47 @@ async def test_test_iam_permissions_from_dict_async():
             }
         )
         call.assert_called()
+
+
+def test_test_iam_permissions_flattened():
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        client.test_iam_permissions()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_flattened_async():
+    client = NetworkSecurityAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+
+        await client.test_iam_permissions()
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
 
 
 def test_transport_close_grpc():

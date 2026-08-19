@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,6 +35,19 @@ from .attachment import (
     GetAttachmentRequest,
     UploadAttachmentRequest,
     UploadAttachmentResponse,
+)
+from .audience import (
+    Audience,
+)
+from .availability import (
+    Availability,
+    CustomStatus,
+    DoNotDisturbMetadata,
+    GetAvailabilityRequest,
+    MarkAsActiveRequest,
+    MarkAsAwayRequest,
+    MarkAsDoNotDisturbRequest,
+    UpdateAvailabilityRequest,
 )
 from .contextual_addon import (
     ContextualAddOnMarkup,
@@ -85,6 +98,7 @@ from .message import (
     ActionResponse,
     AttachedGif,
     CardWithId,
+    CreateMessageNotificationOptions,
     CreateMessageRequest,
     DeleteMessageRequest,
     Dialog,
@@ -96,6 +110,9 @@ from .message import (
     Message,
     QuotedMessageMetadata,
     QuotedMessageSnapshot,
+    SearchMessageResult,
+    SearchMessagesRequest,
+    SearchMessagesResponse,
     Thread,
     UpdateMessageRequest,
 )
@@ -114,6 +131,21 @@ from .reaction import (
     ListReactionsResponse,
     Reaction,
 )
+from .section import (
+    CreateSectionRequest,
+    DeleteSectionRequest,
+    ListSectionItemsRequest,
+    ListSectionItemsResponse,
+    ListSectionsRequest,
+    ListSectionsResponse,
+    MoveSectionItemRequest,
+    MoveSectionItemResponse,
+    PositionSectionRequest,
+    PositionSectionResponse,
+    Section,
+    SectionItem,
+    UpdateSectionRequest,
+)
 from .slash_command import (
     SlashCommand,
 )
@@ -123,12 +155,15 @@ from .space import (
     CreateSpaceRequest,
     DeleteSpaceRequest,
     FindDirectMessageRequest,
+    FindGroupChatsRequest,
+    FindGroupChatsResponse,
     GetSpaceRequest,
     ListSpacesRequest,
     ListSpacesResponse,
     SearchSpacesRequest,
     SearchSpacesResponse,
     Space,
+    SpaceView,
     UpdateSpaceRequest,
 )
 from .space_event import (
@@ -179,6 +214,15 @@ __all__ = (
     "GetAttachmentRequest",
     "UploadAttachmentRequest",
     "UploadAttachmentResponse",
+    "Audience",
+    "Availability",
+    "CustomStatus",
+    "DoNotDisturbMetadata",
+    "GetAvailabilityRequest",
+    "MarkAsActiveRequest",
+    "MarkAsAwayRequest",
+    "MarkAsDoNotDisturbRequest",
+    "UpdateAvailabilityRequest",
     "ContextualAddOnMarkup",
     "DeletionMetadata",
     "MembershipBatchCreatedEventData",
@@ -213,6 +257,7 @@ __all__ = (
     "ActionResponse",
     "AttachedGif",
     "CardWithId",
+    "CreateMessageNotificationOptions",
     "CreateMessageRequest",
     "DeleteMessageRequest",
     "Dialog",
@@ -224,6 +269,9 @@ __all__ = (
     "Message",
     "QuotedMessageMetadata",
     "QuotedMessageSnapshot",
+    "SearchMessageResult",
+    "SearchMessagesRequest",
+    "SearchMessagesResponse",
     "Thread",
     "UpdateMessageRequest",
     "CreateCustomEmojiRequest",
@@ -239,12 +287,27 @@ __all__ = (
     "ListReactionsRequest",
     "ListReactionsResponse",
     "Reaction",
+    "CreateSectionRequest",
+    "DeleteSectionRequest",
+    "ListSectionItemsRequest",
+    "ListSectionItemsResponse",
+    "ListSectionsRequest",
+    "ListSectionsResponse",
+    "MoveSectionItemRequest",
+    "MoveSectionItemResponse",
+    "PositionSectionRequest",
+    "PositionSectionResponse",
+    "Section",
+    "SectionItem",
+    "UpdateSectionRequest",
     "SlashCommand",
     "CompleteImportSpaceRequest",
     "CompleteImportSpaceResponse",
     "CreateSpaceRequest",
     "DeleteSpaceRequest",
     "FindDirectMessageRequest",
+    "FindGroupChatsRequest",
+    "FindGroupChatsResponse",
     "GetSpaceRequest",
     "ListSpacesRequest",
     "ListSpacesResponse",
@@ -252,6 +315,7 @@ __all__ = (
     "SearchSpacesResponse",
     "Space",
     "UpdateSpaceRequest",
+    "SpaceView",
     "GetSpaceEventRequest",
     "ListSpaceEventsRequest",
     "ListSpaceEventsResponse",

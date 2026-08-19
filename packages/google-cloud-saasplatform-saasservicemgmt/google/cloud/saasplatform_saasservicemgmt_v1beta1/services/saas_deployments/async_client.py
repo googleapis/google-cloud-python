@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,6 +48,7 @@ except AttributeError:  # pragma: NO COVER
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
@@ -86,6 +87,20 @@ class SaasDeploymentsAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = SaasDeploymentsClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = SaasDeploymentsClient._DEFAULT_UNIVERSE
 
+    application_path = staticmethod(SaasDeploymentsClient.application_path)
+    parse_application_path = staticmethod(SaasDeploymentsClient.parse_application_path)
+    application_template_path = staticmethod(
+        SaasDeploymentsClient.application_template_path
+    )
+    parse_application_template_path = staticmethod(
+        SaasDeploymentsClient.parse_application_template_path
+    )
+    application_template_revision_path = staticmethod(
+        SaasDeploymentsClient.application_template_revision_path
+    )
+    parse_application_template_revision_path = staticmethod(
+        SaasDeploymentsClient.parse_application_template_revision_path
+    )
     release_path = staticmethod(SaasDeploymentsClient.release_path)
     parse_release_path = staticmethod(SaasDeploymentsClient.parse_release_path)
     rollout_path = staticmethod(SaasDeploymentsClient.rollout_path)
@@ -212,7 +227,7 @@ class SaasDeploymentsAsyncClient:
         return self._client.transport
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -2979,7 +2994,7 @@ class SaasDeploymentsAsyncClient:
 
                 This is a base object that contains the
                 common fields in all unit operations.
-                Next: 19
+                Next: 22
 
         """
         # Create or coerce a protobuf request object.
@@ -3127,7 +3142,7 @@ class SaasDeploymentsAsyncClient:
 
                 This is a base object that contains the
                 common fields in all unit operations.
-                Next: 19
+                Next: 22
 
         """
         # Create or coerce a protobuf request object.
@@ -3276,7 +3291,7 @@ class SaasDeploymentsAsyncClient:
 
                 This is a base object that contains the
                 common fields in all unit operations.
-                Next: 19
+                Next: 22
 
         """
         # Create or coerce a protobuf request object.
@@ -4048,7 +4063,7 @@ class SaasDeploymentsAsyncClient:
 
     async def get_location(
         self,
-        request: Optional[locations_pb2.GetLocationRequest] = None,
+        request: Optional[Union[locations_pb2.GetLocationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -4074,8 +4089,12 @@ class SaasDeploymentsAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = locations_pb2.GetLocationRequest(**request)
+        if request is None:
+            request_pb = locations_pb2.GetLocationRequest()
+        elif isinstance(request, dict):
+            request_pb = locations_pb2.GetLocationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4084,7 +4103,7 @@ class SaasDeploymentsAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -4092,7 +4111,7 @@ class SaasDeploymentsAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -4103,7 +4122,7 @@ class SaasDeploymentsAsyncClient:
 
     async def list_locations(
         self,
-        request: Optional[locations_pb2.ListLocationsRequest] = None,
+        request: Optional[Union[locations_pb2.ListLocationsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -4129,8 +4148,12 @@ class SaasDeploymentsAsyncClient:
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = locations_pb2.ListLocationsRequest(**request)
+        if request is None:
+            request_pb = locations_pb2.ListLocationsRequest()
+        elif isinstance(request, dict):
+            request_pb = locations_pb2.ListLocationsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4139,7 +4162,7 @@ class SaasDeploymentsAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -4147,7 +4170,7 @@ class SaasDeploymentsAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
+            request_pb,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -4166,9 +4189,7 @@ class SaasDeploymentsAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("SaasDeploymentsAsyncClient",)

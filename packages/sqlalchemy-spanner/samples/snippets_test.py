@@ -4,18 +4,19 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bs
 
-from samples import snippets
-from samples.conftest import insert_data
 from sqlalchemy import (
     Column,
-    create_engine,
     Index,
     Integer,
-    inspect,
     MetaData,
     String,
     Table,
+    create_engine,
+    inspect,
 )
+
+from samples import snippets
+from samples.conftest import insert_data
 
 DATA = [
     {"user_id": 1, "user_name": "abcdefg"},

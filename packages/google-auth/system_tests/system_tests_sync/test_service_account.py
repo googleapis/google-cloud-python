@@ -57,7 +57,7 @@ def test_iam_signer(http_request, credentials):
         credentials,
         credentials.service_account_email
     )
-    
+
     signed_blob = signer.sign("message")
 
     assert isinstance(signed_blob, bytes)

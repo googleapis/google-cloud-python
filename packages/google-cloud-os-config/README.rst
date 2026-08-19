@@ -3,7 +3,8 @@ Python Client for OS Config
 
 |stable| |pypi| |versions|
 
-`OS Config`_: provides OS management tools that can be used for patch management, patch compliance, and configuration management on VM instances.
+`OS Config`_: OS management tools that can be used for patch management, patch
+compliance, and configuration management on VM instances.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +15,9 @@ Python Client for OS Config
    :target: https://pypi.org/project/google-cloud-os-config/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-os-config.svg
    :target: https://pypi.org/project/google-cloud-os-config/
-.. _OS Config: https://cloud.google.com/compute/docs/manage-os
+.. _OS Config: https://cloud.google.com/compute/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/osconfig/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/compute/docs/manage-os
+.. _Product Documentation:  https://cloud.google.com/compute/
 
 Quick Start
 -----------
@@ -30,7 +31,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the OS Config.:  https://cloud.google.com/compute/docs/manage-os
+.. _Enable the OS Config.:  https://cloud.google.com/compute/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +62,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -104,7 +106,7 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _OS Config Product documentation:  https://cloud.google.com/compute/docs/manage-os
+.. _OS Config Product documentation:  https://cloud.google.com/compute/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

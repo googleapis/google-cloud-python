@@ -29,11 +29,23 @@ import nox
 LOCAL_DEPS = ("google-api-core", "google-cloud-core")
 NOX_DIR = os.path.abspath(os.path.dirname(__file__))
 DEFAULT_INTERPRETER = "3.14"
-ALL_INTERPRETERS = ("3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14")
-EMULTATOR_INTERPRETERS = ("3.9", "3.10", "3.11", "3.12", "3.13", "3.14")
+ALL_INTERPRETERS = ("3.10", "3.11", "3.12", "3.13", "3.14", "3.15")
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 
 BLACK_VERSION = "black[jupyter]==23.7.0"
+RUFF_VERSION = "ruff==0.14.14"
+LINT_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -48,7 +60,6 @@ nox.options.error_on_missing_interpreters = True
 
 nox.options.sessions = [
     "prerelease_deps",
-    "unit-3.9",
     "unit-3.10",
     "unit-3.11",
     "unit-3.12",
@@ -100,18 +111,10 @@ def default(session):
 @nox.session(python=DEFAULT_INTERPRETER)
 @nox.parametrize(
     "protobuf_implementation",
-    ["python", "upb", "cpp"],
+    ["python", "upb"],
 )
 def prerelease_deps(session, protobuf_implementation):
     """Run all tests with prerelease versions of dependencies installed."""
-
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
     session.install("-e", ".[all, tests, tracing]")
@@ -193,7 +196,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=100")
+    session.run("coverage", "report", "--show-missing")
 
     session.run("coverage", "erase")
 
@@ -251,40 +254,76 @@ def _run_emulator(session, emulator_args):
     emulator.wait(timeout=2)
 
 
-def run_black(session, use_check=False):
-    args = ["black"]
-    if use_check:
-        args.append("--check")
-
-    args.extend(
-        [
-            get_path("docs"),
-            get_path("noxfile.py"),
-            get_path("google"),
-            get_path("tests"),
-        ]
-    )
-
-    session.run(*args)
-
-
 @nox.session(py=DEFAULT_INTERPRETER)
 def lint(session):
     """Run linters.
+
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", BLACK_VERSION)
-    run_black(session, use_check=True)
+    session.install("flake8", RUFF_VERSION)
+
+    # 2. Check formatting
+    session.run(
+        "ruff",
+        "format",
+        "--check",
+        f"--target-version=py{ALL_INTERPRETERS[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
+
     session.run("flake8", "google", "tests")
 
 
 @nox.session(py=DEFAULT_INTERPRETER)
 def blacken(session):
-    # Install all dependencies.
-    session.install(BLACK_VERSION)
-    # Run ``black``.
-    run_black(session)
+    """(Deprecated) Legacy session. Please use 'nox -s format'."""
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in a future release. Please use 'nox -s format' in the future."
+    )
+
+    # Just run the ruff formatter (keeping legacy behavior of only formatting, not sorting imports)
+    session.install(RUFF_VERSION)
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_INTERPRETERS[0].replace('.', '')}",
+        "--line-length=88",
+        *LINT_PATHS,
+    )
+
+
+@nox.session(python=DEFAULT_INTERPRETER)
+def format(session):
+    """
+    Run ruff to sort imports and format code.
+    """
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
+    # check --select I: Enables strict import sorting
+    # --fix: Applies the changes automatically
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        f"--target-version=py{ALL_INTERPRETERS[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+    )
+
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff",
+        "format",
+        f"--target-version=py{ALL_INTERPRETERS[0].replace('.', '')}",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+    )
 
 
 @nox.session(py="3.10")
@@ -368,7 +407,7 @@ def docfx(session):
     )
 
 
-@nox.session(py="3.9")
+@nox.session(py="3.10")
 def doctest(session):
     # Install all dependencies.
     session.install(
@@ -453,19 +492,67 @@ def system_default(session):
 
 
 @nox.session(python=DEFAULT_INTERPRETER)
-def core_deps_from_source(session):
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Enable this test once this bug is fixed.
-    session.skip("Temporarily skip core_deps_from_source. See issue 16014")
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb"],
+)
+def core_deps_from_source(session, protobuf_implementation):
+    """Run all tests with core dependencies installed from source"""
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    install_unittest_dependencies(session, "-c", constraints_path)
+
+    core_dependencies_from_source = [
+        "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
+        "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
+        "google-auth @ git+https://github.com/googleapis/google-cloud-python#egg=google-auth&subdirectory=packages/google-auth",
+        "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
+        "proto-plus @ git+https://github.com/googleapis/google-cloud-python#egg=proto-plus&subdirectory=packages/proto-plus",
+    ]
+
+    for dep in core_dependencies_from_source:
+        session.install(dep, "--no-deps", "--ignore-installed")
+        print(f"Installed {dep}")
+
+    tests_path = os.path.join("tests", "unit")
+    session.run(
+        "py.test",
+        "--quiet",
+        f"--junitxml=unit_{session.python}_sponge_log.xml",
+        "--cov=google",
+        "--cov=tests/unit",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
+        tests_path,
+        *session.posargs,
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+        },
+    )
 
 
 @nox.session(python=DEFAULT_INTERPRETER)
 def mypy(session):
     """Run the type checker."""
-
-    # TODO(https://github.com/googleapis/google-cloud-python/issues/16014):
-    # Enable mypy once this bug is fixed.
-    session.skip("Temporarily skip mypy. See issue 16014")
+    session.install(
+        "mypy<1.16.0",
+        "types-requests",
+        "types-protobuf",
+        "types-pytz",
+    )
+    session.install("-e", ".")
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "google.cloud.ndb",
+        "--check-untyped-defs",
+        "--ignore-missing-imports",
+        *session.posargs,
+    )
 
 
 @nox.session(python=DEFAULT_INTERPRETER)

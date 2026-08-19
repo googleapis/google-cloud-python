@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -169,6 +169,10 @@ class Chunk(proto.Message):
             audio.
 
             This field is a member of `oneof`_ ``data``.
+        blob (google.cloud.ces_v1.types.Blob):
+            Optional. Blob data.
+
+            This field is a member of `oneof`_ ``data``.
         payload (google.protobuf.struct_pb2.Struct):
             Optional. Custom payload data.
 
@@ -212,6 +216,12 @@ class Chunk(proto.Message):
         proto.STRING,
         number=9,
         oneof="data",
+    )
+    blob: "Blob" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="data",
+        message="Blob",
     )
     payload: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,

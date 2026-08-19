@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -141,12 +136,28 @@ def modify_default_endpoint_template(client):
     )
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert SecurityCenterClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -167,6 +178,10 @@ def test__get_default_mtls_endpoint():
     )
     assert (
         SecurityCenterClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+    )
+    assert (
+        SecurityCenterClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -969,7 +984,14 @@ def test_security_center_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1016,7 +1038,14 @@ def test_security_center_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1308,11 +1337,13 @@ def test_security_center_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1337,8 +1368,8 @@ def test_security_center_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        securitycenter_service.CreateSourceRequest,
-        dict,
+        securitycenter_service.CreateSourceRequest(),
+        {},
     ],
 )
 def test_create_source(request_type, transport: str = "grpc"):
@@ -1349,7 +1380,7 @@ def test_create_source(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_source), "__call__") as call:
@@ -1397,9 +1428,10 @@ def test_create_source_non_empty_request_with_auto_populated_field():
         client.create_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.CreateSourceRequest(
+        request_msg = securitycenter_service.CreateSourceRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_source_use_cached_wrapped_rpc():
@@ -1480,10 +1512,14 @@ async def test_create_source_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_source_async(
-    transport: str = "grpc_asyncio",
-    request_type=securitycenter_service.CreateSourceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.CreateSourceRequest(),
+        {},
+    ],
+)
+async def test_create_source_async(request_type, transport: str = "grpc_asyncio"):
     client = SecurityCenterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1491,7 +1527,7 @@ async def test_create_source_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_source), "__call__") as call:
@@ -1516,11 +1552,6 @@ async def test_create_source_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_create_source_async_from_dict():
-    await test_create_source_async(request_type=dict)
 
 
 def test_create_source_field_headers():
@@ -1675,8 +1706,8 @@ async def test_create_source_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        securitycenter_service.CreateFindingRequest,
-        dict,
+        securitycenter_service.CreateFindingRequest(),
+        {},
     ],
 )
 def test_create_finding(request_type, transport: str = "grpc"):
@@ -1687,7 +1718,7 @@ def test_create_finding(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_finding), "__call__") as call:
@@ -1742,10 +1773,11 @@ def test_create_finding_non_empty_request_with_auto_populated_field():
         client.create_finding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.CreateFindingRequest(
+        request_msg = securitycenter_service.CreateFindingRequest(
             parent="parent_value",
             finding_id="finding_id_value",
         )
+        assert args[0] == request_msg
 
 
 def test_create_finding_use_cached_wrapped_rpc():
@@ -1826,10 +1858,14 @@ async def test_create_finding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_finding_async(
-    transport: str = "grpc_asyncio",
-    request_type=securitycenter_service.CreateFindingRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.CreateFindingRequest(),
+        {},
+    ],
+)
+async def test_create_finding_async(request_type, transport: str = "grpc_asyncio"):
     client = SecurityCenterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1837,7 +1873,7 @@ async def test_create_finding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_finding), "__call__") as call:
@@ -1868,11 +1904,6 @@ async def test_create_finding_async(
     assert response.state == gcs_finding.Finding.State.ACTIVE
     assert response.category == "category_value"
     assert response.external_uri == "external_uri_value"
-
-
-@pytest.mark.asyncio
-async def test_create_finding_async_from_dict():
-    await test_create_finding_async(request_type=dict)
 
 
 def test_create_finding_field_headers():
@@ -2037,8 +2068,8 @@ async def test_create_finding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
     ],
 )
 def test_get_iam_policy(request_type, transport: str = "grpc"):
@@ -2049,7 +2080,7 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -2095,9 +2126,10 @@ def test_get_iam_policy_non_empty_request_with_auto_populated_field():
         client.get_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+        request_msg = iam_policy_pb2.GetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_iam_policy_use_cached_wrapped_rpc():
@@ -2178,9 +2210,14 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_get_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = SecurityCenterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2188,7 +2225,7 @@ async def test_get_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -2211,11 +2248,6 @@ async def test_get_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_get_iam_policy_async_from_dict():
-    await test_get_iam_policy_async(request_type=dict)
 
 
 def test_get_iam_policy_field_headers():
@@ -2377,8 +2409,8 @@ async def test_get_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        securitycenter_service.GetOrganizationSettingsRequest,
-        dict,
+        securitycenter_service.GetOrganizationSettingsRequest(),
+        {},
     ],
 )
 def test_get_organization_settings(request_type, transport: str = "grpc"):
@@ -2389,7 +2421,7 @@ def test_get_organization_settings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2439,9 +2471,10 @@ def test_get_organization_settings_non_empty_request_with_auto_populated_field()
         client.get_organization_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.GetOrganizationSettingsRequest(
+        request_msg = securitycenter_service.GetOrganizationSettingsRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_organization_settings_use_cached_wrapped_rpc():
@@ -2527,9 +2560,15 @@ async def test_get_organization_settings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.GetOrganizationSettingsRequest(),
+        {},
+    ],
+)
 async def test_get_organization_settings_async(
-    transport: str = "grpc_asyncio",
-    request_type=securitycenter_service.GetOrganizationSettingsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2538,7 +2577,7 @@ async def test_get_organization_settings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2563,11 +2602,6 @@ async def test_get_organization_settings_async(
     assert isinstance(response, organization_settings.OrganizationSettings)
     assert response.name == "name_value"
     assert response.enable_asset_discovery is True
-
-
-@pytest.mark.asyncio
-async def test_get_organization_settings_async_from_dict():
-    await test_get_organization_settings_async(request_type=dict)
 
 
 def test_get_organization_settings_field_headers():
@@ -2724,8 +2758,8 @@ async def test_get_organization_settings_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        securitycenter_service.GetSourceRequest,
-        dict,
+        securitycenter_service.GetSourceRequest(),
+        {},
     ],
 )
 def test_get_source(request_type, transport: str = "grpc"):
@@ -2736,7 +2770,7 @@ def test_get_source(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_source), "__call__") as call:
@@ -2784,9 +2818,10 @@ def test_get_source_non_empty_request_with_auto_populated_field():
         client.get_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.GetSourceRequest(
+        request_msg = securitycenter_service.GetSourceRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_source_use_cached_wrapped_rpc():
@@ -2865,10 +2900,14 @@ async def test_get_source_async_use_cached_wrapped_rpc(transport: str = "grpc_as
 
 
 @pytest.mark.asyncio
-async def test_get_source_async(
-    transport: str = "grpc_asyncio",
-    request_type=securitycenter_service.GetSourceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.GetSourceRequest(),
+        {},
+    ],
+)
+async def test_get_source_async(request_type, transport: str = "grpc_asyncio"):
     client = SecurityCenterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2876,7 +2915,7 @@ async def test_get_source_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_source), "__call__") as call:
@@ -2901,11 +2940,6 @@ async def test_get_source_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_get_source_async_from_dict():
-    await test_get_source_async(request_type=dict)
 
 
 def test_get_source_field_headers():
@@ -3050,8 +3084,8 @@ async def test_get_source_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        securitycenter_service.GroupAssetsRequest,
-        dict,
+        securitycenter_service.GroupAssetsRequest(),
+        {},
     ],
 )
 def test_group_assets(request_type, transport: str = "grpc"):
@@ -3062,7 +3096,7 @@ def test_group_assets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.group_assets), "__call__") as call:
@@ -3109,12 +3143,13 @@ def test_group_assets_non_empty_request_with_auto_populated_field():
         client.group_assets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.GroupAssetsRequest(
+        request_msg = securitycenter_service.GroupAssetsRequest(
             parent="parent_value",
             filter="filter_value",
             group_by="group_by_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_group_assets_use_cached_wrapped_rpc():
@@ -3195,10 +3230,14 @@ async def test_group_assets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_group_assets_async(
-    transport: str = "grpc_asyncio",
-    request_type=securitycenter_service.GroupAssetsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.GroupAssetsRequest(),
+        {},
+    ],
+)
+async def test_group_assets_async(request_type, transport: str = "grpc_asyncio"):
     client = SecurityCenterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3206,7 +3245,7 @@ async def test_group_assets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.group_assets), "__call__") as call:
@@ -3227,11 +3266,6 @@ async def test_group_assets_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.GroupAssetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_group_assets_async_from_dict():
-    await test_group_assets_async(request_type=dict)
 
 
 def test_group_assets_field_headers():
@@ -3344,6 +3378,9 @@ def test_group_assets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, securitycenter_service.GroupResult) for i in results)
@@ -3432,6 +3469,8 @@ async def test_group_assets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -3479,11 +3518,7 @@ async def test_group_assets_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.group_assets(request={})
-        ).pages:
+        async for page_ in (await client.group_assets(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3492,8 +3527,8 @@ async def test_group_assets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        securitycenter_service.GroupFindingsRequest,
-        dict,
+        securitycenter_service.GroupFindingsRequest(),
+        {},
     ],
 )
 def test_group_findings(request_type, transport: str = "grpc"):
@@ -3504,7 +3539,7 @@ def test_group_findings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.group_findings), "__call__") as call:
@@ -3551,12 +3586,13 @@ def test_group_findings_non_empty_request_with_auto_populated_field():
         client.group_findings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.GroupFindingsRequest(
+        request_msg = securitycenter_service.GroupFindingsRequest(
             parent="parent_value",
             filter="filter_value",
             group_by="group_by_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_group_findings_use_cached_wrapped_rpc():
@@ -3637,10 +3673,14 @@ async def test_group_findings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_group_findings_async(
-    transport: str = "grpc_asyncio",
-    request_type=securitycenter_service.GroupFindingsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.GroupFindingsRequest(),
+        {},
+    ],
+)
+async def test_group_findings_async(request_type, transport: str = "grpc_asyncio"):
     client = SecurityCenterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3648,7 +3688,7 @@ async def test_group_findings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.group_findings), "__call__") as call:
@@ -3669,11 +3709,6 @@ async def test_group_findings_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.GroupFindingsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_group_findings_async_from_dict():
-    await test_group_findings_async(request_type=dict)
 
 
 def test_group_findings_field_headers():
@@ -3878,6 +3913,9 @@ def test_group_findings_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, securitycenter_service.GroupResult) for i in results)
@@ -3966,6 +4004,8 @@ async def test_group_findings_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4013,11 +4053,7 @@ async def test_group_findings_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.group_findings(request={})
-        ).pages:
+        async for page_ in (await client.group_findings(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4026,8 +4062,8 @@ async def test_group_findings_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        securitycenter_service.ListAssetsRequest,
-        dict,
+        securitycenter_service.ListAssetsRequest(),
+        {},
     ],
 )
 def test_list_assets(request_type, transport: str = "grpc"):
@@ -4038,7 +4074,7 @@ def test_list_assets(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
@@ -4087,12 +4123,13 @@ def test_list_assets_non_empty_request_with_auto_populated_field():
         client.list_assets(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.ListAssetsRequest(
+        request_msg = securitycenter_service.ListAssetsRequest(
             parent="parent_value",
             filter="filter_value",
             order_by="order_by_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_assets_use_cached_wrapped_rpc():
@@ -4173,10 +4210,14 @@ async def test_list_assets_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_assets_async(
-    transport: str = "grpc_asyncio",
-    request_type=securitycenter_service.ListAssetsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.ListAssetsRequest(),
+        {},
+    ],
+)
+async def test_list_assets_async(request_type, transport: str = "grpc_asyncio"):
     client = SecurityCenterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4184,7 +4225,7 @@ async def test_list_assets_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
@@ -4207,11 +4248,6 @@ async def test_list_assets_async(
     assert isinstance(response, pagers.ListAssetsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-@pytest.mark.asyncio
-async def test_list_assets_async_from_dict():
-    await test_list_assets_async(request_type=dict)
 
 
 def test_list_assets_field_headers():
@@ -4324,6 +4360,9 @@ def test_list_assets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(
@@ -4415,6 +4454,8 @@ async def test_list_assets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4465,11 +4506,7 @@ async def test_list_assets_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_assets(request={})
-        ).pages:
+        async for page_ in (await client.list_assets(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4478,8 +4515,8 @@ async def test_list_assets_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        securitycenter_service.ListFindingsRequest,
-        dict,
+        securitycenter_service.ListFindingsRequest(),
+        {},
     ],
 )
 def test_list_findings(request_type, transport: str = "grpc"):
@@ -4490,7 +4527,7 @@ def test_list_findings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_findings), "__call__") as call:
@@ -4539,12 +4576,13 @@ def test_list_findings_non_empty_request_with_auto_populated_field():
         client.list_findings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.ListFindingsRequest(
+        request_msg = securitycenter_service.ListFindingsRequest(
             parent="parent_value",
             filter="filter_value",
             order_by="order_by_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_findings_use_cached_wrapped_rpc():
@@ -4625,10 +4663,14 @@ async def test_list_findings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_findings_async(
-    transport: str = "grpc_asyncio",
-    request_type=securitycenter_service.ListFindingsRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.ListFindingsRequest(),
+        {},
+    ],
+)
+async def test_list_findings_async(request_type, transport: str = "grpc_asyncio"):
     client = SecurityCenterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4636,7 +4678,7 @@ async def test_list_findings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_findings), "__call__") as call:
@@ -4659,11 +4701,6 @@ async def test_list_findings_async(
     assert isinstance(response, pagers.ListFindingsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-@pytest.mark.asyncio
-async def test_list_findings_async_from_dict():
-    await test_list_findings_async(request_type=dict)
 
 
 def test_list_findings_field_headers():
@@ -4776,6 +4813,9 @@ def test_list_findings_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, finding.Finding) for i in results)
@@ -4864,6 +4904,8 @@ async def test_list_findings_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -4911,11 +4953,7 @@ async def test_list_findings_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_findings(request={})
-        ).pages:
+        async for page_ in (await client.list_findings(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4924,8 +4962,8 @@ async def test_list_findings_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        securitycenter_service.ListSourcesRequest,
-        dict,
+        securitycenter_service.ListSourcesRequest(),
+        {},
     ],
 )
 def test_list_sources(request_type, transport: str = "grpc"):
@@ -4936,7 +4974,7 @@ def test_list_sources(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sources), "__call__") as call:
@@ -4981,10 +5019,11 @@ def test_list_sources_non_empty_request_with_auto_populated_field():
         client.list_sources(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.ListSourcesRequest(
+        request_msg = securitycenter_service.ListSourcesRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
+        assert args[0] == request_msg
 
 
 def test_list_sources_use_cached_wrapped_rpc():
@@ -5065,10 +5104,14 @@ async def test_list_sources_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_sources_async(
-    transport: str = "grpc_asyncio",
-    request_type=securitycenter_service.ListSourcesRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.ListSourcesRequest(),
+        {},
+    ],
+)
+async def test_list_sources_async(request_type, transport: str = "grpc_asyncio"):
     client = SecurityCenterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5076,7 +5119,7 @@ async def test_list_sources_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sources), "__call__") as call:
@@ -5097,11 +5140,6 @@ async def test_list_sources_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSourcesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_sources_async_from_dict():
-    await test_list_sources_async(request_type=dict)
 
 
 def test_list_sources_field_headers():
@@ -5296,6 +5334,9 @@ def test_list_sources_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, source.Source) for i in results)
@@ -5384,6 +5425,8 @@ async def test_list_sources_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5431,11 +5474,7 @@ async def test_list_sources_async_pages():
             RuntimeError,
         )
         pages = []
-        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
-        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_sources(request={})
-        ).pages:
+        async for page_ in (await client.list_sources(request={})).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -5444,8 +5483,8 @@ async def test_list_sources_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        securitycenter_service.RunAssetDiscoveryRequest,
-        dict,
+        securitycenter_service.RunAssetDiscoveryRequest(),
+        {},
     ],
 )
 def test_run_asset_discovery(request_type, transport: str = "grpc"):
@@ -5456,7 +5495,7 @@ def test_run_asset_discovery(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5501,9 +5540,10 @@ def test_run_asset_discovery_non_empty_request_with_auto_populated_field():
         client.run_asset_discovery(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.RunAssetDiscoveryRequest(
+        request_msg = securitycenter_service.RunAssetDiscoveryRequest(
             parent="parent_value",
         )
+        assert args[0] == request_msg
 
 
 def test_run_asset_discovery_use_cached_wrapped_rpc():
@@ -5598,10 +5638,14 @@ async def test_run_asset_discovery_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_run_asset_discovery_async(
-    transport: str = "grpc_asyncio",
-    request_type=securitycenter_service.RunAssetDiscoveryRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.RunAssetDiscoveryRequest(),
+        {},
+    ],
+)
+async def test_run_asset_discovery_async(request_type, transport: str = "grpc_asyncio"):
     client = SecurityCenterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5609,7 +5653,7 @@ async def test_run_asset_discovery_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5629,11 +5673,6 @@ async def test_run_asset_discovery_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-@pytest.mark.asyncio
-async def test_run_asset_discovery_async_from_dict():
-    await test_run_asset_discovery_async(request_type=dict)
 
 
 def test_run_asset_discovery_field_headers():
@@ -5790,8 +5829,8 @@ async def test_run_asset_discovery_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        securitycenter_service.SetFindingStateRequest,
-        dict,
+        securitycenter_service.SetFindingStateRequest(),
+        {},
     ],
 )
 def test_set_finding_state(request_type, transport: str = "grpc"):
@@ -5802,7 +5841,7 @@ def test_set_finding_state(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5860,9 +5899,10 @@ def test_set_finding_state_non_empty_request_with_auto_populated_field():
         client.set_finding_state(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.SetFindingStateRequest(
+        request_msg = securitycenter_service.SetFindingStateRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_finding_state_use_cached_wrapped_rpc():
@@ -5945,10 +5985,14 @@ async def test_set_finding_state_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_finding_state_async(
-    transport: str = "grpc_asyncio",
-    request_type=securitycenter_service.SetFindingStateRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.SetFindingStateRequest(),
+        {},
+    ],
+)
+async def test_set_finding_state_async(request_type, transport: str = "grpc_asyncio"):
     client = SecurityCenterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5956,7 +6000,7 @@ async def test_set_finding_state_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5989,11 +6033,6 @@ async def test_set_finding_state_async(
     assert response.state == finding.Finding.State.ACTIVE
     assert response.category == "category_value"
     assert response.external_uri == "external_uri_value"
-
-
-@pytest.mark.asyncio
-async def test_set_finding_state_async_from_dict():
-    await test_set_finding_state_async(request_type=dict)
 
 
 def test_set_finding_state_field_headers():
@@ -6166,8 +6205,8 @@ async def test_set_finding_state_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
     ],
 )
 def test_set_iam_policy(request_type, transport: str = "grpc"):
@@ -6178,7 +6217,7 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -6224,9 +6263,10 @@ def test_set_iam_policy_non_empty_request_with_auto_populated_field():
         client.set_iam_policy(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+        request_msg = iam_policy_pb2.SetIamPolicyRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_set_iam_policy_use_cached_wrapped_rpc():
@@ -6307,9 +6347,14 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(
-    transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest(),
+        {},
+    ],
+)
+async def test_set_iam_policy_async(request_type, transport: str = "grpc_asyncio"):
     client = SecurityCenterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6317,7 +6362,7 @@ async def test_set_iam_policy_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -6340,11 +6385,6 @@ async def test_set_iam_policy_async(
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-@pytest.mark.asyncio
-async def test_set_iam_policy_async_from_dict():
-    await test_set_iam_policy_async(request_type=dict)
 
 
 def test_set_iam_policy_field_headers():
@@ -6507,8 +6547,8 @@ async def test_set_iam_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
     ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
@@ -6519,7 +6559,7 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6567,9 +6607,10 @@ def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
         client.test_iam_permissions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest(
             resource="resource_value",
         )
+        assert args[0] == request_msg
 
 
 def test_test_iam_permissions_use_cached_wrapped_rpc():
@@ -6654,9 +6695,15 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest(),
+        {},
+    ],
+)
 async def test_test_iam_permissions_async(
-    transport: str = "grpc_asyncio",
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -6665,7 +6712,7 @@ async def test_test_iam_permissions_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6688,11 +6735,6 @@ async def test_test_iam_permissions_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-@pytest.mark.asyncio
-async def test_test_iam_permissions_async_from_dict():
-    await test_test_iam_permissions_async(request_type=dict)
 
 
 def test_test_iam_permissions_field_headers():
@@ -6878,8 +6920,8 @@ async def test_test_iam_permissions_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        securitycenter_service.UpdateFindingRequest,
-        dict,
+        securitycenter_service.UpdateFindingRequest(),
+        {},
     ],
 )
 def test_update_finding(request_type, transport: str = "grpc"):
@@ -6890,7 +6932,7 @@ def test_update_finding(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_finding), "__call__") as call:
@@ -6942,7 +6984,8 @@ def test_update_finding_non_empty_request_with_auto_populated_field():
         client.update_finding(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.UpdateFindingRequest()
+        request_msg = securitycenter_service.UpdateFindingRequest()
+        assert args[0] == request_msg
 
 
 def test_update_finding_use_cached_wrapped_rpc():
@@ -7023,10 +7066,14 @@ async def test_update_finding_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_finding_async(
-    transport: str = "grpc_asyncio",
-    request_type=securitycenter_service.UpdateFindingRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.UpdateFindingRequest(),
+        {},
+    ],
+)
+async def test_update_finding_async(request_type, transport: str = "grpc_asyncio"):
     client = SecurityCenterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7034,7 +7081,7 @@ async def test_update_finding_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_finding), "__call__") as call:
@@ -7065,11 +7112,6 @@ async def test_update_finding_async(
     assert response.state == gcs_finding.Finding.State.ACTIVE
     assert response.category == "category_value"
     assert response.external_uri == "external_uri_value"
-
-
-@pytest.mark.asyncio
-async def test_update_finding_async_from_dict():
-    await test_update_finding_async(request_type=dict)
 
 
 def test_update_finding_field_headers():
@@ -7214,8 +7256,8 @@ async def test_update_finding_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        securitycenter_service.UpdateOrganizationSettingsRequest,
-        dict,
+        securitycenter_service.UpdateOrganizationSettingsRequest(),
+        {},
     ],
 )
 def test_update_organization_settings(request_type, transport: str = "grpc"):
@@ -7226,7 +7268,7 @@ def test_update_organization_settings(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7274,7 +7316,8 @@ def test_update_organization_settings_non_empty_request_with_auto_populated_fiel
         client.update_organization_settings(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.UpdateOrganizationSettingsRequest()
+        request_msg = securitycenter_service.UpdateOrganizationSettingsRequest()
+        assert args[0] == request_msg
 
 
 def test_update_organization_settings_use_cached_wrapped_rpc():
@@ -7360,9 +7403,15 @@ async def test_update_organization_settings_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.UpdateOrganizationSettingsRequest(),
+        {},
+    ],
+)
 async def test_update_organization_settings_async(
-    transport: str = "grpc_asyncio",
-    request_type=securitycenter_service.UpdateOrganizationSettingsRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -7371,7 +7420,7 @@ async def test_update_organization_settings_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7396,11 +7445,6 @@ async def test_update_organization_settings_async(
     assert isinstance(response, gcs_organization_settings.OrganizationSettings)
     assert response.name == "name_value"
     assert response.enable_asset_discovery is True
-
-
-@pytest.mark.asyncio
-async def test_update_organization_settings_async_from_dict():
-    await test_update_organization_settings_async(request_type=dict)
 
 
 def test_update_organization_settings_field_headers():
@@ -7565,8 +7609,8 @@ async def test_update_organization_settings_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        securitycenter_service.UpdateSourceRequest,
-        dict,
+        securitycenter_service.UpdateSourceRequest(),
+        {},
     ],
 )
 def test_update_source(request_type, transport: str = "grpc"):
@@ -7577,7 +7621,7 @@ def test_update_source(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_source), "__call__") as call:
@@ -7623,7 +7667,8 @@ def test_update_source_non_empty_request_with_auto_populated_field():
         client.update_source(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.UpdateSourceRequest()
+        request_msg = securitycenter_service.UpdateSourceRequest()
+        assert args[0] == request_msg
 
 
 def test_update_source_use_cached_wrapped_rpc():
@@ -7704,10 +7749,14 @@ async def test_update_source_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_source_async(
-    transport: str = "grpc_asyncio",
-    request_type=securitycenter_service.UpdateSourceRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.UpdateSourceRequest(),
+        {},
+    ],
+)
+async def test_update_source_async(request_type, transport: str = "grpc_asyncio"):
     client = SecurityCenterAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7715,7 +7764,7 @@ async def test_update_source_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_source), "__call__") as call:
@@ -7740,11 +7789,6 @@ async def test_update_source_async(
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.description == "description_value"
-
-
-@pytest.mark.asyncio
-async def test_update_source_async_from_dict():
-    await test_update_source_async(request_type=dict)
 
 
 def test_update_source_field_headers():
@@ -7889,8 +7933,8 @@ async def test_update_source_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        securitycenter_service.UpdateSecurityMarksRequest,
-        dict,
+        securitycenter_service.UpdateSecurityMarksRequest(),
+        {},
     ],
 )
 def test_update_security_marks(request_type, transport: str = "grpc"):
@@ -7901,7 +7945,7 @@ def test_update_security_marks(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7947,7 +7991,8 @@ def test_update_security_marks_non_empty_request_with_auto_populated_field():
         client.update_security_marks(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.UpdateSecurityMarksRequest()
+        request_msg = securitycenter_service.UpdateSecurityMarksRequest()
+        assert args[0] == request_msg
 
 
 def test_update_security_marks_use_cached_wrapped_rpc():
@@ -8033,9 +8078,15 @@ async def test_update_security_marks_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        securitycenter_service.UpdateSecurityMarksRequest(),
+        {},
+    ],
+)
 async def test_update_security_marks_async(
-    transport: str = "grpc_asyncio",
-    request_type=securitycenter_service.UpdateSecurityMarksRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = SecurityCenterAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -8044,7 +8095,7 @@ async def test_update_security_marks_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8067,11 +8118,6 @@ async def test_update_security_marks_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_security_marks.SecurityMarks)
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_update_security_marks_async_from_dict():
-    await test_update_security_marks_async(request_type=dict)
 
 
 def test_update_security_marks_field_headers():
@@ -8334,7 +8380,7 @@ def test_create_source_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_source_rest_unset_required_fields():
@@ -8537,7 +8583,7 @@ def test_create_finding_rest_required_fields(
                 ("$alt", "json;enum-encoding=int"),
             ]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_create_finding_rest_unset_required_fields():
@@ -8727,7 +8773,7 @@ def test_get_iam_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_iam_policy_rest_unset_required_fields():
@@ -8908,7 +8954,7 @@ def test_get_organization_settings_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_organization_settings_rest_unset_required_fields():
@@ -9086,7 +9132,7 @@ def test_get_source_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_source_rest_unset_required_fields():
@@ -9268,7 +9314,7 @@ def test_group_assets_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_group_assets_rest_unset_required_fields():
@@ -9341,6 +9387,9 @@ def test_group_assets_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "organizations/sample1"}
 
         pager = client.group_assets(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -9464,7 +9513,7 @@ def test_group_findings_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_group_findings_rest_unset_required_fields():
@@ -9598,6 +9647,9 @@ def test_group_findings_rest_pager(transport: str = "rest"):
 
         pager = client.group_findings(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, securitycenter_service.GroupResult) for i in results)
@@ -9727,7 +9779,7 @@ def test_list_assets_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_assets_rest_unset_required_fields():
@@ -9805,6 +9857,9 @@ def test_list_assets_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "organizations/sample1"}
 
         pager = client.list_assets(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -9937,7 +9992,7 @@ def test_list_findings_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_findings_rest_unset_required_fields():
@@ -10014,6 +10069,9 @@ def test_list_findings_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "organizations/sample1/sources/sample2"}
 
         pager = client.list_findings(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -10139,7 +10197,7 @@ def test_list_sources_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_list_sources_rest_unset_required_fields():
@@ -10270,6 +10328,9 @@ def test_list_sources_rest_pager(transport: str = "rest"):
 
         pager = client.list_sources(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, source.Source) for i in results)
@@ -10393,7 +10454,7 @@ def test_run_asset_discovery_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_run_asset_discovery_rest_unset_required_fields():
@@ -10572,7 +10633,7 @@ def test_set_finding_state_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_finding_state_rest_unset_required_fields():
@@ -10764,7 +10825,7 @@ def test_set_iam_policy_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_set_iam_policy_rest_unset_required_fields():
@@ -10955,7 +11016,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_test_iam_permissions_rest_unset_required_fields():
@@ -11139,7 +11200,7 @@ def test_update_finding_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_finding_rest_unset_required_fields():
@@ -11326,7 +11387,7 @@ def test_update_organization_settings_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_organization_settings_rest_unset_required_fields():
@@ -11510,7 +11571,7 @@ def test_update_source_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_source_rest_unset_required_fields():
@@ -11696,7 +11757,7 @@ def test_update_security_marks_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_update_security_marks_rest_unset_required_fields():
@@ -11901,7 +11962,6 @@ def test_create_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.CreateSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -11922,7 +11982,6 @@ def test_create_finding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.CreateFindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -11943,7 +12002,6 @@ def test_get_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -11966,7 +12024,6 @@ def test_get_organization_settings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.GetOrganizationSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -11987,7 +12044,6 @@ def test_get_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.GetSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -12008,7 +12064,6 @@ def test_group_assets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.GroupAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12029,7 +12084,6 @@ def test_group_findings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.GroupFindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12050,7 +12104,6 @@ def test_list_assets_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.ListAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12071,7 +12124,6 @@ def test_list_findings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.ListFindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12092,7 +12144,6 @@ def test_list_sources_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.ListSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -12115,7 +12166,6 @@ def test_run_asset_discovery_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.RunAssetDiscoveryRequest()
-
         assert args[0] == request_msg
 
 
@@ -12138,7 +12188,6 @@ def test_set_finding_state_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.SetFindingStateRequest()
-
         assert args[0] == request_msg
 
 
@@ -12159,7 +12208,6 @@ def test_set_iam_policy_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -12182,7 +12230,6 @@ def test_test_iam_permissions_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12203,7 +12250,6 @@ def test_update_finding_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.UpdateFindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -12226,7 +12272,6 @@ def test_update_organization_settings_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.UpdateOrganizationSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12247,7 +12292,6 @@ def test_update_source_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.UpdateSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -12270,7 +12314,6 @@ def test_update_security_marks_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.UpdateSecurityMarksRequest()
-
         assert args[0] == request_msg
 
 
@@ -12313,7 +12356,6 @@ async def test_create_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.CreateSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -12345,7 +12387,6 @@ async def test_create_finding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.CreateFindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -12373,7 +12414,6 @@ async def test_get_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -12403,7 +12443,6 @@ async def test_get_organization_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.GetOrganizationSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12432,7 +12471,6 @@ async def test_get_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.GetSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -12459,7 +12497,6 @@ async def test_group_assets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.GroupAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12486,7 +12523,6 @@ async def test_group_findings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.GroupFindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12514,7 +12550,6 @@ async def test_list_assets_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.ListAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12542,7 +12577,6 @@ async def test_list_findings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.ListFindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12569,7 +12603,6 @@ async def test_list_sources_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.ListSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -12596,7 +12629,6 @@ async def test_run_asset_discovery_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.RunAssetDiscoveryRequest()
-
         assert args[0] == request_msg
 
 
@@ -12630,7 +12662,6 @@ async def test_set_finding_state_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.SetFindingStateRequest()
-
         assert args[0] == request_msg
 
 
@@ -12658,7 +12689,6 @@ async def test_set_iam_policy_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -12687,7 +12717,6 @@ async def test_test_iam_permissions_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12719,7 +12748,6 @@ async def test_update_finding_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.UpdateFindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -12749,7 +12777,6 @@ async def test_update_organization_settings_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.UpdateOrganizationSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -12778,7 +12805,6 @@ async def test_update_source_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.UpdateSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -12807,7 +12833,6 @@ async def test_update_security_marks_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.UpdateSecurityMarksRequest()
-
         assert args[0] == request_msg
 
 
@@ -12829,8 +12854,9 @@ def test_create_source_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12969,17 +12995,19 @@ def test_create_source_rest_interceptors(null_interceptor):
     )
     client = SecurityCenterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_create_source"
-    ) as post, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_create_source_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "pre_create_source"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_create_source"
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_create_source_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "pre_create_source"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13032,8 +13060,9 @@ def test_create_finding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13185,17 +13214,20 @@ def test_create_finding_rest_interceptors(null_interceptor):
     )
     client = SecurityCenterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_create_finding"
-    ) as post, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_create_finding_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "pre_create_finding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_create_finding"
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor,
+            "post_create_finding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "pre_create_finding"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13248,8 +13280,9 @@ def test_get_iam_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13311,17 +13344,20 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     )
     client = SecurityCenterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_get_iam_policy"
-    ) as post, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_get_iam_policy_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "pre_get_iam_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_get_iam_policy"
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor,
+            "post_get_iam_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "pre_get_iam_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13372,8 +13408,9 @@ def test_get_organization_settings_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13438,18 +13475,20 @@ def test_get_organization_settings_rest_interceptors(null_interceptor):
     )
     client = SecurityCenterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_get_organization_settings"
-    ) as post, mock.patch.object(
-        transports.SecurityCenterRestInterceptor,
-        "post_get_organization_settings_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "pre_get_organization_settings"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_get_organization_settings"
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor,
+            "post_get_organization_settings_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "pre_get_organization_settings"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13507,8 +13546,9 @@ def test_get_source_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13575,17 +13615,19 @@ def test_get_source_rest_interceptors(null_interceptor):
     )
     client = SecurityCenterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_get_source"
-    ) as post, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_get_source_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "pre_get_source"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_get_source"
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_get_source_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "pre_get_source"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13638,8 +13680,9 @@ def test_group_assets_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13702,17 +13745,19 @@ def test_group_assets_rest_interceptors(null_interceptor):
     )
     client = SecurityCenterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_group_assets"
-    ) as post, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_group_assets_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "pre_group_assets"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_group_assets"
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_group_assets_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "pre_group_assets"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13770,8 +13815,9 @@ def test_group_findings_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13834,17 +13880,20 @@ def test_group_findings_rest_interceptors(null_interceptor):
     )
     client = SecurityCenterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_group_findings"
-    ) as post, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_group_findings_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "pre_group_findings"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_group_findings"
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor,
+            "post_group_findings_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "pre_group_findings"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13902,8 +13951,9 @@ def test_list_assets_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13968,17 +14018,19 @@ def test_list_assets_rest_interceptors(null_interceptor):
     )
     client = SecurityCenterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_list_assets"
-    ) as post, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_list_assets_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "pre_list_assets"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_list_assets"
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_list_assets_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "pre_list_assets"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14036,8 +14088,9 @@ def test_list_findings_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14102,17 +14155,19 @@ def test_list_findings_rest_interceptors(null_interceptor):
     )
     client = SecurityCenterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_list_findings"
-    ) as post, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_list_findings_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "pre_list_findings"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_list_findings"
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_list_findings_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "pre_list_findings"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14170,8 +14225,9 @@ def test_list_sources_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14234,17 +14290,19 @@ def test_list_sources_rest_interceptors(null_interceptor):
     )
     client = SecurityCenterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_list_sources"
-    ) as post, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_list_sources_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "pre_list_sources"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_list_sources"
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_list_sources_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "pre_list_sources"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14302,8 +14360,9 @@ def test_run_asset_discovery_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14360,20 +14419,21 @@ def test_run_asset_discovery_rest_interceptors(null_interceptor):
     )
     client = SecurityCenterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_run_asset_discovery"
-    ) as post, mock.patch.object(
-        transports.SecurityCenterRestInterceptor,
-        "post_run_asset_discovery_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "pre_run_asset_discovery"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_run_asset_discovery"
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor,
+            "post_run_asset_discovery_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "pre_run_asset_discovery"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14426,8 +14486,9 @@ def test_set_finding_state_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14500,17 +14561,20 @@ def test_set_finding_state_rest_interceptors(null_interceptor):
     )
     client = SecurityCenterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_set_finding_state"
-    ) as post, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_set_finding_state_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "pre_set_finding_state"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_set_finding_state"
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor,
+            "post_set_finding_state_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "pre_set_finding_state"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14563,8 +14627,9 @@ def test_set_iam_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14626,17 +14691,20 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     )
     client = SecurityCenterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_set_iam_policy"
-    ) as post, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_set_iam_policy_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "pre_set_iam_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_set_iam_policy"
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor,
+            "post_set_iam_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "pre_set_iam_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14687,8 +14755,9 @@ def test_test_iam_permissions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14748,18 +14817,20 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     )
     client = SecurityCenterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_test_iam_permissions"
-    ) as post, mock.patch.object(
-        transports.SecurityCenterRestInterceptor,
-        "post_test_iam_permissions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "pre_test_iam_permissions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_test_iam_permissions"
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor,
+            "post_test_iam_permissions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "pre_test_iam_permissions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14817,8 +14888,9 @@ def test_update_finding_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14972,17 +15044,20 @@ def test_update_finding_rest_interceptors(null_interceptor):
     )
     client = SecurityCenterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_update_finding"
-    ) as post, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_update_finding_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "pre_update_finding"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_update_finding"
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor,
+            "post_update_finding_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "pre_update_finding"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15037,8 +15112,9 @@ def test_update_organization_settings_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15184,18 +15260,21 @@ def test_update_organization_settings_rest_interceptors(null_interceptor):
     )
     client = SecurityCenterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_update_organization_settings"
-    ) as post, mock.patch.object(
-        transports.SecurityCenterRestInterceptor,
-        "post_update_organization_settings_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "pre_update_organization_settings"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor,
+            "post_update_organization_settings",
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor,
+            "post_update_organization_settings_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "pre_update_organization_settings"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15253,8 +15332,9 @@ def test_update_source_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15393,17 +15473,19 @@ def test_update_source_rest_interceptors(null_interceptor):
     )
     client = SecurityCenterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_update_source"
-    ) as post, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_update_source_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "pre_update_source"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_update_source"
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_update_source_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "pre_update_source"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15458,8 +15540,9 @@ def test_update_security_marks_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15597,18 +15680,20 @@ def test_update_security_marks_rest_interceptors(null_interceptor):
     )
     client = SecurityCenterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "post_update_security_marks"
-    ) as post, mock.patch.object(
-        transports.SecurityCenterRestInterceptor,
-        "post_update_security_marks_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecurityCenterRestInterceptor, "pre_update_security_marks"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "post_update_security_marks"
+        ) as post,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor,
+            "post_update_security_marks_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecurityCenterRestInterceptor, "pre_update_security_marks"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15675,7 +15760,6 @@ def test_create_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.CreateSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -15695,7 +15779,6 @@ def test_create_finding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.CreateFindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -15715,7 +15798,6 @@ def test_get_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.GetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -15737,7 +15819,6 @@ def test_get_organization_settings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.GetOrganizationSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15757,7 +15838,6 @@ def test_get_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.GetSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -15777,7 +15857,6 @@ def test_group_assets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.GroupAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15797,7 +15876,6 @@ def test_group_findings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.GroupFindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15817,7 +15895,6 @@ def test_list_assets_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.ListAssetsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15837,7 +15914,6 @@ def test_list_findings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.ListFindingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15857,7 +15933,6 @@ def test_list_sources_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.ListSourcesRequest()
-
         assert args[0] == request_msg
 
 
@@ -15879,7 +15954,6 @@ def test_run_asset_discovery_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.RunAssetDiscoveryRequest()
-
         assert args[0] == request_msg
 
 
@@ -15901,7 +15975,6 @@ def test_set_finding_state_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.SetFindingStateRequest()
-
         assert args[0] == request_msg
 
 
@@ -15921,7 +15994,6 @@ def test_set_iam_policy_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.SetIamPolicyRequest()
-
         assert args[0] == request_msg
 
 
@@ -15943,7 +16015,6 @@ def test_test_iam_permissions_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = iam_policy_pb2.TestIamPermissionsRequest()
-
         assert args[0] == request_msg
 
 
@@ -15963,7 +16034,6 @@ def test_update_finding_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.UpdateFindingRequest()
-
         assert args[0] == request_msg
 
 
@@ -15985,7 +16055,6 @@ def test_update_organization_settings_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.UpdateOrganizationSettingsRequest()
-
         assert args[0] == request_msg
 
 
@@ -16005,7 +16074,6 @@ def test_update_source_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.UpdateSourceRequest()
-
         assert args[0] == request_msg
 
 
@@ -16027,7 +16095,6 @@ def test_update_security_marks_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = securitycenter_service.UpdateSecurityMarksRequest()
-
         assert args[0] == request_msg
 
 
@@ -16123,11 +16190,14 @@ def test_security_center_base_transport():
 
 def test_security_center_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.securitycenter_v1beta1.services.security_center.transports.SecurityCenterTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.securitycenter_v1beta1.services.security_center.transports.SecurityCenterTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SecurityCenterTransport(
@@ -16144,9 +16214,12 @@ def test_security_center_base_transport_with_credentials_file():
 
 def test_security_center_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.securitycenter_v1beta1.services.security_center.transports.SecurityCenterTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.securitycenter_v1beta1.services.security_center.transports.SecurityCenterTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SecurityCenterTransport()
@@ -16218,11 +16291,12 @@ def test_security_center_transport_auth_gdch_credentials(transport_class):
 def test_security_center_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

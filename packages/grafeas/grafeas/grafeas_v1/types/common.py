@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -244,6 +244,10 @@ class FileLocation(proto.Message):
             Each package found in a file should have its
             own layer metadata (that is, information from
             the origin layer of the package).
+        line_number (int):
+            Line number in the file where the package was
+            found. Optional field that only applies to
+            source repository scanning.
     """
 
     file_path: str = proto.Field(
@@ -254,6 +258,10 @@ class FileLocation(proto.Message):
         proto.MESSAGE,
         number=2,
         message="LayerDetails",
+    )
+    line_number: int = proto.Field(
+        proto.INT32,
+        number=3,
     )
 
 

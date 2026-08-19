@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-kms-inventory/#history
 
+## [0.6.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-inventory-v0.6.0...google-cloud-kms-inventory-v0.6.1) (2026-06-22)
+
+
+### Features
+
+* regenerate google-cloud-[k-n] packages ([#17074](https://github.com/googleapis/google-cloud-python/issues/17074)) ([ec54f78](https://github.com/googleapis/google-cloud-python/commit/ec54f78e37bb3b48e0794d544784b99fa13d6f85))
+
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-inventory-v0.5.0...google-cloud-kms-inventory-v0.6.0) (2026-03-26)
+
+
+### Features
+
+* Allow Protobuf 7.x ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
+
+### Bug Fixes
+
+* Require Python 3.9 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Require google-api-core >= 2.11.0 ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+* Improve type checking ([1eb7c268482e55971966e284dac2cbeb903adcbb](https://github.com/googleapis/google-cloud-python/commit/1eb7c268482e55971966e284dac2cbeb903adcbb))
+
 ## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-inventory-v0.4.0...google-cloud-kms-inventory-v0.5.0) (2026-02-19)
 
 

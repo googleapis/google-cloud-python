@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -65,6 +65,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
@@ -122,7 +123,7 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
     """Manages the deployment of SaaS services."""
 
     @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint):
+    def _get_default_mtls_endpoint(api_endpoint) -> Optional[str]:
         """Converts api endpoint to mTLS endpoint.
 
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
@@ -130,7 +131,7 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
         Args:
             api_endpoint (Optional[str]): the api endpoint to convert.
         Returns:
-            str: converted mTLS api endpoint.
+            Optional[str]: converted mTLS api endpoint.
         """
         if not api_endpoint:
             return api_endpoint
@@ -140,6 +141,10 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
         )
 
         m = mtls_endpoint_re.match(api_endpoint)
+        if m is None:
+            # Could not parse api_endpoint; return as-is.
+            return api_endpoint
+
         name, mtls, sandbox, googledomain = m.groups()
         if mtls or not googledomain:
             return api_endpoint
@@ -234,6 +239,80 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
                 instance.
         """
         return self._transport
+
+    @staticmethod
+    def application_path(
+        project: str,
+        location: str,
+        application: str,
+    ) -> str:
+        """Returns a fully-qualified application string."""
+        return (
+            "projects/{project}/locations/{location}/applications/{application}".format(
+                project=project,
+                location=location,
+                application=application,
+            )
+        )
+
+    @staticmethod
+    def parse_application_path(path: str) -> Dict[str, str]:
+        """Parses a application path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/applications/(?P<application>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def application_template_path(
+        project: str,
+        location: str,
+        space: str,
+        applicationTemplate: str,
+    ) -> str:
+        """Returns a fully-qualified application_template string."""
+        return "projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{applicationTemplate}".format(
+            project=project,
+            location=location,
+            space=space,
+            applicationTemplate=applicationTemplate,
+        )
+
+    @staticmethod
+    def parse_application_template_path(path: str) -> Dict[str, str]:
+        """Parses a application_template path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/spaces/(?P<space>.+?)/applicationTemplates/(?P<applicationTemplate>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def application_template_revision_path(
+        project: str,
+        location: str,
+        space: str,
+        application_template: str,
+        revision: str,
+    ) -> str:
+        """Returns a fully-qualified application_template_revision string."""
+        return "projects/{project}/locations/{location}/spaces/{space}/applicationTemplates/{application_template}/revisions/{revision}".format(
+            project=project,
+            location=location,
+            space=space,
+            application_template=application_template,
+            revision=revision,
+        )
+
+    @staticmethod
+    def parse_application_template_revision_path(path: str) -> Dict[str, str]:
+        """Parses a application_template_revision path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/spaces/(?P<space>.+?)/applicationTemplates/(?P<application_template>.+?)/revisions/(?P<revision>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def release_path(
@@ -579,7 +658,7 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
     @staticmethod
     def _get_api_endpoint(
         api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ):
+    ) -> str:
         """Return the API endpoint used by the client.
 
         Args:
@@ -676,7 +755,7 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
             error._details.append(json.dumps(cred_info))
 
     @property
-    def api_endpoint(self):
+    def api_endpoint(self) -> str:
         """Return the API endpoint used by the client instance.
 
         Returns:
@@ -774,7 +853,7 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
         self._universe_domain = SaasDeploymentsClient._get_universe_domain(
             universe_domain_opt, self._universe_domain_env
         )
-        self._api_endpoint = None  # updated below, depending on `transport`
+        self._api_endpoint: str = ""  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
@@ -3468,7 +3547,7 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
 
                 This is a base object that contains the
                 common fields in all unit operations.
-                Next: 19
+                Next: 22
 
         """
         # Create or coerce a protobuf request object.
@@ -3613,7 +3692,7 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
 
                 This is a base object that contains the
                 common fields in all unit operations.
-                Next: 19
+                Next: 22
 
         """
         # Create or coerce a protobuf request object.
@@ -3759,7 +3838,7 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
 
                 This is a base object that contains the
                 common fields in all unit operations.
-                Next: 19
+                Next: 22
 
         """
         # Create or coerce a protobuf request object.
@@ -4523,7 +4602,7 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
 
     def get_location(
         self,
-        request: Optional[locations_pb2.GetLocationRequest] = None,
+        request: Optional[Union[locations_pb2.GetLocationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -4549,8 +4628,12 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = locations_pb2.GetLocationRequest(**request)
+        if request is None:
+            request_pb = locations_pb2.GetLocationRequest()
+        elif isinstance(request, dict):
+            request_pb = locations_pb2.GetLocationRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4559,7 +4642,7 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -4568,7 +4651,7 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
+                request_pb,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata,
@@ -4582,7 +4665,7 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
 
     def list_locations(
         self,
-        request: Optional[locations_pb2.ListLocationsRequest] = None,
+        request: Optional[Union[locations_pb2.ListLocationsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -4608,8 +4691,12 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
         # Create or coerce a protobuf request object.
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
-        if isinstance(request, dict):
-            request = locations_pb2.ListLocationsRequest(**request)
+        if request is None:
+            request_pb = locations_pb2.ListLocationsRequest()
+        elif isinstance(request, dict):
+            request_pb = locations_pb2.ListLocationsRequest(**request)
+        else:
+            request_pb = request
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4618,7 +4705,7 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request_pb.name),)),
         )
 
         # Validate the universe domain.
@@ -4627,7 +4714,7 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
         try:
             # Send the request.
             response = rpc(
-                request,
+                request_pb,
                 retry=retry,
                 timeout=timeout,
                 metadata=metadata,
@@ -4643,8 +4730,6 @@ class SaasDeploymentsClient(metaclass=SaasDeploymentsClientMeta):
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("SaasDeploymentsClient",)

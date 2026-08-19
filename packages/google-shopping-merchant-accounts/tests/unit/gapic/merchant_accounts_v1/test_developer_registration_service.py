@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,18 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
-
+import asyncio
 import json
 import math
+import os
 from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
+from unittest import mock
+from unittest.mock import AsyncMock
 
 import grpc
 import pytest
@@ -113,12 +108,28 @@ def modify_default_endpoint_template(client):
     )
 
 
+@pytest.fixture(autouse=True)
+def set_event_loop():
+    try:
+        asyncio.get_running_loop()
+        yield
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            yield
+        finally:
+            loop.close()
+            asyncio.set_event_loop(None)
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
     sandbox_endpoint = "example.sandbox.googleapis.com"
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
+    custom_endpoint = ".custom"
 
     assert DeveloperRegistrationServiceClient._get_default_mtls_endpoint(None) is None
     assert (
@@ -142,6 +153,10 @@ def test__get_default_mtls_endpoint():
     assert (
         DeveloperRegistrationServiceClient._get_default_mtls_endpoint(non_googleapi)
         == non_googleapi
+    )
+    assert (
+        DeveloperRegistrationServiceClient._get_default_mtls_endpoint(custom_endpoint)
+        == custom_endpoint
     )
 
 
@@ -1030,7 +1045,14 @@ def test_developer_registration_service_client_get_mtls_endpoint_and_cert_source
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1077,7 +1099,14 @@ def test_developer_registration_service_client_get_mtls_endpoint_and_cert_source
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1387,11 +1416,13 @@ def test_developer_registration_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1416,8 +1447,8 @@ def test_developer_registration_service_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        developerregistration.RegisterGcpRequest,
-        dict,
+        developerregistration.RegisterGcpRequest(),
+        {},
     ],
 )
 def test_register_gcp(request_type, transport: str = "grpc"):
@@ -1428,7 +1459,7 @@ def test_register_gcp(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.register_gcp), "__call__") as call:
@@ -1475,10 +1506,11 @@ def test_register_gcp_non_empty_request_with_auto_populated_field():
         client.register_gcp(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developerregistration.RegisterGcpRequest(
+        request_msg = developerregistration.RegisterGcpRequest(
             name="name_value",
             developer_email="developer_email_value",
         )
+        assert args[0] == request_msg
 
 
 def test_register_gcp_use_cached_wrapped_rpc():
@@ -1559,10 +1591,14 @@ async def test_register_gcp_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_register_gcp_async(
-    transport: str = "grpc_asyncio",
-    request_type=developerregistration.RegisterGcpRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developerregistration.RegisterGcpRequest(),
+        {},
+    ],
+)
+async def test_register_gcp_async(request_type, transport: str = "grpc_asyncio"):
     client = DeveloperRegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1570,7 +1606,7 @@ async def test_register_gcp_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.register_gcp), "__call__") as call:
@@ -1593,11 +1629,6 @@ async def test_register_gcp_async(
     assert isinstance(response, developerregistration.DeveloperRegistration)
     assert response.name == "name_value"
     assert response.gcp_ids == ["gcp_ids_value"]
-
-
-@pytest.mark.asyncio
-async def test_register_gcp_async_from_dict():
-    await test_register_gcp_async(request_type=dict)
 
 
 def test_register_gcp_field_headers():
@@ -1664,8 +1695,8 @@ async def test_register_gcp_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developerregistration.GetDeveloperRegistrationRequest,
-        dict,
+        developerregistration.GetDeveloperRegistrationRequest(),
+        {},
     ],
 )
 def test_get_developer_registration(request_type, transport: str = "grpc"):
@@ -1676,7 +1707,7 @@ def test_get_developer_registration(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1726,9 +1757,10 @@ def test_get_developer_registration_non_empty_request_with_auto_populated_field(
         client.get_developer_registration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developerregistration.GetDeveloperRegistrationRequest(
+        request_msg = developerregistration.GetDeveloperRegistrationRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_get_developer_registration_use_cached_wrapped_rpc():
@@ -1814,9 +1846,15 @@ async def test_get_developer_registration_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developerregistration.GetDeveloperRegistrationRequest(),
+        {},
+    ],
+)
 async def test_get_developer_registration_async(
-    transport: str = "grpc_asyncio",
-    request_type=developerregistration.GetDeveloperRegistrationRequest,
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DeveloperRegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1825,7 +1863,7 @@ async def test_get_developer_registration_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1850,11 +1888,6 @@ async def test_get_developer_registration_async(
     assert isinstance(response, developerregistration.DeveloperRegistration)
     assert response.name == "name_value"
     assert response.gcp_ids == ["gcp_ids_value"]
-
-
-@pytest.mark.asyncio
-async def test_get_developer_registration_async_from_dict():
-    await test_get_developer_registration_async(request_type=dict)
 
 
 def test_get_developer_registration_field_headers():
@@ -2011,8 +2044,8 @@ async def test_get_developer_registration_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        developerregistration.UnregisterGcpRequest,
-        dict,
+        developerregistration.UnregisterGcpRequest(),
+        {},
     ],
 )
 def test_unregister_gcp(request_type, transport: str = "grpc"):
@@ -2023,7 +2056,7 @@ def test_unregister_gcp(request_type, transport: str = "grpc"):
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.unregister_gcp), "__call__") as call:
@@ -2064,9 +2097,10 @@ def test_unregister_gcp_non_empty_request_with_auto_populated_field():
         client.unregister_gcp(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == developerregistration.UnregisterGcpRequest(
+        request_msg = developerregistration.UnregisterGcpRequest(
             name="name_value",
         )
+        assert args[0] == request_msg
 
 
 def test_unregister_gcp_use_cached_wrapped_rpc():
@@ -2147,10 +2181,14 @@ async def test_unregister_gcp_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_unregister_gcp_async(
-    transport: str = "grpc_asyncio",
-    request_type=developerregistration.UnregisterGcpRequest,
-):
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        developerregistration.UnregisterGcpRequest(),
+        {},
+    ],
+)
+async def test_unregister_gcp_async(request_type, transport: str = "grpc_asyncio"):
     client = DeveloperRegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2158,7 +2196,7 @@ async def test_unregister_gcp_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.unregister_gcp), "__call__") as call:
@@ -2174,11 +2212,6 @@ async def test_unregister_gcp_async(
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-@pytest.mark.asyncio
-async def test_unregister_gcp_async_from_dict():
-    await test_unregister_gcp_async(request_type=dict)
 
 
 def test_unregister_gcp_field_headers():
@@ -2243,8 +2276,8 @@ async def test_unregister_gcp_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        empty_pb2.Empty,
-        dict,
+        empty_pb2.Empty(),
+        {},
     ],
 )
 def test_get_account_for_gcp_registration(request_type, transport: str = "grpc"):
@@ -2255,7 +2288,7 @@ def test_get_account_for_gcp_registration(request_type, transport: str = "grpc")
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2303,7 +2336,8 @@ def test_get_account_for_gcp_registration_non_empty_request_with_auto_populated_
         client.get_account_for_gcp_registration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == empty_pb2.Empty()
+        request_msg = empty_pb2.Empty()
+        assert args[0] == request_msg
 
 
 def test_get_account_for_gcp_registration_use_cached_wrapped_rpc():
@@ -2389,8 +2423,15 @@ async def test_get_account_for_gcp_registration_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        empty_pb2.Empty(),
+        {},
+    ],
+)
 async def test_get_account_for_gcp_registration_async(
-    transport: str = "grpc_asyncio", request_type=empty_pb2.Empty
+    request_type, transport: str = "grpc_asyncio"
 ):
     client = DeveloperRegistrationServiceAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2399,7 +2440,7 @@ async def test_get_account_for_gcp_registration_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
+    request = request_type
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2424,11 +2465,6 @@ async def test_get_account_for_gcp_registration_async(
         response, developerregistration.GetAccountForGcpRegistrationResponse
     )
     assert response.name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_get_account_for_gcp_registration_async_from_dict():
-    await test_get_account_for_gcp_registration_async(request_type=dict)
 
 
 def test_get_account_for_gcp_registration_from_dict_foreign():
@@ -2554,7 +2590,7 @@ def test_register_gcp_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_register_gcp_rest_unset_required_fields():
@@ -2679,7 +2715,7 @@ def test_get_developer_registration_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_get_developer_registration_rest_unset_required_fields():
@@ -2855,7 +2891,7 @@ def test_unregister_gcp_rest_required_fields(
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
+            assert sorted(expected_params) == sorted(actual_params)
 
 
 def test_unregister_gcp_rest_unset_required_fields():
@@ -3031,7 +3067,6 @@ def test_register_gcp_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developerregistration.RegisterGcpRequest()
-
         assert args[0] == request_msg
 
 
@@ -3054,7 +3089,6 @@ def test_get_developer_registration_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developerregistration.GetDeveloperRegistrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -3075,7 +3109,6 @@ def test_unregister_gcp_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developerregistration.UnregisterGcpRequest()
-
         assert args[0] == request_msg
 
 
@@ -3098,7 +3131,6 @@ def test_get_account_for_gcp_registration_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = empty_pb2.Empty()
-
         assert args[0] == request_msg
 
 
@@ -3140,7 +3172,6 @@ async def test_register_gcp_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developerregistration.RegisterGcpRequest()
-
         assert args[0] == request_msg
 
 
@@ -3170,7 +3201,6 @@ async def test_get_developer_registration_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developerregistration.GetDeveloperRegistrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -3193,7 +3223,6 @@ async def test_unregister_gcp_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developerregistration.UnregisterGcpRequest()
-
         assert args[0] == request_msg
 
 
@@ -3222,7 +3251,6 @@ async def test_get_account_for_gcp_registration_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = empty_pb2.Empty()
-
         assert args[0] == request_msg
 
 
@@ -3244,8 +3272,9 @@ def test_register_gcp_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -3310,18 +3339,20 @@ def test_register_gcp_rest_interceptors(null_interceptor):
     )
     client = DeveloperRegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeveloperRegistrationServiceRestInterceptor, "post_register_gcp"
-    ) as post, mock.patch.object(
-        transports.DeveloperRegistrationServiceRestInterceptor,
-        "post_register_gcp_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DeveloperRegistrationServiceRestInterceptor, "pre_register_gcp"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DeveloperRegistrationServiceRestInterceptor, "post_register_gcp"
+        ) as post,
+        mock.patch.object(
+            transports.DeveloperRegistrationServiceRestInterceptor,
+            "post_register_gcp_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DeveloperRegistrationServiceRestInterceptor, "pre_register_gcp"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -3379,8 +3410,9 @@ def test_get_developer_registration_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -3445,20 +3477,22 @@ def test_get_developer_registration_rest_interceptors(null_interceptor):
     )
     client = DeveloperRegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeveloperRegistrationServiceRestInterceptor,
-        "post_get_developer_registration",
-    ) as post, mock.patch.object(
-        transports.DeveloperRegistrationServiceRestInterceptor,
-        "post_get_developer_registration_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DeveloperRegistrationServiceRestInterceptor,
-        "pre_get_developer_registration",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DeveloperRegistrationServiceRestInterceptor,
+            "post_get_developer_registration",
+        ) as post,
+        mock.patch.object(
+            transports.DeveloperRegistrationServiceRestInterceptor,
+            "post_get_developer_registration_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DeveloperRegistrationServiceRestInterceptor,
+            "pre_get_developer_registration",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -3516,8 +3550,9 @@ def test_unregister_gcp_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -3574,13 +3609,13 @@ def test_unregister_gcp_rest_interceptors(null_interceptor):
     )
     client = DeveloperRegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeveloperRegistrationServiceRestInterceptor, "pre_unregister_gcp"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DeveloperRegistrationServiceRestInterceptor, "pre_unregister_gcp"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = developerregistration.UnregisterGcpRequest.pb(
             developerregistration.UnregisterGcpRequest()
@@ -3625,8 +3660,9 @@ def test_get_account_for_gcp_registration_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -3693,20 +3729,22 @@ def test_get_account_for_gcp_registration_rest_interceptors(null_interceptor):
     )
     client = DeveloperRegistrationServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeveloperRegistrationServiceRestInterceptor,
-        "post_get_account_for_gcp_registration",
-    ) as post, mock.patch.object(
-        transports.DeveloperRegistrationServiceRestInterceptor,
-        "post_get_account_for_gcp_registration_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.DeveloperRegistrationServiceRestInterceptor,
-        "pre_get_account_for_gcp_registration",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.DeveloperRegistrationServiceRestInterceptor,
+            "post_get_account_for_gcp_registration",
+        ) as post,
+        mock.patch.object(
+            transports.DeveloperRegistrationServiceRestInterceptor,
+            "post_get_account_for_gcp_registration_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.DeveloperRegistrationServiceRestInterceptor,
+            "pre_get_account_for_gcp_registration",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -3776,7 +3814,6 @@ def test_register_gcp_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developerregistration.RegisterGcpRequest()
-
         assert args[0] == request_msg
 
 
@@ -3798,7 +3835,6 @@ def test_get_developer_registration_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developerregistration.GetDeveloperRegistrationRequest()
-
         assert args[0] == request_msg
 
 
@@ -3818,7 +3854,6 @@ def test_unregister_gcp_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = developerregistration.UnregisterGcpRequest()
-
         assert args[0] == request_msg
 
 
@@ -3840,7 +3875,6 @@ def test_get_account_for_gcp_registration_empty_call_rest():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = empty_pb2.Empty()
-
         assert args[0] == request_msg
 
 
@@ -3900,11 +3934,14 @@ def test_developer_registration_service_base_transport():
 
 def test_developer_registration_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.shopping.merchant_accounts_v1.services.developer_registration_service.transports.DeveloperRegistrationServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.shopping.merchant_accounts_v1.services.developer_registration_service.transports.DeveloperRegistrationServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DeveloperRegistrationServiceTransport(
@@ -3921,9 +3958,12 @@ def test_developer_registration_service_base_transport_with_credentials_file():
 
 def test_developer_registration_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.shopping.merchant_accounts_v1.services.developer_registration_service.transports.DeveloperRegistrationServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.shopping.merchant_accounts_v1.services.developer_registration_service.transports.DeveloperRegistrationServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DeveloperRegistrationServiceTransport()
@@ -4002,11 +4042,12 @@ def test_developer_registration_service_transport_create_channel(
 ):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

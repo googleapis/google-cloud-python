@@ -1,9 +1,11 @@
-Python Client for Cloud Quotas API
-==================================
+Python Client for Cloud Quotas
+==============================
 
 |preview| |pypi| |versions|
 
-`Cloud Quotas API`_: Cloud Quotas API provides Google Cloud service consumers with management and observability for resource usage, quotas, and restrictions of the services they consume.
+`Cloud Quotas`_: Cloud Quotas API provides Google Cloud service consumers with management
+and observability for resource usage, quotas, and restrictions of the
+services they consume.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +16,9 @@ Python Client for Cloud Quotas API
    :target: https://pypi.org/project/google-cloud-quotas/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-quotas.svg
    :target: https://pypi.org/project/google-cloud-quotas/
-.. _Cloud Quotas API: https://cloud.google.com/docs/quota/api-overview
+.. _Cloud Quotas: https://cloud.google.com/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-cloudquotas/latest/summary_overview
-.. _Product Documentation:  https://cloud.google.com/docs/quota/api-overview
+.. _Product Documentation:  https://cloud.google.com/
 
 Quick Start
 -----------
@@ -25,12 +27,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Quotas API.`_
+3. `Enable the Cloud Quotas.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Quotas API.:  https://cloud.google.com/docs/quota/api-overview
+.. _Enable the Cloud Quotas.:  https://cloud.google.com/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +63,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -97,14 +100,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Quotas API
+-  Read the `Client Library Documentation`_ for Cloud Quotas
    to see other available methods on the client.
--  Read the `Cloud Quotas API Product documentation`_ to learn
+-  Read the `Cloud Quotas Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Quotas API Product documentation:  https://cloud.google.com/docs/quota/api-overview
+.. _Cloud Quotas Product documentation:  https://cloud.google.com/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging

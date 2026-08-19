@@ -1,9 +1,9 @@
-Python Client for Network Connectivity Center
-=============================================
+Python Client for Network Connectivity
+======================================
 
 |stable| |pypi| |versions|
 
-`Network Connectivity Center`_: The Network Connectivity API will be home to various services which provide information pertaining to network connectivity.  This includes information like interconnects, VPNs, VPCs, routing information, ip address details, etc. This information will help customers verify their network configurations and helps them to discover misconfigurations, inconsistencies, etc.
+`Network Connectivity`_: This API enables connectivity with and between Google Cloud resources.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Network Connectivity Center
    :target: https://pypi.org/project/google-cloud-network-connectivity/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-network-connectivity.svg
    :target: https://pypi.org/project/google-cloud-network-connectivity/
-.. _Network Connectivity Center: https://cloud.google.com/network-connectivity/
+.. _Network Connectivity: https://cloud.google.com/network-connectivity/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/networkconnectivity/latest/summary_overview
 .. _Product Documentation:  https://cloud.google.com/network-connectivity/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Network Connectivity Center.`_
+3. `Enable the Network Connectivity.`_
 4. `Set up Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Network Connectivity Center.:  https://cloud.google.com/network-connectivity/
+.. _Enable the Network Connectivity.:  https://cloud.google.com/network-connectivity/
 .. _Set up Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -61,14 +61,15 @@ Supported Python Versions
 Our client libraries are compatible with all current `active`_ and `maintenance`_ versions of
 Python.
 
-Python >= 3.7, including 3.14
+Python >= 3.10, including 3.14
 
 .. _active: https://devguide.python.org/devcycle/#in-development-main-branch
 .. _maintenance: https://devguide.python.org/devcycle/#maintenance-branches
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6
+Python <= 3.9
+
 
 If you are using an `end-of-life`_
 version of Python, we recommend that you update as soon as possible to an actively supported version.
@@ -97,14 +98,14 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Network Connectivity Center
+-  Read the `Client Library Documentation`_ for Network Connectivity
    to see other available methods on the client.
--  Read the `Network Connectivity Center Product documentation`_ to learn
+-  Read the `Network Connectivity Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Network Connectivity Center Product documentation:  https://cloud.google.com/network-connectivity/
+.. _Network Connectivity Product documentation:  https://cloud.google.com/network-connectivity/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
 
 Logging
