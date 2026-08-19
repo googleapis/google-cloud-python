@@ -2,9 +2,6 @@
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": true,
   "packages": {
-    "packages/bigframes": {
-      "component": "bigframes"
-    },
     "packages/google-cloud-workloadidentity": {
       "component": "google-cloud-workloadidentity",
       "extra-files": [
