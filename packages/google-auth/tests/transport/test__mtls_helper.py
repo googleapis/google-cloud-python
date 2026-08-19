@@ -21,6 +21,7 @@ from unittest import mock
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import ec
 import pytest  # type: ignore
+import urllib3.util
 
 from google.auth import environment_vars, exceptions
 from google.auth.transport import _mtls_helper
@@ -1888,3 +1889,60 @@ class TestSecureWipeAndRemove(object):
         mock_fh.flush.assert_called_once()
         mock_fsync.assert_called_once()
         mock_remove.assert_called_once_with("/path/to/secret")
+
+
+class TestIsMtlsEndpoint(object):
+    @pytest.mark.parametrize(
+        "url",
+        [
+            "https://mtls.googleapis.com",
+            "https://mtls.googleapis.com/",
+            "https://mtls.googleapis.com/v1/projects",
+            "https://mtls.sandbox.googleapis.com",
+            "https://mtls.sandbox.googleapis.com/v1/projects",
+            "https://pubsub.mtls.googleapis.com",
+            "https://pubsub.mtls.googleapis.com/v1/projects/my-project",
+            "https://storage.mtls.sandbox.googleapis.com/b/my-bucket",
+            "https://my-service.us-east1.rep.mtls.googleapis.com/v1",
+            "https://my-service.us-east1.rep.mtls.sandbox.googleapis.com/v1",
+            "https://storage.p.googleapis.com/b/my-bucket",
+            "https://my-custom-endpoint.p.googleapis.com/v1",
+            "https://my-service.us-east1.p.googleapis.com/v1",
+            "HTTP://PUBSUB.MTLS.GOOGLEAPIS.COM/V1",
+            b"https://pubsub.mtls.googleapis.com",
+            b"https://storage.p.googleapis.com/b/my-bucket",
+            urllib3.util.parse_url("https://pubsub.mtls.googleapis.com/v1"),
+            urllib3.util.parse_url("https://storage.p.googleapis.com/b/my-bucket"),
+        ],
+    )
+    def test_is_mtls_endpoint_true(self, url):
+        assert _mtls_helper.is_mtls_endpoint(url) is True
+
+    @pytest.mark.parametrize(
+        "url",
+        [
+            "https://storage.googleapis.com",
+            "https://storage.googleapis.com/bucket/mtls.googleapis.com",
+            "https://logging.googleapis.com/v2/entries?filter=mtls.googleapis.com",
+            "https://logging.googleapis.com/v2/entries?filter=mtls.sandbox.googleapis.com",
+            "https://logging.googleapis.com/v2/entries?filter=service.p.googleapis.com",
+            "https://example.com/mtls.googleapis.com",
+            "https://fake-mtls.googleapis.com.attacker.com/v1",
+            "https://fake-p.googleapis.com.attacker.com/v1",
+            "http://localhost:8080/",
+            "http://localhost:8080/mtls.googleapis.com",
+            b"https://storage.googleapis.com",
+            b"https://storage.googleapis.com/bucket/mtls.googleapis.com",
+            b"\xff\xfeinvalid",
+            urllib3.util.parse_url("https://storage.googleapis.com/b/my-bucket"),
+            urllib3.util.parse_url(
+                "https://storage.googleapis.com/bucket/mtls.googleapis.com"
+            ),
+            "",
+            None,
+            123,
+            "not a url",
+        ],
+    )
+    def test_is_mtls_endpoint_false(self, url):
+        assert _mtls_helper.is_mtls_endpoint(url) is False
