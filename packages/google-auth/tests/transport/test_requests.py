@@ -16,6 +16,7 @@ import datetime
 import functools
 import http.client as http_client
 import os
+import threading
 from unittest import mock
 
 import freezegun
@@ -31,6 +32,7 @@ import google.auth.transport._mtls_helper
 import google.auth.transport.requests
 from google.oauth2 import service_account
 from tests.transport import compliance
+import http.client as http_client
 
 
 @pytest.fixture
@@ -1109,3 +1111,37 @@ class TestMutualTlsOffloadAdapter(object):
 
         adapter.proxy_manager_for()
         mock_proxy_manager_for.assert_called_with(ssl_context=adapter._ctx_proxymanager)
+
+class TestAuthorizedSessionMTLSReauth:
+
+    @mock.patch("google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response")
+    def test_reauth_lock_acquired_on_unauthorized(self, mock_check_params):
+        credentials = mock.Mock()
+        session = google.auth.transport.requests.AuthorizedSession(credentials)
+        
+        session._is_mtls = True 
+        
+        mock_response = mock.Mock()
+        mock_response.status_code = http_client.UNAUTHORIZED
+        session._auth_request_session.request = mock.Mock(return_value=mock_response)
+        
+        mock_lock = mock.MagicMock()
+        session._reauth_lock = mock_lock
+        
+        mock_check_params.return_value = (
+            b"new_cert_bytes",
+            b"new_key_bytes",
+            "old_fingerprint",
+            "new_fingerprint",
+        )
+        session.configure_mtls_channel = mock.Mock()
+        
+        try:
+            session.request("GET", "https://example.mtls.googleapis.com/some/endpoint")
+        except Exception:
+            pass
+            
+        mock_lock.__enter__.assert_called_once()
+        mock_lock.__exit__.assert_called_once()
+        mock_check_params.assert_called_once_with(session._cached_cert)
+        session.configure_mtls_channel.assert_called_once()
