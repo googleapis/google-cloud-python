@@ -13,7 +13,7 @@ COROS="${COROS:-1}"
 FILE_SIZE_MIB="${FILE_SIZE_MIB:-10240}"      # 10 GiB files by default
 CHUNK_SIZE_KIB="${CHUNK_SIZE_KIB:-102400}"   # ~100 MiB read chunks by default
 BUCKET_TYPE="${BUCKET_TYPE:-zonal}"          # "zonal" uses BidiReadObject gRPC DirectPath
-TARGET_BUCKET="${DEFAULT_RAPID_ZONAL_BUCKET:-shradhakatyal-read-bench-zb}"
+TARGET_BUCKET="${DEFAULT_RAPID_ZONAL_BUCKET:-shradhakatyal-read-bench-zb-us-west4-a}"
 OUT_JSON="${OUT_JSON:-/tmp/bench_result.json}"
 UPLOAD_GCS_PREFIX="${UPLOAD_GCS_PREFIX:-}"
 
