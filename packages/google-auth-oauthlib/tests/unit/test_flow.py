@@ -544,3 +544,34 @@ class TestInstalledAppFlow(object):
 
         webbrowser_mock.get.assert_called_with(None)
         webbrowser_mock.get.return_value.open.assert_called_once()
+
+
+class TestExclusiveWSGIServer(object):
+    def test_exclusive_wsgi_server_bind_windows(self):
+        with mock.patch("sys.platform", "win32"), mock.patch(
+            "google_auth_oauthlib.flow.socket"
+        ) as mock_socket:
+            mock_socket.SOL_SOCKET = socket.SOL_SOCKET
+            mock_socket.SO_EXCLUSIVEADDRUSE = getattr(socket, "SO_EXCLUSIVEADDRUSE", 1)
+
+            server = flow._ExclusiveWSGIServer(
+                ("localhost", 0), flow._WSGIRequestHandler, bind_and_activate=False
+            )
+            server.socket = mock.Mock()
+
+            with mock.patch.object(wsgiref.simple_server.WSGIServer, "server_bind"):
+                server.server_bind()
+                server.socket.setsockopt.assert_called_once_with(
+                    mock_socket.SOL_SOCKET, mock_socket.SO_EXCLUSIVEADDRUSE, 1
+                )
+
+    def test_exclusive_wsgi_server_bind_non_windows(self):
+        with mock.patch("sys.platform", "linux"):
+            server = flow._ExclusiveWSGIServer(
+                ("localhost", 0), flow._WSGIRequestHandler, bind_and_activate=False
+            )
+            server.socket = mock.Mock()
+
+            with mock.patch.object(wsgiref.simple_server.WSGIServer, "server_bind"):
+                server.server_bind()
+                server.socket.setsockopt.assert_not_called()
