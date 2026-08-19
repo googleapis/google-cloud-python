@@ -81,6 +81,9 @@ from .group import (
 from .history_state import (
     HistoryState,
 )
+from .markup_syntax import (
+    MarkupSyntax,
+)
 from .matched_url import (
     MatchedUrl,
 )
@@ -245,6 +248,7 @@ __all__ = (
     "SpaceUpdatedEventData",
     "Group",
     "HistoryState",
+    "MarkupSyntax",
     "MatchedUrl",
     "CreateMembershipRequest",
     "DeleteMembershipRequest",

@@ -3532,7 +3532,6 @@ def test_insert_rest_required_fields(request_type=compute.InsertFirewallPolicyRe
     transport_class = transports.FirewallPoliciesRestTransport
 
     request_init = {}
-    request_init["parent_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -3540,7 +3539,6 @@ def test_insert_rest_required_fields(request_type=compute.InsertFirewallPolicyRe
     )
 
     # verify fields with default values are dropped
-    assert "parentId" not in jsonified_request
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -3548,10 +3546,6 @@ def test_insert_rest_required_fields(request_type=compute.InsertFirewallPolicyRe
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-    assert "parentId" in jsonified_request
-    assert jsonified_request["parentId"] == request_init["parent_id"]
-
-    jsonified_request["parentId"] = "parent_id_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -3566,8 +3560,6 @@ def test_insert_rest_required_fields(request_type=compute.InsertFirewallPolicyRe
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
-    assert "parentId" in jsonified_request
-    assert jsonified_request["parentId"] == "parent_id_value"
 
     client = FirewallPoliciesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3607,12 +3599,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertFirewallPolicyRe
 
             response = client.insert(request)
 
-            expected_params = [
-                (
-                    "parentId",
-                    "",
-                ),
-            ]
+            expected_params = []
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
 
@@ -3630,12 +3617,7 @@ def test_insert_rest_unset_required_fields():
                 "requestId",
             )
         )
-        & set(
-            (
-                "firewallPolicyResource",
-                "parentId",
-            )
-        )
+        & set(("firewallPolicyResource",))
     )
 
 
@@ -3655,7 +3637,6 @@ def test_insert_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            parent_id="parent_id_value",
             firewall_policy_resource=compute.FirewallPolicy(
                 associations=[
                     compute.FirewallPolicyAssociation(
@@ -3699,7 +3680,6 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
     with pytest.raises(ValueError):
         client.insert(
             compute.InsertFirewallPolicyRequest(),
-            parent_id="parent_id_value",
             firewall_policy_resource=compute.FirewallPolicy(
                 associations=[
                     compute.FirewallPolicyAssociation(
@@ -3756,7 +3736,6 @@ def test_insert_unary_rest_required_fields(
     transport_class = transports.FirewallPoliciesRestTransport
 
     request_init = {}
-    request_init["parent_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -3764,7 +3743,6 @@ def test_insert_unary_rest_required_fields(
     )
 
     # verify fields with default values are dropped
-    assert "parentId" not in jsonified_request
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -3772,10 +3750,6 @@ def test_insert_unary_rest_required_fields(
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-    assert "parentId" in jsonified_request
-    assert jsonified_request["parentId"] == request_init["parent_id"]
-
-    jsonified_request["parentId"] = "parent_id_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -3790,8 +3764,6 @@ def test_insert_unary_rest_required_fields(
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
-    assert "parentId" in jsonified_request
-    assert jsonified_request["parentId"] == "parent_id_value"
 
     client = FirewallPoliciesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3831,12 +3803,7 @@ def test_insert_unary_rest_required_fields(
 
             response = client.insert_unary(request)
 
-            expected_params = [
-                (
-                    "parentId",
-                    "",
-                ),
-            ]
+            expected_params = []
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
 
@@ -3854,12 +3821,7 @@ def test_insert_unary_rest_unset_required_fields():
                 "requestId",
             )
         )
-        & set(
-            (
-                "firewallPolicyResource",
-                "parentId",
-            )
-        )
+        & set(("firewallPolicyResource",))
     )
 
 
@@ -3879,7 +3841,6 @@ def test_insert_unary_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            parent_id="parent_id_value",
             firewall_policy_resource=compute.FirewallPolicy(
                 associations=[
                     compute.FirewallPolicyAssociation(
@@ -3923,7 +3884,6 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
     with pytest.raises(ValueError):
         client.insert_unary(
             compute.InsertFirewallPolicyRequest(),
-            parent_id="parent_id_value",
             firewall_policy_resource=compute.FirewallPolicy(
                 associations=[
                     compute.FirewallPolicyAssociation(
@@ -4117,7 +4077,6 @@ def test_move_rest_required_fields(request_type=compute.MoveFirewallPolicyReques
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request_init["parent_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -4125,7 +4084,6 @@ def test_move_rest_required_fields(request_type=compute.MoveFirewallPolicyReques
     )
 
     # verify fields with default values are dropped
-    assert "parentId" not in jsonified_request
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -4133,11 +4091,8 @@ def test_move_rest_required_fields(request_type=compute.MoveFirewallPolicyReques
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-    assert "parentId" in jsonified_request
-    assert jsonified_request["parentId"] == request_init["parent_id"]
 
     jsonified_request["firewallPolicy"] = "firewall_policy_value"
-    jsonified_request["parentId"] = "parent_id_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -4154,8 +4109,6 @@ def test_move_rest_required_fields(request_type=compute.MoveFirewallPolicyReques
     # verify required fields with non-default values are left alone
     assert "firewallPolicy" in jsonified_request
     assert jsonified_request["firewallPolicy"] == "firewall_policy_value"
-    assert "parentId" in jsonified_request
-    assert jsonified_request["parentId"] == "parent_id_value"
 
     client = FirewallPoliciesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4194,12 +4147,7 @@ def test_move_rest_required_fields(request_type=compute.MoveFirewallPolicyReques
 
             response = client.move(request)
 
-            expected_params = [
-                (
-                    "parentId",
-                    "",
-                ),
-            ]
+            expected_params = []
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
 
@@ -4217,12 +4165,7 @@ def test_move_rest_unset_required_fields():
                 "requestId",
             )
         )
-        & set(
-            (
-                "firewallPolicy",
-                "parentId",
-            )
-        )
+        & set(("firewallPolicy",))
     )
 
 
@@ -4243,7 +4186,6 @@ def test_move_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             firewall_policy="firewall_policy_value",
-            parent_id="parent_id_value",
         )
         mock_args.update(sample_request)
 
@@ -4282,7 +4224,6 @@ def test_move_rest_flattened_error(transport: str = "rest"):
         client.move(
             compute.MoveFirewallPolicyRequest(),
             firewall_policy="firewall_policy_value",
-            parent_id="parent_id_value",
         )
 
 
@@ -4333,7 +4274,6 @@ def test_move_unary_rest_required_fields(
 
     request_init = {}
     request_init["firewall_policy"] = ""
-    request_init["parent_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -4341,7 +4281,6 @@ def test_move_unary_rest_required_fields(
     )
 
     # verify fields with default values are dropped
-    assert "parentId" not in jsonified_request
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -4349,11 +4288,8 @@ def test_move_unary_rest_required_fields(
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-    assert "parentId" in jsonified_request
-    assert jsonified_request["parentId"] == request_init["parent_id"]
 
     jsonified_request["firewallPolicy"] = "firewall_policy_value"
-    jsonified_request["parentId"] = "parent_id_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -4370,8 +4306,6 @@ def test_move_unary_rest_required_fields(
     # verify required fields with non-default values are left alone
     assert "firewallPolicy" in jsonified_request
     assert jsonified_request["firewallPolicy"] == "firewall_policy_value"
-    assert "parentId" in jsonified_request
-    assert jsonified_request["parentId"] == "parent_id_value"
 
     client = FirewallPoliciesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4410,12 +4344,7 @@ def test_move_unary_rest_required_fields(
 
             response = client.move_unary(request)
 
-            expected_params = [
-                (
-                    "parentId",
-                    "",
-                ),
-            ]
+            expected_params = []
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
 
@@ -4433,12 +4362,7 @@ def test_move_unary_rest_unset_required_fields():
                 "requestId",
             )
         )
-        & set(
-            (
-                "firewallPolicy",
-                "parentId",
-            )
-        )
+        & set(("firewallPolicy",))
     )
 
 
@@ -4459,7 +4383,6 @@ def test_move_unary_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             firewall_policy="firewall_policy_value",
-            parent_id="parent_id_value",
         )
         mock_args.update(sample_request)
 
@@ -4498,7 +4421,6 @@ def test_move_unary_rest_flattened_error(transport: str = "rest"):
         client.move_unary(
             compute.MoveFirewallPolicyRequest(),
             firewall_policy="firewall_policy_value",
-            parent_id="parent_id_value",
         )
 
 
@@ -6275,7 +6197,11 @@ def test_set_iam_policy_rest_flattened():
         mock_args = dict(
             resource="resource_value",
             global_organization_set_policy_request_resource=compute.GlobalOrganizationSetPolicyRequest(
-                bindings=[compute.Binding(binding_id="binding_id_value")]
+                bindings=[
+                    compute.Binding(
+                        condition=compute.Expr(description="description_value")
+                    )
+                ]
             ),
         )
         mock_args.update(sample_request)
@@ -6316,7 +6242,11 @@ def test_set_iam_policy_rest_flattened_error(transport: str = "rest"):
             compute.SetIamPolicyFirewallPolicyRequest(),
             resource="resource_value",
             global_organization_set_policy_request_resource=compute.GlobalOrganizationSetPolicyRequest(
-                bindings=[compute.Binding(binding_id="binding_id_value")]
+                bindings=[
+                    compute.Binding(
+                        condition=compute.Expr(description="description_value")
+                    )
+                ]
             ),
         )
 
@@ -7847,7 +7777,6 @@ def test_get_iam_policy_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = compute.Policy(
             etag="etag_value",
-            iam_owned=True,
             version=774,
         )
 
@@ -7866,7 +7795,6 @@ def test_get_iam_policy_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Policy)
     assert response.etag == "etag_value"
-    assert response.iam_owned is True
     assert response.version == 774
 
 
@@ -9909,7 +9837,6 @@ def test_set_iam_policy_rest_call_success(request_type):
     request_init["global_organization_set_policy_request_resource"] = {
         "bindings": [
             {
-                "binding_id": "binding_id_value",
                 "condition": {
                     "description": "description_value",
                     "expression": "expression_value",
@@ -9930,20 +9857,14 @@ def test_set_iam_policy_rest_call_success(request_type):
                                 "exempted_members_value1",
                                 "exempted_members_value2",
                             ],
-                            "ignore_child_exemptions": True,
                             "log_type": "log_type_value",
                         }
-                    ],
-                    "exempted_members": [
-                        "exempted_members_value1",
-                        "exempted_members_value2",
                     ],
                     "service": "service_value",
                 }
             ],
             "bindings": {},
             "etag": "etag_value",
-            "iam_owned": True,
             "version": 774,
         },
     }
@@ -10036,7 +9957,6 @@ def test_set_iam_policy_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = compute.Policy(
             etag="etag_value",
-            iam_owned=True,
             version=774,
         )
 
@@ -10055,7 +9975,6 @@ def test_set_iam_policy_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Policy)
     assert response.etag == "etag_value"
-    assert response.iam_owned is True
     assert response.version == 774
 
 

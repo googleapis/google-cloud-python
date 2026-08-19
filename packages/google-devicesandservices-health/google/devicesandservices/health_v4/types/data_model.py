@@ -37,6 +37,7 @@ __protobuf__ = proto.module(
         "Nutrient",
         "WeightUnit",
         "VolumeUnit",
+        "OvulationTestResult",
         "ActiveZoneMinutes",
         "ActiveZoneMinutesRollupValue",
         "ActiveMinutes",
@@ -103,6 +104,10 @@ __protobuf__ = proto.module(
         "SedentaryPeriodRollupValue",
         "ActiveEnergyBurned",
         "ActiveEnergyBurnedRollupValue",
+        "MenstrualPeriod",
+        "OvulationTest",
+        "Symptoms",
+        "Moods",
     },
 )
 
@@ -410,6 +415,32 @@ class VolumeUnit(proto.Enum):
     MILLILITER = 6
     PINT_IMPERIAL = 7
     PINT_US = 8
+
+
+class OvulationTestResult(proto.Enum):
+    r"""Ovulation test result.
+
+    Values:
+        OVULATION_TEST_RESULT_UNSPECIFIED (0):
+            Unspecified result.
+        NEGATIVE (1):
+            Negative result.
+        LUTEINIZING_HORMONE_SURGE (2):
+            Luteinizing hormone surge.
+        ESTROGEN_SURGE (3):
+            Estrogen surge.
+        POSITIVE (4):
+            Positive result.
+        INDETERMINATE (5):
+            Indeterminate result.
+    """
+
+    OVULATION_TEST_RESULT_UNSPECIFIED = 0
+    NEGATIVE = 1
+    LUTEINIZING_HORMONE_SURGE = 2
+    ESTROGEN_SURGE = 3
+    POSITIVE = 4
+    INDETERMINATE = 5
 
 
 class ActiveZoneMinutes(proto.Message):
@@ -1667,7 +1698,12 @@ class Exercise(proto.Message):
         exercise_metadata (google.devicesandservices.health_v4.types.Exercise.ExerciseMetadata):
             Optional. Additional exercise metadata.
         display_name (str):
-            Required. Exercise display name.
+            Required. The localized, human-readable name of the
+            exercise. For all exercise types other than ``OTHER``, the
+            system ignores client input and overrides this field with a
+            generated name based on ``exercise_type`` (e.g., "Walking"
+            for ``WALKING``). If ``exercise_type`` is ``OTHER``, this
+            field can contain the user's custom, free-form display name.
         active_duration (google.protobuf.duration_pb2.Duration):
             Optional. Duration excluding pauses.
         notes (str):
@@ -1683,49 +1719,557 @@ class Exercise(proto.Message):
 
     class ExerciseType(proto.Enum):
         r"""The type of activity performed during an exercise.
+        May receive new values in the future.
 
         Values:
             EXERCISE_TYPE_UNSPECIFIED (0):
                 Exercise type is unspecified.
-            RUNNING (1):
-                Running type.
-            WALKING (2):
-                Walking type.
+            AEROBIC_WORKOUT (13):
+                Aerobic workout type.
+            ARCHERY (47):
+                Archery type.
+            ASSAULT_BIKE (164):
+                Assault bike type.
+            BACKPACKING (181):
+                Backpacking type.
+            BADMINTON (48):
+                Badminton type.
+            BALLET (103):
+                Ballet type.
+            BALLROOM_DANCE (156):
+                Ballroom dance type.
+            BARRE_CLASS (49):
+                Barre class type.
+            BASEBALL (50):
+                Baseball type.
+            BASKETBALL (51):
+                Basketball type.
             BIKING (3):
                 Biking type.
-            SWIMMING (4):
-                Swimming type.
+            BILLIARDS (180):
+                Billiards type.
+            BODY_WEIGHT (149):
+                Body weight type.
+            BOOTCAMP (14):
+                Bootcamp type.
+            BOWLING (52):
+                Bowling type.
+            BOXING (53):
+                Boxing type.
+            BREAKDANCING (157):
+                Breakdancing type.
+            CALISTHENICS (54):
+                Calisthenics type.
+            CANOEING (15):
+                Canoeing type.
+            CARDIO_SCULPT (129):
+                Cardio sculpt type.
+            CARDIO_WORKOUT (140):
+                Cardio workout type.
+            CARPENTRY (108):
+                Carpentry type.
+            CHEERLEADING (165):
+                Cheerleading type.
+            CIRCUIT_TRAINING (16):
+                Circuit training type.
+            CLEANING (105):
+                Cleaning type.
+            CLIMBING (55):
+                Climbing type.
+            CORE_TRAINING (17):
+                Core training type.
+            CRICKET (56):
+                Cricket type.
+            CROQUET (111):
+                Croquet type.
+            CROSS_COUNTRY_SKI (18):
+                Cross country ski type.
+            CROSS_TRAINING (57):
+                Cross training type.
+            CROSSFIT (19):
+                Crossfit type.
+            CURLING (58):
+                Curling type.
+            DANCING (20):
+                Dancing type.
+            DIVING (59):
+                Diving type.
+            ELECTRIC_BIKE (152):
+                Electric bike type.
+            ELECTRIC_SCOOTER (168):
+                Electric scooter type.
+            ELLIPTICAL (21):
+                Elliptical type.
+            EQUESTRIAN_SPORTS (60):
+                Equestrian sports type.
+            EXERCISE_CLASS (61):
+                Exercise class type.
+            FENCING (62):
+                Fencing type.
+            FIELD_HOCKEY (113):
+                Field hockey type.
+            FISHING (63):
+                Fishing type.
+            FITNESS_GAMING (64):
+                Fitness gaming type.
+            FOILING (175):
+                Foiling type.
+            FOOTBALL_AMERICAN (65):
+                Football american type.
+            FOOTBALL_AUSTRALIAN (66):
+                Football australian type.
+            FREE_WEIGHTS (148):
+                Free weights type.
+            FRISBEE_PLAYING_GENERAL (67):
+                Frisbee playing general type.
+            FUNCTIONAL_STRENGTH_TRAINING (68):
+                Functional strength training type.
+            GARDENING (107):
+                Gardening type.
+            GOLF (22):
+                Golf type.
+            GYMNASTICS (69):
+                Gymnastics type.
+            HANDBALL (70):
+                Handball type.
+            HAND_CYCLING (71):
+                Hand cycling type.
+            HIIT (9):
+                Hiit type.
             HIKING (5):
                 Hiking type.
-            YOGA (6):
-                Yoga type.
-            PILATES (7):
-                Pilates type.
-            WORKOUT (8):
-                Workout type.
-            HIIT (9):
-                HIIT type.
-            WEIGHTLIFTING (10):
-                Weightlifting type.
-            STRENGTH_TRAINING (11):
-                Strength training type.
+            HIP_HOP (158):
+                Hip hop type.
+            HOCKEY (72):
+                Hockey type.
+            HOEING (109):
+                Hoeing type.
+            HOUSEHOLD_CHORES (137):
+                Household chores type.
+            HUNTING (73):
+                Hunting type.
+            ICE_SKATING (127):
+                Ice skating type.
+            INCLINE_RUN (142):
+                Incline run type.
+            INCLINE_WALK (146):
+                Incline walk type.
+            INDOOR_CLIMBING (23):
+                Indoor climbing type.
+            INTERVAL_WORKOUT (24):
+                Interval workout type.
+            JAZZ_DANCE (154):
+                Jazz dance type.
+            JIU_JITSU (160):
+                Jiu jitsu type.
+            JUMPING_ROPE (74):
+                Jumping rope type.
+            KARATE (159):
+                Karate type.
+            KAYAKING (25):
+                Kayaking type.
+            KICKBOXING (26):
+                Kickboxing type.
+            KITESURFING (172):
+                Kitesurfing type.
+            LACROSSE (75):
+                Lacrosse type.
+            MARTIAL_ARTS (27):
+                Martial arts type.
+            MEDITATE (28):
+                Meditate type.
+            MODERN_DANCE (153):
+                Modern dance type.
+            MOTOCROSS (114):
+                Motocross type.
+            MOTORCYCLE (121):
+                Motorcycle type.
+            MOUNTAIN_BIKE (128):
+                Mountain bike type.
+            MOWING_LAWN (106):
+                Mowing lawn type.
+            MUAY_THAI (162):
+                Muay thai type.
+            MULTISPORT (76):
+                Multisport type.
+            MUSICAL_PERFORMANCE (163):
+                Musical performance type.
+            NORDIC_WALKING (145):
+                Nordic walking type.
+            ORIENTEERING (115):
+                Orienteering type.
             OTHER (12):
                 Other type.
+            OUTDOOR_BIKE (29):
+                Outdoor bike type.
+            OUTDOOR_WORKOUT (30):
+                Outdoor workout type.
+            PADDLEBOARDING (31):
+                Paddleboarding type.
+            PADEL (176):
+                Padel type.
+            PAINTING (170):
+                Painting type.
+            PARAGLIDING (78):
+                Paragliding type.
+            PARKOUR (166):
+                Parkour type.
+            PICKELBALL (79):
+                Pickelball type.
+            PILATES (7):
+                Pilates type.
+            POLO (116):
+                Polo type.
+            POWERLIFTING (32):
+                Powerlifting type.
+            POWER_WALKING (143):
+                Power walking type.
+            RACKET_SPORTS (169):
+                Racket sports type.
+            RACQUETBALL (80):
+                Racquetball type.
+            RESISTANCE_BANDS (151):
+                Resistance bands type.
+            ROCK_CLIMBING (123):
+                Rock climbing type.
+            ROLLERBLADING (33):
+                Rollerblading type.
+            ROLLER_SKATING (118):
+                Roller skating type.
+            ROWING (81):
+                Rowing type.
+            ROWING_MACHINE (34):
+                Rowing machine type.
+            RUCKING (144):
+                Rucking type.
+            RUGBY (82):
+                Rugby type.
+            RUNNING (1):
+                Running type.
+            SAILING (83):
+                Sailing type.
+            SCOOTERING (167):
+                Scootering type.
+            SCUBA_DIVING (84):
+                Scuba diving type.
+            SHOOTING (104):
+                Shooting type.
+            SHOVELING (171):
+                Shoveling type.
+            SKATEBOARDING (117):
+                Skateboarding type.
+            SKATING (35):
+                Skating type.
+            SKIING (36):
+                Skiing type.
+            SKYDIVING (182):
+                Skydiving type.
+            SNORKELING (37):
+                Snorkeling type.
+            SNOWBOARDING (38):
+                Snowboarding type.
+            SNOWMOBILING (179):
+                Snowmobiling type.
+            SNOWSHOEING (85):
+                Snowshoeing type.
+            SNOW_SPORT (86):
+                Snow sport type.
+            SOCCER (87):
+                Soccer type.
+            SOFTBALL (88):
+                Softball type.
+            SPEED_SKATING (178):
+                Speed skating type.
+            SPINNING (39):
+                Spinning type.
+            SPORT (40):
+                Sport type.
+            SQUASH (89):
+                Squash type.
+            STAIRCLIMBER (41):
+                Stairclimber type.
+            STATIONARY_BIKE (139):
+                Stationary bike type.
+            STEP_TRAINING (90):
+                Step training type.
+            STRENGTH_TRAINING (11):
+                Strength training type.
+            STRETCHING (42):
+                Stretching type.
+            STROLLER_WALK (122):
+                Stroller walk type.
+            SURFING (43):
+                Surfing type.
+            SWIMMING (4):
+                Swimming type.
+            SWIMMING_OPEN_WATER (91):
+                Swimming open water type.
+            SWIMMING_POOL (101):
+                Swimming pool type.
+            SYNCHRONIZED_SWIMMING (177):
+                Synchronized swimming type.
+            TABATA_WORKOUT (130):
+                Tabata workout type.
+            TABLE_TENNIS (92):
+                Table tennis type.
+            TAEKWONDO (161):
+                Taekwondo type.
+            TAI_CHI (93):
+                Tai chi type.
+            TANGO (155):
+                Tango type.
+            TENNIS (44):
+                Tennis type.
+            TRACK_AND_FIELD (94):
+                Track and field type.
+            TRAIL_RUN (141):
+                Trail run type.
+            TRAMPOLINE (119):
+                Trampoline type.
+            TREADMILL (45):
+                Treadmill type.
+            TREADMILL_WALK (138):
+                Treadmill walk type.
+            TRX (131):
+                Trx type.
+            ULTIMATE_FRISBEE (112):
+                Ultimate frisbee type.
+            UNICYCLING (102):
+                Unicycling type.
+            VOLLEYBALL (95):
+                Volleyball type.
+            VOLLEYBALL_BEACH (120):
+                Volleyball beach type.
+            WAKEBOARDING (173):
+                Wakeboarding type.
+            WALKING (2):
+                Walking type.
+            WALK_WITH_WEIGHTS (147):
+                Walk with weights type.
+            WATER_AEROBICS (96):
+                Water aerobics type.
+            WATER_JOGGING (126):
+                Water jogging type.
+            WATER_POLO (97):
+                Water polo type.
+            WATER_SKIING (124):
+                Water skiing type.
+            WATER_SPORT (98):
+                Water sport type.
+            WATER_VOLLEYBALL (125):
+                Water volleyball type.
+            WEEDING (110):
+                Weeding type.
+            WEIGHTLIFTING (10):
+                Weightlifting type.
+            WEIGHT_MACHINES (150):
+                Weight machines type.
+            WEIGHTS (46):
+                Weights type.
+            WHEELCHAIR (99):
+                Wheelchair type.
+            WINDSURFING (174):
+                Windsurfing type.
+            WORKOUT (8):
+                Workout type.
+            WRESTLING (100):
+                Wrestling type.
+            YOGA (6):
+                Yoga type.
+            YOGA_BIKRAM (132):
+                Yoga bikram type.
+            YOGA_HATHA (133):
+                Yoga hatha type.
+            YOGA_POWER (134):
+                Yoga power type.
+            YOGA_VINYASA (135):
+                Yoga vinyasa type.
+            ZUMBA (136):
+                Zumba type.
         """
 
         EXERCISE_TYPE_UNSPECIFIED = 0
-        RUNNING = 1
-        WALKING = 2
+        AEROBIC_WORKOUT = 13
+        ARCHERY = 47
+        ASSAULT_BIKE = 164
+        BACKPACKING = 181
+        BADMINTON = 48
+        BALLET = 103
+        BALLROOM_DANCE = 156
+        BARRE_CLASS = 49
+        BASEBALL = 50
+        BASKETBALL = 51
         BIKING = 3
-        SWIMMING = 4
-        HIKING = 5
-        YOGA = 6
-        PILATES = 7
-        WORKOUT = 8
+        BILLIARDS = 180
+        BODY_WEIGHT = 149
+        BOOTCAMP = 14
+        BOWLING = 52
+        BOXING = 53
+        BREAKDANCING = 157
+        CALISTHENICS = 54
+        CANOEING = 15
+        CARDIO_SCULPT = 129
+        CARDIO_WORKOUT = 140
+        CARPENTRY = 108
+        CHEERLEADING = 165
+        CIRCUIT_TRAINING = 16
+        CLEANING = 105
+        CLIMBING = 55
+        CORE_TRAINING = 17
+        CRICKET = 56
+        CROQUET = 111
+        CROSS_COUNTRY_SKI = 18
+        CROSS_TRAINING = 57
+        CROSSFIT = 19
+        CURLING = 58
+        DANCING = 20
+        DIVING = 59
+        ELECTRIC_BIKE = 152
+        ELECTRIC_SCOOTER = 168
+        ELLIPTICAL = 21
+        EQUESTRIAN_SPORTS = 60
+        EXERCISE_CLASS = 61
+        FENCING = 62
+        FIELD_HOCKEY = 113
+        FISHING = 63
+        FITNESS_GAMING = 64
+        FOILING = 175
+        FOOTBALL_AMERICAN = 65
+        FOOTBALL_AUSTRALIAN = 66
+        FREE_WEIGHTS = 148
+        FRISBEE_PLAYING_GENERAL = 67
+        FUNCTIONAL_STRENGTH_TRAINING = 68
+        GARDENING = 107
+        GOLF = 22
+        GYMNASTICS = 69
+        HANDBALL = 70
+        HAND_CYCLING = 71
         HIIT = 9
-        WEIGHTLIFTING = 10
-        STRENGTH_TRAINING = 11
+        HIKING = 5
+        HIP_HOP = 158
+        HOCKEY = 72
+        HOEING = 109
+        HOUSEHOLD_CHORES = 137
+        HUNTING = 73
+        ICE_SKATING = 127
+        INCLINE_RUN = 142
+        INCLINE_WALK = 146
+        INDOOR_CLIMBING = 23
+        INTERVAL_WORKOUT = 24
+        JAZZ_DANCE = 154
+        JIU_JITSU = 160
+        JUMPING_ROPE = 74
+        KARATE = 159
+        KAYAKING = 25
+        KICKBOXING = 26
+        KITESURFING = 172
+        LACROSSE = 75
+        MARTIAL_ARTS = 27
+        MEDITATE = 28
+        MODERN_DANCE = 153
+        MOTOCROSS = 114
+        MOTORCYCLE = 121
+        MOUNTAIN_BIKE = 128
+        MOWING_LAWN = 106
+        MUAY_THAI = 162
+        MULTISPORT = 76
+        MUSICAL_PERFORMANCE = 163
+        NORDIC_WALKING = 145
+        ORIENTEERING = 115
         OTHER = 12
+        OUTDOOR_BIKE = 29
+        OUTDOOR_WORKOUT = 30
+        PADDLEBOARDING = 31
+        PADEL = 176
+        PAINTING = 170
+        PARAGLIDING = 78
+        PARKOUR = 166
+        PICKELBALL = 79
+        PILATES = 7
+        POLO = 116
+        POWERLIFTING = 32
+        POWER_WALKING = 143
+        RACKET_SPORTS = 169
+        RACQUETBALL = 80
+        RESISTANCE_BANDS = 151
+        ROCK_CLIMBING = 123
+        ROLLERBLADING = 33
+        ROLLER_SKATING = 118
+        ROWING = 81
+        ROWING_MACHINE = 34
+        RUCKING = 144
+        RUGBY = 82
+        RUNNING = 1
+        SAILING = 83
+        SCOOTERING = 167
+        SCUBA_DIVING = 84
+        SHOOTING = 104
+        SHOVELING = 171
+        SKATEBOARDING = 117
+        SKATING = 35
+        SKIING = 36
+        SKYDIVING = 182
+        SNORKELING = 37
+        SNOWBOARDING = 38
+        SNOWMOBILING = 179
+        SNOWSHOEING = 85
+        SNOW_SPORT = 86
+        SOCCER = 87
+        SOFTBALL = 88
+        SPEED_SKATING = 178
+        SPINNING = 39
+        SPORT = 40
+        SQUASH = 89
+        STAIRCLIMBER = 41
+        STATIONARY_BIKE = 139
+        STEP_TRAINING = 90
+        STRENGTH_TRAINING = 11
+        STRETCHING = 42
+        STROLLER_WALK = 122
+        SURFING = 43
+        SWIMMING = 4
+        SWIMMING_OPEN_WATER = 91
+        SWIMMING_POOL = 101
+        SYNCHRONIZED_SWIMMING = 177
+        TABATA_WORKOUT = 130
+        TABLE_TENNIS = 92
+        TAEKWONDO = 161
+        TAI_CHI = 93
+        TANGO = 155
+        TENNIS = 44
+        TRACK_AND_FIELD = 94
+        TRAIL_RUN = 141
+        TRAMPOLINE = 119
+        TREADMILL = 45
+        TREADMILL_WALK = 138
+        TRX = 131
+        ULTIMATE_FRISBEE = 112
+        UNICYCLING = 102
+        VOLLEYBALL = 95
+        VOLLEYBALL_BEACH = 120
+        WAKEBOARDING = 173
+        WALKING = 2
+        WALK_WITH_WEIGHTS = 147
+        WATER_AEROBICS = 96
+        WATER_JOGGING = 126
+        WATER_POLO = 97
+        WATER_SKIING = 124
+        WATER_SPORT = 98
+        WATER_VOLLEYBALL = 125
+        WEEDING = 110
+        WEIGHTLIFTING = 10
+        WEIGHT_MACHINES = 150
+        WEIGHTS = 46
+        WHEELCHAIR = 99
+        WINDSURFING = 174
+        WORKOUT = 8
+        WRESTLING = 100
+        YOGA = 6
+        YOGA_BIKRAM = 132
+        YOGA_HATHA = 133
+        YOGA_POWER = 134
+        YOGA_VINYASA = 135
+        ZUMBA = 136
 
     class SplitSummary(proto.Message):
         r"""Represents splits or laps recorded within an exercise. Lap
@@ -2830,8 +3374,7 @@ class WeightQuantity(proto.Message):
 
     Attributes:
         grams (float):
-            Required. Value representing the weight in
-            grams.
+            Required. The weight value in grams.
 
             This field is a member of `oneof`_ ``_grams``.
         user_provided_unit (google.devicesandservices.health_v4.types.WeightUnit):
@@ -2858,8 +3401,7 @@ class EnergyQuantity(proto.Message):
 
     Attributes:
         kcal (float):
-            Required. Value representing the energy in
-            kilocalories.
+            Required. The energy value in kilocalories.
 
             This field is a member of `oneof`_ ``_kcal``.
         user_provided_unit (google.devicesandservices.health_v4.types.EnergyUnit):
@@ -2884,10 +3426,10 @@ class NutrientQuantity(proto.Message):
 
     Attributes:
         quantity (google.devicesandservices.health_v4.types.WeightQuantity):
-            Required. Value representing the quantity of
-            the nutrient.
+            Required. The quantity of the nutrient,
+            measured in grams.
         nutrient (google.devicesandservices.health_v4.types.Nutrient):
-            Required. Value representing the nutrient.
+            Required. The nutrient type.
     """
 
     quantity: "WeightQuantity" = proto.Field(
@@ -2903,7 +3445,7 @@ class NutrientQuantity(proto.Message):
 
 
 class NutritionLog(proto.Message):
-    r"""Holds information about a user logged food.
+    r"""Holds information about food logged by a user.
 
     There are two ways of creating a nutrition log based on the food
     type:
@@ -2918,56 +3460,42 @@ class NutritionLog(proto.Message):
        ``total_carbohydrate``, ``total_fat`` fields manually.
 
     The identified food is preferred over the anonymous food. Nutrition
-    logs created from anonymous food are not be editable.
+    logs created from anonymous food are not editable.
 
     Attributes:
         interval (google.devicesandservices.health_v4.types.SessionTimeInterval):
-            Required. Observed interval.
+            Required. The time window when the food was
+            logged.
         nutrients (MutableSequence[google.devicesandservices.health_v4.types.NutrientQuantity]):
-            Optional. Value representing the nutrients of
-            the nutrition log.
+            Optional. An array of individual nutrient
+            values for the nutrition log.
         energy (google.devicesandservices.health_v4.types.EnergyQuantity):
-            Optional. Value representing the energy of
-            the nutrition log. For nutrition logs created
-            from an identified food, this field will be
-            populated based on the referenced food. For
-            anonymous food, this field will be populated
-            manually.
+            Optional. The total energy of the food, measured in
+            kilocalories (``kcal``).
         energy_from_fat (google.devicesandservices.health_v4.types.EnergyQuantity):
-            Optional. Value representing the energy from
-            fat of the nutrition log. For nutrition logs
-            created from an identified food, this field will
-            be populated based on the referenced food. For
-            anonymous food, this field will be populated
-            manually.
+            Optional. The energy from fat, measured in kilocalories
+            (``kcal``).
         total_carbohydrate (google.devicesandservices.health_v4.types.WeightQuantity):
-            Optional. Value representing the total
-            carbohydrate of the nutrition log. For nutrition
-            logs created from an identified food, this field
-            will be populated based on the referenced food.
-            For anonymous food, this field will be populated
-            manually.
+            Optional. The total carbohydrate content,
+            measured in grams.
         total_fat (google.devicesandservices.health_v4.types.WeightQuantity):
-            Optional. Value representing the total fat of
-            the nutrition log. For nutrition logs created
-            from an identified food, this field will be
-            populated based on the referenced food. For
-            anonymous food, this field will be populated
-            manually.
+            Optional. The total fat content, measured in
+            grams.
         meal_type (google.devicesandservices.health_v4.types.MealType):
-            Optional. Value representing the meal type of
-            the nutrition log.
+            Optional. The meal category. One of ``BREAKFAST``,
+            ``LUNCH``, ``DINNER``, or ``SNACK``.
         serving (google.devicesandservices.health_v4.types.NutritionLog.Serving):
-            Optional. Value representing the nutrition
-            log serving.
+            Optional. The serving information for the
+            logged food.
         food (str):
-            Required. Represents the food ID.
+            Optional. The resource name of the Food item. Required when
+            creating a nutrition log from an identified food. For
+            anonymous food logs, use the ``food_display_name`` field
+            instead.
         food_display_name (str):
-            Value representing the display name of the
-            food. For nutrition logs created from an
-            identified food, this field will be populated
-            based on the referenced food. For anonymous
-            food, this field will be populated manually.
+            The display name of the food. For identified
+            food logs, this is populated automatically from
+            the referenced food.
     """
 
     class Serving(proto.Message):
@@ -2979,8 +3507,7 @@ class NutritionLog(proto.Message):
 
         Attributes:
             amount (float):
-                Optional. Amount of food consumed, fractional
-                values are supported.
+                Optional. The number of servings.
 
                 This field is a member of `oneof`_ ``_amount``.
             food_measurement_unit (str):
@@ -3534,8 +4061,8 @@ class Sleep(proto.Message):
             “Out of bed” segments that can overlap with
             sleep stages.
         metadata (google.devicesandservices.health_v4.types.Sleep.SleepMetadata):
-            Optional. Sleep metadata: processing, main,
-            manually edited, stages status.
+            Optional. Sleep metadata: ``processed``, ``main_sleep``,
+            ``manually_edited``, and ``stages_status``.
         summary (google.devicesandservices.health_v4.types.Sleep.SleepSummary):
             Output only. Sleep summary: metrics and
             stages summary.
@@ -3545,6 +4072,11 @@ class Sleep(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Last update time of this sleep
             observation.
+        short_awakenings (MutableSequence[google.devicesandservices.health_v4.types.Sleep.SleepStage]):
+            Output only. List of short awake segments
+            (under a set threshold) that are part of the
+            sleep session. These can overlap with sleep
+            stages.
     """
 
     class SleepType(proto.Enum):
@@ -3705,8 +4237,11 @@ class Sleep(proto.Message):
                 Output only. Sleep stages algorithm
                 processing status.
             processed (bool):
-                Output only. Sleep and sleep stages
-                algorithms finished processing.
+                Output only. Sleep and sleep stages algorithms finished
+                processing. A ``true`` value indicates whether all data
+                processing for the session is complete. A ``false`` value
+                means sleep period is detected but sleep stages is still
+                processing.
             nap (bool):
                 Output only. Naps are sleeps without stages
                 and relatively short durations.
@@ -3716,6 +4251,12 @@ class Sleep(proto.Message):
             external_id (str):
                 Optional. Sleep identifier relevant in the
                 context of the data source.
+            main_sleep (bool):
+                Output only. ``main_sleep``: the longest sleep session with
+                stages within one day. If no sleep session has stages, then
+                the longest sleep is the ``main_sleep``. If there are
+                multiple days of sleep in the response, there is one
+                ``main_sleep`` per day.
         """
 
         class StagesState(proto.Enum):
@@ -3787,6 +4328,10 @@ class Sleep(proto.Message):
         external_id: str = proto.Field(
             proto.STRING,
             number=7,
+        )
+        main_sleep: bool = proto.Field(
+            proto.BOOL,
+            number=9,
         )
 
     class SleepSummary(proto.Message):
@@ -3937,6 +4482,11 @@ class Sleep(proto.Message):
         proto.MESSAGE,
         number=11,
         message=timestamp_pb2.Timestamp,
+    )
+    short_awakenings: MutableSequence[SleepStage] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=12,
+        message=SleepStage,
     )
 
 
@@ -4127,8 +4677,17 @@ class TimeInHeartRateZoneRollupValue(proto.Message):
 
 
 class TotalCaloriesRollupValue(proto.Message):
-    r"""Represents the result of the rollup of the user's total
-    calories.
+    r"""Represents the result of the rollup of the user's total calories.
+
+    Note: Queries for the ``total-calories`` data type must include a
+    time interval filter (such as
+    [``total_calories.interval.start_time``][google.devicesandservices.health.v4main.ObservationTimeInterval.start_time]
+    or
+    [``total_calories.interval.civil_start_time``][google.devicesandservices.health.v4main.ObservationTimeInterval.civil_start_time]).
+    The maximum range is 14 days.
+
+    Example filter query:
+    ``total_calories.interval.start_time >= "2026-04-20T00:00:00Z" AND total_calories.interval.start_time < "2026-04-21T00:00:00Z"``
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -4558,6 +5117,505 @@ class ActiveEnergyBurnedRollupValue(proto.Message):
         proto.DOUBLE,
         number=1,
         optional=True,
+    )
+
+
+class MenstrualPeriod(proto.Message):
+    r"""Menstrual period record.
+
+    Attributes:
+        interval (google.devicesandservices.health_v4.types.ObservationTimeInterval):
+            Required. Observed interval.
+        notes (str):
+            Optional. Standard free-form notes captured
+            at manual logging.
+    """
+
+    interval: data_coordinates.ObservationTimeInterval = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=data_coordinates.ObservationTimeInterval,
+    )
+    notes: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class OvulationTest(proto.Message):
+    r"""Ovulation test record.
+
+    Attributes:
+        sample_time (google.devicesandservices.health_v4.types.ObservationSampleTime):
+            Required. The time at which ovulation test
+            was measured.
+        result (google.devicesandservices.health_v4.types.OvulationTestResult):
+            Required. The result of the ovulation test.
+    """
+
+    sample_time: data_coordinates.ObservationSampleTime = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=data_coordinates.ObservationSampleTime,
+    )
+    result: "OvulationTestResult" = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="OvulationTestResult",
+    )
+
+
+class Symptoms(proto.Message):
+    r"""Symptoms logged by the user.
+
+    Attributes:
+        sample_time (google.devicesandservices.health_v4.types.ObservationSampleTime):
+            Required. Time when the symptoms were logged.
+        symptoms (MutableSequence[google.devicesandservices.health_v4.types.Symptoms.SymptomValue]):
+            Required. List of symptoms experienced.
+    """
+
+    class SymptomValue(proto.Enum):
+        r"""Enum representing possible symptom values.
+
+        Values:
+            SYMPTOM_VALUE_UNSPECIFIED (0):
+                Unspecified symptom value.
+            CRAMPS (1):
+                Abdominal cramps.
+            HEADACHE (2):
+                Headache.
+            TENDER_BREASTS (3):
+                Tender breasts.
+            ACNE (4):
+                Acne.
+            SICK (5):
+                Feeling sick or unwell.
+            BLOATED (6):
+                Bloating or abdominal swelling.
+            HOT_FLASHES (7):
+                Hot flashes.
+            PMS (8):
+                Premenstrual syndrome symptoms.
+            COUGH (9):
+                Coughing.
+            FEVER (10):
+                Fever or elevated body temperature.
+            DIFFICULTY_BREATHING (11):
+                Difficulty breathing or shortness of breath.
+            BACK_PAIN (12):
+                Back pain.
+            SHAKINESS (13):
+                Shakiness or tremors.
+            HUNGER (14):
+                Excessive hunger.
+            SWEATING (15):
+                Excessive sweating.
+            ANXIETY (16):
+                Anxiety or nervousness.
+            THIRST (17):
+                Excessive thirst.
+            FREQUENT_URINATION (18):
+                Frequent urination.
+            BLURRED_VISION (19):
+                Blurred vision.
+            OTHER (20):
+                Other symptoms.
+            SEX_DRIVE_HIGH (21):
+                High sex drive.
+            SEX_DRIVE_MEDIUM (22):
+                Medium sex drive.
+            SEX_DRIVE_LOW (23):
+                Low sex drive.
+            HEART_PALPITATIONS (24):
+                Heart palpitations or racing heart.
+            FAINTING (25):
+                Fainting or loss of consciousness.
+            CHEST_PAIN (26):
+                Chest pain or discomfort.
+            FATIGUE (27):
+                Fatigue or extreme tiredness.
+            CONFUSION (28):
+                Confusion or mental fogginess.
+            DIZZINESS (29):
+                Dizziness or lightheadedness.
+            ABDOMINAL_PAIN (30):
+                Abdominal pain.
+            BLADDER_LEAKS (31):
+                Bladder leaks.
+            BLEEDING_GUMS (32):
+                Bleeding gums.
+            BRAIN_FOG (33):
+                Brain fog.
+            BURNING_MOUTH (34):
+                Burning mouth.
+            CONSTIPATION (35):
+                Constipation.
+            CRAVINGS (36):
+                Food cravings.
+            DECREASED_APPETITE (37):
+                Decreased appetite.
+            DIARRHEA (38):
+                Diarrhea.
+            DRAWING_PAIN (39):
+                Drawing pain.
+            DRY_EYES (40):
+                Dry eyes.
+            DRY_HAIR (41):
+                Dry hair.
+            DRY_SKIN (42):
+                Dry skin.
+            EXHAUSTION (43):
+                Exhaustion.
+            FEEL_GOOD (44):
+                Feeling good or well.
+            FOOD_AVERSIONS (45):
+                Food aversions.
+            HAIR_LOSS (46):
+                Hair loss.
+            HEARTBURN (47):
+                Heartburn.
+            HYPERPIGMENTATION (48):
+                Hyperpigmentation.
+            INCREASED_APPETITE (49):
+                Increased appetite.
+            INCREASED_APPETITE_V2 (50):
+                Increased appetite V2.
+            INSOMNIA (51):
+                Insomnia or difficulty sleeping.
+            JOINT_PAIN (52):
+                Joint pain.
+            LEG_CRAMPS (53):
+                Leg cramps.
+            MILKY_NIPPLE_DISCHARGE (54):
+                Milky nipple discharge.
+            NAUSEA (55):
+                Nausea.
+            NIGHT_SWEATS (56):
+                Night sweats.
+            NORMAL_DIGESTION (57):
+                Normal digestion.
+            NORMAL_STOOL (58):
+                Normal stool.
+            PERINEUM_PAIN (59):
+                Perineum pain.
+            SLEEPINESS (60):
+                Sleepiness or drowsiness.
+            STRETCH_MARKS (61):
+                Stretch marks.
+            SWELLING (62):
+                Swelling.
+            VAGINAL_DRYNESS (63):
+                Vaginal dryness.
+            VAGINAL_ITCHING (64):
+                Vaginal itching.
+            VOMITING (65):
+                Vomiting.
+        """
+
+        SYMPTOM_VALUE_UNSPECIFIED = 0
+        CRAMPS = 1
+        HEADACHE = 2
+        TENDER_BREASTS = 3
+        ACNE = 4
+        SICK = 5
+        BLOATED = 6
+        HOT_FLASHES = 7
+        PMS = 8
+        COUGH = 9
+        FEVER = 10
+        DIFFICULTY_BREATHING = 11
+        BACK_PAIN = 12
+        SHAKINESS = 13
+        HUNGER = 14
+        SWEATING = 15
+        ANXIETY = 16
+        THIRST = 17
+        FREQUENT_URINATION = 18
+        BLURRED_VISION = 19
+        OTHER = 20
+        SEX_DRIVE_HIGH = 21
+        SEX_DRIVE_MEDIUM = 22
+        SEX_DRIVE_LOW = 23
+        HEART_PALPITATIONS = 24
+        FAINTING = 25
+        CHEST_PAIN = 26
+        FATIGUE = 27
+        CONFUSION = 28
+        DIZZINESS = 29
+        ABDOMINAL_PAIN = 30
+        BLADDER_LEAKS = 31
+        BLEEDING_GUMS = 32
+        BRAIN_FOG = 33
+        BURNING_MOUTH = 34
+        CONSTIPATION = 35
+        CRAVINGS = 36
+        DECREASED_APPETITE = 37
+        DIARRHEA = 38
+        DRAWING_PAIN = 39
+        DRY_EYES = 40
+        DRY_HAIR = 41
+        DRY_SKIN = 42
+        EXHAUSTION = 43
+        FEEL_GOOD = 44
+        FOOD_AVERSIONS = 45
+        HAIR_LOSS = 46
+        HEARTBURN = 47
+        HYPERPIGMENTATION = 48
+        INCREASED_APPETITE = 49
+        INCREASED_APPETITE_V2 = 50
+        INSOMNIA = 51
+        JOINT_PAIN = 52
+        LEG_CRAMPS = 53
+        MILKY_NIPPLE_DISCHARGE = 54
+        NAUSEA = 55
+        NIGHT_SWEATS = 56
+        NORMAL_DIGESTION = 57
+        NORMAL_STOOL = 58
+        PERINEUM_PAIN = 59
+        SLEEPINESS = 60
+        STRETCH_MARKS = 61
+        SWELLING = 62
+        VAGINAL_DRYNESS = 63
+        VAGINAL_ITCHING = 64
+        VOMITING = 65
+
+    sample_time: data_coordinates.ObservationSampleTime = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=data_coordinates.ObservationSampleTime,
+    )
+    symptoms: MutableSequence[SymptomValue] = proto.RepeatedField(
+        proto.ENUM,
+        number=2,
+        enum=SymptomValue,
+    )
+
+
+class Moods(proto.Message):
+    r"""Moods record.
+
+    Attributes:
+        sample_time (google.devicesandservices.health_v4.types.ObservationSampleTime):
+            Required. The time at which moods were
+            measured.
+        moods (MutableSequence[google.devicesandservices.health_v4.types.Moods.Mood]):
+            Required. The moods logged.
+        valences (MutableSequence[google.devicesandservices.health_v4.types.Moods.Valence]):
+            Optional. The valences.
+    """
+
+    class Mood(proto.Enum):
+        r"""The mood.
+
+        Values:
+            MOOD_UNSPECIFIED (0):
+                Unspecified mood.
+            AMAZED (1):
+                Amazed.
+            AMUSED (2):
+                Amused.
+            ANGRY (3):
+                Angry.
+            ANNOYED (4):
+                Annoyed.
+            ANXIOUS (5):
+                Anxious.
+            HAPPY (6):
+                Happy.
+            CONTENT (7):
+                Content.
+            SAD (8):
+                Sad.
+            WORRIED (9):
+                Worried.
+            FRUSTRATED (10):
+                Frustrated.
+            EXCITED (11):
+                Excited.
+            CALM (12):
+                Calm.
+            STRESSED (13):
+                Stressed.
+            ASHAMED (14):
+                Ashamed.
+            BRAVE (15):
+                Brave.
+            CONFIDENT (16):
+                Confident.
+            DISAPPOINTED (17):
+                Disappointed.
+            DISCOURAGED (18):
+                Discouraged.
+            DISGUSTED (19):
+                Disgusted.
+            DRAINED (20):
+                Drained.
+            EMBARRASSED (21):
+                Embarrassed.
+            GRATEFUL (22):
+                Grateful.
+            GUILTY (23):
+                Guilty.
+            HOPEFUL (24):
+                Hopeful.
+            HOPELESS (25):
+                Hopeless.
+            INDIFFERENT (26):
+                Indifferent.
+            IRRITATED (27):
+                Irritated.
+            JEALOUS (28):
+                Jealous.
+            JOYFUL (29):
+                Joyful.
+            LONELY (30):
+                Lonely.
+            OVERWHELMED (31):
+                Overwhelmed.
+            PASSIONATE (32):
+                Passionate.
+            PEACEFUL (33):
+                Peaceful.
+            PROUD (34):
+                Proud.
+            RELIEVED (35):
+                Relieved.
+            SATISFIED (36):
+                Satisfied.
+            SCARED (37):
+                Scared.
+            SURPRISED (38):
+                Surprised.
+            ENERGIZED (39):
+                Energized.
+            FATIGUED (40):
+                Fatigued.
+            VERY_CALM (41):
+                Very calm.
+            VERY_STRESSED (42):
+                Very stressed.
+            NEUTRAL (43):
+                Neutral.
+            AFRAID (44):
+                Afraid.
+            HURTING (45):
+                Hurting.
+            BORED (46):
+                Bored.
+            BITTER (47):
+                Bitter.
+            ENVIOUS (48):
+                Envious.
+            CONFUSED (49):
+                Confused.
+            CURIOUS (50):
+                Curious.
+            AWESTRUCK (51):
+                Awestruck.
+            INSPIRED (52):
+                Inspired.
+            LONGING (53):
+                Longing.
+            ACCOMPLISHED (54):
+                Accomplished.
+            LOVING (55):
+                Loving.
+            COMPASSIONATE (56):
+                Compassionate.
+        """
+
+        MOOD_UNSPECIFIED = 0
+        AMAZED = 1
+        AMUSED = 2
+        ANGRY = 3
+        ANNOYED = 4
+        ANXIOUS = 5
+        HAPPY = 6
+        CONTENT = 7
+        SAD = 8
+        WORRIED = 9
+        FRUSTRATED = 10
+        EXCITED = 11
+        CALM = 12
+        STRESSED = 13
+        ASHAMED = 14
+        BRAVE = 15
+        CONFIDENT = 16
+        DISAPPOINTED = 17
+        DISCOURAGED = 18
+        DISGUSTED = 19
+        DRAINED = 20
+        EMBARRASSED = 21
+        GRATEFUL = 22
+        GUILTY = 23
+        HOPEFUL = 24
+        HOPELESS = 25
+        INDIFFERENT = 26
+        IRRITATED = 27
+        JEALOUS = 28
+        JOYFUL = 29
+        LONELY = 30
+        OVERWHELMED = 31
+        PASSIONATE = 32
+        PEACEFUL = 33
+        PROUD = 34
+        RELIEVED = 35
+        SATISFIED = 36
+        SCARED = 37
+        SURPRISED = 38
+        ENERGIZED = 39
+        FATIGUED = 40
+        VERY_CALM = 41
+        VERY_STRESSED = 42
+        NEUTRAL = 43
+        AFRAID = 44
+        HURTING = 45
+        BORED = 46
+        BITTER = 47
+        ENVIOUS = 48
+        CONFUSED = 49
+        CURIOUS = 50
+        AWESTRUCK = 51
+        INSPIRED = 52
+        LONGING = 53
+        ACCOMPLISHED = 54
+        LOVING = 55
+        COMPASSIONATE = 56
+
+    class Valence(proto.Enum):
+        r"""The valence.
+
+        Values:
+            VALENCE_UNSPECIFIED (0):
+                Unspecified valence.
+            UNPLEASANT (1):
+                Unpleasant.
+            BASELINE (2):
+                Baseline.
+            PLEASANT (3):
+                Pleasant.
+        """
+
+        VALENCE_UNSPECIFIED = 0
+        UNPLEASANT = 1
+        BASELINE = 2
+        PLEASANT = 3
+
+    sample_time: data_coordinates.ObservationSampleTime = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=data_coordinates.ObservationSampleTime,
+    )
+    moods: MutableSequence[Mood] = proto.RepeatedField(
+        proto.ENUM,
+        number=3,
+        enum=Mood,
+    )
+    valences: MutableSequence[Valence] = proto.RepeatedField(
+        proto.ENUM,
+        number=5,
+        enum=Valence,
     )
 
 

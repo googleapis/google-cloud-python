@@ -42,6 +42,7 @@ __lazy_modules__ = {
     "google.apps.chat_v1.types.event_payload",
     "google.apps.chat_v1.types.group",
     "google.apps.chat_v1.types.history_state",
+    "google.apps.chat_v1.types.markup_syntax",
     "google.apps.chat_v1.types.matched_url",
     "google.apps.chat_v1.types.membership",
     "google.apps.chat_v1.types.message",
@@ -116,6 +117,7 @@ from .types.event_payload import (
 )
 from .types.group import Group
 from .types.history_state import HistoryState
+from .types.markup_syntax import MarkupSyntax
 from .types.matched_url import MatchedUrl
 from .types.membership import (
     CreateMembershipRequest,
@@ -379,6 +381,7 @@ __all__ = (
     "MarkAsActiveRequest",
     "MarkAsAwayRequest",
     "MarkAsDoNotDisturbRequest",
+    "MarkupSyntax",
     "MatchedUrl",
     "MeetSpaceLinkData",
     "Membership",

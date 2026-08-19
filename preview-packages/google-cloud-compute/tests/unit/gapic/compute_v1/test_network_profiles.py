@@ -1772,7 +1772,6 @@ def test_get_rest_call_success(request_type):
             name="name_value",
             self_link="self_link_value",
             self_link_with_id="self_link_with_id_value",
-            zone="zone_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -1796,7 +1795,6 @@ def test_get_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.self_link == "self_link_value"
     assert response.self_link_with_id == "self_link_with_id_value"
-    assert response.zone == "zone_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

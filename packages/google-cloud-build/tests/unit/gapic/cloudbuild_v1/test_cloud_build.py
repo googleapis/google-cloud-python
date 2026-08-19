@@ -13827,6 +13827,7 @@ def test_create_build_rest_call_success(request_type):
                     "recurse_submodules": True,
                     "depth": 533,
                     "dest_path": "dest_path_value",
+                    "fetch_tags": True,
                 },
             }
         ],
@@ -14943,6 +14944,7 @@ def test_create_build_trigger_rest_call_success(request_type):
                         "recurse_submodules": True,
                         "depth": 533,
                         "dest_path": "dest_path_value",
+                        "fetch_tags": True,
                     },
                 }
             ],
@@ -15851,6 +15853,7 @@ def test_update_build_trigger_rest_call_success(request_type):
                         "recurse_submodules": True,
                         "depth": 533,
                         "dest_path": "dest_path_value",
+                        "fetch_tags": True,
                     },
                 }
             ],
