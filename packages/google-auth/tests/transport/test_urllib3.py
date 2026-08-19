@@ -708,18 +708,64 @@ class TestAuthorizedHttp(object):
         assert is_mtls
         assert authed_http._is_mtls
 
-        # Subsequent call returns no client certificate (disabled)
+        # Subsequent call returns no client certificate -> raises MutualTLSChannelError
         with mock.patch(
             "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
         ) as mock_get_client_cert_and_key:
             mock_get_client_cert_and_key.return_value = (False, None, None)
 
-            with mock.patch.dict(
-                os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
-            ):
-                is_mtls = authed_http.configure_mtls_channel()
+            with pytest.raises(exceptions.MutualTLSChannelError):
+                with mock.patch.dict(
+                    os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+                ):
+                    authed_http.configure_mtls_channel()
 
-        # Verify mTLS is disabled and standard PoolManager is restored
-        assert not is_mtls
+        # Verify mTLS state is preserved
+        assert authed_http._is_mtls
+        assert isinstance(authed_http.http, mock.Mock)
+
+    @mock.patch("google.auth.transport.urllib3._make_mutual_tls_http", autospec=True)
+    def test_configure_mtls_channel_subsequent_env_disabled(
+        self, mock_make_mutual_tls_http
+    ):
+        callback = mock.Mock()
+        callback.return_value = (pytest.public_cert_bytes, pytest.private_key_bytes)
+
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            credentials=mock.Mock()
+        )
+
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+        ):
+            is_mtls = authed_http.configure_mtls_channel(callback)
+
+        assert is_mtls
+        assert authed_http._is_mtls
+
+        # Subsequent call with mTLS disabled via env var -> raises MutualTLSChannelError
+        with pytest.raises(exceptions.MutualTLSChannelError):
+            with mock.patch.dict(
+                os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "false"}
+            ):
+                authed_http.configure_mtls_channel()
+
+        # Verify mTLS state is preserved
+        assert authed_http._is_mtls
+        assert isinstance(authed_http.http, mock.Mock)
+
+    def test_configure_mtls_channel_desynchronized_state_raises(self):
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            credentials=mock.Mock()
+        )
+        # Set connection_pool_kw with ssl_context directly, leaving _is_mtls False
+        authed_http.http.connection_pool_kw["ssl_context"] = mock.Mock(spec=ssl.SSLContext)
         assert not authed_http._is_mtls
-        assert isinstance(authed_http.http, urllib3.PoolManager)
+        assert authed_http._is_mtls_configured()
+
+        # Calling configure_mtls_channel with mTLS disabled in env should raise
+        with pytest.raises(exceptions.MutualTLSChannelError):
+            with mock.patch.dict(
+                os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "false"}
+            ):
+                authed_http.configure_mtls_channel()

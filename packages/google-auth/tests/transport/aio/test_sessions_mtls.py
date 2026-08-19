@@ -344,3 +344,101 @@ class TestSessionsMtls:
             assert session._is_mtls is True
             assert session._cached_cert == b"fake_cert_data"
             await session.close()
+
+    @pytest.mark.asyncio
+    async def test_configure_mtls_channel_subsequent_disabled(self):
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}
+        ), mock.patch("os.path.exists") as mock_exists, mock.patch(
+            "builtins.open", mock.mock_open(read_data=json.dumps(VALID_WORKLOAD_CONFIG))
+        ), mock.patch(
+            "google.auth.aio.transport.mtls.get_client_cert_and_key"
+        ) as mock_helper, mock.patch(
+            "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
+        ) as mock_make_context, mock.patch(
+            "aiohttp.TCPConnector"
+        ), mock.patch(
+            "aiohttp.ClientSession"
+        ) as mock_session:
+            mock_session.return_value.close = mock.AsyncMock()
+            mock_exists.return_value = True
+            mock_helper.return_value = (True, b"fake_cert_data", b"fake_key_data")
+
+            mock_context = mock.Mock(spec=ssl.SSLContext)
+            mock_make_context.return_value = mock_context
+
+            mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+            session = sessions.AsyncAuthorizedSession(mock_creds)
+
+            await session.configure_mtls_channel()
+            assert session._is_mtls is True
+            first_auth_request = session._auth_request
+
+            # Reset task so we trigger a new configuration run
+            session._mtls_init_task = None
+            mock_helper.return_value = (False, None, None)
+
+            with pytest.raises(exceptions.MutualTLSChannelError):
+                await session.configure_mtls_channel()
+
+            assert session._is_mtls is True
+            assert session._auth_request is first_auth_request
+            await session.close()
+
+    @pytest.mark.asyncio
+    async def test_configure_mtls_channel_subsequent_env_disabled(self):
+        with mock.patch.dict(
+            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}
+        ), mock.patch("os.path.exists") as mock_exists, mock.patch(
+            "builtins.open", mock.mock_open(read_data=json.dumps(VALID_WORKLOAD_CONFIG))
+        ), mock.patch(
+            "google.auth.aio.transport.mtls.get_client_cert_and_key"
+        ) as mock_helper, mock.patch(
+            "google.auth.aio.transport.mtls.make_client_cert_ssl_context"
+        ) as mock_make_context, mock.patch(
+            "aiohttp.TCPConnector"
+        ), mock.patch(
+            "aiohttp.ClientSession"
+        ) as mock_session:
+            mock_session.return_value.close = mock.AsyncMock()
+            mock_exists.return_value = True
+            mock_helper.return_value = (True, b"fake_cert_data", b"fake_key_data")
+
+            mock_context = mock.Mock(spec=ssl.SSLContext)
+            mock_make_context.return_value = mock_context
+
+            mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+            session = sessions.AsyncAuthorizedSession(mock_creds)
+
+            await session.configure_mtls_channel()
+            assert session._is_mtls is True
+            first_auth_request = session._auth_request
+
+            # Reset task and disable env var
+            session._mtls_init_task = None
+            with pytest.raises(exceptions.MutualTLSChannelError):
+                with mock.patch.dict(
+                    os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}
+                ):
+                    await session.configure_mtls_channel()
+
+            assert session._is_mtls is True
+            assert session._auth_request is first_auth_request
+            await session.close()
+
+    @pytest.mark.asyncio
+    async def test_configure_mtls_channel_desynchronized_state_raises(self):
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        session = sessions.AsyncAuthorizedSession(mock_creds)
+        # Directly set cached cert, leaving _is_mtls False
+        session._cached_cert = b"fake_cert_data"
+        assert not session._is_mtls
+        assert session._is_mtls_configured()
+
+        with pytest.raises(exceptions.MutualTLSChannelError):
+            with mock.patch.dict(
+                os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}
+            ):
+                await session.configure_mtls_channel()
+        await session.close()
+
