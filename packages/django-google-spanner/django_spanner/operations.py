@@ -43,6 +43,15 @@ class DatabaseOperations(BaseDatabaseOperations):
     cast_char_field_without_max_length = "STRING"
     compiler_module = "django_spanner.compiler"
 
+    def returning_columns(self, fields):
+        if not fields:
+            return "", ()
+        columns = [self.quote_name(field.column) for field in fields]
+        return "THEN RETURN %s" % ", ".join(columns), ()
+
+    # In Django <= 5.2, this method was named return_insert_columns
+    return_insert_columns = returning_columns
+
     # Django's lookup names that require a different name in Spanner's
     # EXTRACT() function.
     # https://cloud.google.com/spanner/docs/functions-and-operators#extract

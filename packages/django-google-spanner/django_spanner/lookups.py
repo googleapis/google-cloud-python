@@ -42,8 +42,9 @@ def contains(self, compiler, connection):
     :rtype: tuple[str, str]
     :returns: A tuple of the SQL request and parameters.
     """
-    lhs_sql, params = self.process_lhs(compiler, connection)
+    lhs_sql, lhs_params = self.process_lhs(compiler, connection)
     rhs_sql, rhs_params = self.process_rhs(compiler, connection)
+    params = list(lhs_params)
     params.extend(rhs_params)
     is_icontains = self.lookup_name.startswith("i")
     if self.rhs_is_direct_value() and params and not self.bilateral_transforms:
@@ -55,7 +56,7 @@ def contains(self, compiler, connection):
         if is_icontains:
             params[0] = "(?i)" + params[0]
         # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
-        return rhs_sql % lhs_sql, params
+        return rhs_sql % lhs_sql, tuple(params)
     else:
         # rhs_sql is the expression/column to use as the base of the regular
         # expression.
@@ -64,7 +65,7 @@ def contains(self, compiler, connection):
         return (
             "REGEXP_CONTAINS(%s, %s)"
             % (lhs_sql, connection.pattern_esc.format(rhs_sql)),
-            params,
+            tuple(params),
         )
 
 
@@ -89,8 +90,9 @@ def iexact(self, compiler, connection):
     :rtype: tuple[str, str]
     :returns: A tuple of the SQL request and parameters.
     """
-    lhs_sql, params = self.process_lhs(compiler, connection)
+    lhs_sql, lhs_params = self.process_lhs(compiler, connection)
     rhs_sql, rhs_params = self.process_rhs(compiler, connection)
+    params = list(lhs_params)
     params.extend(rhs_params)
     rhs_sql = self.get_rhs_op(connection, rhs_sql)
     # Wrap the parameter in ^ and $ to restrict the regex to an exact match.
@@ -113,7 +115,7 @@ def iexact(self, compiler, connection):
                 rhs_sql = rhs_sql.replace("%s", "%%s")
                 rhs_sql = rhs_sql.replace("__PLACEHOLDER_FOR_LHS_SQL__", "%s")
     # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
-    return rhs_sql % lhs_sql, params
+    return rhs_sql % lhs_sql, tuple(params)
 
 
 def regex(self, compiler, connection):
@@ -136,8 +138,9 @@ def regex(self, compiler, connection):
     :rtype: tuple[str, str]
     :returns: A tuple of the SQL request and parameters.
     """
-    lhs_sql, params = self.process_lhs(compiler, connection)
+    lhs_sql, lhs_params = self.process_lhs(compiler, connection)
     rhs_sql, rhs_params = self.process_rhs(compiler, connection)
+    params = list(lhs_params)
     params.extend(rhs_params)
     is_iregex = self.lookup_name.startswith("i")
     if self.rhs_is_direct_value() and params and not self.bilateral_transforms:
@@ -147,13 +150,13 @@ def regex(self, compiler, connection):
         else:
             params[0] = str(params[0])
         # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
-        return rhs_sql % lhs_sql, params
+        return rhs_sql % lhs_sql, tuple(params)
     else:
         # rhs_sql is the expression/column to use as the base of the regular
         # expression.
         if is_iregex:
             rhs_sql = "CONCAT('(?i)', " + rhs_sql + ")"
-        return "REGEXP_CONTAINS(%s, %s)" % (lhs_sql, rhs_sql), params
+        return "REGEXP_CONTAINS(%s, %s)" % (lhs_sql, rhs_sql), tuple(params)
 
 
 def startswith_endswith(self, compiler, connection):
@@ -179,8 +182,9 @@ def startswith_endswith(self, compiler, connection):
     :rtype: tuple[str, str]
     :returns: A tuple of the SQL request and parameters.
     """
-    lhs_sql, params = self.process_lhs(compiler, connection)
+    lhs_sql, lhs_params = self.process_lhs(compiler, connection)
     rhs_sql, rhs_params = self.process_rhs(compiler, connection)
+    params = list(lhs_params)
     params.extend(rhs_params)
     is_startswith = "startswith" in self.lookup_name
     is_endswith = "endswith" in self.lookup_name
@@ -197,7 +201,7 @@ def startswith_endswith(self, compiler, connection):
         if is_insensitive:
             params[0] = "(?i)" + params[0]
         # rhs_sql is REGEXP_CONTAINS(%s, %%s), and lhs_sql is the column name.
-        return rhs_sql % lhs_sql, params
+        return rhs_sql % lhs_sql, tuple(params)
     else:
         # rhs_sql is the expression/column to use as the base of the regular
         # expression.
@@ -212,7 +216,7 @@ def startswith_endswith(self, compiler, connection):
         sql += ")"
         return (
             "REGEXP_CONTAINS(%s, %s)" % (lhs_sql, connection.pattern_esc.format(sql)),
-            params,
+            tuple(params),
         )
 
 
@@ -241,6 +245,7 @@ def cast_param_to_float(self, compiler, connection):
     :returns: A tuple of the SQL request and float parameters.
     """
     sql, params = self.as_sql(compiler, connection)
+    params = list(params) if params else []
     if params:
         # Cast remote field lookups that must be integer but come in as string.
         if hasattr(self.lhs.output_field, "get_path_info"):
@@ -251,7 +256,7 @@ def cast_param_to_float(self, compiler, connection):
                     params[i], str
                 ):
                     params[i] = int(params[i])
-    return sql, params
+    return sql, tuple(params)
 
 
 def register_lookups():

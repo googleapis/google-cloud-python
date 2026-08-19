@@ -7,6 +7,7 @@
 import os
 
 from django.db.backends.base.base import BaseDatabaseWrapper
+from asgiref.sync import sync_to_async
 from google.cloud import spanner, spanner_dbapi
 
 from .client import DatabaseClient
@@ -215,6 +216,11 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         """
         with self.wrap_database_errors:
             self.connection.autocommit = autocommit
+
+    async def _a_set_autocommit(self, autocommit):
+        return await sync_to_async(self._set_autocommit, thread_sensitive=True)(
+            autocommit
+        )
 
     def is_usable(self):
         """Check whether the connection is valid.
