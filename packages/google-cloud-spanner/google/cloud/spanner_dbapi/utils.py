@@ -33,17 +33,12 @@ class BufferedIterator:
 
     def __init__(self, source):
         self._rows = [
-            tuple(row) if isinstance(row, list) else row
-            for row in (source or ())
+            tuple(row) if isinstance(row, list) else row for row in (source or ())
         ]
-        self._index = 0
+        self._itr = iter(self._rows)
 
     def __next__(self):
-        if self._index >= len(self._rows):
-            raise StopIteration
-        row = self._rows[self._index]
-        self._index += 1
-        return row
+        return next(self._itr)
 
     def __iter__(self):
         return self

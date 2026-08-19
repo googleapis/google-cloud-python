@@ -133,4 +133,3 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(next(bitr), ("second", 2))
         with self.assertRaises(StopIteration):
             next(bitr)
-

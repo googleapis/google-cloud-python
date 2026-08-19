@@ -135,10 +135,14 @@ class TestCursor(unittest.TestCase):
 
         def streaming_generator():
             if not tx_active:
-                raise ValueError("Transaction has already been committed or rolled back")
+                raise ValueError(
+                    "Transaction has already been committed or rolled back"
+                )
             yield [1, "Alice"]
             if not tx_active:
-                raise ValueError("Transaction has already been committed or rolled back")
+                raise ValueError(
+                    "Transaction has already been committed or rolled back"
+                )
             yield [2, "Bob"]
 
         field1 = StructType.Field(name="id", type=Type(code=TypeCode.INT64))
@@ -170,7 +174,6 @@ class TestCursor(unittest.TestCase):
         self.assertEqual(cursor.description[1].name, "name")
         self.assertEqual(cursor.rowcount, 2)
         self.assertEqual(cursor.fetchall(), [(1, "Alice"), (2, "Bob")])
-
 
     def test_do_batch_update(self):
         from google.cloud.spanner_dbapi import connect
