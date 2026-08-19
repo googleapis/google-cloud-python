@@ -12,6 +12,10 @@ name: lint
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 env:
   NOX_REUSE_EXISTING_VIRTUALENVS: "true"
   NOX_ENVDIR: "/tmp/shared_nox_envs"
