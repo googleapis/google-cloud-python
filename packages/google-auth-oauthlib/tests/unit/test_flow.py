@@ -466,7 +466,7 @@ class TestInstalledAppFlow(object):
             hijack_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             try:
                 with pytest.raises(OSError):
-                    hijack_socket.bind(("localhost", port))
+                    hijack_socket.bind(("", port))
             finally:
                 hijack_socket.close()
                 while not future.done():
