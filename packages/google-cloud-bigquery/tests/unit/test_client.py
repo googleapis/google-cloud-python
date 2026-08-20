@@ -865,7 +865,7 @@ class TestClient(unittest.TestCase):
         mock_client.assert_called_once()
         _, kwargs = mock_client.call_args
         self.assertEqual(
-            kwargs["client_info"].user_agent, "app-agent pandas-gbq/0.13.0"
+            kwargs["client_info"].user_agent, "app-agent pandas-gbq/0.13.0 legacy-gcb"
         )
 
     def test_ensure_bqstorage_client_pandas_gbq_not_installed(self):
@@ -888,7 +888,7 @@ class TestClient(unittest.TestCase):
 
         mock_client.assert_called_once()
         _, kwargs = mock_client.call_args
-        self.assertEqual(kwargs["client_info"].user_agent, "app-agent pandas-gbq/0.0.0")
+        self.assertEqual(kwargs["client_info"].user_agent, "app-agent pandas-gbq/0.0.0 legacy-gcb")
 
     def test_ensure_bqstorage_client_client_info_none(self):
         bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
@@ -905,7 +905,7 @@ class TestClient(unittest.TestCase):
 
         mock_client.assert_called_once()
         _, kwargs = mock_client.call_args
-        self.assertEqual(kwargs["client_info"].user_agent, "pandas-gbq/0.0.0")
+        self.assertEqual(kwargs["client_info"].user_agent, "pandas-gbq/0.0.0 legacy-gcb")
 
     def test_ensure_bqstorage_client_client_info_user_agent_none(self):
         bigquery_storage = pytest.importorskip("google.cloud.bigquery_storage")
@@ -926,7 +926,7 @@ class TestClient(unittest.TestCase):
 
         mock_client.assert_called_once()
         _, kwargs = mock_client.call_args
-        self.assertEqual(kwargs["client_info"].user_agent, "pandas-gbq/0.0.0")
+        self.assertEqual(kwargs["client_info"].user_agent, "pandas-gbq/0.0.0 legacy-gcb")
 
     def test_ensure_bqstorage_client_missing_dependency(self):
         creds = _make_credentials()
