@@ -24,7 +24,7 @@ import warnings
 
 
 from google.auth import exceptions
-from google.auth import transport 
+from google.auth import transport
 from google.auth.transport import _mtls_helper
 from google.auth.transport import mtls
 from google.oauth2 import service_account
@@ -324,9 +324,9 @@ def secure_authorized_channel(
             "_is_recreation": True,  # Hidden flag to stop recursion
             **kwargs,
         }
-        interceptor = _MTLSCallInterceptor()
+        interceptor = CertRotationInterceptor()
 
-        wrapper = _MTLSRefreshingChannel(target, factory_args, channel, cached_cert)
+        wrapper = MTLSRefreshingChannel(target, factory_args, channel, cached_cert)
 
         interceptor._wrapper = wrapper
         return grpc.intercept_channel(wrapper, interceptor)
@@ -401,19 +401,19 @@ class SslCredentials:
         return self._is_mtls
 
 
-class _MTLSCallInterceptor(
+class CertRotationInterceptor(
     grpc.UnaryUnaryClientInterceptor,
     grpc.UnaryStreamClientInterceptor,
     grpc.StreamUnaryClientInterceptor,
     grpc.StreamStreamClientInterceptor,
 ):
     """A gRPC client interceptor that provides automatic retry logic for mTLS certificate rotation.
-    
-    This interceptor wraps all gRPC client calls (unary and streaming) with retryable 
-    futures or iterators. Its primary role is to monitor responses for `UNAUTHENTICATED` 
-    errors. When an authentication failure occurs, it uses `_should_retry()` to check 
-    if a new mTLS certificate is available. If a new certificate is found, it signals 
-    its associated `_MTLSRefreshingChannel` wrapper to refresh the underlying gRPC 
+
+    This interceptor wraps all gRPC client calls (unary and streaming) with retryable
+    futures or iterators. Its primary role is to monitor responses for `UNAUTHENTICATED`
+    errors. When an authentication failure occurs, it uses `_should_retry()` to check
+    if a new mTLS certificate is available. If a new certificate is found, it signals
+    its associated `MTLSRefreshingChannel` wrapper to refresh the underlying gRPC
     channel's credentials and automatically replays the failed RPC.
     """
 
@@ -423,15 +423,17 @@ class _MTLSCallInterceptor(
 
     def _should_retry(self, code, retry_count, attempt_cert):
         """Determines if the RPC should be retried due to a certificate rotation.
-        
-         Returns a tuple: (should_retry, call_cert_bytes, call_key_bytes, passphrase).
-         """
+
+        Returns a tuple: (should_retry, call_cert_bytes, call_key_bytes, passphrase).
+        """
         if code != grpc.StatusCode.UNAUTHENTICATED or not self._wrapper:
             return False, None, None, None
 
         if retry_count >= self._max_retries:
             _LOGGER.debug(
-                "Max retries reached (%d/%d) for channel recreation.", retry_count, self._max_retries
+                "Max retries reached (%d/%d) for channel recreation.",
+                retry_count,
+                self._max_retries,
             )
             return False, None, None, None
 
@@ -483,7 +485,7 @@ class _MTLSCallInterceptor(
         )
 
 
-class _MTLSRefreshingChannel(grpc.Channel):
+class MTLSRefreshingChannel(grpc.Channel):
     def __init__(self, target, factory_args, initial_channel, initial_cert):
         self._target = target
         self._factory_args = factory_args
@@ -492,14 +494,14 @@ class _MTLSRefreshingChannel(grpc.Channel):
         self._lock = threading.Lock()
         self._subscribers = set()
 
-    def refresh_logic(self, count, call_cert_bytes=None, call_key_bytes=None, passphrase=None):
+    def refresh_logic(
+        self, count, call_cert_bytes=None, call_key_bytes=None, passphrase=None
+    ):
         with self._lock:
             if not call_cert_bytes or self._cached_cert == call_cert_bytes:
                 return
 
-            _LOGGER.debug(
-                "Wrapper: Refreshing mTLS channel. Retry count: %d", count
-            )
+            _LOGGER.debug("Wrapper: Refreshing mTLS channel. Retry count: %d", count)
             old_channel = self._channel
 
             if passphrase is not None:
@@ -630,14 +632,18 @@ _ClientCallDetails = collections.namedtuple(
     ("method", "timeout", "metadata", "credentials", "wait_for_ready"),
 )
 
+
 class _DeadlineExceededError(grpc.RpcError, grpc.Call):
     def __init__(self, details):
         super().__init__()
         self._details = details
+
     def code(self):
         return grpc.StatusCode.DEADLINE_EXCEEDED
+
     def details(self):
         return self._details
+
 
 class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
     def __init__(
@@ -698,7 +704,9 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
                 elapsed = time.monotonic() - self._start_time
                 remaining = self._initial_timeout - elapsed
                 if remaining <= 0:
-                    raise _DeadlineExceededError("Deadline Exceeded during retry resolution.")
+                    raise _DeadlineExceededError(
+                        "Deadline Exceeded during retry resolution."
+                    )
                 call_details = _ClientCallDetails(
                     method=call_details.method,
                     timeout=remaining,
@@ -742,7 +750,9 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
             if can_replay and should_retry:
                 if getattr(self._interceptor, "_wrapper", None):
                     try:
-                        self._interceptor._wrapper.refresh_logic(1, call_cert, call_key, pwd)
+                        self._interceptor._wrapper.refresh_logic(
+                            1, call_cert, call_key, pwd
+                        )
                     except Exception as e:
                         with self._lock:
                             self._terminal_exception = e
@@ -757,18 +767,23 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
                     self._terminal_exception = e
 
             if self._interceptor._wrapper:
-                chk_should_retry, chk_cert, chk_key, chk_pwd = self._interceptor._should_retry(
-                    status_code, 0, self._attempt_cert
-                )
+                (
+                    chk_should_retry,
+                    chk_cert,
+                    chk_key,
+                    chk_pwd,
+                ) = self._interceptor._should_retry(status_code, 0, self._attempt_cert)
                 if chk_should_retry:
                     try:
-                        self._interceptor._wrapper.refresh_logic(1, chk_cert, chk_key, chk_pwd)
+                        self._interceptor._wrapper.refresh_logic(
+                            1, chk_cert, chk_key, chk_pwd
+                        )
                     except Exception:
                         pass
         with self._lock:
             self._completion_event.set()
             callbacks_to_fire = list(self._done_callbacks)
-            
+
         for fn in callbacks_to_fire:
             try:
                 fn(self)
@@ -929,7 +944,9 @@ class _RetryableStreamResponseIterator(grpc.Call):
                 elapsed = time.monotonic() - self._start_time
                 remaining = self._initial_timeout - elapsed
                 if remaining <= 0:
-                    raise _DeadlineExceededError("Deadline Exceeded during retry resolution.")
+                    raise _DeadlineExceededError(
+                        "Deadline Exceeded during retry resolution."
+                    )
                 call_details = _ClientCallDetails(
                     method=call_details.method,
                     timeout=remaining,
@@ -959,9 +976,12 @@ class _RetryableStreamResponseIterator(grpc.Call):
             if self._call is not inner_call:
                 return
             # Intercept and suppress premature callbacks for UNAUTHENTICATED.
-            # __next__ inherently handles this error and manages triggering callbacks 
+            # __next__ inherently handles this error and manages triggering callbacks
             # later if retriies are exhausted.
-            if callable(getattr(inner_call, "code", None)) and inner_call.code() == grpc.StatusCode.UNAUTHENTICATED:
+            if (
+                callable(getattr(inner_call, "code", None))
+                and inner_call.code() == grpc.StatusCode.UNAUTHENTICATED
+            ):
                 return
         self._trigger_callbacks()
 
@@ -994,42 +1014,52 @@ class _RetryableStreamResponseIterator(grpc.Call):
                     )
                 )
 
-                should_retry, call_cert, call_key, pwd = self._interceptor._should_retry(
+                (
+                    should_retry,
+                    call_cert,
+                    call_key,
+                    pwd,
+                ) = self._interceptor._should_retry(
                     status_code,
                     self._retry_count,
                     getattr(self, "_attempt_cert", None),
                 )
 
-                if (
-                    not self._yielded_any_response
-                    and can_replay
-                    and should_retry
-                ):
+                if not self._yielded_any_response and can_replay and should_retry:
                     try:
                         if getattr(self._interceptor, "_wrapper", None):
-                            self._interceptor._wrapper.refresh_logic(1, call_cert, call_key, pwd)
-    
+                            self._interceptor._wrapper.refresh_logic(
+                                1, call_cert, call_key, pwd
+                            )
+
                         with self._lock:
                             self._retry_count += 1
                             self._start_call()
-                            
+
                     except Exception as fallback_e:
                         self._trigger_callbacks()
                         raise fallback_e
-                        
+
                     continue
                 else:
                     # Non-retryable error, check if another rotation happened while we were finishing
                     if getattr(self._interceptor, "_wrapper", None):
-                        chk_should_retry, chk_cert, chk_key, chk_pwd = self._interceptor._should_retry(
+                        (
+                            chk_should_retry,
+                            chk_cert,
+                            chk_key,
+                            chk_pwd,
+                        ) = self._interceptor._should_retry(
                             status_code, 0, getattr(self, "_attempt_cert", None)
                         )
                         if chk_should_retry:
                             try:
-                                self._interceptor._wrapper.refresh_logic(1, chk_cert, chk_key, chk_pwd)
+                                self._interceptor._wrapper.refresh_logic(
+                                    1, chk_cert, chk_key, chk_pwd
+                                )
                             except Exception:
-                                pass # Terminal anyway
-                                
+                                pass  # Terminal anyway
+
                     self._trigger_callbacks()
                     raise e
 
