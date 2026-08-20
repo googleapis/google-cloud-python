@@ -676,7 +676,9 @@ class AuthorizedSession(requests.Session):
                                     lambda: (call_cert_bytes, call_key_bytes)
                                 )
                             except Exception as e:
-                                _LOGGER.error("Failed to reconfigure mTLS channel: %s", e)
+                                _LOGGER.error(
+                                    "Failed to reconfigure mTLS channel: %s", e
+                                )
                                 raise exceptions.MutualTLSChannelError(
                                     "Failed to reconfigure mTLS channel"
                                 ) from e

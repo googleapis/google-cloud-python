@@ -461,11 +461,13 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
                                     )
                                 )
                             except Exception as e:
-                                _LOGGER.error("Failed to reconfigure mTLS channel: %s", e)
+                                _LOGGER.error(
+                                    "Failed to reconfigure mTLS channel: %s", e
+                                )
                                 raise exceptions.MutualTLSChannelError(
                                     "Failed to reconfigure mTLS channel"
                                 ) from e
-    
+
                         else:
                             _LOGGER.info(
                                 "Skipping reconfiguration of mTLS channel because the "
