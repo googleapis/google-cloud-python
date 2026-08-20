@@ -2991,6 +2991,16 @@ class RowIterator(HTTPIterator):
             create_bqstorage_client = False
             bqstorage_client = None
 
+        if _versions_helpers.PANDAS_GBQ_VERSIONS.is_delegation_supported:
+            client_info = getattr(
+                getattr(self.client, "_connection", None), "_client_info", None
+            )
+            if client_info:
+                ua = client_info.user_agent or ""
+                if "pandas-gbq" not in ua:
+                    version = _versions_helpers.PANDAS_GBQ_VERSIONS.installed_version
+                    client_info.user_agent = f"{ua} pandas-gbq/{version}".strip()
+
         with warnings.catch_warnings():
             warnings.filterwarnings(
                 "ignore",
