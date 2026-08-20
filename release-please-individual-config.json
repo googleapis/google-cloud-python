@@ -2,18 +2,6 @@
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": true,
   "packages": {
-    "packages/google-cloud-workloadidentity": {
-      "component": "google-cloud-workloadidentity",
-      "extra-files": [
-        "google/cloud/workloadidentity/gapic_version.py",
-        "google/cloud/workloadidentity_v1/gapic_version.py",
-        {
-          "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.cloud.workloadidentity.v1.json",
-          "type": "json"
-        }
-      ]
-    },
     "packages/google-cloud-ftp": {
       "component": "google-cloud-ftp",
       "extra-files": [
@@ -22,6 +10,36 @@
         {
           "jsonpath": "$.clientLibrary.version",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.ftp.v1.json",
+          "type": "json"
+        }
+      ]
+    },
+    "packages/google-cloud-sql": {
+      "component": "google-cloud-sql",
+      "extra-files": [
+        "google/cloud/sql/gapic_version.py",
+        "google/cloud/sql_v1/gapic_version.py",
+        "google/cloud/sql_v1beta4/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.sql.v1.json",
+          "type": "json"
+        },
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.sql.v1beta4.json",
+          "type": "json"
+        }
+      ]
+    },
+    "packages/google-cloud-workloadidentity": {
+      "component": "google-cloud-workloadidentity",
+      "extra-files": [
+        "google/cloud/workloadidentity/gapic_version.py",
+        "google/cloud/workloadidentity_v1/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.workloadidentity.v1.json",
           "type": "json"
         }
       ]
