@@ -462,7 +462,11 @@ def system(session, test_type):
             db_url = config.get("db", "default")
             session.install(*SQLALCHEMY_20_DEPENDENCIES)
             session.run(
-                "py.test", f"--dburi={db_url}", "--quiet", os.path.join("tests", "system"), *session.posargs
+                "py.test",
+                f"--dburi={db_url}",
+                "--quiet",
+                os.path.join("tests", "system"),
+                *session.posargs,
             )
         elif test_type == "compliance_14":
             compliance_test_14(session)
