@@ -11,4 +11,3 @@ exclude_lines =
     pragma: NO COVER
     # Ignore debug-only repr
     def __repr__
-
