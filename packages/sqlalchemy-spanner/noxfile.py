@@ -21,6 +21,7 @@ import os
 import pathlib
 import re
 import shutil
+import uuid
 
 import nox
 
@@ -180,7 +181,8 @@ def lint_setup_py(session):
 def compliance_test_14(session):
     """Run SQLAlchemy dialect compliance test suite."""
     config_file = os.environ.setdefault(
-        "SQLALCHEMY_SPANNER_CONFIG", f"test_compliance_14_{session.python}.cfg"
+        "SQLALCHEMY_SPANNER_CONFIG",
+        f"test_compliance_14_{session.python}_{uuid.uuid4().hex[:6]}.cfg",
     )
 
     # Check the value of `RUN_COMPLIANCE_TESTS` env var. It defaults to true.
@@ -233,7 +235,8 @@ def compliance_test_14(session):
 def compliance_test_20(session):
     """Run SQLAlchemy dialect compliance test suite."""
     config_file = os.environ.setdefault(
-        "SQLALCHEMY_SPANNER_CONFIG", f"test_compliance_20_{session.python}.cfg"
+        "SQLALCHEMY_SPANNER_CONFIG",
+        f"test_compliance_20_{session.python}_{uuid.uuid4().hex[:6]}.cfg",
     )
 
     # Check the value of `RUN_COMPLIANCE_TESTS` env var. It defaults to true.
@@ -327,7 +330,8 @@ def _migration_test(session):
     import shutil
 
     config_file = os.environ.setdefault(
-        "SQLALCHEMY_SPANNER_CONFIG", f"test_migration_{session.python}.cfg"
+        "SQLALCHEMY_SPANNER_CONFIG",
+        f"test_migration_{session.python}_{uuid.uuid4().hex[:6]}.cfg",
     )
 
     session.install(*MIGRATION_TEST_DEPENDENCIES)
@@ -426,7 +430,8 @@ def system(session, test_type):
     """Run SQLAlchemy dialect system test suite."""
 
     config_file = os.environ.setdefault(
-        "SQLALCHEMY_SPANNER_CONFIG", f"test_{test_type}_{session.python}.cfg"
+        "SQLALCHEMY_SPANNER_CONFIG",
+        f"test_{test_type}_{session.python}_{uuid.uuid4().hex[:6]}.cfg",
     )
 
     if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "") and not os.environ.get(

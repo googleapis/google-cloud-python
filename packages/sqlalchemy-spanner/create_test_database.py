@@ -142,7 +142,7 @@ def create_test_instance():
     # Format: sp_test_{timestamp_in_seconds}_{rand_hex3} (compliant with Spanner naming: ^[a-z][a-z0-9_]{1,29}$)
     creation_timestamp = time.time()
     timestamp_part = str(int(creation_timestamp))
-    rand_part = uuid.uuid4().hex[:3]
+    rand_part = uuid.uuid4().hex[:8]
     database_id = f"sp_test_{timestamp_part}_{rand_part}"
 
     try:
