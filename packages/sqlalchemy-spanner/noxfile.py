@@ -324,13 +324,17 @@ def _migration_test(session):
     import os
     import shutil
 
+    config_file = os.getenv("SQLALCHEMY_SPANNER_CONFIG", "test.cfg")
+
     session.install(*MIGRATION_TEST_DEPENDENCIES)
     session.install(".")
 
     session.run("python", "create_test_database.py")
 
     config = configparser.ConfigParser()
-    if os.path.exists("test.cfg"):
+    if os.path.exists(config_file):
+        config.read(config_file)
+    elif os.path.exists("test.cfg"):
         config.read("test.cfg")
     else:
         config.read("setup.cfg")
@@ -366,7 +370,9 @@ def _migration_test(session):
     os.remove("alembic.ini")
     shutil.rmtree("test_migration")
     session.run("python", "migration_test_cleanup.py", db_url)
-    if os.path.exists("test.cfg"):
+    if os.path.exists(config_file) and config_file != "setup.cfg":
+        os.remove(config_file)
+    elif os.path.exists("test.cfg"):
         os.remove("test.cfg")
 
 
