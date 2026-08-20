@@ -29,6 +29,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.ads.admanager_v1._compat import transcode_request
 from google.ads.admanager_v1.types import (
     child_publisher_messages,
     child_publisher_service,
@@ -642,21 +643,18 @@ class ChildPublisherServiceRestTransport(_BaseChildPublisherServiceRestTransport
             """
 
             http_options = _BaseChildPublisherServiceRestTransport._BaseBatchCreateChildPublishers._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_create_child_publishers(
                 request, metadata
             )
-            transcoded_request = _BaseChildPublisherServiceRestTransport._BaseBatchCreateChildPublishers._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseChildPublisherServiceRestTransport._BaseBatchCreateChildPublishers._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseChildPublisherServiceRestTransport._BaseBatchCreateChildPublishers._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseChildPublisherServiceRestTransport._BaseBatchCreateChildPublishers,
+                    "_BaseBatchCreateChildPublishers__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -803,21 +801,18 @@ class ChildPublisherServiceRestTransport(_BaseChildPublisherServiceRestTransport
             """
 
             http_options = _BaseChildPublisherServiceRestTransport._BaseBatchUpdateChildPublishers._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_update_child_publishers(
                 request, metadata
             )
-            transcoded_request = _BaseChildPublisherServiceRestTransport._BaseBatchUpdateChildPublishers._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseChildPublisherServiceRestTransport._BaseBatchUpdateChildPublishers._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseChildPublisherServiceRestTransport._BaseBatchUpdateChildPublishers._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseChildPublisherServiceRestTransport._BaseBatchUpdateChildPublishers,
+                    "_BaseBatchUpdateChildPublishers__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -963,21 +958,18 @@ class ChildPublisherServiceRestTransport(_BaseChildPublisherServiceRestTransport
             """
 
             http_options = _BaseChildPublisherServiceRestTransport._BaseCreateChildPublisher._get_http_options()
-
             request, metadata = self._interceptor.pre_create_child_publisher(
                 request, metadata
             )
-            transcoded_request = _BaseChildPublisherServiceRestTransport._BaseCreateChildPublisher._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseChildPublisherServiceRestTransport._BaseCreateChildPublisher._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseChildPublisherServiceRestTransport._BaseCreateChildPublisher._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseChildPublisherServiceRestTransport._BaseCreateChildPublisher,
+                    "_BaseCreateChildPublisher__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1120,17 +1112,18 @@ class ChildPublisherServiceRestTransport(_BaseChildPublisherServiceRestTransport
             """
 
             http_options = _BaseChildPublisherServiceRestTransport._BaseGetChildPublisher._get_http_options()
-
             request, metadata = self._interceptor.pre_get_child_publisher(
                 request, metadata
             )
-            transcoded_request = _BaseChildPublisherServiceRestTransport._BaseGetChildPublisher._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseChildPublisherServiceRestTransport._BaseGetChildPublisher._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseChildPublisherServiceRestTransport._BaseGetChildPublisher,
+                    "_BaseGetChildPublisher__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1273,17 +1266,18 @@ class ChildPublisherServiceRestTransport(_BaseChildPublisherServiceRestTransport
             """
 
             http_options = _BaseChildPublisherServiceRestTransport._BaseListChildPublishers._get_http_options()
-
             request, metadata = self._interceptor.pre_list_child_publishers(
                 request, metadata
             )
-            transcoded_request = _BaseChildPublisherServiceRestTransport._BaseListChildPublishers._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseChildPublisherServiceRestTransport._BaseListChildPublishers._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseChildPublisherServiceRestTransport._BaseListChildPublishers,
+                    "_BaseListChildPublishers__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1428,21 +1422,18 @@ class ChildPublisherServiceRestTransport(_BaseChildPublisherServiceRestTransport
             """
 
             http_options = _BaseChildPublisherServiceRestTransport._BaseUpdateChildPublisher._get_http_options()
-
             request, metadata = self._interceptor.pre_update_child_publisher(
                 request, metadata
             )
-            transcoded_request = _BaseChildPublisherServiceRestTransport._BaseUpdateChildPublisher._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseChildPublisherServiceRestTransport._BaseUpdateChildPublisher._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseChildPublisherServiceRestTransport._BaseUpdateChildPublisher._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseChildPublisherServiceRestTransport._BaseUpdateChildPublisher,
+                    "_BaseUpdateChildPublisher__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1652,17 +1643,18 @@ class ChildPublisherServiceRestTransport(_BaseChildPublisherServiceRestTransport
             """
 
             http_options = _BaseChildPublisherServiceRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseChildPublisherServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseChildPublisherServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseChildPublisherServiceRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1770,15 +1762,16 @@ class ChildPublisherServiceRestTransport(_BaseChildPublisherServiceRestTransport
             """
 
             http_options = _BaseChildPublisherServiceRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseChildPublisherServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseChildPublisherServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseChildPublisherServiceRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
