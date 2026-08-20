@@ -45,6 +45,11 @@ steps:
           TARGET_BUCKET=${_ZONAL_BUCKET} \
           bash cloudbuild/run_benchmark_tests.sh
 
+        # Upload JSON result report to Cloud Build bucket
+        if [ -f /tmp/bench_result.json ]; then
+          gcloud storage cp /tmp/bench_result.json "gs://${PROJECT_ID}_cloudbuild/build_results/result_${BUILD_ID}.json" || true
+        fi
+
         echo "=== [Cloud Build] Benchmark Complete ==="
         EOF
 
@@ -87,7 +92,27 @@ steps:
     waitFor:
       - "trigger-vm-benchmark"
 
-  # Step 3: Cleanup startup script metadata and temporary build source archive
+  # Step 3: Fetch JSON report and publish results to GitHub Checks Tab
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "publish-benchmark-results"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        mkdir -p /workspace/report
+        gcloud storage cp "gs://${PROJECT_ID}_cloudbuild/build_results/result_${BUILD_ID}.json" /workspace/report/bench_result.json 2>/dev/null || true
+        python3 packages/google-cloud-storage/cloudbuild/publish_check_run.py \
+          --result-file="/workspace/report/bench_result.json" \
+          --commit-sha="${COMMIT_SHA}" \
+          --build-id="${BUILD_ID}" \
+          --project-id="${PROJECT_ID}" \
+          --region="${LOCATION}" \
+          --vm-name="${_VM_NAME}" \
+          --zonal-bucket="${_ZONAL_BUCKET}"
+    waitFor:
+      - "monitor-benchmark-execution"
+
+  # Step 4: Cleanup startup script metadata and temporary build artifacts
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     id: "cleanup-metadata"
     entrypoint: "bash"
@@ -95,9 +120,10 @@ steps:
       - "-c"
       - |
         gcloud compute instances remove-metadata "${_VM_NAME}" --zone="${_ZONE}" --keys=startup-script || true
-        gcloud storage rm "gs://${PROJECT_ID}_cloudbuild/build_source/source_${BUILD_ID}.tar.gz" || true
+        gcloud storage rm "gs://${PROJECT_ID}_cloudbuild/build_source/source_${BUILD_ID}.tar.gz" 2>/dev/null || true
+        gcloud storage rm "gs://${PROJECT_ID}_cloudbuild/build_results/result_${BUILD_ID}.json" 2>/dev/null || true
     waitFor:
-      - "monitor-benchmark-execution"
+      - "publish-benchmark-results"
 
 timeout: "3600s"
 
