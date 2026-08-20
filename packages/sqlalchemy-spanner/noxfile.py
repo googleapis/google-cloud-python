@@ -346,7 +346,7 @@ def _migration_test(session):
     session.install(".")
 
     try:
-        session.run("python", "create_test_database.py")
+        session.run("python", "create_test_database.py", config_file)
 
         config = configparser.ConfigParser()
         if os.path.exists(config_file):
@@ -391,7 +391,9 @@ def _migration_test(session):
             shutil.rmtree("test_migration")
 
         if os.path.exists(config_file):
-            session.run("python", "drop_test_database.py", success_codes=[0, 1])
+            session.run(
+                "python", "drop_test_database.py", config_file, success_codes=[0, 1]
+            )
 
 
 @nox.session(python=ALL_PYTHON)
