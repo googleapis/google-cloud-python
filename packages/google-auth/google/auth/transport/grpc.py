@@ -617,9 +617,7 @@ class _ReplayableIteratorReader(object):
 
                 if self._parent._can_replay:
                     self._parent._buffer.append(val)
-                    if len(self._parent._buffer) > getattr(
-                        self._parent, "_max_items", 10000
-                    ):
+                    if len(self._parent._buffer) > self._parent._max_items:
                         self._parent._buffer.clear()
                         self._parent._can_replay = False
 
@@ -632,6 +630,14 @@ _ClientCallDetails = collections.namedtuple(
     ("method", "timeout", "metadata", "credentials", "wait_for_ready"),
 )
 
+class _DeadlineExceededError(grpc.RpcError, grpc.Call):
+    def __init__(self, details):
+        super().__init__()
+        self._details = details
+    def code(self):
+        return grpc.StatusCode.DEADLINE_EXCEEDED
+    def details(self):
+        return self._details
 
 class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
     def __init__(
@@ -692,7 +698,7 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
                 elapsed = time.monotonic() - self._start_time
                 remaining = self._initial_timeout - elapsed
                 if remaining <= 0:
-                    raise grpc.RpcError("Deadline Exceeded during retry resolution.")
+                    raise _DeadlineExceededError("Deadline Exceeded during retry resolution.")
                 call_details = _ClientCallDetails(
                     method=call_details.method,
                     timeout=remaining,
@@ -923,7 +929,7 @@ class _RetryableStreamResponseIterator(grpc.Call):
                 elapsed = time.monotonic() - self._start_time
                 remaining = self._initial_timeout - elapsed
                 if remaining <= 0:
-                    raise grpc.RpcError("Deadline Exceeded during retry resolution.")
+                    raise _DeadlineExceededError("Deadline Exceeded during retry resolution.")
                 call_details = _ClientCallDetails(
                     method=call_details.method,
                     timeout=remaining,
