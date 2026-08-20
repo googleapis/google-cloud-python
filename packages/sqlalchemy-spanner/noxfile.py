@@ -179,8 +179,9 @@ def lint_setup_py(session):
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS[0])
 def compliance_test_14(session):
     """Run SQLAlchemy dialect compliance test suite."""
-    config_file = f"test_compliance_test_14_{session.python}.cfg"
-    os.environ["SQLALCHEMY_SPANNER_CONFIG"] = config_file
+    config_file = os.environ.setdefault(
+        "SQLALCHEMY_SPANNER_CONFIG", f"test_compliance_14_{session.python}.cfg"
+    )
 
     # Check the value of `RUN_COMPLIANCE_TESTS` env var. It defaults to true.
     if os.environ.get("RUN_COMPLIANCE_TESTS", "true") == "false":
@@ -231,8 +232,9 @@ def compliance_test_14(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20)
 def compliance_test_20(session):
     """Run SQLAlchemy dialect compliance test suite."""
-    config_file = f"test_compliance_test_20_{session.python}.cfg"
-    os.environ["SQLALCHEMY_SPANNER_CONFIG"] = config_file
+    config_file = os.environ.setdefault(
+        "SQLALCHEMY_SPANNER_CONFIG", f"test_compliance_20_{session.python}.cfg"
+    )
 
     # Check the value of `RUN_COMPLIANCE_TESTS` env var. It defaults to true.
     if os.environ.get("RUN_COMPLIANCE_TESTS", "true") == "false":
@@ -324,56 +326,60 @@ def _migration_test(session):
     import os
     import shutil
 
-    config_file = os.getenv("SQLALCHEMY_SPANNER_CONFIG", "test.cfg")
+    config_file = os.environ.setdefault(
+        "SQLALCHEMY_SPANNER_CONFIG", f"test_migration_{session.python}.cfg"
+    )
 
     session.install(*MIGRATION_TEST_DEPENDENCIES)
     session.install(".")
 
-    session.run("python", "create_test_database.py")
+    try:
+        session.run("python", "create_test_database.py")
 
-    config = configparser.ConfigParser()
-    if os.path.exists(config_file):
-        config.read(config_file)
-    elif os.path.exists("test.cfg"):
-        config.read("test.cfg")
-    else:
-        config.read("setup.cfg")
-    db_url = config.get("db", "default")
+        config = configparser.ConfigParser()
+        if os.path.exists(config_file):
+            config.read(config_file)
+        else:
+            config.read("setup.cfg")
+        db_url = config.get("db", "default")
 
-    session.run("alembic", "init", "test_migration")
+        session.run("alembic", "init", "test_migration")
 
-    # setting testing configurations
-    os.remove("alembic.ini")
-    with open("alembic.ini", "w") as f:
-        f.write(ALEMBIC_CONF.format(db_url))
+        # setting testing configurations
+        if os.path.exists("alembic.ini"):
+            os.remove("alembic.ini")
+        with open("alembic.ini", "w") as f:
+            f.write(ALEMBIC_CONF.format(db_url))
 
-    session.run("alembic", "revision", "-m", "migration_for_test")
-    files = glob.glob("test_migration/versions/*.py")
+        session.run("alembic", "revision", "-m", "migration_for_test")
+        files = glob.glob("test_migration/versions/*.py")
 
-    # updating the upgrade-script code
-    with open(files[0], "rb") as f:
-        script_code = f.read().decode()
+        # updating the upgrade-script code
+        with open(files[0], "rb") as f:
+            script_code = f.read().decode()
 
-    script_code = script_code.replace(
-        """def upgrade() -> None:\n    pass""", UPGRADE_CODE
-    )
-    with open(files[0], "wb") as f:
-        f.write(script_code.encode())
+        script_code = script_code.replace(
+            """def upgrade() -> None:\n    pass""", UPGRADE_CODE
+        )
+        with open(files[0], "wb") as f:
+            f.write(script_code.encode())
 
-    os.remove("test_migration/env.py")
-    shutil.copyfile("test_migration_env.py", "test_migration/env.py")
+        if os.path.exists("test_migration/env.py"):
+            os.remove("test_migration/env.py")
+        shutil.copyfile("test_migration_env.py", "test_migration/env.py")
 
-    # running the test migration
-    session.run("alembic", "upgrade", "head")
+        # running the test migration
+        session.run("alembic", "upgrade", "head")
 
-    # clearing the migration data
-    os.remove("alembic.ini")
-    shutil.rmtree("test_migration")
-    session.run("python", "migration_test_cleanup.py", db_url)
-    if os.path.exists(config_file) and config_file != "setup.cfg":
-        os.remove(config_file)
-    elif os.path.exists("test.cfg"):
-        os.remove("test.cfg")
+    finally:
+        # clearing the migration data
+        if os.path.exists("alembic.ini"):
+            os.remove("alembic.ini")
+        if os.path.exists("test_migration"):
+            shutil.rmtree("test_migration")
+
+        if os.path.exists(config_file):
+            session.run("python", "drop_test_database.py", success_codes=[0, 1])
 
 
 @nox.session(python=ALL_PYTHON)
@@ -419,8 +425,9 @@ def unit(session, test_type):
 def system(session, test_type):
     """Run SQLAlchemy dialect system test suite."""
 
-    config_file = f"test_{test_type}_{session.python}.cfg"
-    os.environ["SQLALCHEMY_SPANNER_CONFIG"] = config_file
+    config_file = os.environ.setdefault(
+        "SQLALCHEMY_SPANNER_CONFIG", f"test_{test_type}_{session.python}.cfg"
+    )
 
     if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "") and not os.environ.get(
         "SPANNER_EMULATOR_HOST", ""

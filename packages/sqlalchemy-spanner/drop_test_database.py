@@ -55,14 +55,23 @@ def format_duration(seconds):
 def delete_test_database():
     """Delete the currently configured test database."""
     config = configparser.ConfigParser()
-    config_filename = os.getenv("SQLALCHEMY_SPANNER_CONFIG", "test.cfg")
-    if os.path.exists(config_filename):
-        config.read(config_filename)
+    config_env_val = os.getenv("SQLALCHEMY_SPANNER_CONFIG")
+    if config_env_val:
+        config_filename = config_env_val
+        if not os.path.exists(config_filename):
+            print(f"[Spanner DB] Config file {config_filename} specified in SQLALCHEMY_SPANNER_CONFIG does not exist. Skipping database drop.")
+            return
     elif os.path.exists("test.cfg"):
-        config.read("test.cfg")
+        config_filename = "test.cfg"
     else:
-        config.read("setup.cfg")
+        config_filename = "setup.cfg"
+
+    config.read(config_filename)
+
     db_url = config.get("db", "default")
+    if not db_url.startswith("spanner"):
+        print(f"[Spanner DB] Database URL {db_url} is not a Spanner URL. Skipping database drop.")
+        return
 
     instance_id = re.findall(r"instances(.*?)databases", db_url)
     database_id = re.findall(r"databases(.*?)$", db_url)
