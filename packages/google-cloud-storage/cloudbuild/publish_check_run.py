@@ -251,6 +251,9 @@ def main():
     )
 
     try:
+        out_dir = os.path.dirname(args.output_markdown)
+        if out_dir:
+            os.makedirs(out_dir, exist_ok=True)
         with open(args.output_markdown, "w", encoding="utf-8") as f:
             f.write(markdown_content)
         print(f"Saved benchmark summary to {args.output_markdown}")
