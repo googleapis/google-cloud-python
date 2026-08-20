@@ -642,10 +642,7 @@ def get_client_ssl_credentials(
     """
 
     # 1.  Attempt to retrieve X.509 Workload cert and key.
-    try:
-        cert, key = _get_workload_cert_and_key(certificate_config_path)
-    except exceptions.ClientCertError:
-        cert, key = None, None
+    cert, key = _get_workload_cert_and_key(certificate_config_path)
     if cert and key:
         return True, cert, key, None
 
@@ -820,7 +817,7 @@ def check_parameters_for_unauthorized_response(cached_cert):
     Returns:
         bytes: The client callback cert bytes.
         bytes: The client callback key bytes.
-        bytes/str: The passphrase for the key.
+        Optional[Union[bytes, str]]: The passphrase for the key.
         str: The base64-encoded SHA256 cached fingerprint.
         str: The base64-encoded SHA256 current cert fingerprint.
     """
