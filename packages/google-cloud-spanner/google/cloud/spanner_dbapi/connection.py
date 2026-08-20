@@ -90,6 +90,17 @@ class Connection:
         the read-only transaction is semantically the same, and only indicates that the read-only transaction
         should end a that a new one should be started when the next statement is executed.
 
+    :type data_boost_enabled: bool
+    :param data_boost_enabled: (Optional) Whether to enable DataBoost for
+        partitioned queries executed via this connection. Defaults to False.
+        Note that DataBoost is only supported for partitioned query execution.
+
+    :type auto_partition_mode: bool
+    :param auto_partition_mode: (Optional) Whether to enable auto partition mode
+        for queries executed via this connection. When True, queries on read-only
+        or autocommit connections are automatically partitioned and executed in parallel.
+        Defaults to False.
+
     **kwargs: Initial value for connection variables.
     """
 

@@ -141,7 +141,7 @@ _BOOL_MAP = {"true": True, "false": False}
 
 
 def _parse_bool(raw_val: str, var_name: str) -> bool:
-    cleaned = raw_val.strip().strip("'\"").lower()
+    cleaned = raw_val.strip().rstrip(";").strip().strip("'\"").lower()
     if cleaned not in _BOOL_MAP:
         raise ProgrammingError(
             f"Invalid value for {var_name}: '{raw_val}'. Expected TRUE or FALSE."

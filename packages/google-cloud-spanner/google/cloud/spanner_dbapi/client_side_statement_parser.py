@@ -48,13 +48,13 @@ RE_SET_DATA_BOOST_ENABLED = re.compile(
     r"^\s*(SET)\s+(DATA_BOOST_ENABLED)\s+(=)\s+(.+)", re.IGNORECASE
 )
 RE_SHOW_DATA_BOOST_ENABLED = re.compile(
-    r"^\s*(SHOW)\s+(VARIABLE)\s+(DATA_BOOST_ENABLED)\s*$", re.IGNORECASE
+    r"^\s*(SHOW)\s+(VARIABLE)\s+(DATA_BOOST_ENABLED)\s*;?\s*$", re.IGNORECASE
 )
 RE_SET_AUTO_PARTITION_MODE = re.compile(
     r"^\s*(SET)\s+(AUTO_PARTITION_MODE)\s+(=)\s+(.+)", re.IGNORECASE
 )
 RE_SHOW_AUTO_PARTITION_MODE = re.compile(
-    r"^\s*(SHOW)\s+(VARIABLE)\s+(AUTO_PARTITION_MODE)\s*$", re.IGNORECASE
+    r"^\s*(SHOW)\s+(VARIABLE)\s+(AUTO_PARTITION_MODE)\s*;?\s*$", re.IGNORECASE
 )
 
 

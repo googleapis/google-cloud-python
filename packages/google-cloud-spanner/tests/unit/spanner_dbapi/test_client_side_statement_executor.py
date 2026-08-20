@@ -75,6 +75,16 @@ class TestClientSideStatementExecutor(unittest.TestCase):
         self.assertIsNone(res)
         self.assertFalse(cursor.connection.data_boost_enabled)
 
+        stmt = classify_statement("SET DATA_BOOST_ENABLED = TRUE;")
+        res = execute(cursor, stmt)
+        self.assertIsNone(res)
+        self.assertTrue(cursor.connection.data_boost_enabled)
+
+        stmt = classify_statement("SET DATA_BOOST_ENABLED = 'FALSE';")
+        res = execute(cursor, stmt)
+        self.assertIsNone(res)
+        self.assertFalse(cursor.connection.data_boost_enabled)
+
         stmt = classify_statement("SET DATA_BOOST_ENABLED = INVALID")
         with self.assertRaises(ProgrammingError):
             execute(cursor, stmt)
@@ -96,6 +106,12 @@ class TestClientSideStatementExecutor(unittest.TestCase):
         self.assertEqual(rows[0][0], True)
         self.assertEqual(res.fields[0].name, "DATA_BOOST_ENABLED")
         self.assertEqual(res.fields[0].type_.code, TypeCode.BOOL)
+
+        stmt_semicolon = classify_statement("SHOW VARIABLE DATA_BOOST_ENABLED;")
+        res_semicolon = execute(cursor, stmt_semicolon)
+        rows_semicolon = list(res_semicolon)
+        self.assertEqual(len(rows_semicolon), 1)
+        self.assertEqual(rows_semicolon[0][0], True)
 
         cursor.connection.data_boost_enabled = False
         res = execute(cursor, stmt)
@@ -119,6 +135,16 @@ class TestClientSideStatementExecutor(unittest.TestCase):
         self.assertTrue(cursor.connection.auto_partition_mode)
 
         stmt = classify_statement("SET AUTO_PARTITION_MODE = FALSE")
+        res = execute(cursor, stmt)
+        self.assertIsNone(res)
+        self.assertFalse(cursor.connection.auto_partition_mode)
+
+        stmt = classify_statement("SET AUTO_PARTITION_MODE = TRUE;")
+        res = execute(cursor, stmt)
+        self.assertIsNone(res)
+        self.assertTrue(cursor.connection.auto_partition_mode)
+
+        stmt = classify_statement("SET AUTO_PARTITION_MODE = 'FALSE';")
         res = execute(cursor, stmt)
         self.assertIsNone(res)
         self.assertFalse(cursor.connection.auto_partition_mode)
