@@ -233,6 +233,11 @@ def main():
         help="Path to write markdown summary",
     )
     parser.add_argument(
+        "--pr-number",
+        default="",
+        help="GitHub Pull Request Number (optional)",
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Print markdown without posting to GitHub API",

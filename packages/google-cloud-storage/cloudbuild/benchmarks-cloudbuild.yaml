@@ -7,6 +7,7 @@ substitutions:
   _FILE_SIZE_MIB: "10240"
   _CHUNK_SIZE_KIB: "102400"
   _ZONAL_BUCKET: "shradhakatyal-read-bench-zb-us-west4-a"
+  _PR_NUMBER: ""
 
 steps:
   # Step 0: Package code and upload archive to Cloud Build storage bucket
@@ -104,6 +105,7 @@ steps:
         python3 packages/google-cloud-storage/cloudbuild/publish_check_run.py \
           --result-file="/workspace/report/bench_result.json" \
           --commit-sha="${COMMIT_SHA}" \
+          --pr-number="${_PR_NUMBER}" \
           --build-id="${BUILD_ID}" \
           --project-id="${PROJECT_ID}" \
           --region="${LOCATION}" \
