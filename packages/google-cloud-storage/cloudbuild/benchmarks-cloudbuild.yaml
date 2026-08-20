@@ -67,15 +67,15 @@ steps:
       - |
         echo "Streaming logs from VM ${_VM_NAME}..."
         START=0
-        for i in {1..90}; do
-          OUTPUT=$(gcloud compute instances get-serial-port-output "${_VM_NAME}" --zone="${_ZONE}" --start="${START}" 2>/dev/null || true)
-          if [ -n "$OUTPUT" ]; then
-            echo "$OUTPUT"
-            NEXT_START=$(echo "$OUTPUT" | grep -o 'Specify --start=[0-9]*' | tail -n 1 | cut -d'=' -f2 || true)
-            if [ -n "$NEXT_START" ]; then
-              START="$NEXT_START"
+        for i in $(seq 1 90); do
+          OUTPUT=$(gcloud compute instances get-serial-port-output "${_VM_NAME}" --zone="${_ZONE}" --start="$$START" 2>/dev/null || true)
+          if [ -n "$$OUTPUT" ]; then
+            echo "$$OUTPUT"
+            NEXT_START=$(echo "$$OUTPUT" | grep -o 'Specify --start=[0-9]*' | tail -n 1 | cut -d'=' -f2 || true)
+            if [ -n "$$NEXT_START" ]; then
+              START="$$NEXT_START"
             fi
-            if echo "$OUTPUT" | grep -q "=== \[Cloud Build\] Benchmark Complete ==="; then
+            if echo "$$OUTPUT" | grep -q "=== \[Cloud Build\] Benchmark Complete ==="; then
               echo "Benchmark run finished successfully!"
               exit 0
             fi
