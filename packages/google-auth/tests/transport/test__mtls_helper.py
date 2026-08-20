@@ -1913,6 +1913,9 @@ class TestIsMtlsEndpoint(object):
             b"https://storage.p.googleapis.com/b/my-bucket",
             urllib3.util.parse_url("https://pubsub.mtls.googleapis.com/v1"),
             urllib3.util.parse_url("https://storage.p.googleapis.com/b/my-bucket"),
+            "https://pubsub.mtls.googleapis.com.",
+            "https://storage.p.googleapis.com./b/my-bucket",
+            "https://mtls.googleapis.com.",
         ],
     )
     def test_is_mtls_endpoint_true(self, url):
@@ -1922,6 +1925,7 @@ class TestIsMtlsEndpoint(object):
         "url",
         [
             "https://storage.googleapis.com",
+            "https://storage.googleapis.com.",
             "https://storage.googleapis.com/bucket/mtls.googleapis.com",
             "https://logging.googleapis.com/v2/entries?filter=mtls.googleapis.com",
             "https://logging.googleapis.com/v2/entries?filter=mtls.sandbox.googleapis.com",
@@ -1938,6 +1942,7 @@ class TestIsMtlsEndpoint(object):
             urllib3.util.parse_url(
                 "https://storage.googleapis.com/bucket/mtls.googleapis.com"
             ),
+            "https://.",
             "",
             None,
             123,

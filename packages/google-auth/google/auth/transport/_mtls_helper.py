@@ -882,5 +882,8 @@ def is_mtls_endpoint(url: Optional[Union[str, bytes, Any]]) -> bool:
     if not hostname:
         return False
 
-    hostname = hostname.lower()
+    hostname = hostname.rstrip(".").lower()
+    if not hostname:
+        return False
+
     return hostname in _MTLS_EXACT_HOSTS or hostname.endswith(_MTLS_HOST_SUFFIXES)
