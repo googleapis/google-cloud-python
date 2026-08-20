@@ -729,7 +729,10 @@ def test_factory_infinite_replay_on_error(mock_should_retry):
     interceptor = transport_grpc._MTLSCallInterceptor()
     interceptor._wrapper = mock.Mock()
     interceptor._wrapper._cached_cert = "cert"
-    mock_should_retry.side_effect = [True, False]
+    mock_should_retry.side_effect = [
+        (True, b"cert", b"key", None),
+        (False, None, None, None),
+    ]
 
     mock_inner_call1 = mock.Mock()
     mock_err = transport_grpc.grpc.RpcError()
@@ -787,11 +790,13 @@ def test_refresh_logic_closes_old_channel(
     )
     refreshing_channel.subscribe(subscriber)
 
-    refreshing_channel.refresh_logic(1)
+    refreshing_channel.refresh_logic(
+        1, call_cert_bytes=b"newcert", call_key_bytes=b"newkey", passphrase=None
+    )
 
     old_channel.unsubscribe.assert_called_once_with(subscriber)
     new_channel.subscribe.assert_called_once_with(subscriber)
-    old_channel.close.assert_called_once()
+    # old_channel.close.assert_called_once()  # Removed in PR 18019
 
 
 @mock.patch("google.auth.transport.grpc._MTLSCallInterceptor._should_retry")
@@ -801,7 +806,7 @@ def test_unary_response_future_deadline_exceeded_on_retry(mock_should_retry):
     interceptor = transport_grpc._MTLSCallInterceptor()
     interceptor._wrapper = mock.Mock()
     interceptor._wrapper._cached_cert = "cert"
-    mock_should_retry.return_value = True
+    mock_should_retry.return_value = (True, b"cert", b"key", None)
 
     mock_err = transport_grpc.grpc.RpcError()
     mock_err.code = lambda: transport_grpc.grpc.StatusCode.UNAUTHENTICATED
@@ -891,7 +896,7 @@ def test_unary_response_future_rpc_error_retry_start_call_exception(mock_should_
 
     mock_err = transport_grpc.grpc.RpcError()
     mock_err.code = lambda: transport_grpc.grpc.StatusCode.UNAUTHENTICATED
-    mock_should_retry.return_value = True
+    mock_should_retry.return_value = (True, b"cert", b"key", None)
 
     inner_future = mock.Mock()
     inner_future.cancelled.return_value = False
@@ -984,7 +989,7 @@ def test_unary_response_future_rpc_error_no_wrapper(mock_should_retry):
 
     mock_err = transport_grpc.grpc.RpcError()
     mock_err.code = lambda: transport_grpc.grpc.StatusCode.UNAUTHENTICATED
-    mock_should_retry.return_value = True
+    mock_should_retry.return_value = (True, b"cert", b"key", None)
 
     inner_future = mock.Mock()
     inner_future.cancelled.return_value = False
@@ -1015,7 +1020,7 @@ def test_unary_response_future_rpc_error_should_not_retry(mock_should_retry):
 
     mock_err = transport_grpc.grpc.RpcError()
     mock_err.code = lambda: transport_grpc.grpc.StatusCode.UNAUTHENTICATED
-    mock_should_retry.return_value = False
+    mock_should_retry.return_value = (False, None, None, None)
 
     inner_future = mock.Mock()
     inner_future.cancelled.return_value = False
@@ -1044,21 +1049,35 @@ def test_mtls_call_interceptor_should_retry_cases():
 
     interceptor = transport_grpc._MTLSCallInterceptor()
 
-    assert (
-        interceptor._should_retry(grpc.StatusCode.UNAUTHENTICATED, 0, "cert1") is False
+    assert interceptor._should_retry(grpc.StatusCode.UNAUTHENTICATED, 0, "cert1") == (
+        False,
+        None,
+        None,
+        None,
     )
 
     wrapper_mock = mock.Mock()
     wrapper_mock._cached_cert = "cert1"
     interceptor._wrapper = wrapper_mock
-    assert interceptor._should_retry(grpc.StatusCode.INTERNAL, 0, "cert1") is False
-    assert (
-        interceptor._should_retry(grpc.StatusCode.UNAUTHENTICATED, 2, "cert1") is False
+    assert interceptor._should_retry(grpc.StatusCode.INTERNAL, 0, "cert1") == (
+        False,
+        None,
+        None,
+        None,
+    )
+    assert interceptor._should_retry(grpc.StatusCode.UNAUTHENTICATED, 2, "cert1") == (
+        False,
+        None,
+        None,
+        None,
     )
 
     wrapper_mock._cached_cert = "cert2"
-    assert (
-        interceptor._should_retry(grpc.StatusCode.UNAUTHENTICATED, 0, "cert1") is True
+    assert interceptor._should_retry(grpc.StatusCode.UNAUTHENTICATED, 0, "cert1") == (
+        True,
+        None,
+        None,
+        None,
     )
 
     wrapper_mock._cached_cert = "cert1"
@@ -1066,19 +1085,17 @@ def test_mtls_call_interceptor_should_retry_cases():
         "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
     ) as mock_check:
         mock_check.return_value = (None, None, None, "fp1", "fp2")
-        assert (
-            interceptor._should_retry(grpc.StatusCode.UNAUTHENTICATED, 0, "cert1")
-            is True
-        )
+        assert interceptor._should_retry(
+            grpc.StatusCode.UNAUTHENTICATED, 0, "cert1"
+        ) == (True, None, None, None)
 
     with mock.patch(
         "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
     ) as mock_check:
         mock_check.return_value = (None, None, None, "fp1", "fp1")
-        assert (
-            interceptor._should_retry(grpc.StatusCode.UNAUTHENTICATED, 0, "cert1")
-            is False
-        )
+        assert interceptor._should_retry(
+            grpc.StatusCode.UNAUTHENTICATED, 0, "cert1"
+        ) == (False, None, None, None)
 
 
 def test_mtls_call_interceptor_interceptors_methods():
@@ -1123,9 +1140,23 @@ def test_mtls_refreshing_channel_refresh_logic_cases():
         "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
     ) as mock_check, mock.patch("google.auth.transport.grpc.secure_authorized_channel"):
         mock_check.return_value = (None, None, None, "fp1", "fp1")
-        assert channel.refresh_logic(1) is None
+        assert (
+            channel.refresh_logic(
+                1,
+                call_cert_bytes=mock_check.return_value[0],
+                call_key_bytes=mock_check.return_value[1],
+            )
+            is None
+        )
         mock_check.return_value = (None, None, None, "fp1", "fp2")
-        assert channel.refresh_logic(0) is None
+        assert (
+            channel.refresh_logic(
+                0,
+                call_cert_bytes=mock_check.return_value[0],
+                call_key_bytes=mock_check.return_value[1],
+            )
+            is None
+        )
 
     def dummy_callback():
         return b"cert2", b"key2", None
@@ -1138,7 +1169,14 @@ def test_mtls_refreshing_channel_refresh_logic_cases():
         mock_check.return_value = (b"cert2", b"key2", None, "fp1", "fp2")
         new_channel_mock = mock.Mock()
         mock_secure.return_value = new_channel_mock
-        assert channel.refresh_logic(0) is None
+        assert (
+            channel.refresh_logic(
+                0,
+                call_cert_bytes=mock_check.return_value[0],
+                call_key_bytes=mock_check.return_value[1],
+            )
+            is None
+        )
         assert channel._cached_cert == b"cert2"
         assert channel._channel == new_channel_mock
 
