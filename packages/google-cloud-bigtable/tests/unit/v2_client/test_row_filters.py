@@ -15,6 +15,7 @@
 
 import pytest
 
+from google.cloud.bigtable import row_filters
 from google.cloud.bigtable.row_filters import (
     _BoolFilter as _BaseBoolFilter,
     _RegexFilter as _BaseRegexFilter,
@@ -1193,27 +1194,36 @@ def _ValueBitmaskPB(*args, **kw):
     return data_v2_pb2.ValueBitmask(*args, **kw)
 
 
-def test_row_filter_to_pb_backwards_compatibility():
-    from google.cloud.bigtable.row_filters import (
-        PassAllFilter,
-        RowKeyRegexFilter,
-        ValueBitmaskFilter,
-    )
-
-    pass_filter = PassAllFilter(True)
-    assert hasattr(pass_filter, "to_pb")
+@pytest.mark.parametrize(
+    "filter_instance",
+    [
+        row_filters.SinkFilter(True),
+        row_filters.PassAllFilter(True),
+        row_filters.BlockAllFilter(True),
+        row_filters.RowKeyRegexFilter(b"key.*"),
+        row_filters.RowSampleFilter(0.5),
+        row_filters.FamilyNameRegexFilter("fam.*"),
+        row_filters.ColumnQualifierRegexFilter(b"col.*"),
+        row_filters.TimestampRangeFilter(row_filters.TimestampRange()),
+        row_filters.ColumnRangeFilter("fam", start_column=b"a", end_column=b"b"),
+        row_filters.ValueRegexFilter(b"val.*"),
+        row_filters.ExactValueFilter(b"exact"),
+        row_filters.ValueRangeFilter(start_value=b"a", end_value=b"b"),
+        row_filters.ValueBitmaskFilter(b"mask"),
+        row_filters.CellsRowOffsetFilter(5),
+        row_filters.CellsRowLimitFilter(10),
+        row_filters.CellsColumnLimitFilter(2),
+        row_filters.StripValueTransformerFilter(True),
+        row_filters.ApplyLabelFilter("label"),
+        row_filters.RowFilterChain(filters=[row_filters.PassAllFilter(True)]),
+        row_filters.RowFilterUnion(filters=[row_filters.PassAllFilter(True)]),
+        row_filters.ConditionalRowFilter(base_filter=row_filters.PassAllFilter(True)),
+    ],
+)
+def test_all_row_filters_to_pb_backwards_compatibility(filter_instance):
+    assert hasattr(filter_instance, "to_pb")
     with pytest.deprecated_call():
-        assert pass_filter.to_pb() == pass_filter._to_pb()
-
-    regex_filter = RowKeyRegexFilter(b"row-.*")
-    assert hasattr(regex_filter, "to_pb")
-    with pytest.deprecated_call():
-        assert regex_filter.to_pb() == regex_filter._to_pb()
-
-    bitmask_filter = ValueBitmaskFilter(b"mask")
-    assert hasattr(bitmask_filter, "to_pb")
-    with pytest.deprecated_call():
-        assert bitmask_filter.to_pb() == bitmask_filter._to_pb()
+        assert filter_instance.to_pb() == filter_instance._to_pb()
 
 
 def test_timestamp_range_to_pb_backwards_compatibility():
