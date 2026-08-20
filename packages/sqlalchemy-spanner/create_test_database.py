@@ -160,5 +160,38 @@ def create_test_instance():
         json.dump({"database_id": database_id, "creation_time": creation_timestamp}, f)
 
 
-delete_stale_test_databases()
-create_test_instance()
+def main(argv):
+    config_filename = argv[0] if argv else os.getenv("SQLALCHEMY_SPANNER_CONFIG", "test.cfg")
+    os.environ["SQLALCHEMY_SPANNER_CONFIG"] = config_filename
+
+    delete_stale_test_databases()
+    create_test_instance()
+
+    instance_id = "sqlalchemy-dialect-test"
+    instance = CLIENT.instance(instance_id)
+
+    # Generate a session-isolated unique database ID within Spanner 30-char limit
+    # Format: sp_test_{timestamp_in_seconds}_{rand_hex8} (compliant with Spanner naming: ^[a-z][a-z0-9_]{1,29}$)
+    creation_timestamp = time.time()
+    timestamp_part = str(int(creation_timestamp))
+    rand_part = uuid.uuid4().hex[:8]
+    database_id = f"sp_test_{timestamp_part}_{rand_part}"
+
+    try:
+        database = instance.database(database_id)
+        created_op = database.create()
+        created_op.result(1800)
+    except AlreadyExists:
+        pass  # database was already created
+
+    set_test_config(PROJECT, instance_id, database_id)
+
+    # Record metadata for duration tracking on teardown
+    meta_path = os.path.join(os.path.dirname(__file__), ".db_session_info.json")
+    with open(meta_path, "w") as f:
+        json.dump({"database_id": database_id, "creation_time": creation_timestamp}, f)
+
+
+if __name__ == "__main__":
+    import sys
+    main(sys.argv[1:])

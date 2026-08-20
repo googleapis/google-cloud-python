@@ -107,4 +107,12 @@ def delete_test_database():
             pass
 
 
-delete_test_database()
+def main(argv):
+    config_filename = argv[0] if argv else os.getenv("SQLALCHEMY_SPANNER_CONFIG", "test.cfg")
+    os.environ["SQLALCHEMY_SPANNER_CONFIG"] = config_filename
+    delete_test_database()
+
+
+if __name__ == "__main__":
+    import sys
+    main(sys.argv[1:])

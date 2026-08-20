@@ -205,7 +205,7 @@ def compliance_test_14(session):
             *SQLALCHEMY_14_DEPENDENCIES,
             "--force-reinstall",
         )
-        session.run("python", "create_test_database.py")
+        session.run("python", "create_test_database.py", config_file)
         config = configparser.ConfigParser()
         config.read(config_file)
         db_url = config.get("db", "default")
@@ -226,9 +226,13 @@ def compliance_test_14(session):
         )
     finally:
         if os.path.exists(config_file):
-            session.run("python", "drop_test_database.py", success_codes=[0, 1])
+            session.run(
+                "python", "drop_test_database.py", config_file, success_codes=[0, 1]
+            )
         elif os.path.exists("test.cfg"):
-            session.run("python", "drop_test_database.py", success_codes=[0, 1])
+            session.run(
+                "python", "drop_test_database.py", "test.cfg", success_codes=[0, 1]
+            )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20)
@@ -254,7 +258,7 @@ def compliance_test_20(session):
     try:
         session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES)
         session.install("-e", ".", "--force-reinstall")
-        session.run("python", "create_test_database.py")
+        session.run("python", "create_test_database.py", config_file)
         config = configparser.ConfigParser()
         config.read(config_file)
         db_url = config.get("db", "default")
@@ -276,9 +280,13 @@ def compliance_test_20(session):
         )
     finally:
         if os.path.exists(config_file):
-            session.run("python", "drop_test_database.py", success_codes=[0, 1])
+            session.run(
+                "python", "drop_test_database.py", config_file, success_codes=[0, 1]
+            )
         elif os.path.exists("test.cfg"):
-            session.run("python", "drop_test_database.py", success_codes=[0, 1])
+            session.run(
+                "python", "drop_test_database.py", "test.cfg", success_codes=[0, 1]
+            )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION_FOR_SQLALCHEMY_20)
@@ -468,7 +476,7 @@ def system(session, test_type):
             session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES)
             session.install(".[tracing]")
             session.install(*SYSTEM_TEST_EXTERNAL_DEPENDENCIES)
-            session.run("python", "create_test_database.py")
+            session.run("python", "create_test_database.py", config_file)
             config = configparser.ConfigParser()
             config.read(config_file)
             db_url = config.get("db", "default")
@@ -490,9 +498,13 @@ def system(session, test_type):
             _migration_test(session)
     finally:
         if os.path.exists(config_file):
-            session.run("python", "drop_test_database.py", success_codes=[0, 1])
+            session.run(
+                "python", "drop_test_database.py", config_file, success_codes=[0, 1]
+            )
         elif os.path.exists("test.cfg"):
-            session.run("python", "drop_test_database.py", success_codes=[0, 1])
+            session.run(
+                "python", "drop_test_database.py", "test.cfg", success_codes=[0, 1]
+            )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
