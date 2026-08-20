@@ -186,6 +186,13 @@ class MutationsBatcher(object):
 
     Note on thread safety: The same :class:`MutationBatcher` cannot be shared by multiple end-user threads.
 
+    .. warning::
+
+       If using ``MutationsBatcher``, please ensure you are using
+       ``google-cloud-bigtable >= 2.42.0``, or consider migrating to the
+       batcher provided by the synchronous/asynchronous data client
+       (:mod:`google.cloud.bigtable.data`).
+
     :type table: class
     :param table: class:`~google.cloud.bigtable.table.Table`.
 
