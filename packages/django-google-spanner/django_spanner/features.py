@@ -71,6 +71,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     # Spanner does not support order by null modifiers.
     supports_order_by_nulls_modifier = False
     supports_any_value = True
+    supports_covering_indexes = True
     # Spanner does not support SELECTing an arbitrary expression that also
     # appears in the GROUP BY clause.
     supports_subqueries_in_group_by = False
@@ -214,6 +215,11 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         "many_to_one_null.tests.ManyToOneNullTests.test_set_clear_non_bulk",
         "many_to_one_null.tests.ManyToOneNullTests.test_unsaved",
         "foreign_object.tests.MultiColumnFKTests.test_prefetch_foreignobject_reverse",
+        # Indexes tests: Spanner uses STORING instead of PostgreSQL's INCLUDE syntax
+        # and does not support partial (WHERE) indexes. Upstream test assertions hardcode
+        # the literal string 'INCLUDE', causing string assertion failures against Spanner's STORING clause.
+        "indexes.tests.CoveringIndexTests.test_covering_index",
+        "indexes.tests.CoveringIndexTests.test_covering_partial_index",
         # Admin ChangeList tests
         "admin_changelist.tests.ChangeListTests.test_custom_lookup_in_search_fields",
         "admin_changelist.tests.ChangeListTests.test_deterministic_order_for_model_ordered_by_its_manager",

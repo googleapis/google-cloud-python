@@ -24,6 +24,7 @@ class TestFeatures(SpannerSimpleTestClass):
     def test_spanner_specific_feature_flags(self):
         features = DatabaseFeatures(self.connection)
         self.assertTrue(features.supports_any_value)
+        self.assertTrue(features.supports_covering_indexes)
         self.assertTrue(features.supports_stored_generated_columns)
         self.assertTrue(features.supports_composite_primary_keys)
         self.assertFalse(features.supports_subqueries_in_group_by)

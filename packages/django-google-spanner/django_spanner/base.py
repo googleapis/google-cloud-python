@@ -16,6 +16,7 @@ from .features import DatabaseFeatures
 from .introspection import DatabaseIntrospection
 from .operations import DatabaseOperations
 from .schema import DatabaseSchemaEditor
+from .version import __version__
 
 # Global cache for Spanner client to prevent multiple initializations
 # which can cause OpenTelemetry 'MeterProvider override' crashes.
@@ -160,7 +161,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
             "project": self._get_project_id(),
             "instance_id": self.settings_dict["INSTANCE"],
             "database_id": self.settings_dict["NAME"],
-            "user_agent": "django_spanner/2.2.0a1",
+            "user_agent": f"django_spanner/{__version__}",
             **self.settings_dict["OPTIONS"],
         }
 
