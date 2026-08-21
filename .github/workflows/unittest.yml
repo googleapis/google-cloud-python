@@ -78,7 +78,7 @@ jobs:
         PACKAGE_WEIGHTS: ${{ env.PACKAGE_WEIGHTS }}
       run: |
         if [ -n "$TARGET_BRANCH" ]; then
-          git fetch origin "$TARGET_BRANCH" || true
+          git fetch --no-tags --quiet origin "$TARGET_BRANCH" || true
         fi
         python3 ci/get_package_shards.py
 

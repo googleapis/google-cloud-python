@@ -25,7 +25,6 @@ from google.api_core.exceptions import (
     InvalidArgument,
     OutOfRange,
 )
-
 from google.cloud import spanner_v1 as spanner
 from google.cloud.spanner_dbapi import (
     _helpers,
@@ -308,6 +307,11 @@ class Cursor(object):
                         self._itr = PeekIterator(self._result_set)
             elif self.connection._batch_mode == BatchMode.DML:
                 self.connection.execute_batch_dml_statement(self._parsed_statement)
+            elif (
+                self._parsed_statement.statement_type == StatementType.QUERY
+                and self.connection.auto_partition_mode
+            ):
+                self._handle_auto_partition_query(sql, args or None)
             elif self.connection.read_only or (
                 not self.connection._client_transaction_started
                 and self._parsed_statement.statement_type == StatementType.QUERY
@@ -580,6 +584,27 @@ class Cursor(object):
                 self.connection._snapshot = snapshot
                 self.connection._transaction = None
                 self._handle_DQL_with_snapshot(snapshot, sql, params)
+
+    def _handle_auto_partition_query(self, sql, params):
+        if self.connection.database is None:
+            raise ValueError("Database needs to be passed for this operation")
+        if (
+            not self.connection.read_only
+            and self.connection._client_transaction_started
+        ):
+            raise ProgrammingError(
+                "Partitioned query is not supported, because the connection is in a read/write transaction."
+            )
+        sql, params = parse_utils.sql_pyformat_args_to_spanner(sql, params)
+        batch_snapshot = self.connection.database.batch_snapshot()
+        self._result_set = batch_snapshot.run_partitioned_query(
+            sql,
+            params=params,
+            param_types=get_param_types(params),
+            data_boost_enabled=self.connection.data_boost_enabled,
+        )
+        self._itr = self._result_set
+        self._row_count = None
 
     def __enter__(self):
         return self
