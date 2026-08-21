@@ -2,12 +2,7 @@ import os
 
 import proto
 
-<<<<<<< HEAD
-from google.cloud.bigtable.row_data import InvalidChunk, PartialRowData, PartialRowsData
-from google.cloud.bigtable.row_merger import _RowMerger
-=======
 from google.cloud.bigtable.row_data import PartialRowData
->>>>>>> 9ee40327a33 (feat: Rerouted ReadRows to data client (#1299))
 from google.cloud.bigtable_v2.types.bigtable import ReadRowsResponse
 
 

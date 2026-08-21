@@ -43,36 +43,26 @@ from google.cloud.bigtable.data.exceptions import (
     MutationsExceptionGroup,
     RetryExceptionGroup,
 )
-from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
 from google.cloud.bigtable.data.mutations import RowMutationEntry
+from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
 from google.cloud.bigtable.encryption_info import EncryptionInfo
 from google.cloud.bigtable.policy import Policy
-<<<<<<< HEAD
-from google.cloud.bigtable.row import AppendRow, ConditionalRow, DirectRow
+from google.cloud.bigtable.row import (
+    AppendRow,
+    ConditionalRow,
+    DirectRow,
+    PartialRowData,
+)
 from google.cloud.bigtable.row_data import (
     DEFAULT_RETRY_READ_ROWS,
     PartialRowsData,
 )
-from google.cloud.bigtable.row_set import RowRange, RowSet
+from google.cloud.bigtable.row_set import RowRange
 from google.cloud.bigtable_admin_v2 import BaseBigtableTableAdminClient
 from google.cloud.bigtable_admin_v2.types import (
-=======
-from google.cloud.bigtable.row import AppendRow
-from google.cloud.bigtable.row import ConditionalRow
-from google.cloud.bigtable.row import DirectRow
-from google.cloud.bigtable.row import PartialRowData
-from google.cloud.bigtable.row_data import PartialRowsData
-from google.cloud.bigtable.row_data import DEFAULT_RETRY_READ_ROWS
-from google.cloud.bigtable.row_set import RowRange
-from google.cloud.bigtable import enums
-from google.cloud.bigtable.admin import BigtableTableAdminClient
-from google.cloud.bigtable.admin.types import table as admin_messages_v2_pb2
-from google.cloud.bigtable.admin.types import (
->>>>>>> 9ee40327a33 (feat: Rerouted ReadRows to data client (#1299))
     bigtable_table_admin as table_admin_messages_v2_pb2,
 )
 from google.cloud.bigtable_admin_v2.types import table as admin_messages_v2_pb2
-from google.cloud.bigtable_v2.types import bigtable as data_messages_v2_pb2
 
 # Maximum number of mutations in bulk (MutateRowsRequest message):
 # (https://cloud.google.com/bigtable/docs/reference/data/rpc/
