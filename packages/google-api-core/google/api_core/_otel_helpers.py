@@ -50,9 +50,10 @@ def get_otel_grpc_interceptor(
         try:
             import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
 
+            tracer_provider = None
             if isinstance(client_options, dict):
                 tracer_provider = client_options.get("tracer_provider")
-            else:
+            elif client_options is not None:
                 tracer_provider = getattr(client_options, "tracer_provider", None)
 
             return otel_grpc.client_interceptor(tracer_provider=tracer_provider)
