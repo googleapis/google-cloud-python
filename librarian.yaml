@@ -85,25 +85,25 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: django-google-spanner
-    version: 5.0.0
+    version: 5.0.1
     python:
       library_type: INTEGRATION
   - name: gapic-generator
-    version: 1.38.0
+    version: 1.39.0
     python:
       library_type: CORE
   - name: gcp-sphinx-docfx-yaml
-    version: 3.3.1
+    version: 3.3.2
     python:
       library_type: OTHER
   - name: google-ads-admanager
-    version: 0.10.1
+    version: 0.10.2
     apis:
       - path: google/ads/admanager/v1
     python:
       default_version: v1
   - name: google-ads-datamanager
-    version: 0.9.1
+    version: 0.9.2
     apis:
       - path: google/ads/datamanager/v1
     python:
@@ -149,7 +149,7 @@ libraries:
       metadata_name_override: analyticsdata
       default_version: v1beta
   - name: google-api-core
-    version: 2.34.0
+    version: 2.35.0
     python:
       library_type: CORE
   - name: google-apps-card
@@ -161,7 +161,7 @@ libraries:
     python:
       default_version: v1
   - name: google-apps-chat
-    version: 0.10.4
+    version: 0.10.5
     apis:
       - path: google/chat/v1
     python:
@@ -242,15 +242,15 @@ libraries:
       metadata_name_override: area120tables
       default_version: v1alpha1
   - name: google-auth
-    version: 2.56.3
+    version: 2.57.0
     python:
       library_type: AUTH
   - name: google-auth-httplib2
-    version: 0.4.1
+    version: 0.4.2
     python:
       library_type: AUTH
   - name: google-auth-oauthlib
-    version: 1.4.0
+    version: 1.4.1
     python:
       library_type: AUTH
   - name: google-backstory
@@ -317,7 +317,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-alloydb
-    version: 0.11.0
+    version: 0.11.1
     apis:
       - path: google/cloud/alloydb/v1
       - path: google/cloud/alloydb/v1beta
@@ -455,7 +455,7 @@ libraries:
       metadata_name_override: assuredworkloads
       default_version: v1
   - name: google-cloud-audit-log
-    version: 0.6.1
+    version: 0.6.2
     apis:
       - path: google/cloud/audit
     python:
@@ -466,13 +466,13 @@ libraries:
       metadata_name_override: auditlog
       default_version: apiVersion
   - name: google-cloud-auditmanager
-    version: 0.3.0
+    version: 0.3.1
     apis:
       - path: google/cloud/auditmanager/v1
     python:
       default_version: v1
   - name: google-cloud-automl
-    version: 2.20.0
+    version: 2.20.1
     apis:
       - path: google/cloud/automl/v1
       - path: google/cloud/automl/v1beta1
@@ -558,7 +558,7 @@ libraries:
     python:
       default_version: v1beta
   - name: google-cloud-bigquery
-    version: 3.43.0
+    version: 3.44.0
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: bigquery
@@ -631,14 +631,14 @@ libraries:
       metadata_name_override: bigquerymigration
       default_version: v2
   - name: google-cloud-bigquery-reservation
-    version: 1.25.0
+    version: 1.26.0
     apis:
       - path: google/cloud/bigquery/reservation/v1
     python:
       metadata_name_override: bigqueryreservation
       default_version: v1
   - name: google-cloud-bigquery-storage
-    version: 2.40.0
+    version: 2.41.0
     apis:
       - path: google/cloud/bigquery/storage/v1
       - path: google/cloud/bigquery/storage/v1beta2
@@ -652,7 +652,7 @@ libraries:
       metadata_name_override: bigquerystorage
       default_version: v1
   - name: google-cloud-bigtable
-    version: 2.42.0
+    version: 2.43.0
     apis:
       - path: google/bigtable/v2
       - path: google/bigtable/admin/v2
@@ -699,7 +699,7 @@ libraries:
       metadata_name_override: binaryauthorization
       default_version: v1
   - name: google-cloud-build
-    version: 3.38.1
+    version: 3.39.0
     apis:
       - path: google/devtools/cloudbuild/v2
       - path: google/devtools/cloudbuild/v1
@@ -769,7 +769,7 @@ libraries:
       metadata_name_override: procurement
       default_version: v1
   - name: google-cloud-commerceproducer
-    version: 0.1.1
+    version: 0.1.2
     apis:
       - path: google/cloud/commerceproducer/v1beta
     copyright_year: "2026"
@@ -786,7 +786,7 @@ libraries:
       metadata_name_override: common
       default_version: apiVersion
   - name: google-cloud-compute
-    version: 1.50.0
+    version: 1.51.0
     preview:
       version: 1.51.0-preview.1
       apis:
@@ -797,7 +797,7 @@ libraries:
       metadata_name_override: compute
       default_version: v1
   - name: google-cloud-compute-v1beta
-    version: 0.12.1
+    version: 0.12.2
     apis:
       - path: google/cloud/compute/v1beta
     python:
@@ -870,7 +870,7 @@ libraries:
       metadata_name_override: contentwarehouse
       default_version: v1
   - name: google-cloud-core
-    version: 2.6.1
+    version: 2.7.0
     python:
       library_type: CORE
   - name: google-cloud-data-fusion
@@ -929,7 +929,7 @@ libraries:
       metadata_name_override: dataflow
       default_version: v1beta3
   - name: google-cloud-dataform
-    version: 0.11.2
+    version: 0.11.3
     apis:
       - path: google/cloud/dataform/v1
       - path: google/cloud/dataform/v1beta1
@@ -967,7 +967,7 @@ libraries:
       metadata_name_override: metastore
       default_version: v1
   - name: google-cloud-datastore
-    version: 2.26.0
+    version: 2.26.1
     apis:
       - path: google/datastore/v1
       - path: google/datastore/admin/v1
@@ -1062,7 +1062,7 @@ libraries:
       metadata_name_override: datamigration
       default_version: v1
   - name: google-cloud-dns
-    version: 0.37.0
+    version: 0.37.1
     python:
       library_type: REST
       issue_tracker_override: https://issuetracker.google.com/savedsearches/559772
@@ -1076,7 +1076,7 @@ libraries:
       metadata_name_override: documentai
       default_version: v1
   - name: google-cloud-documentai-toolbox
-    version: 0.17.2
+    version: 0.17.3
     python:
       library_type: OTHER
       metadata_name_override: documentai-toolbox
@@ -1110,7 +1110,7 @@ libraries:
       metadata_name_override: enterpriseknowledgegraph
       default_version: v1
   - name: google-cloud-error-reporting
-    version: 1.16.0
+    version: 1.16.1
     apis:
       - path: google/devtools/clouderrorreporting/v1beta1
     python:
@@ -1162,7 +1162,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-firestore
-    version: 2.28.1
+    version: 2.29.0
     apis:
       - path: google/firestore/v1
       - path: google/firestore/admin/v1
@@ -1298,7 +1298,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-iam
-    version: 2.24.1
+    version: 2.25.0
     apis:
       - path: google/iam/v3
       - path: google/iam/v2
@@ -1408,7 +1408,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-logging
-    version: 3.16.2
+    version: 3.16.3
     apis:
       - path: google/logging/v2
     python:
@@ -1500,7 +1500,7 @@ libraries:
       metadata_name_override: monitoring
       default_version: v3
   - name: google-cloud-monitoring-dashboards
-    version: 2.22.0
+    version: 3.0.0
     apis:
       - path: google/monitoring/dashboard/v1
     keep:
@@ -1524,7 +1524,7 @@ libraries:
           - python-gapic-namespace=google.cloud
       default_version: v1
   - name: google-cloud-ndb
-    version: 2.5.1
+    version: 2.6.0
     python:
       library_type: GAPIC_MANUAL
       metadata_name_override: python-ndb
@@ -1597,7 +1597,7 @@ libraries:
       metadata_name_override: optimization
       default_version: v1
   - name: google-cloud-oracledatabase
-    version: 0.6.1
+    version: 0.6.2
     apis:
       - path: google/cloud/oracledatabase/v1
     python:
@@ -1726,7 +1726,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-pubsub
-    version: 2.39.1
+    version: 2.39.2
     apis:
       - path: google/pubsub/v1
     python:
@@ -1758,7 +1758,7 @@ libraries:
       metadata_name_override: rapidmigrationassessment
       default_version: v1
   - name: google-cloud-recaptcha-enterprise
-    version: 1.32.0
+    version: 1.33.0
     apis:
       - path: google/cloud/recaptchaenterprise/v1
     python:
@@ -1802,7 +1802,7 @@ libraries:
       metadata_name_override: cloudresourcemanager
       default_version: v3
   - name: google-cloud-retail
-    version: 2.11.0
+    version: 2.12.0
     apis:
       - path: google/cloud/retail/v2
       - path: google/cloud/retail/v2beta
@@ -1818,7 +1818,7 @@ libraries:
       metadata_name_override: run
       default_version: v2
   - name: google-cloud-runtimeconfig
-    version: 0.37.0
+    version: 0.37.1
     python:
       library_type: GAPIC_MANUAL
       issue_tracker_override: https://issuetracker.google.com/savedsearches/559663
@@ -1958,7 +1958,7 @@ libraries:
       metadata_name_override: source
       default_version: v1
   - name: google-cloud-spanner
-    version: 3.69.1
+    version: 3.70.0
     apis:
       - path: google/spanner/v1
       - path: google/spanner/admin/instance/v1
@@ -2000,7 +2000,7 @@ libraries:
       metadata_name_override: speech
       default_version: v1
   - name: google-cloud-storage
-    version: 3.13.1
+    version: 3.14.0
     apis:
       - path: google/storage/v2
     python:
@@ -2012,7 +2012,7 @@ libraries:
       metadata_name_override: storage
       default_version: v2
   - name: google-cloud-storage-control
-    version: 1.13.0
+    version: 1.14.0
     apis:
       - path: google/storage/control/v2
     python:
@@ -2046,7 +2046,7 @@ libraries:
       metadata_name_override: storageinsights
       default_version: v1
   - name: google-cloud-support
-    version: 0.5.2
+    version: 0.5.3
     apis:
       - path: google/cloud/support/v2
       - path: google/cloud/support/v2beta
@@ -2078,7 +2078,7 @@ libraries:
     python:
       default_version: v1
   - name: google-cloud-testutils
-    version: 1.9.2
+    version: 1.9.3
     python:
       library_type: OTHER
       metadata_name_override: google-cloud-test-utils
@@ -2124,7 +2124,7 @@ libraries:
       metadata_name_override: translate
       default_version: v3
   - name: google-cloud-vectorsearch
-    version: 0.11.1
+    version: 0.11.2
     apis:
       - path: google/cloud/vectorsearch/v1
       - path: google/cloud/vectorsearch/v1beta
@@ -2285,7 +2285,7 @@ libraries:
           - python-gapic-name=developer_knowledge
       default_version: v1
   - name: google-devicesandservices-health
-    version: 0.1.1
+    version: 0.1.2
     apis:
       - path: google/devicesandservices/health/v4
     copyright_year: "2026"
@@ -2407,7 +2407,7 @@ libraries:
     python:
       default_version: v1
   - name: google-resumable-media
-    version: 2.10.1
+    version: 2.10.2
     python:
       library_type: CORE
       client_documentation_override: https://cloud.google.com/python/docs/reference/google-resumable-media/latest
@@ -2579,7 +2579,7 @@ libraries:
     python:
       default_version: apiVersion
   - name: googleapis-common-protos
-    version: 1.75.1
+    version: 1.75.2
     apis:
       - path: google/api
       - path: google/cloud
@@ -2621,11 +2621,11 @@ libraries:
       metadata_name_override: grpc-iam
       default_version: apiVersion
   - name: pandas-gbq
-    version: 0.35.1
+    version: 0.35.2
     python:
       library_type: INTEGRATION
   - name: proto-plus
-    version: 1.28.3
+    version: 1.28.4
     python:
       library_type: CORE
   - name: sqlalchemy-bigquery
@@ -2633,6 +2633,6 @@ libraries:
     python:
       library_type: INTEGRATION
   - name: sqlalchemy-spanner
-    version: 1.19.0
+    version: 1.20.0
     python:
       library_type: INTEGRATION
