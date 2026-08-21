@@ -833,10 +833,7 @@ class TestMutationsBatcher:
                 assert args[2] == batch
                 assert kwargs["operation_timeout"] == 17
                 assert kwargs["attempt_timeout"] == 13
-<<<<<<< ours
                 assert kwargs["metric"] == expected_metric
-=======
->>>>>>> theirs
                 assert result == []
 
     def test__execute_mutate_rows_returns_errors(self):
@@ -858,7 +855,7 @@ class TestMutationsBatcher:
             table.default_mutate_rows_retryable_errors = ()
             with self._make_one(table) as instance:
                 batch = [self._make_mutation(), self._make_mutation()]
-                result = instance._execute_mutate_rows(batch)
+                result = instance._execute_mutate_rows(batch, mock.Mock())
                 assert len(result) == 2
                 assert result[0] == err1
                 assert result[1] == err2
@@ -883,13 +880,10 @@ class TestMutationsBatcher:
             with self._make_one(table) as instance:
                 instance._user_batch_completed_callback = callback
                 batch = [self._make_mutation()]
-<<<<<<< ours
                 result = instance._execute_mutate_rows(batch, mock.Mock())
-=======
-                result = instance._execute_mutate_rows(batch)
                 callback.assert_called_once_with([status_pb2.Status(code=code_pb2.OK)])
                 assert start_operation.call_count == 1
-                (args, kwargs) = mutate_rows.call_args
+                args, kwargs = mutate_rows.call_args
                 assert args[0] == table.client._gapic_client
                 assert args[1] == table
                 assert args[2] == batch
@@ -899,11 +893,12 @@ class TestMutationsBatcher:
 
     def test__execute_mutate_rows_batch_completed_callback_errors(self):
         from google.api_core import exceptions
-        from google.cloud.bigtable.data.exceptions import (
-            MutationsExceptionGroup,
-            FailedMutationEntryError,
-        )
         from google.rpc import code_pb2, status_pb2
+
+        from google.cloud.bigtable.data.exceptions import (
+            FailedMutationEntryError,
+            MutationsExceptionGroup,
+        )
 
         with mock.patch.object(
             CrossSync._Sync_Impl._MutateRowsOperation, "start"
@@ -927,7 +922,7 @@ class TestMutationsBatcher:
                     self._make_mutation(),
                     self._make_mutation(),
                 ]
-                result = instance._execute_mutate_rows(batch)
+                result = instance._execute_mutate_rows(batch, mock.Mock())
                 callback.assert_called_once_with(
                     [
                         status_pb2.Status(code=code_pb2.OK),
@@ -939,7 +934,6 @@ class TestMutationsBatcher:
                         ),
                     ]
                 )
->>>>>>> theirs
                 assert len(result) == 2
                 assert result[0] == err1
                 assert result[1] == err2
