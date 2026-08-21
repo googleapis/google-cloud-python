@@ -17,44 +17,39 @@
 import warnings
 from typing import Set
 
-<<<<<<< HEAD
-from google.api_core import timeout
 from google.api_core.exceptions import (
     Aborted,
     DeadlineExceeded,
+    GoogleAPICallError,
     InternalServerError,
     NotFound,
-    RetryError,
     ServiceUnavailable,
 )
-=======
-from google.api_core.exceptions import GoogleAPICallError
-from google.api_core.exceptions import Aborted
-from google.api_core.exceptions import DeadlineExceeded
-from google.api_core.exceptions import NotFound
-from google.api_core.exceptions import ServiceUnavailable
-from google.api_core.exceptions import InternalServerError
->>>>>>> 8e1634b4aa9 (feat: Reworked MutateRows to use the data client (#1290))
 from google.api_core.gapic_v1.method import DEFAULT
 from google.api_core.retry import Retry, if_exception_type
 from google.cloud._helpers import _to_bytes  # type: ignore
+from google.rpc import code_pb2, status_pb2
 
 from google.cloud.bigtable import enums
 from google.cloud.bigtable.backup import Backup
-<<<<<<< HEAD
 from google.cloud.bigtable.batcher import (
     FLUSH_COUNT,
     MAX_MUTATION_SIZE,
     MutationsBatcher,
 )
 from google.cloud.bigtable.column_family import ColumnFamily, _gc_rule_from_pb
+from google.cloud.bigtable.data._helpers import TABLE_DEFAULT
+from google.cloud.bigtable.data.exceptions import (
+    MutationsExceptionGroup,
+    RetryExceptionGroup,
+)
+from google.cloud.bigtable.data.mutations import RowMutationEntry
 from google.cloud.bigtable.encryption_info import EncryptionInfo
 from google.cloud.bigtable.policy import Policy
 from google.cloud.bigtable.row import AppendRow, ConditionalRow, DirectRow
 from google.cloud.bigtable.row_data import (
     DEFAULT_RETRY_READ_ROWS,
     PartialRowsData,
-    _retriable_internal_server_error,
 )
 from google.cloud.bigtable.row_set import RowRange, RowSet
 from google.cloud.bigtable_admin_v2 import BaseBigtableTableAdminClient
@@ -63,35 +58,6 @@ from google.cloud.bigtable_admin_v2.types import (
 )
 from google.cloud.bigtable_admin_v2.types import table as admin_messages_v2_pb2
 from google.cloud.bigtable_v2.types import bigtable as data_messages_v2_pb2
-=======
-from google.cloud.bigtable.column_family import _gc_rule_from_pb
-from google.cloud.bigtable.column_family import ColumnFamily
-from google.cloud.bigtable.data._helpers import TABLE_DEFAULT
-from google.cloud.bigtable.data.exceptions import (
-    RetryExceptionGroup,
-    MutationsExceptionGroup,
-)
-from google.cloud.bigtable.data.mutations import RowMutationEntry
-from google.cloud.bigtable.batcher import MutationsBatcher
-from google.cloud.bigtable.batcher import FLUSH_COUNT, MAX_MUTATION_SIZE
-from google.cloud.bigtable.encryption_info import EncryptionInfo
-from google.cloud.bigtable.policy import Policy
-from google.cloud.bigtable.row import AppendRow
-from google.cloud.bigtable.row import ConditionalRow
-from google.cloud.bigtable.row import DirectRow
-from google.cloud.bigtable.row_data import PartialRowsData
-from google.cloud.bigtable.row_data import DEFAULT_RETRY_READ_ROWS
-from google.cloud.bigtable.row_set import RowSet
-from google.cloud.bigtable.row_set import RowRange
-from google.cloud.bigtable import enums
-from google.cloud.bigtable_v2.types import bigtable as data_messages_v2_pb2
-from google.cloud.bigtable.admin import BigtableTableAdminClient
-from google.cloud.bigtable.admin.types import table as admin_messages_v2_pb2
-from google.cloud.bigtable.admin.types import (
-    bigtable_table_admin as table_admin_messages_v2_pb2,
-)
-from google.rpc import code_pb2, status_pb2
->>>>>>> 8e1634b4aa9 (feat: Reworked MutateRows to use the data client (#1290))
 
 # Maximum number of mutations in bulk (MutateRowsRequest message):
 # (https://cloud.google.com/bigtable/docs/reference/data/rpc/
@@ -1180,136 +1146,6 @@ class Table(object):
         )
 
 
-<<<<<<< HEAD
-class _RetryableMutateRowsWorker(object):
-    """A callable worker that can retry to mutate rows with transient errors.
-
-    This class is a callable that can retry mutating rows that result in
-    transient errors. After all rows are successful or none of the rows
-    are retryable, any subsequent call on this callable will be a no-op.
-    """
-
-    def __init__(self, client, table_name, rows, app_profile_id=None, timeout=None):
-        self.client = client
-        self.table_name = table_name
-        self.rows = rows
-        self.app_profile_id = app_profile_id
-        self.responses_statuses = [None] * len(self.rows)
-        self.timeout = timeout
-
-    def __call__(self, retry=DEFAULT_RETRY):
-        """Attempt to mutate all rows and retry rows with transient errors.
-
-        Will retry the rows with transient errors until all rows succeed or
-        ``deadline`` specified in the `retry` is reached.
-
-        :rtype: list
-        :returns: A list of response statuses (`google.rpc.status_pb2.Status`)
-                  corresponding to success or failure of each row mutation
-                  sent. These will be in the same order as the ``rows``.
-        """
-        mutate_rows = self._do_mutate_retryable_rows
-        if retry:
-            mutate_rows = retry(self._do_mutate_retryable_rows)
-
-        try:
-            mutate_rows()
-        except (_BigtableRetryableError, RetryError):
-            # - _BigtableRetryableError raised when no retry strategy is used
-            #   and a retryable error on a mutation occurred.
-            # - RetryError raised when retry deadline is reached.
-            # In both cases, just return current `responses_statuses`.
-            pass
-
-        return self.responses_statuses
-
-    @staticmethod
-    def _is_retryable(status):
-        return status is None or status.code in RETRYABLE_CODES
-
-    def _do_mutate_retryable_rows(self):
-        """Mutate all the rows that are eligible for retry.
-
-        A row is eligible for retry if it has not been tried or if it resulted
-        in a transient error in a previous call.
-
-        :rtype: list
-        :return: The responses statuses, which is a list of
-                 :class:`~google.rpc.status_pb2.Status`.
-        :raises: One of the following:
-
-                 * :exc:`~.table._BigtableRetryableError` if any
-                   row returned a transient error.
-                 * :exc:`RuntimeError` if the number of responses doesn't
-                   match the number of rows that were retried
-        """
-        retryable_rows = []
-        index_into_all_rows = []
-        for index, status in enumerate(self.responses_statuses):
-            if self._is_retryable(status):
-                retryable_rows.append(self.rows[index])
-                index_into_all_rows.append(index)
-
-        if not retryable_rows:
-            # All mutations are either successful or non-retryable now.
-            return self.responses_statuses
-
-        entries = _compile_mutation_entries(self.table_name, retryable_rows)
-        data_client = self.client.table_data_client
-
-        kwargs = {}
-        if self.timeout is not None:
-            kwargs["timeout"] = timeout.ExponentialTimeout(deadline=self.timeout)
-
-        try:
-            responses = data_client.mutate_rows(
-                table_name=self.table_name,
-                entries=entries,
-                app_profile_id=self.app_profile_id,
-                retry=None,
-                **kwargs,
-            )
-        except RETRYABLE_MUTATION_ERRORS as exc:
-            # If an exception, considered retryable by `RETRYABLE_MUTATION_ERRORS`, is
-            # returned from the initial call, consider
-            # it to be retryable. Wrap as a Bigtable Retryable Error.
-            # For InternalServerError, it is only retriable if the message is related to RST Stream messages
-            if _retriable_internal_server_error(exc) or not isinstance(
-                exc, InternalServerError
-            ):
-                raise _BigtableRetryableError
-            else:
-                # re-raise the original exception
-                raise
-
-        num_responses = 0
-        num_retryable_responses = 0
-        for response in responses:
-            for entry in response.entries:
-                num_responses += 1
-                index = index_into_all_rows[entry.index]
-                self.responses_statuses[index] = entry.status
-                if self._is_retryable(entry.status):
-                    num_retryable_responses += 1
-                if entry.status.code == 0:
-                    self.rows[index].clear()
-
-        if len(retryable_rows) != num_responses:
-            raise RuntimeError(
-                "Unexpected number of responses",
-                num_responses,
-                "Expected",
-                len(retryable_rows),
-            )
-
-        if num_retryable_responses:
-            raise _BigtableRetryableError
-
-        return self.responses_statuses
-
-
-=======
->>>>>>> 8e1634b4aa9 (feat: Reworked MutateRows to use the data client (#1290))
 class ClusterState(object):
     """Representation of a Cluster State.
 
@@ -1456,74 +1292,3 @@ def _create_row_request(
         row_set._update_message_request(message)
 
     return message
-<<<<<<< HEAD
-
-
-def _compile_mutation_entries(table_name, rows):
-    """Create list of mutation entries
-
-    :type table_name: str
-    :param table_name: The name of the table to write to.
-
-    :type rows: list
-    :param rows: List or other iterable of :class:`.DirectRow` instances.
-
-    :rtype: List[:class:`data_messages_v2_pb2.MutateRowsRequest.Entry`]
-    :returns: entries corresponding to the inputs.
-    :raises: :exc:`~.table.TooManyMutationsError` if the number of mutations is
-             greater than the max ({})
-    """.format(_MAX_BULK_MUTATIONS)
-    entries = []
-    mutations_count = 0
-    entry_klass = data_messages_v2_pb2.MutateRowsRequest.Entry
-
-    for row in rows:
-        _check_row_table_name(table_name, row)
-        _check_row_type(row)
-        mutations = row._get_mutation_pbs()
-        entries.append(entry_klass(row_key=row.row_key, mutations=mutations))
-        mutations_count += len(mutations)
-
-    if mutations_count > _MAX_BULK_MUTATIONS:
-        raise TooManyMutationsError(
-            "Maximum number of mutations is %s" % (_MAX_BULK_MUTATIONS,)
-        )
-    return entries
-
-
-def _check_row_table_name(table_name, row):
-    """Checks that a row belongs to a table.
-
-    :type table_name: str
-    :param table_name: The name of the table.
-
-    :type row: :class:`~google.cloud.bigtable.row.Row`
-    :param row: An instance of :class:`~google.cloud.bigtable.row.Row`
-                subclasses.
-
-    :raises: :exc:`~.table.TableMismatchError` if the row does not belong to
-             the table.
-    """
-    if row.table is not None and row.table.name != table_name:
-        raise TableMismatchError(
-            "Row %s is a part of %s table. Current table: %s"
-            % (row.row_key, row.table.name, table_name)
-        )
-
-
-def _check_row_type(row):
-    """Checks that a row is an instance of :class:`.DirectRow`.
-
-    :type row: :class:`~google.cloud.bigtable.row.Row`
-    :param row: An instance of :class:`~google.cloud.bigtable.row.Row`
-                subclasses.
-
-    :raises: :class:`TypeError <exceptions.TypeError>` if the row is not an
-             instance of DirectRow.
-    """
-    if not isinstance(row, DirectRow):
-        raise TypeError(
-            "Bulk processing can not be applied for conditional or append mutations."
-        )
-=======
->>>>>>> 8e1634b4aa9 (feat: Reworked MutateRows to use the data client (#1290))
