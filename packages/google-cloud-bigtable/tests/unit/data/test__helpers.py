@@ -16,18 +16,12 @@ import grpc
 import mock
 import pytest
 from google.api_core import exceptions as core_exceptions
+from google.rpc import code_pb2, status_pb2
 
 import google.cloud.bigtable.data._helpers as _helpers
 import google.cloud.bigtable.data.exceptions as bt_exceptions
 from google.cloud.bigtable.data._helpers import TABLE_DEFAULT
 
-<<<<<<< ours
-=======
-from google.rpc import code_pb2, status_pb2
-
-import mock
-
->>>>>>> theirs
 
 class TestAttemptTimeoutGenerator:
     @pytest.mark.parametrize(
