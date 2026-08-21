@@ -579,7 +579,11 @@ class Table(object):
         :returns: The contents of the row if any chunks were returned in
                   the response, otherwise :data:`None`.
         """
-        attempt_timeout = retry.deadline if retry.deadline else TABLE_DEFAULT.READ_ROWS
+        attempt_timeout = (
+            getattr(retry, "deadline", None)
+            or getattr(retry, "_deadline", None)
+            or TABLE_DEFAULT.READ_ROWS
+        )
         row = self._table_impl.read_row(
             row_key,
             row_filter=filter_,
@@ -651,7 +655,11 @@ class Table(object):
         :returns: A :class:`.PartialRowsData` a generator for consuming
                   the streamed results.
         """
-        attempt_timeout = retry.deadline if retry.deadline else TABLE_DEFAULT.READ_ROWS
+        attempt_timeout = (
+            getattr(retry, "deadline", None)
+            or getattr(retry, "_deadline", None)
+            or TABLE_DEFAULT.READ_ROWS
+        )
         query = _create_row_request(
             start_key=start_key,
             end_key=end_key,
