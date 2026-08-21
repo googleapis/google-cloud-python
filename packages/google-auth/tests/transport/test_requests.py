@@ -16,6 +16,7 @@ import datetime
 import functools
 import http.client as http_client
 import os
+import threading
 from unittest import mock
 
 import freezegun
@@ -1146,3 +1147,38 @@ class TestMutualTlsOffloadAdapter(object):
 
         adapter.proxy_manager_for()
         mock_proxy_manager_for.assert_called_with(ssl_context=adapter._ctx_proxymanager)
+
+
+class TestAuthorizedSessionMTLSReauth:
+    @mock.patch(
+        "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+    )
+    @mock.patch("google.auth.transport.requests.requests.Session.request")
+    def test_reauth_lock_acquired_on_unauthorized(
+        self, mock_session_request, mock_check_params
+    ):
+        credentials = mock.Mock()
+        session = google.auth.transport.requests.AuthorizedSession(credentials)
+        session._is_mtls = True
+        session._cached_cert = b"cert"
+        mock_response = mock.Mock()
+        mock_response.status_code = http_client.UNAUTHORIZED
+        mock_session_request.return_value = mock_response
+        real_lock = threading.Lock()
+        session._reauth_lock = real_lock
+        mock_check_params.return_value = (
+            b"new_cert_bytes",
+            b"new_key_bytes",
+            "old_fingerprint",
+            "new_fingerprint",
+        )
+        lock_held_during_call = {"held": False}
+
+        def verify_lock_held(*args, **kwargs):
+            lock_held_during_call["held"] = real_lock.locked()
+
+        session.configure_mtls_channel = mock.Mock(side_effect=verify_lock_held)
+        session.request("GET", "https://example.mtls.googleapis.com/")
+
+        session.configure_mtls_channel.assert_called()
+        assert lock_held_during_call["held"] is True

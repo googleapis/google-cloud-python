@@ -14,6 +14,7 @@
 
 import http.client as http_client
 import os
+import threading
 from unittest import mock
 
 import pytest  # type: ignore
@@ -787,3 +788,34 @@ class TestAuthorizedHttp(object):
         assert not is_mtls
         assert not authed_http._is_mtls
         assert isinstance(authed_http.http, urllib3.PoolManager)
+
+
+class TestAuthorizedHttpMTLSReauth:
+    @mock.patch(
+        "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+    )
+    def test_reauth_lock_acquired_on_unauthorized(self, mock_check_params):
+        credentials = mock.Mock()
+        http_obj = google.auth.transport.urllib3.AuthorizedHttp(credentials)
+        http_obj._is_mtls = True
+        http_obj._cached_cert = b"cert"
+        mock_response = mock.Mock()
+        mock_response.status = http_client.UNAUTHORIZED
+        http_obj.http.urlopen = mock.Mock(return_value=mock_response)
+        real_lock = threading.Lock()
+        http_obj._reauth_lock = real_lock
+        mock_check_params.return_value = (
+            b"new_cert_bytes",
+            b"new_key_bytes",
+            "old_fingerprint",
+            "new_fingerprint",
+        )
+        lock_held_during_call = {"held": False}
+
+        def verify_lock_held(*args, **kwargs):
+            lock_held_during_call["held"] = real_lock.locked()
+
+        http_obj.configure_mtls_channel = mock.Mock(side_effect=verify_lock_held)
+        http_obj.request("GET", "https://example.mtls.googleapis.com/")
+        http_obj.configure_mtls_channel.assert_called()
+        assert lock_held_during_call["held"] is True
