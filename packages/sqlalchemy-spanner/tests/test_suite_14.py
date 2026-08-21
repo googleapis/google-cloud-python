@@ -25,9 +25,7 @@ from unittest import mock
 import pytest
 import sqlalchemy
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds
-from google.cloud import spanner_dbapi
 from google.cloud.spanner_v1 import Client, RequestOptions
-from google.cloud.sqlalchemy_spanner import version as sqlalchemy_spanner_version
 from sqlalchemy import (
     FLOAT,
     Boolean,
@@ -206,6 +204,8 @@ from sqlalchemy.testing.suite.test_update_delete import (
 )
 from sqlalchemy.types import Integer, Numeric, Text
 
+from google.cloud import spanner_dbapi
+from google.cloud.sqlalchemy_spanner import version as sqlalchemy_spanner_version
 from tests._helpers import get_db_url, get_project
 
 config.test_schema = ""
