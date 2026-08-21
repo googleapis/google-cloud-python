@@ -15,9 +15,12 @@
 """User-friendly container for Google Cloud Bigtable RowSet"""
 
 from google.cloud._helpers import _to_bytes
+
+from google.cloud.bigtable.data.read_rows_query import (
+    ReadRowsQuery,
+)
 from google.cloud.bigtable.data.read_rows_query import (
     RowRange as BaseRowRange,
-    ReadRowsQuery,
 )
 from google.cloud.bigtable.helpers import _MappableAttributesMixin
 
