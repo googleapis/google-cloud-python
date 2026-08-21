@@ -17,11 +17,6 @@ Helper functions used in various places in the library.
 
 from __future__ import annotations
 
-<<<<<<< ours
-=======
-from typing import cast, Callable, Sequence, List, Optional, Tuple, TYPE_CHECKING, Union
-import time
->>>>>>> theirs
 import enum
 import time
 from collections import namedtuple
@@ -33,6 +28,7 @@ from typing import (
     Sequence,
     Tuple,
     Union,
+    cast,
 )
 
 from google.api_core import exceptions as core_exceptions

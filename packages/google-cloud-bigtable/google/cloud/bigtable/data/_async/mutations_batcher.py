@@ -299,16 +299,10 @@ class MutationsBatcherAsync:
         self._newest_exceptions: deque[FailedMutationEntryError] = deque(
             maxlen=self._exception_list_limit
         )
-<<<<<<< ours
+        # only used by the shim right now.
         self._user_batch_completed_callback: (
             Callable[[list[status_pb2.Status]], Any] | None
         ) = None
-=======
-        # only used by the shim right now.
-        self._user_batch_completed_callback: Optional[
-            Callable[[list[status_pb2.Status]], None]
-        ] = None
->>>>>>> theirs
         # clean up on program exit
         atexit.register(self._on_exit)
 
@@ -392,19 +386,14 @@ class MutationsBatcherAsync:
             new_entries list of RowMutationEntry objects to flush
         """
         # flush new entries
-<<<<<<< ours
-        in_process_requests: list[CrossSync.Future[list[FailedMutationEntryError]]] = []
-        async for batch, metric in self._flow_control.add_to_flow_with_metrics(
-            new_entries, self._target.client._metrics
-        ):
-=======
         in_process_requests: list[
             tuple[
                 CrossSync.Future[list[FailedMutationEntryError]], list[RowMutationEntry]
             ]
         ] = []
-        async for batch in self._flow_control.add_to_flow(new_entries):
->>>>>>> theirs
+        async for batch, metric in self._flow_control.add_to_flow_with_metrics(
+            new_entries, self._target.client._metrics
+        ):
             batch_task = CrossSync.create_task(
                 self._execute_mutate_rows,
                 batch,
