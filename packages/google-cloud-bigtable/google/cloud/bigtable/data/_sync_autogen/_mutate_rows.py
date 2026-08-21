@@ -104,7 +104,6 @@ class _MutateRowsOperation:
 
         Raises:
             MutationsExceptionGroup: if any mutations failed"""
-<<<<<<< ours
         with self._operation_metric:
             try:
                 self._operation()
@@ -113,7 +112,7 @@ class _MutateRowsOperation:
                 for idx in incomplete_indices:
                     self._handle_entry_error(idx, exc)
             finally:
-                all_errors: list[Exception] = []
+                all_errors: list[bt_exceptions.FailedMutationEntryError] = []
                 for idx, exc_list in self.errors.items():
                     if len(exc_list) == 0:
                         raise core_exceptions.ClientError(
@@ -130,20 +129,6 @@ class _MutateRowsOperation:
                 if all_errors:
                     raise bt_exceptions.MutationsExceptionGroup(
                         all_errors, len(self.mutations)
-=======
-        try:
-            self._operation()
-        except Exception as exc:
-            incomplete_indices = self.remaining_indices.copy()
-            for idx in incomplete_indices:
-                self._handle_entry_error(idx, exc)
-        finally:
-            all_errors: list[bt_exceptions.FailedMutationEntryError] = []
-            for idx, exc_list in self.errors.items():
-                if len(exc_list) == 0:
-                    raise core_exceptions.ClientError(
-                        f"Mutation {idx} failed with no associated errors"
->>>>>>> theirs
                     )
 
     def _run_attempt(self):

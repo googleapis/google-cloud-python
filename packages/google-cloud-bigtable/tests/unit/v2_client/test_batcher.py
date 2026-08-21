@@ -13,13 +13,14 @@
 # limitations under the License.
 
 
+import time
+
 import mock
 import pytest
 
 from google.cloud.bigtable.batcher import (
     MutationsBatcher,
     MutationsBatchError,
-    _FlowControl,
 )
 from google.cloud.bigtable.row import DirectRow
 
@@ -33,10 +34,9 @@ TABLE_NAME = "/tables/" + TABLE_ID
 
 @pytest.fixture
 def _setup_batcher():
+    import google.cloud.bigtable.data._sync_autogen.mutations_batcher
     from google.cloud.bigtable.client import Client
     from google.cloud.bigtable.table import Table
-
-    import google.cloud.bigtable.data._sync_autogen.mutations_batcher
 
     client = Client(project=PROJECT, credentials=_make_credentials())
     instance = client.instance(INSTANCE_ID)
@@ -58,8 +58,10 @@ def _atexit_mock():
 
 
 def test_mutations_batcher_constructor(_setup_batcher, _atexit_mock):
-    from google.cloud.bigtable.batcher import MAX_OUTSTANDING_ELEMENTS
-    from google.cloud.bigtable.batcher import MAX_OUTSTANDING_BYTES
+    from google.cloud.bigtable.batcher import (
+        MAX_OUTSTANDING_BYTES,
+        MAX_OUTSTANDING_ELEMENTS,
+    )
 
     flush_count = 5
     flush_interval = 0.1
@@ -211,183 +213,6 @@ def test_mutations_batcher_context_manager_flushed_when_closed(_setup_batcher):
     operation_mock.assert_called_once()
 
 
-<<<<<<< ours
-@mock.patch("google.cloud.bigtable.batcher.threading.Timer")
-@mock.patch("google.cloud.bigtable.batcher.MutationsBatcher.flush")
-def test_mutations_batcher_flush_interval_does_not_start_timer(
-    mocked_flush, mocked_timer
-):
-    # ``flush_interval`` is accepted for backwards compatibility but no longer
-    # starts a background timer. Constructing the batcher must not create a
-    # timer or trigger a flush.
-    table = _Table(TABLE_NAME)
-    MutationsBatcher(table=table, flush_interval=0.5)
-
-    mocked_timer.assert_not_called()
-    mocked_flush.assert_not_called()
-
-
-def test_mutations_batcher_response_with_error_codes():
-    from google.rpc.status_pb2 import Status
-
-    mocked_response = [Status(code=1), Status(code=5)]
-
-    with mock.patch("tests.unit.v2_client.test_batcher._Table") as mocked_table:
-        table = mocked_table.return_value
-        mutation_batcher = MutationsBatcher(table=table)
-
-        row1 = DirectRow(row_key=b"row_key")
-        row2 = DirectRow(row_key=b"row_key")
-        table.mutate_rows.return_value = mocked_response
-
-        mutation_batcher.mutate_rows([row1, row2])
-        with pytest.raises(MutationsBatchError) as exc:
-            mutation_batcher.close()
-        assert exc.value.message == "Errors in batch mutations."
-        assert len(exc.value.exc) == 2
-
-        assert exc.value.exc[0].message == mocked_response[0].message
-        assert exc.value.exc[1].message == mocked_response[1].message
-
-
-def test_mutations_batcher_asynchronous_flush_exception_is_surfaced():
-    """An exception raised by the underlying ``mutate_rows`` call (e.g. a
-    non-retryable RPC error or a response-count mismatch) is raised inside the
-    async flush task. It must be captured and re-raised at ``close()`` rather
-    than being silently swallowed by the executor -- otherwise the failed
-    mutations are never reported to the user (silent data loss)."""
-    from google.api_core.exceptions import PermissionDenied
-
-    with mock.patch("tests.unit.v2_client.test_batcher._Table") as mocked_table:
-        table = mocked_table.return_value
-        # flush_count=2 forces the batch to flush asynchronously (through the
-        # executor) as soon as the second row is added
-        mutation_batcher = MutationsBatcher(table=table, flush_count=2)
-
-        row1 = DirectRow(row_key=b"row_key")
-        row1.set_cell("cf1", b"c1", b"1")
-        row2 = DirectRow(row_key=b"row_key")
-        row2.set_cell("cf1", b"c1", b"2")
-        table.mutate_rows.side_effect = PermissionDenied("denied")
-
-        mutation_batcher.mutate_rows([row1, row2])
-        with pytest.raises(MutationsBatchError) as exc:
-            mutation_batcher.close()
-        assert exc.value.message == "Errors in batch mutations."
-        # the whole batch (both rows) failed, so both are reported -- the error
-        # count stays aligned with the number of affected mutations
-        assert len(exc.value.exc) == 2
-        assert all(isinstance(e, PermissionDenied) for e in exc.value.exc)
-
-
-def test_batch_completed_callback_ignores_cancelled_future():
-    """A cancelled future is still "done", so the completion callback runs for
-    it, but ``future.exception()`` would raise ``CancelledError``. The callback
-    must short-circuit on a cancelled future instead of letting that propagate."""
-    from google.cloud.bigtable.batcher import _BatchInfo
-
-    table = _Table(TABLE_NAME)
-    with MutationsBatcher(table=table) as mutation_batcher:
-        batch_info = _BatchInfo(rows_count=2, mutations_count=2, mutations_size=0)
-
-        cancelled_future = mock.Mock()
-        cancelled_future.cancelled.return_value = True
-        cancelled_future.exception.side_effect = AssertionError(
-            "exception() must not be called on a cancelled future"
-        )
-        mutation_batcher.futures_mapping[cancelled_future] = batch_info
-
-        # Should not raise, should not record any exceptions
-        mutation_batcher._batch_completed_callback(cancelled_future)
-
-        assert cancelled_future not in mutation_batcher.futures_mapping
-        assert mutation_batcher.exceptions.qsize() == 0
-
-
-def test_mutations_batcher_close_surfaces_errors_when_final_flush_raises():
-    """If the final flush in ``close()`` raises, ``close()`` must still shut
-    down the executor and surface every accumulated error -- including ones
-    already captured from async flushes -- instead of letting the flush
-    exception mask them and abort cleanup (silent data loss)."""
-    from google.api_core.exceptions import PermissionDenied, ServiceUnavailable
-
-    with mock.patch("tests.unit.v2_client.test_batcher._Table") as mocked_table:
-        table = mocked_table.return_value
-        mutation_batcher = MutationsBatcher(table=table)
-
-        # Simulate an error already captured earlier (e.g. from an async flush).
-        prior_error = ServiceUnavailable("earlier async failure")
-        mutation_batcher.exceptions.put(prior_error)
-
-        # The row stays queued (below flush_count), so it is only flushed by
-        # close(); make that final flush raise.
-        row = DirectRow(row_key=b"row_key")
-        row.set_cell("cf1", b"c1", b"1")
-        mutation_batcher.mutate(row)
-        table.mutate_rows.side_effect = PermissionDenied("denied")
-
-        with pytest.raises(MutationsBatchError) as exc:
-            mutation_batcher.close()
-
-        # both the pre-existing and the flush-time errors are reported
-        assert prior_error in exc.value.exc
-        assert any(isinstance(e, PermissionDenied) for e in exc.value.exc)
-        # cleanup still ran despite the flush raising
-        assert mutation_batcher._executor._shutdown is True
-
-
-def test_flow_control_event_is_set_when_not_blocked():
-    flow_control = _FlowControl()
-
-    flow_control.set_flow_control_status()
-    assert flow_control.event.is_set()
-
-
-def test_flow_control_event_is_not_set_when_blocked():
-    flow_control = _FlowControl()
-
-    flow_control.inflight_mutations = flow_control.max_mutations
-    flow_control.inflight_size = flow_control.max_mutation_bytes
-
-    flow_control.set_flow_control_status()
-    assert not flow_control.event.is_set()
-
-
-@mock.patch("concurrent.futures.ThreadPoolExecutor.submit")
-def test_flush_async_batch_count(mocked_executor_submit):
-    table = _Table(TABLE_NAME)
-    mutation_batcher = MutationsBatcher(table=table, flush_count=2)
-
-    number_of_bytes = 1 * 1024 * 1024
-    max_value = b"1" * number_of_bytes
-    for index in range(5):
-        row = DirectRow(row_key=f"row_key_{index}")
-        row.set_cell("cf1", b"c1", max_value)
-        mutation_batcher.mutate(row)
-    mutation_batcher._flush_async()
-
-    # 3 batches submitted. 2 batches of 2 items, and the last one a single item batch.
-    assert mocked_executor_submit.call_count == 3
-
-
-class _Instance(object):
-    def __init__(self, client=None):
-        self._client = client
-
-
-class _Table(object):
-    def __init__(self, name, client=None):
-        self.name = name
-        self._instance = _Instance(client)
-        self.mutation_calls = 0
-
-    def mutate_rows(self, rows):
-        from google.rpc.status_pb2 import Status
-
-        self.mutation_calls += 1
-
-        return [Status(code=0) for _ in rows]
-=======
 def test_mutations_batcher_flush_interval(_setup_batcher):
     table, operation_mock = _setup_batcher
     flush_interval = 0.5
@@ -409,8 +234,11 @@ def test_mutations_batcher_flush_interval(_setup_batcher):
 
 def test_mutations_batcher_response_with_error_codes(_setup_batcher):
     from google.api_core import exceptions
-    from google.cloud.bigtable.data.exceptions import FailedMutationEntryError
-    from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+
+    from google.cloud.bigtable.data.exceptions import (
+        FailedMutationEntryError,
+        MutationsExceptionGroup,
+    )
 
     table, operation_mock = _setup_batcher
 
@@ -447,8 +275,11 @@ def test_mutations_batcher_response_with_error_codes(_setup_batcher):
 
 def test_mutations_batcher_response_with_error_codes_multiple_flushes(_setup_batcher):
     from google.api_core import exceptions
-    from google.cloud.bigtable.data.exceptions import FailedMutationEntryError
-    from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
+
+    from google.cloud.bigtable.data.exceptions import (
+        FailedMutationEntryError,
+        MutationsExceptionGroup,
+    )
 
     table, operation_mock = _setup_batcher
 
@@ -498,4 +329,3 @@ class _AtexitMock:
 
     def unregister(self, func):
         self._functions.remove(func)
->>>>>>> theirs
