@@ -1,0 +1,103 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.blockchainnodeengine_v1",
+  "protoPackage": "google.cloud.blockchainnodeengine.v1",
+  "schema": "1.0",
+  "services": {
+    "BlockchainNodeEngine": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "BlockchainNodeEngineClient",
+          "rpcs": {
+            "CreateBlockchainNode": {
+              "methods": [
+                "create_blockchain_node"
+              ]
+            },
+            "DeleteBlockchainNode": {
+              "methods": [
+                "delete_blockchain_node"
+              ]
+            },
+            "GetBlockchainNode": {
+              "methods": [
+                "get_blockchain_node"
+              ]
+            },
+            "ListBlockchainNodes": {
+              "methods": [
+                "list_blockchain_nodes"
+              ]
+            },
+            "UpdateBlockchainNode": {
+              "methods": [
+                "update_blockchain_node"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "BlockchainNodeEngineAsyncClient",
+          "rpcs": {
+            "CreateBlockchainNode": {
+              "methods": [
+                "create_blockchain_node"
+              ]
+            },
+            "DeleteBlockchainNode": {
+              "methods": [
+                "delete_blockchain_node"
+              ]
+            },
+            "GetBlockchainNode": {
+              "methods": [
+                "get_blockchain_node"
+              ]
+            },
+            "ListBlockchainNodes": {
+              "methods": [
+                "list_blockchain_nodes"
+              ]
+            },
+            "UpdateBlockchainNode": {
+              "methods": [
+                "update_blockchain_node"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "BlockchainNodeEngineClient",
+          "rpcs": {
+            "CreateBlockchainNode": {
+              "methods": [
+                "create_blockchain_node"
+              ]
+            },
+            "DeleteBlockchainNode": {
+              "methods": [
+                "delete_blockchain_node"
+              ]
+            },
+            "GetBlockchainNode": {
+              "methods": [
+                "get_blockchain_node"
+              ]
+            },
+            "ListBlockchainNodes": {
+              "methods": [
+                "list_blockchain_nodes"
+              ]
+            },
+            "UpdateBlockchainNode": {
+              "methods": [
+                "update_blockchain_node"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

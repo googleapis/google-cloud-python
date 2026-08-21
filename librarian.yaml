@@ -698,6 +698,13 @@ libraries:
     python:
       metadata_name_override: binaryauthorization
       default_version: v1
+  - name: google-cloud-blockchainnodeengine
+    version: 0.0.0
+    apis:
+      - path: google/cloud/blockchainnodeengine/v1
+    copyright_year: "2026"
+    python:
+      default_version: v1
   - name: google-cloud-build
     version: 3.38.1
     apis:
