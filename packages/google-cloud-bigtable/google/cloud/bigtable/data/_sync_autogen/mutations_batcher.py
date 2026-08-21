@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import atexit
 import concurrent.futures
+import logging
 import time
 import warnings
 from collections import deque
@@ -50,6 +51,7 @@ if TYPE_CHECKING:
     )
     from google.cloud.bigtable.data.mutations import RowMutationEntry
 _MB_SIZE = 1024 * 1024
+_LOGGER = logging.getLogger(__name__)
 
 
 @CrossSync._Sync_Impl.add_mapping_decorator("_FlowControl")
@@ -361,7 +363,7 @@ class MutationsBatcher:
             list[FailedMutationEntryError]:
                 list of FailedMutationEntryError objects for mutations that failed.
                 FailedMutationEntryError objects will not contain index information"""
-        statuses = [status_pb2.Status(code=code_pb2.Code.UNKNOWN)] * len(batch)
+        statuses = [status_pb2.Status(code=code_pb2.UNKNOWN) for _ in range(len(batch))]
         try:
             operation = CrossSync._Sync_Impl._MutateRowsOperation(
                 self._target.client._gapic_client,
@@ -379,11 +381,16 @@ class MutationsBatcher:
                 subexc.index = None
             return list(e.exceptions)
         else:
-            statuses = [status_pb2.Status(code=code_pb2.Code.OK)] * len(batch)
+            statuses = [status_pb2.Status(code=code_pb2.OK) for _ in range(len(batch))]
         finally:
             self._flow_control.remove_from_flow(batch)
             if self._user_batch_completed_callback:
-                self._user_batch_completed_callback(statuses)
+                try:
+                    self._user_batch_completed_callback(statuses)
+                except Exception as exc:
+                    _LOGGER.warning(
+                        f"Exception raised in user batch completion callback: {exc}"
+                    )
         return []
 
     def _add_exceptions(self, excs: list[Exception]):
