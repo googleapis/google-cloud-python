@@ -35,7 +35,7 @@ from typing import (
 )
 
 import google.protobuf
-from google.api_core import _feature_gating_helpers, gapic_v1
+from google.api_core import _feature_gating_helpers, _otel_helpers, gapic_v1
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
@@ -746,19 +746,11 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
             # Resolve interceptors for gRPC
             interceptors = None
             if transport_init is SecretManagerServiceGrpcTransport:
-                is_tracing_enabled = _feature_gating_helpers.resolve_feature_flags(
-                    env_var="GOOGLE_CLOUD_PYTHON_TRACING_ENABLED",
-                    feature_key="tracer_provider",
-                    configuration=self._client_options,
+                otel_interceptor = _otel_helpers.get_otel_grpc_interceptor(
+                    self._client_options
                 )
-                if is_tracing_enabled:
-                    try:
-                        import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
-                        tracer_provider = getattr(self._client_options, "tracer_provider", None)
-                        interceptor = otel_grpc.client_interceptor(tracer_provider=tracer_provider)
-                        interceptors = [interceptor]
-                    except ImportError:
-                        pass
+                if otel_interceptor:
+                    interceptors = [otel_interceptor]
 
             # initialize with the provided callable or the passed in class
             transport_kwargs = {
