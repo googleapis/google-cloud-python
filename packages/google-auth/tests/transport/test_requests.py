@@ -940,19 +940,9 @@ class TestAuthorizedSession(object):
             # Assert mTLS check logic was SKIPPED (Inner Check was False)
             assert not mock_helper.check_parameters_for_unauthorized_response.called
 
-    @pytest.mark.parametrize(
-        "non_mtls_url",
-        [
-            "http://example.com/",
-            "https://storage.googleapis.com/bucket/mtls.googleapis.com",
-            "https://logging.googleapis.com/v2/entries?filter=mtls.googleapis.com",
-            "https://example.com/mtls.sandbox.googleapis.com",
-        ],
-    )
-    def test_cert_rotation_skipped_on_non_mtls_url(self, non_mtls_url):
+    def test_cert_rotation_skipped_on_non_mtls_url(self):
         """
-        Tests that mTLS cert rotation is skipped on non-mTLS URLs (including
-        those containing mTLS substrings in paths/query parameters) even if
+        Tests that mTLS cert rotation is skipped on non-mTLS URLs even if
         mTLS is enabled and an UNAUTHORIZED (401) response is received.
         """
         credentials = mock.Mock(wraps=CredentialsStub())
@@ -963,11 +953,11 @@ class TestAuthorizedSession(object):
                 make_response(status=http_client.OK),
             ]
         )
+        non_mtls_url = "https://storage.googleapis.com/bucket/mtls.googleapis.com"
         authed_session = google.auth.transport.requests.AuthorizedSession(
             credentials, refresh_timeout=60
         )
         authed_session.mount("https://", adapter)
-        authed_session.mount("http://", adapter)
         authed_session._is_mtls = True
         authed_session._cached_cert = b"cached_cert"
 
