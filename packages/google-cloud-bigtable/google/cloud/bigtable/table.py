@@ -808,9 +808,10 @@ class Table(object):
                 mut_exc_group, len(mutation_entries)
             )
         else:
-            return_statuses = [status_pb2.Status(code=code_pb2.Code.OK)] * len(
-                mutation_entries
-            )
+            return_statuses = [
+                status_pb2.Status(code=code_pb2.OK)
+                for _ in range(len(mutation_entries))
+            ]
 
         return return_statuses
 
