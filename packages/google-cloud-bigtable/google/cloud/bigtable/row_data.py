@@ -14,9 +14,16 @@
 
 """Container for Google Cloud Bigtable Cells and Streaming Row Contents."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, Generator
+
 from google.api_core import exceptions, retry
 
 from google.cloud.bigtable.row import Cell, InvalidChunk, PartialRowData
+
+if TYPE_CHECKING:
+    from google.cloud.bigtable.data.row import Row
 
 # Some classes need to be re-exported here to keep backwards
 # compatibility. Those classes were moved to row_merger, but we dont want to
@@ -75,7 +82,13 @@ class PartialRowsData(object):
     :param generator: The `Row` iterator from :meth:`Table.read_rows`.
     """
 
-    def __init__(self, *args, generator=None, **kwargs):
+    def __init__(
+        self,
+        *args: Any,
+        generator: Generator[Row, Any, Any] | None = None,
+        **kwargs: Any,
+    ) -> None:
+        self._generator: Generator[Row, Any, Any]
         if generator is not None and not args and not kwargs:
             self._generator = generator
         else:
@@ -90,10 +103,12 @@ class PartialRowsData(object):
             )
             self._generator = (x for x in ())
 
-        self.rows = {}
+        self.rows: dict[bytes, PartialRowData] = {}
 
     @classmethod
-    def _from_generator(cls, generator):
+    def _from_generator(
+        cls, generator: Generator[Row, Any, Any]
+    ) -> PartialRowsData:
         """Internal constructor for Table.read_rows."""
         return cls(generator=generator)
 
