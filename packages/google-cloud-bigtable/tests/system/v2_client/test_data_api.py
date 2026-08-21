@@ -275,50 +275,12 @@ def test_table_mutate_rows(data_table, rows_to_delete):
     assert row2_data.cells[COLUMN_FAMILY_ID1][COL_NAME1][0].value == CELL_VAL4
 
 
-<<<<<<< HEAD
-def _add_test_error_handler(retry):
-    """Overwrites the current on_error function to assert that backoff values are within expected bounds."""
-    import time
-
-    curr_time = time.monotonic()
-    times_triggered = 0
-
-    # Assert that the retry handler works properly.
-    def test_error_handler(exc):
-        nonlocal curr_time, times_triggered
-        next_time = time.monotonic()
-        if times_triggered >= 1:
-            gap = next_time - curr_time
-
-            # Exponential backoff = uniform randomness from 0 to max_gap
-            max_gap = min(
-                retry._initial * retry._multiplier**times_triggered,
-                retry._maximum,
-            )
-            # Allow a small tolerance margin (1.0s) for OS sleep scheduling latency
-            assert gap <= max_gap + 1.0
-        times_triggered += 1
-        curr_time = next_time
-
-    retry._on_error = test_error_handler
-
-
-def test_table_mutate_rows_retries_timeout(data_table, rows_to_delete):
-    import copy
-
-    import mock
-    from google.api_core import retry as retries
-    from google.api_core.exceptions import InvalidArgument
-=======
 def test_table_mutate_rows_retries_timeout(data_table, rows_to_delete):
     import mock
-    from google.cloud.bigtable_v2 import MutateRowsResponse
-    from google.cloud.bigtable.table import DEFAULT_RETRY
->>>>>>> 8e1634b4aa9 (feat: Reworked MutateRows to use the data client (#1290))
     from google.rpc.code_pb2 import Code
     from google.rpc.status_pb2 import Status
 
-    from google.cloud.bigtable.table import DEFAULT_RETRY, _BigtableRetryableError
+    from google.cloud.bigtable.table import DEFAULT_RETRY
     from google.cloud.bigtable_v2 import MutateRowsResponse
 
     # Simulate a server error on row 2, and a normal response on row 1, followed by a bunch of error
@@ -507,13 +469,7 @@ def test_table_mutate_rows_integers(data_table, rows_to_delete):
 
 
 def test_table_mutate_rows_input_errors(data_table, rows_to_delete):
-<<<<<<< HEAD
-    from google.api_core.exceptions import InvalidArgument
-
-    from google.cloud.bigtable.table import _MAX_BULK_MUTATIONS, TooManyMutationsError
-=======
     from google.cloud.bigtable.table import _MAX_BULK_MUTATIONS
->>>>>>> 8e1634b4aa9 (feat: Reworked MutateRows to use the data client (#1290))
 
     row = data_table.direct_row(ROW_KEY)
     rows_to_delete.append(row)
