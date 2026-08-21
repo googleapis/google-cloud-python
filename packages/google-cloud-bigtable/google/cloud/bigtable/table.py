@@ -666,7 +666,7 @@ class Table(object):
             attempt_timeout=attempt_timeout,
             retryable_errors=TABLE_DEFAULT.READ_ROWS,
         )
-        return PartialRowsData(generator)
+        return PartialRowsData._from_generator(generator)
 
     def yield_rows(self, **kwargs):
         """Read rows from this table.

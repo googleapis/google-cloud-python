@@ -457,10 +457,10 @@ def test_partial_cell_data():
     assert instance.value == added_value + added_value
 
 
-def _make_partial_rows_data(*args, **kwargs):
+def _make_partial_rows_data(generator):
     from google.cloud.bigtable.row_data import PartialRowsData
 
-    return PartialRowsData(*args, **kwargs)
+    return PartialRowsData._from_generator(generator)
 
 
 def _partial_rows_data_consume_all(yrd):
@@ -551,12 +551,48 @@ def _make_cell_pb(value):
     return row_data.Cell(value, TIMESTAMP_MICROS)
 
 
+def test_partial_rows_data_legacy_constructor_fallback():
+    import warnings
+    from google.cloud.bigtable.row_data import PartialRowsData
+
+    read_method = object()
+    request = object()
+
+    with warnings.catch_warnings(record=True) as warned:
+        warnings.simplefilter("always")
+        prd = PartialRowsData(read_method, request)
+
+    assert len(warned) == 1
+    assert issubclass(warned[0].category, DeprecationWarning)
+    assert "Direct instantiation of `PartialRowsData` is deprecated" in str(
+        warned[0].message
+    )
+    assert list(prd) == []
+    assert prd.rows == {}
+    # cancel() should work cleanly on the generator fallback
+    prd.cancel()
+
+
+def test_partial_rows_data_keyword_generator():
+    import warnings
+    from google.cloud.bigtable.row_data import PartialRowsData
+
+    generator = _make_generator([])
+    with warnings.catch_warnings(record=True) as warned:
+        warnings.simplefilter("always")
+        prd = PartialRowsData(generator=generator)
+
+    assert len(warned) == 0
+    assert prd._generator is generator
+    assert prd.rows == {}
+
+
 def test_partial_rows_data_deprecated_properties():
     import warnings
     from google.cloud.bigtable.row_data import PartialRowsData
 
     generator = _make_generator([])
-    prd = PartialRowsData(generator)
+    prd = PartialRowsData._from_generator(generator)
 
     for attr in [
         "state",
@@ -576,5 +612,8 @@ def test_partial_rows_data_deprecated_properties():
         assert f"The `{attr}` attribute on `PartialRowsData` is deprecated" in str(
             warned[0].message
         )
+
+
+
 
 

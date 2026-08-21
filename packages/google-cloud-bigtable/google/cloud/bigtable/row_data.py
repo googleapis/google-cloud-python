@@ -75,9 +75,27 @@ class PartialRowsData(object):
     :param generator: The `Row` iterator from :meth:`Table.read_rows`.
     """
 
-    def __init__(self, generator):
-        self._generator = generator
+    def __init__(self, *args, generator=None, **kwargs):
+        if generator is not None and not args and not kwargs:
+            self._generator = generator
+        else:
+            import warnings
+
+            warnings.warn(
+                "Direct instantiation of `PartialRowsData` is deprecated "
+                "and will be removed in a future release. `PartialRowsData` should only be obtained "
+                "by calling `Table.read_rows()`. An empty stream has been initialized.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+            self._generator = (x for x in ())
+
         self.rows = {}
+
+    @classmethod
+    def _from_generator(cls, generator):
+        """Internal constructor for Table.read_rows."""
+        return cls(generator=generator)
 
     @property
     def state(self):
