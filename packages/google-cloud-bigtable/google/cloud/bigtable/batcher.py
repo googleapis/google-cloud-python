@@ -131,9 +131,12 @@ class MutationsBatcher(object):
             self._batcher.close()
         except MutationsExceptionGroup as exc_group:
             for error in exc_group.exceptions:
-                # Unpack the root cause of the FailedMutationEntryError
-                # and return that error to the user.
-                self._exceptions.put(error.__cause__)
+                # Unpack the root cause of the FailedMutationEntryError and
+                # return that error to the user. In standard execution paths,
+                # FailedMutationEntryError always has an Exception cause;
+                # defensively fall back to error itself if __cause__ is None.
+                cause = error.__cause__ if error.__cause__ is not None else error
+                self._exceptions.put(cause)
 
     def __enter__(self):
         """Starting the MutationsBatcher as a context manager"""
