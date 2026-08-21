@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-audit-log/#history
 
+## [0.6.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-audit-log-v0.6.1...google-cloud-audit-log-v0.6.2) (2026-08-21)
+
+
+### Bug Fixes
+
+* `google-cloud-audit-log` wheel installs unintended top-level `docs` package ([#17271](https://github.com/googleapis/google-cloud-python/issues/17271)) ([ad99ed1](https://github.com/googleapis/google-cloud-python/commit/ad99ed156cc7999149206c50fa670ddc7500dd83))
+
 ## [0.6.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-audit-log-v0.6.0...google-cloud-audit-log-v0.6.1) (2026-08-06)
 
 
