@@ -79,6 +79,78 @@ class PartialRowsData(object):
         self._generator = generator
         self.rows = {}
 
+    @property
+    def state(self):
+        import warnings
+
+        warnings.warn(
+            "The `state` attribute on `PartialRowsData` is deprecated "
+            "and will return None.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return None
+
+    @property
+    def last_scanned_row_key(self):
+        import warnings
+
+        warnings.warn(
+            "The `last_scanned_row_key` attribute on `PartialRowsData` is deprecated "
+            "and will return None.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return None
+
+    @property
+    def read_method(self):
+        import warnings
+
+        warnings.warn(
+            "The `read_method` attribute on `PartialRowsData` is deprecated "
+            "and will return None.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return None
+
+    @property
+    def request(self):
+        import warnings
+
+        warnings.warn(
+            "The `request` attribute on `PartialRowsData` is deprecated "
+            "and will return None.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return None
+
+    @property
+    def retry(self):
+        import warnings
+
+        warnings.warn(
+            "The `retry` attribute on `PartialRowsData` is deprecated "
+            "and will return None.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return None
+
+    @property
+    def response_iterator(self):
+        import warnings
+
+        warnings.warn(
+            "The `response_iterator` attribute on `PartialRowsData` is deprecated "
+            "and will return None.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return None
+
     def cancel(self):
         """Cancels the iterator, closing the stream."""
         self._generator.close()
