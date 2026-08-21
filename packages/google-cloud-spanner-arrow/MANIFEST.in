@@ -1,0 +1,4 @@
+include README.md LICENSE
+recursive-include src/google_cloud_spanner_arrow/nanoarrow *.h *.c
+include src/google_cloud_spanner_arrow/*.c
+include src/google_cloud_spanner_arrow/py.typed
