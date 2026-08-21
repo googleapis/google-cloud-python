@@ -17,22 +17,13 @@
 import warnings
 from typing import Set
 
-<<<<<<< ours
 from google.api_core.exceptions import (
     Aborted,
     DeadlineExceeded,
-    GoogleAPICallError,
     InternalServerError,
     NotFound,
     ServiceUnavailable,
 )
-=======
-from google.api_core.exceptions import Aborted
-from google.api_core.exceptions import DeadlineExceeded
-from google.api_core.exceptions import NotFound
-from google.api_core.exceptions import ServiceUnavailable
-from google.api_core.exceptions import InternalServerError
->>>>>>> theirs
 from google.api_core.gapic_v1.method import DEFAULT
 from google.api_core.retry import Retry, if_exception_type
 from google.cloud._helpers import _to_bytes  # type: ignore
@@ -46,24 +37,13 @@ from google.cloud.bigtable.batcher import (
     MutationsBatcher,
 )
 from google.cloud.bigtable.column_family import ColumnFamily, _gc_rule_from_pb
-from google.cloud.bigtable.data._helpers import TABLE_DEFAULT
-<<<<<<< ours
-from google.cloud.bigtable.data.exceptions import (
-    MutationsExceptionGroup,
-    RetryExceptionGroup,
-)
-from google.cloud.bigtable.data.mutations import RowMutationEntry
-from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
-=======
 from google.cloud.bigtable.data._helpers import (
+    TABLE_DEFAULT,
     _get_statuses_from_mutations_exception_group,
 )
 from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
 from google.cloud.bigtable.data.mutations import RowMutationEntry
 from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
-from google.cloud.bigtable.batcher import MutationsBatcher
-from google.cloud.bigtable.batcher import FLUSH_COUNT, MAX_MUTATION_SIZE
->>>>>>> theirs
 from google.cloud.bigtable.encryption_info import EncryptionInfo
 from google.cloud.bigtable.policy import Policy
 from google.cloud.bigtable.row import (

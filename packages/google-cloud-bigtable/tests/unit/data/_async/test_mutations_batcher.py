@@ -953,10 +953,7 @@ class TestMutationsBatcherAsync:
                 assert args[2] == batch
                 assert kwargs["operation_timeout"] == 17
                 assert kwargs["attempt_timeout"] == 13
-<<<<<<< ours
                 assert kwargs["metric"] == expected_metric
-=======
->>>>>>> theirs
                 assert result == []
 
     @CrossSync.pytest
@@ -977,7 +974,7 @@ class TestMutationsBatcherAsync:
             table.default_mutate_rows_retryable_errors = ()
             async with self._make_one(table) as instance:
                 batch = [self._make_mutation(), self._make_mutation()]
-                result = await instance._execute_mutate_rows(batch)
+                result = await instance._execute_mutate_rows(batch, mock.Mock())
                 assert len(result) == 2
                 assert result[0] == err1
                 assert result[1] == err2
@@ -1002,10 +999,7 @@ class TestMutationsBatcherAsync:
             async with self._make_one(table) as instance:
                 instance._user_batch_completed_callback = callback
                 batch = [self._make_mutation()]
-<<<<<<< ours
                 result = await instance._execute_mutate_rows(batch, mock.Mock())
-=======
-                result = await instance._execute_mutate_rows(batch)
                 callback.assert_called_once_with([status_pb2.Status(code=code_pb2.OK)])
                 assert start_operation.call_count == 1
                 args, kwargs = mutate_rows.call_args
@@ -1019,11 +1013,12 @@ class TestMutationsBatcherAsync:
     @CrossSync.pytest
     async def test__execute_mutate_rows_batch_completed_callback_errors(self):
         from google.api_core import exceptions
-        from google.cloud.bigtable.data.exceptions import (
-            MutationsExceptionGroup,
-            FailedMutationEntryError,
-        )
         from google.rpc import code_pb2, status_pb2
+
+        from google.cloud.bigtable.data.exceptions import (
+            FailedMutationEntryError,
+            MutationsExceptionGroup,
+        )
 
         with mock.patch.object(CrossSync._MutateRowsOperation, "start") as mutate_rows:
             err1 = FailedMutationEntryError(
@@ -1045,7 +1040,7 @@ class TestMutationsBatcherAsync:
                     self._make_mutation(),
                     self._make_mutation(),
                 ]
-                result = await instance._execute_mutate_rows(batch)
+                result = await instance._execute_mutate_rows(batch, mock.Mock())
                 callback.assert_called_once_with(
                     [
                         status_pb2.Status(code=code_pb2.OK),
@@ -1057,7 +1052,6 @@ class TestMutationsBatcherAsync:
                         ),
                     ]
                 )
->>>>>>> theirs
                 assert len(result) == 2
                 assert result[0] == err1
                 assert result[1] == err2
