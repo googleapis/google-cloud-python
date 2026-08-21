@@ -56,13 +56,13 @@ UNIT_TEST_EXTERNAL_DEPENDENCIES = [
 ]
 
 UNIT_TEST_DEPENDENCIES = [
-    "django~=5.2",
-    "sqlparse==0.3.1",
+    "django>=5.2,<6.1",
+    "sqlparse>=0.3.1",
 ]
 
 UNIT_TEST_MOCKSERVER_DEPENDENCIES = [
-    "django~=5.2",
-    "google-cloud-spanner>=3.55.0",
+    "django>=5.2,<6.1",
+    "google-cloud-spanner>=3.69.1",
     "sqlparse>=0.4.4",
 ]
 
