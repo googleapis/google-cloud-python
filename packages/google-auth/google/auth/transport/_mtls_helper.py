@@ -851,6 +851,7 @@ _MTLS_HOST_SUFFIXES = (
 _MTLS_EXACT_HOSTS = (
     "mtls.googleapis.com",
     "mtls.sandbox.googleapis.com",
+    "p.googleapis.com",
 )
 
 

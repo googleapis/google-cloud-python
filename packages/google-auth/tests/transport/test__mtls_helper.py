@@ -1923,6 +1923,10 @@ class TestIsMtlsEndpoint(object):
             "https://pubsub.mtls.googleapis.com:443/v1/projects?pageSize=10&filter=foo#frag",
             "https://storage.p.googleapis.com:443/b/my-bucket?param=1#section",
             "https://mtls.googleapis.com:443/",
+            "https://p.googleapis.com",
+            "https://p.googleapis.com/",
+            "https://p.googleapis.com:443/v1",
+            "https://p.googleapis.com.",
         ],
     )
     def test_is_mtls_endpoint_true(self, url):
@@ -1936,6 +1940,8 @@ class TestIsMtlsEndpoint(object):
             "https://storage.googleapis.com:443/b/my-bucket",
             "https://storage.googleapis.com:443/bucket/mtls.googleapis.com?pageSize=10#frag",
             "https://storage.googleapis.com/bucket/mtls.googleapis.com",
+            "https://[2001:db8::1]:443/mtls.googleapis.com",
+            "https://[::1]:8443/mtls.googleapis.com",
             "https://logging.googleapis.com/v2/entries?filter=mtls.googleapis.com",
             "https://logging.googleapis.com/v2/entries?filter=mtls.sandbox.googleapis.com",
             "https://logging.googleapis.com/v2/entries?filter=service.p.googleapis.com",
