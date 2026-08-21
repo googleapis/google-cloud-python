@@ -14,30 +14,17 @@
 
 """User-friendly container for Google Cloud Bigtable Row."""
 
-<<<<<<< HEAD
+from google.api_core.exceptions import GoogleAPICallError
 from google.cloud._helpers import (
     _datetime_from_microseconds,  # type: ignore
     _microseconds_from_datetime,  # type: ignore
     _to_bytes,  # type: ignore
 )
-=======
-from google.api_core.exceptions import GoogleAPICallError
-
-from google.cloud._helpers import _datetime_from_microseconds  # type: ignore
-from google.cloud._helpers import _microseconds_from_datetime  # type: ignore
-from google.cloud._helpers import _to_bytes  # type: ignore
->>>>>>> 6153a5c31cb (feat: Rerouted DirectRow.commit to use MutateRow (#1276))
 
 from google.cloud.bigtable.data import mutations
 from google.cloud.bigtable.data import read_modify_write_rules as rmw_rules
-
-<<<<<<< HEAD
-=======
 from google.rpc import code_pb2
 from google.rpc import status_pb2
-
-
->>>>>>> 6153a5c31cb (feat: Rerouted DirectRow.commit to use MutateRow (#1276))
 MAX_MUTATIONS = 100000
 """The maximum number of mutations that a row can accumulate."""
 

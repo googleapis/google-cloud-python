@@ -1064,11 +1064,6 @@ def test_table_sample_row_keys(data_table, skip_on_emulator):
 
 
 def test_table_direct_row_input_errors(data_table, rows_to_delete):
-<<<<<<< HEAD
-    from google.api_core.exceptions import InvalidArgument
-
-=======
->>>>>>> 6153a5c31cb (feat: Rerouted DirectRow.commit to use MutateRow (#1276))
     from google.cloud.bigtable.row import MAX_MUTATIONS
 
     row = data_table.direct_row(ROW_KEY)

@@ -478,7 +478,6 @@ def test_direct_row_commit_with_unknown_exception():
 
 def test_direct_row_commit_with_invalid_argument():
     from google.cloud.bigtable_v2.services.bigtable import BigtableClient
-    from google.rpc import code_pb2, status_pb2
 
     project_id = "project-id"
     row_key = b"row_key"
