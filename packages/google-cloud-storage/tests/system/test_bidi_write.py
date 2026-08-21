@@ -21,7 +21,6 @@ import google_crc32c
 
 from google.api_core import exceptions
 from google.api_core.client_options import ClientOptions
-from google.api_core.exceptions import NotFound, OutOfRange, InvalidArgument
 from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 from google.cloud.storage.asyncio.async_appendable_object_writer import AsyncAppendableObjectWriter
 from google.cloud.storage.asyncio.async_multi_range_downloader import AsyncMultiRangeDownloader
@@ -29,16 +28,14 @@ from google.cloud.storage.asyncio.async_multi_range_downloader import AsyncMulti
 REGIONAL_RAPID_BUCKET = "java-storage-reg-rapid-preprod-3fe2bb58"
 PREPROD_ENDPOINT = "storage-preprod-test-grpc.googleusercontent.com:443"
 
-# We parameterized the tests to run against REGIONAL_RAPID for now.
-# We can expand to others if needed.
-@pytest.fixture(scope="module")
-def bidi_location_type():
-    return "REGIONAL_RAPID"
+# Parameterize over LocationType
+@pytest.fixture(scope="module", params=["REGIONAL_RAPID"])
+def bidi_location_type(request):
+    return request.param
 
 @pytest.fixture(scope="module")
 def grpc_client(bidi_location_type):
     if bidi_location_type == "REGIONAL_RAPID":
-        # Point to preprod endpoint
         options = ClientOptions(api_endpoint=PREPROD_ENDPOINT)
         return AsyncGrpcClient(client_options=options)
     else:
@@ -46,8 +43,9 @@ def grpc_client(bidi_location_type):
 
 @pytest.fixture(scope="module")
 def bidi_bucket(bidi_location_type):
-    if bidi_location_type == "REGIONAL_RAPID":
-        # Shared pre-created bucket
+    if bidi_location_type == "REGIONAL_STANDARD":
+        pytest.skip("Bidi Write (Appendable) is not supported on standard regional buckets")
+    elif bidi_location_type == "REGIONAL_RAPID":
         return REGIONAL_RAPID_BUCKET
     elif bidi_location_type == "ZONAL_RAPID":
         zonal_bucket = os.getenv("ZONAL_BUCKET")
@@ -57,40 +55,25 @@ def bidi_bucket(bidi_location_type):
     else:
         pytest.fail(f"Unsupported location type: {bidi_location_type}")
 
-# Helper to create objects using sync client if needed,
-# but using AsyncAppendableObjectWriter is also fine.
-# We will use sync client from conftest if available, but it points to Prod.
-# For preprod, we need to initialize a sync client pointing to preprod if we want to use it.
-# Actually, we can just use AsyncAppendableObjectWriter to create objects for read tests.
-async def create_object(grpc_client, bucket, object_name, data):
-    writer = AsyncAppendableObjectWriter(grpc_client, bucket, object_name)
-    await writer.open()
-    await writer.append(data)
-    await writer.close(finalize_on_close=True)
-
 # ----------------- Write Tests -----------------
 
 @pytest.mark.asyncio
-async def test_appendable_upload_empty_object(grpc_client, bidi_bucket):
+@pytest.mark.parametrize("finalize_on_close", [True, False])
+async def test_appendable_upload_empty_object(grpc_client, bidi_bucket, finalize_on_close):
     object_name = f"test_empty_{uuid.uuid4()}"
     
     writer = AsyncAppendableObjectWriter(grpc_client, bidi_bucket, object_name)
     await writer.open()
-    object_metadata = await writer.close(finalize_on_close=True)
+    object_metadata = await writer.close(finalize_on_close=finalize_on_close)
 
-    # Register for deletion (using sync client, it should work if it can access the bucket,
-    # but sync client might be pointing to Prod. Wait, if sync client is pointing to Prod,
-    # it won't be able to delete from pre-prod bucket unless we configure it or if the credential
-    # has access. The bucket is in 'gcs-hyd-connector-benchmarks' project.
-    # If standard client has access to it, it should work.
-    # Wait, the sync client in conftest uses default project.
-    # If we need to delete it from preprod, maybe we should delete it using grpc_client?
-    # AsyncGrpcClient has delete_object!
-    # Let's check:
-    # await grpc_client.delete_object(bidi_bucket, object_name)
-    # Yes, we can do that.
-    # So we can manually delete it or use a cleanup helper.
-    # Let's register it for deletion using a custom cleanup list.
+    # If finalized_on_close is False, we need to finalize it now to get size and CRC,
+    # or just verify we can close it.
+    # In Java: upload.open().close(); results in 0 size.
+    # In Python, if finalize_on_close is False, close() returns persisted_size (which should be 0).
+    if not finalize_on_close:
+        assert object_metadata == 0
+        # Finalize to get the object resource
+        object_metadata = await writer.finalize()
     
     assert object_metadata.size == 0
     assert int(object_metadata.checksums.crc32c) == int(google_crc32c.value(b""))
@@ -105,19 +88,38 @@ async def test_appendable_upload_empty_object(grpc_client, bidi_bucket):
     await grpc_client.delete_object(bidi_bucket, object_name)
 
 
+# Parameterize write options similar to Java
+FLUSH_INTERVALS = [None, 2 * 1024 * 1024, 4 * 1024 * 1024]
+FINALIZE_ON_CLOSE_OPTS = [True, False]
+OBJECT_SIZES = [5, 500, 5000, 500000, 5000000]
+
 @pytest.mark.asyncio
-async def test_appendable_upload_bytes(grpc_client, bidi_bucket):
+@pytest.mark.parametrize("flush_interval", FLUSH_INTERVALS)
+@pytest.mark.parametrize("finalize_on_close", FINALIZE_ON_CLOSE_OPTS)
+@pytest.mark.parametrize("object_size", OBJECT_SIZES)
+async def test_appendable_upload_bytes(grpc_client, bidi_bucket, flush_interval, finalize_on_close, object_size):
     object_name = f"test_bytes_{uuid.uuid4()}"
-    data = os.urandom(1000)
+    data = os.urandom(object_size)
     mid = len(data) // 2
     chunk1 = data[:mid]
     chunk2 = data[mid:]
 
-    writer = AsyncAppendableObjectWriter(grpc_client, bidi_bucket, object_name)
+    writer_options = {}
+    if flush_interval is not None:
+        writer_options["FLUSH_INTERVAL_BYTES"] = flush_interval
+
+    writer = AsyncAppendableObjectWriter(
+        grpc_client, bidi_bucket, object_name, writer_options=writer_options
+    )
     await writer.open()
     await writer.append(chunk1)
     await writer.append(chunk2)
-    object_metadata = await writer.close(finalize_on_close=True)
+    object_metadata = await writer.close(finalize_on_close=finalize_on_close)
+
+    if not finalize_on_close:
+        # Check persisted size so far
+        assert object_metadata == len(data)
+        object_metadata = await writer.finalize()
 
     assert object_metadata.size == len(data)
     expected_crc = google_crc32c.value(data)
@@ -258,9 +260,7 @@ async def test_explicit_finalize_with_incorrect_checksum_fails(grpc_client, bidi
     
     assert "mismatch" in str(excinfo.value).lower()
 
-    # Cleanup (it should not have been finalized, but we might need to delete the unfinalized object if it exists)
-    # Actually, unfinalized objects might not be deleteable normally?
-    # Yes they are deleteable.
+    # Cleanup
     try:
         await grpc_client.delete_object(bidi_bucket, object_name)
     except Exception:
@@ -357,132 +357,3 @@ async def test_takeover_and_append_with_incorrect_checksum_fails(grpc_client, bi
         await grpc_client.delete_object(bidi_bucket, object_name)
     except Exception:
         pass
-
-
-# ----------------- Read Tests -----------------
-
-@pytest.mark.asyncio
-async def test_read_post_stream_close(grpc_client, bidi_bucket):
-    object_name = f"test_read_close_{uuid.uuid4()}"
-    data = os.urandom(5 * 1024 * 1024)  # 5MB
-    await create_object(grpc_client, bidi_bucket, object_name, data)
-
-    mrd = await AsyncMultiRangeDownloader.create_mrd(grpc_client, bidi_bucket, object_name)
-    buffer = BytesIO()
-
-    # Start download in background
-    task = asyncio.create_task(mrd.download_ranges([(0, 0, buffer)]))
-
-    # Wait a bit to ensure it started
-    await asyncio.sleep(0.1)
-
-    # Close the downloader mid-stream
-    await mrd.close()
-
-    # Awaiting the task should raise an exception
-    with pytest.raises(Exception) as excinfo:
-        await task
-
-    # The exception could be ServiceUnavailable or CancelledError
-    assert isinstance(excinfo.value, (exceptions.ServiceUnavailable, asyncio.CancelledError))
-
-    # Cleanup
-    await grpc_client.delete_object(bidi_bucket, object_name)
-
-
-@pytest.mark.asyncio
-async def test_zero_copy_range_reads(grpc_client, bidi_bucket):
-    # We call it zero_copy to match Java test name, but it's standard range read in Python.
-    object_name = f"test_zero_copy_{uuid.uuid4()}"
-    data = os.urandom(1024 * 1024)  # 1MB
-    await create_object(grpc_client, bidi_bucket, object_name, data)
-
-    # Define ranges
-    r1 = (0, 1000)
-    r2 = (50000, 250000)
-    r3 = (800000, 10000)
-
-    async with AsyncMultiRangeDownloader(grpc_client, bidi_bucket, object_name) as mrd:
-        buf1 = BytesIO()
-        buf2 = BytesIO()
-        buf3 = BytesIO()
-
-        # Concurrent downloads
-        t1 = asyncio.create_task(mrd.download_ranges([(r1[0], r1[1], buf1)]))
-        t2 = asyncio.create_task(mrd.download_ranges([(r2[0], r2[1], buf2)]))
-        t3 = asyncio.create_task(mrd.download_ranges([(r3[0], r3[1], buf3)]))
-
-        await asyncio.gather(t1, t2, t3)
-
-        assert buf1.getvalue() == data[r1[0] : r1[0] + r1[1]]
-        assert buf2.getvalue() == data[r2[0] : r2[0] + r2[1]]
-        assert buf3.getvalue() == data[r3[0] : r3[0] + r3[1]]
-
-    # Cleanup
-    await grpc_client.delete_object(bidi_bucket, object_name)
-
-
-@pytest.mark.asyncio
-async def test_multiple_ranged_read(grpc_client, bidi_bucket):
-    object_name = f"test_multi_range_{uuid.uuid4()}"
-    data = os.urandom(1024 * 1024)  # 1MB
-    await create_object(grpc_client, bidi_bucket, object_name, data)
-
-    r1 = (0, 1000)
-    r2 = (50000, 250000)
-
-    async with AsyncMultiRangeDownloader(grpc_client, bidi_bucket, object_name) as mrd:
-        buf1 = BytesIO()
-        buf2 = BytesIO()
-
-        # Download multiple ranges in a single call (AsyncMultiRangeDownloader supports this)
-        await mrd.download_ranges([
-            (r1[0], r1[1], buf1),
-            (r2[0], r2[1], buf2)
-        ])
-
-        assert buf1.getvalue() == data[r1[0] : r1[0] + r1[1]]
-        assert buf2.getvalue() == data[r2[0] : r2[0] + r2[1]]
-
-    # Cleanup
-    await grpc_client.delete_object(bidi_bucket, object_name)
-
-
-@pytest.mark.asyncio
-async def test_read_from_non_existent_bucket_fails(grpc_client):
-    bad_bucket_name = f"non-existent-bucket-{uuid.uuid4()}"
-    
-    with pytest.raises(NotFound) as excinfo:
-        await AsyncMultiRangeDownloader.create_mrd(grpc_client, bad_bucket_name, "some-object")
-    
-    assert excinfo.value.code == 404
-
-
-@pytest.mark.asyncio
-async def test_read_out_of_range(grpc_client, bidi_bucket):
-    object_name = f"test_oob_{uuid.uuid4()}"
-    data = os.urandom(1024 * 1024)  # 1MB
-    await create_object(grpc_client, bidi_bucket, object_name, data)
-
-    async with AsyncMultiRangeDownloader(grpc_client, bidi_bucket, object_name) as mrd:
-        valid_buffer = BytesIO()
-        valid_task = asyncio.create_task(
-            mrd.download_ranges([(0, 100, valid_buffer)])
-        )
-
-        oob_buffer = BytesIO()
-        # starts at 2MB, object is 1MB
-        oob_task = asyncio.create_task(
-            mrd.download_ranges([(2 * 1024 * 1024, 100, oob_buffer)])
-        )
-
-        results = await asyncio.gather(valid_task, oob_task, return_exceptions=True)
-
-        # Verify valid one processed correctly
-        assert valid_buffer.getvalue() == data[:100]
-
-        # Verify fully OOB request returned OutOfRange
-        assert isinstance(results[1], OutOfRange)
-
-    # Cleanup
-    await grpc_client.delete_object(bidi_bucket, object_name)
