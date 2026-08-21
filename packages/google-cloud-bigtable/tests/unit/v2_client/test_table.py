@@ -980,8 +980,8 @@ def test_table_mutations_batcher_factory():
     )
 
     assert mutation_batcher.table.table_id == TABLE_ID
-    assert mutation_batcher.flush_count == flush_count
-    assert mutation_batcher.max_row_bytes == max_row_bytes
+    assert mutation_batcher._batcher_kwargs["flush_limit_mutation_count"] == flush_count
+    assert mutation_batcher._batcher_kwargs["flush_limit_bytes"] == max_row_bytes
 
 
 def test_table_get_iam_policy():

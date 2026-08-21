@@ -1245,3 +1245,110 @@ def test_mutations_batcher_threading(data_table, rows_to_delete):
                 time.sleep(0.01)
     # ensure all mutations were sent
     assert len(all_results) == num_sent
+
+
+def test_mutations_batcher_exceptions(data_table, rows_to_delete):
+    """Test the mutations batcher exception handling"""
+    import mock
+    from google.rpc import code_pb2, status_pb2
+
+    from google.cloud.bigtable.batcher import MutationsBatcher, MutationsBatchError
+    from google.cloud.bigtable_v2 import MutateRowsResponse
+
+    num_sent = 5
+
+    error_response = [
+        MutateRowsResponse(
+            entries=[
+                MutateRowsResponse.Entry(
+                    index=i,
+                    status=status_pb2.Status(
+                        code=code_pb2.INTERNAL,
+                        message="Test error",
+                    ),
+                )
+                for i in range(num_sent)
+            ]
+        )
+    ]
+
+    # Simulate only failures
+    with pytest.raises(MutationsBatchError):
+        with mock.patch.object(
+            data_table._instance._client.table_data_client, "mutate_rows"
+        ) as mutate_mock:
+            mutate_mock.side_effect = [error_response] * 100000
+            with MutationsBatcher(
+                data_table,
+                flush_count=10,
+                flush_interval=1,
+            ) as batcher:
+                for i in range(num_sent):
+                    row = data_table.direct_row("row{}".format(i))
+                    row.set_cell(
+                        COLUMN_FAMILY_ID1, COL_NAME1, "val{}".format(i).encode("utf-8")
+                    )
+                    rows_to_delete.append(row)
+                    batcher.mutate(row)
+                batcher.flush()
+
+    # Test that exceptions are only raised on close.
+    with mock.patch.object(
+        data_table._instance._client.table_data_client, "mutate_rows"
+    ) as mutate_mock:
+        mutate_mock.side_effect = [error_response] * 100000
+        batcher = MutationsBatcher(
+            data_table,
+            flush_count=10,
+            flush_interval=1,
+        )
+        for i in range(num_sent):
+            row = data_table.direct_row("row{}".format(i))
+            row.set_cell(
+                COLUMN_FAMILY_ID1, COL_NAME1, "val{}".format(i).encode("utf-8")
+            )
+            rows_to_delete.append(row)
+            batcher.mutate(row)
+        batcher.flush()
+
+        with pytest.raises(MutationsBatchError):
+            batcher.close()
+
+
+def test_mutations_batcher_manual_flush(data_table, rows_to_delete):
+    """Test the mutations batcher manual flush"""
+    import mock
+    from google.rpc import code_pb2, status_pb2
+
+    from google.cloud.bigtable.batcher import MutationsBatcher
+
+    num_batches = 5
+    batch_size = 4
+    callback = mock.MagicMock()
+
+    with MutationsBatcher(
+        data_table,
+        flush_count=500,
+        flush_interval=5,
+        batch_completed_callback=callback,
+    ) as batcher:
+        for i in range(num_batches):
+            for j in range(batch_size):
+                num = i * batch_size + j
+                row = data_table.direct_row(f"row{num}".encode("utf-8"))
+                row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, f"val{num}".encode("utf-8"))
+                rows_to_delete.append(row)
+                batcher.mutate(row)
+            batcher.flush()
+            callback.assert_called_with(
+                [status_pb2.Status(code=code_pb2.OK)] * batch_size
+            )
+
+    # ensure all mutations were sent
+    rows = data_table.read_rows()
+    rows.consume_all()
+    for row_num in range(0, num_batches * batch_size):
+        row = rows.rows[f"row{row_num}".encode("utf-8")]
+        assert row.cells[COLUMN_FAMILY_ID1][COL_NAME1][
+            0
+        ].value == f"val{row_num}".encode("utf-8")
