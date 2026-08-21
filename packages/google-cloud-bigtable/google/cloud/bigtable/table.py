@@ -782,9 +782,10 @@ class Table(object):
         mutation_entries = [
             RowMutationEntry(row.row_key, row._get_mutations()) for row in rows
         ]
-        return_statuses = [status_pb2.Status(code=code_pb2.Code.UNKNOWN)] * len(
-            mutation_entries
-        )
+        return_statuses = [
+            status_pb2.Status(code=code_pb2.UNKNOWN)
+            for _ in range(len(mutation_entries))
+        ]
 
         try:
             self._table_impl.bulk_mutate_rows(
@@ -798,9 +799,10 @@ class Table(object):
                 mut_exc_group, len(mutation_entries)
             )
         else:
-            return_statuses = [status_pb2.Status(code=code_pb2.Code.OK)] * len(
-                mutation_entries
-            )
+            return_statuses = [
+                status_pb2.Status(code=code_pb2.OK)
+                for _ in range(len(mutation_entries))
+            ]
 
         return return_statuses
 
