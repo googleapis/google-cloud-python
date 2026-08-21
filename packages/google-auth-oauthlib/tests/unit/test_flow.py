@@ -14,15 +14,15 @@
 
 import concurrent.futures
 import datetime
-from functools import partial
 import json
 import logging
 import os
 import re
 import socket
-from unittest import mock
 import urllib
 import webbrowser
+from functools import partial
+from unittest import mock
 
 import pytest
 import requests
