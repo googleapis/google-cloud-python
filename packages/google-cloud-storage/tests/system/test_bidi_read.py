@@ -74,7 +74,7 @@ def get_storage_class(location_type):
     return None
 
 async def create_object(grpc_client, bucket_name, object_name, data, storage_class=None):
-    bucket = Bucket(name=bucket_name)
+    bucket = Bucket(None, name=bucket_name)
     blob = Blob(object_name, bucket)
     if storage_class:
         blob.storage_class = storage_class

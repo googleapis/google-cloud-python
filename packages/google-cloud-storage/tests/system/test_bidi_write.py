@@ -76,7 +76,7 @@ def get_storage_class(location_type):
     return None
 
 def make_blob(bucket_name, object_name, location_type, generation=None):
-    bucket = Bucket(name=bucket_name)
+    bucket = Bucket(None, name=bucket_name)
     blob = Blob(object_name, bucket)
     storage_class = get_storage_class(location_type)
     if storage_class:
