@@ -61,8 +61,6 @@ from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
-from google.oauth2 import service_account
-
 from google.cloud.secretmanager_v1.services.secret_manager_service import (
     SecretManagerServiceAsyncClient,
     SecretManagerServiceClient,
@@ -70,6 +68,7 @@ from google.cloud.secretmanager_v1.services.secret_manager_service import (
     transports,
 )
 from google.cloud.secretmanager_v1.types import resources, service
+from google.oauth2 import service_account
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -768,6 +767,49 @@ def test_secret_manager_service_client_client_options(
             always_use_jwt_access=True,
             api_audience="https://language.googleapis.com",
         )
+
+
+def test_secret_manager_service_client_otel_interceptor_injection():
+    # Mock the helper to return a sentinel interceptor
+    mock_interceptor = mock.Mock()
+
+    with mock.patch(
+        "google.cloud.secretmanager_v1.services.secret_manager_service.client._otel_helpers.get_otel_grpc_interceptor"
+    ) as mock_get_interceptor:
+        mock_get_interceptor.return_value = mock_interceptor
+
+        with mock.patch.object(
+            transports.SecretManagerServiceGrpcTransport, "__init__"
+        ) as patched_transport_init:
+            patched_transport_init.return_value = None
+
+            client = SecretManagerServiceClient(transport="grpc")
+
+            mock_get_interceptor.assert_called_once()
+
+            called_kwargs = patched_transport_init.call_args.kwargs
+            assert "interceptors" in called_kwargs
+            assert called_kwargs["interceptors"] == [mock_interceptor]
+
+
+def test_secret_manager_service_client_otel_interceptor_injection_disabled():
+    # The helper does not return an interceptor
+    with mock.patch(
+        "google.cloud.secretmanager_v1.services.secret_manager_service.client._otel_helpers.get_otel_grpc_interceptor"
+    ) as mock_get_interceptor:
+        mock_get_interceptor.return_value = None
+
+        with mock.patch.object(
+            transports.SecretManagerServiceGrpcTransport, "__init__"
+        ) as patched_transport_init:
+            patched_transport_init.return_value = None
+
+            client = SecretManagerServiceClient(transport="grpc")
+
+            mock_get_interceptor.assert_called_once()
+
+            called_kwargs = patched_transport_init.call_args.kwargs
+            assert "interceptors" not in called_kwargs
 
 
 @pytest.mark.parametrize(
