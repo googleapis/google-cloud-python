@@ -5981,6 +5981,11 @@ class TestRowIterator(unittest.TestCase):
                 new_callable=mock.PropertyMock,
                 return_value=True,
             ),
+            mock.patch(
+                "google.cloud.bigquery._versions_helpers.PandasGBQVersions.installed_version",
+                new_callable=mock.PropertyMock,
+                return_value="1.0.0",
+            ),
             mock.patch.object(row_iterator, "to_arrow", return_value=batch),
         ):
             _ = row_iterator.to_geodataframe(create_bqstorage_client=False)
