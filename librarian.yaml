@@ -788,7 +788,7 @@ libraries:
   - name: google-cloud-compute
     version: 1.50.0
     preview:
-      version: 1.51.0-preview.1
+      version: 1.51.0-preview.2
       apis:
         - path: google/cloud/compute/v1
     apis:
