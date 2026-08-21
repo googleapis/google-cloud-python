@@ -402,13 +402,14 @@ class TestSystem(SystemTestRunner):
     )
     def test_mutations_batcher_completed_callback(self, client, target, temp_rows):
         """test batcher with batch completed callback. It should be called when the batcher flushes."""
-        from google.cloud.bigtable.data.mutations import RowMutationEntry
-        from google.rpc import code_pb2, status_pb2
         import mock
+        from google.rpc import code_pb2, status_pb2
+
+        from google.cloud.bigtable.data.mutations import RowMutationEntry
 
         callback = mock.Mock()
         new_value = uuid.uuid4().hex.encode()
-        (row_key, mutation) = self._create_row_and_mutation(
+        row_key, mutation = self._create_row_and_mutation(
             target, temp_rows, new_value=new_value
         )
         bulk_mutation = RowMutationEntry(row_key, [mutation])

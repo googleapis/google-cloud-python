@@ -14,35 +14,20 @@
 #
 from __future__ import annotations
 
-<<<<<<< ours
-=======
-from typing import Callable, Optional, Sequence, TYPE_CHECKING, cast
->>>>>>> theirs
 import atexit
 import concurrent.futures
 import time
 import warnings
 from collections import deque
-<<<<<<< ours
-from typing import TYPE_CHECKING, Sequence, cast
-=======
-import concurrent.futures
+from typing import TYPE_CHECKING, Any, Callable, Sequence, cast
 
-from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
-from google.cloud.bigtable.data.exceptions import FailedMutationEntryError
-from google.cloud.bigtable.data._helpers import _get_retryable_errors
-from google.cloud.bigtable.data._helpers import _get_timeouts
-from google.cloud.bigtable.data._helpers import (
-    _get_statuses_from_mutations_exception_group,
-)
-
-from google.cloud.bigtable.data._helpers import TABLE_DEFAULT
->>>>>>> theirs
+from google.rpc import code_pb2, status_pb2
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._helpers import (
     TABLE_DEFAULT,
     _get_retryable_errors,
+    _get_statuses_from_mutations_exception_group,
     _get_timeouts,
 )
 from google.cloud.bigtable.data._metrics import ActiveOperationMetric, OperationType
@@ -54,9 +39,6 @@ from google.cloud.bigtable.data.mutations import (
     _MUTATE_ROWS_REQUEST_MUTATION_LIMIT,
     Mutation,
 )
-
-from google.rpc import code_pb2
-from google.rpc import status_pb2
 
 if TYPE_CHECKING:
     from google.cloud.bigtable.data._metrics import BigtableClientSideMetricsController
@@ -315,7 +297,9 @@ class MutationsBatcherAsync:
         self._newest_exceptions: deque[Exception] = deque(
             maxlen=self._exception_list_limit
         )
-        self._user_batch_completed_callback = None
+        self._user_batch_completed_callback: (
+            Callable[[list[status_pb2.Status]], Any] | None
+        ) = None
         # clean up on program exit
         atexit.register(self._on_exit)
 

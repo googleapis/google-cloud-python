@@ -524,10 +524,10 @@ class TestSystemAsync(SystemTestRunner):
         """
         test batcher with batch completed callback. It should be called when the batcher flushes.
         """
-        from google.cloud.bigtable.data.mutations import RowMutationEntry
+        import mock
         from google.rpc import code_pb2, status_pb2
 
-        import mock
+        from google.cloud.bigtable.data.mutations import RowMutationEntry
 
         callback = mock.Mock()
 
