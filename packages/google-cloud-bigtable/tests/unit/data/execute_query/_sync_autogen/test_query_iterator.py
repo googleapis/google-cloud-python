@@ -362,7 +362,7 @@ class TestQueryIterator:
             CrossSync._Sync_Impl,
             "create_task",
             side_effect=RuntimeError("can't start new thread"),
-        ):
+        ) as mock_create_task:
             with caplog.at_level(logging.WARNING):
                 iterator = self._make_one(
                     client=client_mock,
@@ -378,4 +378,11 @@ class TestQueryIterator:
                 assert iterator._register_instance_task is None
                 assert "Failed to start background instance registration" in caplog.text
                 assert "can't start new thread" in caplog.text
+                mock_create_task.assert_called_once_with(
+                    client_mock._register_instance,
+                    "test-instance",
+                    "test_profile",
+                    id(iterator),
+                    sync_executor=client_mock._executor,
+                )
         iterator.close()

@@ -418,12 +418,17 @@ class TestBigtableDataClientAsync:
         client._emulator_host = None
         with mock.patch.object(
             CrossSync, "create_task", side_effect=RuntimeError("can't start new thread")
-        ):
+        ) as mock_create_task:
             with caplog.at_level(logging.WARNING):
                 client._start_background_channel_refresh()
                 assert client._channel_refresh_task is None
                 assert "Failed to start background channel refresh task" in caplog.text
                 assert "can't start new thread" in caplog.text
+                mock_create_task.assert_called_once_with(
+                    client._manage_channel,
+                    sync_executor=client._executor,
+                    task_name=f"{client.__class__.__name__} channel refresh",
+                )
         await client.close()
 
     @CrossSync.drop
@@ -1536,12 +1541,19 @@ class TestTableAsync:
         client = self._make_client()
         with mock.patch.object(
             CrossSync, "create_task", side_effect=RuntimeError("can't start new thread")
-        ):
+        ) as mock_create_task:
             with caplog.at_level(logging.WARNING):
                 table = self._make_one(client)
                 assert table._register_instance_future is None
                 assert "Failed to start background instance registration" in caplog.text
                 assert "can't start new thread" in caplog.text
+                mock_create_task.assert_called_once_with(
+                    client._register_instance,
+                    table.instance_id,
+                    table.app_profile_id,
+                    id(table),
+                    sync_executor=client._executor,
+                )
         async with table:
             pass
         await table.close()
