@@ -22,13 +22,15 @@ import concurrent.futures
 import time
 import warnings
 from collections import deque
-<<<<<<< ours
-from typing import TYPE_CHECKING, Sequence, cast
+from typing import TYPE_CHECKING, Any, Callable, Sequence, cast
+
+from google.rpc import code_pb2, status_pb2
 
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._helpers import (
     TABLE_DEFAULT,
     _get_retryable_errors,
+    _get_statuses_from_mutations_exception_group,
     _get_timeouts,
 )
 from google.cloud.bigtable.data._metrics import ActiveOperationMetric, OperationType
@@ -40,22 +42,6 @@ from google.cloud.bigtable.data.mutations import (
     _MUTATE_ROWS_REQUEST_MUTATION_LIMIT,
     Mutation,
 )
-=======
-import concurrent.futures
-from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
-from google.cloud.bigtable.data.exceptions import FailedMutationEntryError
-from google.cloud.bigtable.data._helpers import _get_retryable_errors
-from google.cloud.bigtable.data._helpers import _get_timeouts
-from google.cloud.bigtable.data._helpers import (
-    _get_statuses_from_mutations_exception_group,
-)
-from google.cloud.bigtable.data._helpers import TABLE_DEFAULT
-from google.cloud.bigtable.data.mutations import _MUTATE_ROWS_REQUEST_MUTATION_LIMIT
-from google.cloud.bigtable.data.mutations import Mutation
-from google.cloud.bigtable.data._cross_sync import CrossSync
-from google.rpc import code_pb2
-from google.rpc import status_pb2
->>>>>>> theirs
 
 if TYPE_CHECKING:
     from google.cloud.bigtable.data._metrics import BigtableClientSideMetricsController
@@ -276,7 +262,9 @@ class MutationsBatcher:
         self._newest_exceptions: deque[Exception] = deque(
             maxlen=self._exception_list_limit
         )
-        self._user_batch_completed_callback = None
+        self._user_batch_completed_callback: (
+            Callable[[list[status_pb2.Status]], Any] | None
+        ) = None
         atexit.register(self._on_exit)
 
     def _timer_routine(self, interval: float | None) -> None:

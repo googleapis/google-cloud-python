@@ -17,11 +17,6 @@ Helper functions used in various places in the library.
 
 from __future__ import annotations
 
-<<<<<<< ours
-=======
-from typing import Callable, Sequence, List, Optional, Tuple, TYPE_CHECKING, Union
-import time
->>>>>>> theirs
 import enum
 import time
 from collections import namedtuple
@@ -29,6 +24,7 @@ from typing import (
     TYPE_CHECKING,
     Callable,
     List,
+    Optional,
     Sequence,
     Tuple,
     Union,
@@ -37,16 +33,13 @@ from typing import (
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.api_core.retry import RetryFailureReason, exponential_sleep_generator
+from google.rpc import code_pb2, status_pb2
 
-from google.cloud.bigtable.data.exceptions import RetryExceptionGroup
-<<<<<<< ours
+from google.cloud.bigtable.data.exceptions import (
+    MutationsExceptionGroup,
+    RetryExceptionGroup,
+)
 from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
-=======
-from google.cloud.bigtable.data.exceptions import MutationsExceptionGroup
-from google.rpc import code_pb2
-from google.rpc import status_pb2
-
->>>>>>> theirs
 
 if TYPE_CHECKING:
     import grpc
