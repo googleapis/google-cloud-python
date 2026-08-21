@@ -1,0 +1,134 @@
+substitutions:
+  _ZONE: "us-west4-a"
+  _VM_NAME: "shradhakatyal-benchmarks-us-west4-a"
+  _ULIMIT: "65536"
+  _PROCESSES: "48"
+  _COROS: "1"
+  _FILE_SIZE_MIB: "10240"
+  _CHUNK_SIZE_KIB: "102400"
+  _ZONAL_BUCKET: "shradhakatyal-read-bench-zb-us-west4-a"
+  _PR_NUMBER: ""
+
+steps:
+  # Step 0: Package code and upload archive to Cloud Build storage bucket
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "package-and-upload-source"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        tar --exclude='.nox' --exclude='venv_*' --exclude='.pytest_cache' --exclude='__pycache__' --exclude='.git' \
+          -czf /workspace/source.tar.gz -C /workspace/packages google-cloud-storage
+        gcloud storage cp /workspace/source.tar.gz "gs://${PROJECT_ID}_cloudbuild/build_source/source_${BUILD_ID}.tar.gz"
+
+  # Step 1: Set startup-script metadata on the standing VM and trigger reset
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "trigger-vm-benchmark"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        cat << 'EOF' > /workspace/startup.sh
+        #!/bin/bash
+        set -x
+        echo "=== [Cloud Build] Starting GCS Read Benchmark on Standing VM ==="
+        cd /root
+
+        # Download and extract source archive from Cloud Build bucket
+        rm -rf /root/google-cloud-storage /root/source.tar.gz
+        gcloud storage cp "gs://${PROJECT_ID}_cloudbuild/build_source/source_${BUILD_ID}.tar.gz" /root/source.tar.gz
+        tar -xzf /root/source.tar.gz
+        cd google-cloud-storage
+
+        # Run benchmark runner script
+        ulimit -n ${_ULIMIT}
+        PROCESSES=${_PROCESSES} COROS=${_COROS} FILE_SIZE_MIB=${_FILE_SIZE_MIB} CHUNK_SIZE_KIB=${_CHUNK_SIZE_KIB} \
+          TARGET_BUCKET=${_ZONAL_BUCKET} \
+          bash cloudbuild/run_benchmark_tests.sh
+
+        # Upload JSON result report to Cloud Build bucket
+        if [ -f /tmp/bench_result.json ]; then
+          gcloud storage cp /tmp/bench_result.json "gs://${PROJECT_ID}_cloudbuild/build_results/result_${BUILD_ID}.json" || true
+        fi
+
+        echo "=== [Cloud Build] Benchmark Complete ==="
+        EOF
+
+        # Attach startup script to the standing VM
+        gcloud compute instances add-metadata "${_VM_NAME}" \
+          --zone="${_ZONE}" \
+          --metadata-from-file="startup-script=/workspace/startup.sh"
+
+        # Trigger run by resetting the VM
+        gcloud compute instances reset "${_VM_NAME}" --zone="${_ZONE}"
+    waitFor:
+      - "package-and-upload-source"
+
+  # Step 2: Stream VM serial port console output until benchmark completes
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "monitor-benchmark-execution"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        echo "Streaming logs from VM ${_VM_NAME}..."
+        START=0
+        for i in $(seq 1 90); do
+          OUTPUT=$(gcloud compute instances get-serial-port-output "${_VM_NAME}" --zone="${_ZONE}" --start="$$START" 2>/dev/null || true)
+          if [ -n "$$OUTPUT" ]; then
+            echo "$$OUTPUT"
+            NEXT_START=$(echo "$$OUTPUT" | grep -o 'Specify --start=[0-9]*' | tail -n 1 | cut -d'=' -f2 || true)
+            if [ -n "$$NEXT_START" ]; then
+              START="$$NEXT_START"
+            fi
+            if echo "$$OUTPUT" | grep -q "=== \[Cloud Build\] Benchmark Complete ==="; then
+              echo "Benchmark run finished successfully!"
+              exit 0
+            fi
+          fi
+          sleep 10
+        done
+        echo "Timeout waiting for benchmark completion on VM"
+        exit 1
+    waitFor:
+      - "trigger-vm-benchmark"
+
+  # Step 3: Fetch JSON report and publish results to GitHub Checks Tab
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "publish-benchmark-results"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        mkdir -p /workspace/report
+        gcloud storage cp "gs://${PROJECT_ID}_cloudbuild/build_results/result_${BUILD_ID}.json" /workspace/report/bench_result.json 2>/dev/null || true
+        python3 packages/google-cloud-storage/cloudbuild/publish_check_run.py \
+          --result-file="/workspace/report/bench_result.json" \
+          --commit-sha="${COMMIT_SHA}" \
+          --pr-number="${_PR_NUMBER}" \
+          --build-id="${BUILD_ID}" \
+          --project-id="${PROJECT_ID}" \
+          --region="${LOCATION}" \
+          --vm-name="${_VM_NAME}" \
+          --zonal-bucket="${_ZONAL_BUCKET}"
+    waitFor:
+      - "monitor-benchmark-execution"
+
+  # Step 4: Cleanup startup script metadata and temporary build artifacts
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "cleanup-metadata"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        gcloud compute instances remove-metadata "${_VM_NAME}" --zone="${_ZONE}" --keys=startup-script || true
+        gcloud storage rm "gs://${PROJECT_ID}_cloudbuild/build_source/source_${BUILD_ID}.tar.gz" 2>/dev/null || true
+        gcloud storage rm "gs://${PROJECT_ID}_cloudbuild/build_results/result_${BUILD_ID}.json" 2>/dev/null || true
+    waitFor:
+      - "publish-benchmark-results"
+
+timeout: "3600s"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+  dynamicSubstitutions: true
