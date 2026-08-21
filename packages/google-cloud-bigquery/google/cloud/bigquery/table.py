@@ -20,6 +20,7 @@ import base64
 import copy
 import datetime
 import functools
+import logging
 import operator
 import typing
 import warnings
@@ -86,6 +87,7 @@ if typing.TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud import bigquery_storage  # type: ignore
     from google.cloud.bigquery.dataset import DatasetReference
 
+_LOGGER = logging.getLogger(__name__)
 
 _NO_GEOPANDAS_ERROR = (
     "The geopandas library is not installed, please install "
@@ -2992,14 +2994,19 @@ class RowIterator(HTTPIterator):
             bqstorage_client = None
 
         if _versions_helpers.PANDAS_GBQ_VERSIONS.is_delegation_supported:
-            client_info = getattr(
-                getattr(self.client, "_connection", None), "_client_info", None
-            )
-            if client_info:
-                ua = client_info.user_agent or ""
-                if "pandas-gbq" not in ua:
-                    version = _versions_helpers.PANDAS_GBQ_VERSIONS.installed_version
-                    client_info.user_agent = f"{ua} pandas-gbq/{version}".strip()
+            try:
+                client_info = getattr(
+                    getattr(self.client, "_connection", None), "_client_info", None
+                )
+                if client_info:
+                    ua = getattr(client_info, "user_agent", None) or ""
+                    if "pandas-gbq" not in ua:
+                        version = (
+                            _versions_helpers.PANDAS_GBQ_VERSIONS.installed_version
+                        )
+                        client_info.user_agent = f"{ua} pandas-gbq/{version}".strip()
+            except Exception as exc:
+                _LOGGER.warning("Failed to update telemetry user-agent: %s", exc)
 
         with warnings.catch_warnings():
             warnings.filterwarnings(

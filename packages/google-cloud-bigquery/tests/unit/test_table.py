@@ -5961,6 +5961,48 @@ class TestRowIterator(unittest.TestCase):
                 "gl-python/3.10.0",
             )
 
+    def test_to_dataframe_delegated_when_user_agent_update_fails_logs_warning(self):
+        pytest.importorskip("db_dtypes")
+        pandas = pytest.importorskip("pandas")
+        mock_pandas_gbq = mock.Mock()
+        mock_pandas_gbq.__version__ = "1.0.0"
+
+        class ReadOnlyClientInfo:
+            @property
+            def user_agent(self):
+                return "gl-python/3.10.0"
+
+            @user_agent.setter
+            def user_agent(self, value):
+                raise AttributeError("user_agent is read-only")
+
+        mock_client = _mock_client()
+        mock_client._connection = mock.Mock(_client_info=ReadOnlyClientInfo())
+
+        with (
+            mock.patch(
+                "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
+                new_callable=mock.PropertyMock,
+                return_value=True,
+            ),
+            mock.patch(
+                "google.cloud.bigquery._versions_helpers.SUPPORTS_RANGE_PYARROW",
+                False,
+            ),
+            mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),
+            mock.patch("google.cloud.bigquery.table._LOGGER.warning") as mock_log,
+        ):
+            row_iterator = self._make_one_from_data((("name", "STRING"),), (("foo",),))
+            row_iterator.client = mock_client
+
+            df = row_iterator.to_dataframe(progress_bar_type="tqdm", timeout=5.0)
+
+            self.assertIsInstance(df, pandas.DataFrame)
+            mock_log.assert_called_once()
+            self.assertIn(
+                "Failed to update telemetry user-agent", mock_log.call_args[0][0]
+            )
+
     def test_to_geodataframe_updates_user_agent(self):
         pytest.importorskip("geopandas")
         pyarrow = pytest.importorskip("pyarrow")
