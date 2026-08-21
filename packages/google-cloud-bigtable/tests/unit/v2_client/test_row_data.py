@@ -549,3 +549,32 @@ def _make_cell_pb(value):
     from google.cloud.bigtable import row_data
 
     return row_data.Cell(value, TIMESTAMP_MICROS)
+
+
+def test_partial_rows_data_deprecated_properties():
+    import warnings
+    from google.cloud.bigtable.row_data import PartialRowsData
+
+    generator = _make_generator([])
+    prd = PartialRowsData(generator)
+
+    for attr in [
+        "state",
+        "last_scanned_row_key",
+        "read_method",
+        "request",
+        "retry",
+        "response_iterator",
+    ]:
+        with warnings.catch_warnings(record=True) as warned:
+            warnings.simplefilter("always")
+            val = getattr(prd, attr)
+
+        assert val is None
+        assert len(warned) == 1
+        assert issubclass(warned[0].category, DeprecationWarning)
+        assert f"The `{attr}` attribute on `PartialRowsData` is deprecated" in str(
+            warned[0].message
+        )
+
+
