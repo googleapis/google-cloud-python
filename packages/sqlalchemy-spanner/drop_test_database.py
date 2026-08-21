@@ -15,17 +15,17 @@
 # limitations under the License.
 
 import configparser
+import json
 import os
 import re
 import time
 
+from create_test_config import set_test_config
 from google.api_core import datetime_helpers
 from google.api_core.exceptions import AlreadyExists, ResourceExhausted
 from google.cloud.spanner_v1 import Client
 from google.cloud.spanner_v1.database import Database
 from google.cloud.spanner_v1.instance import Instance
-
-from create_test_config import set_test_config
 
 USE_EMULATOR = os.getenv("SPANNER_EMULATOR_HOST") is not None
 
@@ -43,21 +43,76 @@ else:
     CLIENT = Client(project=PROJECT)
 
 
+def format_duration(seconds):
+    mins = int(seconds // 60)
+    secs = int(seconds % 60)
+    if mins > 0:
+        return f"{mins} minutes and {secs} seconds"
+    else:
+        return f"{secs} seconds"
+
+
 def delete_test_database():
     """Delete the currently configured test database."""
     config = configparser.ConfigParser()
-    if os.path.exists("test.cfg"):
-        config.read("test.cfg")
+    config_env_val = os.getenv("SQLALCHEMY_SPANNER_CONFIG")
+    if config_env_val:
+        config_filename = config_env_val
+        if not os.path.exists(config_filename):
+            print(f"[Spanner DB] Config file {config_filename} specified in SQLALCHEMY_SPANNER_CONFIG does not exist. Skipping database drop.")
+            return
+    elif os.path.exists("test.cfg"):
+        config_filename = "test.cfg"
     else:
-        config.read("setup.cfg")
+        config_filename = "setup.cfg"
+
+    config.read(config_filename)
+
     db_url = config.get("db", "default")
+    if not db_url.startswith("spanner"):
+        print(f"[Spanner DB] Database URL {db_url} is not a Spanner URL. Skipping database drop.")
+        return
 
     instance_id = re.findall(r"instances(.*?)databases", db_url)
     database_id = re.findall(r"databases(.*?)$", db_url)
 
     instance = CLIENT.instance(instance_id="".join(instance_id).replace("/", ""))
-    database = instance.database("".join(database_id).replace("/", ""))
+    database_id_str = "".join(database_id).replace("/", "")
+    database = instance.database(database_id_str)
     database.drop()
 
+    # Calculate and report active duration with type-validation for compliance
+    meta_path = os.path.join(os.path.dirname(__file__), ".db_session_info.json")
+    if os.path.exists(meta_path):
+        try:
+            with open(meta_path, "r") as f:
+                meta = json.load(f)
+            if isinstance(meta, dict):
+                creation_time = meta.get("creation_time", time.time())
+                db_name = meta.get("database_id", database_id_str)
+                elapsed_seconds = time.time() - creation_time
+                duration_str = format_duration(elapsed_seconds)
+                print(f"[Spanner DB] Database {db_name} was active for {duration_str} before teardown.")
+        except Exception:
+            pass
+        finally:
+            if os.path.exists(meta_path):
+                os.remove(meta_path)
 
-delete_test_database()
+    # Clean up session-specific config file
+    if os.path.exists(config_filename) and config_filename != "setup.cfg":
+        try:
+            os.remove(config_filename)
+        except Exception:
+            pass
+
+
+def main(argv):
+    config_filename = argv[0] if argv else os.getenv("SQLALCHEMY_SPANNER_CONFIG", "test.cfg")
+    os.environ["SQLALCHEMY_SPANNER_CONFIG"] = config_filename
+    delete_test_database()
+
+
+if __name__ == "__main__":
+    import sys
+    main(sys.argv[1:])
