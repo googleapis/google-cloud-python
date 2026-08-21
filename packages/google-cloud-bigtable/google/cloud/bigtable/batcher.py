@@ -42,17 +42,17 @@ class MutationsBatchError(Exception):
 class MutationsBatcher(object):
     """A MutationsBatcher is used in batch cases where the number of mutations
     is large or unknown. It will store :class:`DirectRow` in memory until one of the
-    size limits is reached, or an explicit call to :func:`flush()` is performed. When
-    a flush event occurs, the :class:`DirectRow` in memory will be sent to Cloud
-    Bigtable. Batching mutations is more efficient than sending individual
-    request.
+    size limits is reached, the ``flush_interval`` timer fires, or an explicit call
+    to :func:`flush()` is performed. When a flush event occurs, the :class:`DirectRow`
+    in memory will be sent to Cloud Bigtable. Batching mutations is more efficient than
+    sending individual requests.
 
     This class is not suited for usage in systems where each mutation
     must be guaranteed to be sent, since calling :func:`mutate()` may only
-    result in an in-memory change. Rows are only sent to the service when a size
-    limit is reached, when :func:`flush()` is called explicitly, or when the
-    batcher is closed (:func:`close()` is also registered to run at interpreter
-    exit). There is no time-based background flush. As a result, if the process
+    result in an in-memory change. Rows are sent to the service when a size
+    limit is reached, when the ``flush_interval`` timer fires, when :func:`flush()`
+    is called explicitly, or when the batcher is closed (:func:`close()` is also
+    registered to run at interpreter exit). As a result, if the process
     terminates abruptly -- e.g. a crash, ``SIGKILL``, or ``os._exit`` where the
     ``atexit`` handler never runs -- any :class:`DirectRow` still buffered in
     memory is silently dropped and never sent, even after :func:`mutate()`
@@ -82,9 +82,8 @@ class MutationsBatcher(object):
         (5 MB).
 
     :type flush_interval: float
-    :param flush_interval: (Deprecated) No longer used. Retained only for
-        backwards compatibility. There is no time-based background flush; see the
-        class docstring for when rows are sent.
+    :param flush_interval: (Optional) Automatically flush every flush_interval seconds.
+        If None or <= 0, no time-based flushing is performed. Default is 1 second.
 
     :type batch_completed_callback: Callable[list:[`~google.rpc.status_pb2.Status`]] = None
     :param batch_completed_callback: (Optional) A callable for handling responses
