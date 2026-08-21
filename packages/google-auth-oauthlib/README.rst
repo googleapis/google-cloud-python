@@ -1,7 +1,6 @@
 oauthlib integration for Google Auth
 ====================================
 
-
 |pypi|
 
 This library provides `oauthlib`_ integration with `google-auth`_.
