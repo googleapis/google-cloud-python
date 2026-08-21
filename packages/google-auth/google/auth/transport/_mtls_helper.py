@@ -23,7 +23,7 @@ import re
 import subprocess
 import sys
 import tempfile
-from typing import Any, cast, Generator, List, Optional, Tuple, Union
+from typing import cast, Generator, List, Optional, Tuple, Union
 from urllib.parse import urlsplit
 
 from google.auth import _agent_identity_utils
@@ -855,11 +855,11 @@ _MTLS_EXACT_HOSTS = (
 )
 
 
-def is_mtls_endpoint(url: Optional[Union[str, bytes, Any]]) -> bool:
+def is_mtls_endpoint(url: Optional[Union[str, bytes, object]]) -> bool:
     """Checks if the given URL corresponds to an mTLS or Private Service Connect (PSC) endpoint.
 
     Args:
-        url (Optional[Union[str, bytes, Any]]): The request URL.
+        url (Optional[Union[str, bytes, object]]): The request URL.
 
     Returns:
         bool: True if the URL targets an mTLS or PSC endpoint, False otherwise.
