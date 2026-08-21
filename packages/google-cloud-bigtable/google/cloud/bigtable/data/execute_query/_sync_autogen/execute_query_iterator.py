@@ -17,6 +17,7 @@
 
 from __future__ import annotations
 
+import logging
 from typing import TYPE_CHECKING, Any, Dict, Optional, Sequence, Tuple
 
 from google.api_core import retry as retries
@@ -46,6 +47,7 @@ from google.cloud.bigtable_v2.types.bigtable import ExecuteQueryResponse
 
 if TYPE_CHECKING:
     from google.cloud.bigtable.data import BigtableDataClient as DataClientType
+_LOGGER = logging.getLogger(__name__)
 
 
 def _has_resume_token(response: ExecuteQueryResponse) -> bool:
@@ -119,13 +121,19 @@ class ExecuteQueryIterator:
         )
         self._req_metadata = req_metadata
         self._column_info = column_info
-        self._register_instance_task = CrossSync._Sync_Impl.create_task(
-            self._client._register_instance,
-            self._instance_id,
-            self.app_profile_id,
-            id(self),
-            sync_executor=self._client._executor,
-        )
+        try:
+            self._register_instance_task = CrossSync._Sync_Impl.create_task(
+                self._client._register_instance,
+                self._instance_id,
+                self.app_profile_id,
+                id(self),
+                sync_executor=self._client._executor,
+            )
+        except Exception as e:
+            _LOGGER.warning(
+                f"Failed to start background instance registration: {e}. Requests will proceed without proactive channel warming."
+            )
+            self._register_instance_task = None
 
     @property
     def is_closed(self) -> bool:

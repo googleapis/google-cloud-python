@@ -306,11 +306,17 @@ class BigtableDataClient(ClientWithProject):
             and (not self._disable_background_refresh)
         ):
             CrossSync._Sync_Impl.verify_async_event_loop()
-            self._channel_refresh_task = CrossSync._Sync_Impl.create_task(
-                self._manage_channel,
-                sync_executor=self._executor,
-                task_name=f"{self.__class__.__name__} channel refresh",
-            )
+            try:
+                self._channel_refresh_task = CrossSync._Sync_Impl.create_task(
+                    self._manage_channel,
+                    sync_executor=self._executor,
+                    task_name=f"{self.__class__.__name__} channel refresh",
+                )
+            except Exception as e:
+                _LOGGER.warning(
+                    f"Failed to start background channel refresh task: {e}. Channel refresh will be disabled."
+                )
+                self._channel_refresh_task = None
 
     def close(self, timeout: float | None = 2.0):
         """Cancel all background tasks"""
@@ -907,13 +913,21 @@ class _DataApiTarget(abc.ABC):
         self.default_retryable_errors: Sequence[type[Exception]] = (
             default_retryable_errors or ()
         )
-        self._register_instance_future = CrossSync._Sync_Impl.create_task(
-            self.client._register_instance,
-            self.instance_id,
-            self.app_profile_id,
-            id(self),
-            sync_executor=self.client._executor,
-        )
+        try:
+            self._register_instance_future: CrossSync._Sync_Impl.Future[None] | None = (
+                CrossSync._Sync_Impl.create_task(
+                    self.client._register_instance,
+                    self.instance_id,
+                    self.app_profile_id,
+                    id(self),
+                    sync_executor=self.client._executor,
+                )
+            )
+        except Exception as e:
+            _LOGGER.warning(
+                f"Failed to start background instance registration: {e}. Requests will proceed without proactive channel warming."
+            )
+            self._register_instance_future = None
 
     def _create_operation(
         self, op_type: OperationType, **kwargs
