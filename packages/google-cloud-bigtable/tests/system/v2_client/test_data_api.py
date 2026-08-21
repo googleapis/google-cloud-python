@@ -1250,9 +1250,10 @@ def test_mutations_batcher_threading(data_table, rows_to_delete):
 def test_mutations_batcher_exceptions(data_table, rows_to_delete):
     """Test the mutations batcher exception handling"""
     import mock
+    from google.rpc import code_pb2, status_pb2
+
     from google.cloud.bigtable.batcher import MutationsBatcher, MutationsBatchError
     from google.cloud.bigtable_v2 import MutateRowsResponse
-    from google.rpc import code_pb2, status_pb2
 
     num_sent = 5
 
@@ -1317,8 +1318,9 @@ def test_mutations_batcher_exceptions(data_table, rows_to_delete):
 def test_mutations_batcher_manual_flush(data_table, rows_to_delete):
     """Test the mutations batcher manual flush"""
     import mock
+    from google.rpc import code_pb2, status_pb2
+
     from google.cloud.bigtable.batcher import MutationsBatcher
-    from google.rpc import status_pb2, code_pb2
 
     num_batches = 5
     batch_size = 4
