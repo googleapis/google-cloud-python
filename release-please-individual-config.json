@@ -2,14 +2,20 @@
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": true,
   "packages": {
-    "packages/google-cloud-workloadidentity": {
-      "component": "google-cloud-workloadidentity",
+    "packages/google-cloud-biglake-hive": {
+      "component": "google-cloud-biglake-hive",
       "extra-files": [
-        "google/cloud/workloadidentity/gapic_version.py",
-        "google/cloud/workloadidentity_v1/gapic_version.py",
+        "google/cloud/biglake/hive/gapic_version.py",
+        "google/cloud/biglake/hive_v1/gapic_version.py",
+        "google/cloud/biglake/hive_v1beta/gapic_version.py",
         {
           "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.cloud.workloadidentity.v1.json",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.biglake.hive.v1.json",
+          "type": "json"
+        },
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.biglake.hive.v1beta.json",
           "type": "json"
         }
       ]
@@ -22,6 +28,18 @@
         {
           "jsonpath": "$.clientLibrary.version",
           "path": "samples/generated_samples/snippet_metadata_google.cloud.ftp.v1.json",
+          "type": "json"
+        }
+      ]
+    },
+    "packages/google-cloud-workloadidentity": {
+      "component": "google-cloud-workloadidentity",
+      "extra-files": [
+        "google/cloud/workloadidentity/gapic_version.py",
+        "google/cloud/workloadidentity_v1/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.workloadidentity.v1.json",
           "type": "json"
         }
       ]
