@@ -907,18 +907,13 @@ class _DataApiTarget(abc.ABC):
         self.default_retryable_errors: Sequence[type[Exception]] = (
             default_retryable_errors or ()
         )
-        try:
-            self._register_instance_future = CrossSync._Sync_Impl.create_task(
-                self.client._register_instance,
-                self.instance_id,
-                self.app_profile_id,
-                id(self),
-                sync_executor=self.client._executor,
-            )
-        except RuntimeError as e:
-            raise RuntimeError(
-                f"{self.__class__.__name__} must be created within an async event loop context."
-            ) from e
+        self._register_instance_future = CrossSync._Sync_Impl.create_task(
+            self.client._register_instance,
+            self.instance_id,
+            self.app_profile_id,
+            id(self),
+            sync_executor=self.client._executor,
+        )
 
     def _create_operation(
         self, op_type: OperationType, **kwargs

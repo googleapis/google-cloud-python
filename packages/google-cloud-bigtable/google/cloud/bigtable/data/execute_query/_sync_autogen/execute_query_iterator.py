@@ -119,18 +119,13 @@ class ExecuteQueryIterator:
         )
         self._req_metadata = req_metadata
         self._column_info = column_info
-        try:
-            self._register_instance_task = CrossSync._Sync_Impl.create_task(
-                self._client._register_instance,
-                self._instance_id,
-                self.app_profile_id,
-                id(self),
-                sync_executor=self._client._executor,
-            )
-        except RuntimeError as e:
-            raise RuntimeError(
-                f"{self.__class__.__name__} must be created within an async event loop context."
-            ) from e
+        self._register_instance_task = CrossSync._Sync_Impl.create_task(
+            self._client._register_instance,
+            self._instance_id,
+            self.app_profile_id,
+            id(self),
+            sync_executor=self._client._executor,
+        )
 
     @property
     def is_closed(self) -> bool:
