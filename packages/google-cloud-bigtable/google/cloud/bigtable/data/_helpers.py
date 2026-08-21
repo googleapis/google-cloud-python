@@ -266,7 +266,7 @@ def _get_statuses_from_mutations_exception_group(
     #
     # 3. In the case of a RetryExceptionGroup, we use terminal exception in the exception
     #    group and process that.
-    statuses = [status_pb2.Status(code=code_pb2.OK)] * batch_size
+    statuses = [status_pb2.Status(code=code_pb2.OK) for _ in range(batch_size)]
     for error in exc_group.exceptions:
         if isinstance(error.index, int) and 0 <= error.index < len(statuses):
             cause = error.__cause__
@@ -297,7 +297,7 @@ def _get_status(exc: Optional[Exception]) -> status_pb2.Status:
         )
 
     return status_pb2.Status(
-        code=code_pb2.Code.UNKNOWN,
+        code=code_pb2.UNKNOWN,
         message=str(exc) if exc else "An unknown error has occurred",
     )
 
