@@ -24,12 +24,7 @@ import time
 import warnings
 from functools import partial
 from typing import (
-<<<<<<< ours
     TYPE_CHECKING,
-=======
-    Callable,
-    cast,
->>>>>>> theirs
     Any,
     AsyncIterable,
     Callable,
@@ -151,13 +146,7 @@ else:
     )
 
 if TYPE_CHECKING:
-<<<<<<< ours
     from google.cloud.bigtable.data._helpers import RowKeySamples, ShardedQuery
-=======
-    from google.cloud.bigtable.data._helpers import RowKeySamples
-    from google.cloud.bigtable.data._helpers import ShardedQuery
-    from google.rpc import status_pb2
->>>>>>> theirs
 
     if CrossSync.is_async:
         from google.cloud.bigtable.data._async.mutations_batcher import (
