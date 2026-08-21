@@ -658,6 +658,7 @@ class AuthorizedSession(requests.Session):
                     (
                         call_cert_bytes,
                         call_key_bytes,
+                        _,  # passphrase is not processed by requests adapter
                         cached_fingerprint,
                         current_cert_fingerprint,
                     ) = _mtls_helper.check_parameters_for_unauthorized_response(

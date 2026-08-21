@@ -1185,6 +1185,7 @@ class TestMtlsHelper:
         mock_call_client_cert_callback.return_value = (
             CERT_MOCK_VAL,
             KEY_MOCK_VAL,
+            b"passphrase",
         )
         mock_agent_identity_utils.get_cached_cert_fingerprint.return_value = (
             "cached_fingerprint"
@@ -1196,6 +1197,7 @@ class TestMtlsHelper:
         (
             cert,
             key,
+            passphrase,
             cached_fingerprint,
             current_fingerprint,
         ) = _mtls_helper.check_parameters_for_unauthorized_response(
@@ -1204,6 +1206,7 @@ class TestMtlsHelper:
 
         assert cert == CERT_MOCK_VAL
         assert key == KEY_MOCK_VAL
+        assert passphrase == b"passphrase"
         assert cached_fingerprint == "cached_fingerprint"
         assert current_fingerprint == "current_fingerprint"
         mock_call_client_cert_callback.assert_called_once()
@@ -1219,6 +1222,7 @@ class TestMtlsHelper:
         mock_call_client_cert_callback.return_value = (
             CERT_MOCK_VAL,
             KEY_MOCK_VAL,
+            b"passphrase",
         )
         mock_agent_identity_utils.calculate_certificate_fingerprint.return_value = (
             "current_fingerprint"
@@ -1227,12 +1231,14 @@ class TestMtlsHelper:
         (
             cert,
             key,
+            passphrase,
             cached_fingerprint,
             current_fingerprint,
         ) = _mtls_helper.check_parameters_for_unauthorized_response(cached_cert=None)
 
         assert cert == CERT_MOCK_VAL
         assert key == KEY_MOCK_VAL
+        assert passphrase == b"passphrase"
         assert cached_fingerprint == "current_fingerprint"
         assert current_fingerprint == "current_fingerprint"
         mock_call_client_cert_callback.assert_called_once()
@@ -1247,10 +1253,11 @@ class TestMtlsHelper:
             b"passphrase",
         )
 
-        cert, key = _mtls_helper.call_client_cert_callback()
+        cert, key, passphrase = _mtls_helper.call_client_cert_callback()
 
         assert cert == b"cert_bytes"
         assert key == b"key_bytes"
+        assert passphrase == b"passphrase"
         mock_get_client_ssl_credentials.assert_called_once_with(
             generate_encrypted_key=True
         )
