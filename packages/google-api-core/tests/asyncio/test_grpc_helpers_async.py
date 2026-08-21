@@ -33,7 +33,6 @@ if grpc is None:  # pragma: NO COVER
 
 
 import google.auth.credentials
-
 from google.api_core import exceptions, grpc_helpers_async
 
 
