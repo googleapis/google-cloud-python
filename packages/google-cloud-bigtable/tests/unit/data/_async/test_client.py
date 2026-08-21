@@ -1528,6 +1528,7 @@ class TestTableAsync:
         with pytest.raises(RuntimeError) as e:
             TableAsync(client, "instance-id", "table-id")
         assert e.match("TableAsync must be created within an async event loop context.")
+
     @CrossSync.pytest
     async def test_table_ctor_task_creation_failure_warns_and_continues(self, caplog):
         import logging
@@ -1539,9 +1540,7 @@ class TestTableAsync:
             with caplog.at_level(logging.WARNING):
                 table = self._make_one(client)
                 assert table._register_instance_future is None
-                assert (
-                    "Failed to start background instance registration" in caplog.text
-                )
+                assert "Failed to start background instance registration" in caplog.text
                 assert "can't start new thread" in caplog.text
         async with table:
             pass

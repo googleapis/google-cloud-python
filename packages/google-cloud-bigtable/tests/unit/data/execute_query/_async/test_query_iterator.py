@@ -449,8 +449,6 @@ class TestQueryIteratorAsync:
                     operation_timeout=10,
                 )
                 assert iterator._register_instance_task is None
-                assert (
-                    "Failed to start background instance registration" in caplog.text
-                )
+                assert "Failed to start background instance registration" in caplog.text
                 assert "can't start new thread" in caplog.text
         await iterator.close()
