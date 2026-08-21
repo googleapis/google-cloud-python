@@ -350,6 +350,39 @@ To create an integer-range partitioned table
         bigquery_require_partition_filter=True,
     )
 
+To create an external table backed by files in Google Cloud Storage:
+
+.. code-block:: python
+
+    from google.cloud import bigquery
+
+    external_config = bigquery.ExternalConfig(bigquery.ExternalSourceFormat.PARQUET)
+    external_config.source_uris = ["gs://my-bucket/path/to/files/*"]
+
+    table = Table('mytable', ...,
+        prefixes=['EXTERNAL'],
+        bigquery_external_data_configuration=external_config,
+    )
+
+To create an external table with hive partitioning:
+
+.. code-block:: python
+
+    from google.cloud import bigquery
+
+    hive_partitioning = bigquery.HivePartitioningOptions()
+    hive_partitioning.source_uri_prefix = "gs://my-bucket/path/to"
+    hive_partitioning.require_partition_filter = True
+
+    external_config = bigquery.ExternalConfig(bigquery.ExternalSourceFormat.PARQUET)
+    external_config.source_uris = ["gs://my-bucket/path/to/field=*/*"]
+    external_config.hive_partitioning = hive_partitioning
+
+    table = Table('mytable', ...,
+        prefixes=['EXTERNAL'],
+        bigquery_external_data_configuration=external_config,
+    )
+
 
 Threading and Multiprocessing
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
