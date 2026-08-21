@@ -18,7 +18,6 @@ import pytest
 
 from ._testing import _make_credentials
 
-
 _INSTANCE_ID = "test-instance"
 
 
@@ -97,7 +96,7 @@ def test_direct_row__get_mutations():
 
 
 def test_direct_row__get_mutation_pbs():
-    from google.cloud.bigtable.data.mutations import SetCell, _SERVER_SIDE_TIMESTAMP
+    from google.cloud.bigtable.data.mutations import _SERVER_SIDE_TIMESTAMP, SetCell
 
     row_key = b"row_key"
     row = _make_direct_row(row_key, None)
@@ -262,8 +261,8 @@ def test_direct_row_delete_cells_non_iterable():
 
 
 def test_direct_row_delete_cells_all_columns():
-    from google.cloud.bigtable.row import DirectRow
     from google.cloud.bigtable.data.mutations import DeleteAllFromFamily
+    from google.cloud.bigtable.row import DirectRow
 
     row_key = b"row_key"
     column_family_id = "column_family_id"
@@ -680,9 +679,8 @@ def test_append_row_commit_too_many_mutations():
 def test__parse_rmw_row_response():
     from google.cloud._helpers import _datetime_from_microseconds
 
-    from google.cloud.bigtable.row import _parse_rmw_row_response
-
     from google.cloud.bigtable.data.row import Row
+    from google.cloud.bigtable.row import _parse_rmw_row_response
 
     col_fam1 = "col-fam-id"
     col_fam2 = "col-fam-id2"
@@ -734,7 +732,6 @@ def test__parse_rmw_row_response():
     )
     sample_input = Row._from_pb(response_row)
     assert expected_output == _parse_rmw_row_response(sample_input)
-
 
 
 def _CheckAndMutateRowResponsePB(*args, **kw):

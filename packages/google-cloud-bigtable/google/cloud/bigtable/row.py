@@ -23,7 +23,6 @@ from google.cloud._helpers import (
 from google.cloud.bigtable.data import mutations
 from google.cloud.bigtable.data import read_modify_write_rules as rmw_rules
 
-
 MAX_MUTATIONS = 100000
 """The maximum number of mutations that a row can accumulate."""
 
