@@ -1637,7 +1637,6 @@ class TestTableAsync:
                     predicate_builder_mock.assert_called_once_with(
                         *expected_retryables, *extra_retryables
                     )
-<<<<<<< HEAD
                     # output of if_exception_type should be sent in to retry constructor
                     retry_call_kwargs = retry_fn_mock.call_args_list[0].kwargs
                     # check for predicate passed as kwarg
@@ -1647,12 +1646,6 @@ class TestTableAsync:
                         # check for predicate passed as arg
                         retry_call_args = retry_fn_mock.call_args_list[0].args
                         assert retry_call_args[1] is expected_predicate
-=======
-                    retry_call_args = retry_fn_mock.call_args_list[0].args
-
-                    # output of the predicate builder should be sent in to retry constructor
-                    assert retry_call_args[1] is expected_predicate
->>>>>>> 3426dbfbca1 (feat: Added rst_stream exception handling for ReadRows. (#1298))
 
     @pytest.mark.parametrize(
         "fn_name,fn_args,gapic_fn",

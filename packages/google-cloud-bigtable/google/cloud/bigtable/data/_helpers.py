@@ -17,24 +17,22 @@ Helper functions used in various places in the library.
 
 from __future__ import annotations
 
-<<<<<<< HEAD
-=======
-from typing import Callable, Sequence, List, Tuple, TYPE_CHECKING, Union
-import time
->>>>>>> 3426dbfbca1 (feat: Added rst_stream exception handling for ReadRows. (#1298))
 import enum
 import time
 from collections import namedtuple
-from typing import TYPE_CHECKING, List, Sequence, Tuple, Union
+from typing import (
+    TYPE_CHECKING,
+    Callable,
+    List,
+    Sequence,
+    Tuple,
+    Union,
+)
 
 from google.api_core import exceptions as core_exceptions
-<<<<<<< HEAD
+from google.api_core import retry as retries
 from google.api_core.retry import RetryFailureReason, exponential_sleep_generator
 
-=======
-from google.api_core import retry as retries
-from google.api_core.retry import RetryFailureReason
->>>>>>> 3426dbfbca1 (feat: Added rst_stream exception handling for ReadRows. (#1298))
 from google.cloud.bigtable.data.exceptions import RetryExceptionGroup
 from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
 
@@ -162,12 +160,14 @@ def _rst_stream_aware_predicate(
     """
     # predicate to check for retryable error types
     if_exception_type = retries.if_exception_type(*exception_types)
+
     # special case: treat InternalServerError with rst_stream error message as ServiceUnavailable
-    rst_check = (
-        lambda e: core_exceptions.ServiceUnavailable in exception_types
-        and isinstance(e, core_exceptions.InternalServerError)
-        and any(m in e.message.lower() for m in _RETRYABLE_INTERNAL_ERROR_MESSAGES)
-    )
+    def rst_check(e):
+        return (
+            core_exceptions.ServiceUnavailable in exception_types
+            and isinstance(e, core_exceptions.InternalServerError)
+            and any(m in e.message.lower() for m in _RETRYABLE_INTERNAL_ERROR_MESSAGES)
+        )
 
     return lambda e: if_exception_type(e) or rst_check(e)
 
