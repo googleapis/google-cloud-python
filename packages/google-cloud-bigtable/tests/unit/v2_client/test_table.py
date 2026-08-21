@@ -826,7 +826,7 @@ def test_table_read_rows():
     generator = (r for r in rows)
 
     # Create expected result.
-    expected_result = PartialRowsData(generator)
+    expected_result = PartialRowsData._from_generator(generator)
 
     # Perform the method and check the result.
     start_key = b"begin-key"
