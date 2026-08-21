@@ -14,14 +14,9 @@
 
 """User-friendly container for Google Cloud Bigtable RowSet"""
 
-<<<<<<< HEAD
-from google.cloud._helpers import _to_bytes
-
 from google.cloud.bigtable.data.read_rows_query import (
     ReadRowsQuery,
 )
-=======
->>>>>>> 9ee40327a33 (feat: Rerouted ReadRows to data client (#1299))
 from google.cloud.bigtable.data.read_rows_query import (
     RowRange as BaseRowRange,
 )

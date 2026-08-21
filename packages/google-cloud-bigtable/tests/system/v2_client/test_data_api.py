@@ -913,10 +913,10 @@ def test_table_read_rows_retry_timeout_mid_stream(
 
     from google.api_core import exceptions
 
+    from google.cloud.bigtable.data._helpers import _RETRYABLE_INTERNAL_ERROR_MESSAGES
     from google.cloud.bigtable.row_data import (
         DEFAULT_RETRY_READ_ROWS,
     )
-    from google.cloud.bigtable.data._helpers import _RETRYABLE_INTERNAL_ERROR_MESSAGES
 
     error_injector = data_table_read_rows_retry_tests.error_injector
     error_injector.errors_to_inject = [
