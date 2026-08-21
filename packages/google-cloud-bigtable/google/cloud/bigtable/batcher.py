@@ -115,11 +115,11 @@ class MutationsBatcher(object):
 
     @property
     def flush_count(self):
-        return self._flush_count
+        return self._batcher._flush_limit_count
 
     @property
     def max_row_bytes(self):
-        return self._max_row_bytes
+        return self._batcher._flush_limit_bytes
 
     def _init_batcher(self):
         self._batcher = self.table._table_impl.mutations_batcher(**self._batcher_kwargs)
