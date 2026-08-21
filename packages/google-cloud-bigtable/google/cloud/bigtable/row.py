@@ -20,11 +20,11 @@ from google.cloud._helpers import (
     _microseconds_from_datetime,  # type: ignore
     _to_bytes,  # type: ignore
 )
+from google.rpc import code_pb2, status_pb2
 
 from google.cloud.bigtable.data import mutations
 from google.cloud.bigtable.data import read_modify_write_rules as rmw_rules
-from google.rpc import code_pb2
-from google.rpc import status_pb2
+
 MAX_MUTATIONS = 100000
 """The maximum number of mutations that a row can accumulate."""
 

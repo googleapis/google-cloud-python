@@ -370,8 +370,9 @@ def test_direct_row_delete_cells_with_string_columns():
 
 
 def test_direct_row_commit():
-    from google.cloud.bigtable_v2.services.bigtable import BigtableClient
     from google.rpc import code_pb2, status_pb2
+
+    from google.cloud.bigtable_v2.services.bigtable import BigtableClient
 
     project_id = "project-id"
     row_key = b"row_key"
@@ -404,8 +405,9 @@ def test_direct_row_commit():
 
 def test_direct_row_commit_with_exception():
     from google.api_core.exceptions import InternalServerError
-    from google.cloud.bigtable_v2.services.bigtable import BigtableClient
     from google.rpc import code_pb2, status_pb2
+
+    from google.cloud.bigtable_v2.services.bigtable import BigtableClient
 
     project_id = "project-id"
     row_key = b"row_key"
@@ -441,8 +443,9 @@ def test_direct_row_commit_with_exception():
 
 def test_direct_row_commit_with_unknown_exception():
     from google.api_core.exceptions import GoogleAPICallError
-    from google.cloud.bigtable_v2.services.bigtable import BigtableClient
     from google.rpc import code_pb2, status_pb2
+
+    from google.cloud.bigtable_v2.services.bigtable import BigtableClient
 
     project_id = "project-id"
     row_key = b"row_key"
