@@ -61,7 +61,7 @@ jobs:
         TEST_ALL_PACKAGES: ${{ steps.check-label.outputs.is_full_run }}
       run: |
         if [ -n "$TARGET_BRANCH" ]; then
-          git fetch origin "$TARGET_BRANCH" --deepen=200 || true
+          git fetch --no-tags --quiet origin "$TARGET_BRANCH" --deepen=200 || true
         fi
         python3 ci/get_package_shards.py
 
