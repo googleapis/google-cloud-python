@@ -113,6 +113,7 @@ from google.cloud.bigquery.retry import (
     DEFAULT_GET_JOB_TIMEOUT,
     DEFAULT_JOB_RETRY,
     DEFAULT_RETRY,
+    INSERT_ROWS_DEFAULT_RETRY,
     DEFAULT_TIMEOUT,
     POLLING_DEFAULT_VALUE,
 )
@@ -3956,7 +3957,7 @@ class Client(ClientWithProject):
         skip_invalid_rows: Optional[bool] = None,
         ignore_unknown_values: Optional[bool] = None,
         template_suffix: Optional[str] = None,
-        retry: retries.Retry = DEFAULT_RETRY,
+        retry: retries.Retry = INSERT_ROWS_DEFAULT_RETRY,
         timeout: TimeoutType = DEFAULT_TIMEOUT,
     ) -> Sequence[dict]:
         """Insert rows into a table without applying local type conversions.
