@@ -179,3 +179,24 @@ class Test_should_retry_insert_rows(unittest.TestCase):
     def test_w_rate_limited(self):
         exc = mock.Mock(errors=[{"reason": "rateLimitExceeded"}], spec=["errors"])
         self.assertTrue(self._call_fut(exc))
+
+
+class Test_insert_rows_default_retry(unittest.TestCase):
+    def test_insert_rows_json_defaults_to_scoped_retry(self):
+        from types import MethodType
+        from google.cloud.bigquery.retry import INSERT_ROWS_DEFAULT_RETRY, _should_retry_insert_rows
+
+        # The default retry object on insert_rows_json is the scoped one,
+        # so transient SSLErrors on polling paths stay retryable while the
+        # streaming-insert carve-out is preserved.
+        self.assertIs(
+            INSERT_ROWS_DEFAULT_RETRY._predicate,
+            _should_retry_insert_rows,
+        )
+
+    def test_scoped_predicate_keeps_connection_errors_retryable(self):
+        from google.cloud.bigquery.retry import _should_retry_insert_rows
+
+        self.assertTrue(
+            _should_retry_insert_rows(requests.exceptions.ConnectionError())
+        )
