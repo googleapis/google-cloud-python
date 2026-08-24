@@ -32,6 +32,7 @@ sync clients; ``grpc.RpcError`` is the common base of both ``grpc.RpcError`` and
 
 from __future__ import annotations
 
+import logging
 import threading
 from typing import TYPE_CHECKING
 
@@ -41,6 +42,8 @@ from google.api_core import exceptions as core_exceptions
 
 if TYPE_CHECKING:
     from google.cloud.bigtable.data._accelerator._daemon import AcceleratorDaemon
+
+_LOGGER = logging.getLogger(__name__)
 
 
 class _AcceleratorFallback(Exception):
@@ -77,14 +80,22 @@ class AcceleratorBreaker:
 
 
 def _grpc_code(exc: BaseException) -> StatusCode | None:
-    """Best-effort extraction of a gRPC status code from an exception."""
+    """Best-effort extraction of a gRPC status code from an exception.
+
+    Handles both ``grpc.RpcError`` (status via a ``code()`` method) and
+    ``google.api_core.exceptions.GoogleAPICallError`` (status stored on the
+    ``grpc_status_code`` attribute), returning ``None`` for anything else.
+    """
     code = getattr(exc, "code", None)
-    if not callable(code):
-        return None
-    try:
-        return code()
-    except Exception:
-        return None
+    if callable(code):
+        try:
+            return code()
+        except Exception:
+            return None
+    grpc_status = getattr(exc, "grpc_status_code", None)
+    if isinstance(grpc_status, StatusCode):
+        return grpc_status
+    return None
 
 
 def handle_accelerator_error(
@@ -111,6 +122,11 @@ def handle_accelerator_error(
     # check liveness first: the "daemon died mid-flight" case always wins and is
     # never recoverable.
     if daemon is not None and not daemon.is_running:
+        _LOGGER.warning(
+            "Accelerator daemon is no longer running; permanently falling back "
+            "to the native Bigtable client for this table.",
+            exc_info=exc,
+        )
         breaker.trip()
         raise _AcceleratorFallback() from exc
     if not isinstance(exc, RpcError):
@@ -121,6 +137,10 @@ def handle_accelerator_error(
         # The daemon only replies UNIMPLEMENTED once it has no working sessions,
         # a persistent condition, so trip the breaker and fall back immediately
         # rather than re-dialing on every subsequent call.
+        _LOGGER.warning(
+            "Accelerator daemon replied UNIMPLEMENTED; permanently falling back "
+            "to the native Bigtable client for this table."
+        )
         breaker.trip()
         raise _AcceleratorFallback() from exc
     raise core_exceptions.from_grpc_error(exc) from exc

@@ -14,9 +14,10 @@
 """Unit tests for how the client decides whether to start the accelerator
 daemon. The accelerator is on by default and must degrade gracefully: it
 disables itself (with a warning) when the emulator is set or the daemon can't
-start, and only errors out on an explicit ``use_accelerator=True`` that
-conflicts with the emulator. These exercise the pure enablement helpers on the
-async target without spinning up a full client or event loop."""
+start, unless the caller passed an explicit ``use_accelerator=True`` — then a
+conflicting emulator or a daemon that fails to start is a hard error. These
+exercise the pure enablement helpers on the async target without spinning up a
+full client or event loop."""
 
 from types import SimpleNamespace
 
@@ -69,19 +70,29 @@ class TestMaybeStartAccelerator:
         with pytest.raises(RuntimeError, match="use_accelerator=True is not supported"):
             t._maybe_start_accelerator(explicit=True)
 
-    @pytest.mark.parametrize("explicit", [False, True])
-    def test_start_failure_falls_back_to_native(self, explicit):
-        """A daemon start failure (e.g. binary missing) never propagates; it
-        warns and leaves the target on the native client."""
+    def test_start_failure_falls_back_to_native(self):
+        """A default (non-explicit) daemon start failure (e.g. binary missing)
+        never propagates; it warns and leaves the target on the native client."""
 
         def _boom():
             raise FileNotFoundError("no bundled binary")
 
         t = _bare_target(emulator=None, start=_boom)
         with pytest.warns(RuntimeWarning, match="Failed to start"):
-            t._maybe_start_accelerator(explicit=explicit)
+            t._maybe_start_accelerator(explicit=False)
         assert t._accelerator_client is None
         assert t._accelerator_daemon is None
+
+    def test_start_failure_explicit_raises(self):
+        """An explicit use_accelerator=True must not silently fall back: a daemon
+        start failure propagates to the caller."""
+
+        def _boom():
+            raise FileNotFoundError("no bundled binary")
+
+        t = _bare_target(emulator=None, start=_boom)
+        with pytest.raises(FileNotFoundError, match="no bundled binary"):
+            t._maybe_start_accelerator(explicit=True)
 
     def test_successful_start(self):
         t = _bare_target(emulator=None, start=None)

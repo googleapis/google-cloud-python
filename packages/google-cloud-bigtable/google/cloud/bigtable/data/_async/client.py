@@ -1206,9 +1206,10 @@ class _DataApiTargetAsync(abc.ABC):
         The accelerator is on by default, so it must never break callers when
         it can't run. When the emulator is set, or the daemon fails to start
         (e.g. the binary isn't bundled for this platform), fall back to the
-        native client and warn. The one hard error is an explicit
-        ``use_accelerator=True`` combined with the emulator, which is a genuine
-        misconfiguration.
+        native client and warn. The exception is an explicit
+        ``use_accelerator=True``: a caller who required the accelerator gets a
+        hard error rather than a silent fallback, both for the emulator (a
+        genuine misconfiguration) and for a daemon that fails to start.
         """
         if self.client._emulator_host is not None:
             if explicit:
@@ -1227,6 +1228,9 @@ class _DataApiTargetAsync(abc.ABC):
         try:
             self._start_accelerator()
         except Exception as exc:
+            if explicit:
+                # The caller required the accelerator; don't mask the failure.
+                raise
             warnings.warn(
                 "Failed to start the Bigtable accelerator daemon; falling back "
                 f"to the native client: {exc}",
@@ -1413,6 +1417,8 @@ class _DataApiTargetAsync(abc.ABC):
         machinery and skip start_operation/tracked_retry. The daemon also owns
         metrics for accelerated RPCs, so the merger gets a handler-less metric:
         it satisfies the merger's state machine but never exports anything here.
+        No attempt is started on it — ``merge_rows`` finalizes the metric from
+        its initial state, and nothing is exported regardless.
 
         Raises ``_AcceleratorFallback`` if the caller should retry on the native
         client; other gRPC errors are translated to ``google.api_core``
@@ -1426,7 +1432,6 @@ class _DataApiTargetAsync(abc.ABC):
             metric=ActiveOperationMetric(OperationType.READ_ROWS, is_streaming=False),
             retryable_exceptions=(),
         )
-        row_merger._operation_metric.start_attempt()
         try:
             stream = self._accelerator_client.read_rows(
                 row_merger.request, timeout=operation_timeout
