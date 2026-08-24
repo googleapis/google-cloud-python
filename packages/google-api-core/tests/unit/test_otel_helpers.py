@@ -92,7 +92,9 @@ def test_apply_otel_capabilities_to_channel_enabled_otel_installed(monkeypatch):
 
     assert result is mock_intercepted_channel
     mock_otel_grpc.client_interceptor.assert_called_once_with(tracer_provider=None)
-    mock_otel_grpc.intercept_channel.assert_called_once_with(mock_channel, mock_interceptor)
+    mock_otel_grpc.intercept_channel.assert_called_once_with(
+        mock_channel, mock_interceptor
+    )
 
 
 def test_apply_otel_capabilities_to_channel_enabled_via_config(monkeypatch):
@@ -118,10 +120,14 @@ def test_apply_otel_capabilities_to_channel_enabled_via_config(monkeypatch):
         sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
     )
 
-    result = _otel_helpers.apply_otel_capabilities_to_channel(mock_channel, client_options=options)
+    result = _otel_helpers.apply_otel_capabilities_to_channel(
+        mock_channel, client_options=options
+    )
 
     assert result is mock_intercepted_channel
     mock_otel_grpc.client_interceptor.assert_called_once_with(
         tracer_provider=mock_tracer_provider
     )
-    mock_otel_grpc.intercept_channel.assert_called_once_with(mock_channel, mock_interceptor)
+    mock_otel_grpc.intercept_channel.assert_called_once_with(
+        mock_channel, mock_interceptor
+    )

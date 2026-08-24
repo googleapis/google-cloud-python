@@ -43,7 +43,8 @@ def is_otel_capabilities_enabled(
 
     if is_tracing_enabled:
         try:
-            import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
+            import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found] # noqa: F401
+
             return True
         except ImportError:
             pass
