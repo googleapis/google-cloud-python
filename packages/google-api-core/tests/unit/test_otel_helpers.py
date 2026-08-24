@@ -131,3 +131,39 @@ def test_apply_otel_capabilities_to_channel_enabled_via_config(monkeypatch):
     mock_otel_grpc.intercept_channel.assert_called_once_with(
         mock_channel, mock_interceptor
     )
+
+
+def test_apply_otel_capabilities_to_channel_enabled_via_dict_config(monkeypatch):
+    # Tracing enabled via dict config
+    mock_tracer_provider = object()
+    options = {"tracer_provider": mock_tracer_provider}
+
+    mock_channel = mock.Mock()
+    mock_intercepted_channel = mock.Mock()
+
+    mock_otel = mock.Mock()
+    mock_otel_grpc = mock_otel.instrumentation.grpc
+    mock_interceptor = mock.Mock()
+
+    mock_otel_grpc.client_interceptor.return_value = mock_interceptor
+    mock_otel_grpc.intercept_channel.return_value = mock_intercepted_channel
+
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(
+        sys.modules, "opentelemetry.instrumentation", mock_otel.instrumentation
+    )
+    monkeypatch.setitem(
+        sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
+    )
+
+    result = _otel_helpers.apply_otel_capabilities_to_channel(
+        mock_channel, client_options=options
+    )
+
+    assert result is mock_intercepted_channel
+    mock_otel_grpc.client_interceptor.assert_called_once_with(
+        tracer_provider=mock_tracer_provider
+    )
+    mock_otel_grpc.intercept_channel.assert_called_once_with(
+        mock_channel, mock_interceptor
+    )
