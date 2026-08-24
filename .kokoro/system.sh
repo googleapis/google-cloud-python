@@ -128,6 +128,7 @@ run_package_test() {
 reap_parallel_results() {
   local retval=0
   local failed_count=0
+  local timed_out_count=0
   local succeeded_count=0
 
   if [ -z "$LOG_DIR" ]; then
@@ -142,6 +143,13 @@ reap_parallel_results() {
     fi
   done
 
+  # Count timed out packages by checking for .timed_out marker files
+  for timed_out in "$LOG_DIR"/*.timed_out; do
+    if [ -f "$timed_out" ]; then
+      timed_out_count=$((timed_out_count + 1))
+    fi
+  done
+
   local total_tested=${#PACKAGES_TO_TEST[@]}
   succeeded_count=$((total_tested - failed_count))
 
@@ -152,6 +160,9 @@ reap_parallel_results() {
   echo "Total Packages: $total_tested"
   echo "Succeeded:      $succeeded_count"
   echo "Failed:         $failed_count"
+  if [ "$timed_out_count" -gt 0 ]; then
+    echo "Timed Out:      $timed_out_count"
+  fi
   echo "=================================================="
 
   local succeeded_packages=()
@@ -168,14 +179,23 @@ reap_parallel_results() {
     # List failed packages
     for failed in "$LOG_DIR"/*.failed; do
       if [ -f "$failed" ]; then
-        basename "$failed" .failed
+        local pkg=$(basename "$failed" .failed)
+        if [ -f "$LOG_DIR/$pkg.timed_out" ]; then
+          echo "$pkg (TIMED OUT after ${PACKAGE_TEST_TIMEOUT})"
+        else
+          echo "$pkg"
+        fi
       fi
     done
     for failed in "$LOG_DIR"/*.failed; do
       if [ -f "$failed" ]; then
         local pkg=$(basename "$failed" .failed)
         echo "--------------------------------------------------"
-        echo "@PACKAGE (FAILED): $pkg"
+        if [ -f "$LOG_DIR/$pkg.timed_out" ]; then
+          echo "@PACKAGE (TIMED OUT after ${PACKAGE_TEST_TIMEOUT}): $pkg"
+        else
+          echo "@PACKAGE (FAILED): $pkg"
+        fi
         echo "--------------------------------------------------"
         if [ -n "$KOKORO_ARTIFACTS_DIR" ] && [ -f "$KOKORO_ARTIFACTS_DIR/$pkg/sponge_log.log" ]; then
           cat "$KOKORO_ARTIFACTS_DIR/$pkg/sponge_log.log"
@@ -287,6 +307,7 @@ done
 
 # Parallel Execution Logic
 MAX_JOBS=${MAX_JOBS:-4}
+PACKAGE_TEST_TIMEOUT="${PACKAGE_TEST_TIMEOUT:-35m}"
 
 # Temporary directory for clean log segregation
 LOG_DIR=$(mktemp -d -t test-logs-XXXXXX)
@@ -301,9 +322,10 @@ fi
 echo "=================================================="
 echo "Starting parallel test execution for ${#PACKAGES_TO_TEST[@]} packages"
 echo "Concurrency limit: ${MAX_JOBS}"
+echo "Per-package timeout: ${PACKAGE_TEST_TIMEOUT}"
 echo "=================================================="
 
-export LOG_DIR
+export LOG_DIR PACKAGE_TEST_TIMEOUT
 export -f run_package_test
 export system_test_script PROJECT_ROOT KOKORO_GFILE_DIR
 
@@ -323,8 +345,22 @@ printf '%s\n' "${PACKAGES_TO_TEST[@]}" \
         log_file="$LOG_DIR/$pkg.log"
       fi
 
-      # Run test; if it fails, create a .failed file to signal failure to the reaper
-      run_package_test "$pkg" > "$log_file" 2>&1 || touch "$LOG_DIR/$pkg.failed"
+      # Run test with timeout guard; if it fails or times out, mark as failed
+      set +e
+      timeout --kill-after=1m "${PACKAGE_TEST_TIMEOUT}" bash -c '\''run_package_test "$0"'\'' "$pkg" > "$log_file" 2>&1
+      status=$?
+      set -e
+
+      if [ $status -eq 124 ] || [ $status -eq 137 ]; then
+        echo "" >> "$log_file"
+        echo "==================================================" >> "$log_file"
+        echo "ERROR: Package test timed out after ${PACKAGE_TEST_TIMEOUT}!" >> "$log_file"
+        echo "==================================================" >> "$log_file"
+        touch "$LOG_DIR/$pkg.timed_out"
+        touch "$LOG_DIR/$pkg.failed"
+      elif [ $status -ne 0 ]; then
+        touch "$LOG_DIR/$pkg.failed"
+      fi
     '
 
 reap_parallel_results || RETVAL=1
