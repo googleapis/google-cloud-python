@@ -192,3 +192,5 @@
 
 * Clean up docs and let the nox pass ([#24](https://github.com/googleapis/python-bigquery-magics/issues/24)) ([275712f](https://github.com/googleapis/python-bigquery-magics/commit/275712f4e4b647cda2d253e1f6b7a2fa093ee7c1))
 * Reset the changelog for the new package ([#22](https://github.com/googleapis/python-bigquery-magics/issues/22)) ([f7d9c14](https://github.com/googleapis/python-bigquery-magics/commit/f7d9c1445feac32e468a3e06ca55c9474a1ae548))
+
+<!-- trigger system tests -->

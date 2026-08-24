@@ -917,3 +917,5 @@
   `googleapis-common-protos` dependencies (#4096, #4098)
 
 PyPI: https://pypi.org/project/google-cloud-logging/1.4.0/
+
+<!-- trigger system tests -->

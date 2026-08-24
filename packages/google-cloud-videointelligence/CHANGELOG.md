@@ -717,3 +717,5 @@ change as the `v1` and `v1beta2` endpoints are identical. If you pinned to
   to `4 - Beta` (eb43849569556c6e47f11b8310864c5a280507f2)
 
 PyPI: https://pypi.org/project/google-cloud-videointelligence/0.28.0/
+
+<!-- trigger system tests -->
