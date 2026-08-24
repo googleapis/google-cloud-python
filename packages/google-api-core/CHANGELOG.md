@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.35.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.34.0...google-api-core-v2.35.0) (2026-08-21)
+
+
+### Features
+
+* **api_core:** add deprecation warning for grpcio &lt; 1.83.0 for PQC ([#18045](https://github.com/googleapis/google-cloud-python/issues/18045)) ([7e2e23e](https://github.com/googleapis/google-cloud-python/commit/7e2e23e817f1672bef34f850f319928815b5f7fb))
+
+
+### Bug Fixes
+
+* **api_core:** improve rest path validation ([#17753](https://github.com/googleapis/google-cloud-python/issues/17753)) ([63bfb96](https://github.com/googleapis/google-cloud-python/commit/63bfb96a8063d0d6ee38c7804009f82c9c426772))
+* **api_core:** support suppress_metrics_header fallback in AuthMetadataPlugin ([#18029](https://github.com/googleapis/google-cloud-python/issues/18029)) ([dd2000d](https://github.com/googleapis/google-cloud-python/commit/dd2000d473b5ac315aa0f8408d7aefba793fd623))
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
 ## [2.34.0](https://github.com/googleapis/google-cloud-python/compare/google-api-core-v2.33.0...google-api-core-v2.34.0) (2026-08-06)
 
 
