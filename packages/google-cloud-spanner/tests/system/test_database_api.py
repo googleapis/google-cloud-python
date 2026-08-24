@@ -571,20 +571,17 @@ def test_db_batch_send_and_ack(
     not_emulator, spanner_client, database_dialect, shared_instance
 ):
     import uuid
-
     from google.api_core.exceptions import GoogleAPIError, MethodNotImplemented
-
     from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 
     db_id = f"test-db-{uuid.uuid4().hex[:8]}"
     queue_name = f"test_queue_{uuid.uuid4().hex[:8]}"
 
-    test_database = shared_instance.database(db_id, database_dialect=database_dialect)
-    operation = test_database.create()
-    operation.result(300)
-    print("Database created successfully!")
-
     try:
+        test_database = shared_instance.database(db_id, database_dialect=database_dialect)
+        operation = test_database.create()
+        operation.result(300)
+
         # Create the Queue
         if database_dialect == DatabaseDialect.POSTGRESQL:
             queue_ddl = f"""CREATE QUEUE {queue_name} (
@@ -613,28 +610,21 @@ def test_db_batch_send_and_ack(
             ):
                 pytest.skip(f"Queues are not implemented yet: {e}")
             raise
-        print("Queue created successfully.")
 
-        # Run mutations
-        print("Sending message to queue...")
         with test_database.batch() as batch:
             batch.send(
                 queue=queue_name,
                 key=(2,),
                 payload="Hello, Queues!",
             )
-        print("Send successful.")
-
-        print("Acking message in queue...")
+            
         with test_database.batch() as batch:
             batch.ack(
                 queue=queue_name,
                 key=(2,),
             )
-        print("Ack successful.")
 
     finally:
-        print("Dropping database...")
         test_database.drop()
 
 

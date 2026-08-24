@@ -92,21 +92,19 @@ async def test_db_batch_send_and_ack(
     not_emulator, spanner_client, database_dialect, shared_instance
 ):
     import uuid
-
     from google.api_core.exceptions import GoogleAPIError, MethodNotImplemented
-
     from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 
     db_name = f"test-db-{uuid.uuid4().hex[:8]}"
     queue_name = f"test_queue_{uuid.uuid4().hex[:8]}"
 
-    test_database = await shared_instance.database(
-        db_name, database_dialect=database_dialect
-    )
-    operation = await test_database.create()
-    operation.result(300)
-
     try:
+        test_database = await shared_instance.database(
+            db_name, database_dialect=database_dialect
+        )
+        operation = await test_database.create()
+        await operation.result(300)
+
         # Create the Queue
         if database_dialect == DatabaseDialect.POSTGRESQL:
             queue_ddl = f"""CREATE QUEUE {queue_name} (
@@ -144,8 +142,7 @@ async def test_db_batch_send_and_ack(
                 key=(2,),
                 payload="Hello, Queues!",
             )
-
-        print("Acking message in queue...")
+        
         async with test_database.batch() as batch:
             batch.ack(
                 queue=queue_name,
@@ -153,7 +150,6 @@ async def test_db_batch_send_and_ack(
             )
 
     finally:
-        print("Dropping database...")
         await test_database.drop()
 
 
