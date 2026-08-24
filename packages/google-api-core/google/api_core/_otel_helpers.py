@@ -55,45 +55,28 @@ def is_otel_capabilities_enabled(
 def apply_otel_capabilities_to_channel(
     channel: Any,
     client_options: Optional[ClientOptions | dict[str, Any]] = None,
-    env_var: str = "GOOGLE_CLOUD_PYTHON_TRACING_ENABLED",
 ) -> Any:
-    """Applies OTel capabilities (like tracing) to the channel if enabled and installed.
+    """Applies OTel capabilities (like tracing) to the channel.
 
-    This helper centralizes the logic for checking environment variables,
-    programmatic configuration, and applying OTel interceptors directly to the
-    channel using specialized OTel wrappers (avoiding standard gRPC TypeError).
+    Precondition: This function assumes `is_otel_capabilities_enabled` has already
+    been called and returned `True`.
 
     Args:
         channel: The raw gRPC channel to wrap.
         client_options: The client options object or dictionary.
-        env_var: The environment variable to check for enablement.
 
     Returns:
-        Any: The intercepted channel if OTel is enabled and applied,
-            otherwise the original channel.
+        Any: The intercepted channel.
     """
-    is_tracing_enabled = _feature_gating_helpers.resolve_feature_flags(
-        env_var=env_var,
-        feature_key="tracer_provider",
-        configuration=client_options,
-    )
+    import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
 
-    if is_tracing_enabled:
-        try:
-            import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
+    tracer_provider = None
+    if isinstance(client_options, dict):
+        tracer_provider = client_options.get("tracer_provider")
+    elif client_options is not None:
+        tracer_provider = getattr(client_options, "tracer_provider", None)
 
-            tracer_provider = None
-            if isinstance(client_options, dict):
-                tracer_provider = client_options.get("tracer_provider")
-            elif client_options is not None:
-                tracer_provider = getattr(client_options, "tracer_provider", None)
+    interceptor = otel_grpc.client_interceptor(tracer_provider=tracer_provider)
 
-            interceptor = otel_grpc.client_interceptor(tracer_provider=tracer_provider)
-
-            # We use OTel's own compatible applier to avoid standard gRPC TypeError.
-            return otel_grpc.intercept_channel(channel, interceptor)
-        except ImportError:
-            # Failed open if OTel is not installed but feature was requested.
-            pass
-
-    return channel
+    # We use OTel's own compatible applier to avoid standard gRPC TypeError.
+    return otel_grpc.intercept_channel(channel, interceptor)

@@ -49,27 +49,7 @@ def test_is_otel_capabilities_enabled_otel_installed(monkeypatch):
     assert _otel_helpers.is_otel_capabilities_enabled()
 
 
-def test_apply_otel_capabilities_to_channel_disabled(monkeypatch):
-    monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "false")
-    mock_channel = mock.Mock()
-
-    result = _otel_helpers.apply_otel_capabilities_to_channel(mock_channel)
-    assert result is mock_channel
-
-
-def test_apply_otel_capabilities_to_channel_enabled_otel_missing(monkeypatch):
-    monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "true")
-    # Simulate OTel not being installed by blocking imports
-    monkeypatch.setitem(sys.modules, "opentelemetry.instrumentation.grpc", None)
-
-    mock_channel = mock.Mock()
-    result = _otel_helpers.apply_otel_capabilities_to_channel(mock_channel)
-    assert result is mock_channel
-
-
 def test_apply_otel_capabilities_to_channel_enabled_otel_installed(monkeypatch):
-    monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "true")
-
     mock_channel = mock.Mock()
     mock_intercepted_channel = mock.Mock()
 
