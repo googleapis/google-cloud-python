@@ -89,7 +89,7 @@ def apply_otel_capabilities_to_channel(
 
             interceptor = otel_grpc.client_interceptor(tracer_provider=tracer_provider)
 
-            # 🎯 We use OTel's own compatible applier!
+            # We use OTel's own compatible applier to avoid standard gRPC TypeError.
             return otel_grpc.intercept_channel(channel, interceptor)
         except ImportError:
             # Failed open if OTel is not installed but feature was requested.
