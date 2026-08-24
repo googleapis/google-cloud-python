@@ -48,6 +48,7 @@ _DEFAULT_STARTUP_TIMEOUT = 10.0
 # Sequence: close stdin, wait this long; SIGTERM, wait again; SIGKILL.
 _STDIN_GRACE_SECONDS = 2.0
 _SIGTERM_GRACE_SECONDS = 2.0
+_SIGKILL_GRACE_SECONDS = 2.0
 
 
 def _default_binary_path() -> str | None:
@@ -55,7 +56,21 @@ def _default_binary_path() -> str | None:
     return bundled if os.path.isfile(bundled) else None
 
 
-def _resolve_binary_path() -> str:
+def _resolve_binary_path(explicit_path: str | None = None) -> str:
+    """Resolve the daemon binary path, validating that it is a regular file.
+
+    Precedence: an explicit ``binary_path`` argument, then the
+    ``BIGTABLE_ACCELERATOR_BIN`` env var, then the binary bundled in the wheel.
+    An explicit path or env override that does not point at a regular file is a
+    hard error (a caller who named a path meant it); a missing bundled binary
+    reports how to supply one.
+    """
+    if explicit_path is not None:
+        if not os.path.isfile(explicit_path):
+            raise FileNotFoundError(
+                f"binary_path={explicit_path!r} does not point at a regular file"
+            )
+        return explicit_path
     override = os.environ.get(_BIN_ENV_VAR)
     if override:
         if not os.path.isfile(override):
@@ -98,7 +113,22 @@ class AcceleratorDaemon:
         binary_path: str | None = None,
         startup_timeout: float = _DEFAULT_STARTUP_TIMEOUT,
     ):
-        self._binary_path = binary_path or _resolve_binary_path()
+        """Resolve the binary and pick the UDS path (does not spawn anything).
+
+        Args:
+            cli_flags: extra arguments appended after ``--uds-path`` when
+                spawning the daemon (e.g. ``--project``/``--instance``).
+            binary_path: explicit path to the daemon binary. When omitted, the
+                path is resolved from the ``BIGTABLE_ACCELERATOR_BIN`` env var
+                and then the binary bundled in the wheel.
+            startup_timeout: seconds ``start()`` waits for the daemon's UDS to
+                become connectable before raising.
+
+        Raises:
+            FileNotFoundError: no binary could be resolved, or an explicit
+                ``binary_path``/env override does not point at a regular file.
+        """
+        self._binary_path = _resolve_binary_path(binary_path)
         self._cli_flags = list(cli_flags)
         self._startup_timeout = startup_timeout
         self._tempdir: str | None = None
@@ -106,6 +136,15 @@ class AcceleratorDaemon:
         self._log_path: str | None = None
         self._log_file: "typing.IO[bytes] | None" = None
         self._proc: subprocess.Popen[bytes] | None = None
+
+    def __enter__(self) -> "AcceleratorDaemon":
+        """Start the daemon on ``with`` entry and return it."""
+        self.start()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        """Tear the daemon down on ``with`` exit."""
+        self.close()
 
     @property
     def uds_path(self) -> str:
@@ -130,7 +169,14 @@ class AcceleratorDaemon:
         return self._proc is not None and self._proc.poll() is None
 
     def start(self) -> None:
-        """Spawn the daemon and wait for the UDS to become connectable."""
+        """Spawn the daemon and wait for the UDS to become connectable.
+
+        Raises:
+            RuntimeError: called twice, the daemon failed to spawn, exited
+                during startup, or did not become ready within
+                ``startup_timeout``. On any of these the child is killed and the
+                tempdir removed before the error propagates.
+        """
         if self._proc is not None:
             raise RuntimeError("AcceleratorDaemon.start() called twice")
         self._tempdir = tempfile.mkdtemp(prefix="bt-accel-")
@@ -155,14 +201,16 @@ class AcceleratorDaemon:
                 close_fds=True,
             )
         except OSError as exc:
-            self._close_log_file()
             self._cleanup_tempdir()
             raise RuntimeError(
                 f"Failed to spawn accelerator daemon at {self._binary_path}: {exc}"
             ) from exc
-        # The child inherited its own dup of the log fd; the parent no longer
-        # needs its copy. Startup failures read the tail back from the path.
-        self._close_log_file()
+        finally:
+            # Whether or not the spawn succeeded, the parent no longer needs its
+            # copy of the log fd: on success the child holds its own dup, and on
+            # failure there is nothing to keep open. Startup failures read the
+            # tail back from the path.
+            self._close_log_file()
         try:
             self._wait_until_ready()
         except BaseException:
@@ -188,16 +236,18 @@ class AcceleratorDaemon:
                     # Step 2: SIGTERM.
                     proc.terminate()
                     if not self._wait_for_exit(_SIGTERM_GRACE_SECONDS):
-                        # Step 3: SIGKILL.
+                        # Step 3: SIGKILL. Bounded wait so teardown can't hang
+                        # forever if the process is stuck unreapable.
                         proc.kill()
-                        proc.wait()
+                        self._wait_for_exit(_SIGKILL_GRACE_SECONDS)
         finally:
             self._proc = None
             self._close_log_file()
             self._cleanup_tempdir()
 
     def _wait_until_ready(self) -> None:
-        assert self._proc is not None and self._uds_path is not None
+        if self._proc is None or self._uds_path is None:
+            raise RuntimeError("AcceleratorDaemon._wait_until_ready() before spawn")
         deadline = time.monotonic() + self._startup_timeout
         while time.monotonic() < deadline:
             exit_code = self._proc.poll()
@@ -239,7 +289,9 @@ class AcceleratorDaemon:
                     fh.seek(-max_bytes, os.SEEK_END)
                 except OSError:
                     fh.seek(0)
-                data = fh.read()
+                # Bound the read too, so a log smaller than max_bytes (seek
+                # failed, fell back to seek(0)) is still capped.
+                data = fh.read(max_bytes)
         except OSError:
             return ""
         return data.decode("utf-8", errors="replace")
@@ -253,7 +305,8 @@ class AcceleratorDaemon:
             self._log_file = None
 
     def _wait_for_exit(self, timeout: float) -> bool:
-        assert self._proc is not None
+        if self._proc is None:
+            return True
         try:
             self._proc.wait(timeout=timeout)
             return True
