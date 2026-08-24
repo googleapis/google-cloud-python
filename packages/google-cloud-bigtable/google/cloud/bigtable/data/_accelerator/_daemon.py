@@ -30,7 +30,6 @@ import socket
 import subprocess
 import tempfile
 import time
-import typing
 from typing import Sequence
 
 # Environment variable that overrides the bundled binary location. Primarily
@@ -49,11 +48,6 @@ _DEFAULT_STARTUP_TIMEOUT = 10.0
 _STDIN_GRACE_SECONDS = 2.0
 _SIGTERM_GRACE_SECONDS = 2.0
 _SIGKILL_GRACE_SECONDS = 2.0
-
-
-def _default_binary_path() -> str | None:
-    bundled = os.path.join(os.path.dirname(__file__), _DEFAULT_BIN_RELATIVE_PATH)
-    return bundled if os.path.isfile(bundled) else None
 
 
 def _resolve_binary_path(explicit_path: str | None = None) -> str:
@@ -78,8 +72,8 @@ def _resolve_binary_path(explicit_path: str | None = None) -> str:
                 f"{_BIN_ENV_VAR}={override!r} does not point at a regular file"
             )
         return override
-    bundled = _default_binary_path()
-    if bundled is None:
+    bundled = os.path.join(os.path.dirname(__file__), _DEFAULT_BIN_RELATIVE_PATH)
+    if not os.path.isfile(bundled):
         raise FileNotFoundError(
             "No accelerator binary found. Set the "
             f"{_BIN_ENV_VAR} env var to a daemon binary path, or install a "
@@ -134,7 +128,6 @@ class AcceleratorDaemon:
         self._tempdir: str | None = None
         self._uds_path: str | None = None
         self._log_path: str | None = None
-        self._log_file: "typing.IO[bytes] | None" = None
         self._proc: subprocess.Popen[bytes] | None = None
 
     def __enter__(self) -> "AcceleratorDaemon":
@@ -190,13 +183,16 @@ class AcceleratorDaemon:
         # stays a PIPE — closing it is how close() signals the daemon to shut
         # down.
         self._log_path = os.path.join(self._tempdir, "daemon.log")
-        self._log_file = open(self._log_path, "wb")
+        # The log file handle only needs to live long enough for Popen to dup
+        # it into the child, so it stays local to start() rather than being an
+        # attribute. Startup failures read the tail back from the path.
+        log_file = open(self._log_path, "wb")
         argv = [self._binary_path, "--uds-path", self._uds_path, *self._cli_flags]
         try:
             self._proc = subprocess.Popen(
                 argv,
                 stdin=subprocess.PIPE,
-                stdout=self._log_file,
+                stdout=log_file,
                 stderr=subprocess.STDOUT,
                 close_fds=True,
             )
@@ -208,11 +204,13 @@ class AcceleratorDaemon:
         finally:
             # Whether or not the spawn succeeded, the parent no longer needs its
             # copy of the log fd: on success the child holds its own dup, and on
-            # failure there is nothing to keep open. Startup failures read the
-            # tail back from the path.
-            self._close_log_file()
+            # failure there is nothing to keep open.
+            try:
+                log_file.close()
+            except OSError:
+                pass
         try:
-            self._wait_until_ready()
+            self._wait_until_ready(self._startup_timeout)
         except BaseException:
             self._force_kill()
             self._cleanup_tempdir()
@@ -242,13 +240,17 @@ class AcceleratorDaemon:
                         self._wait_for_exit(_SIGKILL_GRACE_SECONDS)
         finally:
             self._proc = None
-            self._close_log_file()
             self._cleanup_tempdir()
 
-    def _wait_until_ready(self) -> None:
+    def _wait_until_ready(self, timeout: float) -> None:
+        """Poll until the UDS accepts a connection, the child dies, or timeout.
+
+        Raises RuntimeError if the daemon exits during startup or does not
+        become connectable within ``timeout`` seconds.
+        """
         if self._proc is None or self._uds_path is None:
             raise RuntimeError("AcceleratorDaemon._wait_until_ready() before spawn")
-        deadline = time.monotonic() + self._startup_timeout
+        deadline = time.monotonic() + timeout
         while time.monotonic() < deadline:
             exit_code = self._proc.poll()
             if exit_code is not None:
@@ -269,7 +271,7 @@ class AcceleratorDaemon:
         log_tail = self._read_log_tail()
         raise RuntimeError(
             "Accelerator daemon did not become ready within "
-            f"{self._startup_timeout}s. log: {log_tail!r}"
+            f"{timeout}s. log: {log_tail!r}"
         )
 
     def _read_log_tail(self, max_bytes: int = 4096) -> str:
@@ -296,15 +298,11 @@ class AcceleratorDaemon:
             return ""
         return data.decode("utf-8", errors="replace")
 
-    def _close_log_file(self) -> None:
-        if self._log_file is not None:
-            try:
-                self._log_file.close()
-            except OSError:
-                pass
-            self._log_file = None
-
     def _wait_for_exit(self, timeout: float) -> bool:
+        """Wait up to ``timeout`` seconds for the child to exit.
+
+        Returns True if it has exited (or there is no child), False on timeout.
+        """
         if self._proc is None:
             return True
         try:
@@ -314,6 +312,7 @@ class AcceleratorDaemon:
             return False
 
     def _force_kill(self) -> None:
+        """SIGKILL the child and reap it; a no-op if it is already gone."""
         if self._proc is None or self._proc.poll() is not None:
             return
         try:
@@ -326,6 +325,7 @@ class AcceleratorDaemon:
             pass
 
     def _cleanup_tempdir(self) -> None:
+        """Remove the tempdir holding the socket and log; clear derived paths."""
         if self._tempdir is not None and os.path.isdir(self._tempdir):
             shutil.rmtree(self._tempdir, ignore_errors=True)
         self._tempdir = None
