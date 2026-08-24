@@ -59,7 +59,8 @@ def apply_otel_capabilities_to_channel(
     """Applies OTel capabilities (like tracing) to the channel.
 
     Precondition: This function assumes `is_otel_capabilities_enabled` has already
-    been called and returned `True`.
+    been called and returned `True`, i.e. in the Client. At this time
+    this function is not intended to be standalone.
 
     Args:
         channel: The raw gRPC channel to wrap.
