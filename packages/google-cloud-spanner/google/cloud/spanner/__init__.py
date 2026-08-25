@@ -15,9 +15,6 @@
 #
 from __future__ import absolute_import
 
-import google.api_core as api_core
-
-
 from google.cloud.spanner_v1 import (
     COMMIT_TIMESTAMP,
     AbstractSessionPool,
@@ -31,12 +28,6 @@ from google.cloud.spanner_v1 import (
     __version__,
     param_types,
 )
-
-if hasattr(api_core, "check_python_version") and hasattr(
-    api_core, "check_dependency_versions"
-):  # pragma: NO COVER
-    api_core.check_python_version(__name__)  # type: ignore
-    api_core.check_dependency_versions(__name__)  # type: ignore
 
 __all__ = (
     # google.cloud.spanner
