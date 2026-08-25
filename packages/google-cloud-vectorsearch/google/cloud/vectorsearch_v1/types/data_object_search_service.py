@@ -43,6 +43,7 @@ __protobuf__ = proto.module(
         "BatchSearchDataObjectsRequest",
         "Ranker",
         "ReciprocalRankFusion",
+        "VertexRanker",
         "BatchSearchDataObjectsResponse",
     },
 )
@@ -739,6 +740,10 @@ class Ranker(proto.Message):
             Reciprocal Rank Fusion ranking.
 
             This field is a member of `oneof`_ ``ranker``.
+        vertex_ranker (google.cloud.vectorsearch_v1.types.VertexRanker):
+            Optional. Vertex AI ranking.
+
+            This field is a member of `oneof`_ ``reranker``.
     """
 
     rrf: "ReciprocalRankFusion" = proto.Field(
@@ -746,6 +751,12 @@ class Ranker(proto.Message):
         number=1,
         oneof="ranker",
         message="ReciprocalRankFusion",
+    )
+    vertex_ranker: "VertexRanker" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="reranker",
+        message="VertexRanker",
     )
 
 
@@ -762,6 +773,75 @@ class ReciprocalRankFusion(proto.Message):
     weights: MutableSequence[float] = proto.RepeatedField(
         proto.DOUBLE,
         number=1,
+    )
+
+
+class VertexRanker(proto.Message):
+    r"""Defines a ranker using the Vertex AI ranking service.
+    See
+    https://cloud.google.com/generative-ai-app-builder/docs/ranking
+    for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        text_record_spec (google.cloud.vectorsearch_v1.types.VertexRanker.TextRecordSpec):
+            The record spec for text search.
+
+            This field is a member of `oneof`_ ``record_spec``.
+        model (str):
+            Required. The model used for ranking documents. The list of
+            available models is described in
+            https://docs.cloud.google.com/generative-ai-app-builder/docs/ranking#models.
+            Currently, only ``semantic-ranker-fast@latest`` is
+            supported.
+        top_n (int):
+            Required. The number of documents to be
+            processed for ranking.
+    """
+
+    class TextRecordSpec(proto.Message):
+        r"""The record spec for text search.
+
+        Attributes:
+            query (str):
+                Required. The query against which the records
+                are ranked and scored.
+            title_template (str):
+                Optional. The template used to generate the
+                record's title.
+            content_template (str):
+                Optional. The template used to generate the
+                record's content.
+        """
+
+        query: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        title_template: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        content_template: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    text_record_spec: TextRecordSpec = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="record_spec",
+        message=TextRecordSpec,
+    )
+    model: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    top_n: int = proto.Field(
+        proto.INT32,
+        number=5,
     )
 
 

@@ -974,7 +974,7 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
                 within the same connection for the default stream.
 
                 The size of a single AppendRowsRequest must be less than
-                10 MB in size. Requests larger than this return an
+                20 MB in size. Requests larger than this return an
                 error, typically ``INVALID_ARGUMENT``.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -1472,8 +1472,6 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("BigQueryWriteClient",)

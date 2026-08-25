@@ -12,9 +12,38 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_gapic//:gapic.bzl", "proto_custom_library", "unzipped_srcjar")
+load("@rules_gapic//:gapic.bzl", "proto_custom_library", "unzipped_srcjar", "CustomProtoInfo")
 load("@rules_python//python:defs.bzl", "py_library")
 load("@gapic_generator_python_pip_deps//:requirements.bzl", "requirement")
+
+# Load modern rules_proto Starlark ProtoInfo provider.
+# Needed because modern rules_proto targets output Starlark ProtoInfo, whereas
+# rules_gapic's proto_custom_library expects rules_gapic's CustomProtoInfo provider.
+load("@rules_proto//proto:defs.bzl", StarlarkProtoInfo = "ProtoInfo")
+
+# Compatibility adapter rule to convert modern rules_proto Starlark ProtoInfo
+# into rules_gapic CustomProtoInfo provider required by proto_custom_library.
+def _gapic_compat_proto_library_impl(ctx):
+    dep = ctx.attr.dep
+    starlark_proto = dep[StarlarkProtoInfo]
+    return [
+        dep[DefaultInfo],
+        # Construct CustomProtoInfo provider needed by rules_gapic's proto_custom_library.
+        # Must not return ProtoInfo here so proto_custom_library selects CustomProtoInfo (which has transitive_imports).
+        CustomProtoInfo(
+            direct_sources = starlark_proto.direct_sources,
+            check_deps_sources = starlark_proto.check_deps_sources,
+            # Map modern transitive_sources to CustomProtoInfo's transitive_imports field
+            transitive_imports = starlark_proto.transitive_sources,
+        ),
+    ]
+
+gapic_compat_proto_library = rule(
+    implementation = _gapic_compat_proto_library_impl,
+    attrs = {
+        "dep": attr.label(mandatory = True, providers = [StarlarkProtoInfo]),
+    }
+)
 
 def _gapic_test_file_impl(ctx):
     generated_test_file = ctx.actions.declare_file(ctx.label.name)
@@ -46,6 +75,22 @@ def py_gapic_library(
         rest_numeric_enums = False,
         deps = [],
         **kwargs):
+
+    # We extract and propagate 'testonly' and 'tags' from kwargs to prevent Bazel dependency analysis
+    # errors and ensure wildcard builds (e.g. manual tags) behave correctly.
+    testonly = kwargs.get("testonly", False)
+    tags = kwargs.get("tags", [])
+    compat_srcs = []
+    for i, src in enumerate(srcs):
+        compat_name = "%s_compat_src_%d" % (name, i)
+        gapic_compat_proto_library(
+            name = compat_name,
+            dep = src,
+            testonly = testonly,
+            tags = tags,
+        )
+        compat_srcs.append(":%s" % compat_name)
+
     srcjar_target_name = "%s_srcjar" % name
     srcjar_output_suffix = ".srcjar"
 
@@ -67,9 +112,11 @@ def py_gapic_library(
     if rest_numeric_enums:
         opt_args = opt_args + ["rest-numeric-enums"]
 
+    # Point deps to compat_srcs so proto_custom_library receives targets providing
+    # the CustomProtoInfo provider instead of raw Starlark ProtoInfo targets.
     proto_custom_library(
         name = srcjar_target_name,
-        deps = srcs,
+        deps = compat_srcs,
         plugin = Label("@gapic_generator_python//:gapic_plugin"),
         plugin_args = plugin_args,
         plugin_file_args = file_args,

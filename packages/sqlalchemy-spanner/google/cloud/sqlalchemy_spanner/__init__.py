@@ -12,7 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .sqlalchemy_spanner import SpannerDialect
+from .sqlalchemy_spanner import MAX_SIZE, SpannerDialect
 from .version import __version__
 
-__all__ = (SpannerDialect, __version__)
+__all__ = (
+    "MAX_SIZE",
+    "SpannerDialect",
+    "__version__",
+)

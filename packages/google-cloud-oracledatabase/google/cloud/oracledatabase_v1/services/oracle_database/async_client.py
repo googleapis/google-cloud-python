@@ -4475,6 +4475,268 @@ class OracleDatabaseAsyncClient:
         # Done; return the response.
         return response
 
+    async def refresh_autonomous_database(
+        self,
+        request: Optional[
+            Union[oracledatabase.RefreshAutonomousDatabaseRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        refresh_cutoff_time: Optional[timestamp_pb2.Timestamp] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Refreshes the refreshable clone of an Autonomous
+        Database.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            async def sample_refresh_autonomous_database():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseAsyncClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.RefreshAutonomousDatabaseRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = await client.refresh_autonomous_database(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = await operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.oracledatabase_v1.types.RefreshAutonomousDatabaseRequest, dict]]):
+                The request object. Request message for
+                RefreshAutonomousDatabase method.
+            name (:class:`str`):
+                Required. The name of the AutonomousDatabase resource.
+                Format:
+                projects/{project}/location/{location}/autonomousDatabases/{autonomous_database}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            refresh_cutoff_time (:class:`google.protobuf.timestamp_pb2.Timestamp`):
+                Required. The timestamp to which the
+                Autonomous Database refreshable clone
+                will be refreshed. Changes made in the
+                primary database after this timestamp
+                are not part of the data refresh.
+
+                This corresponds to the ``refresh_cutoff_time`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.oracledatabase_v1.types.AutonomousDatabase` Details of the Autonomous Database resource.
+                   https://docs.oracle.com/en-us/iaas/api/#/en/database/20160918/AutonomousDatabase/
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name, refresh_cutoff_time]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, oracledatabase.RefreshAutonomousDatabaseRequest):
+            request = oracledatabase.RefreshAutonomousDatabaseRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+        if refresh_cutoff_time is not None:
+            request.refresh_cutoff_time = refresh_cutoff_time
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.refresh_autonomous_database
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            autonomous_database.AutonomousDatabase,
+            metadata_type=oracledatabase.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_autonomous_database_refreshable_clones(
+        self,
+        request: Optional[
+            Union[oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> oracledatabase.AutonomousDatabaseRefreshableClones:
+        r"""Gets the refreshable clones for a given Autonomous
+        Database.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import oracledatabase_v1
+
+            async def sample_get_autonomous_database_refreshable_clones():
+                # Create a client
+                client = oracledatabase_v1.OracleDatabaseAsyncClient()
+
+                # Initialize request argument(s)
+                request = oracledatabase_v1.GetAutonomousDatabaseRefreshableClonesRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_autonomous_database_refreshable_clones(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.oracledatabase_v1.types.GetAutonomousDatabaseRefreshableClonesRequest, dict]]):
+                The request object. Request message for getting
+                refreshable clones for an Autonomous
+                Database.
+            name (:class:`str`):
+                Required. The Autonomous Database resource whose
+                refreshable clones are to be listed. Format:
+                projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.oracledatabase_v1.types.AutonomousDatabaseRefreshableClones:
+                Response message for getting the
+                Autonomous Database refreshable clones.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest
+        ):
+            request = oracledatabase.GetAutonomousDatabaseRefreshableClonesRequest(
+                request
+            )
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_autonomous_database_refreshable_clones
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def list_odb_networks(
         self,
         request: Optional[Union[odb_network.ListOdbNetworksRequest, dict]] = None,
@@ -11299,9 +11561,7 @@ class OracleDatabaseAsyncClient:
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 __all__ = ("OracleDatabaseAsyncClient",)

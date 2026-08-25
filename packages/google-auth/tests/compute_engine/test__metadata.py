@@ -993,9 +993,13 @@ def test__is_service_account_email():
         _metadata._is_service_account_email("my-sa@my-project.iam.gserviceaccount.com")
         is True
     )
-    assert _metadata._is_service_account_email("test@example.com") is True
+    assert (
+        _metadata._is_service_account_email("my-sa@my-project.iam.GSERVICEACCOUNT.COM")
+        is True
+    )
 
     # Empty inputs and standard string placeholders
+    assert _metadata._is_service_account_email("test@example.com") is False
     assert _metadata._is_service_account_email("default") is False
     assert _metadata._is_service_account_email("") is False
     assert _metadata._is_service_account_email(None) is False

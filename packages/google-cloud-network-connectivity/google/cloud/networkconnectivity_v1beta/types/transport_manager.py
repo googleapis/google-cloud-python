@@ -28,6 +28,8 @@ __protobuf__ = proto.module(
         "ListRemoteTransportProfilesRequest",
         "ListRemoteTransportProfilesResponse",
         "GetRemoteTransportProfileRequest",
+        "ParseFromActivationKeyRequest",
+        "ParseFromActivationKeyResponse",
         "Transport",
         "ListTransportsRequest",
         "ListTransportsResponse",
@@ -80,6 +82,8 @@ class RemoteTransportProfile(proto.Message):
             Output only. Human readable name of this
             profile, used to identify this profile in the
             UI.
+        provider_type (google.cloud.networkconnectivity_v1beta.types.RemoteTransportProfile.ProviderType):
+            Output only. Provider type for this profile.
     """
 
     class Bandwidth(proto.Enum):
@@ -192,6 +196,22 @@ class RemoteTransportProfile(proto.Message):
         CLOSED = 1
         OPEN = 2
 
+    class ProviderType(proto.Enum):
+        r"""Provider type for this profile.
+
+        Values:
+            PROVIDER_TYPE_UNSPECIFIED (0):
+                Unspecified provider type.
+            CLOUD (1):
+                Represents a Cloud service provider.
+            NETWORK (2):
+                Represents a Network service provider.
+        """
+
+        PROVIDER_TYPE_UNSPECIFIED = 0
+        CLOUD = 1
+        NETWORK = 2
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -236,6 +256,11 @@ class RemoteTransportProfile(proto.Message):
     display_name: str = proto.Field(
         proto.STRING,
         number=13,
+    )
+    provider_type: ProviderType = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum=ProviderType,
     )
 
 
@@ -331,6 +356,46 @@ class GetRemoteTransportProfileRequest(proto.Message):
     )
 
 
+class ParseFromActivationKeyRequest(proto.Message):
+    r"""Message for getting a RemoteTransportProfile from an
+    activation key.
+
+    Attributes:
+        parent (str):
+            Required. Parent value for
+            ParseFromActivationKeyRequest.
+        activation_key (str):
+            Required. The activation key to get the
+            RemoteTransportProfile for.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    activation_key: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ParseFromActivationKeyResponse(proto.Message):
+    r"""Message for response to getting a RemoteTransportProfile from
+    an activation key.
+
+    Attributes:
+        remote_transport_profile (google.cloud.networkconnectivity_v1beta.types.RemoteTransportProfile):
+            The RemoteTransportProfile that was parsed
+            from the activation key.
+    """
+
+    remote_transport_profile: "RemoteTransportProfile" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="RemoteTransportProfile",
+    )
+
+
 class Transport(proto.Message):
     r"""Message describing Transport object.
 
@@ -346,13 +411,14 @@ class Transport(proto.Message):
         description (str):
             Optional. Description of the Transport.
         remote_profile (str):
-            Optional. Name of the remoteTransportProfile
-            that this Transport is connecting to.
+            Optional. Immutable. Name of the
+            remoteTransportProfile that this Transport is
+            connecting to.
         provided_activation_key (str):
-            Optional. Key used for establishing a connection with the
-            remote transport. This key can only be provided if the
-            profile supports an INPUT key flow and the resource is in
-            the PENDING_KEY state.
+            Optional. Immutable. Key used for establishing a connection
+            with the remote transport. This key can only be provided if
+            the profile supports an INPUT key flow and the resource is
+            in the PENDING_KEY state.
         generated_activation_key (str):
             Output only. Google-generated activation key. This is only
             output if the selected profile supports an OUTPUT key flow.
@@ -385,21 +451,44 @@ class Transport(proto.Message):
             billing, and retains the underlying network
             bandwidth associated with the connectivity.
         network (str):
-            Optional. Resource URI of the Network that
-            will be peered with this Transport. This field
-            must be provided during resource creation and
-            cannot be changed.
+            Optional. Immutable. Resource URI of the
+            Network that will be peered with this Transport.
+            This field must be provided during resource
+            creation and cannot be changed.
         advertised_routes (MutableSequence[str]):
             Optional. List of IP Prefixes that will be
             advertised to the remote provider. Both IPv4 and
             IPv6 addresses are supported.
         remote_account_id (str):
-            Optional. The user supplied account id for
-            the CSP associated with the remote profile.
+            Optional. Immutable. The user supplied
+            account id for the CSP associated with the
+            remote profile.
         peering_network (str):
             Output only. VPC Network URI that was created for the VPC
             Peering connection to the provided ``network``. If VPC
             Peering is disconnected, this can be used to re-establish.
+        hub (str):
+            Optional. Immutable. The NCC Hub that the Transport should
+            attach to. The hub must be in the same project as the
+            Transport. Format: ``{hub}`` or
+            ``projects/{project}/locations/global/hubs/{hub}``
+        psc_routing_enabled (bool):
+            Optional. Immutable. Controls whether a
+            Routing VPC Spoke should be created and attached
+            to the NCC Hub. This will provide Private
+            Service Connect (PSC) connectivity through NCC.
+            This can only be set when the Transport is first
+            created.
+        auto_accept (bool):
+            Optional. Immutable. Controls whether
+            resources proposed by the Transport are
+            automatically accepted on behalf of the user.
+            List of actions that can be automatically
+            accepted are:
+
+            1. VPC Peering creation
+            2. Routing VPC Spoke creation
+            3. Hybrid Spoke creation
     """
 
     class Bandwidth(proto.Enum):
@@ -589,6 +678,18 @@ class Transport(proto.Message):
         proto.STRING,
         number=18,
     )
+    hub: str = proto.Field(
+        proto.STRING,
+        number=19,
+    )
+    psc_routing_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=20,
+    )
+    auto_accept: bool = proto.Field(
+        proto.BOOL,
+        number=21,
+    )
 
 
 class ListTransportsRequest(proto.Message):
@@ -687,11 +788,19 @@ class GetStatusRequest(proto.Message):
     Attributes:
         name (str):
             Required. Name of the resource.
+        skip_cache (bool):
+            Optional. If set to true, the response will
+            bypass any caches and return the freshest
+            possible data.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    skip_cache: bool = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 

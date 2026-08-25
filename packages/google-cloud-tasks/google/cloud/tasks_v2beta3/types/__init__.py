@@ -14,10 +14,16 @@
 # limitations under the License.
 #
 from .cloudtasks import (
+    BatchCreateTasksMetadata,
+    BatchCreateTasksRequest,
+    BatchCreateTasksResponse,
+    BatchDeleteTasksMetadata,
+    BatchDeleteTasksRequest,
     CreateQueueRequest,
     CreateTaskRequest,
     DeleteQueueRequest,
     DeleteTaskRequest,
+    GetCmekConfigRequest,
     GetQueueRequest,
     GetTaskRequest,
     ListQueuesRequest,
@@ -28,7 +34,11 @@ from .cloudtasks import (
     PurgeQueueRequest,
     ResumeQueueRequest,
     RunTaskRequest,
+    UpdateCmekConfigRequest,
     UpdateQueueRequest,
+)
+from .cmek_config import (
+    CmekConfig,
 )
 from .queue import (
     Queue,
@@ -57,10 +67,16 @@ from .task import (
 )
 
 __all__ = (
+    "BatchCreateTasksMetadata",
+    "BatchCreateTasksRequest",
+    "BatchCreateTasksResponse",
+    "BatchDeleteTasksMetadata",
+    "BatchDeleteTasksRequest",
     "CreateQueueRequest",
     "CreateTaskRequest",
     "DeleteQueueRequest",
     "DeleteTaskRequest",
+    "GetCmekConfigRequest",
     "GetQueueRequest",
     "GetTaskRequest",
     "ListQueuesRequest",
@@ -71,7 +87,9 @@ __all__ = (
     "PurgeQueueRequest",
     "ResumeQueueRequest",
     "RunTaskRequest",
+    "UpdateCmekConfigRequest",
     "UpdateQueueRequest",
+    "CmekConfig",
     "Queue",
     "QueueStats",
     "RateLimits",

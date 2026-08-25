@@ -163,6 +163,16 @@ _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS = "jobReference,totalRows,pageToken,rows"
 # https://github.com/googleapis/python-bigquery/issues/438
 _MIN_GET_QUERY_RESULTS_TIMEOUT = 120
 
+_LOAD_TABLE_FROM_DATAFRAME_DEPRECATED = (
+    "Loading DataFrames via google-cloud-bigquery is deprecated. "
+    "For direct, optimized loading, please call 'pandas_gbq.to_gbq()' directly."
+)
+
+_INSERT_ROWS_FROM_DATAFRAME_DEPRECATED = (
+    "Inserting rows from DataFrames via google-cloud-bigquery is deprecated. "
+    "For direct, optimized access, please call 'pandas_gbq.to_gbq()' directly."
+)
+
 TIMEOUT_HEADER = "X-Server-Timeout"
 
 
@@ -2830,6 +2840,12 @@ class Client(ClientWithProject):
                 If ``job_config`` is not an instance of
                 :class:`~google.cloud.bigquery.job.LoadJobConfig` class.
         """
+        warnings.warn(
+            _LOAD_TABLE_FROM_DATAFRAME_DEPRECATED,
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
+
         job_id = _make_job_id(job_id, job_id_prefix)
 
         if job_config is not None:
@@ -3649,6 +3665,8 @@ class Client(ClientWithProject):
         job_retry: retries.Retry = DEFAULT_JOB_RETRY,
         page_size: Optional[int] = None,
         max_results: Optional[int] = None,
+        query_results_format: Optional[str] = None,
+        compression_codec: Optional[str] = None,
     ) -> RowIterator:
         """Run the query, wait for it to finish, and return the results.
 
@@ -3696,6 +3714,10 @@ class Client(ClientWithProject):
                 by this parameter.
             max_results (Optional[int]):
                 The maximum total number of rows from this request.
+            query_results_format (Optional[Union[str, google.cloud.bigquery.enums.QueryResultsFormat]]):
+                [Beta] The format for query results (e.g. "ARROW" or :class:`~google.cloud.bigquery.enums.QueryResultsFormat.ARROW`).
+            compression_codec (Optional[Union[str, google.cloud.bigquery.enums.QueryResultsCompressionCodec]]):
+                [Beta] Compression codec for Arrow serialization (e.g. "LZ4_FRAME" or :class:`~google.cloud.bigquery.enums.QueryResultsCompressionCodec.LZ4_FRAME`).
 
         Returns:
             google.cloud.bigquery.table.RowIterator:
@@ -3726,6 +3748,8 @@ class Client(ClientWithProject):
             job_retry=job_retry,
             page_size=page_size,
             max_results=max_results,
+            query_results_format=query_results_format,
+            compression_codec=compression_codec,
         )
 
     def _query_and_wait_bigframes(
@@ -3741,6 +3765,8 @@ class Client(ClientWithProject):
         job_retry: retries.Retry = DEFAULT_JOB_RETRY,
         page_size: Optional[int] = None,
         max_results: Optional[int] = None,
+        query_results_format: Optional[str] = None,
+        compression_codec: Optional[str] = None,
         callback: Callable = lambda _: None,
     ) -> RowIterator:
         """See query_and_wait.
@@ -3773,6 +3799,8 @@ class Client(ClientWithProject):
             job_retry=job_retry,
             page_size=page_size,
             max_results=max_results,
+            query_results_format=query_results_format,
+            compression_codec=compression_codec,
             callback=callback,
         )
 
@@ -3900,6 +3928,12 @@ class Client(ClientWithProject):
         Raises:
             ValueError: if table's schema is not set
         """
+        warnings.warn(
+            _INSERT_ROWS_FROM_DATAFRAME_DEPRECATED,
+            PendingDeprecationWarning,
+            stacklevel=2,
+        )
+
         insert_results = []
 
         chunk_count = int(math.ceil(len(dataframe) / chunk_size))

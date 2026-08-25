@@ -30,14 +30,37 @@ ParsedVersion = Tuple[int, ...]
 # about deprecated and unsupported versions.
 DependencyConstraint = namedtuple(
     "DependencyConstraint",
-    ["package_name", "minimum_fully_supported_version", "recommended_version"],
+    [
+        "package_name",
+        "minimum_fully_supported_version",
+        "recommended_version",
+        "message_template",
+    ],
+    defaults=(None, None),
 )
+
+PQC_GRPC_WARNING_TEMPLATE = (
+    "Package {consumer_package} depends on {dependency_package}, currently installed at version {version_used_string}. "
+    "grpcio < 1.83.0 does not support Post-Quantum Cryptography (PQC). "
+    "Support for non-PQC environments is deprecated. In October 2026, "
+    "Google Cloud Python packages will raise their minimum requirements "
+    "(including google-api-core, grpcio, and grpcio-status) to enforce grpcio >= 1.83.0. "
+    "For more details on Google Cloud's post-quantum security migration, visit: "
+    "https://cloud.google.com/security/resources/post-quantum-cryptography"
+)
+
 _PACKAGE_DEPENDENCY_WARNINGS = [
     DependencyConstraint(
         "google.protobuf",
-        minimum_fully_supported_version="4.25.8",
+        minimum_fully_supported_version="6.33.5",
         recommended_version="6.x",
-    )
+    ),
+    DependencyConstraint(
+        "grpcio",
+        minimum_fully_supported_version="1.83.0",
+        recommended_version="1.83.x",
+        message_template=PQC_GRPC_WARNING_TEMPLATE,
+    ),
 ]
 
 
@@ -50,7 +73,7 @@ UNKNOWN_VERSION_STRING = "--"
 def parse_version_to_tuple(version_string: str) -> ParsedVersion:
     """Safely converts a semantic version string to a comparable tuple of integers.
 
-    Example: "4.25.8" -> (4, 25, 8)
+    Example: "6.33.5" -> (6, 33, 5)
     Ignores non-numeric parts and handles common version formats.
 
     Args:
@@ -162,7 +185,7 @@ def warn_deprecation_for_versions_less_than(
         ) = _get_distribution_and_import_packages(consumer_import_package)
 
         recommendation = (
-            " (we recommend {recommended_version})" if recommended_version else ""
+            f" (we recommend {recommended_version})" if recommended_version else ""
         )
         message_template = message_template or _flatten_message(
             """
@@ -222,4 +245,5 @@ def check_dependency_versions(
             package_info.package_name,
             package_info.minimum_fully_supported_version,
             recommended_version=package_info.recommended_version,
+            message_template=package_info.message_template,
         )

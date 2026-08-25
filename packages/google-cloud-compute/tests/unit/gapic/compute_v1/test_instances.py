@@ -878,7 +878,14 @@ def test_instances_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -925,7 +932,14 @@ def test_instances_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -3726,7 +3740,12 @@ def test_delete_rest_required_fields(request_type=compute.DeleteInstanceRequest)
         credentials=ga_credentials.AnonymousCredentials()
     ).delete._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3786,7 +3805,12 @@ def test_delete_rest_unset_required_fields():
 
     unset_fields = transport.delete._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instance",
@@ -3933,7 +3957,12 @@ def test_delete_unary_rest_required_fields(request_type=compute.DeleteInstanceRe
         credentials=ga_credentials.AnonymousCredentials()
     ).delete._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "no_graceful_shutdown",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3993,7 +4022,12 @@ def test_delete_unary_rest_unset_required_fields():
 
     unset_fields = transport.delete._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",))
+        set(
+            (
+                "noGracefulShutdown",
+                "requestId",
+            )
+        )
         & set(
             (
                 "instance",
@@ -17746,6 +17780,7 @@ def test_stop_rest_required_fields(request_type=compute.StopInstanceRequest):
     assert not set(unset_fields) - set(
         (
             "discard_local_ssd",
+            "no_graceful_shutdown",
             "request_id",
         )
     )
@@ -17811,6 +17846,7 @@ def test_stop_rest_unset_required_fields():
         set(
             (
                 "discardLocalSsd",
+                "noGracefulShutdown",
                 "requestId",
             )
         )
@@ -17963,6 +17999,7 @@ def test_stop_unary_rest_required_fields(request_type=compute.StopInstanceReques
     assert not set(unset_fields) - set(
         (
             "discard_local_ssd",
+            "no_graceful_shutdown",
             "request_id",
         )
     )
@@ -18028,6 +18065,7 @@ def test_stop_unary_rest_unset_required_fields():
         set(
             (
                 "discardLocalSsd",
+                "noGracefulShutdown",
                 "requestId",
             )
         )
@@ -22604,9 +22642,13 @@ def test_bulk_insert_rest_call_success(request_type):
             "scheduling": {
                 "automatic_restart": True,
                 "availability_domain": 2002,
+                "graceful_shutdown": {
+                    "enabled": True,
+                    "max_duration": {"nanos": 543, "seconds": 751},
+                },
                 "host_error_timeout_seconds": 2811,
                 "instance_termination_action": "instance_termination_action_value",
-                "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
+                "local_ssd_recovery_timeout": {},
                 "location_hint": "location_hint_value",
                 "max_run_duration": {},
                 "min_node_cpus": 1379,
@@ -22620,6 +22662,7 @@ def test_bulk_insert_rest_call_success(request_type):
                 "on_host_maintenance": "on_host_maintenance_value",
                 "on_instance_stop_action": {"discard_local_ssd": True},
                 "preemptible": True,
+                "preemption_notice_duration": {},
                 "provisioning_model": "provisioning_model_value",
                 "skip_guest_os_shutdown": True,
                 "termination_time": "termination_time_value",
@@ -24720,9 +24763,21 @@ def test_insert_rest_call_success(request_type):
                 "subblock": "subblock_value",
             },
             "reservation_consumption_info": {
-                "consumed_reservation": "consumed_reservation_value"
+                "consumed_reservation": "consumed_reservation_value",
+                "consumed_reservation_block": "consumed_reservation_block_value",
+                "consumed_reservation_sub_block": "consumed_reservation_sub_block_value",
             },
-            "scheduling": {"availability_domain": 2002},
+            "scheduling": {
+                "availability_domain": 2002,
+                "graceful_shutdown_timestamp": "graceful_shutdown_timestamp_value",
+                "termination_timestamp": "termination_timestamp_value",
+            },
+            "shutdown_details": {
+                "max_duration": {},
+                "request_timestamp": "request_timestamp_value",
+                "stop_state": "stop_state_value",
+                "target_state": "target_state_value",
+            },
             "upcoming_maintenance": {
                 "can_reschedule": True,
                 "latest_window_start_time": "latest_window_start_time_value",
@@ -24742,6 +24797,7 @@ def test_insert_rest_call_success(request_type):
         "scheduling": {
             "automatic_restart": True,
             "availability_domain": 2002,
+            "graceful_shutdown": {"enabled": True, "max_duration": {}},
             "host_error_timeout_seconds": 2811,
             "instance_termination_action": "instance_termination_action_value",
             "local_ssd_recovery_timeout": {},
@@ -24758,6 +24814,7 @@ def test_insert_rest_call_success(request_type):
             "on_host_maintenance": "on_host_maintenance_value",
             "on_instance_stop_action": {"discard_local_ssd": True},
             "preemptible": True,
+            "preemption_notice_duration": {},
             "provisioning_model": "provisioning_model_value",
             "skip_guest_os_shutdown": True,
             "termination_time": "termination_time_value",
@@ -28511,9 +28568,13 @@ def test_set_scheduling_rest_call_success(request_type):
     request_init["scheduling_resource"] = {
         "automatic_restart": True,
         "availability_domain": 2002,
+        "graceful_shutdown": {
+            "enabled": True,
+            "max_duration": {"nanos": 543, "seconds": 751},
+        },
         "host_error_timeout_seconds": 2811,
         "instance_termination_action": "instance_termination_action_value",
-        "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
+        "local_ssd_recovery_timeout": {},
         "location_hint": "location_hint_value",
         "max_run_duration": {},
         "min_node_cpus": 1379,
@@ -28527,6 +28588,7 @@ def test_set_scheduling_rest_call_success(request_type):
         "on_host_maintenance": "on_host_maintenance_value",
         "on_instance_stop_action": {"discard_local_ssd": True},
         "preemptible": True,
+        "preemption_notice_duration": {},
         "provisioning_model": "provisioning_model_value",
         "skip_guest_os_shutdown": True,
         "termination_time": "termination_time_value",
@@ -31086,9 +31148,21 @@ def test_update_rest_call_success(request_type):
                 "subblock": "subblock_value",
             },
             "reservation_consumption_info": {
-                "consumed_reservation": "consumed_reservation_value"
+                "consumed_reservation": "consumed_reservation_value",
+                "consumed_reservation_block": "consumed_reservation_block_value",
+                "consumed_reservation_sub_block": "consumed_reservation_sub_block_value",
             },
-            "scheduling": {"availability_domain": 2002},
+            "scheduling": {
+                "availability_domain": 2002,
+                "graceful_shutdown_timestamp": "graceful_shutdown_timestamp_value",
+                "termination_timestamp": "termination_timestamp_value",
+            },
+            "shutdown_details": {
+                "max_duration": {},
+                "request_timestamp": "request_timestamp_value",
+                "stop_state": "stop_state_value",
+                "target_state": "target_state_value",
+            },
             "upcoming_maintenance": {
                 "can_reschedule": True,
                 "latest_window_start_time": "latest_window_start_time_value",
@@ -31108,6 +31182,7 @@ def test_update_rest_call_success(request_type):
         "scheduling": {
             "automatic_restart": True,
             "availability_domain": 2002,
+            "graceful_shutdown": {"enabled": True, "max_duration": {}},
             "host_error_timeout_seconds": 2811,
             "instance_termination_action": "instance_termination_action_value",
             "local_ssd_recovery_timeout": {},
@@ -31124,6 +31199,7 @@ def test_update_rest_call_success(request_type):
             "on_host_maintenance": "on_host_maintenance_value",
             "on_instance_stop_action": {"discard_local_ssd": True},
             "preemptible": True,
+            "preemption_notice_duration": {},
             "provisioning_model": "provisioning_model_value",
             "skip_guest_os_shutdown": True,
             "termination_time": "termination_time_value",

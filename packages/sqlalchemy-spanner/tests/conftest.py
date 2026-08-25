@@ -71,7 +71,7 @@ def literal_round_trip_spanner(metadata, connection):
         compare=None,
         support_whereclause=True,
     ):
-        t = Table("t", metadata, Column("x", type_))
+        t = Table("t_literal_round_trip_spanner", metadata, Column("x", type_))
         t.create(connection)
 
         for value in input_:

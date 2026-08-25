@@ -58,7 +58,9 @@ try:
 except ImportError:  # pragma: NO COVER
     from random import SystemRandom
 
+import socket
 from string import ascii_letters, digits
+import sys
 import webbrowser
 import wsgiref.simple_server
 import wsgiref.util
@@ -432,10 +434,14 @@ class InstalledAppFlow(Flow):
                 authorization server.
         """
         wsgi_app = _RedirectWSGIApp(success_message)
-        # Fail fast if the address is occupied
-        wsgiref.simple_server.WSGIServer.allow_reuse_address = False
+        # Use _ExclusiveWSGIServer to fail fast if the address/port is occupied,
+        # and to prevent other apps from binding to it on Windows.
         local_server = wsgiref.simple_server.make_server(
-            bind_addr or host, port, wsgi_app, handler_class=_WSGIRequestHandler
+            bind_addr or host,
+            port,
+            wsgi_app,
+            server_class=_ExclusiveWSGIServer,
+            handler_class=_WSGIRequestHandler,
         )
 
         try:
@@ -476,6 +482,23 @@ class InstalledAppFlow(Flow):
             local_server.server_close()
 
         return self.credentials
+
+
+class _ExclusiveWSGIServer(wsgiref.simple_server.WSGIServer):
+    """Custom WSGIServer.
+
+    Enforces exclusive address binding on Windows.
+    Setting `WSGIServer.allow_reuse_address` is not enough, since it sets `SO_REUSEADDR`
+    and not `SO_EXCLUSIVEADDRUSE`. `SO_REUSEADDR` alone allows other processes to bind
+    to the same address and port on Windows.
+    """
+
+    allow_reuse_address = False
+
+    def server_bind(self):
+        if sys.platform == "win32" and hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+        super().server_bind()
 
 
 class _WSGIRequestHandler(wsgiref.simple_server.WSGIRequestHandler):

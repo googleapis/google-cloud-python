@@ -25,7 +25,9 @@ from unittest import mock
 import pytest
 import sqlalchemy
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds
+from google.cloud import spanner_dbapi
 from google.cloud.spanner_v1 import Client, RequestOptions
+from google.cloud.sqlalchemy_spanner import version as sqlalchemy_spanner_version
 from sqlalchemy import (
     FLOAT,
     Boolean,
@@ -204,8 +206,6 @@ from sqlalchemy.testing.suite.test_update_delete import (
 )
 from sqlalchemy.types import Integer, Numeric, Text
 
-from google.cloud import spanner_dbapi
-from google.cloud.sqlalchemy_spanner import version as sqlalchemy_spanner_version
 from tests._helpers import get_db_url, get_project
 
 config.test_schema = ""
@@ -250,7 +250,7 @@ class ComponentReflectionTestExtra(_ComponentReflectionTestExtra):
     @testing.requires.table_reflection
     def test_nullable_reflection(self, connection, metadata):
         t = Table(
-            "t",
+            "t_nullable_reflection",
             metadata,
             Column("a", Integer, nullable=True),
             Column("b", Integer, nullable=False),
@@ -260,19 +260,21 @@ class ComponentReflectionTestExtra(_ComponentReflectionTestExtra):
         eq_(
             dict(
                 (col["name"], col["nullable"])
-                for col in inspect(connection).get_columns("t")
+                for col in inspect(connection).get_columns("t_nullable_reflection")
             ),
             {"a": True, "b": False},
         )
 
     def _type_round_trip(self, connection, metadata, *types):
         t = Table(
-            "t", metadata, *[Column("t%d" % i, type_) for i, type_ in enumerate(types)]
+            "t_type_round_trip",
+            metadata,
+            *[Column("t%d" % i, type_) for i, type_ in enumerate(types)],
         )
         t.create(connection)
         connection.connection.commit()
 
-        return [c["type"] for c in inspect(connection).get_columns("t")]
+        return [c["type"] for c in inspect(connection).get_columns("t_type_round_trip")]
 
     @testing.requires.table_reflection
     def test_numeric_reflection(self, connection, metadata):
@@ -1207,7 +1209,7 @@ class EscapingTest(_EscapingTest):
         Overriding the test to avoid the same failure.
         """
         m = self.metadata
-        t = Table("t", m, Column("data", String(50)))
+        t = Table("t_percent_signs", m, Column("data", String(50)))
         t.create(config.db)
         with config.db.begin() as conn:
             conn.execute(t.insert(), dict(data="some % value"))
@@ -1551,7 +1553,7 @@ class NumericTest(_NumericTest):
         @testing.emits_warning(r".*does \*not\* support Decimal objects natively")
         def run(type_, input_, output, filter_=None, check_scale=False):
             t = Table(
-                "t",
+                "t_do_numeric",
                 metadata,
                 Column("x", type_),
                 Column("id", Integer, primary_key=True),

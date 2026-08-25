@@ -885,10 +885,9 @@ class DataSubscriptionServiceClient(metaclass=DataSubscriptionServiceClientMeta)
                 The request object. -- Messages --
                 Request message for CreateSubscriber.
             parent (str):
-                Required. The parent resource where
-                this subscriber will be created. Format:
-                projects/{project} Example:
-                projects/my-project-123
+                Required. The parent resource where this subscriber will
+                be created. Format: projects/{project_number} Example:
+                projects/1234567890
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1939,8 +1938,6 @@ class DataSubscriptionServiceClient(metaclass=DataSubscriptionServiceClientMeta)
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("DataSubscriptionServiceClient",)

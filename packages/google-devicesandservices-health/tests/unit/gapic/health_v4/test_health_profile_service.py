@@ -1007,7 +1007,14 @@ def test_health_profile_service_client_get_mtls_endpoint_and_cert_source(client_
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1054,7 +1061,14 @@ def test_health_profile_service_client_get_mtls_endpoint_and_cert_source(client_
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1381,8 +1395,13 @@ def test_health_profile_service_client_create_channel_credentials_file(
                 "https://www.googleapis.com/auth/googlehealth.ecg.readonly",
                 "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.readonly",
                 "https://www.googleapis.com/auth/googlehealth.irn.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.readonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.readonly",
                 "https://www.googleapis.com/auth/googlehealth.profile.readonly",
+                "https://www.googleapis.com/auth/googlehealth.profile.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.readonly",
                 "https://www.googleapis.com/auth/googlehealth.settings.readonly",
+                "https://www.googleapis.com/auth/googlehealth.settings.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.sleep.readonly",
             ),
             scopes=None,
@@ -8096,8 +8115,13 @@ def test_health_profile_service_base_transport_with_credentials_file():
                 "https://www.googleapis.com/auth/googlehealth.ecg.readonly",
                 "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.readonly",
                 "https://www.googleapis.com/auth/googlehealth.irn.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.readonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.readonly",
                 "https://www.googleapis.com/auth/googlehealth.profile.readonly",
+                "https://www.googleapis.com/auth/googlehealth.profile.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.readonly",
                 "https://www.googleapis.com/auth/googlehealth.settings.readonly",
+                "https://www.googleapis.com/auth/googlehealth.settings.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.sleep.readonly",
             ),
             quota_project_id="octopus",
@@ -8130,8 +8154,13 @@ def test_health_profile_service_auth_adc():
                 "https://www.googleapis.com/auth/googlehealth.ecg.readonly",
                 "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.readonly",
                 "https://www.googleapis.com/auth/googlehealth.irn.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.readonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.readonly",
                 "https://www.googleapis.com/auth/googlehealth.profile.readonly",
+                "https://www.googleapis.com/auth/googlehealth.profile.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.readonly",
                 "https://www.googleapis.com/auth/googlehealth.settings.readonly",
+                "https://www.googleapis.com/auth/googlehealth.settings.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.sleep.readonly",
             ),
             quota_project_id=None,
@@ -8158,8 +8187,13 @@ def test_health_profile_service_transport_auth_adc(transport_class):
                 "https://www.googleapis.com/auth/googlehealth.ecg.readonly",
                 "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.readonly",
                 "https://www.googleapis.com/auth/googlehealth.irn.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.readonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.readonly",
                 "https://www.googleapis.com/auth/googlehealth.profile.readonly",
+                "https://www.googleapis.com/auth/googlehealth.profile.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.readonly",
                 "https://www.googleapis.com/auth/googlehealth.settings.readonly",
+                "https://www.googleapis.com/auth/googlehealth.settings.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.sleep.readonly",
             ),
             quota_project_id="octopus",
@@ -8219,8 +8253,13 @@ def test_health_profile_service_transport_create_channel(transport_class, grpc_h
                 "https://www.googleapis.com/auth/googlehealth.ecg.readonly",
                 "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.readonly",
                 "https://www.googleapis.com/auth/googlehealth.irn.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.readonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.readonly",
                 "https://www.googleapis.com/auth/googlehealth.profile.readonly",
+                "https://www.googleapis.com/auth/googlehealth.profile.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.readonly",
                 "https://www.googleapis.com/auth/googlehealth.settings.readonly",
+                "https://www.googleapis.com/auth/googlehealth.settings.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.sleep.readonly",
             ),
             scopes=["1", "2"],

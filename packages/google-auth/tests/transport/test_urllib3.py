@@ -247,6 +247,63 @@ class TestAuthorizedHttp(object):
     @mock.patch(
         "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
     )
+    def test_configure_mtls_channel_closes_old_poolmanager(
+        self, mock_get_client_cert_and_key, mock_make_mutual_tls_http
+    ):
+        mock_get_client_cert_and_key.return_value = (
+            True,
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+        )
+
+        old_http = mock.create_autospec(urllib3.PoolManager)
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            credentials=mock.Mock(), http=old_http
+        )
+
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+        ):
+            is_mtls = authed_http.configure_mtls_channel()
+
+        assert is_mtls
+        old_http.clear.assert_called_once()
+        mock_make_mutual_tls_http.assert_called_once_with(
+            cert=pytest.public_cert_bytes, key=pytest.private_key_bytes
+        )
+
+    @mock.patch("google.auth.transport.urllib3._make_mutual_tls_http", autospec=True)
+    @mock.patch(
+        "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
+    )
+    def test_configure_mtls_channel_with_none_http(
+        self, mock_get_client_cert_and_key, mock_make_mutual_tls_http
+    ):
+        mock_get_client_cert_and_key.return_value = (
+            True,
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+        )
+
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            credentials=mock.Mock()
+        )
+        authed_http.http = None  # Force old_http to be None
+
+        with mock.patch.dict(
+            os.environ, {environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "true"}
+        ):
+            is_mtls = authed_http.configure_mtls_channel()
+
+        assert is_mtls
+        mock_make_mutual_tls_http.assert_called_once_with(
+            cert=pytest.public_cert_bytes, key=pytest.private_key_bytes
+        )
+
+    @mock.patch("google.auth.transport.urllib3._make_mutual_tls_http", autospec=True)
+    @mock.patch(
+        "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
+    )
     def test_configure_mtls_channel_non_mtls(
         self, mock_get_client_cert_and_key, mock_make_mutual_tls_http
     ):

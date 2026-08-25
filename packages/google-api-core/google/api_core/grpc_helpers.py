@@ -254,11 +254,20 @@ def _create_composite_credentials(
     request = google.auth.transport.requests.Request()
 
     # Create the metadata plugin for inserting the authorization header.
-    metadata_plugin = google.auth.transport.grpc.AuthMetadataPlugin(
-        credentials,
-        request,
-        default_host=default_host,
-    )
+    try:
+        metadata_plugin = google.auth.transport.grpc.AuthMetadataPlugin(
+            credentials,
+            request,
+            default_host=default_host,
+            suppress_metrics_header=True,
+        )
+    except TypeError:
+        # Support older versions of google-auth that do not accept suppress_metrics_header
+        metadata_plugin = google.auth.transport.grpc.AuthMetadataPlugin(
+            credentials,
+            request,
+            default_host=default_host,
+        )
 
     # Create a set of grpc.CallCredentials using the metadata plugin.
     google_auth_credentials = grpc.metadata_call_credentials(metadata_plugin)

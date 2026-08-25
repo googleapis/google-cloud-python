@@ -879,7 +879,14 @@ def test_instances_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -926,7 +933,14 @@ def test_instances_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -26802,7 +26816,10 @@ def test_insert_rest_call_success(request_type):
             },
             "physical_host": "physical_host_value",
             "physical_host_topology": {
-                "additional_attributes": {"accelerator_topology_ids": {}},
+                "additional_attributes": {
+                    "accelerator_topology_ids": {},
+                    "network_topology_ids": {},
+                },
                 "block": "block_value",
                 "cluster": "cluster_value",
                 "host": "host_value",
@@ -26815,6 +26832,7 @@ def test_insert_rest_call_success(request_type):
             },
             "scheduling": {
                 "availability_domain": 2002,
+                "graceful_shutdown_timestamp": "graceful_shutdown_timestamp_value",
                 "termination_timestamp": "termination_timestamp_value",
             },
             "shutdown_details": {
@@ -33794,7 +33812,10 @@ def test_update_rest_call_success(request_type):
             },
             "physical_host": "physical_host_value",
             "physical_host_topology": {
-                "additional_attributes": {"accelerator_topology_ids": {}},
+                "additional_attributes": {
+                    "accelerator_topology_ids": {},
+                    "network_topology_ids": {},
+                },
                 "block": "block_value",
                 "cluster": "cluster_value",
                 "host": "host_value",
@@ -33807,6 +33828,7 @@ def test_update_rest_call_success(request_type):
             },
             "scheduling": {
                 "availability_domain": 2002,
+                "graceful_shutdown_timestamp": "graceful_shutdown_timestamp_value",
                 "termination_timestamp": "termination_timestamp_value",
             },
             "shutdown_details": {

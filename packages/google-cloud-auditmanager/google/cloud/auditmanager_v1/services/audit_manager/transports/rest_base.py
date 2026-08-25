@@ -183,6 +183,11 @@ class _BaseAuditManagerRestTransport(AuditManagerTransport):
                     "uri": "/v1/{scope=projects/*/locations/*}/auditReports:generate",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{scope=organizations/*/locations/*}/auditReports:generate",
+                    "body": "*",
+                },
             ]
             return http_options
 
@@ -245,6 +250,11 @@ class _BaseAuditManagerRestTransport(AuditManagerTransport):
                     "uri": "/v1/{scope=projects/*/locations/*}/auditScopeReports:generate",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1/{scope=organizations/*/locations/*}/auditScopeReports:generate",
+                    "body": "*",
+                },
             ]
             return http_options
 
@@ -304,6 +314,10 @@ class _BaseAuditManagerRestTransport(AuditManagerTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=projects/*/locations/*/auditReports/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=organizations/*/locations/*/auditReports/*}",
                 },
             ]
             return http_options

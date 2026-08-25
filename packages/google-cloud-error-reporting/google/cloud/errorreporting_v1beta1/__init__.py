@@ -23,6 +23,23 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.errorreporting_v1beta1.services.error_group_service",
+    "google.cloud.errorreporting_v1beta1.services.error_stats_service",
+    "google.cloud.errorreporting_v1beta1.services.report_errors_service",
+    "google.cloud.errorreporting_v1beta1.types.common",
+    "google.cloud.errorreporting_v1beta1.types.error_group_service",
+    "google.cloud.errorreporting_v1beta1.types.error_stats_service",
+    "google.cloud.errorreporting_v1beta1.types.report_errors_service",
+}
+
+
 from .services.error_group_service import (
     ErrorGroupServiceAsyncClient,
     ErrorGroupServiceClient,

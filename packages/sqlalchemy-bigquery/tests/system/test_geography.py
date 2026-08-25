@@ -22,8 +22,6 @@ import pytest
 geoalchemy2 = pytest.importorskip("geoalchemy2")
 
 
-# TODO(http://github.com/googleapis/google-cloud-python/issues/17287): Unskip once bug is resolved.
-@pytest.mark.skip(reason="Failing in CI with AssertionError.")
 def test_geoalchemy2_core(bigquery_dataset):
     """Make sure GeoAlchemy 2 Core Tutorial works as adapted to only having geography
 
@@ -44,7 +42,7 @@ def test_geoalchemy2_core(bigquery_dataset):
 
     from sqlalchemy import Column, MetaData, String, Table
 
-    from sqlalchemy_bigquery import GEOGRAPHY
+    from sqlalchemy_bigquery import GEOGRAPHY, WKT
 
     metadata = MetaData()
     lake_table = Table(
@@ -86,7 +84,7 @@ def test_geoalchemy2_core(bigquery_dataset):
 
     [[result]] = conn.execute(
         select(lake_table.c.name).where(
-            func.ST_Contains(lake_table.c.geog, "POINT(4 1)")
+            func.ST_Contains(lake_table.c.geog, WKT("POINT(4 1)"))
         )
     )
     assert result == "Orta"
@@ -119,8 +117,6 @@ def test_geoalchemy2_core(bigquery_dataset):
 
     # and, while we're at it, that we can insert WKTs, although we
     # normally wouldn't want to.
-    from sqlalchemy_bigquery import WKT
-
     conn.execute(
         lake_table.insert().values(
             name="test2",
@@ -141,8 +137,6 @@ def test_geoalchemy2_core(bigquery_dataset):
     )
 
 
-# TODO(http://github.com/googleapis/google-cloud-python/issues/17287): Unskip once bug is resolved.
-@pytest.mark.skip(reason="Failing in CI with AssertionError.")
 def test_geoalchemy2_orm(bigquery_dataset):
     """Make sure GeoAlchemy 2 ORM Tutorial works as adapted to only having geometry
 
@@ -160,7 +154,7 @@ def test_geoalchemy2_orm(bigquery_dataset):
     from sqlalchemy import Column, Integer, String
     from sqlalchemy.ext.declarative import declarative_base
 
-    from sqlalchemy_bigquery import GEOGRAPHY
+    from sqlalchemy_bigquery import GEOGRAPHY, WKT
 
     Base = declarative_base()
 
@@ -224,19 +218,19 @@ def test_geoalchemy2_orm(bigquery_dataset):
 
     from sqlalchemy import func
 
-    query = session.query(Lake).filter(func.ST_Contains(Lake.geog, "POINT(4 1)"))
+    query = session.query(Lake).filter(func.ST_Contains(Lake.geog, WKT("POINT(4 1)")))
 
     assert [lake.name for lake in query] == ["Orta"]
 
     query = (
         session.query(Lake)
-        .filter(Lake.geog.ST_Intersects("LINESTRING(2 1,4 1)"))
+        .filter(Lake.geog.ST_Intersects(WKT("LINESTRING(2 1,4 1)")))
         .order_by(Lake.name)
     )
     assert [lake.name for lake in query] == ["Garde", "Orta"]
 
     lake = session.query(Lake).filter_by(name="Garde").one()
-    assert session.scalar(lake.geog.ST_Intersects("LINESTRING(2 1,4 1)"))
+    assert session.scalar(lake.geog.ST_Intersects(WKT("LINESTRING(2 1,4 1)")))
 
     # Use Other Spatial Functions
     query = session.query(Lake.name, func.ST_Area(Lake.geog).label("area")).order_by(
@@ -258,8 +252,6 @@ def test_geoalchemy2_orm(bigquery_dataset):
     ]
 
 
-# TODO(http://github.com/googleapis/google-cloud-python/issues/17287): Unskip once bug is resolved.
-@pytest.mark.skip(reason="Failing in CI with AssertionError.")
 def test_geoalchemy2_orm_w_relationship(bigquery_dataset):
     from sqlalchemy import create_engine
 

@@ -1005,7 +1005,14 @@ def test_data_points_service_client_get_mtls_endpoint_and_cert_source(client_cla
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1052,7 +1059,14 @@ def test_data_points_service_client_get_mtls_endpoint_and_cert_source(client_cla
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1368,9 +1382,19 @@ def test_data_points_service_client_create_channel_credentials_file(
             quota_project_id=None,
             default_scopes=(
                 "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.readonly",
+                "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.readonly",
+                "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.location.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.readonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.nutrition.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.readonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.sleep.readonly",
+                "https://www.googleapis.com/auth/googlehealth.sleep.writeonly",
             ),
             scopes=None,
             default_host="health.googleapis.com",
@@ -7398,6 +7422,7 @@ def test_create_data_point_rest_call_success(request_type):
                 "nap": True,
                 "manually_edited": True,
                 "external_id": "external_id_value",
+                "main_sleep": True,
             },
             "summary": {
                 "minutes_in_sleep_period": 2453,
@@ -7409,6 +7434,7 @@ def test_create_data_point_rest_call_success(request_type):
             },
             "create_time": {},
             "update_time": {},
+            "short_awakenings": {},
         },
         "daily_resting_heart_rate": {
             "date": {},
@@ -7424,7 +7450,7 @@ def test_create_data_point_rest_call_success(request_type):
         },
         "exercise": {
             "interval": {},
-            "exercise_type": 1,
+            "exercise_type": 13,
             "splits": [
                 {
                     "start_time": {},
@@ -7659,6 +7685,10 @@ def test_create_data_point_rest_call_success(request_type):
             "specimen": 1,
             "notes": "notes_value",
         },
+        "menstrual_period": {"interval": {}, "notes": "notes_value"},
+        "ovulation_test": {"sample_time": {}, "result": 1},
+        "symptoms": {"sample_time": {}, "symptoms": [1]},
+        "moods": {"sample_time": {}, "moods": [1], "valences": [1]},
         "name": "name_value",
         "data_source": {
             "recording_method": 1,
@@ -7933,6 +7963,7 @@ def test_update_data_point_rest_call_success(request_type):
                 "nap": True,
                 "manually_edited": True,
                 "external_id": "external_id_value",
+                "main_sleep": True,
             },
             "summary": {
                 "minutes_in_sleep_period": 2453,
@@ -7944,6 +7975,7 @@ def test_update_data_point_rest_call_success(request_type):
             },
             "create_time": {},
             "update_time": {},
+            "short_awakenings": {},
         },
         "daily_resting_heart_rate": {
             "date": {},
@@ -7959,7 +7991,7 @@ def test_update_data_point_rest_call_success(request_type):
         },
         "exercise": {
             "interval": {},
-            "exercise_type": 1,
+            "exercise_type": 13,
             "splits": [
                 {
                     "start_time": {},
@@ -8194,6 +8226,10 @@ def test_update_data_point_rest_call_success(request_type):
             "specimen": 1,
             "notes": "notes_value",
         },
+        "menstrual_period": {"interval": {}, "notes": "notes_value"},
+        "ovulation_test": {"sample_time": {}, "result": 1},
+        "symptoms": {"sample_time": {}, "symptoms": [1]},
+        "moods": {"sample_time": {}, "moods": [1], "valences": [1]},
         "name": "users/sample1/dataTypes/sample2/dataPoints/sample3",
         "data_source": {
             "recording_method": 1,
@@ -9325,9 +9361,19 @@ def test_data_points_service_base_transport_with_credentials_file():
             scopes=None,
             default_scopes=(
                 "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.readonly",
+                "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.readonly",
+                "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.location.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.readonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.nutrition.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.readonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.sleep.readonly",
+                "https://www.googleapis.com/auth/googlehealth.sleep.writeonly",
             ),
             quota_project_id="octopus",
         )
@@ -9356,9 +9402,19 @@ def test_data_points_service_auth_adc():
             scopes=None,
             default_scopes=(
                 "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.readonly",
+                "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.readonly",
+                "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.location.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.readonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.nutrition.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.readonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.sleep.readonly",
+                "https://www.googleapis.com/auth/googlehealth.sleep.writeonly",
             ),
             quota_project_id=None,
         )
@@ -9381,9 +9437,19 @@ def test_data_points_service_transport_auth_adc(transport_class):
             scopes=["1", "2"],
             default_scopes=(
                 "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.readonly",
+                "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.readonly",
+                "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.location.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.readonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.nutrition.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.readonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.sleep.readonly",
+                "https://www.googleapis.com/auth/googlehealth.sleep.writeonly",
             ),
             quota_project_id="octopus",
         )
@@ -9439,9 +9505,19 @@ def test_data_points_service_transport_create_channel(transport_class, grpc_help
             quota_project_id="octopus",
             default_scopes=(
                 "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.readonly",
+                "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.readonly",
+                "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.location.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.readonly",
+                "https://www.googleapis.com/auth/googlehealth.logged_symptoms.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.readonly",
+                "https://www.googleapis.com/auth/googlehealth.mindfulness.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.nutrition.writeonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.readonly",
+                "https://www.googleapis.com/auth/googlehealth.reproductive_health.writeonly",
                 "https://www.googleapis.com/auth/googlehealth.sleep.readonly",
+                "https://www.googleapis.com/auth/googlehealth.sleep.writeonly",
             ),
             scopes=["1", "2"],
             default_host="health.googleapis.com",

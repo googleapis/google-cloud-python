@@ -2957,6 +2957,9 @@ class RunEvaluationRequest(proto.Message):
         generate_latency_report (bool):
             Optional. Whether to generate a latency
             report for the evaluation run.
+        evaluation_run_caching_settings (google.cloud.ces_v1beta.types.EvaluationRunCachingSettings):
+            Optional. The caching settings to use for the
+            evaluation run.
     """
 
     app: str = proto.Field(
@@ -3011,6 +3014,11 @@ class RunEvaluationRequest(proto.Message):
     generate_latency_report: bool = proto.Field(
         proto.BOOL,
         number=14,
+    )
+    evaluation_run_caching_settings: common.EvaluationRunCachingSettings = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message=common.EvaluationRunCachingSettings,
     )
 
 

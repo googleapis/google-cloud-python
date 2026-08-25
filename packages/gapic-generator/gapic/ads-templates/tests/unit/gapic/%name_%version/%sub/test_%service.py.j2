@@ -1,10 +1,12 @@
 {% extends "_base.py.j2" %}
-
 {% block content %}
+{% set has_auto_populated_fields = api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
+
+
 {% import "%namespace/%name/%version/%sub/services/%service/_shared_macros.j2" as shared_macros %}
 
 import os
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|select|list %}
+{% if has_auto_populated_fields %}
 import re
 {% endif %}
 from unittest import mock
@@ -70,7 +72,7 @@ from google.iam.v1 import policy_pb2  # type: ignore
 {% endfilter %}
 {{ shared_macros.add_google_api_core_version_header_import(service.version) }}
 
-{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
+{% if has_auto_populated_fields %}
 _UUID4_RE = re.compile(r"{{ uuid4_re }}")
 {% endif %}
 
@@ -666,7 +668,10 @@ def test_{{ method_name }}_api_version_header(transport_name):
 
         # Establish that the api version header was sent.
         _, _, kw = call.mock_calls[0]
-        assert kw['metadata'][0] == (version_header.API_VERSION_METADATA_KEY, "{{ service.version }}")
+        assert (
+            version_header.API_VERSION_METADATA_KEY,
+            "{{ service.version }}",
+        ) in kw['metadata']
     else:
         pytest.skip("google-api-core>=2.19.0 is required for `google.api_core.version_header`")
 {% endif %}{# service.version #}
@@ -1337,7 +1342,12 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     assert "{{ field_name }}" not in jsonified_request
     {% endfor %}
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.transport_safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._Base{{ method.name }},
+        "_Base{{ method.name }}__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {k: v for k, v in default_values.items() if k not in jsonified_request}
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -1353,12 +1363,10 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     jsonified_request["{{ field_name }}"] = {{ mock_value }}
     {% endfor %}
 
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.transport_safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
     {% if method.query_params %}
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(({% for param in method.query_params|sort %}"{{param}}", {% endfor %}))
+    assert not set(unset_fields) - set(({% for param in method.query_params|sort %}"{{param | camel_case}}", {% endfor %}))
     {% endif %}
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     {% for req_field in method.input.required_fields if req_field.is_primitive %}
@@ -1456,13 +1464,6 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             ]
             actual_params = req.call_args.kwargs['params']
             assert expected_params == actual_params
-
-
-def test_{{ method_name }}_rest_unset_required_fields():
-    transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.{{ method.transport_safe_name|snake_case }}._get_unset_required_fields({})
-    assert set(unset_fields) == (set(({% for param in method.query_params|sort %}"{{ param|camel_case }}", {% endfor %})) & set(({% for param in method.input.required_fields %}"{{param.name|camel_case}}", {% endfor %})))
 
 
     {% endif %}{# required_fields #}

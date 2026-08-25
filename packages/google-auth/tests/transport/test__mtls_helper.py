@@ -315,13 +315,16 @@ class TestGetClientSslCredentials(object):
     )
     @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
     @mock.patch("google.auth.transport._mtls_helper._check_config_path", autospec=True)
+    @mock.patch("os.path.exists", autospec=True)
     def test_success_with_certificate_config(
         self,
+        mock_path_exists,
         mock_check_config_path,
         mock_load_json_file,
         mock_get_cert_config_path,
         mock_read_cert_and_key_files,
     ):
+        mock_path_exists.return_value = True
         cert_config_path = "/path/to/config"
         mock_check_config_path.return_value = cert_config_path
         mock_load_json_file.return_value = {
@@ -340,93 +343,6 @@ class TestGetClientSslCredentials(object):
         assert cert == pytest.public_cert_bytes
         assert key == pytest.private_key_bytes
         assert passphrase is None
-
-    @mock.patch(
-        "google.auth.transport._mtls_helper._read_cert_and_key_files", autospec=True
-    )
-    @mock.patch(
-        "google.auth.transport._mtls_helper._get_cert_config_path", autospec=True
-    )
-    @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
-    @mock.patch("google.auth.transport._mtls_helper._check_config_path", autospec=True)
-    def test_success_with_certificate_config_cloud_run_patch(
-        self,
-        mock_check_config_path,
-        mock_load_json_file,
-        mock_get_cert_config_path,
-        mock_read_cert_and_key_files,
-    ):
-        cert_config_path = "/path/to/config"
-        mock_check_config_path.return_value = cert_config_path
-        mock_load_json_file.return_value = {
-            "cert_configs": {
-                "workload": {
-                    "cert_path": _mtls_helper._INCORRECT_CLOUD_RUN_CERT_PATH,
-                    "key_path": _mtls_helper._INCORRECT_CLOUD_RUN_KEY_PATH,
-                }
-            }
-        }
-        mock_get_cert_config_path.return_value = cert_config_path
-        mock_read_cert_and_key_files.return_value = (
-            pytest.public_cert_bytes,
-            pytest.private_key_bytes,
-        )
-
-        has_cert, cert, key, passphrase = _mtls_helper.get_client_ssl_credentials()
-        assert has_cert
-        assert cert == pytest.public_cert_bytes
-        assert key == pytest.private_key_bytes
-        assert passphrase is None
-
-        mock_read_cert_and_key_files.assert_called_once_with(
-            _mtls_helper._WELL_KNOWN_CLOUD_RUN_CERT_PATH,
-            _mtls_helper._WELL_KNOWN_CLOUD_RUN_KEY_PATH,
-        )
-
-    @mock.patch("os.path.exists", autospec=True)
-    @mock.patch(
-        "google.auth.transport._mtls_helper._read_cert_and_key_files", autospec=True
-    )
-    @mock.patch(
-        "google.auth.transport._mtls_helper._get_cert_config_path", autospec=True
-    )
-    @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
-    @mock.patch("google.auth.transport._mtls_helper._check_config_path", autospec=True)
-    def test_success_with_certificate_config_cloud_run_patch_skipped_if_cert_exists(
-        self,
-        mock_check_config_path,
-        mock_load_json_file,
-        mock_get_cert_config_path,
-        mock_read_cert_and_key_files,
-        mock_os_path_exists,
-    ):
-        cert_config_path = "/path/to/config"
-        mock_check_config_path.return_value = cert_config_path
-        mock_os_path_exists.return_value = True
-        mock_load_json_file.return_value = {
-            "cert_configs": {
-                "workload": {
-                    "cert_path": _mtls_helper._INCORRECT_CLOUD_RUN_CERT_PATH,
-                    "key_path": _mtls_helper._INCORRECT_CLOUD_RUN_KEY_PATH,
-                }
-            }
-        }
-        mock_get_cert_config_path.return_value = cert_config_path
-        mock_read_cert_and_key_files.return_value = (
-            pytest.public_cert_bytes,
-            pytest.private_key_bytes,
-        )
-
-        has_cert, cert, key, passphrase = _mtls_helper.get_client_ssl_credentials()
-        assert has_cert
-        assert cert == pytest.public_cert_bytes
-        assert key == pytest.private_key_bytes
-        assert passphrase is None
-
-        mock_read_cert_and_key_files.assert_called_once_with(
-            _mtls_helper._INCORRECT_CLOUD_RUN_CERT_PATH,
-            _mtls_helper._INCORRECT_CLOUD_RUN_KEY_PATH,
-        )
 
     @mock.patch(
         "google.auth.transport._mtls_helper._get_workload_cert_and_key", autospec=True
@@ -531,12 +447,15 @@ class TestGetWorkloadCertAndKey(object):
     @mock.patch(
         "google.auth.transport._mtls_helper._read_cert_and_key_files", autospec=True
     )
+    @mock.patch("os.path.exists", autospec=True)
     def test_success(
         self,
+        mock_path_exists,
         mock_read_cert_and_key_files,
         mock_get_cert_config_path,
         mock_load_json_file,
     ):
+        mock_path_exists.return_value = True
         cert_config_path = "/path/to/cert"
         mock_get_cert_config_path.return_value = "/path/to/cert"
         mock_load_json_file.return_value = {
@@ -569,12 +488,53 @@ class TestGetWorkloadCertAndKey(object):
     @mock.patch(
         "google.auth.transport._mtls_helper._get_cert_config_path", autospec=True
     )
-    def test_no_cert_configs(self, mock_get_cert_config_path, mock_load_json_file):
+    @mock.patch("os.path.exists", autospec=True)
+    def test_no_cert_configs(
+        self, mock_path_exists, mock_get_cert_config_path, mock_load_json_file
+    ):
+        mock_path_exists.return_value = True
         mock_get_cert_config_path.return_value = "/path/to/cert"
         mock_load_json_file.return_value = {}
 
         with pytest.raises(exceptions.ClientCertError):
             _mtls_helper._get_workload_cert_and_key("")
+
+    @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
+    @mock.patch("google.auth.transport._mtls_helper.path.exists", autospec=True)
+    def test_non_dict_cert_configs_raises_error(
+        self, mock_path_exists, mock_load_json_file
+    ):
+        mock_path_exists.return_value = True
+
+        for val in [None, [], "not_a_dict"]:
+            mock_load_json_file.return_value = {"cert_configs": val}
+            with pytest.raises(exceptions.ClientCertError):
+                _mtls_helper._get_workload_cert_and_key(None)
+
+    @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
+    @mock.patch("google.auth.transport._mtls_helper.path.exists", autospec=True)
+    def test_malformed_json_returns_error(self, mock_path_exists, mock_load_json_file):
+        mock_path_exists.return_value = True
+
+        for val in [None, [], "invalid_string"]:
+            mock_load_json_file.return_value = val
+            with pytest.raises(exceptions.ClientCertError):
+                _mtls_helper._get_workload_cert_and_key(None)
+
+    @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
+    @mock.patch("google.auth.transport._mtls_helper.path.exists", autospec=True)
+    def test_non_dict_workload_raises_error(
+        self, mock_path_exists, mock_load_json_file
+    ):
+        mock_path_exists.return_value = True
+
+        for invalid_workload in [None, 123, "not_a_dict"]:
+            mock_load_json_file.return_value = {
+                "cert_configs": {"workload": invalid_workload}
+            }
+
+            with pytest.raises(exceptions.ClientCertError):
+                _mtls_helper._get_workload_cert_and_key(None)
 
     @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
     @mock.patch(
@@ -588,11 +548,191 @@ class TestGetWorkloadCertAndKey(object):
         assert actual_cert is None
         assert actual_key is None
 
+    @mock.patch(
+        "google.auth.transport._mtls_helper._load_json_file", autospec=True
+    )  # noqa: E501
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path",
+        autospec=True,
+    )  # noqa: E501
+    @mock.patch(
+        "google.auth.transport._mtls_helper._read_cert_and_key_files",
+        autospec=True,
+    )  # noqa: E501
+    @mock.patch(
+        "google.auth.transport._mtls_helper.path.exists", autospec=True
+    )  # noqa: E501
+    def test_no_workload_fallback_to_home(
+        self,
+        mock_path_exists,
+        mock_read_cert_and_key_files,
+        mock_get_cert_config_path,
+        mock_load_json_file,
+    ):
+        ecp_path = "/etc/gcloud/certificate_config.json"
+        home_path = os.path.join(
+            _mtls_helper._cloud_sdk.get_config_path(),
+            "certificate_config.json",
+        )
+        mock_get_cert_config_path.return_value = ecp_path
+
+        def exists_side_effect(path):
+            if path == home_path:
+                return True
+            return False
+
+        mock_path_exists.side_effect = exists_side_effect
+
+        def load_json_side_effect(path):
+            if path == ecp_path:
+                return {"cert_configs": {"pkcs11": {}}}
+            elif path == home_path:
+                return {
+                    "cert_configs": {
+                        "workload": {
+                            "cert_path": "cert/path",
+                            "key_path": "key/path",
+                        }
+                    }
+                }
+            return {}
+
+        mock_load_json_file.side_effect = load_json_side_effect
+        mock_read_cert_and_key_files.return_value = (
+            pytest.public_cert_bytes,
+            pytest.private_key_bytes,
+        )
+
+        actual_cert, actual_key = _mtls_helper._get_workload_cert_and_key(None)
+        assert actual_cert == pytest.public_cert_bytes
+        assert actual_key == pytest.private_key_bytes
+
+        mock_get_cert_config_path.assert_called_once_with(None, True)
+        mock_load_json_file.assert_has_calls(
+            [mock.call(ecp_path), mock.call(home_path)]
+        )
+        mock_read_cert_and_key_files.assert_called_once_with(
+            "cert/path", "key/path"
+        )  # noqa: E501
+
+    @mock.patch(
+        "google.auth.transport._mtls_helper._load_json_file", autospec=True
+    )  # noqa: E501
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path",
+        autospec=True,
+    )  # noqa: E501
+    @mock.patch(
+        "google.auth.transport._mtls_helper._read_cert_and_key_files",
+        autospec=True,
+    )  # noqa: E501
+    @mock.patch(
+        "google.auth.transport._mtls_helper.path.exists", autospec=True
+    )  # noqa: E501
+    def test_no_workload_fallback_to_home_error(
+        self,
+        mock_path_exists,
+        mock_read_cert_and_key_files,
+        mock_get_cert_config_path,
+        mock_load_json_file,
+    ):
+        ecp_path = "/etc/gcloud/certificate_config.json"
+        home_path = os.path.join(
+            _mtls_helper._cloud_sdk.get_config_path(),
+            "certificate_config.json",
+        )
+        mock_get_cert_config_path.return_value = ecp_path
+
+        def exists_side_effect(path):
+            if path == home_path:
+                return True
+            return False
+
+        mock_path_exists.side_effect = exists_side_effect
+
+        def load_json_side_effect(path):
+            if path == ecp_path:
+                return {"cert_configs": {"pkcs11": {}}}
+            elif path == home_path:
+                raise exceptions.ClientCertError("mocked unreadable file")
+            return {}
+
+        mock_load_json_file.side_effect = load_json_side_effect
+
+        actual_cert, actual_key = _mtls_helper._get_workload_cert_and_key(None)
+        assert actual_cert is None
+        assert actual_key is None
+
+        mock_get_cert_config_path.assert_called_once_with(None, True)
+        mock_load_json_file.assert_has_calls(
+            [mock.call(ecp_path), mock.call(home_path)]
+        )
+        mock_read_cert_and_key_files.assert_not_called()
+
+    @mock.patch(
+        "google.auth.transport._mtls_helper._load_json_file", autospec=True
+    )  # noqa: E501
+    @mock.patch(
+        "google.auth.transport._mtls_helper._get_cert_config_path",
+        autospec=True,
+    )
+    @mock.patch(
+        "google.auth.transport._mtls_helper.path.exists", autospec=True
+    )  # noqa: E501
+    @mock.patch("os.path.normpath", autospec=True)
+    def test_no_workload_fallback_avoided_same_path_normalization(
+        self,
+        mock_normpath,
+        mock_path_exists,
+        mock_get_cert_config_path,
+        mock_load_json_file,
+    ):
+        ecp_path = "C:/Users/User/.config/gcloud/certificate_config.json"
+        home_path = "C:\\Users\\User\\.config\\gcloud/certificate_config.json"
+        mock_get_cert_config_path.return_value = ecp_path
+
+        mock_path_exists.return_value = True
+
+        # When resolving, the first file has no workload.
+        mock_load_json_file.return_value = {"cert_configs": {"pkcs11": {}}}
+
+        win_path = "C:\\Users\\User\\.config\\gcloud\\certificate_config.json"
+
+        # Mock normpath to return the same string for both paths,
+        # simulating Windows path normalization.
+        def normpath_side_effect(path):
+            if path in [ecp_path, home_path]:
+                return win_path
+            return path
+
+        mock_normpath.side_effect = normpath_side_effect
+
+        # Mock get_config_path to construct a path with backslashes
+        with mock.patch(
+            "google.auth._cloud_sdk.get_config_path",
+            return_value="C:\\Users\\User\\.config\\gcloud",
+        ):
+            actual_cert, actual_key = _mtls_helper._get_workload_cert_and_key(
+                None
+            )  # noqa: E501
+
+        assert actual_cert is None
+        assert actual_key is None
+
+        # Check that it resolved ECP path but never attempted to load
+        # home_path (because it normalized to the same file).
+        mock_get_cert_config_path.assert_called_once_with(None, True)
+        mock_load_json_file.assert_called_once_with(ecp_path)
+
     @mock.patch("google.auth.transport._mtls_helper._load_json_file", autospec=True)
     @mock.patch(
         "google.auth.transport._mtls_helper._get_cert_config_path", autospec=True
     )
-    def test_no_cert_file(self, mock_get_cert_config_path, mock_load_json_file):
+    @mock.patch("os.path.exists", autospec=True)
+    def test_no_cert_file(
+        self, mock_path_exists, mock_get_cert_config_path, mock_load_json_file
+    ):
+        mock_path_exists.return_value = True
         mock_get_cert_config_path.return_value = "/path/to/cert"
         mock_load_json_file.return_value = {
             "cert_configs": {"workload": {"key_path": "path/to/key"}}
@@ -605,7 +745,11 @@ class TestGetWorkloadCertAndKey(object):
     @mock.patch(
         "google.auth.transport._mtls_helper._get_cert_config_path", autospec=True
     )
-    def test_no_key_file(self, mock_get_cert_config_path, mock_load_json_file):
+    @mock.patch("os.path.exists", autospec=True)
+    def test_no_key_file(
+        self, mock_path_exists, mock_get_cert_config_path, mock_load_json_file
+    ):
+        mock_path_exists.return_value = True
         mock_get_cert_config_path.return_value = "/path/to/cert"
         mock_load_json_file.return_value = {
             "cert_configs": {"workload": {"cert_path": "path/to/key"}}
@@ -657,10 +801,16 @@ class TestGetCertConfigPath(object):
         returned_path = _mtls_helper._get_cert_config_path(config_path)
         assert returned_path == config_path
 
-    def test_override_does_not_exist(self):
+    @mock.patch("google.auth.transport._mtls_helper._LOGGER.debug")
+    def test_override_does_not_exist(self, mock_debug):
         config_path = "fake/file/path"
         returned_path = _mtls_helper._get_cert_config_path(config_path)
         assert returned_path is None
+        mock_debug.assert_called_once_with(
+            "Certificate configuration file explicitly specified via %s at %s does not exist",
+            "function argument",
+            "fake/file/path",
+        )
 
     @mock.patch.dict(
         os.environ,
@@ -674,7 +824,9 @@ class TestGetCertConfigPath(object):
         mock_path_exists.return_value = True
         returned_path = _mtls_helper._get_cert_config_path()
         expected_path = os.path.expanduser(
-            _mtls_helper.CERTIFICATE_CONFIGURATION_DEFAULT_PATH
+            os.path.join(
+                _mtls_helper._cloud_sdk.get_config_path(), "certificate_config.json"
+            )
         )
         assert returned_path == expected_path
 
@@ -688,9 +840,15 @@ class TestGetCertConfigPath(object):
         expected_path = "path/to/config/file"
         assert returned_path == expected_path
 
-    @mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""})
+    @mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_CERTIFICATE_CONFIG": "",
+            "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH": "",
+        },
+    )
     @mock.patch("os.path.exists", autospec=True)
-    def test_env_variable_file_does_not_exist(self, mock_path_exists):
+    def test_default_file_does_not_exist(self, mock_path_exists):
         mock_path_exists.return_value = False
         returned_path = _mtls_helper._get_cert_config_path()
         assert returned_path is None
@@ -730,10 +888,28 @@ class TestGetCertConfigPath(object):
         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": "path/to/config/file"}
     )
     @mock.patch("os.path.exists", autospec=True)
-    def test_default_file_does_not_exist(self, mock_path_exists):
+    def test_env_variable_file_does_not_exist(self, mock_path_exists):
         mock_path_exists.return_value = False
         returned_path = _mtls_helper._get_cert_config_path()
         assert returned_path is None
+
+    @mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_CERTIFICATE_CONFIG": "",
+            "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH": "path/to/context/aware/config",
+        },
+    )
+    @mock.patch("os.path.exists", autospec=True)
+    def test_cert_config_path_ignore_context_aware(self, mock_path_exists):
+        mock_path_exists.return_value = True
+        returned_path = _mtls_helper._get_cert_config_path(include_context_aware=False)
+        expected_path = os.path.expanduser(
+            os.path.join(
+                _mtls_helper._cloud_sdk.get_config_path(), "certificate_config.json"
+            )
+        )
+        assert returned_path == expected_path
 
 
 class TestGetClientCertAndKey(object):
@@ -848,7 +1024,9 @@ class TestCheckUseClientCert(object):
             "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH": "",
         },
     )
-    def test_config_file_success(self, mock_file):
+    @mock.patch("os.path.exists", autospec=True)
+    def test_config_file_success(self, mock_exists, mock_file):
+        mock_exists.return_value = True
         # We manually apply mock_open here so we can keep autospec=True on the decorator
         mock_file.side_effect = mock.mock_open(
             read_data='{"cert_configs": {"workload": "exists"}}'
@@ -865,7 +1043,9 @@ class TestCheckUseClientCert(object):
             "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH": "",
         },
     )
-    def test_config_file_missing_keys(self, mock_file):
+    @mock.patch("os.path.exists", autospec=True)
+    def test_config_file_missing_keys(self, mock_exists, mock_file):
+        mock_exists.return_value = True
         mock_file.side_effect = mock.mock_open(read_data='{"cert_configs": {}}')
         assert _mtls_helper.check_use_client_cert() is False
 
@@ -879,7 +1059,9 @@ class TestCheckUseClientCert(object):
             "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH": "",
         },
     )
-    def test_config_file_bad_json(self, mock_file):
+    @mock.patch("os.path.exists", autospec=True)
+    def test_config_file_bad_json(self, mock_exists, mock_file):
+        mock_exists.return_value = True
         mock_file.side_effect = mock.mock_open(read_data="{bad_json")
         assert _mtls_helper.check_use_client_cert() is False
 
@@ -893,12 +1075,34 @@ class TestCheckUseClientCert(object):
             "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH": "",
         },
     )
-    def test_config_file_not_found(self, mock_file):
+    @mock.patch("os.path.exists", autospec=True)
+    def test_config_file_not_found(self, mock_exists, mock_file):
+        mock_exists.return_value = True
         mock_file.side_effect = FileNotFoundError
         assert _mtls_helper.check_use_client_cert() is False
 
+    @mock.patch("builtins.open", autospec=True)
+    @mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "",
+            "GOOGLE_API_CERTIFICATE_CONFIG": "/path/to/config",
+            "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH": "",
+        },
+    )
+    @mock.patch("os.path.exists", autospec=True)
+    def test_config_file_invalid_json_type(self, mock_exists, mock_file):
+        mock_exists.return_value = True
+        mock_file.side_effect = mock.mock_open(read_data="[]")
+        assert _mtls_helper.check_use_client_cert() is False
+
+    @mock.patch("builtins.open", autospec=True)
     @mock.patch.dict(os.environ, {}, clear=True)
-    def test_no_env_vars_set(self):
+    @mock.patch("os.path.exists", autospec=True)
+    def test_no_env_vars_set(self, mock_exists, mock_open):
+        mock_exists.return_value = False
+        mock_open.side_effect = FileNotFoundError()
         assert _mtls_helper.check_use_client_cert() is False
 
     def test_use_client_cert_precedence(self):
@@ -941,7 +1145,9 @@ class TestCheckUseClientCert(object):
             assert _mtls_helper.check_use_client_cert() is False
 
     @mock.patch("builtins.open", autospec=True)
-    def test_check_use_client_cert_config_fallback(self, mock_file):
+    @mock.patch("os.path.exists", autospec=True)
+    def test_check_use_client_cert_config_fallback(self, mock_exists, mock_file):
+        mock_exists.return_value = True
         # Test fallback for config file when determining if client cert should be used
         cloudsdk_path = "/path/to/cloudsdk/config"
 

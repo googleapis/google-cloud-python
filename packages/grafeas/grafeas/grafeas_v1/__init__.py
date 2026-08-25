@@ -23,6 +23,40 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "grafeas.grafeas_v1.services.grafeas",
+    "grafeas.grafeas_v1.types.attestation",
+    "grafeas.grafeas_v1.types.build",
+    "grafeas.grafeas_v1.types.common",
+    "grafeas.grafeas_v1.types.compliance",
+    "grafeas.grafeas_v1.types.cvss",
+    "grafeas.grafeas_v1.types.deployment",
+    "grafeas.grafeas_v1.types.discovery",
+    "grafeas.grafeas_v1.types.dsse_attestation",
+    "grafeas.grafeas_v1.types.grafeas",
+    "grafeas.grafeas_v1.types.image",
+    "grafeas.grafeas_v1.types.intoto_provenance",
+    "grafeas.grafeas_v1.types.intoto_statement",
+    "grafeas.grafeas_v1.types.package",
+    "grafeas.grafeas_v1.types.provenance",
+    "grafeas.grafeas_v1.types.risk",
+    "grafeas.grafeas_v1.types.sbom",
+    "grafeas.grafeas_v1.types.secret",
+    "grafeas.grafeas_v1.types.severity",
+    "grafeas.grafeas_v1.types.slsa_provenance",
+    "grafeas.grafeas_v1.types.slsa_provenance_zero_two",
+    "grafeas.grafeas_v1.types.upgrade",
+    "grafeas.grafeas_v1.types.vex",
+    "grafeas.grafeas_v1.types.vulnerability",
+}
+
+
 from .services.grafeas import GrafeasAsyncClient, GrafeasClient
 from .types.attestation import AttestationNote, AttestationOccurrence, Jwt
 from .types.build import BuildNote, BuildOccurrence

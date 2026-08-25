@@ -951,7 +951,14 @@ def test_public_advertised_prefixes_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -998,7 +1005,14 @@ def test_public_advertised_prefixes_client_get_mtls_endpoint_and_cert_source(
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -4167,6 +4181,7 @@ def test_get_rest_call_success(request_type):
             ipv6_access_type="ipv6_access_type_value",
             kind="kind_value",
             name="name_value",
+            network_tier="network_tier_value",
             pdp_scope="pdp_scope_value",
             self_link="self_link_value",
             shared_secret="shared_secret_value",
@@ -4197,6 +4212,7 @@ def test_get_rest_call_success(request_type):
     assert response.ipv6_access_type == "ipv6_access_type_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.network_tier == "network_tier_value"
     assert response.pdp_scope == "pdp_scope_value"
     assert response.self_link == "self_link_value"
     assert response.shared_secret == "shared_secret_value"
@@ -4320,6 +4336,7 @@ def test_insert_rest_call_success(request_type):
         "ipv6_access_type": "ipv6_access_type_value",
         "kind": "kind_value",
         "name": "name_value",
+        "network_tier": "network_tier_value",
         "pdp_scope": "pdp_scope_value",
         "public_delegated_prefixs": [
             {
@@ -4732,6 +4749,7 @@ def test_patch_rest_call_success(request_type):
         "ipv6_access_type": "ipv6_access_type_value",
         "kind": "kind_value",
         "name": "name_value",
+        "network_tier": "network_tier_value",
         "pdp_scope": "pdp_scope_value",
         "public_delegated_prefixs": [
             {

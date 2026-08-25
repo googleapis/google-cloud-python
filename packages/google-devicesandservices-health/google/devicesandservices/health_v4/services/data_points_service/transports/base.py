@@ -32,9 +32,7 @@ from google.devicesandservices.health_v4.types import data_points
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
 class DataPointsServiceTransport(abc.ABC):
@@ -42,9 +40,19 @@ class DataPointsServiceTransport(abc.ABC):
 
     AUTH_SCOPES = (
         "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.readonly",
+        "https://www.googleapis.com/auth/googlehealth.activity_and_fitness.writeonly",
         "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.readonly",
+        "https://www.googleapis.com/auth/googlehealth.health_metrics_and_measurements.writeonly",
         "https://www.googleapis.com/auth/googlehealth.location.readonly",
+        "https://www.googleapis.com/auth/googlehealth.logged_symptoms.readonly",
+        "https://www.googleapis.com/auth/googlehealth.logged_symptoms.writeonly",
+        "https://www.googleapis.com/auth/googlehealth.mindfulness.readonly",
+        "https://www.googleapis.com/auth/googlehealth.mindfulness.writeonly",
+        "https://www.googleapis.com/auth/googlehealth.nutrition.writeonly",
+        "https://www.googleapis.com/auth/googlehealth.reproductive_health.readonly",
+        "https://www.googleapis.com/auth/googlehealth.reproductive_health.writeonly",
         "https://www.googleapis.com/auth/googlehealth.sleep.readonly",
+        "https://www.googleapis.com/auth/googlehealth.sleep.writeonly",
     )
 
     DEFAULT_HOST: str = "health.googleapis.com"

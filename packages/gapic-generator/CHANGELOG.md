@@ -4,6 +4,55 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.39.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.38.0...gapic-generator-v1.39.0) (2026-08-21)
+
+
+### Features
+
+* **generator:** add fallback compatibility imports for google-api-core helpers ([#17999](https://github.com/googleapis/google-cloud-python/issues/17999)) ([9c13ae2](https://github.com/googleapis/google-cloud-python/commit/9c13ae2476e8ea7a5f3197ed5d094d3b1d5686a9))
+
+
+### Bug Fixes
+
+* **generator:** check for api_version header in metadata list ([#18015](https://github.com/googleapis/google-cloud-python/issues/18015)) ([0e63510](https://github.com/googleapis/google-cloud-python/commit/0e63510c3b03c14bb1f8dd473dbcdfb719a7050d))
+* **generator:** move version checks after __all__ in __init__.py temlate ([#18100](https://github.com/googleapis/google-cloud-python/issues/18100)) ([d0efb4d](https://github.com/googleapis/google-cloud-python/commit/d0efb4dd19aa21c779b20cae02d135fad9ca997e))
+* **generator:** switch core_deps_from_source to DEFAULT_PYTHON_VERSION ([#18050](https://github.com/googleapis/google-cloud-python/issues/18050)) ([895ffa2](https://github.com/googleapis/google-cloud-python/commit/895ffa29ba72f2a6e520c6d0fdf26ac9e36f8269))
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
+## [1.38.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.37.1...gapic-generator-v1.38.0) (2026-08-06)
+
+
+### Features
+
+* **generator:** delegate REST transcoding to google-api-core ([#17766](https://github.com/googleapis/google-cloud-python/issues/17766)) ([7b05aab](https://github.com/googleapis/google-cloud-python/commit/7b05aabf2daf10c51d3ce34d6e10a5f4b4290216))
+* **generator:** gapic generator centralization routing ([#17816](https://github.com/googleapis/google-cloud-python/issues/17816)) ([32a2442](https://github.com/googleapis/google-cloud-python/commit/32a2442e73c9ec1576ca92f53469c4acb8226dba))
+
+
+### Bug Fixes
+
+* add typing for header_params ([#17914](https://github.com/googleapis/google-cloud-python/issues/17914)) ([9e98b93](https://github.com/googleapis/google-cloud-python/commit/9e98b93e89c26dfca7ca4980b2da8ff3d2303771))
+* **api-core:** use truthiness check in setup_request_id to support proto-plus messages ([#18000](https://github.com/googleapis/google-cloud-python/issues/18000)) ([ad8f93c](https://github.com/googleapis/google-cloud-python/commit/ad8f93c3211b3ae9d9b234a5b2fa52a8cbf4b206))
+* avoid retaining routing parameter instances in cache ([#17961](https://github.com/googleapis/google-cloud-python/issues/17961)) ([f64ada2](https://github.com/googleapis/google-cloud-python/commit/f64ada29ff596202a5625f71516f0215e45aa8ae))
+* bump aiohttp from 3.13.5 to 3.14.3 in /packages/gapic-generator ([#17990](https://github.com/googleapis/google-cloud-python/issues/17990)) ([6ff5815](https://github.com/googleapis/google-cloud-python/commit/6ff5815f20cc49eddeceaa8c89ac53c26b9b43fb))
+* bump cryptography from 48.0.1 to 50.0.0 in /packages/gapic-generator ([#17991](https://github.com/googleapis/google-cloud-python/issues/17991)) ([d607f25](https://github.com/googleapis/google-cloud-python/commit/d607f25aa7c0db23beff3e43430033b22e860e18))
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+* **generator:** use flat_ref_types in test templates and delete remove-unused-imports ([#17900](https://github.com/googleapis/google-cloud-python/issues/17900)) ([395f764](https://github.com/googleapis/google-cloud-python/commit/395f764737bd976593b9b034130012522c44344c))
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+* resolve collision with reserved words in samples ([#17912](https://github.com/googleapis/google-cloud-python/issues/17912)) ([588cda9](https://github.com/googleapis/google-cloud-python/commit/588cda95202e094511f39f244aa6acea654a7af6))
+* upgrade Protobuf and gRPC in WORKSPACE ([#17882](https://github.com/googleapis/google-cloud-python/issues/17882)) ([5b5ece5](https://github.com/googleapis/google-cloud-python/commit/5b5ece55d1b2a427ccc2b461442a4e7751b33919))
+
+## [1.37.1](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.37.0...gapic-generator-v1.37.1) (2026-07-22)
+
+
+### Bug Fixes
+
+* **gapic-generator:** remove lagging 3.9 refs ([#16924](https://github.com/googleapis/google-cloud-python/issues/16924)) ([a719055](https://github.com/googleapis/google-cloud-python/commit/a7190556f487028f04e42ade1f922075127028c3))
+* **gapic:** mock os.path.exists in mTLS tests to support newer google auth ([#17807](https://github.com/googleapis/google-cloud-python/issues/17807)) ([df0541a](https://github.com/googleapis/google-cloud-python/commit/df0541abf6aae710fc3e6644a5d8f3f706d29c5a))
+
 ## [1.37.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.36.0...gapic-generator-v1.37.0) (2026-07-07)
 
 

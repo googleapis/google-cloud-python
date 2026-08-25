@@ -759,7 +759,7 @@ class DeviceCategoryServiceClient(metaclass=DeviceCategoryServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> device_category_messages.DeviceCategory:
-        r"""API to retrieve a ``DeviceCategory`` object.
+        r"""Retrieves a ``DeviceCategory`` object.
 
         .. code-block:: python
 
@@ -869,7 +869,7 @@ class DeviceCategoryServiceClient(metaclass=DeviceCategoryServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListDeviceCategoriesPager:
-        r"""API to retrieve a list of ``DeviceCategory`` objects.
+        r"""Lists ``DeviceCategory`` objects.
 
         .. code-block:: python
 
@@ -1121,8 +1121,6 @@ class DeviceCategoryServiceClient(metaclass=DeviceCategoryServiceClientMeta):
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("DeviceCategoryServiceClient",)

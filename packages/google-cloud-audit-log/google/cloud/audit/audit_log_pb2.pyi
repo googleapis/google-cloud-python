@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections.abc import Iterable as _Iterable
+from collections.abc import Mapping as _Mapping
 from typing import ClassVar as _ClassVar
-from typing import Iterable as _Iterable
-from typing import Mapping as _Mapping
 from typing import Optional as _Optional
 from typing import Union as _Union
 
@@ -169,7 +169,7 @@ class AuthorizationInfo(_message.Message):
         self,
         resource: _Optional[str] = ...,
         permission: _Optional[str] = ...,
-        granted: bool = ...,
+        granted: _Optional[bool] = ...,
         resource_attributes: _Optional[
             _Union[_attribute_context_pb2.AttributeContext.Resource, _Mapping]
         ] = ...,

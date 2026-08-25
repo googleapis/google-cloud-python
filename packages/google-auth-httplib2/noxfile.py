@@ -39,6 +39,7 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
@@ -69,6 +70,17 @@ SYSTEM_TEST_EXTRAS: List[str] = []
 SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {}
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 
 # Error if a python version is missing
 nox.options.error_on_missing_interpreters = True
@@ -101,6 +113,7 @@ def mypy(session):
     session.install(".")
     session.run(
         "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
         "google_auth_httplib2.py",
     )
 

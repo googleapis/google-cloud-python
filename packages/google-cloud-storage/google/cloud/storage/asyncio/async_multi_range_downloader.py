@@ -21,7 +21,6 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from google.api_core import exceptions
 from google.api_core.retry_async import AsyncRetry
-from google.rpc import status_pb2
 
 from google.cloud import _storage_v2
 from google.cloud.storage._helpers import generate_random_56_bit_integer
@@ -49,51 +48,34 @@ from google.cloud.storage.exceptions import DataCorruption
 from ._utils import raise_if_no_fast_crc32c
 
 _MAX_READ_RANGES_PER_BIDI_READ_REQUEST = 100
-_BIDI_READ_REDIRECTED_TYPE_URL = (
-    "type.googleapis.com/google.storage.v2.BidiReadObjectRedirectedError"
+_COMMON_READ_RETRYABLE_EXCEPTIONS = (
+    exceptions.InternalServerError,
+    exceptions.ServiceUnavailable,
+    exceptions.DeadlineExceeded,
+    exceptions.TooManyRequests,
 )
 
 logger = logging.getLogger(__name__)
 
 
-def _is_read_retryable(exc):
-    """Predicate to determine if a read operation should be retried."""
-    if isinstance(
-        exc,
-        (
-            exceptions.InternalServerError,
-            exceptions.ServiceUnavailable,
-            exceptions.DeadlineExceeded,
-            exceptions.TooManyRequests,
-        ),
-    ):
+def _is_open_retryable(exc):
+    """Determine whether opening a read stream should be retried."""
+    if isinstance(exc, _COMMON_READ_RETRYABLE_EXCEPTIONS):
         return True
 
-    if not isinstance(exc, exceptions.Aborted) or not exc.errors:
+    if not isinstance(exc, exceptions.Aborted):
         return False
 
-    try:
-        grpc_error = exc.errors[0]
-        trailers = grpc_error.trailing_metadata()
-        if not trailers:
-            return False
+    routing_token, read_handle = _handle_redirect(exc)
+    return routing_token is not None or read_handle is not None
 
-        status_details_bin = next(
-            (v for k, v in trailers if k == "grpc-status-details-bin"), None
-        )
 
-        if not status_details_bin:
-            return False
-
-        status_proto = status_pb2.Status()
-        status_proto.ParseFromString(status_details_bin)
-        return any(
-            detail.type_url == _BIDI_READ_REDIRECTED_TYPE_URL
-            for detail in status_proto.details
-        )
-    except Exception as e:
-        logger.error(f"Error parsing status_details_bin: {e}")
-        return False
+def _is_read_retryable(exc):
+    """Determine whether an active read stream should be retried."""
+    return isinstance(
+        exc,
+        _COMMON_READ_RETRYABLE_EXCEPTIONS + (exceptions.Aborted,),
+    )
 
 
 class AsyncMultiRangeDownloader:
@@ -269,7 +251,7 @@ class AsyncMultiRangeDownloader:
                 self._on_open_error(exc)
 
             retry_policy = AsyncRetry(
-                predicate=_is_read_retryable, on_error=on_error_wrapper
+                predicate=_is_open_retryable, on_error=on_error_wrapper
             )
         else:
             original_on_error = retry_policy._on_error
@@ -281,7 +263,7 @@ class AsyncMultiRangeDownloader:
                     original_on_error(exc)
 
             retry_policy = AsyncRetry(
-                predicate=_is_read_retryable,
+                predicate=_is_open_retryable,
                 initial=retry_policy._initial,
                 maximum=retry_policy._maximum,
                 multiplier=retry_policy._multiplier,
@@ -583,3 +565,8 @@ class AsyncMultiRangeDownloader:
     @property
     def is_stream_open(self) -> bool:
         return self._is_stream_open
+
+    @property
+    def object_metadata(self) -> Optional[_storage_v2.Object]:
+        """The metadata of the object being downloaded."""
+        return self.read_obj_str.object_metadata if self.read_obj_str else None

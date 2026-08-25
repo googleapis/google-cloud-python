@@ -944,7 +944,14 @@ def test_audit_manager_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -991,7 +998,14 @@ def test_audit_manager_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1296,7 +1310,10 @@ def test_audit_manager_client_create_channel_credentials_file(
             credentials=file_creds,
             credentials_file=None,
             quota_project_id=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-auditmanager",
+                "https://www.googleapis.com/auth/cloud-platform",
+            ),
             scopes=None,
             default_host="auditmanager.googleapis.com",
             ssl_credentials=None,
@@ -5006,7 +5023,6 @@ def test_generate_audit_scope_report_rest_required_fields(
 
     request_init = {}
     request_init["scope"] = ""
-    request_init["compliance_standard"] = ""
     request_init["compliance_framework"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
@@ -5024,7 +5040,6 @@ def test_generate_audit_scope_report_rest_required_fields(
     # verify required fields with default values are now present
 
     jsonified_request["scope"] = "scope_value"
-    jsonified_request["complianceStandard"] = "compliance_standard_value"
     jsonified_request["complianceFramework"] = "compliance_framework_value"
 
     unset_fields = transport_class(
@@ -5035,8 +5050,6 @@ def test_generate_audit_scope_report_rest_required_fields(
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
     assert jsonified_request["scope"] == "scope_value"
-    assert "complianceStandard" in jsonified_request
-    assert jsonified_request["complianceStandard"] == "compliance_standard_value"
     assert "complianceFramework" in jsonified_request
     assert jsonified_request["complianceFramework"] == "compliance_framework_value"
 
@@ -5094,7 +5107,6 @@ def test_generate_audit_scope_report_rest_unset_required_fields():
         & set(
             (
                 "scope",
-                "complianceStandard",
                 "reportFormat",
                 "complianceFramework",
             )
@@ -5216,7 +5228,6 @@ def test_generate_audit_report_rest_required_fields(
 
     request_init = {}
     request_init["scope"] = ""
-    request_init["compliance_standard"] = ""
     request_init["compliance_framework"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
@@ -5234,7 +5245,6 @@ def test_generate_audit_report_rest_required_fields(
     # verify required fields with default values are now present
 
     jsonified_request["scope"] = "scope_value"
-    jsonified_request["complianceStandard"] = "compliance_standard_value"
     jsonified_request["complianceFramework"] = "compliance_framework_value"
 
     unset_fields = transport_class(
@@ -5245,8 +5255,6 @@ def test_generate_audit_report_rest_required_fields(
     # verify required fields with non-default values are left alone
     assert "scope" in jsonified_request
     assert jsonified_request["scope"] == "scope_value"
-    assert "complianceStandard" in jsonified_request
-    assert jsonified_request["complianceStandard"] == "compliance_standard_value"
     assert "complianceFramework" in jsonified_request
     assert jsonified_request["complianceFramework"] == "compliance_framework_value"
 
@@ -5301,7 +5309,6 @@ def test_generate_audit_report_rest_unset_required_fields():
         & set(
             (
                 "scope",
-                "complianceStandard",
                 "reportFormat",
                 "complianceFramework",
             )
@@ -8806,7 +8813,10 @@ def test_audit_manager_base_transport_with_credentials_file():
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-auditmanager",
+                "https://www.googleapis.com/auth/cloud-platform",
+            ),
             quota_project_id="octopus",
         )
 
@@ -8832,7 +8842,10 @@ def test_audit_manager_auth_adc():
         AuditManagerClient()
         adc.assert_called_once_with(
             scopes=None,
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-auditmanager",
+                "https://www.googleapis.com/auth/cloud-platform",
+            ),
             quota_project_id=None,
         )
 
@@ -8852,7 +8865,10 @@ def test_audit_manager_transport_auth_adc(transport_class):
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-auditmanager",
+                "https://www.googleapis.com/auth/cloud-platform",
+            ),
             quota_project_id="octopus",
         )
 
@@ -8905,7 +8921,10 @@ def test_audit_manager_transport_create_channel(transport_class, grpc_helpers):
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
-            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-auditmanager",
+                "https://www.googleapis.com/auth/cloud-platform",
+            ),
             scopes=["1", "2"],
             default_host="auditmanager.googleapis.com",
             ssl_credentials=None,

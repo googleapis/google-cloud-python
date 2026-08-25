@@ -936,7 +936,14 @@ def test_dataform_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -983,7 +990,14 @@ def test_dataform_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -51587,8 +51601,13 @@ def test_create_release_config_rest_call_success(request_type):
             "builtin_assertion_name_prefix": "builtin_assertion_name_prefix_value",
             "default_notebook_runtime_options": {
                 "gcs_output_bucket": "gcs_output_bucket_value",
+                "gcs_repository_snapshot_destination": {
+                    "repository_snapshot_uri": "repository_snapshot_uri_value"
+                },
                 "ai_platform_notebook_runtime_template": "ai_platform_notebook_runtime_template_value",
             },
+            "pipeline_config": {"pipeline_type": 1, "path": "path_value"},
+            "lineage_enabled": True,
         },
         "cron_schedule": "cron_schedule_value",
         "time_zone": "time_zone_value",
@@ -51843,8 +51862,13 @@ def test_update_release_config_rest_call_success(request_type):
             "builtin_assertion_name_prefix": "builtin_assertion_name_prefix_value",
             "default_notebook_runtime_options": {
                 "gcs_output_bucket": "gcs_output_bucket_value",
+                "gcs_repository_snapshot_destination": {
+                    "repository_snapshot_uri": "repository_snapshot_uri_value"
+                },
                 "ai_platform_notebook_runtime_template": "ai_platform_notebook_runtime_template_value",
             },
+            "pipeline_config": {"pipeline_type": 1, "path": "path_value"},
+            "lineage_enabled": True,
         },
         "cron_schedule": "cron_schedule_value",
         "time_zone": "time_zone_value",
@@ -52481,8 +52505,13 @@ def test_create_compilation_result_rest_call_success(request_type):
             "builtin_assertion_name_prefix": "builtin_assertion_name_prefix_value",
             "default_notebook_runtime_options": {
                 "gcs_output_bucket": "gcs_output_bucket_value",
+                "gcs_repository_snapshot_destination": {
+                    "repository_snapshot_uri": "repository_snapshot_uri_value"
+                },
                 "ai_platform_notebook_runtime_template": "ai_platform_notebook_runtime_template_value",
             },
+            "pipeline_config": {"pipeline_type": 1, "path": "path_value"},
+            "lineage_enabled": True,
         },
         "resolved_git_commit_sha": "resolved_git_commit_sha_value",
         "dataform_core_version": "dataform_core_version_value",
@@ -52502,6 +52531,11 @@ def test_create_compilation_result_rest_call_success(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "internal_metadata": "internal_metadata_value",
         "private_resource_metadata": {"user_scoped": True},
+        "gcs_repository_snapshot_metadata": {
+            "repository_snapshot_uri": "repository_snapshot_uri_value",
+            "crc32c_checksum": "crc32c_checksum_value",
+            "generation": 1068,
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -54044,6 +54078,7 @@ def test_create_workflow_invocation_rest_call_success(request_type):
         "data_encryption_state": {"kms_key_version_name": "kms_key_version_name_value"},
         "internal_metadata": "internal_metadata_value",
         "private_resource_metadata": {"user_scoped": True},
+        "pipeline_config": {"pipeline_type": 1, "path": "path_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

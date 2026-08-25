@@ -27,6 +27,17 @@ RUFF_VERSION = "ruff==0.14.14"
 LINT_PATHS = ["docs", "proto", "tests", "noxfile.py", "setup.py"]
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+# Path to the centralized mypy configuration file at the repository root.
+# Search upwards to support running nox from both monorepo packages and integration test goldens.
+MYPY_CONFIG_FILE = next(
+    (
+        str(p / "mypy.ini")
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "mypy.ini").exists()
+    ),
+    str(CURRENT_DIRECTORY.parent.parent / "mypy.ini"),
+)
+
 
 DEFAULT_PYTHON_VERSION = "3.14"
 
@@ -36,6 +47,7 @@ PYTHON_VERSIONS = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 
 # Error if a python version is missing
@@ -43,19 +55,9 @@ nox.options.error_on_missing_interpreters = True
 
 
 @nox.session(python=PYTHON_VERSIONS)
-@nox.parametrize("implementation", ["cpp", "upb", "python"])
+@nox.parametrize("implementation", ["upb", "python"])
 def unit(session, implementation):
     """Run the unit test suite."""
-
-    # TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
-    # Remove this check once support for Protobuf 3.x is dropped.
-    if implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
@@ -64,11 +66,6 @@ def unit(session, implementation):
     session.env["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = implementation
     session.install("coverage", "pytest", "pytest-cov", "pytz")
     session.install("-e", ".[testing]", "-c", constraints_path)
-    # TODO(https://github.com/googleapis/proto-plus-python/issues/389):
-    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
-    # The 'cpp' implementation requires Protobuf<4.
-    if implementation == "cpp":
-        session.install("protobuf<4")
 
     # TODO(https://github.com/googleapis/proto-plus-python/issues/403): re-enable `-W=error`
     # The warnings-as-errors flag `-W=error` was removed in
@@ -306,6 +303,21 @@ def mypy(session):
     # TODO(https://github.com/googleapis/google-cloud-python/issues/15104):
     # Enable mypy once this bug is fixed.
     session.skip("Skip mypy since this library doesn't have py.typed")
+
+    session.install("-e", ".")
+    session.install(
+        "mypy",
+        "types-setuptools",
+        "types-protobuf",
+        "types-requests",
+    )
+    session.run(
+        "mypy",
+        f"--config-file={MYPY_CONFIG_FILE}",
+        "-p",
+        "proto",
+        *session.posargs,
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

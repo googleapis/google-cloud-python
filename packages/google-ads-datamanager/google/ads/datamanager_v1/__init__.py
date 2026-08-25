@@ -23,6 +23,57 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.ads.datamanager_v1.services.ingestion_service",
+    "google.ads.datamanager_v1.services.marketing_data_insights_service",
+    "google.ads.datamanager_v1.services.partner_link_service",
+    "google.ads.datamanager_v1.services.user_list_direct_license_service",
+    "google.ads.datamanager_v1.services.user_list_global_license_service",
+    "google.ads.datamanager_v1.services.user_list_service",
+    "google.ads.datamanager_v1.types.ad_event",
+    "google.ads.datamanager_v1.types.age_range",
+    "google.ads.datamanager_v1.types.audience",
+    "google.ads.datamanager_v1.types.cart_data",
+    "google.ads.datamanager_v1.types.consent",
+    "google.ads.datamanager_v1.types.destination",
+    "google.ads.datamanager_v1.types.device_info",
+    "google.ads.datamanager_v1.types.encrypted_user_id",
+    "google.ads.datamanager_v1.types.encryption_info",
+    "google.ads.datamanager_v1.types.error",
+    "google.ads.datamanager_v1.types.event",
+    "google.ads.datamanager_v1.types.experimental_field",
+    "google.ads.datamanager_v1.types.gender",
+    "google.ads.datamanager_v1.types.ingestion_service",
+    "google.ads.datamanager_v1.types.insights_service",
+    "google.ads.datamanager_v1.types.item_parameter",
+    "google.ads.datamanager_v1.types.match_rate",
+    "google.ads.datamanager_v1.types.partner_link_service",
+    "google.ads.datamanager_v1.types.processing_errors",
+    "google.ads.datamanager_v1.types.request_status_per_destination",
+    "google.ads.datamanager_v1.types.terms_of_service",
+    "google.ads.datamanager_v1.types.user_data",
+    "google.ads.datamanager_v1.types.user_list",
+    "google.ads.datamanager_v1.types.user_list_direct_license",
+    "google.ads.datamanager_v1.types.user_list_direct_license_service",
+    "google.ads.datamanager_v1.types.user_list_global_license",
+    "google.ads.datamanager_v1.types.user_list_global_license_service",
+    "google.ads.datamanager_v1.types.user_list_global_license_type",
+    "google.ads.datamanager_v1.types.user_list_license_client_account_type",
+    "google.ads.datamanager_v1.types.user_list_license_metrics",
+    "google.ads.datamanager_v1.types.user_list_license_pricing",
+    "google.ads.datamanager_v1.types.user_list_license_status",
+    "google.ads.datamanager_v1.types.user_list_service",
+    "google.ads.datamanager_v1.types.user_properties",
+    "google.ads.datamanager_v1.types.viewability_info",
+}
+
+
 from .services.ingestion_service import (
     IngestionServiceAsyncClient,
     IngestionServiceClient,
@@ -61,9 +112,11 @@ from .types.age_range import AgeRange
 from .types.audience import (
     AudienceMember,
     CompositeData,
+    GoogleUserIdData,
     IpData,
     MobileData,
     PairData,
+    PartnerProvidedIdData,
     PpidData,
     UserIdData,
 )
@@ -97,6 +150,8 @@ from .types.ingestion_service import (
     IngestAudienceMembersResponse,
     IngestEventsRequest,
     IngestEventsResponse,
+    RemoveAllAudienceMembersRequest,
+    RemoveAllAudienceMembersResponse,
     RemoveAudienceMembersRequest,
     RemoveAudienceMembersResponse,
     RetrieveRequestStatusRequest,
@@ -122,10 +177,12 @@ from .types.partner_link_service import (
 from .types.processing_errors import (
     ErrorCount,
     ErrorInfo,
+    FieldWarning,
     ProcessingErrorReason,
     ProcessingWarningReason,
     WarningCount,
     WarningInfo,
+    WarningReason,
 )
 from .types.request_status_per_destination import RequestStatusPerDestination
 from .types.terms_of_service import TermsOfService, TermsOfServiceStatus
@@ -318,11 +375,13 @@ __all__ = (
     "EventSource",
     "ExperimentalField",
     "FeatureSet",
+    "FieldWarning",
     "GcpWrappedKeyInfo",
     "Gender",
     "GetUserListDirectLicenseRequest",
     "GetUserListGlobalLicenseRequest",
     "GetUserListRequest",
+    "GoogleUserIdData",
     "IngestAdEventsRequest",
     "IngestAdEventsResponse",
     "IngestAudienceMembersRequest",
@@ -355,6 +414,7 @@ __all__ = (
     "PartnerLink",
     "PartnerLinkMetadata",
     "PartnerLinkServiceClient",
+    "PartnerProvidedIdData",
     "Platform",
     "PlatformType",
     "PpidData",
@@ -363,6 +423,8 @@ __all__ = (
     "Product",
     "ProductAccount",
     "PseudonymousIdInfo",
+    "RemoveAllAudienceMembersRequest",
+    "RemoveAllAudienceMembersResponse",
     "RemoveAudienceMembersRequest",
     "RemoveAudienceMembersResponse",
     "RequestStatusPerDestination",
@@ -402,4 +464,5 @@ __all__ = (
     "ViewabilityInfo",
     "WarningCount",
     "WarningInfo",
+    "WarningReason",
 )

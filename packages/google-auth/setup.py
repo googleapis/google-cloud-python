@@ -15,8 +15,7 @@
 import io
 import os
 
-from setuptools import find_namespace_packages
-from setuptools import setup
+from setuptools import find_namespace_packages, setup
 
 cryptography_base_require = [
     "cryptography >= 38.0.3; python_version < '3.14'",

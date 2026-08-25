@@ -759,7 +759,7 @@ class BrowserLanguageServiceClient(metaclass=BrowserLanguageServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> browser_language_messages.BrowserLanguage:
-        r"""API to retrieve a ``BrowserLanguage`` object.
+        r"""Retrieves a ``BrowserLanguage`` object.
 
         .. code-block:: python
 
@@ -867,7 +867,7 @@ class BrowserLanguageServiceClient(metaclass=BrowserLanguageServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListBrowserLanguagesPager:
-        r"""API to retrieve a list of ``BrowserLanguage`` objects.
+        r"""Lists ``BrowserLanguage`` objects.
 
         .. code-block:: python
 
@@ -1121,8 +1121,6 @@ class BrowserLanguageServiceClient(metaclass=BrowserLanguageServiceClientMeta):
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("BrowserLanguageServiceClient",)

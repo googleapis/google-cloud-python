@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
+## [2.29.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.28.1...google-cloud-firestore-v2.29.0) (2026-08-21)
+
+
+### Features
+
+* update googleapis and regenerate ([#18087](https://github.com/googleapis/google-cloud-python/issues/18087)) ([db1622a](https://github.com/googleapis/google-cloud-python/commit/db1622a9cfac112b40c93842737d7a5deeb3e8bd))
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
+## [2.28.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.28.0...google-cloud-firestore-v2.28.1) (2026-08-06)
+
+
+### Bug Fixes
+
+* **firestore:** BulkWriter pop from an empty deque ([#17490](https://github.com/googleapis/google-cloud-python/issues/17490)) ([8e826f0](https://github.com/googleapis/google-cloud-python/commit/8e826f078efaa0b5c9372ab8444864026abe4727))
+* **firestore:** preserve async limit_to_last ordering ([#17879](https://github.com/googleapis/google-cloud-python/issues/17879)) ([caf2fdb](https://github.com/googleapis/google-cloud-python/commit/caf2fdb646714f07cf039b0dbb88d0ce594f6567))
+
 ## [2.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-firestore-v2.27.0...google-cloud-firestore-v2.28.0) (2026-06-25)
 
 

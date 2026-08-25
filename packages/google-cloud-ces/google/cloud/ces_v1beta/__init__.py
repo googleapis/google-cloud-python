@@ -23,6 +23,68 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.ces_v1beta.services.agent_service",
+    "google.cloud.ces_v1beta.services.evaluation_service",
+    "google.cloud.ces_v1beta.services.session_service",
+    "google.cloud.ces_v1beta.services.tool_service",
+    "google.cloud.ces_v1beta.services.widget_service",
+    "google.cloud.ces_v1beta.types.agent",
+    "google.cloud.ces_v1beta.types.agent_card",
+    "google.cloud.ces_v1beta.types.agent_service",
+    "google.cloud.ces_v1beta.types.agent_tool",
+    "google.cloud.ces_v1beta.types.agent_transfers",
+    "google.cloud.ces_v1beta.types.app",
+    "google.cloud.ces_v1beta.types.app_version",
+    "google.cloud.ces_v1beta.types.auth",
+    "google.cloud.ces_v1beta.types.bigquery_export",
+    "google.cloud.ces_v1beta.types.changelog",
+    "google.cloud.ces_v1beta.types.client_function",
+    "google.cloud.ces_v1beta.types.common",
+    "google.cloud.ces_v1beta.types.connector_tool",
+    "google.cloud.ces_v1beta.types.connector_toolset",
+    "google.cloud.ces_v1beta.types.conversation",
+    "google.cloud.ces_v1beta.types.data_store",
+    "google.cloud.ces_v1beta.types.data_store_tool",
+    "google.cloud.ces_v1beta.types.deployment",
+    "google.cloud.ces_v1beta.types.evaluation",
+    "google.cloud.ces_v1beta.types.evaluation_metrics_config",
+    "google.cloud.ces_v1beta.types.evaluation_service",
+    "google.cloud.ces_v1beta.types.example",
+    "google.cloud.ces_v1beta.types.fakes",
+    "google.cloud.ces_v1beta.types.file_context",
+    "google.cloud.ces_v1beta.types.file_search_tool",
+    "google.cloud.ces_v1beta.types.golden_run",
+    "google.cloud.ces_v1beta.types.google_search_tool",
+    "google.cloud.ces_v1beta.types.guardrail",
+    "google.cloud.ces_v1beta.types.mcp_tool",
+    "google.cloud.ces_v1beta.types.mcp_toolset",
+    "google.cloud.ces_v1beta.types.mocks",
+    "google.cloud.ces_v1beta.types.omnichannel",
+    "google.cloud.ces_v1beta.types.omnichannel_service",
+    "google.cloud.ces_v1beta.types.open_api_tool",
+    "google.cloud.ces_v1beta.types.open_api_toolset",
+    "google.cloud.ces_v1beta.types.python_function",
+    "google.cloud.ces_v1beta.types.schema",
+    "google.cloud.ces_v1beta.types.search_suggestions",
+    "google.cloud.ces_v1beta.types.security_settings",
+    "google.cloud.ces_v1beta.types.session_service",
+    "google.cloud.ces_v1beta.types.system_tool",
+    "google.cloud.ces_v1beta.types.tool",
+    "google.cloud.ces_v1beta.types.tool_service",
+    "google.cloud.ces_v1beta.types.toolset",
+    "google.cloud.ces_v1beta.types.toolset_tool",
+    "google.cloud.ces_v1beta.types.widget_service",
+    "google.cloud.ces_v1beta.types.widget_tool",
+}
+
+
 from .services.agent_service import AgentServiceAsyncClient, AgentServiceClient
 from .services.evaluation_service import (
     EvaluationServiceAsyncClient,
@@ -148,6 +210,7 @@ from .types.client_function import ClientFunction
 from .types.common import (
     Callback,
     ChannelProfile,
+    EvaluationRunCachingSettings,
     ExecutionType,
     ModelSettings,
     ServiceDirectoryConfig,
@@ -160,7 +223,12 @@ from .types.connector_toolset import ConnectorToolset
 from .types.conversation import Conversation
 from .types.data_store import DataStore
 from .types.data_store_tool import DataStoreTool
-from .types.deployment import Deployment, ExperimentConfig
+from .types.deployment import (
+    Deployment,
+    ExperimentConfig,
+    InstagramCredentials,
+    WhatsAppCredentials,
+)
 from .types.evaluation import (
     AggregatedMetrics,
     Evaluation,
@@ -472,6 +540,7 @@ __all__ = (
     "EvaluationPersona",
     "EvaluationResult",
     "EvaluationRun",
+    "EvaluationRunCachingSettings",
     "EvaluationServiceClient",
     "EvaluationSettings",
     "EvaluationToolCallBehaviour",
@@ -531,6 +600,7 @@ __all__ = (
     "ImportEvaluationsRequest",
     "ImportEvaluationsResponse",
     "InputAudioConfig",
+    "InstagramCredentials",
     "InterruptionSignal",
     "LanguageSettings",
     "LatencyReport",
@@ -650,6 +720,7 @@ __all__ = (
     "UploadEvaluationAudioResponse",
     "VpcScSettings",
     "WebSearchQuery",
+    "WhatsAppCredentials",
     "WidgetServiceClient",
     "WidgetTool",
 )

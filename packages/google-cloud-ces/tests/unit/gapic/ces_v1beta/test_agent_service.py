@@ -996,7 +996,14 @@ def test_agent_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1043,7 +1050,14 @@ def test_agent_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1743,6 +1757,9 @@ def test_list_apps_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, app.App) for i in results)
@@ -1831,6 +1848,8 @@ async def test_list_apps_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -5055,6 +5074,9 @@ def test_list_agents_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, agent.Agent) for i in results)
@@ -5143,6 +5165,8 @@ async def test_list_agents_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -6983,6 +7007,9 @@ def test_list_examples_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, example.Example) for i in results)
@@ -7071,6 +7098,8 @@ async def test_list_examples_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -8863,6 +8892,9 @@ def test_list_tools_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, tool.Tool) for i in results)
@@ -8951,6 +8983,8 @@ async def test_list_tools_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -9735,6 +9769,9 @@ def test_list_conversations_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, conversation.Conversation) for i in results)
@@ -9827,6 +9864,8 @@ async def test_list_conversations_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -12336,6 +12375,9 @@ def test_list_guardrails_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, guardrail.Guardrail) for i in results)
@@ -12424,6 +12466,8 @@ async def test_list_guardrails_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -14268,6 +14312,9 @@ def test_list_deployments_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, deployment.Deployment) for i in results)
@@ -14356,6 +14403,8 @@ async def test_list_deployments_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -16186,6 +16235,9 @@ def test_list_toolsets_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, toolset.Toolset) for i in results)
@@ -16274,6 +16326,8 @@ async def test_list_toolsets_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -18114,6 +18168,9 @@ def test_list_app_versions_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, app_version.AppVersion) for i in results)
@@ -18206,6 +18263,8 @@ async def test_list_app_versions_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -20387,6 +20446,9 @@ def test_list_changelogs_pager(transport_name: str = "grpc"):
         assert pager._retry == retry
         assert pager._timeout == timeout
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, changelog.Changelog) for i in results)
@@ -20475,6 +20537,8 @@ async def test_list_changelogs_async_pager():
             request={},
         )
         assert async_pager.next_page_token == "abc"
+        assert str(async_pager).startswith(f"{async_pager.__class__.__name__}<")
+
         responses = []
         async for response in async_pager:  # pragma: no branch
             responses.append(response)
@@ -21121,6 +21185,9 @@ def test_list_apps_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
         pager = client.list_apps(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -22830,6 +22897,9 @@ def test_list_agents_rest_pager(transport: str = "rest"):
 
         pager = client.list_agents(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, agent.Agent) for i in results)
@@ -23833,6 +23903,9 @@ def test_list_examples_rest_pager(transport: str = "rest"):
 
         pager = client.list_examples(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, example.Example) for i in results)
@@ -24819,6 +24892,9 @@ def test_list_tools_rest_pager(transport: str = "rest"):
 
         pager = client.list_tools(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, tool.Tool) for i in results)
@@ -25262,6 +25338,9 @@ def test_list_conversations_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2/apps/sample3"}
 
         pager = client.list_conversations(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -26650,6 +26729,9 @@ def test_list_guardrails_rest_pager(transport: str = "rest"):
 
         pager = client.list_guardrails(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, guardrail.Guardrail) for i in results)
@@ -27677,6 +27759,9 @@ def test_list_deployments_rest_pager(transport: str = "rest"):
 
         pager = client.list_deployments(request=sample_request)
 
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
+
         results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, deployment.Deployment) for i in results)
@@ -28674,6 +28759,9 @@ def test_list_toolsets_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2/apps/sample3"}
 
         pager = client.list_toolsets(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -29695,6 +29783,9 @@ def test_list_app_versions_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2/apps/sample3"}
 
         pager = client.list_app_versions(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -30880,6 +30971,9 @@ def test_list_changelogs_rest_pager(transport: str = "rest"):
         sample_request = {"parent": "projects/sample1/locations/sample2/apps/sample3"}
 
         pager = client.list_changelogs(request=sample_request)
+
+        assert pager.next_page_token == "abc"
+        assert str(pager).startswith(f"{pager.__class__.__name__}<")
 
         results = list(pager)
         assert len(results) == 6
@@ -34041,6 +34135,7 @@ def test_create_app_rest_call_success(request_type):
                 "project": "project_value",
                 "dataset": "dataset_value",
             },
+            "unredacted_bigquery_export_settings": {},
             "cloud_logging_settings": {"enable_cloud_logging": True},
             "conversation_logging_settings": {
                 "disable_conversation_logging": True,
@@ -34134,6 +34229,20 @@ def test_create_app_rest_call_success(request_type):
                 },
             },
             "noise_suppression_level": "noise_suppression_level_value",
+            "whatsapp_config": {
+                "waba_id": "waba_id_value",
+                "phone_number_id": "phone_number_id_value",
+                "phone_number": "phone_number_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
+            "instagram_config": {
+                "instagram_account_id": "instagram_account_id_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
         },
         "metadata": {},
         "create_time": {"seconds": 751, "nanos": 543},
@@ -34187,6 +34296,7 @@ def test_create_app_rest_call_success(request_type):
                 },
             },
             "scenario_execution_mode": 1,
+            "evaluation_run_caching_settings": {"run_caching_mode": 1},
         },
         "validation_errors": ["validation_errors_value1", "validation_errors_value2"],
     }
@@ -34421,6 +34531,7 @@ def test_update_app_rest_call_success(request_type):
                 "project": "project_value",
                 "dataset": "dataset_value",
             },
+            "unredacted_bigquery_export_settings": {},
             "cloud_logging_settings": {"enable_cloud_logging": True},
             "conversation_logging_settings": {
                 "disable_conversation_logging": True,
@@ -34514,6 +34625,20 @@ def test_update_app_rest_call_success(request_type):
                 },
             },
             "noise_suppression_level": "noise_suppression_level_value",
+            "whatsapp_config": {
+                "waba_id": "waba_id_value",
+                "phone_number_id": "phone_number_id_value",
+                "phone_number": "phone_number_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
+            "instagram_config": {
+                "instagram_account_id": "instagram_account_id_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
         },
         "metadata": {},
         "create_time": {"seconds": 751, "nanos": 543},
@@ -34567,6 +34692,7 @@ def test_update_app_rest_call_success(request_type):
                 },
             },
             "scenario_execution_mode": 1,
+            "evaluation_run_caching_settings": {"run_caching_mode": 1},
         },
         "validation_errors": ["validation_errors_value1", "validation_errors_value2"],
     }
@@ -40417,6 +40543,20 @@ def test_create_deployment_rest_call_success(request_type):
                 },
             },
             "noise_suppression_level": "noise_suppression_level_value",
+            "whatsapp_config": {
+                "waba_id": "waba_id_value",
+                "phone_number_id": "phone_number_id_value",
+                "phone_number": "phone_number_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
+            "instagram_config": {
+                "instagram_account_id": "instagram_account_id_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
         },
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
@@ -40432,6 +40572,18 @@ def test_create_deployment_rest_call_success(request_type):
                     }
                 ],
             }
+        },
+        "whatsapp_credentials": {
+            "auth_code": "auth_code_value",
+            "pin": "pin_value",
+            "phone_number": "phone_number_value",
+            "business_account_id": "business_account_id_value",
+            "waba_id": "waba_id_value",
+            "conversation_profile_id": "conversation_profile_id_value",
+        },
+        "instagram_credentials": {
+            "auth_code": "auth_code_value",
+            "conversation_profile_id": "conversation_profile_id_value",
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -40671,6 +40823,20 @@ def test_update_deployment_rest_call_success(request_type):
                 },
             },
             "noise_suppression_level": "noise_suppression_level_value",
+            "whatsapp_config": {
+                "waba_id": "waba_id_value",
+                "phone_number_id": "phone_number_id_value",
+                "phone_number": "phone_number_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
+            "instagram_config": {
+                "instagram_account_id": "instagram_account_id_value",
+                "display_name": "display_name_value",
+                "thumbnail_url": "thumbnail_url_value",
+                "description": "description_value",
+            },
         },
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
@@ -40686,6 +40852,18 @@ def test_update_deployment_rest_call_success(request_type):
                     }
                 ],
             }
+        },
+        "whatsapp_credentials": {
+            "auth_code": "auth_code_value",
+            "pin": "pin_value",
+            "phone_number": "phone_number_value",
+            "business_account_id": "business_account_id_value",
+            "waba_id": "waba_id_value",
+            "conversation_profile_id": "conversation_profile_id_value",
+        },
+        "instagram_credentials": {
+            "auth_code": "auth_code_value",
+            "conversation_profile_id": "conversation_profile_id_value",
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -41379,6 +41557,7 @@ def test_create_toolset_rest_call_success(request_type):
         "name": "name_value",
         "display_name": "display_name_value",
         "description": "description_value",
+        "timeout": {"seconds": 751, "nanos": 543},
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "etag": "etag_value",
@@ -41704,6 +41883,7 @@ def test_update_toolset_rest_call_success(request_type):
         "name": "projects/sample1/locations/sample2/apps/sample3/toolsets/sample4",
         "display_name": "display_name_value",
         "description": "description_value",
+        "timeout": {"seconds": 751, "nanos": 543},
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
         "etag": "etag_value",
@@ -42363,6 +42543,7 @@ def test_create_app_version_rest_call_success(request_type):
                         "project": "project_value",
                         "dataset": "dataset_value",
                     },
+                    "unredacted_bigquery_export_settings": {},
                     "cloud_logging_settings": {"enable_cloud_logging": True},
                     "conversation_logging_settings": {
                         "disable_conversation_logging": True,
@@ -42458,6 +42639,20 @@ def test_create_app_version_rest_call_success(request_type):
                         },
                     },
                     "noise_suppression_level": "noise_suppression_level_value",
+                    "whatsapp_config": {
+                        "waba_id": "waba_id_value",
+                        "phone_number_id": "phone_number_id_value",
+                        "phone_number": "phone_number_value",
+                        "display_name": "display_name_value",
+                        "thumbnail_url": "thumbnail_url_value",
+                        "description": "description_value",
+                    },
+                    "instagram_config": {
+                        "instagram_account_id": "instagram_account_id_value",
+                        "display_name": "display_name_value",
+                        "thumbnail_url": "thumbnail_url_value",
+                        "description": "description_value",
+                    },
                 },
                 "metadata": {},
                 "create_time": {},
@@ -42514,6 +42709,7 @@ def test_create_app_version_rest_call_success(request_type):
                         },
                     },
                     "scenario_execution_mode": 1,
+                    "evaluation_run_caching_settings": {"run_caching_mode": 1},
                 },
                 "validation_errors": [
                     "validation_errors_value1",
@@ -43000,6 +43196,7 @@ def test_create_app_version_rest_call_success(request_type):
                     "name": "name_value",
                     "display_name": "display_name_value",
                     "description": "description_value",
+                    "timeout": {},
                     "create_time": {},
                     "update_time": {},
                     "etag": "etag_value",

@@ -23,6 +23,29 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.dataflow_v1beta3.services.flex_templates_service",
+    "google.cloud.dataflow_v1beta3.services.jobs_v1_beta3",
+    "google.cloud.dataflow_v1beta3.services.messages_v1_beta3",
+    "google.cloud.dataflow_v1beta3.services.metrics_v1_beta3",
+    "google.cloud.dataflow_v1beta3.services.snapshots_v1_beta3",
+    "google.cloud.dataflow_v1beta3.services.templates_service",
+    "google.cloud.dataflow_v1beta3.types.environment",
+    "google.cloud.dataflow_v1beta3.types.jobs",
+    "google.cloud.dataflow_v1beta3.types.messages",
+    "google.cloud.dataflow_v1beta3.types.metrics",
+    "google.cloud.dataflow_v1beta3.types.snapshots",
+    "google.cloud.dataflow_v1beta3.types.streaming",
+    "google.cloud.dataflow_v1beta3.types.templates",
+}
+
+
 from .services.flex_templates_service import (
     FlexTemplatesServiceAsyncClient,
     FlexTemplatesServiceClient,

@@ -188,8 +188,10 @@ class TestMetricsAsync(SystemTestRunner):
 
     @CrossSync.convert
     @CrossSync.pytest_fixture(scope="session")
-    async def client(self, error_injector):
+    async def client(self, error_injector, handler):
         async with self._make_client() as client:
+            # override handlers with custom test object
+            client._metrics.handlers = [handler]
             if CrossSync.is_async:
                 client.transport.grpc_channel._unary_unary_interceptors.append(
                     error_injector
@@ -214,20 +216,16 @@ class TestMetricsAsync(SystemTestRunner):
 
     @CrossSync.convert
     @CrossSync.pytest_fixture(scope="session")
-    async def table(self, client, table_id, instance_id, handler):
+    async def table(self, client, table_id, instance_id):
         async with client.get_table(instance_id, table_id) as table:
-            table._metrics.add_handler(handler)
             yield table
 
     @CrossSync.convert
     @CrossSync.pytest_fixture(scope="session")
-    async def authorized_view(
-        self, client, table_id, instance_id, authorized_view_id, handler
-    ):
+    async def authorized_view(self, client, table_id, instance_id, authorized_view_id):
         async with client.get_authorized_view(
             instance_id, table_id, authorized_view_id
         ) as table:
-            table._metrics.add_handler(handler)
             yield table
 
     @CrossSync.pytest
@@ -248,6 +246,9 @@ class TestMetricsAsync(SystemTestRunner):
         assert operation.op_type.value == "ReadRows"
         assert len(operation.completed_attempts) == 1
         assert operation.completed_attempts[0] == handler.completed_attempts[0]
+        assert operation.project_id == table.client.project
+        assert operation.instance_id == table.instance_id
+        assert operation.table_id == table.table_id
         assert operation.cluster_id == next(iter(cluster_config.keys()))
         assert (
             operation.zone

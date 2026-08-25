@@ -23,11 +23,68 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.ces_v1.services.agent_service",
+    "google.cloud.ces_v1.services.session_service",
+    "google.cloud.ces_v1.services.tool_service",
+    "google.cloud.ces_v1.services.widget_service",
+    "google.cloud.ces_v1.types.agent",
+    "google.cloud.ces_v1.types.agent_card",
+    "google.cloud.ces_v1.types.agent_service",
+    "google.cloud.ces_v1.types.agent_tool",
+    "google.cloud.ces_v1.types.agent_transfers",
+    "google.cloud.ces_v1.types.app",
+    "google.cloud.ces_v1.types.app_version",
+    "google.cloud.ces_v1.types.auth",
+    "google.cloud.ces_v1.types.bigquery_export",
+    "google.cloud.ces_v1.types.changelog",
+    "google.cloud.ces_v1.types.client_function",
+    "google.cloud.ces_v1.types.common",
+    "google.cloud.ces_v1.types.connector_tool",
+    "google.cloud.ces_v1.types.connector_toolset",
+    "google.cloud.ces_v1.types.conversation",
+    "google.cloud.ces_v1.types.data_store",
+    "google.cloud.ces_v1.types.data_store_tool",
+    "google.cloud.ces_v1.types.deployment",
+    "google.cloud.ces_v1.types.example",
+    "google.cloud.ces_v1.types.fakes",
+    "google.cloud.ces_v1.types.file_search_tool",
+    "google.cloud.ces_v1.types.google_search_tool",
+    "google.cloud.ces_v1.types.guardrail",
+    "google.cloud.ces_v1.types.mcp_tool",
+    "google.cloud.ces_v1.types.mcp_toolset",
+    "google.cloud.ces_v1.types.mocks",
+    "google.cloud.ces_v1.types.omnichannel",
+    "google.cloud.ces_v1.types.omnichannel_service",
+    "google.cloud.ces_v1.types.open_api_tool",
+    "google.cloud.ces_v1.types.open_api_toolset",
+    "google.cloud.ces_v1.types.python_function",
+    "google.cloud.ces_v1.types.schema",
+    "google.cloud.ces_v1.types.search_suggestions",
+    "google.cloud.ces_v1.types.security_settings",
+    "google.cloud.ces_v1.types.session_service",
+    "google.cloud.ces_v1.types.system_tool",
+    "google.cloud.ces_v1.types.tool",
+    "google.cloud.ces_v1.types.tool_service",
+    "google.cloud.ces_v1.types.toolset",
+    "google.cloud.ces_v1.types.toolset_tool",
+    "google.cloud.ces_v1.types.widget_service",
+    "google.cloud.ces_v1.types.widget_tool",
+}
+
+
 from .services.agent_service import AgentServiceAsyncClient, AgentServiceClient
 from .services.session_service import SessionServiceAsyncClient, SessionServiceClient
 from .services.tool_service import ToolServiceAsyncClient, ToolServiceClient
 from .services.widget_service import WidgetServiceAsyncClient, WidgetServiceClient
 from .types.agent import Agent
+from .types.agent_card import AgentCard, AgentInterface, AgentSkill, RemoteAgentTool
 from .types.agent_service import (
     BatchDeleteConversationsRequest,
     BatchDeleteConversationsResponse,
@@ -117,6 +174,7 @@ from .types.app import (
     RedactionConfig,
     SynthesizeSpeechConfig,
     TimeZoneSettings,
+    VpcScSettings,
 )
 from .types.app_version import AppSnapshot, AppVersion
 from .types.auth import (
@@ -146,7 +204,12 @@ from .types.connector_toolset import ConnectorToolset
 from .types.conversation import Conversation
 from .types.data_store import DataStore
 from .types.data_store_tool import DataStoreTool
-from .types.deployment import Deployment
+from .types.deployment import (
+    Deployment,
+    ExperimentConfig,
+    InstagramCredentials,
+    WhatsAppCredentials,
+)
 from .types.example import (
     AgentTransfer,
     Blob,
@@ -162,7 +225,8 @@ from .types.file_search_tool import FileSearchTool
 from .types.google_search_tool import GoogleSearchTool
 from .types.guardrail import Guardrail
 from .types.mcp_tool import McpTool
-from .types.mcp_toolset import McpToolset
+from .types.mcp_toolset import McpToolDefinition, McpToolOverride, McpToolset
+from .types.mocks import MockedToolCall
 from .types.omnichannel import Omnichannel, OmnichannelIntegrationConfig
 from .types.omnichannel_service import OmnichannelOperationMetadata
 from .types.open_api_tool import OpenApiTool
@@ -181,6 +245,7 @@ from .types.session_service import (
     GoAway,
     InputAudioConfig,
     InterruptionSignal,
+    MockConfig,
     OutputAudioConfig,
     RecognitionResult,
     RunSessionRequest,
@@ -296,7 +361,10 @@ __all__ = (
     "WidgetServiceAsyncClient",
     "Action",
     "Agent",
+    "AgentCard",
+    "AgentInterface",
     "AgentServiceClient",
+    "AgentSkill",
     "AgentTool",
     "AgentTransfer",
     "AmbientSoundConfig",
@@ -360,6 +428,7 @@ __all__ = (
     "ExecuteToolRequest",
     "ExecuteToolResponse",
     "ExecutionType",
+    "ExperimentConfig",
     "ExportAppRequest",
     "ExportAppResponse",
     "ExpressionCondition",
@@ -384,6 +453,7 @@ __all__ = (
     "ImportAppRequest",
     "ImportAppResponse",
     "InputAudioConfig",
+    "InstagramCredentials",
     "InterruptionSignal",
     "LanguageSettings",
     "ListAgentsRequest",
@@ -408,9 +478,13 @@ __all__ = (
     "ListToolsetsResponse",
     "LoggingSettings",
     "McpTool",
+    "McpToolDefinition",
+    "McpToolOverride",
     "McpToolset",
     "Message",
     "MetricAnalysisSettings",
+    "MockConfig",
+    "MockedToolCall",
     "ModelSettings",
     "OAuthConfig",
     "Omnichannel",
@@ -424,6 +498,7 @@ __all__ = (
     "PythonFunction",
     "RecognitionResult",
     "RedactionConfig",
+    "RemoteAgentTool",
     "RestoreAppVersionRequest",
     "RestoreAppVersionResponse",
     "RetrieveToolSchemaRequest",
@@ -464,7 +539,9 @@ __all__ = (
     "UpdateGuardrailRequest",
     "UpdateToolRequest",
     "UpdateToolsetRequest",
+    "VpcScSettings",
     "WebSearchQuery",
+    "WhatsAppCredentials",
     "WidgetServiceClient",
     "WidgetTool",
 )

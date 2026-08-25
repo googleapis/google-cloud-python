@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-storage-control/#history
 
+## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.13.0...google-cloud-storage-control-v1.14.0) (2026-08-21)
+
+
+### Features
+
+* update googleapis and regenerate ([#18087](https://github.com/googleapis/google-cloud-python/issues/18087)) ([db1622a](https://github.com/googleapis/google-cloud-python/commit/db1622a9cfac112b40c93842737d7a5deeb3e8bd))
+
+## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.12.0...google-cloud-storage-control-v1.13.0) (2026-08-06)
+
+
+### Features
+
+* update googleapis and regenerate ([#17893](https://github.com/googleapis/google-cloud-python/issues/17893)) ([e70ab6f](https://github.com/googleapis/google-cloud-python/commit/e70ab6fd45edfec5ca0c865e01876f0ea4f09cae))
+
 ## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-control-v1.11.0...google-cloud-storage-control-v1.12.0) (2026-06-02)
 
 

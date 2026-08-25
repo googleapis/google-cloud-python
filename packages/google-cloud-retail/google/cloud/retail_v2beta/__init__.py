@@ -23,6 +23,56 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.retail_v2beta.services.analytics_service",
+    "google.cloud.retail_v2beta.services.catalog_service",
+    "google.cloud.retail_v2beta.services.completion_service",
+    "google.cloud.retail_v2beta.services.control_service",
+    "google.cloud.retail_v2beta.services.conversational_search_service",
+    "google.cloud.retail_v2beta.services.generative_question_service",
+    "google.cloud.retail_v2beta.services.model_service",
+    "google.cloud.retail_v2beta.services.prediction_service",
+    "google.cloud.retail_v2beta.services.product_service",
+    "google.cloud.retail_v2beta.services.project_service",
+    "google.cloud.retail_v2beta.services.search_service",
+    "google.cloud.retail_v2beta.services.serving_config_service",
+    "google.cloud.retail_v2beta.services.user_event_service",
+    "google.cloud.retail_v2beta.types.analytics_service",
+    "google.cloud.retail_v2beta.types.catalog",
+    "google.cloud.retail_v2beta.types.catalog_service",
+    "google.cloud.retail_v2beta.types.common",
+    "google.cloud.retail_v2beta.types.completion_service",
+    "google.cloud.retail_v2beta.types.control",
+    "google.cloud.retail_v2beta.types.control_service",
+    "google.cloud.retail_v2beta.types.conversational_search_service",
+    "google.cloud.retail_v2beta.types.export_config",
+    "google.cloud.retail_v2beta.types.generative_question",
+    "google.cloud.retail_v2beta.types.generative_question_service",
+    "google.cloud.retail_v2beta.types.import_config",
+    "google.cloud.retail_v2beta.types.model",
+    "google.cloud.retail_v2beta.types.model_service",
+    "google.cloud.retail_v2beta.types.prediction_service",
+    "google.cloud.retail_v2beta.types.product",
+    "google.cloud.retail_v2beta.types.product_service",
+    "google.cloud.retail_v2beta.types.project",
+    "google.cloud.retail_v2beta.types.project_service",
+    "google.cloud.retail_v2beta.types.promotion",
+    "google.cloud.retail_v2beta.types.purge_config",
+    "google.cloud.retail_v2beta.types.safety",
+    "google.cloud.retail_v2beta.types.search_service",
+    "google.cloud.retail_v2beta.types.serving_config",
+    "google.cloud.retail_v2beta.types.serving_config_service",
+    "google.cloud.retail_v2beta.types.user_event",
+    "google.cloud.retail_v2beta.types.user_event_service",
+}
+
+
 from .services.analytics_service import (
     AnalyticsServiceAsyncClient,
     AnalyticsServiceClient,

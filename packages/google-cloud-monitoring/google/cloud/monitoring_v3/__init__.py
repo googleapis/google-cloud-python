@@ -23,6 +23,43 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.monitoring_v3.services.alert_policy_service",
+    "google.cloud.monitoring_v3.services.group_service",
+    "google.cloud.monitoring_v3.services.metric_service",
+    "google.cloud.monitoring_v3.services.notification_channel_service",
+    "google.cloud.monitoring_v3.services.query_service",
+    "google.cloud.monitoring_v3.services.service_monitoring_service",
+    "google.cloud.monitoring_v3.services.snooze_service",
+    "google.cloud.monitoring_v3.services.uptime_check_service",
+    "google.cloud.monitoring_v3.types.alert",
+    "google.cloud.monitoring_v3.types.alert_service",
+    "google.cloud.monitoring_v3.types.common",
+    "google.cloud.monitoring_v3.types.dropped_labels",
+    "google.cloud.monitoring_v3.types.group",
+    "google.cloud.monitoring_v3.types.group_service",
+    "google.cloud.monitoring_v3.types.metric",
+    "google.cloud.monitoring_v3.types.metric_service",
+    "google.cloud.monitoring_v3.types.mutation_record",
+    "google.cloud.monitoring_v3.types.notification",
+    "google.cloud.monitoring_v3.types.notification_service",
+    "google.cloud.monitoring_v3.types.query_service",
+    "google.cloud.monitoring_v3.types.service",
+    "google.cloud.monitoring_v3.types.service_service",
+    "google.cloud.monitoring_v3.types.snooze",
+    "google.cloud.monitoring_v3.types.snooze_service",
+    "google.cloud.monitoring_v3.types.span_context",
+    "google.cloud.monitoring_v3.types.uptime",
+    "google.cloud.monitoring_v3.types.uptime_service",
+}
+
+
 from .services.alert_policy_service import (
     AlertPolicyServiceAsyncClient,
     AlertPolicyServiceClient,

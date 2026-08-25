@@ -23,6 +23,19 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.networkconnectivity_v1alpha1.services.hub_service",
+    "google.cloud.networkconnectivity_v1alpha1.types.common",
+    "google.cloud.networkconnectivity_v1alpha1.types.hub",
+}
+
+
 from .services.hub_service import HubServiceAsyncClient, HubServiceClient
 from .types.common import OperationMetadata
 from .types.hub import (

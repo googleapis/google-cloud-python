@@ -762,7 +762,7 @@ class RichMediaAdsCompanyServiceClient(metaclass=RichMediaAdsCompanyServiceClien
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> rich_media_ads_company_messages.RichMediaAdsCompany:
-        r"""API to retrieve a ``RichMediaAdsCompany`` object.
+        r"""Retrieves a ``RichMediaAdsCompany`` object.
 
         .. code-block:: python
 
@@ -878,7 +878,7 @@ class RichMediaAdsCompanyServiceClient(metaclass=RichMediaAdsCompanyServiceClien
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListRichMediaAdsCompaniesPager:
-        r"""API to retrieve a list of ``RichMediaAdsCompany`` objects.
+        r"""Lists ``RichMediaAdsCompany`` objects.
 
         .. code-block:: python
 
@@ -1137,8 +1137,6 @@ class RichMediaAdsCompanyServiceClient(metaclass=RichMediaAdsCompanyServiceClien
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("RichMediaAdsCompanyServiceClient",)

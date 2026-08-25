@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/proto-plus/#history
 
+## [1.28.4](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.28.3...proto-plus-v1.28.4) (2026-08-21)
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
+## [1.28.3](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.28.2...proto-plus-v1.28.3) (2026-08-06)
+
+
+### Bug Fixes
+
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+* **proto-plus:** add context to TypeErrors during message manipulation ([#17682](https://github.com/googleapis/google-cloud-python/issues/17682)) ([08f21a6](https://github.com/googleapis/google-cloud-python/commit/08f21a6bfc357d249a6c85cd9d4282154fa9aba2))
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
+## [1.28.2](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.28.1...proto-plus-v1.28.2) (2026-07-22)
+
+
+### Bug Fixes
+
+* **proto-plus:** make Marshal thread-safe and handle race conditions ([#17774](https://github.com/googleapis/google-cloud-python/issues/17774)) ([0719f1e](https://github.com/googleapis/google-cloud-python/commit/0719f1ec1d4146dbfc96d24c95b7ccafd31ab447)), closes [#15100](https://github.com/googleapis/google-cloud-python/issues/15100)
+
 ## [1.28.1](https://github.com/googleapis/google-cloud-python/compare/proto-plus-v1.28.0...proto-plus-v1.28.1) (2026-07-07)
 
 

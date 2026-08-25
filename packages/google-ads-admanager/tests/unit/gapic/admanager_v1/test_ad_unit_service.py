@@ -916,7 +916,14 @@ def test_ad_unit_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -963,7 +970,14 @@ def test_ad_unit_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -3369,6 +3383,7 @@ def test_get_ad_unit_rest_call_success(request_type):
             smart_size_mode=ad_unit_enums.SmartSizeModeEnum.SmartSizeMode.NONE,
             applied_adsense_enabled=True,
             effective_adsense_enabled=True,
+            refresh_rate_type=ad_unit_enums.RefreshRateTypeEnum.RefreshRateType.DISABLED,
         )
 
         # Wrap the value into a proper Response obj
@@ -3413,6 +3428,10 @@ def test_get_ad_unit_rest_call_success(request_type):
     )
     assert response.applied_adsense_enabled is True
     assert response.effective_adsense_enabled is True
+    assert (
+        response.refresh_rate_type
+        == ad_unit_enums.RefreshRateTypeEnum.RefreshRateType.DISABLED
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -3841,6 +3860,7 @@ def test_create_ad_unit_rest_call_success(request_type):
         "smart_size_mode": 1,
         "applied_adsense_enabled": True,
         "effective_adsense_enabled": True,
+        "refresh_rate_type": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -3932,6 +3952,7 @@ def test_create_ad_unit_rest_call_success(request_type):
             smart_size_mode=ad_unit_enums.SmartSizeModeEnum.SmartSizeMode.NONE,
             applied_adsense_enabled=True,
             effective_adsense_enabled=True,
+            refresh_rate_type=ad_unit_enums.RefreshRateTypeEnum.RefreshRateType.DISABLED,
         )
 
         # Wrap the value into a proper Response obj
@@ -3976,6 +3997,10 @@ def test_create_ad_unit_rest_call_success(request_type):
     )
     assert response.applied_adsense_enabled is True
     assert response.effective_adsense_enabled is True
+    assert (
+        response.refresh_rate_type
+        == ad_unit_enums.RefreshRateTypeEnum.RefreshRateType.DISABLED
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -4129,6 +4154,7 @@ def test_update_ad_unit_rest_call_success(request_type):
         "smart_size_mode": 1,
         "applied_adsense_enabled": True,
         "effective_adsense_enabled": True,
+        "refresh_rate_type": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4220,6 +4246,7 @@ def test_update_ad_unit_rest_call_success(request_type):
             smart_size_mode=ad_unit_enums.SmartSizeModeEnum.SmartSizeMode.NONE,
             applied_adsense_enabled=True,
             effective_adsense_enabled=True,
+            refresh_rate_type=ad_unit_enums.RefreshRateTypeEnum.RefreshRateType.DISABLED,
         )
 
         # Wrap the value into a proper Response obj
@@ -4264,6 +4291,10 @@ def test_update_ad_unit_rest_call_success(request_type):
     )
     assert response.applied_adsense_enabled is True
     assert response.effective_adsense_enabled is True
+    assert (
+        response.refresh_rate_type
+        == ad_unit_enums.RefreshRateTypeEnum.RefreshRateType.DISABLED
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

@@ -69,9 +69,11 @@ from google.ads.admanager_v1.services.report_service import (
 )
 from google.ads.admanager_v1.types import (
     report_definition,
+    report_delivery,
     report_messages,
     report_service,
     report_value,
+    report_visibility_enum,
 )
 
 CRED_INFO_JSON = {
@@ -917,7 +919,14 @@ def test_report_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -964,7 +973,14 @@ def test_report_service_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -2436,7 +2452,7 @@ def test_get_report_rest_call_success(request_type):
         return_value = report_messages.Report(
             name="name_value",
             report_id=968,
-            visibility=report_messages.Report.Visibility.DRAFT,
+            visibility=report_visibility_enum.ReportVisibilityEnum.ReportVisibility.VISIBLE,
             display_name="display_name_value",
             locale="locale_value",
         )
@@ -2457,7 +2473,10 @@ def test_get_report_rest_call_success(request_type):
     assert isinstance(response, report_messages.Report)
     assert response.name == "name_value"
     assert response.report_id == 968
-    assert response.visibility == report_messages.Report.Visibility.DRAFT
+    assert (
+        response.visibility
+        == report_visibility_enum.ReportVisibilityEnum.ReportVisibility.VISIBLE
+    )
     assert response.display_name == "display_name_value"
     assert response.locale == "locale_value"
 
@@ -2701,7 +2720,7 @@ def test_create_report_rest_call_success(request_type):
     request_init["report"] = {
         "name": "name_value",
         "report_id": 968,
-        "visibility": 1,
+        "visibility": 2,
         "report_definition": {
             "dimensions": [575],
             "metrics": [223],
@@ -2861,7 +2880,7 @@ def test_create_report_rest_call_success(request_type):
         return_value = report_messages.Report(
             name="name_value",
             report_id=968,
-            visibility=report_messages.Report.Visibility.DRAFT,
+            visibility=report_visibility_enum.ReportVisibilityEnum.ReportVisibility.VISIBLE,
             display_name="display_name_value",
             locale="locale_value",
         )
@@ -2882,7 +2901,10 @@ def test_create_report_rest_call_success(request_type):
     assert isinstance(response, report_messages.Report)
     assert response.name == "name_value"
     assert response.report_id == 968
-    assert response.visibility == report_messages.Report.Visibility.DRAFT
+    assert (
+        response.visibility
+        == report_visibility_enum.ReportVisibilityEnum.ReportVisibility.VISIBLE
+    )
     assert response.display_name == "display_name_value"
     assert response.locale == "locale_value"
 
@@ -2994,7 +3016,7 @@ def test_update_report_rest_call_success(request_type):
     request_init["report"] = {
         "name": "networks/sample1/reports/sample2",
         "report_id": 968,
-        "visibility": 1,
+        "visibility": 2,
         "report_definition": {
             "dimensions": [575],
             "metrics": [223],
@@ -3154,7 +3176,7 @@ def test_update_report_rest_call_success(request_type):
         return_value = report_messages.Report(
             name="name_value",
             report_id=968,
-            visibility=report_messages.Report.Visibility.DRAFT,
+            visibility=report_visibility_enum.ReportVisibilityEnum.ReportVisibility.VISIBLE,
             display_name="display_name_value",
             locale="locale_value",
         )
@@ -3175,7 +3197,10 @@ def test_update_report_rest_call_success(request_type):
     assert isinstance(response, report_messages.Report)
     assert response.name == "name_value"
     assert response.report_id == 968
-    assert response.visibility == report_messages.Report.Visibility.DRAFT
+    assert (
+        response.visibility
+        == report_visibility_enum.ReportVisibilityEnum.ReportVisibility.VISIBLE
+    )
     assert response.display_name == "display_name_value"
     assert response.locale == "locale_value"
 

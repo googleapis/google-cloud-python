@@ -161,8 +161,9 @@ class TestMetrics(SystemTestRunner):
         error_injector.clear()
 
     @pytest.fixture(scope="session")
-    def client(self, error_injector):
+    def client(self, error_injector, handler):
         with self._make_client() as client:
+            client._metrics.handlers = [handler]
             metrics_channel = client.transport._grpc_channel._channel._channel
             client.transport._grpc_channel._channel._channel = intercept_channel(
                 metrics_channel, error_injector
@@ -176,19 +177,15 @@ class TestMetrics(SystemTestRunner):
         builder.delete_rows()
 
     @pytest.fixture(scope="session")
-    def table(self, client, table_id, instance_id, handler):
+    def table(self, client, table_id, instance_id):
         with client.get_table(instance_id, table_id) as table:
-            table._metrics.add_handler(handler)
             yield table
 
     @pytest.fixture(scope="session")
-    def authorized_view(
-        self, client, table_id, instance_id, authorized_view_id, handler
-    ):
+    def authorized_view(self, client, table_id, instance_id, authorized_view_id):
         with client.get_authorized_view(
             instance_id, table_id, authorized_view_id
         ) as table:
-            table._metrics.add_handler(handler)
             yield table
 
     def test_read_rows(self, table, temp_rows, handler, cluster_config):
@@ -206,6 +203,9 @@ class TestMetrics(SystemTestRunner):
         assert operation.op_type.value == "ReadRows"
         assert len(operation.completed_attempts) == 1
         assert operation.completed_attempts[0] == handler.completed_attempts[0]
+        assert operation.project_id == table.client.project
+        assert operation.instance_id == table.instance_id
+        assert operation.table_id == table.table_id
         assert operation.cluster_id == next(iter(cluster_config.keys()))
         assert (
             operation.zone

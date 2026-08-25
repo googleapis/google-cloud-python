@@ -38,7 +38,7 @@ classifiers = [
   "Topic :: Software Development :: Code Generators",
   "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-dependencies = ["protobuf >= 4.25.8, < 8.0.0"]
+dependencies = ["protobuf >= 6.33.5, < 8.0.0"]
 dynamic = ["version"]
 
 [project.urls]
@@ -47,7 +47,7 @@ Repository = "https://github.com/googleapis/google-cloud-python"
 Homepage = "https://github.com/googleapis/google-cloud-python/tree/main/packages/proto-plus"
 
 [project.optional-dependencies]
-testing = ["google-api-core >= 1.31.5"]
+testing = ["google-api-core >= 2.25.0"]
 
 [tool.setuptools.dynamic]
 version = { attr = "proto.version.__version__" }

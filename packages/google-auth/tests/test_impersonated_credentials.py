@@ -759,6 +759,10 @@ class TestImpersonatedCredentials(object):
         )
         assert url == expected_url
 
+    def test_build_regional_access_boundary_lookup_url_with_subject(self):
+        credentials = self.make_credentials(subject="user@example.com")
+        assert credentials._build_regional_access_boundary_lookup_url() is None
+
     def test_with_scopes_provide_default_scopes(self):
         credentials = self.make_credentials()
         credentials._target_scopes = []

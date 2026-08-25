@@ -33,7 +33,7 @@ dependencies = [
     # Note: google-api-core and google-auth are also included via transitive
     # dependency on google-cloud-bigquery, but this library also uses them
     # directly.
-    "google-api-core >= 2.15.0, <3.0.0",
+    "google-api-core >= 2.25.0, <3.0.0",
     "google-auth >=2.14.1",
     "google-auth-oauthlib >=0.7.0",
     # Please also update the minimum version in pandas_gbq/features.py to
@@ -43,7 +43,7 @@ dependencies = [
 ]
 extras = {
     "bqstorage": [
-        "google-cloud-bigquery-storage >=2.16.2, <3.0.0",
+        "google-cloud-bigquery-storage >=2.29.0, <3.0.0",
     ],
     "tqdm": ["tqdm>=4.23.0"],
     "geopandas": ["geopandas>=0.14.4", "Shapely>=1.8.5"],

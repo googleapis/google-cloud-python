@@ -23,6 +23,27 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.devicesandservices.health_v4.services.data_points_service",
+    "google.devicesandservices.health_v4.services.data_subscription_service",
+    "google.devicesandservices.health_v4.services.health_profile_service",
+    "google.devicesandservices.health_v4.types.data_coordinates",
+    "google.devicesandservices.health_v4.types.data_model",
+    "google.devicesandservices.health_v4.types.data_points",
+    "google.devicesandservices.health_v4.types.data_source",
+    "google.devicesandservices.health_v4.types.data_subscription_service",
+    "google.devicesandservices.health_v4.types.health_profile",
+    "google.devicesandservices.health_v4.types.medical_device_info",
+    "google.devicesandservices.health_v4.types.webhook_notification_cloud_log",
+}
+
+
 from .services.data_points_service import (
     DataPointsServiceAsyncClient,
     DataPointsServiceClient,
@@ -89,11 +110,15 @@ from .types.data_model import (
     HydrationLogRollupValue,
     IrregularRhythmNotification,
     MealType,
+    MenstrualPeriod,
     MetricsSummary,
+    Moods,
     Nutrient,
     NutrientQuantity,
     NutritionLog,
     NutritionLogRollupValue,
+    OvulationTest,
+    OvulationTestResult,
     OxygenSaturation,
     RespiratoryRateSleepSummary,
     RestingHeartRatePersonalRangeRollupValue,
@@ -106,6 +131,7 @@ from .types.data_model import (
     StepsRollupValue,
     SwimLengthsData,
     SwimLengthsDataRollupValue,
+    Symptoms,
     TimeInHeartRateZone,
     TimeInHeartRateZoneRollupValue,
     TotalCaloriesRollupValue,
@@ -361,13 +387,17 @@ __all__ = (
     "ListSubscriptionsResponse",
     "MealType",
     "MedicalDeviceInfo",
+    "MenstrualPeriod",
     "MetricsSummary",
+    "Moods",
     "Nutrient",
     "NutrientQuantity",
     "NutritionLog",
     "NutritionLogRollupValue",
     "ObservationSampleTime",
     "ObservationTimeInterval",
+    "OvulationTest",
+    "OvulationTestResult",
     "OxygenSaturation",
     "PairedDevice",
     "Profile",
@@ -393,6 +423,7 @@ __all__ = (
     "Subscription",
     "SwimLengthsData",
     "SwimLengthsDataRollupValue",
+    "Symptoms",
     "TimeInHeartRateZone",
     "TimeInHeartRateZoneRollupValue",
     "TotalCaloriesRollupValue",

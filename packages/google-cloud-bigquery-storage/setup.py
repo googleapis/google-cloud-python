@@ -44,7 +44,7 @@ else:
     release_status = "Development Status :: 5 - Production/Stable"
 
 dependencies = [
-    "google-api-core[grpc] >= 2.24.2, <3.0.0",
+    "google-api-core[grpc] >= 2.25.0, <3.0.0",
     # Exclude incompatible versions of `google-auth`
     # See https://github.com/googleapis/google-cloud-python/issues/12364
     "google-auth >= 2.14.1, <3.0.0,!=2.24.0,!=2.25.0",
@@ -54,9 +54,13 @@ dependencies = [
     "protobuf >= 6.33.5, < 8.0.0",
 ]
 extras = {
-    "pandas": ["pandas>=1.1.3"],
-    "fastavro": ["fastavro>=1.1.0"],
-    "pyarrow": ["pyarrow>=3.0.0"],
+    "pandas": [
+        "pandas >= 1.1.3, < 3.0.0",
+        "pyarrow >= 3.0.0",
+        "pandas-gbq >= 0.35.1, < 2.0.0",
+    ],
+    "fastavro": ["fastavro >= 1.1.0, < 2.0.0"],
+    "pyarrow": ["pyarrow >= 3.0.0"],
 }
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-storage"
 

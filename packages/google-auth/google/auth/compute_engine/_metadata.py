@@ -38,7 +38,9 @@ from google.auth.compute_engine import _mtls
 
 _LOGGER = logging.getLogger(__name__)
 
-_SERVICE_ACCOUNT_EMAIL_PATTERN = re.compile(r"^[^@]+@[^@]+\.[^@]+$")
+_SERVICE_ACCOUNT_EMAIL_PATTERN = re.compile(
+    r"^[^@]+@[^@]+\.gserviceaccount\.com$", re.IGNORECASE
+)
 
 _GCE_DEFAULT_MDS_IP = "169.254.169.254"
 _GCE_DEFAULT_HOST = "metadata.google.internal"

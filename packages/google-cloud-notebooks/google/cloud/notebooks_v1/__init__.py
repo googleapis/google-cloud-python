@@ -23,6 +23,28 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.notebooks_v1.services.managed_notebook_service",
+    "google.cloud.notebooks_v1.services.notebook_service",
+    "google.cloud.notebooks_v1.types.diagnostic_config",
+    "google.cloud.notebooks_v1.types.environment",
+    "google.cloud.notebooks_v1.types.event",
+    "google.cloud.notebooks_v1.types.execution",
+    "google.cloud.notebooks_v1.types.instance",
+    "google.cloud.notebooks_v1.types.instance_config",
+    "google.cloud.notebooks_v1.types.managed_service",
+    "google.cloud.notebooks_v1.types.runtime",
+    "google.cloud.notebooks_v1.types.schedule",
+    "google.cloud.notebooks_v1.types.service",
+}
+
+
 from .services.managed_notebook_service import (
     ManagedNotebookServiceAsyncClient,
     ManagedNotebookServiceClient,

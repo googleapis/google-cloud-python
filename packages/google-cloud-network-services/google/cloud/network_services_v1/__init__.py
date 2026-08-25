@@ -23,6 +23,33 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.network_services_v1.services.dep_service",
+    "google.cloud.network_services_v1.services.network_services",
+    "google.cloud.network_services_v1.types.agent_gateway",
+    "google.cloud.network_services_v1.types.common",
+    "google.cloud.network_services_v1.types.dep",
+    "google.cloud.network_services_v1.types.endpoint_policy",
+    "google.cloud.network_services_v1.types.extensibility",
+    "google.cloud.network_services_v1.types.gateway",
+    "google.cloud.network_services_v1.types.grpc_route",
+    "google.cloud.network_services_v1.types.http_route",
+    "google.cloud.network_services_v1.types.mesh",
+    "google.cloud.network_services_v1.types.network_services",
+    "google.cloud.network_services_v1.types.route_view",
+    "google.cloud.network_services_v1.types.service_binding",
+    "google.cloud.network_services_v1.types.service_lb_policy",
+    "google.cloud.network_services_v1.types.tcp_route",
+    "google.cloud.network_services_v1.types.tls_route",
+}
+
+
 from .services.dep_service import DepServiceAsyncClient, DepServiceClient
 from .services.network_services import NetworkServicesAsyncClient, NetworkServicesClient
 from .types.agent_gateway import (

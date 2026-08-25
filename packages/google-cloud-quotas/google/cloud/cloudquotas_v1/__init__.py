@@ -23,7 +23,26 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.cloudquotas_v1.services.cloud_quotas",
+    "google.cloud.cloudquotas_v1.services.quota_adjuster_settings_manager",
+    "google.cloud.cloudquotas_v1.types.cloudquotas",
+    "google.cloud.cloudquotas_v1.types.quota_adjuster_settings",
+    "google.cloud.cloudquotas_v1.types.resources",
+}
+
+
 from .services.cloud_quotas import CloudQuotasAsyncClient, CloudQuotasClient
+from .services.quota_adjuster_settings_manager import (
+    QuotaAdjusterSettingsManagerAsyncClient,
+    QuotaAdjusterSettingsManagerClient,
+)
 from .types.cloudquotas import (
     CreateQuotaPreferenceRequest,
     GetQuotaInfoRequest,
@@ -33,6 +52,11 @@ from .types.cloudquotas import (
     ListQuotaPreferencesRequest,
     ListQuotaPreferencesResponse,
     UpdateQuotaPreferenceRequest,
+)
+from .types.quota_adjuster_settings import (
+    GetQuotaAdjusterSettingsRequest,
+    QuotaAdjusterSettings,
+    UpdateQuotaAdjusterSettingsRequest,
 )
 from .types.resources import (
     DimensionsInfo,
@@ -130,15 +154,19 @@ else:  # pragma: NO COVER
 
 __all__ = (
     "CloudQuotasAsyncClient",
+    "QuotaAdjusterSettingsManagerAsyncClient",
     "CloudQuotasClient",
     "CreateQuotaPreferenceRequest",
     "DimensionsInfo",
+    "GetQuotaAdjusterSettingsRequest",
     "GetQuotaInfoRequest",
     "GetQuotaPreferenceRequest",
     "ListQuotaInfosRequest",
     "ListQuotaInfosResponse",
     "ListQuotaPreferencesRequest",
     "ListQuotaPreferencesResponse",
+    "QuotaAdjusterSettings",
+    "QuotaAdjusterSettingsManagerClient",
     "QuotaConfig",
     "QuotaDetails",
     "QuotaIncreaseEligibility",
@@ -146,5 +174,6 @@ __all__ = (
     "QuotaPreference",
     "QuotaSafetyCheck",
     "RolloutInfo",
+    "UpdateQuotaAdjusterSettingsRequest",
     "UpdateQuotaPreferenceRequest",
 )

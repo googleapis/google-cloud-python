@@ -1,39 +1,18 @@
+############
 Contributing
-============
+############
 
-#. **Please sign one of the contributor license agreements below.**
-#. Fork the repo, develop and test your code changes, add docs.
-#. Make sure that your commit messages clearly describe the changes.
-#. Send a pull request.
+This package is part of the ``google-cloud-python`` monorepo.
 
-Here are some guidelines for hacking on ``google-auth-library-python``.
+Please refer to the centralized `Contributing Guide`_ at the repository root for general guidelines on how to contribute, set up your development environment, and submit pull requests.
 
-Making changes
---------------
+.. _Contributing Guide: https://github.com/googleapis/google-cloud-python/blob/main/CONTRIBUTING.rst
 
-A few notes on making changes to ``google-auth-library-python``.
+Package-specific test sessions are defined in this directory's ``noxfile.py``. Dependencies and supported Python versions are defined in ``setup.py`` or ``pyproject.toml``.
 
-- If you've added a new feature or modified an existing feature, be sure to
-  add or update any applicable documentation in docstrings and in the
-  documentation (in ``docs/``). You can re-generate the reference documentation
-  using ``nox -s docs``.
-
-- The change must work fully on the following CPython versions:
-  3.10, 3.11, 3.12, 3.13 and 3.14 across macOS, Linux, and Windows.
-
-- The codebase *must* have 100% test statement coverage after each commit.
-  You can test coverage via ``nox -e cover``.
-
-Testing changes
----------------
-
-To test your changes, run unit tests with ``nox``::
-
-    $ nox -s unit
-
-
+*********************
 Running system tests
---------------------
+*********************
 
 You can run the system tests with ``nox``::
 
@@ -148,47 +127,3 @@ grpc Tests
 
 These tests use the Pub/Sub API. Grant the service account specified by `GOOGLE_APPLICATION_CREDENTIALS`
 permissions to list topics. The service account should have at least `roles/pubsub.viewer`.
-
-Coding Style
-------------
-
-This library is PEP8 & Pylint compliant. Our Pylint config is defined at
-``pylintrc`` for package code and ``pylintrc.tests`` for test code. Use
-``nox`` to check for non-compliant code::
-
-   $ nox -s lint
-
-Documentation Coverage and Building HTML Documentation
-------------------------------------------------------
-
-If you fix a bug, and the bug requires an API or behavior modification, all
-documentation in this package which references that API or behavior must be
-changed to reflect the bug fix, ideally in the same commit that fixes the bug
-or adds the feature.
-
-To build and review docs use  ``nox``::
-
-   $ nox -s docs
-
-The HTML version of the docs will be built in ``docs/_build/html``
-
-Versioning
-----------
-
-This library follows `Semantic Versioning`_.
-
-.. _Semantic Versioning: http://semver.org/
-
-It is currently in major version zero (``0.y.z``), which means that anything
-may change at any time and the public API should not be considered
-stable.
-
-Contributor License Agreements
-------------------------------
-
-Before we can accept your pull requests you'll need to sign a Contributor License Agreement (CLA):
-
-- **If you are an individual writing original source code** and **you own the intellectual property**, then you'll need to sign an `individual CLA <https://developers.google.com/open-source/cla/individual>`__.
-- **If you work for a company that wants to allow you to contribute your work**, then you'll need to sign a `corporate CLA <https://developers.google.com/open-source/cla/corporate>`__.
-
-You can sign these electronically (just scroll to the bottom). After that, we'll be able to accept your pull requests.

@@ -23,6 +23,46 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.automl_v1beta1.services.auto_ml",
+    "google.cloud.automl_v1beta1.services.prediction_service",
+    "google.cloud.automl_v1beta1.types.annotation_payload",
+    "google.cloud.automl_v1beta1.types.annotation_spec",
+    "google.cloud.automl_v1beta1.types.classification",
+    "google.cloud.automl_v1beta1.types.column_spec",
+    "google.cloud.automl_v1beta1.types.data_items",
+    "google.cloud.automl_v1beta1.types.data_stats",
+    "google.cloud.automl_v1beta1.types.data_types",
+    "google.cloud.automl_v1beta1.types.dataset",
+    "google.cloud.automl_v1beta1.types.detection",
+    "google.cloud.automl_v1beta1.types.geometry",
+    "google.cloud.automl_v1beta1.types.image",
+    "google.cloud.automl_v1beta1.types.io",
+    "google.cloud.automl_v1beta1.types.model",
+    "google.cloud.automl_v1beta1.types.model_evaluation",
+    "google.cloud.automl_v1beta1.types.operations",
+    "google.cloud.automl_v1beta1.types.prediction_service",
+    "google.cloud.automl_v1beta1.types.ranges",
+    "google.cloud.automl_v1beta1.types.regression",
+    "google.cloud.automl_v1beta1.types.service",
+    "google.cloud.automl_v1beta1.types.table_spec",
+    "google.cloud.automl_v1beta1.types.tables",
+    "google.cloud.automl_v1beta1.types.temporal",
+    "google.cloud.automl_v1beta1.types.text",
+    "google.cloud.automl_v1beta1.types.text_extraction",
+    "google.cloud.automl_v1beta1.types.text_segment",
+    "google.cloud.automl_v1beta1.types.text_sentiment",
+    "google.cloud.automl_v1beta1.types.translation",
+    "google.cloud.automl_v1beta1.types.video",
+}
+
+
 from .services.auto_ml import AutoMlAsyncClient, AutoMlClient
 from .services.prediction_service import (
     PredictionServiceAsyncClient,

@@ -23,6 +23,18 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service",
+    "google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise",
+}
+
+
 from .services.recaptcha_enterprise_service import (
     RecaptchaEnterpriseServiceAsyncClient,
     RecaptchaEnterpriseServiceClient,
@@ -40,6 +52,11 @@ from .types.recaptchaenterprise import (
     AssessmentEnvironment,
     Bot,
     ChallengeMetrics,
+    ChallengeRule,
+    ChallengeRuleEvaluation,
+    ChallengeRuleGroup,
+    ChallengeType,
+    ClientSettings,
     CreateAssessmentRequest,
     CreateFirewallPolicyRequest,
     CreateKeyRequest,
@@ -56,6 +73,7 @@ from .types.recaptchaenterprise import (
     GetFirewallPolicyRequest,
     GetKeyRequest,
     GetMetricsRequest,
+    GetPolicyRequest,
     IOSKeySettings,
     IpOverrideData,
     Key,
@@ -73,7 +91,11 @@ from .types.recaptchaenterprise import (
     MigrateKeyRequest,
     PhoneAuthenticationEvent,
     PhoneFraudAssessment,
+    Policy,
+    PolicyEvaluation,
     PrivatePasswordLeakVerification,
+    ProtectedEndpoint,
+    ProtectedEndpointGroup,
     RelatedAccountGroup,
     RelatedAccountGroupMembership,
     RemoveIpOverrideRequest,
@@ -92,8 +114,10 @@ from .types.recaptchaenterprise import (
     TokenProperties,
     TransactionData,
     TransactionEvent,
+    UniversalKeySettings,
     UpdateFirewallPolicyRequest,
     UpdateKeyRequest,
+    UpdatePolicyRequest,
     UserId,
     UserInfo,
     WafSettings,
@@ -197,6 +221,11 @@ __all__ = (
     "AssessmentEnvironment",
     "Bot",
     "ChallengeMetrics",
+    "ChallengeRule",
+    "ChallengeRuleEvaluation",
+    "ChallengeRuleGroup",
+    "ChallengeType",
+    "ClientSettings",
     "CreateAssessmentRequest",
     "CreateFirewallPolicyRequest",
     "CreateKeyRequest",
@@ -213,6 +242,7 @@ __all__ = (
     "GetFirewallPolicyRequest",
     "GetKeyRequest",
     "GetMetricsRequest",
+    "GetPolicyRequest",
     "IOSKeySettings",
     "IpOverrideData",
     "Key",
@@ -230,7 +260,11 @@ __all__ = (
     "MigrateKeyRequest",
     "PhoneAuthenticationEvent",
     "PhoneFraudAssessment",
+    "Policy",
+    "PolicyEvaluation",
     "PrivatePasswordLeakVerification",
+    "ProtectedEndpoint",
+    "ProtectedEndpointGroup",
     "RecaptchaEnterpriseServiceClient",
     "RelatedAccountGroup",
     "RelatedAccountGroupMembership",
@@ -250,8 +284,10 @@ __all__ = (
     "TokenProperties",
     "TransactionData",
     "TransactionEvent",
+    "UniversalKeySettings",
     "UpdateFirewallPolicyRequest",
     "UpdateKeyRequest",
+    "UpdatePolicyRequest",
     "UserId",
     "UserInfo",
     "WafSettings",

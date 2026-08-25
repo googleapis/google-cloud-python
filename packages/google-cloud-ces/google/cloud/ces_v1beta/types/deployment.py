@@ -27,6 +27,8 @@ __protobuf__ = proto.module(
     manifest={
         "ExperimentConfig",
         "Deployment",
+        "WhatsAppCredentials",
+        "InstagramCredentials",
     },
 )
 
@@ -46,17 +48,14 @@ class ExperimentConfig(proto.Message):
             STATE_UNSPECIFIED (0):
                 Unspecified state.
             PENDING (1):
-                Pending state. Experiment is pending and not
-                valid.
+                Deprecated: This state is no longer used.
             RUNNING (2):
                 Running state. Experiment is running and
                 valid.
             DONE (3):
-                Done state. Experiment is done and no longer
-                valid.
+                Deprecated: This state is no longer used.
             EXPIRED (4):
-                Expired state. Experiment is expired and no
-                longer valid.
+                Deprecated: This state is no longer used.
         """
 
         STATE_UNSPECIFIED = 0
@@ -159,6 +158,14 @@ class Deployment(proto.Message):
         experiment_config (google.cloud.ces_v1beta.types.ExperimentConfig):
             Optional. Experiment configuration for the
             deployment.
+        whatsapp_credentials (google.cloud.ces_v1beta.types.WhatsAppCredentials):
+            Optional. Input only. Ephemeral WhatsApp
+            credentials required when configuring a WhatsApp
+            channel profile.
+        instagram_credentials (google.cloud.ces_v1beta.types.InstagramCredentials):
+            Optional. Input only. Ephemeral Instagram
+            credentials required when configuring a
+            Instagram channel profile.
     """
 
     name: str = proto.Field(
@@ -196,6 +203,87 @@ class Deployment(proto.Message):
         proto.MESSAGE,
         number=9,
         message="ExperimentConfig",
+    )
+    whatsapp_credentials: "WhatsAppCredentials" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="WhatsAppCredentials",
+    )
+    instagram_credentials: "InstagramCredentials" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="InstagramCredentials",
+    )
+
+
+class WhatsAppCredentials(proto.Message):
+    r"""Ephemeral Meta credentials for WhatsApp native integration.
+
+    Attributes:
+        auth_code (str):
+            Required. The Meta auth code provided by the
+            embedded signup flow.
+        pin (str):
+            Required. The 6-digit PIN created by the user
+            for two-step verification.
+        phone_number (str):
+            Required. The phone number to register with
+            WhatsApp.
+        business_account_id (str):
+            Required. The Business Account ID to use for
+            the phone number.
+        waba_id (str):
+            Required. The WhatsApp Business Account ID.
+        conversation_profile_id (str):
+            Required. The Conversation Profile ID to use
+            for the deployment.
+    """
+
+    auth_code: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    pin: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    phone_number: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    business_account_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    waba_id: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    conversation_profile_id: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+
+
+class InstagramCredentials(proto.Message):
+    r"""Ephemeral Meta credentials for Instagram native integration.
+
+    Attributes:
+        auth_code (str):
+            Required. The Meta auth code provided by the
+            embedded signup flow.
+        conversation_profile_id (str):
+            Required. The Conversation Profile ID to use
+            for the deployment.
+    """
+
+    auth_code: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    conversation_profile_id: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

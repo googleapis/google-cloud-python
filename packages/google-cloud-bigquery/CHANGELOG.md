@@ -4,6 +4,49 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.44.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.43.0...google-cloud-bigquery-v3.44.0) (2026-08-21)
+
+
+### Features
+
+* add PendingDeprecationWarning for to_dataframe and to_arrow conversion methods ([#18021](https://github.com/googleapis/google-cloud-python/issues/18021)) ([6bebf30](https://github.com/googleapis/google-cloud-python/commit/6bebf30fe1b9a5d7b468e390280ab3b55149e82a))
+* **bigquery:** add PendingDeprecationWarning for from_dataframe methods ([#18048](https://github.com/googleapis/google-cloud-python/issues/18048)) ([b84b754](https://github.com/googleapis/google-cloud-python/commit/b84b75440e752ef68e467dbc79a48b54622bbb4f))
+* **bigquery:** support queryResultsFormat and compressionCodec in query_and_wait ([#18027](https://github.com/googleapis/google-cloud-python/issues/18027)) ([d172408](https://github.com/googleapis/google-cloud-python/commit/d1724084886cdb649efcefba95f576c5a4c77278))
+* check python and dependency versions in bigquery and ndb ([#18075](https://github.com/googleapis/google-cloud-python/issues/18075)) ([62ff6f3](https://github.com/googleapis/google-cloud-python/commit/62ff6f37f04de1b8a88876bfc1ac379573e42b36))
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
+## [3.43.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.42.3...google-cloud-bigquery-v3.43.0) (2026-08-06)
+
+
+### Features
+
+* add pandas-gbq capability helper ([#17957](https://github.com/googleapis/google-cloud-python/issues/17957)) ([2207ca6](https://github.com/googleapis/google-cloud-python/commit/2207ca66fe9b5d5aff201dd922f37df06ab4b664))
+
+
+### Bug Fixes
+
+* **bigquery:** Fix bigquery socket leak ([#17953](https://github.com/googleapis/google-cloud-python/issues/17953)) ([8c26b38](https://github.com/googleapis/google-cloud-python/commit/8c26b38a7ab4b5c543f479705c4a231fffffcfcc))
+* remove stray debug print in RangeQueryParameter constructor ([#17973](https://github.com/googleapis/google-cloud-python/issues/17973)) ([fe7bfd0](https://github.com/googleapis/google-cloud-python/commit/fe7bfd03bedf340ed41f3a2730bf77657075833e))
+
+
+### Documentation
+
+* add connector libraries overview table to package README ([#17939](https://github.com/googleapis/google-cloud-python/issues/17939)) ([71bc622](https://github.com/googleapis/google-cloud-python/commit/71bc6223ee0f344b2bc91ddcab82ab0b1b8fc19b))
+* correct return type in CellDataParser.time_to_py docstring ([#17972](https://github.com/googleapis/google-cloud-python/issues/17972)) ([bd1e224](https://github.com/googleapis/google-cloud-python/commit/bd1e2246d2a2a1a0f1973a568e8eb87a1427f9d5))
+
+## [3.42.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.42.2...google-cloud-bigquery-v3.42.3) (2026-07-30)
+
+
+### Bug Fixes
+
+* **bigquery:** dbapi socket leak ([#17921](https://github.com/googleapis/google-cloud-python/issues/17921)) ([d328e3b](https://github.com/googleapis/google-cloud-python/commit/d328e3b5b3d4093421edacc31f306d45a078e186))
+* bump grpcio to 1.59.0; require Python 3.10+ ([#17351](https://github.com/googleapis/google-cloud-python/issues/17351)) ([a53487a](https://github.com/googleapis/google-cloud-python/commit/a53487a009c21912ea6c99fe3a5e0e52a26b31ef))
+* require Protobuf 6.33.5+ ([#17743](https://github.com/googleapis/google-cloud-python/issues/17743)) ([d267342](https://github.com/googleapis/google-cloud-python/commit/d26734293c23f06ccce048f7d9b0fa365e813410))
+
 ## [3.42.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.42.1...google-cloud-bigquery-v3.42.2) (2026-07-07)
 
 

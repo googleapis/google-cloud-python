@@ -204,12 +204,16 @@ class TestBigQuery(unittest.TestCase):
             tag_key = key_values.pop()
 
             # Delete tag values first
-            [
-                tag_values_client.delete_tag_value(name=tag_value.name).result()
-                for tag_value in key_values
-            ]
+            for tag_value in key_values:
+                try:
+                    tag_values_client.delete_tag_value(name=tag_value.name).result()
+                except NotFound:
+                    pass
 
-            tag_keys_client.delete_tag_key(name=tag_key.name).result()
+            try:
+                tag_keys_client.delete_tag_key(name=tag_key.name).result()
+            except NotFound:
+                pass
 
     def test_get_service_account_email(self):
         client = Config.CLIENT
@@ -2182,38 +2186,100 @@ class TestBigQuery(unittest.TestCase):
 
     def test_dbapi_connection_does_not_leak_sockets(self):
         pytest.importorskip("google.cloud.bigquery_storage")
-        current_process = psutil.Process()
-        conn_start = current_process.net_connections()
-        conn_count_start = len(conn_start)
 
-        with helpers.patch_tracked_requests():
-            # Provide no explicit clients, so that the connection will create and own them.
-            connection = dbapi.connect()
-            cursor = connection.cursor()
+        import google.api_core.grpc_helpers
+        import requests
 
-            cursor.execute(
+        # Track HTTP Sessions
+        created_sessions = set()
+        closed_sessions = set()
+
+        original_session_init = requests.Session.__init__
+
+        def patched_session_init(self, *args, **kwargs):
+            original_session_init(self, *args, **kwargs)
+            created_sessions.add(self)
+
+            original_close = self.close
+
+            def patched_close(*s_args, **s_kwargs):
+                original_close(*s_args, **s_kwargs)
+                closed_sessions.add(self)
+
+            self.close = patched_close
+
+        # Track gRPC Channels
+        created_channels = set()
+        closed_channels = set()
+
+        original_create_channel = google.api_core.grpc_helpers.create_channel
+
+        def patched_create_channel(*args, **kwargs):
+            channel = original_create_channel(*args, **kwargs)
+            created_channels.add(channel)
+
+            original_channel_close = channel.close
+
+            def patched_channel_close(*c_args, **c_kwargs):
+                original_channel_close(*c_args, **c_kwargs)
+                closed_channels.add(channel)
+
+            channel.close = patched_channel_close
+            return channel
+
+        # Apply patches
+        requests.Session.__init__ = patched_session_init
+        google.api_core.grpc_helpers.create_channel = patched_create_channel
+
+        try:
+            with helpers.patch_tracked_requests():
+                # Provide no explicit clients, so that the connection will create and own them.
+                connection = dbapi.connect()
+                cursor = connection.cursor()
+
+                cursor.execute(
+                    """
+                    SELECT id, `by`, timestamp
+                    FROM `bigquery-public-data.hacker_news.full`
+                    ORDER BY `id` ASC
+                    LIMIT 100000
                 """
-                SELECT id, `by`, timestamp
-                FROM `bigquery-public-data.hacker_news.full`
-                ORDER BY `id` ASC
-                LIMIT 100000
-            """
+                )
+                rows = cursor.fetchall()
+                self.assertEqual(len(rows), 100000)
+
+                connection.close()
+
+            # Assertions
+            self.assertEqual(
+                created_sessions,
+                closed_sessions,
+                f"HTTP Sessions leak detected! Leaked: {created_sessions - closed_sessions}",
             )
-            rows = cursor.fetchall()
-            self.assertEqual(len(rows), 100000)
 
-            connection.close()
-        import gc
+            self.assertEqual(
+                created_channels,
+                closed_channels,
+                f"gRPC Channels leak detected! Leaked: {created_channels - closed_channels}",
+            )
 
-        gc.collect()
-        for _ in range(30):  # Wait up to 3 seconds
-            conn_end = current_process.net_connections()
-            conn_count_end = len(conn_end)
-            if conn_count_end <= conn_count_start:
-                break
-            time.sleep(0.1)
+        finally:
+            # Revert patches
+            requests.Session.__init__ = original_session_init
+            google.api_core.grpc_helpers.create_channel = original_create_channel
 
-        self.assertLessEqual(conn_count_end, conn_count_start)
+            # Clean up any unclosed sessions/channels to avoid leaking in the test runner
+            for s in created_sessions - closed_sessions:
+                try:
+                    s.close()
+                except Exception:
+                    pass
+
+            for c in created_channels - closed_channels:
+                try:
+                    c.close()
+                except Exception:
+                    pass
 
     def _load_table_for_dml(self, rows, dataset_id, table_id):
         from google.cloud._testing import _NamedTemporaryFile

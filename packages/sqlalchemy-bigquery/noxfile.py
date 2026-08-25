@@ -50,6 +50,7 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
 UNIT_TEST_STANDARD_DEPENDENCIES = [
@@ -86,6 +87,11 @@ UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
         "geography",
         "bqstorage",
     ],
+    "3.15": [
+        "tests",
+        "geography",
+        "bqstorage",
+    ],
 }
 
 SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ALL_PYTHON
@@ -112,6 +118,11 @@ SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
         "bqstorage",
     ],
     "3.14": [
+        "tests",
+        "geography",
+        "bqstorage",
+    ],
+    "3.15": [
         "tests",
         "geography",
         "bqstorage",
@@ -267,38 +278,27 @@ def install_unittest_dependencies(session, *constraints):
 @nox.session(python=ALL_PYTHON)
 @nox.parametrize(
     "protobuf_implementation",
-    ["python", "upb", "cpp"],
+    ["python", "upb"],
 )
 @_calculate_duration
 def unit(session, protobuf_implementation, install_extras=True):
     # Install all test dependencies, then install this package in-place.
 
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
+    if session.python == "3.15":
+        session.skip("Skipping 3.15 until wheels are available for pyarrow.")
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     install_unittest_dependencies(session, "-c", constraints_path)
 
-    if install_extras and session.python in ["3.11", "3.12", "3.13", "3.14"]:
+    if install_extras and session.python in ["3.11", "3.12", "3.13", "3.14", "3.15"]:
         install_target = ".[geography,alembic,tests,bqstorage]"
     elif install_extras:
         install_target = ".[all]"
     else:
         install_target = "."
     session.install("-e", install_target, "-c", constraints_path)
-
-    # TODO(https://github.com/googleapis/synthtool/issues/1976):
-    # Remove the 'cpp' implementation once support for Protobuf 3.x is dropped.
-    # The 'cpp' implementation requires Protobuf<4.
-    if protobuf_implementation == "cpp":
-        session.install("protobuf<4")
 
     session.run("python", "-m", "pip", "freeze")
 
@@ -397,7 +397,7 @@ def _run_system_test_logic(session, test_type):
             "-c",
             constraints_path,
         )
-        if session.python in ["3.12", "3.13", "3.14"]:
+        if session.python in ["3.12", "3.13", "3.14", "3.15"]:
             extras = "[tests,geography,alembic]"
         else:
             extras = "[tests]"
@@ -562,19 +562,11 @@ def docfx(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 @nox.parametrize(
     "protobuf_implementation",
-    ["python", "upb", "cpp"],
+    ["python", "upb"],
 )
 @_calculate_duration
 def prerelease_deps(session, protobuf_implementation):
     """Run all tests with prerelease versions of dependencies installed."""
-
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
-        session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
     session.install("-e", ".[all, tests]")
@@ -707,7 +699,7 @@ def core_deps_from_source(session, protobuf_implementation):
     install_unittest_dependencies(session, "-c", constraints_path)
 
     # Mimic unit session install target
-    if session.python in ["3.11", "3.12", "3.13", "3.14"]:
+    if session.python in ["3.11", "3.12", "3.13", "3.14", "3.15"]:
         install_target = ".[geography,alembic,tests,bqstorage]"
     else:
         install_target = ".[all]"

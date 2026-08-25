@@ -23,6 +23,27 @@ __version__ = package_version.__version__
 
 from importlib import metadata
 
+# PEP 0810: Explicit Lazy Imports
+# Python 3.15+ natively intercepts and defers these imports.
+# Developers can disable this behavior and force eager imports.
+# For more information, see:
+# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
+# Older Python versions safely ignore this variable.
+__lazy_modules__ = {
+    "google.cloud.websecurityscanner_v1beta.services.web_security_scanner",
+    "google.cloud.websecurityscanner_v1beta.types.crawled_url",
+    "google.cloud.websecurityscanner_v1beta.types.finding",
+    "google.cloud.websecurityscanner_v1beta.types.finding_addon",
+    "google.cloud.websecurityscanner_v1beta.types.finding_type_stats",
+    "google.cloud.websecurityscanner_v1beta.types.scan_config",
+    "google.cloud.websecurityscanner_v1beta.types.scan_config_error",
+    "google.cloud.websecurityscanner_v1beta.types.scan_run",
+    "google.cloud.websecurityscanner_v1beta.types.scan_run_error_trace",
+    "google.cloud.websecurityscanner_v1beta.types.scan_run_warning_trace",
+    "google.cloud.websecurityscanner_v1beta.types.web_security_scanner",
+}
+
+
 from .services.web_security_scanner import (
     WebSecurityScannerAsyncClient,
     WebSecurityScannerClient,

@@ -26,7 +26,7 @@ import google.cloud.bigtable.data.exceptions as bt_exceptions
 import google.cloud.bigtable_v2.types.bigtable as types_pb
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._helpers import _attempt_timeout_generator
-from google.cloud.bigtable.data._metrics import tracked_retry
+from google.cloud.bigtable.data._metrics.tracked_retry import tracked_retry
 from google.cloud.bigtable.data.mutations import (
     _MUTATE_ROWS_REQUEST_MUTATION_LIMIT,
     _EntryWithProto,
@@ -173,6 +173,13 @@ class _MutateRowsOperation:
             for idx in active_request_indices.values():
                 self._handle_entry_error(idx, exc)
             raise
+        for idx in active_request_indices.values():
+            self._handle_entry_error(
+                idx,
+                bt_exceptions._MutateRowsIncomplete(
+                    "no response entry received for mutation"
+                ),
+            )
         if self.remaining_indices:
             raise bt_exceptions._MutateRowsIncomplete
 

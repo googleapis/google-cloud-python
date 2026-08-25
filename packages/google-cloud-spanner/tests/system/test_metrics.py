@@ -79,6 +79,7 @@ def test_builtin_metrics_with_default_otel(metrics_database):
         "spanner/operation_count",
         "spanner/attempt_count",
         "spanner/gfe_latencies",
+        "spanner/afe_latencies",
     }
     assert expected_metrics.issubset(collected_metrics)
 

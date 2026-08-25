@@ -4,6 +4,58 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.57.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.56.3...google-auth-v2.57.0) (2026-08-21)
+
+
+### Features
+
+* **auth:** add deprecation warning for grpcio &lt; 1.83.0 (PQC support) ([#18070](https://github.com/googleapis/google-cloud-python/issues/18070)) ([68bdaba](https://github.com/googleapis/google-cloud-python/commit/68bdaba04c706706bf614587adbda0774d15d81d))
+
+
+### Bug Fixes
+
+* **auth:** parse hostname for mTLS and PSC endpoint certificate rotat… ([#18153](https://github.com/googleapis/google-cloud-python/issues/18153)) ([b642373](https://github.com/googleapis/google-cloud-python/commit/b6423734a2470acd01a7081a4133e4373206f325))
+* **auth:** prevent TypeError and support home-dir cert fallback for X… ([#18016](https://github.com/googleapis/google-cloud-python/issues/18016)) ([b9a1379](https://github.com/googleapis/google-cloud-python/commit/b9a1379fd673a1cf3b8c1676400ed9789e12de6a))
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
+## [2.56.3](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.56.2...google-auth-v2.56.3) (2026-08-06)
+
+
+### Bug Fixes
+
+* **auth:** avoid creating mTLS SSL context for custom async transports ([#17825](https://github.com/googleapis/google-cloud-python/issues/17825)) ([fbe33f9](https://github.com/googleapis/google-cloud-python/commit/fbe33f9653d61353c0263ac2d0bff71eb76131f8)), refs [#17622](https://github.com/googleapis/google-cloud-python/issues/17622)
+* **auth:** only trigger mTLS certificate rotation on mTLS endpoints ([#17928](https://github.com/googleapis/google-cloud-python/issues/17928)) ([f7b49ea](https://github.com/googleapis/google-cloud-python/commit/f7b49ea967d93a969c73389c7b7baddf595d9a48))
+* **auth:** properly extract stdout from gnubby webauthn plugin failures ([#17885](https://github.com/googleapis/google-cloud-python/issues/17885)) ([744e826](https://github.com/googleapis/google-cloud-python/commit/744e826f79e99a75600193f4794e6eb225871e37))
+* deduplicate x-goog-api-client headers ([#17616](https://github.com/googleapis/google-cloud-python/issues/17616)) ([6167e41](https://github.com/googleapis/google-cloud-python/commit/6167e4136e24a40fa6fc77be5987ba9cab8ac5e8))
+* **oauth2:** avoid redundant JWKS network fetches ([#17891](https://github.com/googleapis/google-cloud-python/issues/17891)) ([de53298](https://github.com/googleapis/google-cloud-python/commit/de53298212cd4da417f22a5c1697901e0621b975))
+
+
+### Performance Improvements
+
+* **auth:** use generator expression in any() to allow short-circuiting ([735e565](https://github.com/googleapis/google-cloud-python/commit/735e5659be9e48776101f3530db441968e587135))
+* **auth:** use generator expression in any() to allow short-circuiting ([#17937](https://github.com/googleapis/google-cloud-python/issues/17937)) ([735e565](https://github.com/googleapis/google-cloud-python/commit/735e5659be9e48776101f3530db441968e587135))
+
+## [2.56.2](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.56.1...google-auth-v2.56.2) (2026-07-21)
+
+
+### Bug Fixes
+
+* **auth:** centralize cert discovery logic and steps ([#17696](https://github.com/googleapis/google-cloud-python/issues/17696)) ([edc0423](https://github.com/googleapis/google-cloud-python/commit/edc0423e57dd06bef3a93802642a074ab8b7bc5d))
+* **auth:** exit early when agent cert config is outside well-known directory ([#17762](https://github.com/googleapis/google-cloud-python/issues/17762)) ([61e795a](https://github.com/googleapis/google-cloud-python/commit/61e795a8299afec863487776c8a679adbb2911ab))
+* **transport:** propagate mTLS adapter to auth session and fix connection leaks ([#17689](https://github.com/googleapis/google-cloud-python/issues/17689)) ([8289d32](https://github.com/googleapis/google-cloud-python/commit/8289d328f9a1eb2abb766644e4f6748198679c80))
+* update _SERVICE_ACCOUNT_EMAIL_PATTERN to require .gserviceaccount.com    suffix   ([#17748](https://github.com/googleapis/google-cloud-python/issues/17748)) ([b60bb04](https://github.com/googleapis/google-cloud-python/commit/b60bb04a73eb35b15320c54bc3493132e6ba5706))
+
+## [2.56.1](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.56.0...google-auth-v2.56.1) (2026-07-17)
+
+
+### Bug Fixes
+
+* disable RAB lookup for Domain-Wide Delegation ([#17763](https://github.com/googleapis/google-cloud-python/issues/17763)) ([00eb128](https://github.com/googleapis/google-cloud-python/commit/00eb1284fb6081cd37b747d09366568490a6d9ad)), closes [#17703](https://github.com/googleapis/google-cloud-python/issues/17703)
+
 ## [2.56.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.55.2...google-auth-v2.56.0) (2026-07-13)
 
 

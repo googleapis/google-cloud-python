@@ -17,6 +17,7 @@
 from __future__ import absolute_import
 
 import logging
+import warnings
 
 from google.auth import exceptions
 from google.auth.transport import _mtls_helper
@@ -29,6 +30,26 @@ except ImportError as caught_exc:  # pragma: NO COVER
     raise ImportError(
         "gRPC is not installed from please install the grpcio package to use the gRPC transport."
     ) from caught_exc
+
+
+_grpc_ver_str = getattr(grpc, "__version__", None)
+if isinstance(_grpc_ver_str, str):
+    _parts = []
+    for _part in _grpc_ver_str.split("."):
+        try:
+            _parts.append(int(_part))
+        except ValueError:
+            break
+    if _parts and tuple(_parts) < (1, 83, 0):
+        warnings.warn(
+            "grpcio < 1.83.0 does not support Post-Quantum Cryptography (PQC). "
+            "Support for non-PQC environments is deprecated. In October 2026, "
+            "google-auth will raise its minimum requirements "
+            "to enforce grpcio >= 1.83.0. "
+            "For more details on Google Cloud's post-quantum security migration, visit: "
+            "https://cloud.google.com/security/resources/post-quantum-cryptography",
+            FutureWarning,
+        )
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -48,9 +69,13 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
         default_host (Optional[str]): A host like "pubsub.googleapis.com".
             This is used when a self-signed JWT is created from service
             account credentials.
+        suppress_metrics_header (bool): When enabled, ``x-goog-api-client``
+            will be stripped from authorization headers.
     """
 
-    def __init__(self, credentials, request, default_host=None):
+    def __init__(
+        self, credentials, request, default_host=None, *, suppress_metrics_header=False
+    ):
         # pylint: disable=no-value-for-parameter
         # pylint doesn't realize that the super method takes no arguments
         # because this class is the same name as the superclass.
@@ -58,6 +83,7 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
         self._credentials = credentials
         self._request = request
         self._default_host = default_host
+        self._suppress_metrics_header = suppress_metrics_header
 
     def _get_authorization_headers(self, context):
         """Gets the authorization headers for a request.
@@ -80,6 +106,9 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
         self._credentials.before_request(
             self._request, context.method_name, context.service_url, headers
         )
+
+        if self._suppress_metrics_header and "x-goog-api-client" in headers:
+            del headers["x-goog-api-client"]
 
         return list(headers.items())
 

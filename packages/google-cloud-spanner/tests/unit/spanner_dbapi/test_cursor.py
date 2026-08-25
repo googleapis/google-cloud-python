@@ -20,14 +20,13 @@ from unittest import mock
 
 from google.api_core.exceptions import Aborted
 from google.auth.credentials import AnonymousCredentials
-from google.rpc.code_pb2 import ABORTED
-
 from google.cloud.spanner_dbapi.connection import connect
 from google.cloud.spanner_dbapi.parsed_statement import (
     ParsedStatement,
     Statement,
     StatementType,
 )
+from google.rpc.code_pb2 import ABORTED
 
 
 class TestCursor(unittest.TestCase):
@@ -122,6 +121,58 @@ class TestCursor(unittest.TestCase):
 
         self.assertEqual(cursor._result_set, result_set)
         self.assertEqual(cursor.rowcount, 1234)
+
+    def test_do_execute_update_in_autocommit_eagerly_buffers_returning_rows(self):
+        from google.cloud.spanner_v1 import ResultSetStats, Type, TypeCode
+        from google.cloud.spanner_v1.types import ResultSetMetadata, StructType
+
+        connection = self._make_connection(self.INSTANCE, mock.MagicMock())
+        connection.autocommit = True
+        cursor = self._make_one(connection)
+
+        tx_active = True
+
+        def streaming_generator():
+            if not tx_active:
+                raise ValueError(
+                    "Transaction has already been committed or rolled back"
+                )
+            yield [1, "Alice"]
+            if not tx_active:
+                raise ValueError(
+                    "Transaction has already been committed or rolled back"
+                )
+            yield [2, "Bob"]
+
+        field1 = StructType.Field(name="id", type=Type(code=TypeCode.INT64))
+        field2 = StructType.Field(name="name", type=Type(code=TypeCode.STRING))
+        row_type = StructType(fields=[field1, field2])
+        metadata = ResultSetMetadata(row_type=row_type)
+
+        mock_result_set = mock.MagicMock()
+        mock_result_set.__iter__.side_effect = streaming_generator
+        mock_result_set.metadata = metadata
+        mock_result_set.stats = ResultSetStats(row_count_exact=2)
+
+        def fake_run_in_transaction(func, *args, **kwargs):
+            nonlocal tx_active
+            mock_tx = mock.MagicMock()
+            mock_tx.execute_sql.return_value = mock_result_set
+            result = func(mock_tx, *args, **kwargs)
+            tx_active = False
+            return result
+
+        connection.database.run_in_transaction = fake_run_in_transaction
+
+        sql = "INSERT INTO table (id, name) VALUES (1, 'Alice'), (2, 'Bob') THEN RETURN id, name"
+        cursor.execute(sql)
+
+        self.assertIsNotNone(cursor.description)
+        self.assertEqual(len(cursor.description), 2)
+        self.assertEqual(cursor.description[0].name, "id")
+        self.assertEqual(cursor.description[1].name, "name")
+        self.assertEqual(cursor.rowcount, 2)
+        self.assertEqual(cursor.fetchall(), [(1, "Alice"), (2, "Bob")])
 
     def test_do_batch_update(self):
         from google.cloud.spanner_dbapi import connect
@@ -403,7 +454,6 @@ class TestCursor(unittest.TestCase):
 
     def test_execute_integrity_error(self):
         from google.api_core import exceptions
-
         from google.cloud.spanner_dbapi.exceptions import IntegrityError
 
         connection = self._make_connection(self.INSTANCE, mock.MagicMock())
@@ -436,7 +486,6 @@ class TestCursor(unittest.TestCase):
 
     def test_execute_invalid_argument(self):
         from google.api_core import exceptions
-
         from google.cloud.spanner_dbapi.exceptions import ProgrammingError
 
         connection = self._make_connection(self.INSTANCE, mock.MagicMock())
@@ -451,7 +500,6 @@ class TestCursor(unittest.TestCase):
 
     def test_execute_internal_server_error(self):
         from google.api_core import exceptions
-
         from google.cloud.spanner_dbapi.exceptions import OperationalError
 
         connection = self._make_connection(self.INSTANCE, mock.MagicMock())
@@ -715,11 +763,10 @@ class TestCursor(unittest.TestCase):
         transaction.commit.assert_called_once()
 
     def test_executemany_insert_batch_failed(self):
-        from google.rpc.code_pb2 import UNKNOWN
-
         from google.cloud.spanner_dbapi import connect
         from google.cloud.spanner_dbapi.exceptions import OperationalError
         from google.cloud.spanner_v1.types.spanner import Session
+        from google.rpc.code_pb2 import UNKNOWN
 
         sql = """INSERT INTO table (col1, "col2", `col3`, `"col4"`) VALUES (%s, %s, %s, %s)"""
         err_details = "Details here"
@@ -956,6 +1003,50 @@ class TestCursor(unittest.TestCase):
             sql, None, None, request_options=RequestOptions(priority=1)
         )
 
+    def test_execute_query_with_auto_partition_mode(self):
+        from google.cloud import spanner
+
+        connection = self._make_connection(
+            self.INSTANCE,
+            mock.MagicMock(),
+            read_only=True,
+            data_boost_enabled=True,
+            auto_partition_mode=True,
+        )
+        batch_snapshot = connection.database.batch_snapshot.return_value = (
+            mock.MagicMock()
+        )
+        mock_result_set = mock.MagicMock()
+        batch_snapshot.run_partitioned_query.return_value = mock_result_set
+
+        cursor = self._make_one(connection)
+        cursor.execute("SELECT * FROM table WHERE col = %s", (10,))
+
+        self.assertEqual(cursor._result_set, mock_result_set)
+        self.assertEqual(cursor._itr, mock_result_set)
+        batch_snapshot.run_partitioned_query.assert_called_once_with(
+            "SELECT * FROM table WHERE col = @a0",
+            params={"a0": 10},
+            param_types={"a0": spanner.param_types.INT64},
+            data_boost_enabled=True,
+        )
+
+    def test_execute_query_with_auto_partition_mode_rw_transaction_error(self):
+        from google.cloud.spanner_dbapi.exceptions import ProgrammingError
+
+        connection = self._make_connection(
+            self.INSTANCE,
+            mock.MagicMock(),
+            read_only=False,
+            auto_partition_mode=True,
+        )
+        connection._autocommit = False
+        connection._transaction_begin_marked = True
+
+        cursor = self._make_one(connection)
+        with self.assertRaises(ProgrammingError):
+            cursor.execute("SELECT * FROM table")
+
     def test_handle_dql_database_error(self):
         connection = self._make_connection(self.INSTANCE)
         cursor = self._make_one(connection)
@@ -1071,7 +1162,6 @@ class TestCursor(unittest.TestCase):
         while streaming the first element with a PeekIterator.
         """
         from google.api_core.exceptions import Aborted
-
         from google.cloud.spanner_dbapi.connection import connect
 
         connection = connect("test-instance", "test-database")

@@ -14,7 +14,10 @@
 
 from gapic.schema import wrappers
 
+import gc
 import json
+import uuid
+import weakref
 import proto
 import pytest
 
@@ -144,6 +147,21 @@ def test_routing_rule_resolve(routing_parameters, req, expected):
 def test_routing_parameter_key(field, path_template, expected):
     param = wrappers.RoutingParameter(field, path_template)
     assert param.key == expected
+
+
+def test_routing_parameter_cache_does_not_retain_instance():
+    unique_id = f"id_{uuid.uuid4().hex}"
+    param = wrappers.RoutingParameter(
+        f"table_name_{unique_id}", f"{{{unique_id}=projects/*}}/instances/*/**"
+    )
+    _ = param.to_regex()
+    _ = param.key
+    param_ref = weakref.ref(param)
+
+    del param
+    gc.collect()
+
+    assert param_ref() is None
 
 
 def test_routing_parameter_multi_segment_raises():

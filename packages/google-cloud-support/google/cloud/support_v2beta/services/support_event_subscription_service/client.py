@@ -842,6 +842,20 @@ class SupportEventSubscriptionServiceClient(
         Returns:
             google.cloud.support_v2beta.types.SupportEventSubscription:
                 A support event subscription.
+
+                   You can also manage support event subscriptions using
+                   other tools:
+
+                   \* [gcloud support
+                   support-event-subscriptions](/sdk/gcloud/reference/support/support-event-subscriptions)
+                   (or [gcloud
+                   beta](/sdk/gcloud/reference/beta/support/support-event-subscriptions)
+                   for beta) \* [Terraform
+                   google_cloud_support_support_event_subscription](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription)
+                   (or [google-beta
+                   provider](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription)
+                   for beta)
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -963,6 +977,20 @@ class SupportEventSubscriptionServiceClient(
         Returns:
             google.cloud.support_v2beta.types.SupportEventSubscription:
                 A support event subscription.
+
+                   You can also manage support event subscriptions using
+                   other tools:
+
+                   \* [gcloud support
+                   support-event-subscriptions](/sdk/gcloud/reference/support/support-event-subscriptions)
+                   (or [gcloud
+                   beta](/sdk/gcloud/reference/beta/support/support-event-subscriptions)
+                   for beta) \* [Terraform
+                   google_cloud_support_support_event_subscription](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription)
+                   (or [google-beta
+                   provider](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription)
+                   for beta)
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1033,7 +1061,8 @@ class SupportEventSubscriptionServiceClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListSupportEventSubscriptionsPager:
-        r"""Lists support event subscriptions.
+        r"""Lists support event subscriptions for an
+        organization.
 
         .. code-block:: python
 
@@ -1235,6 +1264,20 @@ class SupportEventSubscriptionServiceClient(
         Returns:
             google.cloud.support_v2beta.types.SupportEventSubscription:
                 A support event subscription.
+
+                   You can also manage support event subscriptions using
+                   other tools:
+
+                   \* [gcloud support
+                   support-event-subscriptions](/sdk/gcloud/reference/support/support-event-subscriptions)
+                   (or [gcloud
+                   beta](/sdk/gcloud/reference/beta/support/support-event-subscriptions)
+                   for beta) \* [Terraform
+                   google_cloud_support_support_event_subscription](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription)
+                   (or [google-beta
+                   provider](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription)
+                   for beta)
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1363,6 +1406,20 @@ class SupportEventSubscriptionServiceClient(
         Returns:
             google.cloud.support_v2beta.types.SupportEventSubscription:
                 A support event subscription.
+
+                   You can also manage support event subscriptions using
+                   other tools:
+
+                   \* [gcloud support
+                   support-event-subscriptions](/sdk/gcloud/reference/support/support-event-subscriptions)
+                   (or [gcloud
+                   beta](/sdk/gcloud/reference/beta/support/support-event-subscriptions)
+                   for beta) \* [Terraform
+                   google_cloud_support_support_event_subscription](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription)
+                   (or [google-beta
+                   provider](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription)
+                   for beta)
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1473,6 +1530,20 @@ class SupportEventSubscriptionServiceClient(
         Returns:
             google.cloud.support_v2beta.types.SupportEventSubscription:
                 A support event subscription.
+
+                   You can also manage support event subscriptions using
+                   other tools:
+
+                   \* [gcloud support
+                   support-event-subscriptions](/sdk/gcloud/reference/support/support-event-subscriptions)
+                   (or [gcloud
+                   beta](/sdk/gcloud/reference/beta/support/support-event-subscriptions)
+                   for beta) \* [Terraform
+                   google_cloud_support_support_event_subscription](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription)
+                   (or [google-beta
+                   provider](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription)
+                   for beta)
+
         """
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -1511,6 +1582,145 @@ class SupportEventSubscriptionServiceClient(
         # Done; return the response.
         return response
 
+    def expunge_support_event_subscription(
+        self,
+        request: Optional[
+            Union[
+                support_event_subscription_service.ExpungeSupportEventSubscriptionRequest,
+                dict,
+            ]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
+        r"""Expunges a support event subscription.
+
+        EXAMPLES:
+
+        cURL:
+
+        .. code:: shell
+
+           support_event_subscription="organizations/123456789/supportEventSubscriptions/abcdef123456"
+           curl \
+             --request POST \
+             --header "Authorization: Bearer $(gcloud auth print-access-token)" \
+             "https://cloudsupport.googleapis.com/v2beta/$support_event_subscription:expunge"
+
+        Python:
+
+        .. code:: python
+
+           import googleapiclient.discovery
+
+           api_version = "v2beta"
+           supportApiService = googleapiclient.discovery.build(
+               serviceName="cloudsupport",
+               version=api_version,
+               discoveryServiceUrl=f"https://cloudsupport.googleapis.com/$discovery/rest?version={api_version}",
+           )
+
+           request = supportApiService.supportEventSubscriptions().expunge(
+               name="organizations/123456789/supportEventSubscriptions/abcdef123456"
+           )
+           print(request.execute())
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import support_v2beta
+
+            def sample_expunge_support_event_subscription():
+                # Create a client
+                client = support_v2beta.SupportEventSubscriptionServiceClient()
+
+                # Initialize request argument(s)
+                request = support_v2beta.ExpungeSupportEventSubscriptionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.expunge_support_event_subscription(request=request)
+
+        Args:
+            request (Union[google.cloud.support_v2beta.types.ExpungeSupportEventSubscriptionRequest, dict]):
+                The request object. Request message for
+                ExpungeSupportEventSubscription.
+            name (str):
+                Required. The name of the support event subscription to
+                expunge. Format:
+                organizations/{organization_id}/supportEventSubscriptions/{subscription_id}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            support_event_subscription_service.ExpungeSupportEventSubscriptionRequest,
+        ):
+            request = support_event_subscription_service.ExpungeSupportEventSubscriptionRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.expunge_support_event_subscription
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
     def __enter__(self) -> "SupportEventSubscriptionServiceClient":
         return self
 
@@ -1528,8 +1738,6 @@ class SupportEventSubscriptionServiceClient(
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("SupportEventSubscriptionServiceClient",)

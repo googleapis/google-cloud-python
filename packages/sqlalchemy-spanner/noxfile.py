@@ -85,6 +85,7 @@ CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "pytest",
+    "pytest-cov",
 ]
 
 UNIT_TEST_EXTERNAL_DEPENDENCIES = [
@@ -124,7 +125,7 @@ SQLALCHEMY_20_DEPENDENCIES = [
     "sqlalchemy>=2.0",
 ]
 
-UNIT_TEST_PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
 ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.12"]
 SYSTEM_COMPLIANCE_MIGRATION_TEST_PYTHON_VERSIONS = ["3.12", "3.14"]
@@ -361,14 +362,22 @@ def unit(session, test_type):
         return
 
     if test_type == "unit":
-        # Run SQLAlchemy dialect compliance test suite with OpenTelemetry.
+        # Run SQLAlchemy dialect unit tests with pytest-cov if COVERAGE_FILE is set.
         session.install(
             *UNIT_TEST_STANDARD_DEPENDENCIES,
             *UNIT_TEST_EXTERNAL_DEPENDENCIES,
             *UNIT_TEST_DEPENDENCIES,
         )
         session.install(".")
-        session.run("py.test", "--quiet", os.path.join("tests/unit"), *session.posargs)
+        pytest_args = ["--quiet", os.path.join("tests/unit")]
+        if "COVERAGE_FILE" in os.environ:
+            pytest_args.extend(
+                [
+                    "--cov=google.cloud.sqlalchemy_spanner",
+                    "--cov-config=.coveragerc",
+                ]
+            )
+        session.run("py.test", *pytest_args, *session.posargs)
         return
 
 

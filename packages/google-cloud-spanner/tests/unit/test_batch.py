@@ -759,7 +759,14 @@ class TestMutationGroups(_BaseTest, OpenTelemetryBase):
         return_value="global",
     )
     def test_batch_write_end_to_end_tracing_enabled(self, mock_region):
-        self._test_batch_write_with_request_options(enable_end_to_end_tracing=True)
+        if ot_helpers.HAS_OPENTELEMETRY_INSTALLED:
+            tracer = _opentelemetry_tracing.get_tracer()
+            with tracer.start_as_current_span("test"):
+                self._test_batch_write_with_request_options(
+                    enable_end_to_end_tracing=True
+                )
+        else:
+            self._test_batch_write_with_request_options(enable_end_to_end_tracing=True)
 
     @mock.patch(
         "google.cloud.spanner_v1._opentelemetry_tracing._get_cloud_region",

@@ -710,8 +710,14 @@ class ProjectViewsClient(metaclass=ProjectViewsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.ProjectView:
-        r"""Returns the specified global ProjectViews resource,
-        with a regional context.
+        r"""Returns the specified global ProjectViews resource, with a
+        regional context. This regional API endpoint reads resource
+        metadata from regional read-only replicas. Because changes are
+        copied to these regional replicas asynchronously, for real-time
+        resource reads or any write operations (creating, updating, or
+        deleting resources), use the global
+        `projects.get <https://cloud.google.com/compute/docs/reference/rest/v1/projects/get>`__
+        endpoint.
 
         .. code-block:: python
 
@@ -846,8 +852,6 @@ class ProjectViewsClient(metaclass=ProjectViewsClientMeta):
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("ProjectViewsClient",)

@@ -770,7 +770,7 @@ class AdReviewCenterAdServiceClient(metaclass=AdReviewCenterAdServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.SearchAdReviewCenterAdsPager:
-        r"""API to search for AdReviewCenterAds.
+        r"""Searches for AdReviewCenterAds.
 
         .. code-block:: python
 
@@ -914,7 +914,7 @@ class AdReviewCenterAdServiceClient(metaclass=AdReviewCenterAdServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""API to batch allow AdReviewCenterAds.
+        r"""Batch allows AdReviewCenterAds.
         This method supports partial success. Some operations
         may succeed while others fail. Callers should check the
         failedRequests field in the response to determine which
@@ -1064,7 +1064,7 @@ class AdReviewCenterAdServiceClient(metaclass=AdReviewCenterAdServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""API to batch block AdReviewCenterAds.
+        r"""Batch blocks AdReviewCenterAds.
         This method supports partial success. Some operations
         may succeed while others fail. Callers should check the
         failedRequests field in the response to determine which
@@ -1342,8 +1342,6 @@ class AdReviewCenterAdServiceClient(metaclass=AdReviewCenterAdServiceClientMeta)
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
-    DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
+DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 __all__ = ("AdReviewCenterAdServiceClient",)

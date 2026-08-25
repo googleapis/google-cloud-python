@@ -15,6 +15,9 @@
 #
 from __future__ import absolute_import
 
+import google.api_core as api_core
+
+
 from google.cloud.spanner_v1 import gapic_version as package_version
 
 __version__: str = package_version.__version__
@@ -89,6 +92,12 @@ COMMIT_TIMESTAMP = "spanner.commit_timestamp()"
 This value can only be used for timestamp columns that have set the option
 ``(allow_commit_timestamp=true)`` in the schema.
 """
+
+if hasattr(api_core, "check_python_version") and hasattr(
+    api_core, "check_dependency_versions"
+):  # pragma: NO COVER
+    api_core.check_python_version(__name__)  # type: ignore
+    api_core.check_dependency_versions(__name__)  # type: ignore
 
 __all__ = (
     # google.cloud.spanner_v1

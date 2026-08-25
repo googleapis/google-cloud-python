@@ -970,7 +970,14 @@ def test_policy_bindings_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -1017,7 +1024,14 @@ def test_policy_bindings_client_get_mtls_endpoint_and_cert_source(client_class):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
                 m = mock.mock_open(read_data=config_file_content)
-                with mock.patch("builtins.open", m):
+                with (
+                    mock.patch("builtins.open", m),
+                    mock.patch(
+                        "os.path.exists",
+                        side_effect=lambda path: os.path.basename(path)
+                        == config_filename,
+                    ),
+                ):
                     with mock.patch.dict(
                         os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}
                     ):
@@ -3394,6 +3408,7 @@ def test_search_target_policy_bindings_non_empty_request_with_auto_populated_fie
         target="target_value",
         page_token="page_token_value",
         parent="parent_value",
+        filter="filter_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3410,6 +3425,7 @@ def test_search_target_policy_bindings_non_empty_request_with_auto_populated_fie
             target="target_value",
             page_token="page_token_value",
             parent="parent_value",
+            filter="filter_value",
         )
         assert args[0] == request_msg
 
@@ -5062,6 +5078,7 @@ def test_search_target_policy_bindings_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "filter",
             "page_size",
             "page_token",
             "target",
@@ -5138,6 +5155,7 @@ def test_search_target_policy_bindings_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
+                "filter",
                 "pageSize",
                 "pageToken",
                 "target",
@@ -5756,7 +5774,10 @@ def test_create_policy_binding_rest_call_success(request_type):
         "etag": "etag_value",
         "display_name": "display_name_value",
         "annotations": {},
-        "target": {"principal_set": "principal_set_value"},
+        "target": {
+            "principal_set": "principal_set_value",
+            "resource": "resource_value",
+        },
         "policy_kind": 1,
         "policy": "policy_value",
         "policy_uid": "policy_uid_value",
@@ -6129,7 +6150,10 @@ def test_update_policy_binding_rest_call_success(request_type):
         "etag": "etag_value",
         "display_name": "display_name_value",
         "annotations": {},
-        "target": {"principal_set": "principal_set_value"},
+        "target": {
+            "principal_set": "principal_set_value",
+            "resource": "resource_value",
+        },
         "policy_kind": 1,
         "policy": "policy_value",
         "policy_uid": "policy_uid_value",

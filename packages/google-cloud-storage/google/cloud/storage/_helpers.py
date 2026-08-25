@@ -767,7 +767,7 @@ def _get_default_headers(
         "Accept": "application/json",
         "Accept-Encoding": "gzip, deflate",
         "User-Agent": user_agent,
-        "X-Goog-API-Client": x_goog_api_client,
+        "x-goog-api-client": x_goog_api_client,
         "content-type": content_type,
         "x-upload-content-type": x_upload_content_type or content_type,
     }
