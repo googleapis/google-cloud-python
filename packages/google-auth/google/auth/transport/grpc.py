@@ -327,11 +327,8 @@ def secure_authorized_channel(
             "_is_recreation": True,  # Hidden flag to stop recursion
             **kwargs,
         }
-        interceptor = CertRotationInterceptor()
-
         wrapper = MTLSRefreshingChannel(target, factory_args, channel, cached_cert)
-
-        interceptor._wrapper = wrapper
+        interceptor = CertRotationInterceptor(wrapper=wrapper)
         return grpc.intercept_channel(wrapper, interceptor)
     return channel
 
@@ -420,8 +417,8 @@ class CertRotationInterceptor(
     channel's credentials and automatically replays the failed RPC.
     """
 
-    def __init__(self):
-        self._wrapper = None
+    def __init__(self, wrapper=None):
+        self._wrapper = wrapper
         self._max_retries = transport.DEFAULT_MAX_REFRESH_ATTEMPTS
 
     def _should_retry(self, code, retry_count, attempt_cert):
