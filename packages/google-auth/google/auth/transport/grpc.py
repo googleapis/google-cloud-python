@@ -29,6 +29,9 @@ from google.auth.transport import _mtls_helper
 from google.auth.transport import mtls
 from google.oauth2 import service_account
 
+from typing import Optional
+
+
 try:
     import grpc  # type: ignore
 except ImportError as caught_exc:  # pragma: NO COVER
@@ -288,7 +291,7 @@ def secure_authorized_channel(
         )
 
     # If SSL credentials are not explicitly set, try client_cert_callback and ADC.
-    cached_cert = None
+    cached_cert: Optional[bytes] = None
     if not ssl_credentials:
         use_client_cert = _mtls_helper.check_use_client_cert()
         if use_client_cert and client_cert_callback:
@@ -645,7 +648,7 @@ class _DeadlineExceededError(grpc.RpcError, grpc.Call):
         return self._details
 
 
-class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
+class _RetryableUnaryResponseFuture(_BaseCallWrapper):
     def __init__(
         self,
         continuation,
@@ -672,6 +675,7 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
         )
 
         self._retry_count = 0
+        self._call = None
         self._lock = threading.RLock()
 
         timeout = getattr(self._client_call_details, "timeout", None)
@@ -715,12 +719,12 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
                     wait_for_ready=call_details.wait_for_ready,
                 )
 
-            self._target_future = self._continuation(call_details, payload)
-            self._target_future.add_done_callback(self._on_inner_future_done)
+            self._call = self._continuation(call_details, payload)
+            self._call.add_done_callback(self._on_inner_future_done)
 
     def _on_inner_future_done(self, inner_future):
         with self._lock:
-            if self._target_future is not inner_future:
+            if self._call is not inner_future:
                 return
 
         if inner_future.cancelled():
@@ -810,7 +814,7 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
         with self._lock:
             if self._terminal_exception is not None:
                 raise self._terminal_exception
-            current_future = self._target_future
+            current_future = self._call
         return current_future.result()
 
     def exception(self, timeout=None):
@@ -819,7 +823,7 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
         with self._lock:
             if self._terminal_exception is not None:
                 return self._terminal_exception
-            return self._target_future.exception()
+            return self._call.exception()
 
     def traceback(self, timeout=None):
         if not self._completion_event.wait(timeout):
@@ -827,66 +831,37 @@ class _RetryableUnaryResponseFuture(grpc.Future, grpc.Call):
         with self._lock:
             if self._terminal_exception is not None:
                 return self._terminal_exception.__traceback__
-            return self._target_future.traceback()
+            return self._call.traceback()
 
     def initial_metadata(self):
         self._completion_event.wait()
         with self._lock:
             if self._terminal_exception is not None:
                 return None
-            return self._target_future.initial_metadata()
+            return self._call.initial_metadata()
 
     def trailing_metadata(self):
         self._completion_event.wait()
         with self._lock:
             if self._terminal_exception is not None:
                 return None
-            return self._target_future.trailing_metadata()
+            return self._call.trailing_metadata()
 
     def code(self):
         self._completion_event.wait()
         with self._lock:
             if hasattr(self._terminal_exception, "code"):
                 return self._terminal_exception.code()
-            return self._target_future.code()
+            return self._call.code()
 
     def details(self):
         self._completion_event.wait()
         with self._lock:
             if hasattr(self._terminal_exception, "details"):
                 return self._terminal_exception.details()
-            return self._target_future.details()
+            return self._call.details()
 
-    def cancel(self):
-        with self._lock:
-            return self._target_future.cancel()
-
-    def cancelled(self):
-        with self._lock:
-            return self._target_future.cancelled()
-
-    def running(self):
-        with self._lock:
-            return self._target_future.running()
-
-    def done(self):
-        with self._lock:
-            return self._completion_event.is_set()
-
-    def is_active(self):
-        with self._lock:
-            return self._target_future.is_active()
-
-    def time_remaining(self):
-        with self._lock:
-            return self._target_future.time_remaining()
-
-    def add_callback(self, callback):
-        with self._lock:
-            return self._target_future.add_callback(callback)
-
-
-class _RetryableStreamResponseIterator(grpc.Call):
+class _RetryableStreamResponseIterator(_BaseCallWrapper):
     def __init__(
         self,
         continuation,
@@ -911,7 +886,7 @@ class _RetryableStreamResponseIterator(grpc.Call):
                 else request_or_iterator
             )
         )
-
+        self._call = None
         self._retry_count = 0
         self._yielded_any_response = False
         self._lock = threading.RLock()
@@ -1077,40 +1052,46 @@ class _RetryableStreamResponseIterator(grpc.Call):
             except Exception:
                 pass
 
+class _BaseCallWrapper(grpc.Future, grpc.Call):
+    """A generic wrapper that delegates standard grpc.Call and grpc.Future 
+    methods to an underlying call object.
+    """
+    
     def cancel(self):
-        with self._lock:
-            return self._call.cancel()
+        return self._call.cancel()
 
     def cancelled(self):
-        with self._lock:
-            return self._call.cancelled()
+        return self._call.cancelled()
 
     def running(self):
-        with self._lock:
-            return self._call.running()
+        return self._call.running()
 
     def done(self):
-        with self._lock:
-            return self._is_completed
+        return self._call.done()
+
+    def result(self, timeout=None):
+        return self._call.result(timeout=timeout)
+
+    def exception(self, timeout=None):
+        return self._call.exception(timeout=timeout)
+
+    def traceback(self, timeout=None):
+        return self._call.traceback(timeout=timeout)
+
+    def add_done_callback(self, fn):
+        self._call.add_done_callback(fn)
 
     def initial_metadata(self):
-        with self._lock:
-            return self._call.initial_metadata()
+        return self._call.initial_metadata()
 
     def trailing_metadata(self):
-        with self._lock:
-            return self._call.trailing_metadata()
+        return self._call.trailing_metadata()
 
     def code(self):
-        with self._lock:
-            return self._call.code()
+        return self._call.code()
 
     def details(self):
-        with self._lock:
-            return self._call.details()
-
-    def is_active(self):
-        return self._call.is_active()
+        return self._call.details()
 
     def time_remaining(self):
         return self._call.time_remaining()
