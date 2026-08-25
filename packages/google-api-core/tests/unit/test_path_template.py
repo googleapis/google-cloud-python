@@ -131,6 +131,18 @@ def test_get_field(request_obj, field, expected_result):
     assert result == expected_result
 
 
+def test_get_field_encode():
+    assert (
+        path_template.get_field({"name": "a$b?c=d#e f"}, "name", encode=True)
+        == "a%24b%3Fc%3Dd%23e%20f"
+    )
+    assert (
+        path_template.get_field({"name": "abc-._~"}, "name", encode=True) == "abc-._~"
+    )
+    assert path_template.get_field({"name": None}, "name", encode=True) is None
+    assert path_template.get_field({}, "name", encode=True) is None
+
+
 @pytest.mark.parametrize(
     "request_obj, field, expected_result",
     [

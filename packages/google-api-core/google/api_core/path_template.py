@@ -215,12 +215,17 @@ def _generate_pattern_for_template(tmpl):
     return _VARIABLE_RE.sub(_replace_variable_with_pattern, tmpl)
 
 
-def get_field(request, field):
+def get_field(request, field, encode=False):
     """Get the value of a field from a given dictionary.
 
     Args:
         request (dict | Message): A dictionary or a Message object.
         field (str): The key to the request in dot notation.
+        encode (bool): Whether to percent-encode the field value. If enabled,
+            will encode all characters except `[-_.~/0-9a-zA-Z]` for URI path
+            variable parts per
+            https://github.com/googleapis/googleapis/blob/master/google/api/http.proto#L44-L312.
+            Defaults to False.
 
     Returns:
         The value of the field.
@@ -235,6 +240,8 @@ def get_field(request, field):
             value = value.get(part)
     if isinstance(value, dict):
         return
+    if encode and value is not None:
+        return urllib.parse.quote(str(value), safe="/")
     return value
 
 
@@ -327,13 +334,10 @@ def transcode(http_options, message=None, **request_kwargs):
         ]
         bindings.append((uri_template, fields))
 
-        path_args = {}
-        for field, _ in fields:
-            val = get_field(transcoded_value, field)
-            if val is not None:
-                path_args[field] = urllib.parse.quote(str(val), safe="/")
-            else:
-                path_args[field] = None
+        path_args = {
+            field: get_field(transcoded_value, field, encode=True)
+            for field, _ in fields
+        }
         request["uri"] = expand(uri_template, **path_args)
 
         if not validate(uri_template, request["uri"]) or not all(path_args.values()):
