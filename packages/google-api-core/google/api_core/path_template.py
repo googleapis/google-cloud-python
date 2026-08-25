@@ -123,7 +123,7 @@ def _expand_variable_match(positional_vars, named_vars, match):
         try:
             val = str(named_vars[name])
             _extract_and_validate_wildcards(val, template, name)
-            return urllib.parse.quote(val, safe="/")
+            return urllib.parse.quote(val, safe="/()")
         except KeyError:
             raise ValueError(
                 "Named variable '{}' not specified and needed by template "
@@ -133,7 +133,7 @@ def _expand_variable_match(positional_vars, named_vars, match):
         try:
             val = str(positional_vars.pop(0))
             _extract_and_validate_wildcards(val, positional, "positional variable")
-            return urllib.parse.quote(val, safe="/")
+            return urllib.parse.quote(val, safe="/()")
         except IndexError:
             raise ValueError(
                 "Positional variable not specified and needed by template "
