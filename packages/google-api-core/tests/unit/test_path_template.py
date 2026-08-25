@@ -84,6 +84,19 @@ from google.api_core import path_template
             {"name": "projects/my-project/databases/(default)"},
             "/v1/projects/my-project/databases/(default)",
         ],
+        # Test colon in resource paths
+        [
+            "/v1/{name}",
+            [],
+            {"name": "my-instance:cluster-1"},
+            "/v1/my-instance:cluster-1",
+        ],
+        [
+            "/v1/{name=**}",
+            [],
+            {"name": "instances/my-instance:cluster-1"},
+            "/v1/instances/my-instance:cluster-1",
+        ],
         # Encoding / Metacharacters in positional and named params
         ["/v1/*", ["..?$httpMethod=DELETE#"], {}, "/v1/..%3F%24httpMethod%3DDELETE%23"],
         ["/v1/**", ["path/sub/with/?and#"], {}, "/v1/path/sub/with/%3Fand%23"],
