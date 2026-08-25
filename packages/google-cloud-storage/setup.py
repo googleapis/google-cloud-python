@@ -117,6 +117,7 @@ setuptools.setup(
     version=version,
     description=description,
     long_description=readme,
+    long_description_content_type="text/x-rst",
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     license="Apache-2.0",
