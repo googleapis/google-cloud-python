@@ -110,9 +110,13 @@ def test_baseclient__firestore_api_helper_wo_emulator():
 
     assert api is client_class.return_value
     assert client._firestore_api_internal is api
-    channel_options = {"grpc.keepalive_time_ms": 30000}
+    channel_options = [
+        ("grpc.keepalive_time_ms", 30000),
+        ("grpc.max_send_message_length", -1),
+        ("grpc.max_receive_message_length", -1),
+    ]
     transport_class.create_channel.assert_called_once_with(
-        target, credentials=client._credentials, options=channel_options.items()
+        target, credentials=client._credentials, options=channel_options
     )
     transport_class.assert_called_once_with(
         host=target,
@@ -236,7 +240,12 @@ def test_baseclient__emulator_channel():
     with mock.patch("grpc.insecure_channel") as insecure_channel:
         channel = client._emulator_channel(FirestoreGrpcTransport)
         insecure_channel.assert_called_once_with(
-            emulator_host, options=[("Authorization", "Bearer test")]
+            emulator_host,
+            options=[
+                ("Authorization", "Bearer test"),
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
         )
 
 

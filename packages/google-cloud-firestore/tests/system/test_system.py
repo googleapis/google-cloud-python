@@ -3836,3 +3836,37 @@ def test_transaction_rollback(client, cleanup, database, with_rollback, expected
     assert len(result) == 1
     assert len(result[0]) == 1
     assert result[0][0].value == expected
+
+
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
+def test_large_document_standard_writes(client, cleanup, database):
+    """Test standard write and read operations for large document on Enterprise DB."""
+    collection_id = "large_docs_" + UNIQUE_RESOURCE_ID
+    doc_ref = client.collection(collection_id).document("large_doc")
+    cleanup(doc_ref.delete)
+
+    large_payload = "a" * (900 * 1024)
+    doc_ref.set({"payload": large_payload})
+
+    snapshot = doc_ref.get()
+    assert snapshot.exists
+    assert snapshot.to_dict() == {"payload": large_payload}
+
+
+@pytest.mark.parametrize("method", ["execute", "stream"])
+@pytest.mark.parametrize("database", [FIRESTORE_ENTERPRISE_DB], indirect=True)
+def test_large_document_pipeline(client, cleanup, database, method):
+    """Test pipeline execution over large document on Enterprise DB."""
+    collection_id = "large_pipeline_" + UNIQUE_RESOURCE_ID
+    col_ref = client.collection(collection_id)
+    doc_ref = col_ref.document("large_doc")
+    cleanup(doc_ref.delete)
+
+    large_payload = "b" * (900 * 1024)
+    doc_ref.set({"payload": large_payload})
+
+    pipeline = client.pipeline().collection(collection_id)
+    method_under_test = getattr(pipeline, method)
+
+    results = list(method_under_test())
+    assert [doc.data() for doc in results] == [{"payload": large_payload}]
