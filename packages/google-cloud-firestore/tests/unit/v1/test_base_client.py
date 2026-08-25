@@ -18,6 +18,8 @@ import grpc
 import mock
 import pytest
 
+from google.cloud.firestore_v1.base_client import DEFAULT_DATABASE
+
 PROJECT = "my-prahjekt"
 
 
@@ -178,6 +180,29 @@ def test_baseclient___rpc_metadata_property():
 
     assert client._rpc_metadata == [
         ("google-cloud-resource-prefix", client._database_string),
+    ]
+
+
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE])
+def test_baseclient___database_string_property_default(database):
+    credentials = _make_credentials()
+    client = _make_base_client(
+        project=PROJECT, credentials=credentials, database=database
+    )
+    assert client._database == DEFAULT_DATABASE
+    assert "%28" not in client._database_string
+    assert client._database_string == f"projects/{PROJECT}/databases/(default)"
+
+
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE])
+def test_baseclient___rpc_metadata_property_default(database):
+    credentials = _make_credentials()
+    client = _make_base_client(
+        project=PROJECT, credentials=credentials, database=database
+    )
+
+    assert client._rpc_metadata == [
+        ("google-cloud-resource-prefix", f"projects/{PROJECT}/databases/(default)"),
     ]
 
 
