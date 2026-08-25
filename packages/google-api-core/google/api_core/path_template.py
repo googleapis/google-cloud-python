@@ -123,7 +123,7 @@ def _expand_variable_match(positional_vars, named_vars, match):
         try:
             val = str(named_vars[name])
             _extract_and_validate_wildcards(val, template, name)
-            return urllib.parse.quote(val, safe="/")
+            return val
         except KeyError:
             raise ValueError(
                 "Named variable '{}' not specified and needed by template "
@@ -133,7 +133,7 @@ def _expand_variable_match(positional_vars, named_vars, match):
         try:
             val = str(positional_vars.pop(0))
             _extract_and_validate_wildcards(val, positional, "positional variable")
-            return urllib.parse.quote(val, safe="/")
+            return val
         except IndexError:
             raise ValueError(
                 "Positional variable not specified and needed by template "
@@ -327,7 +327,13 @@ def transcode(http_options, message=None, **request_kwargs):
         ]
         bindings.append((uri_template, fields))
 
-        path_args = {field: get_field(transcoded_value, field) for field, _ in fields}
+        path_args = {}
+        for field, _ in fields:
+            val = get_field(transcoded_value, field)
+            if val is not None:
+                path_args[field] = urllib.parse.quote(str(val), safe="/")
+            else:
+                path_args[field] = None
         request["uri"] = expand(uri_template, **path_args)
 
         if not validate(uri_template, request["uri"]) or not all(path_args.values()):
