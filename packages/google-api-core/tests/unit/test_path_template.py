@@ -64,6 +64,26 @@ from google.api_core import path_template
             {"name": "parent/child/object"},
             "/v1/a/parent/child/object",
         ],
+        # See https://github.com/googleapis/google-cloud-python/issues/18213
+        # Test parentheses in resource paths
+        [
+            "projects/{project}/databases/{database}",
+            [],
+            {"project": "my-project", "database": "(default)"},
+            "projects/my-project/databases/(default)",
+        ],
+        [
+            "projects/{project}/databases/{database}/**",
+            ["documents/user_1"],
+            {"project": "my-project", "database": "(default)"},
+            "projects/my-project/databases/(default)/documents/user_1",
+        ],
+        [
+            "/v1/{name=projects/*/databases/*}",
+            [],
+            {"name": "projects/my-project/databases/(default)"},
+            "/v1/projects/my-project/databases/(default)",
+        ],
         # Encoding / Metacharacters in positional and named params
         ["/v1/*", ["..?$httpMethod=DELETE#"], {}, "/v1/..%3F%24httpMethod%3DDELETE%23"],
         ["/v1/**", ["path/sub/with/?and#"], {}, "/v1/path/sub/with/%3Fand%23"],
