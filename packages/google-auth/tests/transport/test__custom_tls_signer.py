@@ -366,3 +366,38 @@ def test_cast_ssl_ctx_to_void_p_stdlib_mock_error():
         TypeError, match="context must be an instance of ssl.SSLContext, not a mock"
     ):
         _custom_tls_signer._cast_ssl_ctx_to_void_p_stdlib(context)
+
+
+def test_get_cert_from_custom_tls_signer_success():
+    signer_lib = mock.MagicMock()
+    with mock.patch(
+        "google.auth.transport._custom_tls_signer.load_signer_lib",
+        return_value=signer_lib,
+    ) as mock_load_lib:
+        with mock.patch(
+            "google.auth.transport._custom_tls_signer.get_cert",
+            return_value=b"mock_cert_bytes",
+        ) as mock_get_cert:
+            cert = _custom_tls_signer.get_cert_from_custom_tls_signer(
+                ENTERPRISE_CERT_FILE
+            )
+            assert cert == b"mock_cert_bytes"
+            mock_load_lib.assert_called_once_with("/path/to/signer/lib")
+            mock_get_cert.assert_called_once_with(signer_lib, ENTERPRISE_CERT_FILE)
+
+
+def test_get_cert_from_custom_tls_signer_missing_libs():
+    with pytest.raises(
+        exceptions.MutualTLSChannelError, match="missing signer library"
+    ):
+        _custom_tls_signer.get_cert_from_custom_tls_signer(INVALID_ENTERPRISE_CERT_FILE)
+
+
+def test_get_cert_from_custom_tls_signer_missing_signer_lib(tmp_path):
+    config_file = tmp_path / "cert_config.json"
+    config_file.write_text('{"libs": {}}')
+    with pytest.raises(
+        exceptions.MutualTLSChannelError, match="missing signer library"
+    ):
+        _custom_tls_signer.get_cert_from_custom_tls_signer(str(config_file))
+

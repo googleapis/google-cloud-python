@@ -35,6 +35,7 @@ CONTEXT_AWARE_METADATA_PATH = "~/.secureConnect/context_aware_metadata.json"
 # Default gcloud config path, to be used with path.expanduser for cross-platform compatibility.
 CERTIFICATE_CONFIGURATION_DEFAULT_PATH = "~/.config/gcloud/certificate_config.json"
 _CERT_PROVIDER_COMMAND = "cert_provider_command"
+_ECP_SECTIONS = ("pkcs11", "windows_store", "macos_keychain")
 _CERT_REGEX = re.compile(
     b"-----BEGIN CERTIFICATE-----.+-----END CERTIFICATE-----\r?\n?", re.DOTALL
 )
@@ -521,6 +522,67 @@ def _get_workload_cert_and_key_paths(config_path, include_context_aware=True):
     return cert_path, key_path
 
 
+def is_ecp_config(certificate_config_path=None, include_context_aware=True):
+    """Checks if the given configuration is an ECP (Enterprise Certificate Proxy) certificate configuration.
+
+    Args:
+        certificate_config_path (Optional[str]): The certificate config path. If no path is provided,
+            the environment variable will be checked first, then the well known gcloud location.
+        include_context_aware (bool): If context aware metadata path should be checked for the
+            SecureConnect mTLS configuration.
+
+    Returns:
+        bool: True if configuration specifies ECP, False otherwise.
+    """
+    config_path = _get_cert_config_path(certificate_config_path, include_context_aware)
+    if config_path is None:
+        return False
+
+    try:
+        data = _load_json_file(config_path)
+    except (exceptions.ClientCertError, OSError):
+        return False
+
+    if not isinstance(data, dict):
+        return False
+
+    cert_configs = data.get("cert_configs")
+    if not isinstance(cert_configs, dict):
+        return False
+
+    if "workload" in cert_configs:
+        return False
+
+    has_ecp_section = any(section in cert_configs for section in _ECP_SECTIONS)
+    has_libs = isinstance(data.get("libs"), dict)
+
+    if (not has_ecp_section or not has_libs) and certificate_config_path is None:
+        default_home_path = path.expanduser(
+            os.path.join(
+                _cloud_sdk.get_config_path(),
+                "certificate_config.json",
+            )
+        )
+        if path.exists(default_home_path) and os.path.normpath(
+            default_home_path
+        ) != os.path.normpath(config_path):
+            try:
+                home_data = _load_json_file(default_home_path)
+                if isinstance(home_data, dict):
+                    home_cert_configs = home_data.get("cert_configs")
+                    if (
+                        isinstance(home_cert_configs, dict)
+                        and "workload" not in home_cert_configs
+                        and any(section in home_cert_configs for section in _ECP_SECTIONS)
+                        and isinstance(home_data.get("libs"), dict)
+                    ):
+                        return True
+            except (exceptions.ClientCertError, OSError):
+                pass
+
+    return has_ecp_section and has_libs
+
+
 def _read_cert_and_key_files(cert_path, key_path):
     cert_data = _read_cert_file(cert_path)
     key_data = _read_key_file(key_path)
@@ -797,8 +859,13 @@ def check_use_client_cert():
         # Structural validation
         if isinstance(content, dict):
             cert_configs = content.get("cert_configs")
-            if isinstance(cert_configs, dict) and "workload" in cert_configs:
-                return True
+            if isinstance(cert_configs, dict):
+                if "workload" in cert_configs:
+                    return True
+                if any(
+                    section in cert_configs for section in _ECP_SECTIONS
+                ) and isinstance(content.get("libs"), dict):
+                    return True
 
         # If we got here, the file exists but the expected structure is missing
         _LOGGER.debug(

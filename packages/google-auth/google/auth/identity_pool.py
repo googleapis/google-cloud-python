@@ -412,11 +412,20 @@ class Credentials(external_account.Credentials):
 
     def _get_cert_bytes(self):
         cert_path, _ = self._get_mtls_cert_and_key_paths()
-        if cert_path is None:
-            raise exceptions.ClientCertError(
-                "Workload certificate configuration could not be found or does not contain workload certificate paths."
+        if cert_path is not None:
+            return _mtls_helper._read_cert_file(cert_path)
+
+        if _mtls_helper.is_ecp_config(self._certificate_config_location):
+            from google.auth.transport import _custom_tls_signer
+
+            config_path = _mtls_helper._get_cert_config_path(
+                self._certificate_config_location
             )
-        return _mtls_helper._read_cert_file(cert_path)
+            return _custom_tls_signer.get_cert_from_custom_tls_signer(config_path)
+
+        raise exceptions.ClientCertError(
+            "Workload certificate configuration could not be found or does not contain workload certificate paths."
+        )
 
     def _mtls_required(self):
         return self._credential_source_certificate is not None
@@ -574,7 +583,11 @@ class Credentials(external_account.Credentials):
         if self._credential_source_certificate is not None:
             try:
                 cert_bytes = self._get_cert_bytes()
-            except (exceptions.ClientCertError, OSError) as e:
+            except (
+                exceptions.ClientCertError,
+                exceptions.MutualTLSChannelError,
+                OSError,
+            ) as e:
                 raise exceptions.RefreshError(
                     "Failed to retrieve certificate bytes for external"
                     " account credentials"

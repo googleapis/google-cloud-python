@@ -207,6 +207,47 @@ def get_cert(signer_lib, config_file_path):
     return bytes(cert_holder)
 
 
+def get_cert_from_custom_tls_signer(enterprise_cert_file_path):
+    """Retrieves certificate bytes from the signer library specified in the enterprise cert JSON file.
+
+    Args:
+        enterprise_cert_file_path (str): The path to an enterprise cert JSON file.
+
+    Returns:
+        bytes: The certificate bytes in PEM format.
+
+    Raises:
+        google.auth.exceptions.MutualTLSChannelError: If signer library is missing or fails.
+    """
+    try:
+        with open(enterprise_cert_file_path, "r") as f:
+            enterprise_cert_json = json.load(f)
+    except (FileNotFoundError, OSError, json.JSONDecodeError) as e:
+        raise exceptions.MutualTLSChannelError(
+            f"Failed to read enterprise cert file at {enterprise_cert_file_path}"
+        ) from e
+
+    if not isinstance(enterprise_cert_json, dict):
+        raise exceptions.MutualTLSChannelError(
+            "enterprise cert file is invalid"
+        )
+
+    libs = enterprise_cert_json.get("libs")
+    if not isinstance(libs, dict):
+        raise exceptions.MutualTLSChannelError(
+            "enterprise cert file is missing 'libs' section"
+        )
+
+    signer_library = libs.get("ecp_client") or libs.get("signer_library") or libs.get("ecp")
+    if not signer_library:
+        raise exceptions.MutualTLSChannelError(
+            "enterprise cert file is missing signer library (ecp_client)"
+        )
+
+    signer_lib = load_signer_lib(signer_library)
+    return get_cert(signer_lib, enterprise_cert_file_path)
+
+
 class CustomTlsSigner(object):
     def __init__(self, enterprise_cert_file_path):
         """

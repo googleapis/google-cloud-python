@@ -479,9 +479,13 @@ class Credentials(
 
         # Inject client certificate into request.
         if self._mtls_required():
-            request = functools.partial(
-                request, cert=self._get_mtls_cert_and_key_paths()
-            )
+            cert_path, key_path = self._get_mtls_cert_and_key_paths()
+            # Only inject file-based cert/key when a key path is available.
+            # When using hardware-backed keys (ECP), the key is in the
+            # hardware keystore (key_path is None) and mTLS is handled by
+            # the session's ECP adapter instead.
+            if key_path is not None:
+                request = functools.partial(request, cert=(cert_path, key_path))
 
         if self._should_initialize_impersonated_credentials():
             with self._impersonation_lock:

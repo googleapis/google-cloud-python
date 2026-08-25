@@ -784,6 +784,56 @@ class TestCredentials(object):
         return_value=LANG_LIBRARY_METRICS_HEADER_VALUE,
     )
     @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
+    @mock.patch(
+        "google.auth.external_account.Credentials._mtls_required", return_value=True
+    )
+    @mock.patch(
+        "google.auth.external_account.Credentials._get_mtls_cert_and_key_paths",
+        return_value=(None, None),
+    )
+    def test_refresh_with_mtls_ecp_no_key(
+        self,
+        mock_get_mtls_cert_and_key_paths,
+        mock_mtls_required,
+        unused_utcnow,
+        mock_auth_lib_value,
+    ):
+        response = self.SUCCESS_RESPONSE.copy()
+        response["expires_in"] = 2800
+        expected_expiry = datetime.datetime.min + datetime.timedelta(
+            seconds=response["expires_in"]
+        )
+        headers = {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "x-goog-api-client": "gl-python/<python-version> auth/<library-version> google-byoid-sdk sa-impersonation/false config-lifetime/false",
+        }
+        request_data = {
+            "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
+            "audience": self.AUDIENCE,
+            "requested_token_type": "urn:ietf:params:oauth:token-type:access_token",
+            "subject_token": "subject_token_0",
+            "subject_token_type": self.SUBJECT_TOKEN_TYPE,
+        }
+        request = self.make_mock_request(status=http_client.OK, data=response)
+        credentials = self.make_credentials()
+
+        credentials.refresh(request)
+
+        # Expected cert path is None because ECP uses transport adapter for mTLS
+        self.assert_token_request_kwargs(
+            request.call_args[1], headers, request_data, None
+        )
+        assert credentials.valid
+        assert credentials.expiry == expected_expiry
+        assert not credentials.expired
+        assert credentials.token == response["access_token"]
+
+
+    @mock.patch(
+        "google.auth.metrics.python_and_auth_lib_version",
+        return_value=LANG_LIBRARY_METRICS_HEADER_VALUE,
+    )
+    @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
     def test_refresh_workforce_without_client_auth_success(
         self, unused_utcnow, test_auth_lib_value
     ):
