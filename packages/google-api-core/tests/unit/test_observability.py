@@ -15,13 +15,13 @@
 import sys
 from unittest import mock
 
-from google.api_core import _otel_helpers
+from google.api_core import _observability
 from google.api_core.client_options import ClientOptions
 
 
 def test_is_otel_capabilities_enabled_disabled(monkeypatch):
     monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "false")
-    assert not _otel_helpers.is_otel_capabilities_enabled()
+    assert not _observability.is_otel_capabilities_enabled()
 
 
 def test_is_otel_capabilities_enabled_otel_missing(monkeypatch):
@@ -29,7 +29,7 @@ def test_is_otel_capabilities_enabled_otel_missing(monkeypatch):
     # Simulate OTel not being installed by blocking imports
     monkeypatch.setitem(sys.modules, "opentelemetry.instrumentation.grpc", None)
 
-    assert not _otel_helpers.is_otel_capabilities_enabled()
+    assert not _observability.is_otel_capabilities_enabled()
 
 
 def test_is_otel_capabilities_enabled_otel_installed(monkeypatch):
@@ -46,7 +46,7 @@ def test_is_otel_capabilities_enabled_otel_installed(monkeypatch):
         sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
     )
 
-    assert _otel_helpers.is_otel_capabilities_enabled()
+    assert _observability.is_otel_capabilities_enabled()
 
 
 def test_apply_otel_capabilities_to_channel_enabled_otel_installed(monkeypatch):
@@ -68,7 +68,7 @@ def test_apply_otel_capabilities_to_channel_enabled_otel_installed(monkeypatch):
         sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
     )
 
-    result = _otel_helpers.apply_otel_capabilities_to_channel(mock_channel)
+    result = _observability.apply_otel_capabilities_to_channel(mock_channel)
 
     assert result is mock_intercepted_channel
     mock_otel_grpc.client_interceptor.assert_called_once_with(tracer_provider=None)
@@ -100,7 +100,7 @@ def test_apply_otel_capabilities_to_channel_enabled_via_config(monkeypatch):
         sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
     )
 
-    result = _otel_helpers.apply_otel_capabilities_to_channel(
+    result = _observability.apply_otel_capabilities_to_channel(
         mock_channel, client_options=options
     )
 
@@ -136,7 +136,7 @@ def test_apply_otel_capabilities_to_channel_enabled_via_dict_config(monkeypatch)
         sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
     )
 
-    result = _otel_helpers.apply_otel_capabilities_to_channel(
+    result = _observability.apply_otel_capabilities_to_channel(
         mock_channel, client_options=options
     )
 

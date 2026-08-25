@@ -99,7 +99,8 @@ class ClientOptions(object):
             then `api_endpoint` is used as the service endpoint. If `api_endpoint` is
             not specified, the format will be `{service}.{universe_domain}`.
         tracer_provider (Optional[object]): The OpenTelemetry tracer provider to use
-            for tracing. If not set, the global tracer provider will be used.
+            for tracing in supported libraries. If not set, the global tracer provider
+            will be used.
 
     Raises:
         ValueError: If both ``client_cert_source`` and ``client_encrypted_cert_source``

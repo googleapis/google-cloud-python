@@ -21,6 +21,8 @@ from typing import Any, Optional
 from google.api_core import _feature_gating_helpers
 from google.api_core.client_options import ClientOptions
 
+_TRACER_PROVIDER = "tracer_provider"
+
 
 def is_otel_capabilities_enabled(
     client_options: Optional[ClientOptions | dict[str, Any]] = None,
@@ -37,7 +39,7 @@ def is_otel_capabilities_enabled(
     """
     is_tracing_enabled = _feature_gating_helpers.resolve_feature_flags(
         env_var=env_var,
-        feature_key="tracer_provider",
+        feature_key=_TRACER_PROVIDER,
         configuration=client_options,
     )
 
@@ -68,14 +70,18 @@ def apply_otel_capabilities_to_channel(
 
     Returns:
         Any: The intercepted channel.
+
+    Raises:
+        ImportError: If OpenTelemetry packages are not installed and this function
+            is called directly (bypassing the precondition).
     """
     import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
 
     tracer_provider = None
     if isinstance(client_options, dict):
-        tracer_provider = client_options.get("tracer_provider")
+        tracer_provider = client_options.get(_TRACER_PROVIDER)
     elif client_options is not None:
-        tracer_provider = getattr(client_options, "tracer_provider", None)
+        tracer_provider = getattr(client_options, _TRACER_PROVIDER, None)
 
     interceptor = otel_grpc.client_interceptor(tracer_provider=tracer_provider)
 
