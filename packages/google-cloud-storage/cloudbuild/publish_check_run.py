@@ -23,6 +23,8 @@ import urllib.error
 import urllib.request
 from typing import Any, Dict, List, Optional
 
+COMMENT_TAG = "<!-- gcs-read-benchmark-results -->"
+
 
 def parse_benchmark_json(file_path: str) -> Dict[str, Any]:
     """Parses pytest-benchmark JSON output file."""
@@ -125,7 +127,8 @@ def format_markdown_summary(
         else "* DirectPath gRPC streaming metrics verified."
     )
 
-    markdown = f"""### ⚡ GCS DirectPath Read Performance Benchmark
+    markdown = f"""{COMMENT_TAG}
+### ⚡ GCS DirectPath Read Performance Benchmark
 
 **Status**:  **PASSED** | **Commit**: [`{short_commit}`](https://github.com/googleapis/google-cloud-python/commit/{commit_sha}) | **Target VM**: `{vm_name}` (`c4-standard-192`)
 
@@ -193,6 +196,58 @@ def create_github_check_run(
         return False
 
 
+def post_or_update_pr_comment(
+    repo: str,
+    pr_number: str,
+    token: str,
+    comment_body: str,
+) -> bool:
+    """Posts or updates sticky Markdown comment directly on GitHub PR."""
+    headers = {
+        "Authorization": f"token {token}",
+        "Accept": "application/vnd.github.v3+json",
+        "Content-Type": "application/json",
+        "User-Agent": "gcs-benchmark-runner",
+    }
+    comments_url = f"https://api.github.com/repos/{repo}/issues/{pr_number}/comments"
+
+    try:
+        req = urllib.request.Request(comments_url, headers=headers)
+        with urllib.request.urlopen(req) as resp:
+            comments = json.loads(resp.read().decode("utf-8"))
+
+        existing_comment_id = None
+        for c in comments:
+            if COMMENT_TAG in c.get("body", ""):
+                existing_comment_id = c.get("id")
+                break
+
+        if existing_comment_id:
+            update_url = f"https://api.github.com/repos/{repo}/issues/comments/{existing_comment_id}"
+            req = urllib.request.Request(
+                update_url,
+                data=json.dumps({"body": comment_body}).encode("utf-8"),
+                headers=headers,
+                method="PATCH",
+            )
+            with urllib.request.urlopen(req) as resp:
+                print(f"Updated PR sticky comment #{existing_comment_id}")
+                return True
+        else:
+            req = urllib.request.Request(
+                comments_url,
+                data=json.dumps({"body": comment_body}).encode("utf-8"),
+                headers=headers,
+                method="POST",
+            )
+            with urllib.request.urlopen(req) as resp:
+                print(f"Posted new PR comment on #{pr_number}")
+                return True
+    except Exception as e:
+        print(f"Warning: Failed to post PR comment: {e}", file=sys.stderr)
+        return False
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Publish GCS Benchmark Results to GitHub."
@@ -207,7 +262,7 @@ def main():
     )
     parser.add_argument(
         "--repo",
-        default="googleapis/google-cloud-python",
+        default="",
         help="GitHub Repository (owner/repo)",
     )
     parser.add_argument("--build-id", default="", help="Cloud Build ID")
@@ -244,6 +299,8 @@ def main():
     )
     args = parser.parse_args()
 
+    repo = args.repo or os.environ.get("REPO_FULL_NAME") or "shradhakatyal/google-cloud-python"
+
     data = parse_benchmark_json(args.result_file)
     markdown_content = format_markdown_summary(
         data=data,
@@ -270,16 +327,23 @@ def main():
     print("---------------------------------------------\n")
 
     token = os.environ.get("GITHUB_TOKEN")
-    if not args.dry_run and token and args.commit_sha:
-        print(
-            f"Publishing Check Run to {args.repo} for commit {args.commit_sha}..."
-        )
-        create_github_check_run(
-            repo=args.repo,
-            commit_sha=args.commit_sha,
-            token=token,
-            summary_md=markdown_content,
-        )
+    if not args.dry_run and token:
+        if args.commit_sha:
+            print(f"Publishing Check Run to {repo} for commit {args.commit_sha}...")
+            create_github_check_run(
+                repo=repo,
+                commit_sha=args.commit_sha,
+                token=token,
+                summary_md=markdown_content,
+            )
+        if args.pr_number:
+            print(f"Publishing Sticky Comment to {repo} PR #{args.pr_number}...")
+            post_or_update_pr_comment(
+                repo=repo,
+                pr_number=args.pr_number,
+                token=token,
+                comment_body=markdown_content,
+            )
     else:
         print("Note: Skipping GitHub API publication (Dry-run or no token).")
 
