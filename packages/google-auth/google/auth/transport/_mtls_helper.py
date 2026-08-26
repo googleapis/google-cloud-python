@@ -133,9 +133,11 @@ def secure_cert_key_paths(
                     key_path is None or os.path.exists(key_path)
                 ):
                     if _can_read(cert_path) and _can_read(key_path):
-                        yield cast(str, cert_path or cert), cast(
-                            str, key_path or key
-                        ), passphrase
+                        yield (
+                            cast(str, cert_path or cert),
+                            cast(str, key_path or key),
+                            passphrase,
+                        )
                         return
         except _MemfdCreationError:
             pass  # Fallback to Tier 3 on failure.
@@ -555,30 +557,6 @@ def is_ecp_config(certificate_config_path=None, include_context_aware=True):
 
     has_ecp_section = any(section in cert_configs for section in _ECP_SECTIONS)
     has_libs = isinstance(data.get("libs"), dict)
-
-    if (not has_ecp_section or not has_libs) and certificate_config_path is None:
-        default_home_path = path.expanduser(
-            os.path.join(
-                _cloud_sdk.get_config_path(),
-                "certificate_config.json",
-            )
-        )
-        if path.exists(default_home_path) and os.path.normpath(
-            default_home_path
-        ) != os.path.normpath(config_path):
-            try:
-                home_data = _load_json_file(default_home_path)
-                if isinstance(home_data, dict):
-                    home_cert_configs = home_data.get("cert_configs")
-                    if (
-                        isinstance(home_cert_configs, dict)
-                        and "workload" not in home_cert_configs
-                        and any(section in home_cert_configs for section in _ECP_SECTIONS)
-                        and isinstance(home_data.get("libs"), dict)
-                    ):
-                        return True
-            except (exceptions.ClientCertError, OSError):
-                pass
 
     return has_ecp_section and has_libs
 

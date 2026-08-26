@@ -220,7 +220,7 @@ def get_cert_from_custom_tls_signer(enterprise_cert_file_path):
         google.auth.exceptions.MutualTLSChannelError: If signer library is missing or fails.
     """
     try:
-        with open(enterprise_cert_file_path, "r") as f:
+        with open(enterprise_cert_file_path, "r", encoding="utf-8") as f:
             enterprise_cert_json = json.load(f)
     except (FileNotFoundError, OSError, json.JSONDecodeError) as e:
         raise exceptions.MutualTLSChannelError(
@@ -228,9 +228,7 @@ def get_cert_from_custom_tls_signer(enterprise_cert_file_path):
         ) from e
 
     if not isinstance(enterprise_cert_json, dict):
-        raise exceptions.MutualTLSChannelError(
-            "enterprise cert file is invalid"
-        )
+        raise exceptions.MutualTLSChannelError("enterprise cert file is invalid")
 
     libs = enterprise_cert_json.get("libs")
     if not isinstance(libs, dict):
@@ -238,8 +236,10 @@ def get_cert_from_custom_tls_signer(enterprise_cert_file_path):
             "enterprise cert file is missing 'libs' section"
         )
 
-    signer_library = libs.get("ecp_client") or libs.get("signer_library") or libs.get("ecp")
-    if not signer_library:
+    signer_library = (
+        libs.get("ecp_client") or libs.get("signer_library") or libs.get("ecp")
+    )
+    if not isinstance(signer_library, str) or not signer_library:
         raise exceptions.MutualTLSChannelError(
             "enterprise cert file is missing signer library (ecp_client)"
         )

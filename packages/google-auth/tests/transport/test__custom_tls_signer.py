@@ -299,8 +299,9 @@ def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_trace_refs():
     fake_impl = mock.Mock()
     fake_impl.name = "cpython"
 
-    with mock.patch("sys.implementation", fake_impl), mock.patch(
-        "sys.getobjects", create=True
+    with (
+        mock.patch("sys.implementation", fake_impl),
+        mock.patch("sys.getobjects", create=True),
     ):
         with pytest.raises(
             exceptions.MutualTLSChannelError,
@@ -320,8 +321,9 @@ def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_debug_flag():
     context = ssl.SSLContext()
     fake_impl = mock.Mock()
     fake_impl.name = "cpython"
-    with mock.patch("sys.implementation", fake_impl), mock.patch(
-        "sysconfig.get_config_var", return_value=1
+    with (
+        mock.patch("sys.implementation", fake_impl),
+        mock.patch("sysconfig.get_config_var", return_value=1),
     ):
         with pytest.raises(
             exceptions.MutualTLSChannelError,
@@ -340,8 +342,9 @@ def test_cast_ssl_ctx_to_void_p_stdlib_unsupported_runtime_free_threaded():
 
     fake_impl = mock.Mock()
     fake_impl.name = "cpython"
-    with mock.patch("sys.implementation", fake_impl), mock.patch(
-        "sysconfig.get_config_var", side_effect=mock_get_config_var
+    with (
+        mock.patch("sys.implementation", fake_impl),
+        mock.patch("sysconfig.get_config_var", side_effect=mock_get_config_var),
     ):
         with pytest.raises(
             exceptions.MutualTLSChannelError,
@@ -400,4 +403,3 @@ def test_get_cert_from_custom_tls_signer_missing_signer_lib(tmp_path):
         exceptions.MutualTLSChannelError, match="missing signer library"
     ):
         _custom_tls_signer.get_cert_from_custom_tls_signer(str(config_file))
-

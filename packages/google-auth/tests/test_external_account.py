@@ -828,7 +828,6 @@ class TestCredentials(object):
         assert not credentials.expired
         assert credentials.token == response["access_token"]
 
-
     @mock.patch(
         "google.auth.metrics.python_and_auth_lib_version",
         return_value=LANG_LIBRARY_METRICS_HEADER_VALUE,

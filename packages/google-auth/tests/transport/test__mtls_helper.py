@@ -1302,8 +1302,9 @@ class TestSecureCertKeyPaths(object):
         )
         mock_memfd_cm.return_value = mock_memfd_ctx
 
-        with mock.patch.object(os.path, "exists", return_value=True), mock.patch(
-            "builtins.open", mock.mock_open()
+        with (
+            mock.patch.object(os.path, "exists", return_value=True),
+            mock.patch("builtins.open", mock.mock_open()),
         ):
             with _mtls_helper.secure_cert_key_paths(
                 pytest.public_cert_bytes,
@@ -1368,9 +1369,10 @@ class TestSecureCertKeyPaths(object):
         )
         mock_tempfile_cm.return_value = mock_tempfile_ctx
 
-        with mock.patch.object(os.path, "exists", return_value=True), mock.patch(
-            "builtins.open", mock.mock_open()
-        ) as mock_open:
+        with (
+            mock.patch.object(os.path, "exists", return_value=True),
+            mock.patch("builtins.open", mock.mock_open()) as mock_open,
+        ):
             mock_open.side_effect = PermissionError("Permission denied")
 
             with _mtls_helper.secure_cert_key_paths(
@@ -1969,4 +1971,3 @@ class TestIsECPConfig:
         mock_get_path.return_value = "/path/to/config.json"
         mock_load_json.side_effect = exceptions.ClientCertError("error")
         assert _mtls_helper.is_ecp_config("/path/to/config.json") is False
-

@@ -540,7 +540,8 @@ class Credentials(
             self.expiry = now + lifetime
 
     def _build_regional_access_boundary_lookup_url(
-        self, request: "Optional[google.auth.transport.Request]" = None  # noqa: F821
+        self,
+        request: "Optional[google.auth.transport.Request]" = None,  # noqa: F821
     ):
         """Builds and returns the URL for the Regional Access Boundary lookup API."""
         if getattr(self, "_impersonated_credentials", None):
@@ -750,7 +751,7 @@ class Credentials(
                 "universe_domain", credentials.DEFAULT_UNIVERSE_DOMAIN
             ),
             trust_boundary=info.get("trust_boundary"),
-            **kwargs
+            **kwargs,
         )
 
     @classmethod
