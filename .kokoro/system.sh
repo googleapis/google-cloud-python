@@ -93,7 +93,7 @@ run_package_test() {
       PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
       GOOGLE_APPLICATION_CREDENTIALS="${KOKORO_GFILE_DIR}/service-account.json"
       NOX_FILE="noxfile.py"
-      NOX_SESSION="system"
+      NOX_SESSION="${NOX_SESSION:-system}"
       ;;
     *)
       PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
@@ -281,6 +281,20 @@ for path in `find 'packages' \
   # verification.
   if [[ "${library_type}" != "GAPIC_AUTO" || "${package_name}" == "google-cloud-compute"* ]]; then
     files_to_check=("${package_path}")
+  fi
+
+  # When testing core dependencies from source, also trigger on changes to core packages
+  if [[ "${NOX_SESSION}" == "core_deps_from_source" ]]; then
+    files_to_check+=(
+      "packages/google-api-core"
+      "packages/google-auth"
+      "packages/google-auth-httplib2"
+      "packages/google-auth-oauthlib"
+      "packages/google-cloud-core"
+      "packages/googleapis-common-protos"
+      "packages/grpc-google-iam-v1"
+      "packages/proto-plus"
+    )
   fi
 
   set +e
