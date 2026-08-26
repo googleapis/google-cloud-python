@@ -315,7 +315,7 @@ class AsyncAuthorizedSession:
                     )
                 )
                 if response.status_code == http_client.UNAUTHORIZED:
-                    if self.is_mtls:
+                    try:
                         call_cert_bytes, call_key_bytes, cached_fingerprint, current_cert_fingerprint = google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response(
                             self._cached_cert
                         )
@@ -330,15 +330,20 @@ class AsyncAuthorizedSession:
                                 )
                                 continue
                             except Exception as e:
-                                _LOGGER.error("Failed to reconfigure mTLS channel: %s", e)
-                                raise exceptions.MutualTLSChannelError(
-                                    "Failed to reconfigure mTLS channel"
-                                ) from e
+                                _LOGGER.warning(
+                                    "Failed to reconfigure mTLS channel: %s. Proceeding with original response.",
+                                    e
+                                )
                         else:
-                            _LOGGER.info(
+                             _LOGGER.info(
                                 "Skipping reconfiguration of mTLS channel because the client"
                                 " certificate has not changed."
                             )
+                    except Exception as e:
+                        _LOGGER.warning(
+                            "Failed to check client certificate parameters: %s. Proceeding with original response.",
+                            e,
+                        )
 
                 if response.status_code not in transport.DEFAULT_RETRYABLE_STATUS_CODES:
                     break
