@@ -24,7 +24,7 @@ import warnings
 from google.auth import exceptions
 from google.auth import transport
 from google.auth.transport import _mtls_helper
-from google.auth.transport import mtls_interceptor.py‎
+from google.auth.transport import mtls_interceptor‎
 from google.auth.transport import mtls
 from google.oauth2 import service_account
 
