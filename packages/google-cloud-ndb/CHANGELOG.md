@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [2.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ndb-v2.5.1...google-cloud-ndb-v2.6.0) (2026-08-21)
+
+
+### Features
+
+* check python and dependency versions in bigquery and ndb ([#18075](https://github.com/googleapis/google-cloud-python/issues/18075)) ([62ff6f3](https://github.com/googleapis/google-cloud-python/commit/62ff6f37f04de1b8a88876bfc1ac379573e42b36))
+
+
+### Bug Fixes
+
+* **ndb:** avoid unbound lock in delete callback ([#17969](https://github.com/googleapis/google-cloud-python/issues/17969)) ([c513b39](https://github.com/googleapis/google-cloud-python/commit/c513b397eb3514eaec81e26e6cf044a92b57cf23))
+* **ndb:** use the single-argument generator.throw() signature ([#18159](https://github.com/googleapis/google-cloud-python/issues/18159)) ([dfb0e36](https://github.com/googleapis/google-cloud-python/commit/dfb0e36f3ac9089364bf4a638694e70514b18b51))
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
 ## [2.5.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-ndb-v2.5.0...google-cloud-ndb-v2.5.1) (2026-08-06)
 
 

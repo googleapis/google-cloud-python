@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.39.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.38.0...gapic-generator-v1.39.0) (2026-08-21)
+
+
+### Features
+
+* **generator:** add fallback compatibility imports for google-api-core helpers ([#17999](https://github.com/googleapis/google-cloud-python/issues/17999)) ([9c13ae2](https://github.com/googleapis/google-cloud-python/commit/9c13ae2476e8ea7a5f3197ed5d094d3b1d5686a9))
+
+
+### Bug Fixes
+
+* **generator:** check for api_version header in metadata list ([#18015](https://github.com/googleapis/google-cloud-python/issues/18015)) ([0e63510](https://github.com/googleapis/google-cloud-python/commit/0e63510c3b03c14bb1f8dd473dbcdfb719a7050d))
+* **generator:** move version checks after __all__ in __init__.py temlate ([#18100](https://github.com/googleapis/google-cloud-python/issues/18100)) ([d0efb4d](https://github.com/googleapis/google-cloud-python/commit/d0efb4dd19aa21c779b20cae02d135fad9ca997e))
+* **generator:** switch core_deps_from_source to DEFAULT_PYTHON_VERSION ([#18050](https://github.com/googleapis/google-cloud-python/issues/18050)) ([895ffa2](https://github.com/googleapis/google-cloud-python/commit/895ffa29ba72f2a6e520c6d0fdf26ac9e36f8269))
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
 ## [1.38.0](https://github.com/googleapis/google-cloud-python/compare/gapic-generator-v1.37.1...gapic-generator-v1.38.0) (2026-08-06)
 
 

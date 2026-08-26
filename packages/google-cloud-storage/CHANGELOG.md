@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.13.1...google-cloud-storage-v3.14.0) (2026-08-21)
+
+
+### Features
+
+* **storage:** expose metadata parameter in asyncio gRPC calls ([#17634](https://github.com/googleapis/google-cloud-python/issues/17634)) ([aaa263d](https://github.com/googleapis/google-cloud-python/commit/aaa263d672a801fd3d567c43e235a75545de3ec3))
+* **storage:** expose object_metadata on AsyncMultiRangeDownloader ([#17411](https://github.com/googleapis/google-cloud-python/issues/17411)) ([a0171ae](https://github.com/googleapis/google-cloud-python/commit/a0171ae7e0c07409d244ab02743ef9f342ff7a7e))
+
+
+### Bug Fixes
+
+* **storage:** add retry support for finalize and close in AsyncAppendableObjectWriter ([#17733](https://github.com/googleapis/google-cloud-python/issues/17733)) ([92bb6dc](https://github.com/googleapis/google-cloud-python/commit/92bb6dc5cf32cfaf215f0423b13d70e338cd2faf))
+* **storage:** ensure bidi-gRPC stream is cleaned up on open failure and close ([#18119](https://github.com/googleapis/google-cloud-python/issues/18119)) ([ac0dfd1](https://github.com/googleapis/google-cloud-python/commit/ac0dfd1fd1d66c36a15a012a409409ccf640c645))
+* **storage:** resume bidi reads after idle-stream aborts ([#18061](https://github.com/googleapis/google-cloud-python/issues/18061)) ([3fe1e21](https://github.com/googleapis/google-cloud-python/commit/3fe1e219b2f4bade65790879024f32c76d65f60e))
+* use lowercase x-goog-api-client header ([#18064](https://github.com/googleapis/google-cloud-python/issues/18064)) ([d465d1e](https://github.com/googleapis/google-cloud-python/commit/d465d1ebdb03bc61abf51be02663d795ac8806af))
+
+
+### Documentation
+
+* correct typos and grammar in README ([#16535](https://github.com/googleapis/google-cloud-python/issues/16535)) ([593a8b0](https://github.com/googleapis/google-cloud-python/commit/593a8b0859e99489d4c944cc6ee5b982b8c17b92))
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
 ## [3.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-v3.13.0...google-cloud-storage-v3.13.1) (2026-08-06)
 
 

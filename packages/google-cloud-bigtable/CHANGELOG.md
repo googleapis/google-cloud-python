@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.43.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.42.0...google-cloud-bigtable-v2.43.0) (2026-08-21)
+
+
+### Features
+
+* update sources and regenerate ([#18164](https://github.com/googleapis/google-cloud-python/issues/18164)) ([5ff8274](https://github.com/googleapis/google-cloud-python/commit/5ff8274ac2eb9375e918dff68303d3abdc3e6d6f))
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
 ## [2.42.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigtable-v2.41.0...google-cloud-bigtable-v2.42.0) (2026-08-19)
 
 

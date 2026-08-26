@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/sqlalchemy-spanner/#history
 
+## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/sqlalchemy-spanner-v1.19.0...sqlalchemy-spanner-v1.20.0) (2026-08-21)
+
+
+### Features
+
+* **sqlalchemy-spanner:** export MAX_SIZE constant ([#17922](https://github.com/googleapis/google-cloud-python/issues/17922)) ([e15c21d](https://github.com/googleapis/google-cloud-python/commit/e15c21dbe759743b16293d0a084813193ec16dbf))
+* **sqlalchemy-spanner:** native UUID data type support in dialect ([#17913](https://github.com/googleapis/google-cloud-python/issues/17913)) ([6431932](https://github.com/googleapis/google-cloud-python/commit/64319325a5c1b0bc4f6de4a26a9e9ab90d0c3de0))
+
+
+### Bug Fixes
+
+* bump sqlparse from 0.5.5 to 0.6.0 in /packages/sqlalchemy-spanner ([#18136](https://github.com/googleapis/google-cloud-python/issues/18136)) ([3ba7d02](https://github.com/googleapis/google-cloud-python/commit/3ba7d02b5fde9e7ede737a217ed4764228428766))
+* **sqlalchemy-spanner:** fix get_multi_indexes crash on SEARCH indexes ([#17907](https://github.com/googleapis/google-cloud-python/issues/17907)) ([5b2da81](https://github.com/googleapis/google-cloud-python/commit/5b2da81e2e63b154e6441a5abe6ad78688340f5a))
+* **sqlalchemy-spanner:** register TOKENLIST in _type_map for reflection ([#17911](https://github.com/googleapis/google-cloud-python/issues/17911)) ([788208b](https://github.com/googleapis/google-cloud-python/commit/788208bab493ae7e507e94841c1a3a27f49b6b18))
+
 ## [1.19.0](https://github.com/googleapis/google-cloud-python/compare/sqlalchemy-spanner-v1.18.0...sqlalchemy-spanner-v1.19.0) (2026-06-02)
 
 
