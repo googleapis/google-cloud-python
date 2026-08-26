@@ -20,6 +20,7 @@ from google.api_core.client_options import ClientOptions
 from google.api_core.exceptions import Aborted
 from google.api_core.gapic_v1.client_info import ClientInfo
 from google.auth.credentials import AnonymousCredentials
+
 from google.cloud import spanner_v1 as spanner
 from google.cloud.spanner_dbapi import partition_helper
 from google.cloud.spanner_dbapi.batch_dml_executor import BatchDmlExecutor, BatchMode
