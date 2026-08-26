@@ -12,6 +12,7 @@ PROCESSES="${PROCESSES:-48}"
 COROS="${COROS:-1}"
 FILE_SIZE_MIB="${FILE_SIZE_MIB:-10240}"      # 10 GiB files by default
 CHUNK_SIZE_KIB="${CHUNK_SIZE_KIB:-102400}"   # ~100 MiB read chunks by default
+ROUNDS="${ROUNDS:-2}"                        # Run benchmark 2 times
 BUCKET_TYPE="${BUCKET_TYPE:-zonal}"          # "zonal" uses BidiReadObject gRPC DirectPath
 TARGET_BUCKET="${DEFAULT_RAPID_ZONAL_BUCKET:-shradhakatyal-read-bench-zb-us-west4-a}"
 OUT_JSON="${OUT_JSON:-/tmp/bench_result.json}"
@@ -23,6 +24,7 @@ echo " Processes:       ${PROCESSES}"
 echo " Coroutines/proc: ${COROS}"
 echo " File Size:       ${FILE_SIZE_MIB} MiB"
 echo " Chunk Size:      ${CHUNK_SIZE_KIB} KiB"
+echo " Rounds:          ${ROUNDS}"
 echo " Bucket Type:     ${BUCKET_TYPE} (zonal = BidiReadObject gRPC DirectPath)"
 echo " Target Bucket:   gs://${TARGET_BUCKET}"
 echo "========================================================================"
@@ -50,7 +52,7 @@ if [ ! -f "${CONFIG_PATH}" ]; then
   exit 1
 fi
 
-echo "--- 2. Updating ${CONFIG_PATH} parameters ---"
+echo "--- 2. Updating ${CONFIG_PATH} parameters (rounds=${ROUNDS}) ---"
 python3 -c "
 import yaml
 path = '${CONFIG_PATH}'
@@ -62,6 +64,7 @@ if isinstance(d, dict):
         common['file_sizes_mib'] = [${FILE_SIZE_MIB}]
         common['chunk_sizes_kib'] = [${CHUNK_SIZE_KIB}]
         common['bucket_types'] = ['${BUCKET_TYPE}']
+        common['rounds'] = int('${ROUNDS}')
     workloads = d.get('workload')
     if isinstance(workloads, list):
         for w in workloads:
@@ -129,15 +132,15 @@ if __name__ == '__main__':
             pool.map(upload_object, missing_indices)
 "
 
-echo "--- 4. Executing pytest benchmark suite ---"
+echo "--- 4. Executing pytest benchmark suite (${ROUNDS} rounds) ---"
 pytest --benchmark-json="${OUT_JSON}" \
-  -vv -s \
-  --log-format='%(asctime)s %(levelname)s %(message)s' --log-date-format='%H:%M:%S' \
+  --benchmark-rounds="${ROUNDS}" \
+  -rA \
   tests/perf/microbenchmarks/time_based/reads/test_reads.py || true
 
 if [ -s "${OUT_JSON}" ]; then
   echo "========================================================================"
-  echo " BENCHMARK STATS SUMMARY"
+  echo " BENCHMARK STATS SUMMARY (${ROUNDS} Rounds)"
   echo "========================================================================"
   grep -E '"name":|"avg_throughput_mib_s":|"net_throughput_mb_s":|"cpu_max_global":' "${OUT_JSON}" -B 1 -A 2 || true
 

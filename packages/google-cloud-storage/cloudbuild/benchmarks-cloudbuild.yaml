@@ -6,6 +6,7 @@ substitutions:
   _COROS: "1"
   _FILE_SIZE_MIB: "10240"
   _CHUNK_SIZE_KIB: "102400"
+  _ROUNDS: "2"
   _ZONAL_BUCKET: "shradhakatyal-read-bench-zb-us-west4-a"
   _PR_NUMBER: ""
   _REPO: "shradhakatyal/google-cloud-python"
@@ -41,10 +42,10 @@ steps:
         tar -xzf /root/source.tar.gz
         cd google-cloud-storage
 
-        # Run benchmark runner script
+        # Run benchmark runner script with 2 rounds and clean output
         ulimit -n ${_ULIMIT}
         PROCESSES=${_PROCESSES} COROS=${_COROS} FILE_SIZE_MIB=${_FILE_SIZE_MIB} CHUNK_SIZE_KIB=${_CHUNK_SIZE_KIB} \
-          TARGET_BUCKET=${_ZONAL_BUCKET} \
+          ROUNDS=${_ROUNDS} TARGET_BUCKET=${_ZONAL_BUCKET} \
           bash cloudbuild/run_benchmark_tests.sh
 
         # Upload JSON result report to Cloud Build bucket
