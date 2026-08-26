@@ -316,7 +316,13 @@ class AsyncAuthorizedSession:
                 )
                 if response.status_code == http_client.UNAUTHORIZED:
                     try:
-                        call_cert_bytes, call_key_bytes, cached_fingerprint, current_cert_fingerprint = google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response(
+                        (
+                            call_cert_bytes, 
+                            call_key_bytes, 
+                            cached_fingerprint, 
+                            current_cert_fingerprint
+                        ) = await mtls._run_in_executor(
+                            google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response,
                             self._cached_cert
                         )
                         if cached_fingerprint != current_cert_fingerprint:
