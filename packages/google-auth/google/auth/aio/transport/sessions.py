@@ -15,6 +15,8 @@
 import asyncio
 from contextlib import asynccontextmanager
 import functools
+import http.client as http_client
+import logging
 import time
 from typing import Mapping, Optional, TYPE_CHECKING, Union
 import warnings
@@ -25,6 +27,8 @@ from google.auth.aio.credentials import Credentials
 from google.auth.aio.transport import mtls
 from google.auth.exceptions import TimeoutError
 import google.auth.transport._mtls_helper
+
+_LOGGER = logging.getLogger(__name__)
 
 if TYPE_CHECKING:  # pragma: NO COVER
     import aiohttp
@@ -310,6 +314,32 @@ class AsyncAuthorizedSession:
                         url, method, data, headers, actual_timeout, **kwargs
                     )
                 )
+                if response.status_code == http_client.UNAUTHORIZED:
+                    if self.is_mtls:
+                        call_cert_bytes, call_key_bytes, cached_fingerprint, current_cert_fingerprint = google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response(
+                            self._cached_cert
+                        )
+                        if cached_fingerprint != current_cert_fingerprint:
+                            try:
+                                _LOGGER.info(
+                                    "Client certificate has changed, reconfiguring mTLS "
+                                    "channel."
+                                )
+                                await self.configure_mtls_channel(
+                                    lambda: (call_cert_bytes, call_key_bytes)
+                                )
+                                continue
+                            except Exception as e:
+                                _LOGGER.error("Failed to reconfigure mTLS channel: %s", e)
+                                raise exceptions.MutualTLSChannelError(
+                                    "Failed to reconfigure mTLS channel"
+                                ) from e
+                        else:
+                            _LOGGER.info(
+                                "Skipping reconfiguration of mTLS channel because the client"
+                                " certificate has not changed."
+                            )
+
                 if response.status_code not in transport.DEFAULT_RETRYABLE_STATUS_CODES:
                     break
         return response
