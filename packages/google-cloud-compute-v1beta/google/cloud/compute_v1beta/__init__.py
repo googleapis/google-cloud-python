@@ -75,6 +75,7 @@ __lazy_modules__ = {
     "google.cloud.compute_v1beta.services.licenses",
     "google.cloud.compute_v1beta.services.machine_images",
     "google.cloud.compute_v1beta.services.machine_types",
+    "google.cloud.compute_v1beta.services.managed_rulesets",
     "google.cloud.compute_v1beta.services.network_attachments",
     "google.cloud.compute_v1beta.services.network_edge_security_services",
     "google.cloud.compute_v1beta.services.network_endpoint_groups",
@@ -218,6 +219,7 @@ from .services.license_codes import LicenseCodesClient
 from .services.licenses import LicensesClient
 from .services.machine_images import MachineImagesClient
 from .services.machine_types import MachineTypesClient
+from .services.managed_rulesets import ManagedRulesetsClient
 from .services.network_attachments import NetworkAttachmentsClient
 from .services.network_edge_security_services import NetworkEdgeSecurityServicesClient
 from .services.network_endpoint_groups import NetworkEndpointGroupsClient
@@ -796,6 +798,8 @@ from .types.compute import (
     FutureReservationStatusLastKnownGoodState,
     FutureReservationStatusLastKnownGoodStateFutureReservationSpecs,
     FutureReservationStatusSpecificSKUProperties,
+    FutureReservationStoragePoolProperties,
+    FutureReservationStoragePoolProvisionedCapacity,
     FutureReservationTimeWindow,
     FutureResourcesRecommendation,
     FutureResourcesRecommendationOtherLocation,
@@ -903,6 +907,7 @@ from .types.compute import (
     GetMachineImageRequest,
     GetMachineTypeRequest,
     GetMacsecConfigInterconnectRequest,
+    GetManagedRulesetRequest,
     GetNamedSetRouterRequest,
     GetNatIpInfoRouterRequest,
     GetNatMappingInfoRoutersRequest,
@@ -1450,6 +1455,7 @@ from .types.compute import (
     ListMachineTypesRequest,
     ListManagedInstancesInstanceGroupManagersRequest,
     ListManagedInstancesRegionInstanceGroupManagersRequest,
+    ListManagedRulesetsRequest,
     ListNamedSetsRoutersRequest,
     ListNetworkAttachmentsRequest,
     ListNetworkEndpointGroupsRequest,
@@ -1574,6 +1580,8 @@ from .types.compute import (
     ManagedInstanceScheduling,
     ManagedInstanceShutdownDetails,
     ManagedInstanceVersion,
+    ManagedRuleset,
+    ManagedRulesetList,
     Metadata,
     MetadataFilter,
     MetadataFilterLabelMatch,
@@ -3118,6 +3126,8 @@ __all__ = (
     "FutureReservationStatusLastKnownGoodState",
     "FutureReservationStatusLastKnownGoodStateFutureReservationSpecs",
     "FutureReservationStatusSpecificSKUProperties",
+    "FutureReservationStoragePoolProperties",
+    "FutureReservationStoragePoolProvisionedCapacity",
     "FutureReservationTimeWindow",
     "FutureReservationsAggregatedListResponse",
     "FutureReservationsClient",
@@ -3231,6 +3241,7 @@ __all__ = (
     "GetMachineImageRequest",
     "GetMachineTypeRequest",
     "GetMacsecConfigInterconnectRequest",
+    "GetManagedRulesetRequest",
     "GetNamedSetRouterRequest",
     "GetNatIpInfoRouterRequest",
     "GetNatMappingInfoRoutersRequest",
@@ -3804,6 +3815,7 @@ __all__ = (
     "ListMachineTypesRequest",
     "ListManagedInstancesInstanceGroupManagersRequest",
     "ListManagedInstancesRegionInstanceGroupManagersRequest",
+    "ListManagedRulesetsRequest",
     "ListNamedSetsRoutersRequest",
     "ListNetworkAttachmentsRequest",
     "ListNetworkEndpointGroupsRequest",
@@ -3930,6 +3942,9 @@ __all__ = (
     "ManagedInstanceScheduling",
     "ManagedInstanceShutdownDetails",
     "ManagedInstanceVersion",
+    "ManagedRuleset",
+    "ManagedRulesetList",
+    "ManagedRulesetsClient",
     "Metadata",
     "MetadataFilter",
     "MetadataFilterLabelMatch",

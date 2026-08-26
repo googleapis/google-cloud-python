@@ -274,6 +274,10 @@ class _BaseStorageControlRestTransport(StorageControlTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
+    class _BaseDisableRapidCache:
+        def __hash__(self):  # pragma: NO COVER
+            return NotImplementedError("__hash__ must be implemented.")
+
     class _BaseGetAnywhereCache:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")

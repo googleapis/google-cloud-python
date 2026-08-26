@@ -43,6 +43,7 @@ Services for Google Ads Admanager v1 API
     mobile_carrier_service
     mobile_device_service
     mobile_device_submodel_service
+    native_style_service
     network_service
     operating_system_service
     operating_system_version_service
