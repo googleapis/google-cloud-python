@@ -1798,13 +1798,11 @@ class TestClient(unittest.TestCase):
         http.request.assert_called_once_with(
             url=mock.ANY,
             method="GET",
-            headers=requests.structures.CaseInsensitiveDict(
-                {
-                    "X-Goog-API-Client": expected_user_agent,
-                    "Accept-Encoding": "gzip",
-                    "User-Agent": expected_user_agent,
-                }
-            ),
+            headers={
+                "x-goog-api-client": expected_user_agent,
+                "Accept-Encoding": "gzip",
+                "User-Agent": expected_user_agent,
+            },
             data=mock.ANY,
             timeout=DEFAULT_TIMEOUT,
         )
