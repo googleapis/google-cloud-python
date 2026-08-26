@@ -98,6 +98,7 @@ class TestAsyncWriteObjectStream:
         initial_request = call_args.kwargs["initial_request"]
         assert initial_request.write_object_spec is not None
         assert initial_request.write_object_spec.resource.name == OBJECT
+        assert initial_request.write_object_spec.resource.storage_class == "RAPID"
         assert initial_request.write_object_spec.appendable
 
         assert stream.is_stream_open

@@ -124,7 +124,9 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
                 resource = _grpc_conversions.blob_to_proto(self.blob)
             else:
                 resource = _storage_v2.Object(
-                    name=self.object_name, bucket=self._full_bucket_name
+                    name=self.object_name,
+                    bucket=self._full_bucket_name,
+                    storage_class="RAPID",
                 )
             self.first_bidi_write_req = _storage_v2.BidiWriteObjectRequest(
                 write_object_spec=_storage_v2.WriteObjectSpec(
