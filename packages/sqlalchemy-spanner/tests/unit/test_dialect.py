@@ -127,3 +127,26 @@ class TestSpannerDialect(fixtures.TestBase):
         preparer = SpannerDialect().identifier_preparer
         eq_(preparer.quote("a`b"), "`a\\`b`")
         eq_(preparer.quote("a\\b"), "`a\\\\b`")
+
+    def test_interleave_in_parent_string_is_quoted(self):
+        """A string interleave parent is routed through the identifier preparer."""
+        table = Table(
+            "child",
+            MetaData(),
+            Column("id", Integer, primary_key=True),
+            spanner_interleave_in="from",
+        )
+        ddl = str(CreateTable(table).compile(dialect=SpannerDialect()))
+        assert "INTERLEAVE IN PARENT `from`" in ddl
+
+    def test_interleave_in_parent_table_object_is_quoted(self):
+        """A Table interleave parent is quoted by its name rather than repr."""
+        parent = Table("from", MetaData(), Column("id", Integer, primary_key=True))
+        table = Table(
+            "child",
+            MetaData(),
+            Column("id", Integer, primary_key=True),
+            spanner_interleave_in=parent,
+        )
+        ddl = str(CreateTable(table).compile(dialect=SpannerDialect()))
+        assert "INTERLEAVE IN PARENT `from`" in ddl
