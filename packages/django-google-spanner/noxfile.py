@@ -40,6 +40,8 @@ ALL_PYTHON = list(UNIT_TEST_PYTHON_VERSIONS)
 
 SYSTEM_TEST_PYTHON_VERSIONS = ALL_PYTHON
 
+DJANGO_VERSIONS = ["5.2", "6.0"]
+
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "pytest",
@@ -61,8 +63,7 @@ UNIT_TEST_DEPENDENCIES = [
 ]
 
 UNIT_TEST_MOCKSERVER_DEPENDENCIES = [
-    "django>=5.2,<6.1",
-    "google-cloud-spanner>=3.69.1",
+    "google-cloud-spanner>=3.70.0",
     "sqlparse>=0.4.4",
 ]
 
@@ -124,12 +125,22 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-def default(session):
+def default(session, django_version="5.2"):
+    # Django 6.0 dropped support for Python 3.10 and 3.11 (requires Python >= 3.12)
+    if django_version == "6.0" and session.python in ("3.10", "3.11"):
+        session.skip(f"Django {django_version} requires Python >= 3.12")
+
+    # Target specific Django version
+    django_dep = (
+        f"django~={django_version}.0" if django_version == "6.0" else "django~=5.2.0"
+    )
+
     # Install all test dependencies, then install this package in-place.
     session.install(
         *UNIT_TEST_STANDARD_DEPENDENCIES,
         *UNIT_TEST_EXTERNAL_DEPENDENCIES,
         *UNIT_TEST_MOCKSERVER_DEPENDENCIES,
+        django_dep,
     )
     session.install("-e", ".")
 
@@ -149,32 +160,17 @@ def default(session):
 
 
 @nox.session(python=ALL_PYTHON)
-def unit(session):
-    """Run the unit test suite."""
-    default(session)
+@nox.parametrize("django", DJANGO_VERSIONS)
+def unit(session, django):
+    """Run the unit test suite across Django versions."""
+    default(session, django_version=django)
 
 
 @nox.session(python=MOCKSERVER_TEST_PYTHON_VERSION)
-def mockserver(session):
-    # Install all test dependencies, then install this package in-place.
-    session.install(
-        *UNIT_TEST_STANDARD_DEPENDENCIES,
-        *UNIT_TEST_EXTERNAL_DEPENDENCIES,
-        *UNIT_TEST_MOCKSERVER_DEPENDENCIES,
-    )
-    session.install("-e", ".")
-    session.run(
-        "py.test",
-        "--quiet",
-        "--cov=django_spanner",
-        "--cov=tests.mockserver_tests",
-        "--cov-append",
-        "--cov-config=.coveragerc",
-        "--cov-report=",
-        "--cov-fail-under=0",
-        os.path.join("tests", "mockserver_tests"),
-        *session.posargs,
-    )
+@nox.parametrize("django", DJANGO_VERSIONS)
+def mockserver(session, django):
+    """Run mockserver tests across Django versions."""
+    default(session, django_version=django)
 
 
 def system_test(session):
