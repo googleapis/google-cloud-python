@@ -392,9 +392,8 @@ class TestSessionsMtls:
             "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response",
             side_effect=Exception("check_params failed"),
         ) as mock_check_params:
-            with pytest.raises(Exception, match="check_params failed"):
-                await session.request("GET", "http://example.com")
-
+            resp = await session.request("GET", "http://example.com")
+            assert resp == mock_resp
             mock_check_params.assert_called_once()
 
     @pytest.mark.asyncio
