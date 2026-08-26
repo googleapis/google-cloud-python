@@ -344,3 +344,79 @@ class TestSessionsMtls:
             assert session._is_mtls is True
             assert session._cached_cert == b"fake_cert_data"
             await session.close()
+
+    @pytest.mark.asyncio
+    async def test_cert_rotation_failure_raises_error(self):
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_creds.before_request = mock.AsyncMock(return_value=None)
+
+        mock_auth_req = mock.AsyncMock()
+        mock_resp = mock.Mock()
+        import http.client as http_client
+        mock_resp.status_code = http_client.UNAUTHORIZED
+        mock_auth_req.return_value = mock_resp
+
+        session = sessions.AsyncAuthorizedSession(mock_creds, auth_request=mock_auth_req)
+        session._is_mtls = True
+        session._cached_cert = b"old_cert"
+
+        new_cert = b"new_cert"
+        new_key = b"new_key"
+
+        with mock.patch("google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response") as mock_check, \
+             mock.patch.object(session, "configure_mtls_channel", new_callable=mock.AsyncMock) as mock_conf:
+
+            mock_check.return_value = (new_cert, new_key, b"old_fp", b"new_fp")
+            mock_conf.side_effect = Exception("Failed to reconfigure")
+
+            with pytest.raises(exceptions.MutualTLSChannelError):
+                await session.request("GET", "http://example.com")
+
+            mock_check.assert_called_once()
+            mock_conf.assert_called_once()
+
+    @pytest.mark.asyncio
+    async def test_cert_rotation_check_params_fails(self):
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_auth_req = mock.AsyncMock()
+        mock_resp = mock.Mock()
+        import http.client as http_client
+        mock_resp.status_code = http_client.UNAUTHORIZED
+        mock_auth_req.return_value = mock_resp
+
+        session = sessions.AsyncAuthorizedSession(mock_creds, auth_request=mock_auth_req)
+        session._is_mtls = True
+        session._cached_cert = b"cached_cert"
+
+        with mock.patch(
+            "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response",
+            side_effect=Exception("check_params failed"),
+        ) as mock_check_params:
+            with pytest.raises(Exception, match="check_params failed"):
+                await session.request("GET", "http://example.com")
+
+            mock_check_params.assert_called_once()
+
+    @pytest.mark.asyncio
+    async def test_no_cert_rotation_when_cert_match_and_mTLS_enabled(self):
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_auth_req = mock.AsyncMock()
+        mock_resp = mock.Mock()
+        import http.client as http_client
+        mock_resp.status_code = http_client.UNAUTHORIZED
+        mock_auth_req.return_value = mock_resp
+
+        session = sessions.AsyncAuthorizedSession(mock_creds, auth_request=mock_auth_req)
+        session._is_mtls = True
+        session._cached_cert = b"old_cert"
+
+        with mock.patch(
+            "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response",
+        ) as mock_check, mock.patch.object(session, "configure_mtls_channel", new_callable=mock.AsyncMock) as mock_conf:
+            # same fingerprint, so no call to configure_mtls_channel
+            mock_check.return_value = (b"new_cert", b"new_key", b"same_fp", b"same_fp")
+
+            await session.request("GET", "http://example.com")
+
+            mock_check.assert_called_once()
+            mock_conf.assert_not_called()
