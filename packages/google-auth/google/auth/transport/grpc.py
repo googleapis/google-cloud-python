@@ -17,6 +17,7 @@
 from __future__ import absolute_import
 
 import collections
+import functools
 import logging
 import threading
 import time
@@ -318,16 +319,15 @@ def secure_authorized_channel(
     # Avoid wrapping if mTLS is disabled or if this is a channel recreation call
     if cached_cert and not is_recreation:
         # Package arguments so the channel can be recreated later
-        factory_args = {
-            "credentials": credentials,
-            "request": request,
-            "target": target,
-            "ssl_credentials": None,
-            "client_cert_callback": client_cert_callback,
-            "_is_recreation": True,  # Hidden flag to stop recursion
-            **kwargs,
-        }
-        wrapper = MTLSRefreshingChannel(target, factory_args, channel, cached_cert)
+        create_channel_fn = functools.partial(
+            secure_authorized_channel,
+            credentials=credentials,
+            request=request,
+            target=target,
+            _is_recreation=True, # Hidden flag to stop recursion
+            **kwargs
+        )
+        wrapper = MTLSRefreshingChannel(target, create_channel_fn, channel, cached_cert)
         interceptor = CertRotationInterceptor(wrapper=wrapper)
         return grpc.intercept_channel(wrapper, interceptor)
     return channel
@@ -488,7 +488,7 @@ class CertRotationInterceptor(
 class MTLSRefreshingChannel(grpc.Channel):
     def __init__(self, target, factory_args, initial_channel, initial_cert):
         self._target = target
-        self._factory_args = factory_args
+        self._create_channel_fn = create_channel_fn
         self._channel = initial_channel
         self._cached_cert = initial_cert
         self._lock = threading.Lock()
@@ -509,13 +509,17 @@ class MTLSRefreshingChannel(grpc.Channel):
                     call_key_bytes, passphrase
                 )
 
-            # The factory args must use the new credentials exactly to build the rotation channel
-            factory_args = self._factory_args.copy()
-            factory_args["client_cert_callback"] = None
-            factory_args["ssl_credentials"] = grpc.ssl_channel_credentials(
+            # Call the partial, overriding only the cert-related arguments
+            new_ssl_credentials = grpc.ssl_channel_credentials(
                 certificate_chain=call_cert_bytes,
                 private_key=call_key_bytes,
             )
+
+            self._channel = self._create_channel_fn(
+                ssl_credentials=new_ssl_credentials,
+                client_cert_callback=None
+            )
+
 
             self._channel = secure_authorized_channel(**factory_args)
             self._cached_cert = call_cert_bytes
