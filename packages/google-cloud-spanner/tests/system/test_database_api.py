@@ -571,14 +571,18 @@ def test_db_batch_send_and_ack(
     not_emulator, spanner_client, database_dialect, shared_instance
 ):
     import uuid
+
     from google.api_core.exceptions import GoogleAPIError, MethodNotImplemented
+
     from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 
     db_id = f"test-db-{uuid.uuid4().hex[:8]}"
     queue_name = f"test_queue_{uuid.uuid4().hex[:8]}"
 
     try:
-        test_database = shared_instance.database(db_id, database_dialect=database_dialect)
+        test_database = shared_instance.database(
+            db_id, database_dialect=database_dialect
+        )
         operation = test_database.create()
         operation.result(300)
 
@@ -617,7 +621,7 @@ def test_db_batch_send_and_ack(
                 key=(2,),
                 payload="Hello, Queues!",
             )
-            
+
         with test_database.batch() as batch:
             batch.ack(
                 queue=queue_name,

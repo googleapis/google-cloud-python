@@ -92,7 +92,9 @@ async def test_db_batch_send_and_ack(
     not_emulator, spanner_client, database_dialect, shared_instance
 ):
     import uuid
+
     from google.api_core.exceptions import GoogleAPIError, MethodNotImplemented
+
     from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 
     db_name = f"test-db-{uuid.uuid4().hex[:8]}"
@@ -142,7 +144,7 @@ async def test_db_batch_send_and_ack(
                 key=(2,),
                 payload="Hello, Queues!",
             )
-        
+
         async with test_database.batch() as batch:
             batch.ack(
                 queue=queue_name,
