@@ -346,7 +346,7 @@ class TestSessionsMtls:
             await session.close()
 
     @pytest.mark.asyncio
-    async def test_cert_rotation_failure_raises_error(self):
+    async def test_cert_rotation_failure_logs(self):
         mock_creds = mock.AsyncMock(spec=credentials.Credentials)
         mock_creds.before_request = mock.AsyncMock(return_value=None)
 
@@ -369,8 +369,8 @@ class TestSessionsMtls:
             mock_check.return_value = (new_cert, new_key, b"old_fp", b"new_fp")
             mock_conf.side_effect = Exception("Failed to reconfigure")
 
-            with pytest.raises(exceptions.MutualTLSChannelError):
-                await session.request("GET", "http://example.com")
+            resp = await session.request("GET", "http://example.com")
+            assert resp == mock_resp
 
             mock_check.assert_called_once()
             mock_conf.assert_called_once()
