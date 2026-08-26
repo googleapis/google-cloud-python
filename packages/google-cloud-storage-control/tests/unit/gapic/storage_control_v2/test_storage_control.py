@@ -8377,6 +8377,287 @@ async def test_update_rapid_cache_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        storage_control.DisableRapidCacheRequest(),
+        {},
+    ],
+)
+def test_disable_rapid_cache(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_rapid_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.disable_rapid_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.DisableRapidCacheRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_disable_rapid_cache_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.DisableRapidCacheRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_rapid_cache), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.disable_rapid_cache(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.DisableRapidCacheRequest(
+            name="name_value",
+        )
+        assert args[0] == request_msg
+
+
+def test_disable_rapid_cache_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.disable_rapid_cache in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.disable_rapid_cache] = (
+            mock_rpc
+        )
+        request = {}
+        client.disable_rapid_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.disable_rapid_cache(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_disable_rapid_cache_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageControlAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.disable_rapid_cache
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.disable_rapid_cache
+        ] = mock_rpc
+
+        request = {}
+        await client.disable_rapid_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.disable_rapid_cache(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.DisableRapidCacheRequest(),
+        {},
+    ],
+)
+async def test_disable_rapid_cache_async(request_type, transport: str = "grpc_asyncio"):
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_rapid_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.disable_rapid_cache(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.DisableRapidCacheRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_disable_rapid_cache_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_rapid_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.disable_rapid_cache(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_disable_rapid_cache_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.disable_rapid_cache(
+            storage_control.DisableRapidCacheRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_disable_rapid_cache_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_rapid_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.disable_rapid_cache(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_disable_rapid_cache_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.disable_rapid_cache(
+            storage_control.DisableRapidCacheRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         storage_control.GetRapidCacheRequest(),
         {},
     ],
@@ -16498,6 +16779,16 @@ def test_update_rapid_cache_rest_no_http_options():
         client.update_rapid_cache(request)
 
 
+def test_disable_rapid_cache_rest_no_http_options():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = storage_control.DisableRapidCacheRequest()
+    with pytest.raises(RuntimeError):
+        client.disable_rapid_cache(request)
+
+
 def test_get_rapid_cache_rest_no_http_options():
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -19345,6 +19636,19 @@ def test_update_rapid_cache_rest_error():
     )
 
 
+def test_disable_rapid_cache_rest_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.disable_rapid_cache({})
+    assert "Method DisableRapidCache is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
 def test_get_rapid_cache_rest_error():
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -20016,6 +20320,28 @@ def test_update_rapid_cache_empty_call_grpc():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.UpdateRapidCacheRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_disable_rapid_cache_empty_call_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_rapid_cache), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.disable_rapid_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.DisableRapidCacheRequest()
         assert args[0] == request_msg
 
 
@@ -21017,6 +21343,35 @@ def test_update_rapid_cache_routing_parameters_request_1_grpc():
         )
 
 
+def test_disable_rapid_cache_routing_parameters_request_1_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_rapid_cache), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.disable_rapid_cache(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.DisableRapidCacheRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
 def test_get_rapid_cache_routing_parameters_request_1_grpc():
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -21932,6 +22287,32 @@ async def test_update_rapid_cache_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = storage_control.UpdateRapidCacheRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_disable_rapid_cache_empty_call_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_rapid_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.disable_rapid_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.DisableRapidCacheRequest()
         assert args[0] == request_msg
 
 
@@ -23182,6 +23563,39 @@ async def test_update_rapid_cache_routing_parameters_request_1_grpc_asyncio():
         _, args, kw = call.mock_calls[0]
         request_msg = storage_control.UpdateRapidCacheRequest(
             **{"rapid_cache": {"name": "projects/sample1/buckets/sample2/sample3"}}
+        )
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_disable_rapid_cache_routing_parameters_request_1_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_rapid_cache), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.disable_rapid_cache(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.DisableRapidCacheRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
         assert args[0] == request_msg
 
@@ -24668,6 +25082,18 @@ def test_update_rapid_cache_rest_error():
     with pytest.raises(NotImplementedError) as not_implemented_error:
         client.update_rapid_cache({})
     assert "Method UpdateRapidCache is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
+def test_disable_rapid_cache_rest_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.disable_rapid_cache({})
+    assert "Method DisableRapidCache is not available over REST transport" in str(
         not_implemented_error.value
     )
 
@@ -27228,6 +27654,27 @@ def test_update_rapid_cache_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_disable_rapid_cache_empty_call_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_rapid_cache), "__call__"
+    ) as call:
+        client.disable_rapid_cache(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = storage_control.DisableRapidCacheRequest()
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_get_rapid_cache_empty_call_rest():
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -28186,6 +28633,34 @@ def test_update_rapid_cache_routing_parameters_request_1_rest():
         )
 
 
+def test_disable_rapid_cache_routing_parameters_request_1_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_rapid_cache), "__call__"
+    ) as call:
+        client.disable_rapid_cache(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = storage_control.DisableRapidCacheRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
 def test_get_rapid_cache_routing_parameters_request_1_rest():
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -28515,6 +28990,7 @@ def test_storage_control_base_transport():
         "list_anywhere_caches",
         "create_rapid_cache",
         "update_rapid_cache",
+        "disable_rapid_cache",
         "get_rapid_cache",
         "list_rapid_caches",
         "get_project_intelligence_config",
@@ -28888,6 +29364,9 @@ def test_storage_control_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.update_rapid_cache._session
     session2 = client2.transport.update_rapid_cache._session
+    assert session1 != session2
+    session1 = client1.transport.disable_rapid_cache._session
+    session2 = client2.transport.disable_rapid_cache._session
     assert session1 != session2
     session1 = client1.transport.get_rapid_cache._session
     session2 = client2.transport.get_rapid_cache._session

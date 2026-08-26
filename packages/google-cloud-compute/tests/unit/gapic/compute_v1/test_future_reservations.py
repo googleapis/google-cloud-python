@@ -4381,6 +4381,7 @@ def test_get_rest_call_success(request_type):
             planning_status="planning_status_value",
             reservation_mode="reservation_mode_value",
             reservation_name="reservation_name_value",
+            resource_name="resource_name_value",
             scheduling_type="scheduling_type_value",
             self_link="self_link_value",
             self_link_with_id="self_link_with_id_value",
@@ -4419,6 +4420,7 @@ def test_get_rest_call_success(request_type):
     assert response.planning_status == "planning_status_value"
     assert response.reservation_mode == "reservation_mode_value"
     assert response.reservation_name == "reservation_name_value"
+    assert response.resource_name == "resource_name_value"
     assert response.scheduling_type == "scheduling_type_value"
     assert response.self_link == "self_link_value"
     assert response.self_link_with_id == "self_link_with_id_value"
@@ -4563,6 +4565,11 @@ def test_insert_rest_call_success(request_type):
         "planning_status": "planning_status_value",
         "reservation_mode": "reservation_mode_value",
         "reservation_name": "reservation_name_value",
+        "resource_metadata": {
+            "api_version": "api_version_value",
+            "resource_type": "resource_type_value",
+        },
+        "resource_name": "resource_name_value",
         "scheduling_type": "scheduling_type_value",
         "self_link": "self_link_value",
         "self_link_with_id": "self_link_with_id_value",
@@ -4590,6 +4597,11 @@ def test_insert_rest_call_success(request_type):
                 "auto_created_reservations_value1",
                 "auto_created_reservations_value2",
             ],
+            "exapool_provisioned_capacity_gb": {
+                "capacity_optimized": 1922,
+                "read_optimized": 1488,
+                "write_optimized": 1631,
+            },
             "existing_matching_usage_info": {
                 "count": 553,
                 "timestamp": "timestamp_value",
@@ -4616,6 +4628,16 @@ def test_insert_rest_call_success(request_type):
             "specific_sku_properties": {
                 "source_instance_template_id": "source_instance_template_id_value"
             },
+            "storage_pool_provisioned_capacity": {
+                "pool_provisioned_capacity_gb": 2976,
+                "pool_provisioned_iops": 2277,
+                "pool_provisioned_throughput": 2948,
+            },
+        },
+        "storage_pool_properties": {
+            "requested_exapool_provisioned_capacity_gb": {},
+            "requested_storage_pool_provisioned_capacity": {},
+            "storage_pool_type": "storage_pool_type_value",
         },
         "time_window": {},
         "zone": "zone_value",
@@ -5049,6 +5071,11 @@ def test_update_rest_call_success(request_type):
         "planning_status": "planning_status_value",
         "reservation_mode": "reservation_mode_value",
         "reservation_name": "reservation_name_value",
+        "resource_metadata": {
+            "api_version": "api_version_value",
+            "resource_type": "resource_type_value",
+        },
+        "resource_name": "resource_name_value",
         "scheduling_type": "scheduling_type_value",
         "self_link": "self_link_value",
         "self_link_with_id": "self_link_with_id_value",
@@ -5076,6 +5103,11 @@ def test_update_rest_call_success(request_type):
                 "auto_created_reservations_value1",
                 "auto_created_reservations_value2",
             ],
+            "exapool_provisioned_capacity_gb": {
+                "capacity_optimized": 1922,
+                "read_optimized": 1488,
+                "write_optimized": 1631,
+            },
             "existing_matching_usage_info": {
                 "count": 553,
                 "timestamp": "timestamp_value",
@@ -5102,6 +5134,16 @@ def test_update_rest_call_success(request_type):
             "specific_sku_properties": {
                 "source_instance_template_id": "source_instance_template_id_value"
             },
+            "storage_pool_provisioned_capacity": {
+                "pool_provisioned_capacity_gb": 2976,
+                "pool_provisioned_iops": 2277,
+                "pool_provisioned_throughput": 2948,
+            },
+        },
+        "storage_pool_properties": {
+            "requested_exapool_provisioned_capacity_gb": {},
+            "requested_storage_pool_provisioned_capacity": {},
+            "storage_pool_type": "storage_pool_type_value",
         },
         "time_window": {},
         "zone": "zone_value",

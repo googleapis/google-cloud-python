@@ -458,6 +458,8 @@ __protobuf__ = proto.module(
         "FutureReservationStatusLastKnownGoodState",
         "FutureReservationStatusLastKnownGoodStateFutureReservationSpecs",
         "FutureReservationStatusSpecificSKUProperties",
+        "FutureReservationStoragePoolProperties",
+        "FutureReservationStoragePoolProvisionedCapacity",
         "FutureReservationTimeWindow",
         "FutureReservationsAggregatedListResponse",
         "FutureReservationsListResponse",
@@ -1408,6 +1410,7 @@ __protobuf__ = proto.module(
         "RecreateInstancesInstanceGroupManagerRequest",
         "RecreateInstancesRegionInstanceGroupManagerRequest",
         "Reference",
+        "RegexRewrite",
         "Region",
         "RegionAddressesMoveRequest",
         "RegionAutoscalerList",
@@ -1513,6 +1516,7 @@ __protobuf__ = proto.module(
         "ResizeReservationRequest",
         "ResourceCommitment",
         "ResourceGroupReference",
+        "ResourceMetadata",
         "ResourcePoliciesScopedList",
         "ResourcePolicy",
         "ResourcePolicyAggregatedList",
@@ -2454,6 +2458,14 @@ class AcceleratorType(proto.Message):
             [Output Only] Name of the resource.
 
             This field is a member of `oneof`_ ``_name``.
+        resource_metadata (google.cloud.compute_v1.types.ResourceMetadata):
+            Output only. Contains standard resource metadata for an
+            AcceleratorType resource. It is populated for each instance
+            of the AcceleratorType resource, and includes the
+            api_version the instance was retrieved through, and its
+            canonical resource_type name.
+
+            This field is a member of `oneof`_ ``_resource_metadata``.
         self_link (str):
             Output only. [Output Only] Server-defined, fully qualified
             URL for this resource.
@@ -2503,6 +2515,12 @@ class AcceleratorType(proto.Message):
         proto.STRING,
         number=3373707,
         optional=True,
+    )
+    resource_metadata: "ResourceMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=99063872,
+        optional=True,
+        message="ResourceMetadata",
     )
     self_link: str = proto.Field(
         proto.STRING,
@@ -18529,9 +18547,11 @@ class Backend(proto.Message):
             guidelines, see Connection balancing mode.
 
             Backends must use compatible balancing modes.
-            For more information, see Supported balancing
-            modes and target capacity settings and
-            Restrictions and guidance for instance groups.
+            Backends of a backend service may use different
+            balancing modes. For more information, see
+            Supported balancing modes and target capacity
+            settings and Restrictions and guidance for
+            instance groups.
 
             Note: Currently, if you use the API to configure
             incompatible balancing modes, the configuration
@@ -18573,6 +18593,11 @@ class Backend(proto.Message):
             This field designates whether this is a
             failover backend. More than one failover backend
             can be configured for a given BackendService.
+
+            This field can only be used for a regional
+            external Passthrough Network Load Balancer or a
+            regional internal Passthrough Network Load
+            Balancer.
 
             This field is a member of `oneof`_ ``_failover``.
         group (str):
@@ -18692,6 +18717,14 @@ class Backend(proto.Message):
               would be used and traffic would be    assigned
               based on the load balancing algorithm you use.
               This is the    default
+
+            For global external Passthrough Network Load
+            Balancers, the following restrictions apply:
+
+               - At most one backend can be marked as
+              PREFERRED.
+               - PREFERRED and DEFAULT backends cannot
+              reside    in the same Cloud region.
             Check the Preference enum for the list of
             possible values.
 
@@ -18708,7 +18741,8 @@ class Backend(proto.Message):
         balancer can handle additional traffic or is fully loaded. For
         usage guidelines, see Connection balancing mode.
 
-        Backends must use compatible balancing modes. For more
+        Backends must use compatible balancing modes. Backends of a
+        backend service may use different balancing modes. For more
         information, see Supported balancing modes and target capacity
         settings and Restrictions and guidance for instance groups.
 
@@ -18755,6 +18789,13 @@ class Backend(proto.Message):
           capacity, backends in this layer would be used and traffic
           would be    assigned based on the load balancing algorithm you
           use. This is the    default
+
+        For global external Passthrough Network Load Balancers, the
+        following restrictions apply:
+
+           - At most one backend can be marked as PREFERRED.
+           - PREFERRED and DEFAULT backends cannot reside
+           in the same Cloud region.
 
         Values:
             UNDEFINED_PREFERENCE (0):
@@ -19243,16 +19284,16 @@ class BackendBucketCdnPolicy(proto.Message):
             This field is a member of `oneof`_ ``_cache_key_policy``.
         cache_mode (str):
             Specifies the cache setting for all responses from this
-            backend. The possible values are:USE_ORIGIN_HEADERS Requires
-            the origin to set valid caching headers to cache content.
-            Responses without these headers will not be cached at
-            Google's edge, and will require a full trip to the origin on
-            every request, potentially impacting performance and
-            increasing load on the origin server.FORCE_CACHE_ALL Cache
+            backend. The possible values are: USE_ORIGIN_HEADERS
+            Requires the origin to set valid caching headers to cache
+            content. Responses without these headers will not be cached
+            at Google's edge, and will require a full trip to the origin
+            on every request, potentially impacting performance and
+            increasing load on the origin server. FORCE_CACHE_ALL Cache
             all content, ignoring any "private", "no-store" or
             "no-cache" directives in Cache-Control response headers.
             Warning: this may result in Cloud CDN caching private,
-            per-user (user identifiable) content.CACHE_ALL_STATIC
+            per-user (user identifiable) content. CACHE_ALL_STATIC
             Automatically cache static content, including common image
             formats, media (video and audio), and web assets (JavaScript
             and CSS). Requests and responses that are marked as
@@ -19381,19 +19422,19 @@ class BackendBucketCdnPolicy(proto.Message):
 
     class CacheMode(proto.Enum):
         r"""Specifies the cache setting for all responses from this backend. The
-        possible values are:USE_ORIGIN_HEADERS Requires the origin to set
+        possible values are: USE_ORIGIN_HEADERS Requires the origin to set
         valid caching headers to cache content. Responses without these
         headers will not be cached at Google's edge, and will require a full
         trip to the origin on every request, potentially impacting
-        performance and increasing load on the origin server.FORCE_CACHE_ALL
-        Cache all content, ignoring any "private", "no-store" or "no-cache"
-        directives in Cache-Control response headers. Warning: this may
-        result in Cloud CDN caching private, per-user (user identifiable)
-        content.CACHE_ALL_STATIC Automatically cache static content,
-        including common image formats, media (video and audio), and web
-        assets (JavaScript and CSS). Requests and responses that are marked
-        as uncacheable, as well as dynamic content (including HTML), will
-        not be cached.
+        performance and increasing load on the origin server.
+        FORCE_CACHE_ALL Cache all content, ignoring any "private",
+        "no-store" or "no-cache" directives in Cache-Control response
+        headers. Warning: this may result in Cloud CDN caching private,
+        per-user (user identifiable) content. CACHE_ALL_STATIC Automatically
+        cache static content, including common image formats, media (video
+        and audio), and web assets (JavaScript and CSS). Requests and
+        responses that are marked as uncacheable, as well as dynamic content
+        (including HTML), will not be cached.
 
         If no value is provided for cdnPolicy.cacheMode, it defaults to
         CACHE_ALL_STATIC.
@@ -20032,8 +20073,9 @@ class BackendService(proto.Message):
             Balancers <https://cloud.google.com/load-balancing/docs/internal/failover-overview>`__
             and `external passthrough Network Load
             Balancers <https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview>`__.
-
-            failoverPolicy cannot be specified with haPolicy.
+            failoverPolicy cannot be specified with
+            haPolicy.failoverPolicy cannot be used by global external
+            Passthrough Network Load Balancers.
 
             This field is a member of `oneof`_ ``_failover_policy``.
         fingerprint (str):
@@ -20079,11 +20121,10 @@ class BackendService(proto.Message):
             haPolicy requires customers to be responsible for tracking
             backend endpoint health and electing a leader among the
             healthy endpoints. Therefore, haPolicy cannot be specified
-            with healthChecks.
-
-            haPolicy can only be specified for External Passthrough
-            Network Load Balancers and Internal Passthrough Network Load
-            Balancers.
+            with healthChecks. haPolicy can only be specified for
+            External Passthrough Network Load Balancers and Internal
+            Passthrough Network Load Balancers.haPolicy cannot be used
+            by global external Passthrough Network Load Balancers.
 
             This field is a member of `oneof`_ ``_ha_policy``.
         health_checks (MutableSequence[str]):
@@ -20159,8 +20200,8 @@ class BackendService(proto.Message):
             Specifies the load balancer type. A backend
             service created for one type of load balancer
             cannot be used with another. For more
-            information, refer toChoosing
-            a load balancer.
+            information, refer to
+            Backend services product and scheme table.
             Check the LoadBalancingScheme enum for the list
             of possible values.
 
@@ -20211,31 +20252,39 @@ class BackendService(proto.Message):
                If set, the Backend Service responses are expected to contain non-standard
                HTTP response header field Endpoint-Load-Metrics. The reported
                metrics to use for computing the weights are specified via thecustomMetrics field.
+               - WEIGHTED_MAGLEV: Per-endpoint weighted load balancing via
+               health check reported weights. If set, the backend service must configure
+               an HTTP-based Health Check, and health check replies are expected to
+               contain the non-standard HTTP response header fieldX-Load-Balancing-Endpoint-Weight to specify the per-endpoint
+               weights. If set, load balancing is weighted based on the per-endpoint
+               weights reported in the last processed health check replies, as long as
+               every instance either reported a valid weight or had UNAVAILABLE_WEIGHT.
+               Otherwise, load balancing remains equal-weight.
 
-               This field is applicable to either:
-                  - A regional backend service with the service protocol set to HTTP,
-                  HTTPS, HTTP2 or H2C, and load_balancing_scheme set to
-                  INTERNAL_MANAGED.
-                  - A global backend service with the
-                  load_balancing_scheme set to INTERNAL_SELF_MANAGED, INTERNAL_MANAGED, or
-                  EXTERNAL_MANAGED.
+            This field is applicable to either:
 
+            ::
 
-               If sessionAffinity is not configured—that is, if session
-               affinity remains at the default value of NONE—then the
-               default value for localityLbPolicy
-               is ROUND_ROBIN. If session affinity is set to a value other
-               than NONE,
-               then the default value for localityLbPolicy isMAGLEV.
+               - A regional backend service with the service protocol set to HTTP,
+               HTTPS, HTTP2 or H2C, and load_balancing_scheme set to
+               INTERNAL_MANAGED.
+               - A global backend service with the
+               load_balancing_scheme set to INTERNAL_SELF_MANAGED, INTERNAL_MANAGED, or
+               EXTERNAL_MANAGED.
 
-               Only ROUND_ROBIN and RING_HASH are supported
-               when the backend service is referenced by a URL map that is bound to
-               target gRPC proxy that has validateForProxyless field set to true.
+            If sessionAffinity is not configured—that is, if session
+            affinity remains at the default value of NONE—then the
+            default value for localityLbPolicy is ROUND_ROBIN. If
+            session affinity is set to a value other than NONE, then the
+            default value for localityLbPolicy isMAGLEV.
 
-               localityLbPolicy cannot be specified with haPolicy.
+            Only ROUND_ROBIN and RING_HASH are supported when the
+            backend service is referenced by a URL map that is bound to
+            target gRPC proxy that has validateForProxyless field set to
+            true.
 
-            Check the LocalityLbPolicy enum for the list of possible
-            values.
+            localityLbPolicy cannot be specified with haPolicy. Check
+            the LocalityLbPolicy enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_locality_lb_policy``.
         log_config (google.cloud.compute_v1.types.BackendServiceLogConfig):
@@ -20379,13 +20428,12 @@ class BackendService(proto.Message):
         protocol (str):
             The protocol this BackendService uses to
             communicate with backends.
-
             Possible values are HTTP, HTTPS, HTTP2, H2C,
-            TCP, SSL, UDP or GRPC. depending on the chosen
-            load balancer or Traffic Director configuration.
-            Refer to the documentation for the load
-            balancers or for Traffic Director for more
-            information.
+            TCP, SSL, UDP, GRPC, or UNSPECIFIED, depending
+            on the chosen load balancer or Traffic Director
+            configuration.
+            Refer to
+            Load balancing features for more information.
 
             Must be set to GRPC when the backend service is
             referenced by a URL map that is bound to target
@@ -20619,8 +20667,8 @@ class BackendService(proto.Message):
     class LoadBalancingScheme(proto.Enum):
         r"""Specifies the load balancer type. A backend service
         created for one type of load balancer cannot be used with
-        another. For more information, refer toChoosing
-        a load balancer.
+        another. For more information, refer to
+        Backend services product and scheme table.
 
         Values:
             UNDEFINED_LOAD_BALANCING_SCHEME (0):
@@ -20688,28 +20736,37 @@ class BackendService(proto.Message):
            If set, the Backend Service responses are expected to contain non-standard
            HTTP response header field Endpoint-Load-Metrics. The reported
            metrics to use for computing the weights are specified via thecustomMetrics field.
+           - WEIGHTED_MAGLEV: Per-endpoint weighted load balancing via
+           health check reported weights. If set, the backend service must configure
+           an HTTP-based Health Check, and health check replies are expected to
+           contain the non-standard HTTP response header fieldX-Load-Balancing-Endpoint-Weight to specify the per-endpoint
+           weights. If set, load balancing is weighted based on the per-endpoint
+           weights reported in the last processed health check replies, as long as
+           every instance either reported a valid weight or had UNAVAILABLE_WEIGHT.
+           Otherwise, load balancing remains equal-weight.
 
-           This field is applicable to either:
-              - A regional backend service with the service protocol set to HTTP,
-              HTTPS, HTTP2 or H2C, and load_balancing_scheme set to
-              INTERNAL_MANAGED.
-              - A global backend service with the
-              load_balancing_scheme set to INTERNAL_SELF_MANAGED, INTERNAL_MANAGED, or
-              EXTERNAL_MANAGED.
+        This field is applicable to either:
 
+        ::
 
-           If sessionAffinity is not configured—that is, if session
-           affinity remains at the default value of NONE—then the
-           default value for localityLbPolicy
-           is ROUND_ROBIN. If session affinity is set to a value other
-           than NONE,
-           then the default value for localityLbPolicy isMAGLEV.
+           - A regional backend service with the service protocol set to HTTP,
+           HTTPS, HTTP2 or H2C, and load_balancing_scheme set to
+           INTERNAL_MANAGED.
+           - A global backend service with the
+           load_balancing_scheme set to INTERNAL_SELF_MANAGED, INTERNAL_MANAGED, or
+           EXTERNAL_MANAGED.
 
-           Only ROUND_ROBIN and RING_HASH are supported
-           when the backend service is referenced by a URL map that is bound to
-           target gRPC proxy that has validateForProxyless field set to true.
+        If sessionAffinity is not configured—that is, if session affinity
+        remains at the default value of NONE—then the default value for
+        localityLbPolicy is ROUND_ROBIN. If session affinity is set to a
+        value other than NONE, then the default value for localityLbPolicy
+        isMAGLEV.
 
-           localityLbPolicy cannot be specified with haPolicy.
+        Only ROUND_ROBIN and RING_HASH are supported when the backend
+        service is referenced by a URL map that is bound to target gRPC
+        proxy that has validateForProxyless field set to true.
+
+        localityLbPolicy cannot be specified with haPolicy.
 
         Values:
             UNDEFINED_LOCALITY_LB_POLICY (0):
@@ -20794,13 +20851,13 @@ class BackendService(proto.Message):
         WEIGHTED_ROUND_ROBIN = 5584977
 
     class Protocol(proto.Enum):
-        r"""The protocol this BackendService uses to communicate
-        with backends.
-
-        Possible values are HTTP, HTTPS, HTTP2, H2C, TCP, SSL, UDP or
-        GRPC. depending on the chosen load balancer or Traffic Director
-        configuration. Refer to the documentation for the load balancers
-        or for Traffic Director for more information.
+        r"""The protocol this BackendService uses to communicate with
+        backends.
+        Possible values are HTTP, HTTPS, HTTP2, H2C, TCP, SSL, UDP,
+        GRPC, or UNSPECIFIED, depending on the chosen load balancer or
+        Traffic Director configuration.
+        Refer to
+        Load balancing features for more information.
 
         Must be set to GRPC when the backend service is referenced by a
         URL map that is bound to target gRPC proxy.
@@ -21300,16 +21357,16 @@ class BackendServiceCdnPolicy(proto.Message):
             This field is a member of `oneof`_ ``_cache_key_policy``.
         cache_mode (str):
             Specifies the cache setting for all responses from this
-            backend. The possible values are:USE_ORIGIN_HEADERS Requires
-            the origin to set valid caching headers to cache content.
-            Responses without these headers will not be cached at
-            Google's edge, and will require a full trip to the origin on
-            every request, potentially impacting performance and
-            increasing load on the origin server.FORCE_CACHE_ALL Cache
+            backend. The possible values are: USE_ORIGIN_HEADERS
+            Requires the origin to set valid caching headers to cache
+            content. Responses without these headers will not be cached
+            at Google's edge, and will require a full trip to the origin
+            on every request, potentially impacting performance and
+            increasing load on the origin server. FORCE_CACHE_ALL Cache
             all content, ignoring any "private", "no-store" or
             "no-cache" directives in Cache-Control response headers.
             Warning: this may result in Cloud CDN caching private,
-            per-user (user identifiable) content.CACHE_ALL_STATIC
+            per-user (user identifiable) content. CACHE_ALL_STATIC
             Automatically cache static content, including common image
             formats, media (video and audio), and web assets (JavaScript
             and CSS). Requests and responses that are marked as
@@ -21438,19 +21495,19 @@ class BackendServiceCdnPolicy(proto.Message):
 
     class CacheMode(proto.Enum):
         r"""Specifies the cache setting for all responses from this backend. The
-        possible values are:USE_ORIGIN_HEADERS Requires the origin to set
+        possible values are: USE_ORIGIN_HEADERS Requires the origin to set
         valid caching headers to cache content. Responses without these
         headers will not be cached at Google's edge, and will require a full
         trip to the origin on every request, potentially impacting
-        performance and increasing load on the origin server.FORCE_CACHE_ALL
-        Cache all content, ignoring any "private", "no-store" or "no-cache"
-        directives in Cache-Control response headers. Warning: this may
-        result in Cloud CDN caching private, per-user (user identifiable)
-        content.CACHE_ALL_STATIC Automatically cache static content,
-        including common image formats, media (video and audio), and web
-        assets (JavaScript and CSS). Requests and responses that are marked
-        as uncacheable, as well as dynamic content (including HTML), will
-        not be cached.
+        performance and increasing load on the origin server.
+        FORCE_CACHE_ALL Cache all content, ignoring any "private",
+        "no-store" or "no-cache" directives in Cache-Control response
+        headers. Warning: this may result in Cloud CDN caching private,
+        per-user (user identifiable) content. CACHE_ALL_STATIC Automatically
+        cache static content, including common image formats, media (video
+        and audio), and web assets (JavaScript and CSS). Requests and
+        responses that are marked as uncacheable, as well as dynamic content
+        (including HTML), will not be cached.
 
         If no value is provided for cdnPolicy.cacheMode, it defaults to
         CACHE_ALL_STATIC.
@@ -22995,6 +23052,51 @@ class BackendServiceTlsSettings(proto.Message):
             if authenticationMode is not NONE.
 
             This field is a member of `oneof`_ ``_authentication_config``.
+        identity (str):
+            Assigns the Managed Identity for the BackendService
+            Workload.
+
+            Use this property to configure the load balancer back-end to
+            use certificates and roots of trust provisioned by the
+            Managed Workload Identity system.
+
+            The ``identity`` property is the fully-specified SPIFFE ID
+            to use in the SVID presented by the Load Balancer Workload.
+
+            The SPIFFE ID must be a resource starting with the
+            ``trustDomain`` property value, followed by the path to the
+            Managed Workload Identity.
+
+            Supported SPIFFE ID format:
+
+            ::
+
+               - //<trust_domain>/ns/<namespace>/sa/<subject>
+
+            The Trust Domain within the Managed Identity must refer to a
+            valid Workload Identity Pool. The TrustConfig and
+            CertificateIssuanceConfig will be inherited from the
+            Workload Identity Pool.
+
+            Restrictions:
+
+            ::
+
+               - If you set the `identity` property, you cannot manually set
+               the following fields:
+                   - tlsSettings.sni
+                  - tlsSettings.subjectAltNames
+                  - tlsSettings.authenticationConfig
+
+            When defining a ``identity`` for a RegionBackendServices,
+            the corresponding Workload Identity Pool must have a ca_pool
+            configured in the same region.
+
+            The system will set up a
+            read-onlytlsSettings.authenticationConfig for the Managed
+            Identity.
+
+            This field is a member of `oneof`_ ``_identity``.
         sni (str):
             Server Name Indication - see RFC3546 section 3.1. If set,
             the load balancer sends this string as the SNI hostname in
@@ -23024,6 +23126,11 @@ class BackendServiceTlsSettings(proto.Message):
     authentication_config: str = proto.Field(
         proto.STRING,
         number=408053481,
+        optional=True,
+    )
+    identity: str = proto.Field(
+        proto.STRING,
+        number=401109182,
         optional=True,
     )
     sni: str = proto.Field(
@@ -26232,6 +26339,12 @@ class Commitment(proto.Message):
                 16TB of memory.
             NETWORK_OPTIMIZED_C4N (147027572):
                 CUD bucket for C4N (dual Diorite) machines.
+            NETWORK_OPTIMIZED_U4C (147044859):
+                CUD bucket for NETWORK_OPTIMIZED_U4C machines.
+            NETWORK_OPTIMIZED_U4P (147044872):
+                CUD bucket for NETWORK_OPTIMIZED_U4P machines.
+            NETWORK_OPTIMIZED_U4S (147044875):
+                CUD bucket for NETWORK_OPTIMIZED_U4S machines.
             STORAGE_OPTIMIZED_Z3 (316796085):
                 No description available.
             TYPE_UNSPECIFIED (437714322):
@@ -26281,6 +26394,9 @@ class Commitment(proto.Message):
         MEMORY_OPTIMIZED_X4_960_12T = 424752410
         MEMORY_OPTIMIZED_X4_960_16T = 424752534
         NETWORK_OPTIMIZED_C4N = 147027572
+        NETWORK_OPTIMIZED_U4C = 147044859
+        NETWORK_OPTIMIZED_U4P = 147044872
+        NETWORK_OPTIMIZED_U4S = 147044875
         STORAGE_OPTIMIZED_Z3 = 316796085
         TYPE_UNSPECIFIED = 437714322
 
@@ -39685,6 +39801,9 @@ class ForwardingRule(proto.Message):
               - global/addresses/address-name
               - address-name
 
+            The IP address can only be set at creation. Once set, it
+            cannot be updated.
+
             The forwarding rule's target or backendService, and in most
             cases, also the loadBalancingScheme, determine the type of
             IP address that you can use. For detailed information, see
@@ -39693,6 +39812,13 @@ class ForwardingRule(proto.Message):
 
             When reading an IPAddress, the API always returns the IP
             address number.
+
+            When creating a global external Passthrough Network Load
+            Balancer forwarding rule (a parent forwarding rule), you
+            must use theIPAddresses field, but the Google Cloud
+            generated child forwarding rules set the IPAddress field
+            instead. Refer to theavailabilityGroup field for further
+            details.
 
             This field is a member of `oneof`_ ``_I_p_address``.
         I_p_protocol (str):
@@ -39750,10 +39876,18 @@ class ForwardingRule(proto.Message):
             to this ForwardingRule.
         backend_service (str):
             Identifies the backend service to which the
-            forwarding rule sends traffic. Required for
-            internal and external passthrough Network Load
-            Balancers; must be omitted for all other load
-            balancer types.
+            forwarding rule sends traffic.
+            It is a required field for the following load
+            balancers:
+
+               - Internal passthrough Network Load Balancers
+               - Backend service-based regional external
+              passthrough Network Load    Balancers
+               - Global external passthrough Network Load
+              Balancers
+
+            It cannot be set by other load balancer types
+            and protocol forwarding rules.
 
             This field is a member of `oneof`_ ``_backend_service``.
         base_forwarding_rule (str):
@@ -39893,8 +40027,8 @@ class ForwardingRule(proto.Message):
         load_balancing_scheme (str):
             Specifies the forwarding rule type.
 
-            For more information about forwarding rules,
-            refer to Forwarding rule concepts.
+            For more information, refer to
+            Forwarding rule product and scheme table.
             Check the LoadBalancingScheme enum for the list
             of possible values.
 
@@ -39936,6 +40070,16 @@ class ForwardingRule(proto.Message):
             traffic to Google APIs, the forwarding rule name must be a
             1-20 characters string with lowercase letters and numbers
             and must start with a letter.
+
+            For global external Passthrough Network Load Balancer
+            forwarding rules, the forwarding rule name must be 1-43
+            characters long. For each global external Passthrough
+            Network Load Balancer forwarding rule (a parent forwarding
+            rule) that you create, Google Cloud generates two
+            output-only child forwarding rules that are named by
+            concatenating the parent forwarding rule name with the
+            ``-ag0`` and ``-ag1`` suffixes, respectively. Refer to
+            theavailabilityGroup field for further details.
 
             This field is a member of `oneof`_ ``_name``.
         network (str):
@@ -40000,8 +40144,9 @@ class ForwardingRule(proto.Message):
                port specifications for details.
 
             For external forwarding rules, two or more forwarding rules
-            cannot use the same [IPAddress, IPProtocol] pair, and cannot
-            have overlappingportRanges.
+            cannot use the same [IPAddress, IPProtocol] pair (specified
+            inIPAddress, IPAddresses, IPProtocol fields) if they have
+            overlapping portRanges.
 
             For internal forwarding rules within the same VPC network,
             two or more forwarding rules cannot use the same [IPAddress,
@@ -40029,8 +40174,9 @@ class ForwardingRule(proto.Message):
                commas. The ports can be contiguous or discontiguous.
 
             For external forwarding rules, two or more forwarding rules
-            cannot use the same [IPAddress, IPProtocol] pair if they
-            share at least one port number.
+            cannot use the same [IPAddress, IPProtocol] pair (specified
+            inIPAddress, IPAddresses, IPProtocol fields) if they share
+            at least one port number.
 
             For internal forwarding rules within the same VPC network,
             two or more forwarding rules cannot use the same [IPAddress,
@@ -40136,6 +40282,16 @@ class ForwardingRule(proto.Message):
 
                  -  For Private Service Connect forwarding rules that forward traffic to managed services, the target must be a service attachment. The target is not mutable once set as a service attachment.
 
+            The following load balancers cannot set the target field
+            (they should set the backendService field instead):
+
+            ::
+
+               - Internal passthrough Network Load Balancers
+               - Backend service-based regional external passthrough Network Load
+               Balancers
+               - Global external passthrough Network Load Balancers
+
             This field is a member of `oneof`_ ``_target``.
     """
 
@@ -40239,8 +40395,8 @@ class ForwardingRule(proto.Message):
     class LoadBalancingScheme(proto.Enum):
         r"""Specifies the forwarding rule type.
 
-        For more information about forwarding rules, refer to Forwarding
-        rule concepts.
+        For more information, refer to
+        Forwarding rule product and scheme table.
 
         Values:
             UNDEFINED_LOAD_BALANCING_SCHEME (0):
@@ -40941,6 +41097,21 @@ class FutureReservation(proto.Message):
             reservation_name or a name_prefix.
 
             This field is a member of `oneof`_ ``_reservation_name``.
+        resource_metadata (google.cloud.compute_v1.types.ResourceMetadata):
+            Output only. Contains standard resource metadata for an
+            FutureReservation resource. It is populated for each
+            instance of the FutureReservation resource, and includes the
+            api_version the instance was retrieved through, and its
+            canonical resource_type name.
+
+            This field is a member of `oneof`_ ``_resource_metadata``.
+        resource_name (str):
+            Name of the resource intended to be
+            delivered. Name should conform to RFC1035. This
+            will be the name of storage pool or Exapool for
+            persistent disk FRs.
+
+            This field is a member of `oneof`_ ``_resource_name``.
         scheduling_type (str):
             Maintenance information for this reservation
             Check the SchedulingType enum for the list of
@@ -40978,6 +41149,11 @@ class FutureReservation(proto.Message):
             Output only. [Output only] Status of the Future Reservation
 
             This field is a member of `oneof`_ ``_status``.
+        storage_pool_properties (google.cloud.compute_v1.types.FutureReservationStoragePoolProperties):
+            Storage pool details for the future
+            reservation.
+
+            This field is a member of `oneof`_ ``_storage_pool_properties``.
         time_window (google.cloud.compute_v1.types.FutureReservationTimeWindow):
             Time window for this Future Reservation.
 
@@ -41189,6 +41365,17 @@ class FutureReservation(proto.Message):
         number=277311262,
         optional=True,
     )
+    resource_metadata: "ResourceMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=99063872,
+        optional=True,
+        message="ResourceMetadata",
+    )
+    resource_name: str = proto.Field(
+        proto.STRING,
+        number=442550300,
+        optional=True,
+    )
     scheduling_type: str = proto.Field(
         proto.STRING,
         number=199835397,
@@ -41226,6 +41413,12 @@ class FutureReservation(proto.Message):
         number=181260274,
         optional=True,
         message="FutureReservationStatus",
+    )
+    storage_pool_properties: "FutureReservationStoragePoolProperties" = proto.Field(
+        proto.MESSAGE,
+        number=71410546,
+        optional=True,
+        message="FutureReservationStoragePoolProperties",
     )
     time_window: "FutureReservationTimeWindow" = proto.Field(
         proto.MESSAGE,
@@ -41413,6 +41606,11 @@ class FutureReservationStatus(proto.Message):
         auto_created_reservations (MutableSequence[str]):
             Output only. Fully qualified urls of the automatically
             created reservations at start_time.
+        exapool_provisioned_capacity_gb (google.cloud.compute_v1.types.StoragePoolExapoolProvisionedCapacityGb):
+            Output only. Exapool provisioned capacities
+            for each SKU type.
+
+            This field is a member of `oneof`_ ``_exapool_provisioned_capacity_gb``.
         existing_matching_usage_info (google.cloud.compute_v1.types.FutureReservationStatusExistingMatchingUsageInfo):
             Output only. [Output Only] Represents the existing matching
             usage for the future reservation.
@@ -41453,6 +41651,11 @@ class FutureReservationStatus(proto.Message):
         specific_sku_properties (google.cloud.compute_v1.types.FutureReservationStatusSpecificSKUProperties):
 
             This field is a member of `oneof`_ ``_specific_sku_properties``.
+        storage_pool_provisioned_capacity (google.cloud.compute_v1.types.FutureReservationStoragePoolProvisionedCapacity):
+            Output only. Storage pool provisioned
+            capacities for each SKU type.
+
+            This field is a member of `oneof`_ ``_storage_pool_provisioned_capacity``.
     """
 
     class AmendmentStatus(proto.Enum):
@@ -41557,6 +41760,14 @@ class FutureReservationStatus(proto.Message):
         proto.STRING,
         number=140217006,
     )
+    exapool_provisioned_capacity_gb: "StoragePoolExapoolProvisionedCapacityGb" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=345174240,
+            optional=True,
+            message="StoragePoolExapoolProvisionedCapacityGb",
+        )
+    )
     existing_matching_usage_info: "FutureReservationStatusExistingMatchingUsageInfo" = (
         proto.Field(
             proto.MESSAGE,
@@ -41593,6 +41804,12 @@ class FutureReservationStatus(proto.Message):
             optional=True,
             message="FutureReservationStatusSpecificSKUProperties",
         )
+    )
+    storage_pool_provisioned_capacity: "FutureReservationStoragePoolProvisionedCapacity" = proto.Field(
+        proto.MESSAGE,
+        number=135892964,
+        optional=True,
+        message="FutureReservationStoragePoolProvisionedCapacity",
     )
 
 
@@ -41830,6 +42047,87 @@ class FutureReservationStatusSpecificSKUProperties(proto.Message):
     source_instance_template_id: str = proto.Field(
         proto.STRING,
         number=111196154,
+        optional=True,
+    )
+
+
+class FutureReservationStoragePoolProperties(proto.Message):
+    r"""Storage pool properties for the future reservation.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        requested_exapool_provisioned_capacity_gb (google.cloud.compute_v1.types.StoragePoolExapoolProvisionedCapacityGb):
+            Requested exapool provisioned capacity in
+            GiB.
+
+            This field is a member of `oneof`_ ``_requested_exapool_provisioned_capacity_gb``.
+        requested_storage_pool_provisioned_capacity (google.cloud.compute_v1.types.FutureReservationStoragePoolProvisionedCapacity):
+            Requested storage pool provisioned capacity.
+
+            This field is a member of `oneof`_ ``_requested_storage_pool_provisioned_capacity``.
+        storage_pool_type (str):
+            Type of the storage pool.
+
+            This field is a member of `oneof`_ ``_storage_pool_type``.
+    """
+
+    requested_exapool_provisioned_capacity_gb: "StoragePoolExapoolProvisionedCapacityGb" = proto.Field(
+        proto.MESSAGE,
+        number=174982159,
+        optional=True,
+        message="StoragePoolExapoolProvisionedCapacityGb",
+    )
+    requested_storage_pool_provisioned_capacity: "FutureReservationStoragePoolProvisionedCapacity" = proto.Field(
+        proto.MESSAGE,
+        number=326931283,
+        optional=True,
+        message="FutureReservationStoragePoolProvisionedCapacity",
+    )
+    storage_pool_type: str = proto.Field(
+        proto.STRING,
+        number=285999289,
+        optional=True,
+    )
+
+
+class FutureReservationStoragePoolProvisionedCapacity(proto.Message):
+    r"""Storage pool provisioned capacities for each SKU type.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        pool_provisioned_capacity_gb (int):
+            Size of the storage pool in GiB.
+
+            This field is a member of `oneof`_ ``_pool_provisioned_capacity_gb``.
+        pool_provisioned_iops (int):
+            Provisioned IOPS of the storage pool. Only
+            relevant if the storage pool type is
+            hyperdisk-balanced.
+
+            This field is a member of `oneof`_ ``_pool_provisioned_iops``.
+        pool_provisioned_throughput (int):
+            Provisioned throughput of the storage pool in
+            MiB/s. Only relevant if the storage pool type is
+            hyperdisk-balanced or hyperdisk-throughput.
+
+            This field is a member of `oneof`_ ``_pool_provisioned_throughput``.
+    """
+
+    pool_provisioned_capacity_gb: int = proto.Field(
+        proto.INT64,
+        number=478537682,
+        optional=True,
+    )
+    pool_provisioned_iops: int = proto.Field(
+        proto.INT64,
+        number=112092311,
+        optional=True,
+    )
+    pool_provisioned_throughput: int = proto.Field(
+        proto.INT64,
+        number=169215640,
         optional=True,
     )
 
@@ -52797,11 +53095,6 @@ class HealthStatus(proto.Message):
 
     class HealthState(proto.Enum):
         r"""Health state of the IPv4 address of the instance.
-        Additional supported values which may be not listed in the enum
-        directly due to technical reasons:
-
-        HEALTHY
-        UNHEALTHY
 
         Values:
             UNDEFINED_HEALTH_STATE (0):
@@ -52976,26 +53269,19 @@ class HealthStatusForNetworkEndpoint(proto.Message):
     class HealthState(proto.Enum):
         r"""Health state of the network endpoint determined based on the
         health checks configured.
-        Additional supported values which may be not listed in the enum
-        directly due to technical reasons:
-
-        DRAINING
-        HEALTHY
-        UNHEALTHY
-        UNKNOWN
 
         Values:
             UNDEFINED_HEALTH_STATE (0):
                 A value indicating that the enum field is not
                 set.
             DRAINING (480455402):
-                No description available.
+                Endpoint is being drained.
             HEALTHY (439801213):
-                No description available.
+                Endpoint is healthy.
             UNHEALTHY (462118084):
-                No description available.
+                Endpoint is unhealthy.
             UNKNOWN (433141802):
-                No description available.
+                Health status of the endpoint is unknown.
         """
 
         UNDEFINED_HEALTH_STATE = 0
@@ -60955,6 +61241,7 @@ class Instance(proto.Message):
 
             For example:
             zones/us-central1-f/machineTypes/custom-4-5120
+
             For a full list of restrictions, read
             theSpecifications for custom machine types.
 
@@ -61716,6 +62003,12 @@ class InstanceFlexibilityPolicyInstanceSelection(proto.Message):
             created from these properties. This field only accepts a
             machine type names, for example ``n2-standard-4`` and not
             URLs or partial URLs.
+        min_cpu_platform (str):
+            Name of the minimum CPU platform to be used
+            by this instance selection. e.g. 'Intel Ice
+            Lake'.
+
+            This field is a member of `oneof`_ ``_min_cpu_platform``.
         rank (int):
             Rank when prioritizing the shape
             flexibilities. The instance selections with rank
@@ -61734,6 +62027,11 @@ class InstanceFlexibilityPolicyInstanceSelection(proto.Message):
     machine_types: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=79720065,
+    )
+    min_cpu_platform: str = proto.Field(
+        proto.STRING,
+        number=242912759,
+        optional=True,
     )
     rank: int = proto.Field(
         proto.INT64,
@@ -62981,17 +63279,16 @@ class InstanceGroupManagerInstanceLifecyclePolicy(proto.Message):
            repairing VMs in a MIG.
            - DO_NOTHING: MIG does not repair a failed VM.
 
-        Additional supported values which may be not listed in the enum
-        directly due to technical reasons: DO_NOTHING REPAIR
-
         Values:
             UNDEFINED_DEFAULT_ACTION_ON_FAILURE (0):
                 A value indicating that the enum field is not
                 set.
             DO_NOTHING (451307513):
-                No description available.
+                MIG does not repair a failed VM.
             REPAIR (266277773):
-                No description available.
+                (default): MIG automatically repairs a failed
+                VM by recreating it. For more information, see
+                About repairing VMs in a MIG.
         """
 
         UNDEFINED_DEFAULT_ACTION_ON_FAILURE = 0
@@ -100569,9 +100866,7 @@ class ManagedInstance(proto.Message):
 
     class InstanceStatus(proto.Enum):
         r"""Output only. [Output Only] The status of the instance. This field is
-        empty when the instance does not exist. Additional supported values
-        which may be not listed in the enum directly due to technical
-        reasons: STOPPING SUSPENDING
+        empty when the instance does not exist.
 
         Values:
             UNDEFINED_INSTANCE_STATUS (0):
@@ -100600,11 +100895,12 @@ class ManagedInstance(proto.Message):
             STOPPED (444276141):
                 The instance has stopped successfully.
             STOPPING (350791796):
-                No description available.
+                The instance is currently stopping (either
+                being deleted or killed).
             SUSPENDED (51223995):
                 The instance has suspended.
             SUSPENDING (514206246):
-                No description available.
+                The instance is suspending.
             TERMINATED (250018339):
                 The instance has stopped (either by explicit
                 action or underlying failure).
@@ -105327,8 +105623,7 @@ class NetworkProfileNetworkFeatures(proto.Message):
     """
 
     class AddressPurposes(proto.Enum):
-        r"""Additional supported values which may be not listed in the enum
-        directly due to technical reasons: PRIVATE_SERVICE_CONNECT
+        r"""
 
         Values:
             UNDEFINED_ADDRESS_PURPOSES (0):
@@ -105354,7 +105649,10 @@ class NetworkProfileNetworkFeatures(proto.Message):
                 External IP automatically reserved for Cloud
                 NAT.
             PRIVATE_SERVICE_CONNECT (48134724):
-                No description available.
+                A private network IP address that can be used
+                to configure Private Service Connect. This
+                purpose can be specified only forGLOBAL
+                addresses of Type INTERNAL
             SERVERLESS (270492508):
                 A regional internal IP address range reserved
                 for Serverless.
@@ -106535,9 +106833,7 @@ class NetworkRoutingConfig(proto.Message):
     class BgpInterRegionCost(proto.Enum):
         r"""Allows to define a preferred approach for handling inter-region cost
         in the selection process when using the STANDARD BGP best path
-        selection algorithm. Can be DEFAULT orADD_COST_TO_MED. Additional
-        supported values which may be not listed in the enum directly due to
-        technical reasons: ADD_COST_TO_MED DEFAULT
+        selection algorithm. Can be DEFAULT orADD_COST_TO_MED.
 
         Values:
             UNDEFINED_BGP_INTER_REGION_COST (0):
@@ -118726,7 +119022,7 @@ class QuotaStatusWarning(proto.Message):
             [Output Only] Metadata about this warning in key: value
             format. For example:
 
-            "data": [ { "key": "scope", "value": "zones/us-east1-d" }
+            "data": [ { "key": "scope", "value": "zones/us-east1-d" }]
         message (str):
             [Output Only] A human-readable description of the warning
             code.
@@ -119166,6 +119462,60 @@ class Reference(proto.Message):
     target: str = proto.Field(
         proto.STRING,
         number=192835985,
+        optional=True,
+    )
+
+
+class RegexRewrite(proto.Message):
+    r"""The spec for modifying the path using a regular expression.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        path_pattern (str):
+            Required. The regular expression used to match against the
+            URL path. It uses RE2 syntax with the following constraints:
+
+            ::
+
+                 - Any single character operators
+                 - Groups are allowed to have only submatch operator inside
+                 - Groups are allowed only without any char repetition, e.g.
+                 .*
+                 - Any char repetition, e.g. .*, is
+                 only allowed to be used in a single regex together with:
+
+
+                        - Empty string operators
+                        - Other repetitions
+                        - Ranges
+                        - Repetitions of ranges
+
+
+                 - Ranges are only allowed to have:
+
+
+                        - Character range
+                        - Digits range
+                        - Symbols listed in characters allowed for ranges
+
+            This field is a member of `oneof`_ ``_path_pattern``.
+        path_substitution (str):
+            Required. Required when path pattern is
+            specified. Used to rewrite matching parts of the
+            path.
+
+            This field is a member of `oneof`_ ``_path_substitution``.
+    """
+
+    path_pattern: str = proto.Field(
+        proto.STRING,
+        number=316473718,
+        optional=True,
+    )
+    path_substitution: str = proto.Field(
+        proto.STRING,
+        number=268020951,
         optional=True,
     )
 
@@ -122549,6 +122899,14 @@ class Reservation(proto.Message):
             with Google Cloud managed services.
 
             This field is a member of `oneof`_ ``_reservation_sharing_policy``.
+        resource_metadata (google.cloud.compute_v1.types.ResourceMetadata):
+            Output only. [Output Only] Contains standard resource
+            metadata for an Allocation resource. It is populated for
+            each instance of the Allocation resource, and includes the
+            api_version the instance was retrieved through, and its
+            canonical resource_type name.
+
+            This field is a member of `oneof`_ ``_resource_metadata``.
         resource_policies (MutableMapping[str, str]):
             Resource policies to be added to this
             reservation. The key is defined by user, and the
@@ -122861,6 +123219,12 @@ class Reservation(proto.Message):
         number=205970120,
         optional=True,
         message="AllocationReservationSharingPolicy",
+    )
+    resource_metadata: "ResourceMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=99063872,
+        optional=True,
+        message="ResourceMetadata",
     )
     resource_policies: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
@@ -125294,6 +125658,40 @@ class ResourceGroupReference(proto.Message):
     group: str = proto.Field(
         proto.STRING,
         number=98629247,
+        optional=True,
+    )
+
+
+class ResourceMetadata(proto.Message):
+    r"""Standardized resource metadata common to all compute
+    resources.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        api_version (str):
+            The version of the API interface that this resource was
+            retrieved through. For example, ``"2025-01-01"`` or
+            ``"2025-01-01-preview"``.
+
+            This field is a member of `oneof`_ ``_api_version``.
+        resource_type (str):
+            The canonical resource type name in the format of a resource
+            type as defined by `AIP-123 <https://google.aip.dev/123>`__.
+            For example, ``"compute.googleapis.com/Instance"``.
+
+            This field is a member of `oneof`_ ``_resource_type``.
+    """
+
+    api_version: str = proto.Field(
+        proto.STRING,
+        number=476021683,
+        optional=True,
+    )
+    resource_type: str = proto.Field(
+        proto.STRING,
+        number=442752203,
         optional=True,
     )
 
@@ -135139,13 +135537,16 @@ class SecurityPolicyRuleRateLimitOptions(proto.Message):
                which is resolved based on "userIpRequestHeaders" configured with the
                security policy. If there is no "userIpRequestHeaders" configuration or
                an IP address cannot be resolved from it, the key type defaults toIP.
+               - ASN: The autonomous system number of the originating
+               client. If not available, the key type defaults toALL.
+               - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the
+               client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the
+               key type defaults to ALL.
 
-            - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the client
-              connects using HTTPS, HTTP/2 or HTTP/3. If not available,
-              the key type defaults to ALL. For "fairshare" action, this
-              value is limited to ALL i.e. a single rate limit threshold
-              is enforced for all the requests matching the rule. Check
-              the EnforceOnKey enum for the list of possible values.
+            For "fairshare" action, this value is limited to ALL i.e. a
+            single rate limit threshold is enforced for all the requests
+            matching the rule. Check the EnforceOnKey enum for the list
+            of possible values.
 
             This field is a member of `oneof`_ ``_enforce_on_key``.
         enforce_on_key_configs (MutableSequence[google.cloud.compute_v1.types.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig]):
@@ -135226,18 +135627,23 @@ class SecurityPolicyRuleRateLimitOptions(proto.Message):
            which is resolved based on "userIpRequestHeaders" configured with the
            security policy. If there is no "userIpRequestHeaders" configuration or
            an IP address cannot be resolved from it, the key type defaults toIP.
+           - ASN: The autonomous system number of the originating
+           client. If not available, the key type defaults toALL.
+           - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the
+           client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the
+           key type defaults to ALL.
 
-        - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the client
-          connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key
-          type defaults to ALL. For "fairshare" action, this value is
-          limited to ALL i.e. a single rate limit threshold is enforced for
-          all the requests matching the rule.
+        For "fairshare" action, this value is limited to ALL i.e. a single
+        rate limit threshold is enforced for all the requests matching the
+        rule.
 
         Values:
             UNDEFINED_ENFORCE_ON_KEY (0):
                 A value indicating that the enum field is not
                 set.
             ALL (64897):
+                No description available.
+            ASN (65116):
                 No description available.
             HTTP_COOKIE (494981627):
                 No description available.
@@ -135263,6 +135669,7 @@ class SecurityPolicyRuleRateLimitOptions(proto.Message):
 
         UNDEFINED_ENFORCE_ON_KEY = 0
         ALL = 64897
+        ASN = 65116
         HTTP_COOKIE = 494981627
         HTTP_HEADER = 91597348
         HTTP_PATH = 311503228
@@ -135378,11 +135785,14 @@ class SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig(proto.Message):
                which is resolved based on "userIpRequestHeaders" configured with the
                security policy. If there is no "userIpRequestHeaders" configuration
                or an IP address cannot be resolved from it, the key type defaults toIP.
+               - ASN: The autonomous system number of the originating
+               client. If not available, the key type defaults toALL.
+               - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the
+               client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the
+               key type defaults to ALL.
 
-            - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the client
-              connects using HTTPS, HTTP/2 or HTTP/3. If not available,
-              the key type defaults to ALL. Check the EnforceOnKeyType
-              enum for the list of possible values.
+            Check the EnforceOnKeyType enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_enforce_on_key_type``.
     """
@@ -135426,16 +135836,19 @@ class SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig(proto.Message):
            which is resolved based on "userIpRequestHeaders" configured with the
            security policy. If there is no "userIpRequestHeaders" configuration
            or an IP address cannot be resolved from it, the key type defaults toIP.
-
-        - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the client
-          connects using HTTPS, HTTP/2 or HTTP/3. If not available, the key
-          type defaults to ALL.
+           - ASN: The autonomous system number of the originating
+           client. If not available, the key type defaults toALL.
+           - TLS_JA4_FINGERPRINT: JA4 TLS/SSL fingerprint if the
+           client connects using HTTPS, HTTP/2 or HTTP/3. If not available, the
+           key type defaults to ALL.
 
         Values:
             UNDEFINED_ENFORCE_ON_KEY_TYPE (0):
                 A value indicating that the enum field is not
                 set.
             ALL (64897):
+                No description available.
+            ASN (65116):
                 No description available.
             HTTP_COOKIE (494981627):
                 No description available.
@@ -135461,6 +135874,7 @@ class SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig(proto.Message):
 
         UNDEFINED_ENFORCE_ON_KEY_TYPE = 0
         ALL = 64897
+        ASN = 65116
         HTTP_COOKIE = 494981627
         HTTP_HEADER = 91597348
         HTTP_PATH = 311503228
@@ -150515,7 +150929,7 @@ class TargetPool(proto.Message):
             The server-defined URL for the resource. This field is
             applicable only when the containing target pool is serving a
             forwarding rule as the primary pool, and its failoverRatio
-            field is properly set to a value between [0, 1].backupPool
+            field is properly set to a value between [0, 1]. backupPool
             and failoverRatio together define the fallback behavior of
             the primary target pool: if the ratio of the healthy
             instances in the primary pool is at or belowfailoverRatio,
@@ -157758,6 +158172,13 @@ class UrlRewrite(proto.Message):
             be specified.
 
             This field is a member of `oneof`_ ``_path_template_rewrite``.
+        regex_rewrite (google.cloud.compute_v1.types.RegexRewrite):
+            The regex rewrite to be applied to the URL.
+            Only one ofpathPrefixRewrite,
+            pathTemplateRewrite, orregexRewrite may be
+            specified.
+
+            This field is a member of `oneof`_ ``_regex_rewrite``.
     """
 
     host_rewrite: str = proto.Field(
@@ -157774,6 +158195,12 @@ class UrlRewrite(proto.Message):
         proto.STRING,
         number=423409569,
         optional=True,
+    )
+    regex_rewrite: "RegexRewrite" = proto.Field(
+        proto.MESSAGE,
+        number=380801428,
+        optional=True,
+        message="RegexRewrite",
     )
 
 
@@ -160650,7 +161077,7 @@ class Warning(proto.Message):
             [Output Only] Metadata about this warning in key: value
             format. For example:
 
-            "data": [ { "key": "scope", "value": "zones/us-east1-d" }
+            "data": [ { "key": "scope", "value": "zones/us-east1-d" }]
         message (str):
             [Output Only] A human-readable description of the warning
             code.
@@ -160824,7 +161251,7 @@ class Warnings(proto.Message):
             [Output Only] Metadata about this warning in key: value
             format. For example:
 
-            "data": [ { "key": "scope", "value": "zones/us-east1-d" }
+            "data": [ { "key": "scope", "value": "zones/us-east1-d" }]
         message (str):
             [Output Only] A human-readable description of the warning
             code.
