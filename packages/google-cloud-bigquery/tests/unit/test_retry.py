@@ -183,7 +183,10 @@ class Test_should_retry_insert_rows(unittest.TestCase):
 
 class Test_insert_rows_default_retry(unittest.TestCase):
     def test_insert_rows_json_defaults_to_scoped_retry(self):
-        from google.cloud.bigquery.retry import INSERT_ROWS_DEFAULT_RETRY, _should_retry_insert_rows
+        from google.cloud.bigquery.retry import (
+            INSERT_ROWS_DEFAULT_RETRY,
+            _should_retry_insert_rows,
+        )
 
         # The default retry object on insert_rows_json is the scoped one,
         # so transient SSLErrors on polling paths stay retryable while the
