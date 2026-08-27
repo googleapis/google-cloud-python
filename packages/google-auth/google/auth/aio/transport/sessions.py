@@ -283,6 +283,8 @@ class AsyncAuthorizedSession:
                 google.auth.exceptions.TimeoutError: If the method does not complete within
                 the configured `max_allowed_time` or the request exceeds the configured
                 `timeout`.
+                google.auth.exceptions.MutualTLSChannelError: If mutual TLS
+                channel reconfiguration fails for any reason during certificate rotation.
         """
         if self._mtls_init_task:
             try:
@@ -354,10 +356,10 @@ class AsyncAuthorizedSession:
                                             )
                                             continue
                                         except Exception as e:
-                                            _LOGGER.warning(
-                                                "Failed to reconfigure mTLS channel: %s. Proceeding with original response.",
-                                                e,
-                                            )
+                                            _LOGGER.error("Failed to reconfigure mTLS channel: %s", e)
+                                            raise exceptions.MutualTLSChannelError(
+                                                "Failed to reconfigure mTLS channel"
+                                            ) from e
                                     else:
                                         _LOGGER.info(
                                             "Skipping reconfiguration of mTLS channel because the client"
