@@ -92,7 +92,7 @@ class CertRotationInterceptor(
 
 
 class MTLSRefreshingChannel(grpc.Channel):
-    def __init__(self, target, factory_args, initial_channel, initial_cert):
+    def __init__(self, target, factory_args, initial_channel, initial_cert, create_channel_fn):
         self._target = target
         self._create_channel_fn = create_channel_fn
         self._channel = initial_channel
