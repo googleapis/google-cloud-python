@@ -136,7 +136,16 @@ def get_packages_to_test():
 
     package_dirs = set(get_package_directories())
     to_test_paths = collections.defaultdict(list)
+    has_ci_change = False
+
+    CI_INFRASTRUCTURE_PREFIXES = (
+        ".github/",
+        "ci/",
+    )
+
     for f in changed_files:
+        if f.startswith(CI_INFRASTRUCTURE_PREFIXES):
+            has_ci_change = True
         parts = f.split('/')
         if len(parts) >= 2 and parts[0] in package_dirs:
             pkg_name = parts[1]
@@ -157,9 +166,14 @@ def get_packages_to_test():
         "proto-plus",
         "google-crc32c",
     }
-    if any(pkg in core_packages for pkg in to_test_paths):
-        # When a core package changes, test all handwritten packages (non-GAPIC_AUTO)
-        return get_packages(handwritten_only=True)
+    has_core_change = any(pkg in core_packages for pkg in to_test_paths)
+
+    # If CI infrastructure or a core dependency was touched, merge all handwritten packages
+    if has_ci_change or has_core_change:
+        for pkg, paths in get_packages(handwritten_only=True).items():
+            for path in paths:
+                if path not in to_test_paths[pkg]:
+                    to_test_paths[pkg].append(path)
 
     return dict(to_test_paths)
 
