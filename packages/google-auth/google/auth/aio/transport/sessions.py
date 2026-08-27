@@ -40,6 +40,7 @@ else:
         ClientTimeout = None
 
 _LOGGER = logging.getLogger(__name__)
+MTLS_URL_PREFIXES = ["mtls.googleapis.com", "mtls.sandbox.googleapis.com"]
 
 
 # Tracks the internal aiohttp installation and usage
@@ -315,43 +316,46 @@ class AsyncAuthorizedSession:
                     )
                 )
                 if response.status_code == http_client.UNAUTHORIZED:
-                    try:
-                        (
-                            call_cert_bytes,
-                            call_key_bytes,
-                            cached_fingerprint,
-                            current_cert_fingerprint,
-                        ) = await mtls._run_in_executor(
-                            google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response,
-                            self._cached_cert,
-                        )
-                        if cached_fingerprint != current_cert_fingerprint:
-                            try:
-                                _LOGGER.info(
-                                    "Client certificate has changed, reconfiguring mTLS "
-                                    "channel."
-                                )
-                                if self._mtls_init_task and self._mtls_init_task.done():
-                                    self._mtls_init_task = None
-                                await self.configure_mtls_channel(
-                                    lambda: (call_cert_bytes, call_key_bytes)
-                                )
-                                continue
-                            except Exception as e:
-                                _LOGGER.warning(
-                                    "Failed to reconfigure mTLS channel: %s. Proceeding with original response.",
-                                    e,
-                                )
-                        else:
-                            _LOGGER.info(
-                                "Skipping reconfiguration of mTLS channel because the client"
-                                " certificate has not changed."
+                    if getattr(self, "is_mtls", False) and any(
+                        prefix in url for prefix in MTLS_URL_PREFIXES
+                    ):
+                        try:
+                            (
+                                call_cert_bytes,
+                                call_key_bytes,
+                                cached_fingerprint,
+                                current_cert_fingerprint,
+                            ) = await mtls._run_in_executor(
+                                google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response,
+                                self._cached_cert,
                             )
-                    except Exception as e:
-                        _LOGGER.warning(
-                            "Failed to check client certificate parameters: %s. Proceeding with original response.",
-                            e,
-                        )
+                            if cached_fingerprint != current_cert_fingerprint:
+                                try:
+                                    _LOGGER.info(
+                                        "Client certificate has changed, reconfiguring mTLS "
+                                        "channel."
+                                    )
+                                    if self._mtls_init_task and self._mtls_init_task.done():
+                                        self._mtls_init_task = None
+                                    await self.configure_mtls_channel(
+                                        lambda: (call_cert_bytes, call_key_bytes)
+                                    )
+                                    continue
+                                except Exception as e:
+                                    _LOGGER.warning(
+                                        "Failed to reconfigure mTLS channel: %s. Proceeding with original response.",
+                                        e,
+                                    )
+                            else:
+                                _LOGGER.info(
+                                    "Skipping reconfiguration of mTLS channel because the client"
+                                    " certificate has not changed."
+                                )
+                        except Exception as e:
+                            _LOGGER.warning(
+                                "Failed to check client certificate parameters: %s. Proceeding with original response.",
+                                e,
+                            )
 
                 if response.status_code not in transport.DEFAULT_RETRYABLE_STATUS_CODES:
                     break
