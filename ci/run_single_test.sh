@@ -19,7 +19,7 @@
 # `PY_VERSION` should be one of ["3.10", "3.11", "3.12", "3.13"]
 
 # This script is called by the `ci/run_conditional_tests.sh` script.
-# A specific `nox` session will be run, depending on the value of
+# A specific `nox` session will be run, depending on the value of 
 # `TEST_TYPE` and `PY_VERSION`. For example, if `TEST_TYPE` is
 # `lint`, the `nox -s lint` session will be run.
 
@@ -131,12 +131,12 @@ case ${TEST_TYPE} in
             source .venv-profiler/bin/activate
             export PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1
             python -m pip install --upgrade pip setuptools
-
+            
             PROFILER_TEMP_DIR=$(mktemp -d)
             cp ../../scripts/import_profiler/profiler.py "${PROFILER_TEMP_DIR}/profiler.py"
             PROFILER_SCRIPT="${PROFILER_TEMP_DIR}/profiler.py"
             BASELINE_CSV="${PROFILER_TEMP_DIR}/baseline_${PACKAGE_NAME}.csv"
-
+            
             if [ -n "${TARGET_BRANCH}" ]; then
                 # Fetch history for the target branch without --depth=1 in case it was shallowly fetched
                 if [ -f "$(git rev-parse --git-dir)/shallow" ]; then
@@ -180,7 +180,7 @@ case ${TEST_TYPE} in
                     echo "Could not find baseline commit for ${TARGET_BRANCH:-main}. Skipping baseline generation."
                 fi
             fi
-
+            
             # TODO(https://github.com/googleapis/google-cloud-python/issues/18035):
             # Clean up this fallback once Python 3.15 is officially released and upstream binary wheels are available on PyPI.
             # On pre-release Python versions, packages with complex C/Rust dependencies (e.g. bigframes) fail during pip install due to missing pre-built wheels.

@@ -22,12 +22,12 @@ contiguous grouping. All directory variants of a package (e.g. packages/foo and
 preview-packages/foo) are kept aligned in the exact same shard.
 """
 
-import collections
-import json
-import math
 import os
 import subprocess
+import json
+import math
 import sys
+import collections
 
 
 def get_package_directories():
@@ -173,7 +173,7 @@ def group_packages(packages_map):
 
     # Pack packages alphabetically by package name.
     for name, paths, weight in pkg_items:
-        # If adding this package would exceed target weight AND we haven't reached the
+        # If adding this package would exceed target weight AND we haven't reached the 
         # shard limit, start a new shard. Otherwise, keep "stuffing" the current one.
         if current_shard_items and (current_shard_weight + weight > target_weight) and len(shards_list) < max_shards - 1:
             shards_list.append(current_shard_items)

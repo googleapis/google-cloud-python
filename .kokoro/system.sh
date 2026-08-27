@@ -286,20 +286,6 @@ for path in `find 'packages' \
     files_to_check=("${package_path}")
   fi
 
-  # When testing core dependencies from source, also trigger on changes to core packages
-  if [[ "${NOX_SESSION}" == "core_deps_from_source" ]]; then
-    files_to_check+=(
-      "packages/google-api-core"
-      "packages/google-auth"
-      "packages/google-auth-httplib2"
-      "packages/google-auth-oauthlib"
-      "packages/google-cloud-core"
-      "packages/googleapis-common-protos"
-      "packages/grpc-google-iam-v1"
-      "packages/proto-plus"
-    )
-  fi
-
   # When running compliance tests, only test packages that have compliance suites
   if [[ "${NOX_SESSION}" == "compliance"* && "${package_name}" != "sqlalchemy-"* ]]; then
     printf "SKIP %-20s %-40s %s\n" "[not_applicable]" "${package_name}" "${commit_hash:-HEAD}"
