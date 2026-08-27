@@ -27,12 +27,12 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 from google.api_core import gapic_v1, grpc_helpers
+from google.api_core.grpc_helpers import ClientInterceptor
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
-
 from google.cloud.secretmanager_v1.types import resources, service
+from google.protobuf.json_format import MessageToJson
 
 from .base import DEFAULT_CLIENT_INFO, SecretManagerServiceTransport
 
@@ -148,6 +148,7 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         api_audience: Optional[str] = None,
+        interceptors: Optional[Sequence[ClientInterceptor]] = None,
     ) -> None:
         """Instantiate the transport.
 
@@ -198,6 +199,9 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
                 to the service that will be set when using certain 3rd party
                 authentication flows. Audience is typically a resource identifier.
                 If not set, the host value will be used as a default.
+            interceptors (Optional[Sequence[ClientInterceptor]]):
+                Additional interceptors to be injected into the gRPC channel pipeline.
+                These are executed in order.
 
         Raises:
           google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -273,6 +277,10 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
                     ("grpc.max_receive_message_length", -1),
                 ],
             )
+
+        self._grpc_channel = grpc_helpers.apply_interceptors(
+            self._grpc_channel, interceptors
+        )
 
         self._interceptor = _LoggingClientInterceptor()
         self._logged_channel = grpc.intercept_channel(
