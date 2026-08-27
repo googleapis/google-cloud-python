@@ -29,8 +29,8 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.biglake_hive_v1beta._compat import transcode_request
-from google.cloud.biglake_hive_v1beta.types import hive_metastore
+from google.cloud.biglake_hive_v1._compat import transcode_request
+from google.cloud.biglake_hive_v1.types import hive_metastore
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseHiveMetastoreServiceRestTransport
@@ -1271,9 +1271,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.BatchCreatePartitions",
+                    f"Sending request for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.BatchCreatePartitions",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "BatchCreatePartitions",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -1324,9 +1324,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.batch_create_partitions",
+                    "Received response for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.batch_create_partitions",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "BatchCreatePartitions",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
@@ -1423,9 +1423,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.BatchDeletePartitions",
+                    f"Sending request for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.BatchDeletePartitions",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "BatchDeletePartitions",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -1542,9 +1542,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.BatchUpdatePartitions",
+                    f"Sending request for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.BatchUpdatePartitions",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "BatchUpdatePartitions",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -1595,9 +1595,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.batch_update_partitions",
+                    "Received response for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.batch_update_partitions",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "BatchUpdatePartitions",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
@@ -1704,9 +1704,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.CreateHiveCatalog",
+                    f"Sending request for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.CreateHiveCatalog",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "CreateHiveCatalog",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -1755,9 +1755,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.create_hive_catalog",
+                    "Received response for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.create_hive_catalog",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "CreateHiveCatalog",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
@@ -1859,9 +1859,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.CreateHiveDatabase",
+                    f"Sending request for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.CreateHiveDatabase",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "CreateHiveDatabase",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -1910,9 +1910,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.create_hive_database",
+                    "Received response for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.create_hive_database",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "CreateHiveDatabase",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
@@ -2016,9 +2016,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.CreateHiveTable",
+                    f"Sending request for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.CreateHiveTable",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "CreateHiveTable",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -2065,9 +2065,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.create_hive_table",
+                    "Received response for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.create_hive_table",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "CreateHiveTable",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
@@ -2160,9 +2160,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.DeleteHiveCatalog",
+                    f"Sending request for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.DeleteHiveCatalog",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "DeleteHiveCatalog",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -2271,9 +2271,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.DeleteHiveDatabase",
+                    f"Sending request for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.DeleteHiveDatabase",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "DeleteHiveDatabase",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -2382,9 +2382,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.DeleteHiveTable",
+                    f"Sending request for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.DeleteHiveTable",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "DeleteHiveTable",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -2498,9 +2498,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.FailoverHiveCatalog",
+                    f"Sending request for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.FailoverHiveCatalog",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "FailoverHiveCatalog",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -2551,9 +2551,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.failover_hive_catalog",
+                    "Received response for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.failover_hive_catalog",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "FailoverHiveCatalog",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
@@ -2659,9 +2659,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.GetHiveCatalog",
+                    f"Sending request for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.GetHiveCatalog",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "GetHiveCatalog",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -2707,9 +2707,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.get_hive_catalog",
+                    "Received response for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.get_hive_catalog",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "GetHiveCatalog",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
@@ -2810,9 +2810,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.GetHiveDatabase",
+                    f"Sending request for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.GetHiveDatabase",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "GetHiveDatabase",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -2858,9 +2858,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.get_hive_database",
+                    "Received response for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.get_hive_database",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "GetHiveDatabase",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
@@ -2961,9 +2961,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.GetHiveTable",
+                    f"Sending request for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.GetHiveTable",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "GetHiveTable",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -3009,9 +3009,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.get_hive_table",
+                    "Received response for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.get_hive_table",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "GetHiveTable",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
@@ -3110,9 +3110,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.ListHiveCatalogs",
+                    f"Sending request for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.ListHiveCatalogs",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "ListHiveCatalogs",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -3162,9 +3162,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.list_hive_catalogs",
+                    "Received response for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.list_hive_catalogs",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "ListHiveCatalogs",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
@@ -3263,9 +3263,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.ListHiveDatabases",
+                    f"Sending request for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.ListHiveDatabases",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "ListHiveDatabases",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -3315,9 +3315,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.list_hive_databases",
+                    "Received response for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.list_hive_databases",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "ListHiveDatabases",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
@@ -3416,9 +3416,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.ListHiveTables",
+                    f"Sending request for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.ListHiveTables",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "ListHiveTables",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -3466,9 +3466,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.list_hive_tables",
+                    "Received response for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.list_hive_tables",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "ListHiveTables",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
@@ -3563,9 +3563,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.ListPartitions",
+                    f"Sending request for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.ListPartitions",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "ListPartitions",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -3605,9 +3605,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.list_partitions",
+                    "Received response for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.list_partitions",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "ListPartitions",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
@@ -3714,9 +3714,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.UpdateHiveCatalog",
+                    f"Sending request for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.UpdateHiveCatalog",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "UpdateHiveCatalog",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -3765,9 +3765,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.update_hive_catalog",
+                    "Received response for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.update_hive_catalog",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "UpdateHiveCatalog",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
@@ -3869,9 +3869,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.UpdateHiveDatabase",
+                    f"Sending request for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.UpdateHiveDatabase",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "UpdateHiveDatabase",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -3920,9 +3920,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.update_hive_database",
+                    "Received response for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.update_hive_database",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "UpdateHiveDatabase",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
@@ -4026,9 +4026,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "headers": dict(metadata),
                 }
                 _LOGGER.debug(
-                    f"Sending request for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.UpdateHiveTable",
+                    f"Sending request for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.UpdateHiveTable",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "UpdateHiveTable",
                         "httpRequest": http_request,
                         "metadata": http_request["headers"],
@@ -4075,9 +4075,9 @@ class HiveMetastoreServiceRestTransport(_BaseHiveMetastoreServiceRestTransport):
                     "status": response.status_code,
                 }
                 _LOGGER.debug(
-                    "Received response for google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient.update_hive_table",
+                    "Received response for google.cloud.biglake.hive_v1.HiveMetastoreServiceClient.update_hive_table",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "rpcName": "UpdateHiveTable",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,

@@ -15,7 +15,7 @@
 #
 import google.api_core as api_core
 
-from google.cloud.biglake_hive_v1beta import gapic_version as package_version
+from google.cloud.biglake_hive_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
@@ -26,8 +26,8 @@ __version__ = package_version.__version__
 # https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
 # Older Python versions safely ignore this variable.
 __lazy_modules__ = {
-    "google.cloud.biglake_hive_v1beta.services.hive_metastore_service",
-    "google.cloud.biglake_hive_v1beta.types.hive_metastore",
+    "google.cloud.biglake_hive_v1.services.hive_metastore_service",
+    "google.cloud.biglake_hive_v1.types.hive_metastore",
 }
 
 
@@ -117,5 +117,5 @@ __all__ = (
     "UpdatePartitionRequest",
 )
 
-api_core.check_python_version("google.cloud.biglake_hive_v1beta")
-api_core.check_dependency_versions("google.cloud.biglake_hive_v1beta")
+api_core.check_python_version("google.cloud.biglake_hive_v1")
+api_core.check_dependency_versions("google.cloud.biglake_hive_v1")

@@ -554,6 +554,7 @@ libraries:
   - name: google-cloud-biglake-hive
     version: 0.3.2
     apis:
+      - path: google/cloud/biglake/hive/v1
       - path: google/cloud/biglake/hive/v1beta
     python:
       default_version: v1beta

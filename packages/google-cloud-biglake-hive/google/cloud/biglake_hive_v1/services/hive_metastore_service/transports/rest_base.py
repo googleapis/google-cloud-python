@@ -21,7 +21,7 @@ import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import gapic_v1, path_template
 from google.protobuf import json_format
 
-from google.cloud.biglake_hive_v1beta.types import hive_metastore
+from google.cloud.biglake_hive_v1.types import hive_metastore
 
 from .base import DEFAULT_CLIENT_INFO, HiveMetastoreServiceTransport
 
@@ -99,7 +99,7 @@ class _BaseHiveMetastoreServiceRestTransport(HiveMetastoreServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/hive/v1beta/{parent=projects/*/catalogs/*/databases/*/tables/*}/partitions:batchCreate",
+                    "uri": "/hive/v1/{parent=projects/*/catalogs/*/databases/*/tables/*}/partitions:batchCreate",
                     "body": "*",
                 },
             ]
@@ -116,7 +116,7 @@ class _BaseHiveMetastoreServiceRestTransport(HiveMetastoreServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/hive/v1beta/{parent=projects/*/catalogs/*/databases/*/tables/*}/partitions:batchDelete",
+                    "uri": "/hive/v1/{parent=projects/*/catalogs/*/databases/*/tables/*}/partitions:batchDelete",
                     "body": "*",
                 },
             ]
@@ -133,7 +133,7 @@ class _BaseHiveMetastoreServiceRestTransport(HiveMetastoreServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/hive/v1beta/{parent=projects/*/catalogs/*/databases/*/tables/*}/partitions:batchUpdate",
+                    "uri": "/hive/v1/{parent=projects/*/catalogs/*/databases/*/tables/*}/partitions:batchUpdate",
                     "body": "*",
                 },
             ]
@@ -153,7 +153,7 @@ class _BaseHiveMetastoreServiceRestTransport(HiveMetastoreServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/hive/v1beta/{parent=projects/*}/catalogs",
+                    "uri": "/hive/v1/{parent=projects/*}/catalogs",
                     "body": "hive_catalog",
                 },
             ]
@@ -172,7 +172,7 @@ class _BaseHiveMetastoreServiceRestTransport(HiveMetastoreServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/hive/v1beta/{parent=projects/*/catalogs/*}/databases",
+                    "uri": "/hive/v1/{parent=projects/*/catalogs/*}/databases",
                     "body": "hive_database",
                 },
             ]
@@ -191,7 +191,7 @@ class _BaseHiveMetastoreServiceRestTransport(HiveMetastoreServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/hive/v1beta/{parent=projects/*/catalogs/*/databases/*}/tables",
+                    "uri": "/hive/v1/{parent=projects/*/catalogs/*/databases/*}/tables",
                     "body": "hive_table",
                 },
             ]
@@ -208,7 +208,7 @@ class _BaseHiveMetastoreServiceRestTransport(HiveMetastoreServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
-                    "uri": "/hive/v1beta/{name=projects/*/catalogs/*}",
+                    "uri": "/hive/v1/{name=projects/*/catalogs/*}",
                 },
             ]
             return http_options
@@ -224,7 +224,7 @@ class _BaseHiveMetastoreServiceRestTransport(HiveMetastoreServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
-                    "uri": "/hive/v1beta/{name=projects/*/catalogs/*/databases/*}",
+                    "uri": "/hive/v1/{name=projects/*/catalogs/*/databases/*}",
                 },
             ]
             return http_options
@@ -240,7 +240,7 @@ class _BaseHiveMetastoreServiceRestTransport(HiveMetastoreServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
-                    "uri": "/hive/v1beta/{name=projects/*/catalogs/*/databases/*/tables/*}",
+                    "uri": "/hive/v1/{name=projects/*/catalogs/*/databases/*/tables/*}",
                 },
             ]
             return http_options
@@ -256,7 +256,7 @@ class _BaseHiveMetastoreServiceRestTransport(HiveMetastoreServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/hive/v1beta/{name=projects/*/catalogs/*}:failover",
+                    "uri": "/hive/v1/{name=projects/*/catalogs/*}:failover",
                     "body": "*",
                 },
             ]
@@ -273,7 +273,7 @@ class _BaseHiveMetastoreServiceRestTransport(HiveMetastoreServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/hive/v1beta/{name=projects/*/catalogs/*}",
+                    "uri": "/hive/v1/{name=projects/*/catalogs/*}",
                 },
             ]
             return http_options
@@ -289,7 +289,7 @@ class _BaseHiveMetastoreServiceRestTransport(HiveMetastoreServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/hive/v1beta/{name=projects/*/catalogs/*/databases/*}",
+                    "uri": "/hive/v1/{name=projects/*/catalogs/*/databases/*}",
                 },
             ]
             return http_options
@@ -305,7 +305,7 @@ class _BaseHiveMetastoreServiceRestTransport(HiveMetastoreServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/hive/v1beta/{name=projects/*/catalogs/*/databases/*/tables/*}",
+                    "uri": "/hive/v1/{name=projects/*/catalogs/*/databases/*/tables/*}",
                 },
             ]
             return http_options
@@ -321,7 +321,7 @@ class _BaseHiveMetastoreServiceRestTransport(HiveMetastoreServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/hive/v1beta/{parent=projects/*}/catalogs",
+                    "uri": "/hive/v1/{parent=projects/*}/catalogs",
                 },
             ]
             return http_options
@@ -337,7 +337,7 @@ class _BaseHiveMetastoreServiceRestTransport(HiveMetastoreServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/hive/v1beta/{parent=projects/*/catalogs/*}/databases",
+                    "uri": "/hive/v1/{parent=projects/*/catalogs/*}/databases",
                 },
             ]
             return http_options
@@ -353,7 +353,7 @@ class _BaseHiveMetastoreServiceRestTransport(HiveMetastoreServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/hive/v1beta/{parent=projects/*/catalogs/*/databases/*}/tables",
+                    "uri": "/hive/v1/{parent=projects/*/catalogs/*/databases/*}/tables",
                 },
             ]
             return http_options
@@ -369,7 +369,7 @@ class _BaseHiveMetastoreServiceRestTransport(HiveMetastoreServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/hive/v1beta/{parent=projects/*/catalogs/*/databases/*/tables/*}/partitions:list",
+                    "uri": "/hive/v1/{parent=projects/*/catalogs/*/databases/*/tables/*}/partitions:list",
                 },
             ]
             return http_options
@@ -385,7 +385,7 @@ class _BaseHiveMetastoreServiceRestTransport(HiveMetastoreServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "patch",
-                    "uri": "/hive/v1beta/{hive_catalog.name=projects/*/catalogs/*}",
+                    "uri": "/hive/v1/{hive_catalog.name=projects/*/catalogs/*}",
                     "body": "hive_catalog",
                 },
             ]
@@ -402,7 +402,7 @@ class _BaseHiveMetastoreServiceRestTransport(HiveMetastoreServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "patch",
-                    "uri": "/hive/v1beta/{hive_database.name=projects/*/catalogs/*/databases/*}",
+                    "uri": "/hive/v1/{hive_database.name=projects/*/catalogs/*/databases/*}",
                     "body": "hive_database",
                 },
             ]
@@ -419,7 +419,7 @@ class _BaseHiveMetastoreServiceRestTransport(HiveMetastoreServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "patch",
-                    "uri": "/hive/v1beta/{hive_table.name=projects/*/catalogs/*/databases/*/tables/*}",
+                    "uri": "/hive/v1/{hive_table.name=projects/*/catalogs/*/databases/*/tables/*}",
                     "body": "hive_table",
                 },
             ]

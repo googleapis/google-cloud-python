@@ -13,29 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import google.api_core as api_core
-
-from google.cloud.biglake_hive_v1beta import gapic_version as package_version
-
-__version__ = package_version.__version__
-
-# PEP 0810: Explicit Lazy Imports
-# Python 3.15+ natively intercepts and defers these imports.
-# Developers can disable this behavior and force eager imports.
-# For more information, see:
-# https://docs.python.org/3.15/library/sys.html#sys.set_lazy_imports_filter
-# Older Python versions safely ignore this variable.
-__lazy_modules__ = {
-    "google.cloud.biglake_hive_v1beta.services.hive_metastore_service",
-    "google.cloud.biglake_hive_v1beta.types.hive_metastore",
-}
-
-
-from .services.hive_metastore_service import (
-    HiveMetastoreServiceAsyncClient,
-    HiveMetastoreServiceClient,
-)
-from .types.hive_metastore import (
+from .hive_metastore import (
     BatchCreatePartitionsRequest,
     BatchCreatePartitionsResponse,
     BatchDeletePartitionsRequest,
@@ -76,7 +54,6 @@ from .types.hive_metastore import (
 )
 
 __all__ = (
-    "HiveMetastoreServiceAsyncClient",
     "BatchCreatePartitionsRequest",
     "BatchCreatePartitionsResponse",
     "BatchDeletePartitionsRequest",
@@ -97,7 +74,6 @@ __all__ = (
     "GetHiveTableRequest",
     "HiveCatalog",
     "HiveDatabase",
-    "HiveMetastoreServiceClient",
     "HiveTable",
     "ListHiveCatalogsRequest",
     "ListHiveCatalogsResponse",
@@ -116,6 +92,3 @@ __all__ = (
     "UpdateHiveTableRequest",
     "UpdatePartitionRequest",
 )
-
-api_core.check_python_version("google.cloud.biglake_hive_v1beta")
-api_core.check_dependency_versions("google.cloud.biglake_hive_v1beta")

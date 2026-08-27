@@ -46,8 +46,8 @@ from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.biglake_hive_v1beta import gapic_version as package_version
-from google.cloud.biglake_hive_v1beta._compat import (
+from google.cloud.biglake_hive_v1 import gapic_version as package_version
+from google.cloud.biglake_hive_v1._compat import (
     get_api_endpoint,
     get_default_mtls_endpoint,
     get_universe_domain,
@@ -72,8 +72,8 @@ _LOGGER = std_logging.getLogger(__name__)
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
-from google.cloud.biglake_hive_v1beta.services.hive_metastore_service import pagers
-from google.cloud.biglake_hive_v1beta.types import hive_metastore
+from google.cloud.biglake_hive_v1.services.hive_metastore_service import pagers
+from google.cloud.biglake_hive_v1.types import hive_metastore
 
 from .transports.base import DEFAULT_CLIENT_INFO, HiveMetastoreServiceTransport
 from .transports.grpc import HiveMetastoreServiceGrpcTransport
@@ -636,9 +636,9 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 std_logging.DEBUG
             ):  # pragma: NO COVER
                 _LOGGER.debug(
-                    "Created client `google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient`.",
+                    "Created client `google.cloud.biglake.hive_v1.HiveMetastoreServiceClient`.",
                     extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "universeDomain": getattr(
                             self._transport._credentials, "universe_domain", ""
                         ),
@@ -649,7 +649,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                     }
                     if hasattr(self._transport, "_credentials")
                     else {
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
+                        "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
                         "credentialsType": None,
                     },
                 )
@@ -676,17 +676,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
             def sample_create_hive_catalog():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceClient()
 
                 # Initialize request argument(s)
-                hive_catalog = biglake_hive_v1beta.HiveCatalog()
+                hive_catalog = biglake_hive_v1.HiveCatalog()
                 hive_catalog.location_uri = "location_uri_value"
 
-                request = biglake_hive_v1beta.CreateHiveCatalogRequest(
+                request = biglake_hive_v1.CreateHiveCatalogRequest(
                     parent="parent_value",
                     hive_catalog=hive_catalog,
                     hive_catalog_id="hive_catalog_id_value",
@@ -700,7 +700,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.CreateHiveCatalogRequest, dict]):
+            request (Union[google.cloud.biglake_hive_v1.types.CreateHiveCatalogRequest, dict]):
                 The request object. Request message for the
                 CreateHiveCatalog method.
             parent (str):
@@ -710,7 +710,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            hive_catalog (google.cloud.biglake_hive_v1beta.types.HiveCatalog):
+            hive_catalog (google.cloud.biglake_hive_v1.types.HiveCatalog):
                 Required. The catalog to create. The ``name`` field does
                 not need to be provided. Gets copied over from
                 catalog_id.
@@ -737,7 +737,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.HiveCatalog:
+            google.cloud.biglake_hive_v1.types.HiveCatalog:
                 The HiveCatalog contains spark/hive
                 databases and tables in the BigLake
                 Metastore. While creating resources
@@ -819,14 +819,14 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
             def sample_get_hive_catalog():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.GetHiveCatalogRequest(
+                request = biglake_hive_v1.GetHiveCatalogRequest(
                     name="name_value",
                 )
 
@@ -837,7 +837,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.GetHiveCatalogRequest, dict]):
+            request (Union[google.cloud.biglake_hive_v1.types.GetHiveCatalogRequest, dict]):
                 The request object. Request message for the
                 GetHiveCatalog method.
             name (str):
@@ -856,7 +856,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.HiveCatalog:
+            google.cloud.biglake_hive_v1.types.HiveCatalog:
                 The HiveCatalog contains spark/hive
                 databases and tables in the BigLake
                 Metastore. While creating resources
@@ -934,14 +934,14 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
             def sample_list_hive_catalogs():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.ListHiveCatalogsRequest(
+                request = biglake_hive_v1.ListHiveCatalogsRequest(
                     parent="parent_value",
                 )
 
@@ -953,7 +953,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.ListHiveCatalogsRequest, dict]):
+            request (Union[google.cloud.biglake_hive_v1.types.ListHiveCatalogsRequest, dict]):
                 The request object. Request message for the
                 ListHiveCatalogs method.
             parent (str):
@@ -972,7 +972,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.services.hive_metastore_service.pagers.ListHiveCatalogsPager:
+            google.cloud.biglake_hive_v1.services.hive_metastore_service.pagers.ListHiveCatalogsPager:
                 Response message for the
                 ListHiveCatalogs method.
                 Iterating over this object will yield
@@ -1058,17 +1058,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
             def sample_update_hive_catalog():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceClient()
 
                 # Initialize request argument(s)
-                hive_catalog = biglake_hive_v1beta.HiveCatalog()
+                hive_catalog = biglake_hive_v1.HiveCatalog()
                 hive_catalog.location_uri = "location_uri_value"
 
-                request = biglake_hive_v1beta.UpdateHiveCatalogRequest(
+                request = biglake_hive_v1.UpdateHiveCatalogRequest(
                     hive_catalog=hive_catalog,
                 )
 
@@ -1079,10 +1079,10 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.UpdateHiveCatalogRequest, dict]):
+            request (Union[google.cloud.biglake_hive_v1.types.UpdateHiveCatalogRequest, dict]):
                 The request object. Request message for the
                 UpdateHiveCatalog method.
-            hive_catalog (google.cloud.biglake_hive_v1beta.types.HiveCatalog):
+            hive_catalog (google.cloud.biglake_hive_v1.types.HiveCatalog):
                 Required. The hive catalog to update. The name under the
                 catalog is used to identify the catalog. Format:
                 projects/{project_id_or_number}/catalogs/{catalog_id}
@@ -1110,7 +1110,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.HiveCatalog:
+            google.cloud.biglake_hive_v1.types.HiveCatalog:
                 The HiveCatalog contains spark/hive
                 databases and tables in the BigLake
                 Metastore. While creating resources
@@ -1193,14 +1193,14 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
             def sample_delete_hive_catalog():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.DeleteHiveCatalogRequest(
+                request = biglake_hive_v1.DeleteHiveCatalogRequest(
                     name="name_value",
                 )
 
@@ -1208,7 +1208,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 client.delete_hive_catalog(request=request)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.DeleteHiveCatalogRequest, dict]):
+            request (Union[google.cloud.biglake_hive_v1.types.DeleteHiveCatalogRequest, dict]):
                 The request object. Request message for the
                 DeleteHiveCatalog method.
             name (str):
@@ -1291,14 +1291,14 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
             def sample_create_hive_database():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.CreateHiveDatabaseRequest(
+                request = biglake_hive_v1.CreateHiveDatabaseRequest(
                     parent="parent_value",
                     hive_database_id="hive_database_id_value",
                 )
@@ -1310,7 +1310,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.CreateHiveDatabaseRequest, dict]):
+            request (Union[google.cloud.biglake_hive_v1.types.CreateHiveDatabaseRequest, dict]):
                 The request object. Request message for the
                 CreateHiveDatabase method.
             parent (str):
@@ -1321,7 +1321,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            hive_database (google.cloud.biglake_hive_v1beta.types.HiveDatabase):
+            hive_database (google.cloud.biglake_hive_v1.types.HiveDatabase):
                 Required. The database to create. The ``name`` field
                 does not need to be provided.
 
@@ -1345,7 +1345,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.HiveDatabase:
+            google.cloud.biglake_hive_v1.types.HiveDatabase:
                 Stores the hive database information.
                 It includes the database name,
                 description, location and properties
@@ -1422,14 +1422,14 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
             def sample_get_hive_database():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.GetHiveDatabaseRequest(
+                request = biglake_hive_v1.GetHiveDatabaseRequest(
                     name="name_value",
                 )
 
@@ -1440,7 +1440,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.GetHiveDatabaseRequest, dict]):
+            request (Union[google.cloud.biglake_hive_v1.types.GetHiveDatabaseRequest, dict]):
                 The request object. Request message for the
                 GetHiveDatabase method.
             name (str):
@@ -1459,7 +1459,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.HiveDatabase:
+            google.cloud.biglake_hive_v1.types.HiveDatabase:
                 Stores the hive database information.
                 It includes the database name,
                 description, location and properties
@@ -1532,14 +1532,14 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
             def sample_list_hive_databases():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.ListHiveDatabasesRequest(
+                request = biglake_hive_v1.ListHiveDatabasesRequest(
                     parent="parent_value",
                 )
 
@@ -1551,7 +1551,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.ListHiveDatabasesRequest, dict]):
+            request (Union[google.cloud.biglake_hive_v1.types.ListHiveDatabasesRequest, dict]):
                 The request object. Request message for the
                 ListHiveDatabases method.
             parent (str):
@@ -1571,7 +1571,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.services.hive_metastore_service.pagers.ListHiveDatabasesPager:
+            google.cloud.biglake_hive_v1.services.hive_metastore_service.pagers.ListHiveDatabasesPager:
                 Response message for the
                 ListHiveDatabases method.
                 Iterating over this object will yield
@@ -1658,14 +1658,14 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
             def sample_update_hive_database():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.UpdateHiveDatabaseRequest(
+                request = biglake_hive_v1.UpdateHiveDatabaseRequest(
                 )
 
                 # Make the request
@@ -1675,10 +1675,10 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.UpdateHiveDatabaseRequest, dict]):
+            request (Union[google.cloud.biglake_hive_v1.types.UpdateHiveDatabaseRequest, dict]):
                 The request object. Request message for the
                 UpdateHiveDatabase method.
-            hive_database (google.cloud.biglake_hive_v1beta.types.HiveDatabase):
+            hive_database (google.cloud.biglake_hive_v1.types.HiveDatabase):
                 Required. The database to update.
 
                 The database's ``name`` field is used to identify the
@@ -1704,7 +1704,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.HiveDatabase:
+            google.cloud.biglake_hive_v1.types.HiveDatabase:
                 Stores the hive database information.
                 It includes the database name,
                 description, location and properties
@@ -1782,14 +1782,14 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
             def sample_delete_hive_database():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.DeleteHiveDatabaseRequest(
+                request = biglake_hive_v1.DeleteHiveDatabaseRequest(
                     name="name_value",
                 )
 
@@ -1797,7 +1797,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 client.delete_hive_database(request=request)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.DeleteHiveDatabaseRequest, dict]):
+            request (Union[google.cloud.biglake_hive_v1.types.DeleteHiveDatabaseRequest, dict]):
                 The request object. Request message for the
                 DeleteHiveDatabase method.
             name (str):
@@ -1880,18 +1880,18 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
             def sample_create_hive_table():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceClient()
 
                 # Initialize request argument(s)
-                hive_table = biglake_hive_v1beta.HiveTable()
+                hive_table = biglake_hive_v1.HiveTable()
                 hive_table.storage_descriptor.columns.name = "name_value"
                 hive_table.storage_descriptor.columns.type_ = "type__value"
 
-                request = biglake_hive_v1beta.CreateHiveTableRequest(
+                request = biglake_hive_v1.CreateHiveTableRequest(
                     parent="parent_value",
                     hive_table=hive_table,
                     hive_table_id="hive_table_id_value",
@@ -1904,7 +1904,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.CreateHiveTableRequest, dict]):
+            request (Union[google.cloud.biglake_hive_v1.types.CreateHiveTableRequest, dict]):
                 The request object. Request message for the
                 CreateHiveTable method.
             parent (str):
@@ -1915,7 +1915,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            hive_table (google.cloud.biglake_hive_v1beta.types.HiveTable):
+            hive_table (google.cloud.biglake_hive_v1.types.HiveTable):
                 Required. The Hive Table to create. The ``name`` field
                 does not need to be provided.
 
@@ -1940,7 +1940,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.HiveTable:
+            google.cloud.biglake_hive_v1.types.HiveTable:
                 Stores the hive table information. It
                 includes the table name, schema (column
                 names and types), data location, storage
@@ -2019,14 +2019,14 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
             def sample_get_hive_table():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.GetHiveTableRequest(
+                request = biglake_hive_v1.GetHiveTableRequest(
                     name="name_value",
                 )
 
@@ -2037,7 +2037,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.GetHiveTableRequest, dict]):
+            request (Union[google.cloud.biglake_hive_v1.types.GetHiveTableRequest, dict]):
                 The request object. Request message for the GetHiveTable
                 method.
             name (str):
@@ -2056,7 +2056,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.HiveTable:
+            google.cloud.biglake_hive_v1.types.HiveTable:
                 Stores the hive table information. It
                 includes the table name, schema (column
                 names and types), data location, storage
@@ -2132,14 +2132,14 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
             def sample_list_hive_tables():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.ListHiveTablesRequest(
+                request = biglake_hive_v1.ListHiveTablesRequest(
                     parent="parent_value",
                 )
 
@@ -2151,7 +2151,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.ListHiveTablesRequest, dict]):
+            request (Union[google.cloud.biglake_hive_v1.types.ListHiveTablesRequest, dict]):
                 The request object. Request message for the
                 ListHiveTables method.
             parent (str):
@@ -2170,7 +2170,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.services.hive_metastore_service.pagers.ListHiveTablesPager:
+            google.cloud.biglake_hive_v1.services.hive_metastore_service.pagers.ListHiveTablesPager:
                 Response message for the
                 ListHiveTables method.
                 Iterating over this object will yield
@@ -2257,18 +2257,18 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
             def sample_update_hive_table():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceClient()
 
                 # Initialize request argument(s)
-                hive_table = biglake_hive_v1beta.HiveTable()
+                hive_table = biglake_hive_v1.HiveTable()
                 hive_table.storage_descriptor.columns.name = "name_value"
                 hive_table.storage_descriptor.columns.type_ = "type__value"
 
-                request = biglake_hive_v1beta.UpdateHiveTableRequest(
+                request = biglake_hive_v1.UpdateHiveTableRequest(
                     hive_table=hive_table,
                 )
 
@@ -2279,10 +2279,10 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.UpdateHiveTableRequest, dict]):
+            request (Union[google.cloud.biglake_hive_v1.types.UpdateHiveTableRequest, dict]):
                 The request object. Request message for the
                 UpdateHiveTable method.
-            hive_table (google.cloud.biglake_hive_v1beta.types.HiveTable):
+            hive_table (google.cloud.biglake_hive_v1.types.HiveTable):
                 Required. The table to update.
 
                 The table's ``name`` field is used to identify the table
@@ -2308,7 +2308,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.HiveTable:
+            google.cloud.biglake_hive_v1.types.HiveTable:
                 Stores the hive table information. It
                 includes the table name, schema (column
                 names and types), data location, storage
@@ -2388,14 +2388,14 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
             def sample_delete_hive_table():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.DeleteHiveTableRequest(
+                request = biglake_hive_v1.DeleteHiveTableRequest(
                     name="name_value",
                 )
 
@@ -2403,7 +2403,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 client.delete_hive_table(request=request)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.DeleteHiveTableRequest, dict]):
+            request (Union[google.cloud.biglake_hive_v1.types.DeleteHiveTableRequest, dict]):
                 The request object. Request message for the
                 DeleteHiveTable method.
             name (str):
@@ -2486,18 +2486,18 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
             def sample_batch_create_partitions():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceClient()
 
                 # Initialize request argument(s)
-                requests = biglake_hive_v1beta.CreatePartitionRequest()
+                requests = biglake_hive_v1.CreatePartitionRequest()
                 requests.parent = "parent_value"
                 requests.partition.values = ['values_value1', 'values_value2']
 
-                request = biglake_hive_v1beta.BatchCreatePartitionsRequest(
+                request = biglake_hive_v1.BatchCreatePartitionsRequest(
                     parent="parent_value",
                     requests=requests,
                 )
@@ -2509,7 +2509,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.BatchCreatePartitionsRequest, dict]):
+            request (Union[google.cloud.biglake_hive_v1.types.BatchCreatePartitionsRequest, dict]):
                 The request object. Request message for the
                 BatchCreatePartitions method.
             parent (str):
@@ -2530,7 +2530,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.BatchCreatePartitionsResponse:
+            google.cloud.biglake_hive_v1.types.BatchCreatePartitionsResponse:
                 Response message for
                 BatchCreatePartitions.
 
@@ -2603,17 +2603,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
             def sample_batch_delete_partitions():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceClient()
 
                 # Initialize request argument(s)
-                partition_values = biglake_hive_v1beta.PartitionValues()
+                partition_values = biglake_hive_v1.PartitionValues()
                 partition_values.values = ['values_value1', 'values_value2']
 
-                request = biglake_hive_v1beta.BatchDeletePartitionsRequest(
+                request = biglake_hive_v1.BatchDeletePartitionsRequest(
                     parent="parent_value",
                     partition_values=partition_values,
                 )
@@ -2622,7 +2622,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 client.batch_delete_partitions(request=request)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.BatchDeletePartitionsRequest, dict]):
+            request (Union[google.cloud.biglake_hive_v1.types.BatchDeletePartitionsRequest, dict]):
                 The request object. Request message for
                 BatchDeletePartitions. The Partition is
                 uniquely identified by values, which is
@@ -2710,17 +2710,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
             def sample_batch_update_partitions():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceClient()
 
                 # Initialize request argument(s)
-                requests = biglake_hive_v1beta.UpdatePartitionRequest()
+                requests = biglake_hive_v1.UpdatePartitionRequest()
                 requests.partition.values = ['values_value1', 'values_value2']
 
-                request = biglake_hive_v1beta.BatchUpdatePartitionsRequest(
+                request = biglake_hive_v1.BatchUpdatePartitionsRequest(
                     parent="parent_value",
                     requests=requests,
                 )
@@ -2732,7 +2732,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.BatchUpdatePartitionsRequest, dict]):
+            request (Union[google.cloud.biglake_hive_v1.types.BatchUpdatePartitionsRequest, dict]):
                 The request object. Request message for
                 BatchUpdatePartitions.
             parent (str):
@@ -2753,7 +2753,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.BatchUpdatePartitionsResponse:
+            google.cloud.biglake_hive_v1.types.BatchUpdatePartitionsResponse:
                 Response message for
                 BatchUpdatePartitions.
 
@@ -2824,14 +2824,14 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
             def sample_list_partitions():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.ListPartitionsRequest(
+                request = biglake_hive_v1.ListPartitionsRequest(
                     parent="parent_value",
                 )
 
@@ -2843,7 +2843,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.ListPartitionsRequest, dict]):
+            request (Union[google.cloud.biglake_hive_v1.types.ListPartitionsRequest, dict]):
                 The request object. Request message for ListPartitions.
             parent (str):
                 Required. Reference to the table to
@@ -2863,7 +2863,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            Iterable[google.cloud.biglake_hive_v1beta.types.ListPartitionsResponse]:
+            Iterable[google.cloud.biglake_hive_v1.types.ListPartitionsResponse]:
                 Response message for ListPartitions.
         """
         # Create or coerce a protobuf request object.
@@ -2935,14 +2935,14 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
             def sample_failover_hive_catalog():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.FailoverHiveCatalogRequest(
+                request = biglake_hive_v1.FailoverHiveCatalogRequest(
                     name="name_value",
                     primary_replica="primary_replica_value",
                 )
@@ -2954,7 +2954,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.FailoverHiveCatalogRequest, dict]):
+            request (Union[google.cloud.biglake_hive_v1.types.FailoverHiveCatalogRequest, dict]):
                 The request object. Request message for
                 FailoverHiveCatalog.
             name (str):
@@ -2984,7 +2984,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.FailoverHiveCatalogResponse:
+            google.cloud.biglake_hive_v1.types.FailoverHiveCatalogResponse:
                 Response message for
                 FailoverHiveCatalog.
 

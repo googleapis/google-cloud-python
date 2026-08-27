@@ -13,17 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import json
 import logging as std_logging
-import os
 import re
-import warnings
 from collections import OrderedDict
-from http import HTTPStatus
 from typing import (
+    AsyncIterable,
+    Awaitable,
     Callable,
     Dict,
-    Iterable,
     Mapping,
     MutableMapping,
     MutableSequence,
@@ -32,33 +29,32 @@ from typing import (
     Tuple,
     Type,
     Union,
-    cast,
 )
 
 import google.protobuf
-from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
-from google.api_core import retry as retries
+from google.api_core import retry_async as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
-from google.auth.transport import mtls  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.biglake_hive_v1beta import gapic_version as package_version
-from google.cloud.biglake_hive_v1beta._compat import (
-    get_api_endpoint,
-    get_default_mtls_endpoint,
-    get_universe_domain,
-    read_environment_variables,
-    should_use_client_cert,
-)
+from google.cloud.biglake_hive_v1 import gapic_version as package_version
 
 try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+    OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
+
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+
+from google.cloud.biglake_hive_v1.services.hive_metastore_service import pagers
+from google.cloud.biglake_hive_v1.types import hive_metastore
+
+from .client import HiveMetastoreServiceClient
+from .transports.base import DEFAULT_CLIENT_INFO, HiveMetastoreServiceTransport
+from .transports.grpc_asyncio import HiveMetastoreServiceGrpcAsyncIOTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -69,54 +65,8 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
-import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
-from google.cloud.biglake_hive_v1beta.services.hive_metastore_service import pagers
-from google.cloud.biglake_hive_v1beta.types import hive_metastore
-
-from .transports.base import DEFAULT_CLIENT_INFO, HiveMetastoreServiceTransport
-from .transports.grpc import HiveMetastoreServiceGrpcTransport
-from .transports.grpc_asyncio import HiveMetastoreServiceGrpcAsyncIOTransport
-from .transports.rest import HiveMetastoreServiceRestTransport
-
-
-class HiveMetastoreServiceClientMeta(type):
-    """Metaclass for the HiveMetastoreService client.
-
-    This provides class-level methods for building and retrieving
-    support objects (e.g. transport) without polluting the client instance
-    objects.
-    """
-
-    _transport_registry = OrderedDict()  # type: Dict[str, Type[HiveMetastoreServiceTransport]]
-    _transport_registry["grpc"] = HiveMetastoreServiceGrpcTransport
-    _transport_registry["grpc_asyncio"] = HiveMetastoreServiceGrpcAsyncIOTransport
-    _transport_registry["rest"] = HiveMetastoreServiceRestTransport
-
-    def get_transport_class(
-        cls,
-        label: Optional[str] = None,
-    ) -> Type[HiveMetastoreServiceTransport]:
-        """Returns an appropriate transport class.
-
-        Args:
-            label: The name of the desired transport. If none is
-                provided, then the first transport in the registry is used.
-
-        Returns:
-            The transport class to use.
-        """
-        # If a specific transport is requested, return that one.
-        if label:
-            return cls._transport_registry[label]
-
-        # No transport is requested; return the default (that is, the first one
-        # in the dictionary).
-        return next(iter(cls._transport_registry.values()))
-
-
-class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
+class HiveMetastoreServiceAsyncClient:
     """Hive Metastore Service is a biglake service that allows users to
     manage their external Hive catalogs. Full API compatibility with OSS
     Hive Metastore APIs is not supported. The methods match the Hive
@@ -133,12 +83,45 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
     - Each database has a collection of tables: ``/tables/*``
     """
 
-    # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-    DEFAULT_ENDPOINT = "biglake.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = get_default_mtls_endpoint(DEFAULT_ENDPOINT)
+    _client: HiveMetastoreServiceClient
 
-    _DEFAULT_ENDPOINT_TEMPLATE = "biglake.{UNIVERSE_DOMAIN}"
-    _DEFAULT_UNIVERSE = "googleapis.com"
+    # Copy defaults from the synchronous client for use here.
+    # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
+    DEFAULT_ENDPOINT = HiveMetastoreServiceClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = HiveMetastoreServiceClient.DEFAULT_MTLS_ENDPOINT
+    _DEFAULT_ENDPOINT_TEMPLATE = HiveMetastoreServiceClient._DEFAULT_ENDPOINT_TEMPLATE
+    _DEFAULT_UNIVERSE = HiveMetastoreServiceClient._DEFAULT_UNIVERSE
+
+    catalog_path = staticmethod(HiveMetastoreServiceClient.catalog_path)
+    parse_catalog_path = staticmethod(HiveMetastoreServiceClient.parse_catalog_path)
+    namespace_path = staticmethod(HiveMetastoreServiceClient.namespace_path)
+    parse_namespace_path = staticmethod(HiveMetastoreServiceClient.parse_namespace_path)
+    table_path = staticmethod(HiveMetastoreServiceClient.table_path)
+    parse_table_path = staticmethod(HiveMetastoreServiceClient.parse_table_path)
+    common_billing_account_path = staticmethod(
+        HiveMetastoreServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        HiveMetastoreServiceClient.parse_common_billing_account_path
+    )
+    common_folder_path = staticmethod(HiveMetastoreServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        HiveMetastoreServiceClient.parse_common_folder_path
+    )
+    common_organization_path = staticmethod(
+        HiveMetastoreServiceClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        HiveMetastoreServiceClient.parse_common_organization_path
+    )
+    common_project_path = staticmethod(HiveMetastoreServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        HiveMetastoreServiceClient.parse_common_project_path
+    )
+    common_location_path = staticmethod(HiveMetastoreServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        HiveMetastoreServiceClient.parse_common_location_path
+    )
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -151,11 +134,12 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            HiveMetastoreServiceClient: The constructed client.
+            HiveMetastoreServiceAsyncClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_info(info)
-        kwargs["credentials"] = credentials
-        return cls(*args, **kwargs)
+        sa_info_func = (
+            HiveMetastoreServiceClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(HiveMetastoreServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -169,169 +153,20 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            HiveMetastoreServiceClient: The constructed client.
+            HiveMetastoreServiceAsyncClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        kwargs["credentials"] = credentials
-        return cls(*args, **kwargs)
+        sa_file_func = (
+            HiveMetastoreServiceClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(HiveMetastoreServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
-    @property
-    def transport(self) -> HiveMetastoreServiceTransport:
-        """Returns the transport used by the client instance.
-
-        Returns:
-            HiveMetastoreServiceTransport: The transport used by the client
-                instance.
-        """
-        return self._transport
-
-    @staticmethod
-    def catalog_path(
-        project: str,
-        catalog: str,
-    ) -> str:
-        """Returns a fully-qualified catalog string."""
-        return "projects/{project}/catalogs/{catalog}".format(
-            project=project,
-            catalog=catalog,
-        )
-
-    @staticmethod
-    def parse_catalog_path(path: str) -> Dict[str, str]:
-        """Parses a catalog path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/catalogs/(?P<catalog>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def namespace_path(
-        project: str,
-        catalog: str,
-        database: str,
-    ) -> str:
-        """Returns a fully-qualified namespace string."""
-        return "projects/{project}/catalogs/{catalog}/databases/{database}".format(
-            project=project,
-            catalog=catalog,
-            database=database,
-        )
-
-    @staticmethod
-    def parse_namespace_path(path: str) -> Dict[str, str]:
-        """Parses a namespace path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/catalogs/(?P<catalog>.+?)/databases/(?P<database>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def table_path(
-        project: str,
-        catalog: str,
-        database: str,
-        table: str,
-    ) -> str:
-        """Returns a fully-qualified table string."""
-        return "projects/{project}/catalogs/{catalog}/databases/{database}/tables/{table}".format(
-            project=project,
-            catalog=catalog,
-            database=database,
-            table=table,
-        )
-
-    @staticmethod
-    def parse_table_path(path: str) -> Dict[str, str]:
-        """Parses a table path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/catalogs/(?P<catalog>.+?)/databases/(?P<database>.+?)/tables/(?P<table>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_billing_account_path(
-        billing_account: str,
-    ) -> str:
-        """Returns a fully-qualified billing_account string."""
-        return "billingAccounts/{billing_account}".format(
-            billing_account=billing_account,
-        )
-
-    @staticmethod
-    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
-        """Parse a billing_account path into its component segments."""
-        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_folder_path(
-        folder: str,
-    ) -> str:
-        """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(
-            folder=folder,
-        )
-
-    @staticmethod
-    def parse_common_folder_path(path: str) -> Dict[str, str]:
-        """Parse a folder path into its component segments."""
-        m = re.match(r"^folders/(?P<folder>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_organization_path(
-        organization: str,
-    ) -> str:
-        """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(
-            organization=organization,
-        )
-
-    @staticmethod
-    def parse_common_organization_path(path: str) -> Dict[str, str]:
-        """Parse a organization path into its component segments."""
-        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_project_path(
-        project: str,
-    ) -> str:
-        """Returns a fully-qualified project string."""
-        return "projects/{project}".format(
-            project=project,
-        )
-
-    @staticmethod
-    def parse_common_project_path(path: str) -> Dict[str, str]:
-        """Parse a project path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_location_path(
-        project: str,
-        location: str,
-    ) -> str:
-        """Returns a fully-qualified location string."""
-        return "projects/{project}/locations/{location}".format(
-            project=project,
-            location=location,
-        )
-
-    @staticmethod
-    def parse_common_location_path(path: str) -> Dict[str, str]:
-        """Parse a location path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
-        return m.groupdict() if m else {}
-
     @classmethod
     def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[client_options_lib.ClientOptions] = None
+        cls, client_options: Optional[ClientOptions] = None
     ):
-        """Deprecated. Return the API endpoint and client cert source for mutual TLS.
+        """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
         (1) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
@@ -361,98 +196,18 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
+        return HiveMetastoreServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
-        warnings.warn(
-            "get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
-            DeprecationWarning,
-        )
-        if client_options is None:
-            client_options = client_options_lib.ClientOptions()
-        use_client_cert = should_use_client_cert()
-        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
-        if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
-
-        # Figure out the client cert source to use.
-        client_cert_source = None
-        if use_client_cert:
-            if client_options.client_cert_source:
-                client_cert_source = client_options.client_cert_source
-            elif mtls.has_default_client_cert_source():
-                client_cert_source = mtls.default_client_cert_source()
-
-        # Figure out which api endpoint to use.
-        if client_options.api_endpoint is not None:
-            api_endpoint = client_options.api_endpoint
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
-            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT  # type: ignore
-        else:
-            api_endpoint = cls.DEFAULT_ENDPOINT
-
-        return api_endpoint, client_cert_source
-
-    @staticmethod
-    def _get_client_cert_source(provided_cert_source, use_cert_flag):
-        """Return the client cert source to be used by the client.
-
-        Args:
-            provided_cert_source (bytes): The client certificate source provided.
-            use_cert_flag (bool): A flag indicating whether to use the client certificate.
+    @property
+    def transport(self) -> HiveMetastoreServiceTransport:
+        """Returns the transport used by the client instance.
 
         Returns:
-            bytes or None: The client cert source to be used by the client.
+            HiveMetastoreServiceTransport: The transport used by the client instance.
         """
-        client_cert_source = None
-        if use_cert_flag:
-            if provided_cert_source:
-                client_cert_source = provided_cert_source
-            elif mtls.has_default_client_cert_source():
-                client_cert_source = mtls.default_client_cert_source()
-        return client_cert_source
-
-    def _validate_universe_domain(self):
-        """Validates client's and credentials' universe domains are consistent.
-
-        Returns:
-            bool: True iff the configured universe domain is valid.
-
-        Raises:
-            ValueError: If the configured universe domain is not valid.
-        """
-
-        # NOTE (b/349488459): universe validation is disabled until further notice.
-        return True
-
-    def _add_cred_info_for_auth_errors(
-        self, error: core_exceptions.GoogleAPICallError
-    ) -> None:
-        """Adds credential info string to error details for 401/403/404 errors.
-
-        Args:
-            error (google.api_core.exceptions.GoogleAPICallError): The error to add the cred info.
-        """
-        if error.code not in [
-            HTTPStatus.UNAUTHORIZED,
-            HTTPStatus.FORBIDDEN,
-            HTTPStatus.NOT_FOUND,
-        ]:
-            return
-
-        cred = self._transport._credentials
-
-        # get_cred_info is only available in google-auth>=2.35.0
-        if not hasattr(cred, "get_cred_info"):
-            return
-
-        # ignore the type check since pypy test fails when get_cred_info
-        # is not available
-        cred_info = cred.get_cred_info()  # type: ignore
-        if cred_info and hasattr(error._details, "append"):
-            error._details.append(json.dumps(cred_info))
+        return self._client.transport
 
     @property
     def api_endpoint(self) -> str:
@@ -461,16 +216,19 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         Returns:
             str: The API endpoint used by the client instance.
         """
-        return self._api_endpoint
+        return self._client._api_endpoint
 
     @property
     def universe_domain(self) -> str:
         """Return the universe domain used by the client instance.
 
         Returns:
-            str: The universe domain used by the client instance.
+            str: The universe domain used
+                by the client instance.
         """
-        return self._universe_domain
+        return self._client._universe_domain
+
+    get_transport_class = HiveMetastoreServiceClient.get_transport_class
 
     def __init__(
         self,
@@ -482,11 +240,11 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 HiveMetastoreServiceTransport,
                 Callable[..., HiveMetastoreServiceTransport],
             ]
-        ] = None,
-        client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
+        ] = "grpc_asyncio",
+        client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the hive metastore service client.
+        """Instantiates the hive metastore service async client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -495,7 +253,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
             transport (Optional[Union[str,HiveMetastoreServiceTransport,Callable[..., HiveMetastoreServiceTransport]]]):
-                The transport to use, or a Callable that constructs and returns a new transport.
+                The transport to use, or a Callable that constructs and returns a new transport to use.
                 If a Callable is given, it will be called with the same set of initialization
                 arguments as used in the HiveMetastoreServiceTransport constructor.
                 If set to None, a transport is chosen automatically.
@@ -521,7 +279,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 set, no client certificate will be used.
 
                 3. The ``universe_domain`` property can be used to override the
-                default "googleapis.com" universe. Note that the ``api_endpoint``
+                default "googleapis.com" universe. Note that ``api_endpoint``
                 property still takes precedence; and ``universe_domain`` is
                 currently not supported for mTLS.
 
@@ -532,129 +290,39 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 your own client library.
 
         Raises:
-            google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self._client_options = client_options
-        if isinstance(self._client_options, dict):
-            self._client_options = client_options_lib.from_dict(self._client_options)
-        if self._client_options is None:
-            self._client_options = client_options_lib.ClientOptions()
-        self._client_options = cast(
-            client_options_lib.ClientOptions, self._client_options
+        self._client = HiveMetastoreServiceClient(
+            credentials=credentials,
+            transport=transport,
+            client_options=client_options,
+            client_info=client_info,
         )
 
-        universe_domain_opt = getattr(self._client_options, "universe_domain", None)
-
-        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
-            read_environment_variables()
-        )
-        self._client_cert_source = HiveMetastoreServiceClient._get_client_cert_source(
-            self._client_options.client_cert_source, self._use_client_cert
-        )
-        self._universe_domain = get_universe_domain(
-            universe_domain_opt,
-            self._universe_domain_env,
-            default_universe=HiveMetastoreServiceClient._DEFAULT_UNIVERSE,
-        )
-        self._api_endpoint: str = ""  # updated below, depending on `transport`
-
-        # Initialize the universe domain validation.
-        self._is_universe_domain_valid = False
-
-        if CLIENT_LOGGING_SUPPORTED:  # pragma: NO COVER
-            # Setup logging.
-            client_logging.initialize_logging()
-
-        api_key_value = getattr(self._client_options, "api_key", None)
-        if api_key_value and credentials:
-            raise ValueError(
-                "client_options.api_key and credentials are mutually exclusive"
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        ):  # pragma: NO COVER
+            _LOGGER.debug(
+                "Created client `google.cloud.biglake.hive_v1.HiveMetastoreServiceAsyncClient`.",
+                extra={
+                    "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
+                    "universeDomain": getattr(
+                        self._client._transport._credentials, "universe_domain", ""
+                    ),
+                    "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
+                    "credentialsInfo": getattr(
+                        self.transport._credentials, "get_cred_info", lambda: None
+                    )(),
+                }
+                if hasattr(self._client._transport, "_credentials")
+                else {
+                    "serviceName": "google.cloud.biglake.hive.v1.HiveMetastoreService",
+                    "credentialsType": None,
+                },
             )
 
-        # Save or instantiate the transport.
-        # Ordinarily, we provide the transport, but allowing a custom transport
-        # instance provides an extensibility point for unusual situations.
-        transport_provided = isinstance(transport, HiveMetastoreServiceTransport)
-        if transport_provided:
-            # transport is a HiveMetastoreServiceTransport instance.
-            if credentials or self._client_options.credentials_file or api_key_value:
-                raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its credentials directly."
-                )
-            if self._client_options.scopes:
-                raise ValueError(
-                    "When providing a transport instance, provide its scopes directly."
-                )
-            self._transport = cast(HiveMetastoreServiceTransport, transport)
-            self._api_endpoint = self._transport.host
-
-        self._api_endpoint = self._api_endpoint or get_api_endpoint(
-            api_override=self._client_options.api_endpoint,
-            universe_domain=self._universe_domain,
-            default_universe=HiveMetastoreServiceClient._DEFAULT_UNIVERSE,
-            default_mtls_endpoint=HiveMetastoreServiceClient.DEFAULT_MTLS_ENDPOINT,
-            default_endpoint_template=HiveMetastoreServiceClient._DEFAULT_ENDPOINT_TEMPLATE,
-            use_mtls=self._use_mtls_endpoint == "always"
-            or (self._use_mtls_endpoint == "auto" and self._client_cert_source),
-        )
-
-        if not transport_provided:
-            import google.auth._default  # type: ignore
-
-            if api_key_value and hasattr(
-                google.auth._default, "get_api_key_credentials"
-            ):
-                credentials = google.auth._default.get_api_key_credentials(
-                    api_key_value
-                )
-
-            transport_init: Union[
-                Type[HiveMetastoreServiceTransport],
-                Callable[..., HiveMetastoreServiceTransport],
-            ] = (
-                HiveMetastoreServiceClient.get_transport_class(transport)
-                if isinstance(transport, str) or transport is None
-                else cast(Callable[..., HiveMetastoreServiceTransport], transport)
-            )
-            # initialize with the provided callable or the passed in class
-            self._transport = transport_init(
-                credentials=credentials,
-                credentials_file=self._client_options.credentials_file,
-                host=self._api_endpoint,
-                scopes=self._client_options.scopes,
-                client_cert_source_for_mtls=self._client_cert_source,
-                quota_project_id=self._client_options.quota_project_id,
-                client_info=client_info,
-                always_use_jwt_access=True,
-                api_audience=self._client_options.api_audience,
-            )
-
-        if "async" not in str(self._transport):
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                std_logging.DEBUG
-            ):  # pragma: NO COVER
-                _LOGGER.debug(
-                    "Created client `google.cloud.biglake.hive_v1beta.HiveMetastoreServiceClient`.",
-                    extra={
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
-                        "universeDomain": getattr(
-                            self._transport._credentials, "universe_domain", ""
-                        ),
-                        "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
-                        "credentialsInfo": getattr(
-                            self.transport._credentials, "get_cred_info", lambda: None
-                        )(),
-                    }
-                    if hasattr(self._transport, "_credentials")
-                    else {
-                        "serviceName": "google.cloud.biglake.hive.v1beta.HiveMetastoreService",
-                        "credentialsType": None,
-                    },
-                )
-
-    def create_hive_catalog(
+    async def create_hive_catalog(
         self,
         request: Optional[Union[hive_metastore.CreateHiveCatalogRequest, dict]] = None,
         *,
@@ -676,17 +344,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
-            def sample_create_hive_catalog():
+            async def sample_create_hive_catalog():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceAsyncClient()
 
                 # Initialize request argument(s)
-                hive_catalog = biglake_hive_v1beta.HiveCatalog()
+                hive_catalog = biglake_hive_v1.HiveCatalog()
                 hive_catalog.location_uri = "location_uri_value"
 
-                request = biglake_hive_v1beta.CreateHiveCatalogRequest(
+                request = biglake_hive_v1.CreateHiveCatalogRequest(
                     parent="parent_value",
                     hive_catalog=hive_catalog,
                     hive_catalog_id="hive_catalog_id_value",
@@ -694,23 +362,23 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 )
 
                 # Make the request
-                response = client.create_hive_catalog(request=request)
+                response = await client.create_hive_catalog(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.CreateHiveCatalogRequest, dict]):
+            request (Optional[Union[google.cloud.biglake_hive_v1.types.CreateHiveCatalogRequest, dict]]):
                 The request object. Request message for the
                 CreateHiveCatalog method.
-            parent (str):
+            parent (:class:`str`):
                 Required. The parent resource where this catalog will be
                 created. Format: projects/{project_id_or_number}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            hive_catalog (google.cloud.biglake_hive_v1beta.types.HiveCatalog):
+            hive_catalog (:class:`google.cloud.biglake_hive_v1.types.HiveCatalog`):
                 Required. The catalog to create. The ``name`` field does
                 not need to be provided. Gets copied over from
                 catalog_id.
@@ -718,7 +386,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 This corresponds to the ``hive_catalog`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            hive_catalog_id (str):
+            hive_catalog_id (:class:`str`):
                 Required. The Hive Catalog ID to use
                 for the catalog that will become the
                 final component of the catalog's
@@ -728,7 +396,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 This corresponds to the ``hive_catalog_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -737,7 +405,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.HiveCatalog:
+            google.cloud.biglake_hive_v1.types.HiveCatalog:
                 The HiveCatalog contains spark/hive
                 databases and tables in the BigLake
                 Metastore. While creating resources
@@ -766,18 +434,21 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, hive_metastore.CreateHiveCatalogRequest):
             request = hive_metastore.CreateHiveCatalogRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-            if hive_catalog is not None:
-                request.hive_catalog = hive_catalog
-            if hive_catalog_id is not None:
-                request.hive_catalog_id = hive_catalog_id
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if hive_catalog is not None:
+            request.hive_catalog = hive_catalog
+        if hive_catalog_id is not None:
+            request.hive_catalog_id = hive_catalog_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_hive_catalog]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_hive_catalog
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -786,10 +457,10 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -799,7 +470,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         # Done; return the response.
         return response
 
-    def get_hive_catalog(
+    async def get_hive_catalog(
         self,
         request: Optional[Union[hive_metastore.GetHiveCatalogRequest, dict]] = None,
         *,
@@ -819,35 +490,35 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
-            def sample_get_hive_catalog():
+            async def sample_get_hive_catalog():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.GetHiveCatalogRequest(
+                request = biglake_hive_v1.GetHiveCatalogRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                response = client.get_hive_catalog(request=request)
+                response = await client.get_hive_catalog(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.GetHiveCatalogRequest, dict]):
+            request (Optional[Union[google.cloud.biglake_hive_v1.types.GetHiveCatalogRequest, dict]]):
                 The request object. Request message for the
                 GetHiveCatalog method.
-            name (str):
+            name (:class:`str`):
                 Required. The name of the catalog to retrieve. Format:
                 projects/{project_id_or_number}/catalogs/{catalog_id}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -856,7 +527,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.HiveCatalog:
+            google.cloud.biglake_hive_v1.types.HiveCatalog:
                 The HiveCatalog contains spark/hive
                 databases and tables in the BigLake
                 Metastore. While creating resources
@@ -885,14 +556,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, hive_metastore.GetHiveCatalogRequest):
             request = hive_metastore.GetHiveCatalogRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_hive_catalog]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_hive_catalog
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -901,10 +575,10 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -914,7 +588,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         # Done; return the response.
         return response
 
-    def list_hive_catalogs(
+    async def list_hive_catalogs(
         self,
         request: Optional[Union[hive_metastore.ListHiveCatalogsRequest, dict]] = None,
         *,
@@ -922,7 +596,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListHiveCatalogsPager:
+    ) -> pagers.ListHiveCatalogsAsyncPager:
         r"""List all catalogs in a specified project.
 
         .. code-block:: python
@@ -934,14 +608,14 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
-            def sample_list_hive_catalogs():
+            async def sample_list_hive_catalogs():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.ListHiveCatalogsRequest(
+                request = biglake_hive_v1.ListHiveCatalogsRequest(
                     parent="parent_value",
                 )
 
@@ -949,21 +623,21 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 page_result = client.list_hive_catalogs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.ListHiveCatalogsRequest, dict]):
+            request (Optional[Union[google.cloud.biglake_hive_v1.types.ListHiveCatalogsRequest, dict]]):
                 The request object. Request message for the
                 ListHiveCatalogs method.
-            parent (str):
+            parent (:class:`str`):
                 Required. The project to list catalogs from. Format:
                 projects/{project_id_or_number}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -972,7 +646,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.services.hive_metastore_service.pagers.ListHiveCatalogsPager:
+            google.cloud.biglake_hive_v1.services.hive_metastore_service.pagers.ListHiveCatalogsAsyncPager:
                 Response message for the
                 ListHiveCatalogs method.
                 Iterating over this object will yield
@@ -997,14 +671,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, hive_metastore.ListHiveCatalogsRequest):
             request = hive_metastore.ListHiveCatalogsRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_hive_catalogs]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_hive_catalogs
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1013,10 +690,10 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1024,8 +701,8 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListHiveCatalogsPager(
+        # an `__aiter__` convenience method.
+        response = pagers.ListHiveCatalogsAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -1037,7 +714,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         # Done; return the response.
         return response
 
-    def update_hive_catalog(
+    async def update_hive_catalog(
         self,
         request: Optional[Union[hive_metastore.UpdateHiveCatalogRequest, dict]] = None,
         *,
@@ -1058,31 +735,31 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
-            def sample_update_hive_catalog():
+            async def sample_update_hive_catalog():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceAsyncClient()
 
                 # Initialize request argument(s)
-                hive_catalog = biglake_hive_v1beta.HiveCatalog()
+                hive_catalog = biglake_hive_v1.HiveCatalog()
                 hive_catalog.location_uri = "location_uri_value"
 
-                request = biglake_hive_v1beta.UpdateHiveCatalogRequest(
+                request = biglake_hive_v1.UpdateHiveCatalogRequest(
                     hive_catalog=hive_catalog,
                 )
 
                 # Make the request
-                response = client.update_hive_catalog(request=request)
+                response = await client.update_hive_catalog(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.UpdateHiveCatalogRequest, dict]):
+            request (Optional[Union[google.cloud.biglake_hive_v1.types.UpdateHiveCatalogRequest, dict]]):
                 The request object. Request message for the
                 UpdateHiveCatalog method.
-            hive_catalog (google.cloud.biglake_hive_v1beta.types.HiveCatalog):
+            hive_catalog (:class:`google.cloud.biglake_hive_v1.types.HiveCatalog`):
                 Required. The hive catalog to update. The name under the
                 catalog is used to identify the catalog. Format:
                 projects/{project_id_or_number}/catalogs/{catalog_id}
@@ -1090,7 +767,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 This corresponds to the ``hive_catalog`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Optional. The list of fields to update.
 
                 For the ``FieldMask`` definition, see
@@ -1101,7 +778,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1110,7 +787,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.HiveCatalog:
+            google.cloud.biglake_hive_v1.types.HiveCatalog:
                 The HiveCatalog contains spark/hive
                 databases and tables in the BigLake
                 Metastore. While creating resources
@@ -1139,16 +816,19 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, hive_metastore.UpdateHiveCatalogRequest):
             request = hive_metastore.UpdateHiveCatalogRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if hive_catalog is not None:
-                request.hive_catalog = hive_catalog
-            if update_mask is not None:
-                request.update_mask = update_mask
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if hive_catalog is not None:
+            request.hive_catalog = hive_catalog
+        if update_mask is not None:
+            request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_hive_catalog]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_hive_catalog
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1159,10 +839,10 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1172,7 +852,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         # Done; return the response.
         return response
 
-    def delete_hive_catalog(
+    async def delete_hive_catalog(
         self,
         request: Optional[Union[hive_metastore.DeleteHiveCatalogRequest, dict]] = None,
         *,
@@ -1193,32 +873,32 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
-            def sample_delete_hive_catalog():
+            async def sample_delete_hive_catalog():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.DeleteHiveCatalogRequest(
+                request = biglake_hive_v1.DeleteHiveCatalogRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                client.delete_hive_catalog(request=request)
+                await client.delete_hive_catalog(request=request)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.DeleteHiveCatalogRequest, dict]):
+            request (Optional[Union[google.cloud.biglake_hive_v1.types.DeleteHiveCatalogRequest, dict]]):
                 The request object. Request message for the
                 DeleteHiveCatalog method.
-            name (str):
+            name (:class:`str`):
                 Required. The name of the catalog to delete. Format:
                 projects/{project_id_or_number}/catalogs/{catalog_id}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1243,14 +923,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, hive_metastore.DeleteHiveCatalogRequest):
             request = hive_metastore.DeleteHiveCatalogRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_hive_catalog]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_hive_catalog
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1259,17 +942,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        rpc(
+        await rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
 
-    def create_hive_database(
+    async def create_hive_database(
         self,
         request: Optional[Union[hive_metastore.CreateHiveDatabaseRequest, dict]] = None,
         *,
@@ -1291,29 +974,29 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
-            def sample_create_hive_database():
+            async def sample_create_hive_database():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.CreateHiveDatabaseRequest(
+                request = biglake_hive_v1.CreateHiveDatabaseRequest(
                     parent="parent_value",
                     hive_database_id="hive_database_id_value",
                 )
 
                 # Make the request
-                response = client.create_hive_database(request=request)
+                response = await client.create_hive_database(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.CreateHiveDatabaseRequest, dict]):
+            request (Optional[Union[google.cloud.biglake_hive_v1.types.CreateHiveDatabaseRequest, dict]]):
                 The request object. Request message for the
                 CreateHiveDatabase method.
-            parent (str):
+            parent (:class:`str`):
                 Required. The parent resource where this database will
                 be created. Format:
                 projects/{project_id_or_number}/catalogs/{catalog_id}
@@ -1321,14 +1004,14 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            hive_database (google.cloud.biglake_hive_v1beta.types.HiveDatabase):
+            hive_database (:class:`google.cloud.biglake_hive_v1.types.HiveDatabase`):
                 Required. The database to create. The ``name`` field
                 does not need to be provided.
 
                 This corresponds to the ``hive_database`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            hive_database_id (str):
+            hive_database_id (:class:`str`):
                 Required. The ID to use for the Hive
                 Database. The maximum length is 128
                 characters.
@@ -1336,7 +1019,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 This corresponds to the ``hive_database_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1345,7 +1028,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.HiveDatabase:
+            google.cloud.biglake_hive_v1.types.HiveDatabase:
                 Stores the hive database information.
                 It includes the database name,
                 description, location and properties
@@ -1369,18 +1052,21 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, hive_metastore.CreateHiveDatabaseRequest):
             request = hive_metastore.CreateHiveDatabaseRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-            if hive_database is not None:
-                request.hive_database = hive_database
-            if hive_database_id is not None:
-                request.hive_database_id = hive_database_id
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if hive_database is not None:
+            request.hive_database = hive_database
+        if hive_database_id is not None:
+            request.hive_database_id = hive_database_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_hive_database]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_hive_database
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1389,10 +1075,10 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1402,7 +1088,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         # Done; return the response.
         return response
 
-    def get_hive_database(
+    async def get_hive_database(
         self,
         request: Optional[Union[hive_metastore.GetHiveDatabaseRequest, dict]] = None,
         *,
@@ -1422,35 +1108,35 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
-            def sample_get_hive_database():
+            async def sample_get_hive_database():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.GetHiveDatabaseRequest(
+                request = biglake_hive_v1.GetHiveDatabaseRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                response = client.get_hive_database(request=request)
+                response = await client.get_hive_database(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.GetHiveDatabaseRequest, dict]):
+            request (Optional[Union[google.cloud.biglake_hive_v1.types.GetHiveDatabaseRequest, dict]]):
                 The request object. Request message for the
                 GetHiveDatabase method.
-            name (str):
+            name (:class:`str`):
                 Required. The name of the database to retrieve. Format:
                 projects/{project_id_or_number}/catalogs/{catalog_id}/databases/{database_id}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1459,7 +1145,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.HiveDatabase:
+            google.cloud.biglake_hive_v1.types.HiveDatabase:
                 Stores the hive database information.
                 It includes the database name,
                 description, location and properties
@@ -1483,14 +1169,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, hive_metastore.GetHiveDatabaseRequest):
             request = hive_metastore.GetHiveDatabaseRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_hive_database]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_hive_database
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1499,10 +1188,10 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1512,7 +1201,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         # Done; return the response.
         return response
 
-    def list_hive_databases(
+    async def list_hive_databases(
         self,
         request: Optional[Union[hive_metastore.ListHiveDatabasesRequest, dict]] = None,
         *,
@@ -1520,7 +1209,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListHiveDatabasesPager:
+    ) -> pagers.ListHiveDatabasesAsyncPager:
         r"""List all databases in a specified catalog.
 
         .. code-block:: python
@@ -1532,14 +1221,14 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
-            def sample_list_hive_databases():
+            async def sample_list_hive_databases():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.ListHiveDatabasesRequest(
+                request = biglake_hive_v1.ListHiveDatabasesRequest(
                     parent="parent_value",
                 )
 
@@ -1547,14 +1236,14 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 page_result = client.list_hive_databases(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.ListHiveDatabasesRequest, dict]):
+            request (Optional[Union[google.cloud.biglake_hive_v1.types.ListHiveDatabasesRequest, dict]]):
                 The request object. Request message for the
                 ListHiveDatabases method.
-            parent (str):
+            parent (:class:`str`):
                 Required. The hive catalog to list databases from.
                 Format:
                 projects/{project_id_or_number}/catalogs/{catalog_id}
@@ -1562,7 +1251,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1571,7 +1260,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.services.hive_metastore_service.pagers.ListHiveDatabasesPager:
+            google.cloud.biglake_hive_v1.services.hive_metastore_service.pagers.ListHiveDatabasesAsyncPager:
                 Response message for the
                 ListHiveDatabases method.
                 Iterating over this object will yield
@@ -1596,14 +1285,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, hive_metastore.ListHiveDatabasesRequest):
             request = hive_metastore.ListHiveDatabasesRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_hive_databases]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_hive_databases
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1612,10 +1304,10 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1623,8 +1315,8 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListHiveDatabasesPager(
+        # an `__aiter__` convenience method.
+        response = pagers.ListHiveDatabasesAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -1636,7 +1328,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         # Done; return the response.
         return response
 
-    def update_hive_database(
+    async def update_hive_database(
         self,
         request: Optional[Union[hive_metastore.UpdateHiveDatabaseRequest, dict]] = None,
         *,
@@ -1658,27 +1350,27 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
-            def sample_update_hive_database():
+            async def sample_update_hive_database():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.UpdateHiveDatabaseRequest(
+                request = biglake_hive_v1.UpdateHiveDatabaseRequest(
                 )
 
                 # Make the request
-                response = client.update_hive_database(request=request)
+                response = await client.update_hive_database(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.UpdateHiveDatabaseRequest, dict]):
+            request (Optional[Union[google.cloud.biglake_hive_v1.types.UpdateHiveDatabaseRequest, dict]]):
                 The request object. Request message for the
                 UpdateHiveDatabase method.
-            hive_database (google.cloud.biglake_hive_v1beta.types.HiveDatabase):
+            hive_database (:class:`google.cloud.biglake_hive_v1.types.HiveDatabase`):
                 Required. The database to update.
 
                 The database's ``name`` field is used to identify the
@@ -1688,14 +1380,14 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 This corresponds to the ``hive_database`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Optional. The list of fields to
                 update.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1704,7 +1396,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.HiveDatabase:
+            google.cloud.biglake_hive_v1.types.HiveDatabase:
                 Stores the hive database information.
                 It includes the database name,
                 description, location and properties
@@ -1728,16 +1420,19 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, hive_metastore.UpdateHiveDatabaseRequest):
             request = hive_metastore.UpdateHiveDatabaseRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if hive_database is not None:
-                request.hive_database = hive_database
-            if update_mask is not None:
-                request.update_mask = update_mask
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if hive_database is not None:
+            request.hive_database = hive_database
+        if update_mask is not None:
+            request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_hive_database]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_hive_database
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1748,10 +1443,10 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1761,7 +1456,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         # Done; return the response.
         return response
 
-    def delete_hive_database(
+    async def delete_hive_database(
         self,
         request: Optional[Union[hive_metastore.DeleteHiveDatabaseRequest, dict]] = None,
         *,
@@ -1782,32 +1477,32 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
-            def sample_delete_hive_database():
+            async def sample_delete_hive_database():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.DeleteHiveDatabaseRequest(
+                request = biglake_hive_v1.DeleteHiveDatabaseRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                client.delete_hive_database(request=request)
+                await client.delete_hive_database(request=request)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.DeleteHiveDatabaseRequest, dict]):
+            request (Optional[Union[google.cloud.biglake_hive_v1.types.DeleteHiveDatabaseRequest, dict]]):
                 The request object. Request message for the
                 DeleteHiveDatabase method.
-            name (str):
+            name (:class:`str`):
                 Required. The name of the database to delete. Format:
                 projects/{project_id_or_number}/catalogs/{catalog_id}/databases/{database_id}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1832,14 +1527,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, hive_metastore.DeleteHiveDatabaseRequest):
             request = hive_metastore.DeleteHiveDatabaseRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_hive_database]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_hive_database
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1848,17 +1546,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        rpc(
+        await rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
 
-    def create_hive_table(
+    async def create_hive_table(
         self,
         request: Optional[Union[hive_metastore.CreateHiveTableRequest, dict]] = None,
         *,
@@ -1880,34 +1578,34 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
-            def sample_create_hive_table():
+            async def sample_create_hive_table():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceAsyncClient()
 
                 # Initialize request argument(s)
-                hive_table = biglake_hive_v1beta.HiveTable()
+                hive_table = biglake_hive_v1.HiveTable()
                 hive_table.storage_descriptor.columns.name = "name_value"
                 hive_table.storage_descriptor.columns.type_ = "type__value"
 
-                request = biglake_hive_v1beta.CreateHiveTableRequest(
+                request = biglake_hive_v1.CreateHiveTableRequest(
                     parent="parent_value",
                     hive_table=hive_table,
                     hive_table_id="hive_table_id_value",
                 )
 
                 # Make the request
-                response = client.create_hive_table(request=request)
+                response = await client.create_hive_table(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.CreateHiveTableRequest, dict]):
+            request (Optional[Union[google.cloud.biglake_hive_v1.types.CreateHiveTableRequest, dict]]):
                 The request object. Request message for the
                 CreateHiveTable method.
-            parent (str):
+            parent (:class:`str`):
                 Required. The parent resource for the table to be
                 created. Format:
                 projects/{project_id_or_number}/catalogs/{catalog_id}/databases/{database_id}
@@ -1915,14 +1613,14 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            hive_table (google.cloud.biglake_hive_v1beta.types.HiveTable):
+            hive_table (:class:`google.cloud.biglake_hive_v1.types.HiveTable`):
                 Required. The Hive Table to create. The ``name`` field
                 does not need to be provided.
 
                 This corresponds to the ``hive_table`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            hive_table_id (str):
+            hive_table_id (:class:`str`):
                 Required. The Hive Table ID to use
                 for the table that will become the final
                 component of the table's resource name.
@@ -1931,7 +1629,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 This corresponds to the ``hive_table_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -1940,7 +1638,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.HiveTable:
+            google.cloud.biglake_hive_v1.types.HiveTable:
                 Stores the hive table information. It
                 includes the table name, schema (column
                 names and types), data location, storage
@@ -1966,18 +1664,21 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, hive_metastore.CreateHiveTableRequest):
             request = hive_metastore.CreateHiveTableRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-            if hive_table is not None:
-                request.hive_table = hive_table
-            if hive_table_id is not None:
-                request.hive_table_id = hive_table_id
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if hive_table is not None:
+            request.hive_table = hive_table
+        if hive_table_id is not None:
+            request.hive_table_id = hive_table_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_hive_table]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_hive_table
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1986,10 +1687,10 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1999,7 +1700,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         # Done; return the response.
         return response
 
-    def get_hive_table(
+    async def get_hive_table(
         self,
         request: Optional[Union[hive_metastore.GetHiveTableRequest, dict]] = None,
         *,
@@ -2019,35 +1720,35 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
-            def sample_get_hive_table():
+            async def sample_get_hive_table():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.GetHiveTableRequest(
+                request = biglake_hive_v1.GetHiveTableRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                response = client.get_hive_table(request=request)
+                response = await client.get_hive_table(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.GetHiveTableRequest, dict]):
+            request (Optional[Union[google.cloud.biglake_hive_v1.types.GetHiveTableRequest, dict]]):
                 The request object. Request message for the GetHiveTable
                 method.
-            name (str):
+            name (:class:`str`):
                 Required. The name of the table to retrieve. Format:
                 projects/{project_id_or_number}/catalogs/{catalog_id}/databases/{database_id}/tables/{table_id}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2056,7 +1757,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.HiveTable:
+            google.cloud.biglake_hive_v1.types.HiveTable:
                 Stores the hive table information. It
                 includes the table name, schema (column
                 names and types), data location, storage
@@ -2082,14 +1783,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, hive_metastore.GetHiveTableRequest):
             request = hive_metastore.GetHiveTableRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_hive_table]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.get_hive_table
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2098,10 +1802,10 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -2111,7 +1815,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         # Done; return the response.
         return response
 
-    def list_hive_tables(
+    async def list_hive_tables(
         self,
         request: Optional[Union[hive_metastore.ListHiveTablesRequest, dict]] = None,
         *,
@@ -2119,7 +1823,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListHiveTablesPager:
+    ) -> pagers.ListHiveTablesAsyncPager:
         r"""List all hive tables in a specified project under the
         hive catalog and database.
 
@@ -2132,14 +1836,14 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
-            def sample_list_hive_tables():
+            async def sample_list_hive_tables():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.ListHiveTablesRequest(
+                request = biglake_hive_v1.ListHiveTablesRequest(
                     parent="parent_value",
                 )
 
@@ -2147,21 +1851,21 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 page_result = client.list_hive_tables(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.ListHiveTablesRequest, dict]):
+            request (Optional[Union[google.cloud.biglake_hive_v1.types.ListHiveTablesRequest, dict]]):
                 The request object. Request message for the
                 ListHiveTables method.
-            parent (str):
+            parent (:class:`str`):
                 Required. The database to list tables from. Format:
                 projects/{project_id_or_number}/catalogs/{catalog_id}/databases/{database_id}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2170,7 +1874,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.services.hive_metastore_service.pagers.ListHiveTablesPager:
+            google.cloud.biglake_hive_v1.services.hive_metastore_service.pagers.ListHiveTablesAsyncPager:
                 Response message for the
                 ListHiveTables method.
                 Iterating over this object will yield
@@ -2195,14 +1899,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, hive_metastore.ListHiveTablesRequest):
             request = hive_metastore.ListHiveTablesRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_hive_tables]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_hive_tables
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2211,10 +1918,10 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -2222,8 +1929,8 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListHiveTablesPager(
+        # an `__aiter__` convenience method.
+        response = pagers.ListHiveTablesAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -2235,7 +1942,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         # Done; return the response.
         return response
 
-    def update_hive_table(
+    async def update_hive_table(
         self,
         request: Optional[Union[hive_metastore.UpdateHiveTableRequest, dict]] = None,
         *,
@@ -2257,32 +1964,32 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
-            def sample_update_hive_table():
+            async def sample_update_hive_table():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceAsyncClient()
 
                 # Initialize request argument(s)
-                hive_table = biglake_hive_v1beta.HiveTable()
+                hive_table = biglake_hive_v1.HiveTable()
                 hive_table.storage_descriptor.columns.name = "name_value"
                 hive_table.storage_descriptor.columns.type_ = "type__value"
 
-                request = biglake_hive_v1beta.UpdateHiveTableRequest(
+                request = biglake_hive_v1.UpdateHiveTableRequest(
                     hive_table=hive_table,
                 )
 
                 # Make the request
-                response = client.update_hive_table(request=request)
+                response = await client.update_hive_table(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.UpdateHiveTableRequest, dict]):
+            request (Optional[Union[google.cloud.biglake_hive_v1.types.UpdateHiveTableRequest, dict]]):
                 The request object. Request message for the
                 UpdateHiveTable method.
-            hive_table (google.cloud.biglake_hive_v1beta.types.HiveTable):
+            hive_table (:class:`google.cloud.biglake_hive_v1.types.HiveTable`):
                 Required. The table to update.
 
                 The table's ``name`` field is used to identify the table
@@ -2292,14 +1999,14 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 This corresponds to the ``hive_table`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Optional. The list of fields to
                 update.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2308,7 +2015,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.HiveTable:
+            google.cloud.biglake_hive_v1.types.HiveTable:
                 Stores the hive table information. It
                 includes the table name, schema (column
                 names and types), data location, storage
@@ -2334,16 +2041,19 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, hive_metastore.UpdateHiveTableRequest):
             request = hive_metastore.UpdateHiveTableRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if hive_table is not None:
-                request.hive_table = hive_table
-            if update_mask is not None:
-                request.update_mask = update_mask
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if hive_table is not None:
+            request.hive_table = hive_table
+        if update_mask is not None:
+            request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_hive_table]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_hive_table
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2354,10 +2064,10 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -2367,7 +2077,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         # Done; return the response.
         return response
 
-    def delete_hive_table(
+    async def delete_hive_table(
         self,
         request: Optional[Union[hive_metastore.DeleteHiveTableRequest, dict]] = None,
         *,
@@ -2388,32 +2098,32 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
-            def sample_delete_hive_table():
+            async def sample_delete_hive_table():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.DeleteHiveTableRequest(
+                request = biglake_hive_v1.DeleteHiveTableRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                client.delete_hive_table(request=request)
+                await client.delete_hive_table(request=request)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.DeleteHiveTableRequest, dict]):
+            request (Optional[Union[google.cloud.biglake_hive_v1.types.DeleteHiveTableRequest, dict]]):
                 The request object. Request message for the
                 DeleteHiveTable method.
-            name (str):
+            name (:class:`str`):
                 Required. The name of the database to delete. Format:
                 projects/{project_id_or_number}/catalogs/{catalog_id}/databases/{database_id}/tables/{table_id}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2438,14 +2148,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, hive_metastore.DeleteHiveTableRequest):
             request = hive_metastore.DeleteHiveTableRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_hive_table]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_hive_table
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2454,17 +2167,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        rpc(
+        await rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
 
-    def batch_create_partitions(
+    async def batch_create_partitions(
         self,
         request: Optional[
             Union[hive_metastore.BatchCreatePartitionsRequest, dict]
@@ -2486,33 +2199,33 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
-            def sample_batch_create_partitions():
+            async def sample_batch_create_partitions():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceAsyncClient()
 
                 # Initialize request argument(s)
-                requests = biglake_hive_v1beta.CreatePartitionRequest()
+                requests = biglake_hive_v1.CreatePartitionRequest()
                 requests.parent = "parent_value"
                 requests.partition.values = ['values_value1', 'values_value2']
 
-                request = biglake_hive_v1beta.BatchCreatePartitionsRequest(
+                request = biglake_hive_v1.BatchCreatePartitionsRequest(
                     parent="parent_value",
                     requests=requests,
                 )
 
                 # Make the request
-                response = client.batch_create_partitions(request=request)
+                response = await client.batch_create_partitions(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.BatchCreatePartitionsRequest, dict]):
+            request (Optional[Union[google.cloud.biglake_hive_v1.types.BatchCreatePartitionsRequest, dict]]):
                 The request object. Request message for the
                 BatchCreatePartitions method.
-            parent (str):
+            parent (:class:`str`):
                 Required. Reference to the table to
                 where the partitions to be added, in the
                 format of
@@ -2521,7 +2234,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2530,7 +2243,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.BatchCreatePartitionsResponse:
+            google.cloud.biglake_hive_v1.types.BatchCreatePartitionsResponse:
                 Response message for
                 BatchCreatePartitions.
 
@@ -2552,14 +2265,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, hive_metastore.BatchCreatePartitionsRequest):
             request = hive_metastore.BatchCreatePartitionsRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.batch_create_partitions]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_create_partitions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2568,10 +2284,10 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -2581,7 +2297,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         # Done; return the response.
         return response
 
-    def batch_delete_partitions(
+    async def batch_delete_partitions(
         self,
         request: Optional[
             Union[hive_metastore.BatchDeletePartitionsRequest, dict]
@@ -2603,32 +2319,32 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
-            def sample_batch_delete_partitions():
+            async def sample_batch_delete_partitions():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceAsyncClient()
 
                 # Initialize request argument(s)
-                partition_values = biglake_hive_v1beta.PartitionValues()
+                partition_values = biglake_hive_v1.PartitionValues()
                 partition_values.values = ['values_value1', 'values_value2']
 
-                request = biglake_hive_v1beta.BatchDeletePartitionsRequest(
+                request = biglake_hive_v1.BatchDeletePartitionsRequest(
                     parent="parent_value",
                     partition_values=partition_values,
                 )
 
                 # Make the request
-                client.batch_delete_partitions(request=request)
+                await client.batch_delete_partitions(request=request)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.BatchDeletePartitionsRequest, dict]):
+            request (Optional[Union[google.cloud.biglake_hive_v1.types.BatchDeletePartitionsRequest, dict]]):
                 The request object. Request message for
                 BatchDeletePartitions. The Partition is
                 uniquely identified by values, which is
                 an ordered list. Hence, there is no
                 separate name or partition id field.
-            parent (str):
+            parent (:class:`str`):
                 Required. Reference to the table to
                 which these partitions belong, in the
                 format of
@@ -2637,7 +2353,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2662,14 +2378,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, hive_metastore.BatchDeletePartitionsRequest):
             request = hive_metastore.BatchDeletePartitionsRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.batch_delete_partitions]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_delete_partitions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2678,17 +2397,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        rpc(
+        await rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
 
-    def batch_update_partitions(
+    async def batch_update_partitions(
         self,
         request: Optional[
             Union[hive_metastore.BatchUpdatePartitionsRequest, dict]
@@ -2710,32 +2429,32 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
-            def sample_batch_update_partitions():
+            async def sample_batch_update_partitions():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceAsyncClient()
 
                 # Initialize request argument(s)
-                requests = biglake_hive_v1beta.UpdatePartitionRequest()
+                requests = biglake_hive_v1.UpdatePartitionRequest()
                 requests.partition.values = ['values_value1', 'values_value2']
 
-                request = biglake_hive_v1beta.BatchUpdatePartitionsRequest(
+                request = biglake_hive_v1.BatchUpdatePartitionsRequest(
                     parent="parent_value",
                     requests=requests,
                 )
 
                 # Make the request
-                response = client.batch_update_partitions(request=request)
+                response = await client.batch_update_partitions(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.BatchUpdatePartitionsRequest, dict]):
+            request (Optional[Union[google.cloud.biglake_hive_v1.types.BatchUpdatePartitionsRequest, dict]]):
                 The request object. Request message for
                 BatchUpdatePartitions.
-            parent (str):
+            parent (:class:`str`):
                 Required. Reference to the table to
                 which these partitions belong, in the
                 format of
@@ -2744,7 +2463,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2753,7 +2472,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.BatchUpdatePartitionsResponse:
+            google.cloud.biglake_hive_v1.types.BatchUpdatePartitionsResponse:
                 Response message for
                 BatchUpdatePartitions.
 
@@ -2775,14 +2494,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, hive_metastore.BatchUpdatePartitionsRequest):
             request = hive_metastore.BatchUpdatePartitionsRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.batch_update_partitions]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.batch_update_partitions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2791,10 +2513,10 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -2812,7 +2534,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> Iterable[hive_metastore.ListPartitionsResponse]:
+    ) -> Awaitable[AsyncIterable[hive_metastore.ListPartitionsResponse]]:
         r"""Streams list of partitions from a table.
 
         .. code-block:: python
@@ -2824,28 +2546,28 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
-            def sample_list_partitions():
+            async def sample_list_partitions():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.ListPartitionsRequest(
+                request = biglake_hive_v1.ListPartitionsRequest(
                     parent="parent_value",
                 )
 
                 # Make the request
-                stream = client.list_partitions(request=request)
+                stream = await client.list_partitions(request=request)
 
                 # Handle the response
-                for response in stream:
+                async for response in stream:
                     print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.ListPartitionsRequest, dict]):
+            request (Optional[Union[google.cloud.biglake_hive_v1.types.ListPartitionsRequest, dict]]):
                 The request object. Request message for ListPartitions.
-            parent (str):
+            parent (:class:`str`):
                 Required. Reference to the table to
                 which these partitions belong, in the
                 format of
@@ -2854,7 +2576,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2863,7 +2585,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            Iterable[google.cloud.biglake_hive_v1beta.types.ListPartitionsResponse]:
+            AsyncIterable[google.cloud.biglake_hive_v1.types.ListPartitionsResponse]:
                 Response message for ListPartitions.
         """
         # Create or coerce a protobuf request object.
@@ -2883,14 +2605,17 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, hive_metastore.ListPartitionsRequest):
             request = hive_metastore.ListPartitionsRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_partitions]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.list_partitions
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2899,7 +2624,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = rpc(
@@ -2912,7 +2637,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         # Done; return the response.
         return response
 
-    def failover_hive_catalog(
+    async def failover_hive_catalog(
         self,
         request: Optional[
             Union[hive_metastore.FailoverHiveCatalogRequest, dict]
@@ -2935,36 +2660,36 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import biglake_hive_v1beta
+            from google.cloud import biglake_hive_v1
 
-            def sample_failover_hive_catalog():
+            async def sample_failover_hive_catalog():
                 # Create a client
-                client = biglake_hive_v1beta.HiveMetastoreServiceClient()
+                client = biglake_hive_v1.HiveMetastoreServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = biglake_hive_v1beta.FailoverHiveCatalogRequest(
+                request = biglake_hive_v1.FailoverHiveCatalogRequest(
                     name="name_value",
                     primary_replica="primary_replica_value",
                 )
 
                 # Make the request
-                response = client.failover_hive_catalog(request=request)
+                response = await client.failover_hive_catalog(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.biglake_hive_v1beta.types.FailoverHiveCatalogRequest, dict]):
+            request (Optional[Union[google.cloud.biglake_hive_v1.types.FailoverHiveCatalogRequest, dict]]):
                 The request object. Request message for
                 FailoverHiveCatalog.
-            name (str):
+            name (:class:`str`):
                 Required. The name of the catalog in the form
                 "projects/{project_id}/catalogs/{catalog_id}"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            primary_replica (str):
+            primary_replica (:class:`str`):
                 Required. The region being assigned
                 as the new primary replica region. For
                 example "us-east1". This must be one of
@@ -2975,7 +2700,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 This corresponds to the ``primary_replica`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
@@ -2984,7 +2709,7 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
                 be of type `bytes`.
 
         Returns:
-            google.cloud.biglake_hive_v1beta.types.FailoverHiveCatalogResponse:
+            google.cloud.biglake_hive_v1.types.FailoverHiveCatalogResponse:
                 Response message for
                 FailoverHiveCatalog.
 
@@ -3006,16 +2731,19 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         #   there are no flattened fields), or create one.
         if not isinstance(request, hive_metastore.FailoverHiveCatalogRequest):
             request = hive_metastore.FailoverHiveCatalogRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
-            if primary_replica is not None:
-                request.primary_replica = primary_replica
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+        if primary_replica is not None:
+            request.primary_replica = primary_replica
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.failover_hive_catalog]
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.failover_hive_catalog
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3024,10 +2752,10 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         )
 
         # Validate the universe domain.
-        self._validate_universe_domain()
+        self._client._validate_universe_domain()
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -3037,18 +2765,11 @@ class HiveMetastoreServiceClient(metaclass=HiveMetastoreServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self) -> "HiveMetastoreServiceClient":
+    async def __aenter__(self) -> "HiveMetastoreServiceAsyncClient":
         return self
 
-    def __exit__(self, type, value, traceback):
-        """Releases underlying transport's resources.
-
-        .. warning::
-            ONLY use as a context manager if the transport is NOT shared
-            with other clients! Exiting the with block will CLOSE the transport
-            and may cause errors in other clients!
-        """
-        self.transport.close()
+    async def __aexit__(self, exc_type, exc, tb):
+        await self.transport.close()
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -3056,4 +2777,5 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
-__all__ = ("HiveMetastoreServiceClient",)
+
+__all__ = ("HiveMetastoreServiceAsyncClient",)

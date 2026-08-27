@@ -54,13 +54,13 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 
-from google.cloud.biglake_hive_v1beta.services.hive_metastore_service import (
+from google.cloud.biglake_hive_v1.services.hive_metastore_service import (
     HiveMetastoreServiceAsyncClient,
     HiveMetastoreServiceClient,
     pagers,
     transports,
 )
-from google.cloud.biglake_hive_v1beta.types import hive_metastore
+from google.cloud.biglake_hive_v1.types import hive_metastore
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -1019,7 +1019,7 @@ def test_hive_metastore_service_client_client_options_credentials_file(
 
 def test_hive_metastore_service_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.biglake_hive_v1beta.services.hive_metastore_service.transports.HiveMetastoreServiceGrpcTransport.__init__"
+        "google.cloud.biglake_hive_v1.services.hive_metastore_service.transports.HiveMetastoreServiceGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
         client = HiveMetastoreServiceClient(
@@ -8816,8 +8816,7 @@ def test_create_hive_catalog_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/hive/v1beta/{parent=projects/*}/catalogs" % client.transport._host,
-            args[1],
+            "%s/hive/v1/{parent=projects/*}/catalogs" % client.transport._host, args[1]
         )
 
 
@@ -8988,8 +8987,7 @@ def test_get_hive_catalog_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/hive/v1beta/{name=projects/*/catalogs/*}" % client.transport._host,
-            args[1],
+            "%s/hive/v1/{name=projects/*/catalogs/*}" % client.transport._host, args[1]
         )
 
 
@@ -9168,8 +9166,7 @@ def test_list_hive_catalogs_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/hive/v1beta/{parent=projects/*}/catalogs" % client.transport._host,
-            args[1],
+            "%s/hive/v1/{parent=projects/*}/catalogs" % client.transport._host, args[1]
         )
 
 
@@ -9406,7 +9403,7 @@ def test_update_hive_catalog_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/hive/v1beta/{hive_catalog.name=projects/*/catalogs/*}"
+            "%s/hive/v1/{hive_catalog.name=projects/*/catalogs/*}"
             % client.transport._host,
             args[1],
         )
@@ -9575,8 +9572,7 @@ def test_delete_hive_catalog_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/hive/v1beta/{name=projects/*/catalogs/*}" % client.transport._host,
-            args[1],
+            "%s/hive/v1/{name=projects/*/catalogs/*}" % client.transport._host, args[1]
         )
 
 
@@ -9766,7 +9762,7 @@ def test_create_hive_database_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/hive/v1beta/{parent=projects/*/catalogs/*}/databases"
+            "%s/hive/v1/{parent=projects/*/catalogs/*}/databases"
             % client.transport._host,
             args[1],
         )
@@ -9939,7 +9935,7 @@ def test_get_hive_database_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/hive/v1beta/{name=projects/*/catalogs/*/databases/*}"
+            "%s/hive/v1/{name=projects/*/catalogs/*/databases/*}"
             % client.transport._host,
             args[1],
         )
@@ -10120,7 +10116,7 @@ def test_list_hive_databases_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/hive/v1beta/{parent=projects/*/catalogs/*}/databases"
+            "%s/hive/v1/{parent=projects/*/catalogs/*}/databases"
             % client.transport._host,
             args[1],
         )
@@ -10363,7 +10359,7 @@ def test_update_hive_database_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/hive/v1beta/{hive_database.name=projects/*/catalogs/*/databases/*}"
+            "%s/hive/v1/{hive_database.name=projects/*/catalogs/*/databases/*}"
             % client.transport._host,
             args[1],
         )
@@ -10532,7 +10528,7 @@ def test_delete_hive_database_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/hive/v1beta/{name=projects/*/catalogs/*/databases/*}"
+            "%s/hive/v1/{name=projects/*/catalogs/*/databases/*}"
             % client.transport._host,
             args[1],
         )
@@ -10724,7 +10720,7 @@ def test_create_hive_table_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/hive/v1beta/{parent=projects/*/catalogs/*/databases/*}/tables"
+            "%s/hive/v1/{parent=projects/*/catalogs/*/databases/*}/tables"
             % client.transport._host,
             args[1],
         )
@@ -10897,7 +10893,7 @@ def test_get_hive_table_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/hive/v1beta/{name=projects/*/catalogs/*/databases/*/tables/*}"
+            "%s/hive/v1/{name=projects/*/catalogs/*/databases/*/tables/*}"
             % client.transport._host,
             args[1],
         )
@@ -11078,7 +11074,7 @@ def test_list_hive_tables_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/hive/v1beta/{parent=projects/*/catalogs/*/databases/*}/tables"
+            "%s/hive/v1/{parent=projects/*/catalogs/*/databases/*}/tables"
             % client.transport._host,
             args[1],
         )
@@ -11321,7 +11317,7 @@ def test_update_hive_table_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/hive/v1beta/{hive_table.name=projects/*/catalogs/*/databases/*/tables/*}"
+            "%s/hive/v1/{hive_table.name=projects/*/catalogs/*/databases/*/tables/*}"
             % client.transport._host,
             args[1],
         )
@@ -11490,7 +11486,7 @@ def test_delete_hive_table_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/hive/v1beta/{name=projects/*/catalogs/*/databases/*/tables/*}"
+            "%s/hive/v1/{name=projects/*/catalogs/*/databases/*/tables/*}"
             % client.transport._host,
             args[1],
         )
@@ -11667,7 +11663,7 @@ def test_batch_create_partitions_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/hive/v1beta/{parent=projects/*/catalogs/*/databases/*/tables/*}/partitions:batchCreate"
+            "%s/hive/v1/{parent=projects/*/catalogs/*/databases/*/tables/*}/partitions:batchCreate"
             % client.transport._host,
             args[1],
         )
@@ -11839,7 +11835,7 @@ def test_batch_delete_partitions_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/hive/v1beta/{parent=projects/*/catalogs/*/databases/*/tables/*}/partitions:batchDelete"
+            "%s/hive/v1/{parent=projects/*/catalogs/*/databases/*/tables/*}/partitions:batchDelete"
             % client.transport._host,
             args[1],
         )
@@ -12016,7 +12012,7 @@ def test_batch_update_partitions_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/hive/v1beta/{parent=projects/*/catalogs/*/databases/*/tables/*}/partitions:batchUpdate"
+            "%s/hive/v1/{parent=projects/*/catalogs/*/databases/*/tables/*}/partitions:batchUpdate"
             % client.transport._host,
             args[1],
         )
@@ -12196,7 +12192,7 @@ def test_list_partitions_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/hive/v1beta/{parent=projects/*/catalogs/*/databases/*/tables/*}/partitions:list"
+            "%s/hive/v1/{parent=projects/*/catalogs/*/databases/*/tables/*}/partitions:list"
             % client.transport._host,
             args[1],
         )
@@ -12376,8 +12372,7 @@ def test_failover_hive_catalog_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/hive/v1beta/{name=projects/*/catalogs/*}:failover"
-            % client.transport._host,
+            "%s/hive/v1/{name=projects/*/catalogs/*}:failover" % client.transport._host,
             args[1],
         )
 
@@ -17149,7 +17144,7 @@ def test_hive_metastore_service_base_transport_error():
 def test_hive_metastore_service_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.biglake_hive_v1beta.services.hive_metastore_service.transports.HiveMetastoreServiceTransport.__init__"
+        "google.cloud.biglake_hive_v1.services.hive_metastore_service.transports.HiveMetastoreServiceTransport.__init__"
     ) as Transport:
         Transport.return_value = None
         transport = transports.HiveMetastoreServiceTransport(
@@ -17203,7 +17198,7 @@ def test_hive_metastore_service_base_transport_with_credentials_file():
             google.auth, "load_credentials_from_file", autospec=True
         ) as load_creds,
         mock.patch(
-            "google.cloud.biglake_hive_v1beta.services.hive_metastore_service.transports.HiveMetastoreServiceTransport._prep_wrapped_messages"
+            "google.cloud.biglake_hive_v1.services.hive_metastore_service.transports.HiveMetastoreServiceTransport._prep_wrapped_messages"
         ) as Transport,
     ):
         Transport.return_value = None
@@ -17228,7 +17223,7 @@ def test_hive_metastore_service_base_transport_with_adc():
     with (
         mock.patch.object(google.auth, "default", autospec=True) as adc,
         mock.patch(
-            "google.cloud.biglake_hive_v1beta.services.hive_metastore_service.transports.HiveMetastoreServiceTransport._prep_wrapped_messages"
+            "google.cloud.biglake_hive_v1.services.hive_metastore_service.transports.HiveMetastoreServiceTransport._prep_wrapped_messages"
         ) as Transport,
     ):
         Transport.return_value = None
