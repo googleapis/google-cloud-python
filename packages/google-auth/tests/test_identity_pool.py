@@ -1792,23 +1792,21 @@ class TestCredentials(object):
         "google.auth.transport._mtls_helper._get_workload_cert_and_key_paths",
         return_value=(None, None),
     )
-    def test_get_cert_bytes_none_raises_error(
+    def test_retrieve_subject_token_none_raises_error(
         self, mock_get_workload_cert_and_key_paths, mock_is_ecp_config
     ):
         credentials = self.make_credentials(
             credential_source=self.CREDENTIAL_SOURCE_CERTIFICATE.copy()
         )
 
-        with pytest.raises(exceptions.ClientCertError) as excinfo:
-            credentials._get_cert_bytes()
+        with pytest.raises(exceptions.RefreshError) as excinfo:
+            credentials.retrieve_subject_token(None)
 
-        assert excinfo.match(
-            "Workload certificate configuration could not be found or does not contain workload certificate paths."
-        )
+        assert excinfo.match("Failed to retrieve leaf certificate.")
 
     @mock.patch(
         "google.auth.transport._custom_tls_signer.get_cert_from_custom_tls_signer",
-        return_value=b"mock_ecp_cert",
+        return_value=open(CERT_FILE, "rb").read(),
     )
     @mock.patch(
         "google.auth.transport._mtls_helper._get_cert_config_path",
@@ -1819,7 +1817,7 @@ class TestCredentials(object):
         "google.auth.transport._mtls_helper._get_workload_cert_and_key_paths",
         return_value=(None, None),
     )
-    def test_get_cert_bytes_ecp_success(
+    def test_retrieve_subject_token_ecp_success(
         self,
         mock_get_workload_paths,
         mock_is_ecp_config,
@@ -1829,8 +1827,8 @@ class TestCredentials(object):
         credentials = self.make_credentials(
             credential_source=self.CREDENTIAL_SOURCE_CERTIFICATE.copy()
         )
-        cert_bytes = credentials._get_cert_bytes()
-        assert cert_bytes == b"mock_ecp_cert"
+        subject_token = credentials.retrieve_subject_token(None)
+        assert subject_token == json.dumps([CERT_FILE_CONTENT])
         mock_is_ecp_config.assert_called_once()
         mock_get_cert_config_path.assert_called_once()
         mock_get_cert_from_ecp.assert_called_once_with("/path/to/ecp_config.json")

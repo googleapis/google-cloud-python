@@ -1929,7 +1929,8 @@ class TestIsECPConfig:
         mock_get_path.return_value = "/path/to/config.json"
         mock_load_json.return_value = {
             "cert_configs": {
-                "workload": {"cert_path": "cert.pem", "key_path": "key.pem"}
+                "workload": {"cert_path": "cert.pem", "key_path": "key.pem"},
+                "pkcs11": {"module": "/path/to/mod.so"},
             },
             "libs": {"ecp_client": "/path/to/lib.so"},
         }

@@ -837,13 +837,8 @@ def check_use_client_cert():
         # Structural validation
         if isinstance(content, dict):
             cert_configs = content.get("cert_configs")
-            if isinstance(cert_configs, dict):
-                if "workload" in cert_configs:
-                    return True
-                if any(
-                    section in cert_configs for section in _ECP_SECTIONS
-                ) and isinstance(content.get("libs"), dict):
-                    return True
+            if isinstance(cert_configs, dict) and "workload" in cert_configs:
+                return True
 
         # If we got here, the file exists but the expected structure is missing
         _LOGGER.debug(

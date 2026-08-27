@@ -389,17 +389,46 @@ def test_get_cert_from_custom_tls_signer_success():
             mock_get_cert.assert_called_once_with(signer_lib, ENTERPRISE_CERT_FILE)
 
 
-def test_get_cert_from_custom_tls_signer_missing_libs():
+def test_get_cert_from_custom_tls_signer_missing_libs(tmp_path):
+    config_file = tmp_path / "cert_config.json"
+    config_file.write_text('{"cert_configs": {}}')
+    with pytest.raises(
+        exceptions.MutualTLSChannelError, match="missing 'libs' section"
+    ):
+        _custom_tls_signer.get_cert_from_custom_tls_signer(str(config_file))
+
+
+def test_get_cert_from_custom_tls_signer_missing_signer_lib():
     with pytest.raises(
         exceptions.MutualTLSChannelError, match="missing signer library"
     ):
         _custom_tls_signer.get_cert_from_custom_tls_signer(INVALID_ENTERPRISE_CERT_FILE)
 
 
-def test_get_cert_from_custom_tls_signer_missing_signer_lib(tmp_path):
-    config_file = tmp_path / "cert_config.json"
-    config_file.write_text('{"libs": {}}')
-    with pytest.raises(
-        exceptions.MutualTLSChannelError, match="missing signer library"
+def test_get_cert_from_custom_tls_signer_load_lib_oserror():
+    with mock.patch(
+        "google.auth.transport._custom_tls_signer.load_signer_lib",
+        side_effect=OSError("cannot open shared object file"),
     ):
-        _custom_tls_signer.get_cert_from_custom_tls_signer(str(config_file))
+        with pytest.raises(
+            exceptions.MutualTLSChannelError,
+            match="Failed to load or execute signer library",
+        ):
+            _custom_tls_signer.get_cert_from_custom_tls_signer(ENTERPRISE_CERT_FILE)
+
+
+def test_get_cert_from_custom_tls_signer_get_cert_attribute_error():
+    signer_lib = mock.MagicMock()
+    with mock.patch(
+        "google.auth.transport._custom_tls_signer.load_signer_lib",
+        return_value=signer_lib,
+    ):
+        with mock.patch(
+            "google.auth.transport._custom_tls_signer.get_cert",
+            side_effect=AttributeError("function not found in library"),
+        ):
+            with pytest.raises(
+                exceptions.MutualTLSChannelError,
+                match="Failed to load or execute signer library",
+            ):
+                _custom_tls_signer.get_cert_from_custom_tls_signer(ENTERPRISE_CERT_FILE)

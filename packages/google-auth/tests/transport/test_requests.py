@@ -665,10 +665,6 @@ class TestAuthorizedSession(object):
             assert not auth_session.is_mtls
 
     @mock.patch(
-        "google.auth.transport._mtls_helper._get_cert_config_path",
-        return_value=None,
-    )
-    @mock.patch(
         "google.auth.transport._mtls_helper.get_client_cert_and_key", autospec=True
     )
     @mock.patch.dict(
@@ -681,7 +677,7 @@ class TestAuthorizedSession(object):
         },
     )
     def test_configure_mtls_channel_without_client_cert_env(
-        self, get_client_cert_and_key, mock_get_cert_config_path
+        self, get_client_cert_and_key
     ):
         env_to_patch = {
             environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE: "",

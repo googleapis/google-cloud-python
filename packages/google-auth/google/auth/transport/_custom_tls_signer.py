@@ -244,8 +244,13 @@ def get_cert_from_custom_tls_signer(enterprise_cert_file_path):
             "enterprise cert file is missing signer library (ecp_client)"
         )
 
-    signer_lib = load_signer_lib(signer_library)
-    return get_cert(signer_lib, enterprise_cert_file_path)
+    try:
+        signer_lib = load_signer_lib(signer_library)
+        return get_cert(signer_lib, enterprise_cert_file_path)
+    except (OSError, AttributeError, TypeError, ValueError) as e:
+        raise exceptions.MutualTLSChannelError(
+            f"Failed to load or execute signer library at {signer_library}: {e}"
+        ) from e
 
 
 class CustomTlsSigner(object):
