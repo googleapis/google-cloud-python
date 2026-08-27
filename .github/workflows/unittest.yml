@@ -197,6 +197,7 @@ jobs:
         PY_VERSION: ${{ matrix.python }}
         PACKAGE_LIST: ${{ matrix.package_shard.packages }}
         NOX_DEFAULT_VENV_BACKEND: "virtualenv"
+        NOXFORCEPYTHON: ${{ matrix.python }}
       run: |
         ci/run_conditional_tests.sh
 
