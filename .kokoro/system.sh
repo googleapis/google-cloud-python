@@ -286,12 +286,6 @@ for path in `find 'packages' \
     files_to_check=("${package_path}")
   fi
 
-  # When running compliance tests, only test packages that have compliance suites
-  if [[ "${NOX_SESSION}" == "compliance"* && "${package_name}" != "sqlalchemy-"* ]]; then
-    printf "SKIP %-20s %-40s %s\n" "[not_applicable]" "${package_name}" "${commit_hash:-HEAD}"
-    continue
-  fi
-
   set +e
   # Passing the array expanded as arguments to git diff.
   package_modified=$(git diff "${KOKORO_GITHUB_PULL_REQUEST_TARGET_BRANCH}...${KOKORO_GITHUB_PULL_REQUEST_COMMIT}" -- "${files_to_check[@]}" | wc -l)
