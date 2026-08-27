@@ -17,7 +17,7 @@
 import collections
 import functools
 import warnings
-from typing import Generic, Iterator, Optional, TypeVar
+from typing import Generic, Iterator, Optional, Sequence, TypeVar, Union
 
 import google.auth
 import google.auth.credentials
@@ -25,7 +25,6 @@ import google.auth.transport.grpc
 import google.auth.transport.requests
 import google.protobuf
 import grpc
-
 from google.api_core import exceptions, general_helpers
 
 # The list of gRPC Callable interfaces that return iterators.
@@ -33,6 +32,14 @@ _STREAM_WRAP_CLASSES = (grpc.UnaryStreamMultiCallable, grpc.StreamStreamMultiCal
 
 # denotes the proto response type for grpc calls
 P = TypeVar("P")
+
+# Type alias representing any client-side gRPC interceptor
+ClientInterceptor = Union[
+    grpc.UnaryUnaryClientInterceptor,
+    grpc.UnaryStreamClientInterceptor,
+    grpc.StreamUnaryClientInterceptor,
+    grpc.StreamStreamClientInterceptor,
+]
 
 
 def _patch_callable_name(callable_):
@@ -417,6 +424,30 @@ def _modify_target_for_direct_path(target: str) -> str:
         # Modify the target to use Direct Path by adding the `google-c2p:///` prefix
         target = f"google-c2p{direct_path_separator}{target_without_port}"
     return target
+
+
+def apply_interceptors(
+    channel: grpc.Channel,
+    interceptors: Optional[Sequence[ClientInterceptor]] = None,
+) -> grpc.Channel:
+    """Applies a sequence of interceptors to a gRPC channel.
+
+    The interceptors are applied in the order provided, wrapping the channel
+    sequentially.
+
+    Args:
+        channel (grpc.Channel): The channel to intercept.
+        interceptors (Optional[Sequence[ClientInterceptor]]): An optional sequence
+            of client interceptors to apply.
+
+    Returns:
+        grpc.Channel: The intercepted channel, or the original channel if no
+            interceptors were provided.
+    """
+    if interceptors:
+        for interceptor in interceptors:
+            channel = grpc.intercept_channel(channel, interceptor)
+    return channel
 
 
 _MethodCall = collections.namedtuple(

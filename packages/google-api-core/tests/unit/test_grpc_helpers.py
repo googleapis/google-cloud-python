@@ -24,9 +24,8 @@ except ImportError:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
 import google.auth.credentials
-from google.longrunning import operations_pb2
-
 from google.api_core import exceptions, grpc_helpers
+from google.longrunning import operations_pb2
 
 
 def test__patch_callable_name():
@@ -932,3 +931,94 @@ class TestChannelStub(object):
     def test_close(self):
         channel = grpc_helpers.ChannelStub()
         assert channel.close() is None
+
+
+@pytest.mark.parametrize("falsy_interceptors", [None, [], ()])
+def test_apply_interceptors_passthrough(falsy_interceptors):
+    """Verify that falsy or empty interceptor sequences return the channel unmodified."""
+    mock_channel = mock.Mock()
+    result = grpc_helpers.apply_interceptors(mock_channel, falsy_interceptors)
+    assert result is mock_channel
+
+
+@pytest.mark.parametrize("count", [1, 2, 3])
+def test_apply_interceptors_wrapping(count):
+    """Verify that interceptors are wrapped sequentially in the order provided.
+
+    When given a sequence of N interceptors [i_0, i_1, ..., i_{N-1}], apply_interceptors
+    must pass the base channel and i_0 to grpc.intercept_channel, then pass the
+    resulting wrapped channel and i_1 to grpc.intercept_channel, and so on.
+    This ensures each subsequent interceptor wraps the preceding channel state.
+    """
+    mock_channel = mock.Mock(name="base_channel")
+    # Generate distinct mock interceptors and the expected wrapped channel returns for each step
+    interceptors = [mock.Mock(name=f"interceptor_{i}") for i in range(count)]
+    wrapped_channels = [mock.Mock(name=f"wrapped_channel_{i}") for i in range(count)]
+
+    with mock.patch(
+        "grpc.intercept_channel", side_effect=wrapped_channels
+    ) as mock_intercept:
+        result = grpc_helpers.apply_interceptors(mock_channel, interceptors)
+
+    # The final return value must be the outermost wrapped channel from the final loop iteration
+    assert result is wrapped_channels[-1]
+    assert mock_intercept.call_count == count
+
+    # Construct the expected sequential chaining: (base, i_0) -> (wrapped_0, i_1) -> ...
+    expected_calls = []
+    current_channel = mock_channel
+    for i, interceptor in enumerate(interceptors):
+        expected_calls.append(mock.call(current_channel, interceptor))
+        current_channel = wrapped_channels[i]
+
+    mock_intercept.assert_has_calls(expected_calls)
+
+
+def test_apply_interceptors_execution_order():
+    """Verify runtime execution order (onion model) when invoking an RPC on an intercepted channel.
+
+    In gRPC Python, sequential wrapping via grpc.intercept_channel(channel, i) creates an
+    'onion' layer where the LAST applied interceptor becomes the OUTSIDE layer.
+    Therefore, given [i1, i2]:
+      - i1 wraps the raw channel (innermost layer)
+      - i2 wraps the result of (channel + i1) (outermost layer)
+
+    During an RPC invocation:
+      1. i2 intercepts the call first (request inbound / pre-call)
+      2. i2 calls continuation(), which triggers i1
+      3. i1 calls continuation(), which reaches the channel stub / network
+      4. i1 post-call logic finishes
+      5. i2 post-call logic finishes
+    """
+    execution_order = []
+
+    class OrderInterceptor(grpc.UnaryUnaryClientInterceptor):
+        def __init__(self, name):
+            self.name = name
+
+        def intercept_unary_unary(self, continuation, client_call_details, request):
+            execution_order.append(f"{self.name}_start")
+            response = continuation(client_call_details, request)
+            execution_order.append(f"{self.name}_end")
+            return response
+
+    i1 = OrderInterceptor("i1")
+    i2 = OrderInterceptor("i2")
+
+    mock_channel = mock.Mock(spec=grpc.Channel)
+    mock_callable = mock.Mock(spec=grpc.UnaryUnaryMultiCallable)
+    mock_call = mock.Mock(spec=grpc.Call)
+    expected_response = operations_pb2.Operation(name="test_op")
+    mock_callable.with_call.return_value = (expected_response, mock_call)
+    mock_channel.unary_unary.return_value = mock_callable
+
+    # Apply interceptors in sequence [i1, i2]
+    intercepted_channel = grpc_helpers.apply_interceptors(mock_channel, [i1, i2])
+
+    # Trigger a unary RPC through the intercepted channel
+    stub = operations_pb2.OperationsStub(intercepted_channel)
+    response = stub.GetOperation(operations_pb2.GetOperationRequest(name="test_op"))
+
+    assert response.name == "test_op"
+    # Verify i2 executed as the outer layer surrounding i1
+    assert execution_order == ["i2_start", "i1_start", "i1_end", "i2_end"]
