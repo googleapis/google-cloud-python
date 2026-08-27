@@ -24,7 +24,7 @@ tools:
       version: 23.7.0
       package: black[jupyter]==23.7.0
     - name: gapic-generator
-      version: 1.37.1
+      version: 1.39.0
     - name: isort
       version: 5.11.0
     - name: nox
@@ -1998,6 +1998,19 @@ libraries:
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: speech
+      default_version: v1
+  - name: google-cloud-sql
+    version: 0.0.0
+    apis:
+      - path: google/cloud/sql/v1
+      - path: google/cloud/sql/v1beta4
+    copyright_year: "2026"
+    python:
+      opt_args_by_api:
+        google/cloud/sql/v1:
+          - resource-name-alias=backupdr.googleapis.com/Backup:BackupDRBackup
+        google/cloud/sql/v1beta4:
+          - resource-name-alias=backupdr.googleapis.com/Backup:BackupDRBackup
       default_version: v1
   - name: google-cloud-storage
     version: 3.14.0
