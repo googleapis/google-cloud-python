@@ -943,52 +943,41 @@ def test_apply_interceptors_passthrough(falsy_interceptors):
 
 @pytest.mark.parametrize("count", [1, 2, 3])
 def test_apply_interceptors_wrapping(count):
-    """Verify that interceptors are wrapped sequentially in the order provided.
+    """Verify that interceptors are passed to grpc.intercept_channel in a single call.
 
     When given a sequence of N interceptors [i_0, i_1, ..., i_{N-1}], apply_interceptors
-    must pass the base channel and i_0 to grpc.intercept_channel, then pass the
-    resulting wrapped channel and i_1 to grpc.intercept_channel, and so on.
-    This ensures each subsequent interceptor wraps the preceding channel state.
+    must pass the base channel and all interceptors unpacked (*interceptors) to
+    grpc.intercept_channel. This creates a single intercepted channel wrapper rather than
+    multiple nested wrappers.
     """
     mock_channel = mock.Mock(name="base_channel")
-    # Generate distinct mock interceptors and the expected wrapped channel returns for each step
+    mock_intercepted = mock.Mock(name="intercepted_channel")
     interceptors = [mock.Mock(name=f"interceptor_{i}") for i in range(count)]
-    wrapped_channels = [mock.Mock(name=f"wrapped_channel_{i}") for i in range(count)]
 
     with mock.patch(
-        "grpc.intercept_channel", side_effect=wrapped_channels
+        "grpc.intercept_channel", return_value=mock_intercepted
     ) as mock_intercept:
         result = grpc_helpers.apply_interceptors(mock_channel, interceptors)
 
-    # The final return value must be the outermost wrapped channel from the final loop iteration
-    assert result is wrapped_channels[-1]
-    assert mock_intercept.call_count == count
-
-    # Construct the expected sequential chaining: (base, i_0) -> (wrapped_0, i_1) -> ...
-    expected_calls = []
-    current_channel = mock_channel
-    for i, interceptor in enumerate(interceptors):
-        expected_calls.append(mock.call(current_channel, interceptor))
-        current_channel = wrapped_channels[i]
-
-    mock_intercept.assert_has_calls(expected_calls)
+    assert result is mock_intercepted
+    mock_intercept.assert_called_once_with(mock_channel, *interceptors)
 
 
 def test_apply_interceptors_execution_order():
     """Verify runtime execution order (onion model) when invoking an RPC on an intercepted channel.
 
-    In gRPC Python, sequential wrapping via grpc.intercept_channel(channel, i) creates an
-    'onion' layer where the LAST applied interceptor becomes the OUTSIDE layer.
+    In standard gRPC Python, grpc.intercept_channel(channel, *interceptors) processes
+    the interceptor list such that the first interceptor in the sequence is the outermost layer.
     Therefore, given [i1, i2]:
-      - i1 wraps the raw channel (innermost layer)
-      - i2 wraps the result of (channel + i1) (outermost layer)
+      - i1 is the outermost layer (executes first on outbound request)
+      - i2 is the inner layer (executes second on outbound request)
 
     During an RPC invocation:
-      1. i2 intercepts the call first (request inbound / pre-call)
-      2. i2 calls continuation(), which triggers i1
-      3. i1 calls continuation(), which reaches the channel stub / network
-      4. i1 post-call logic finishes
-      5. i2 post-call logic finishes
+      1. i1 intercepts the call first (request inbound / pre-call)
+      2. i1 calls continuation(), which triggers i2
+      3. i2 calls continuation(), which reaches the channel stub / network
+      4. i2 post-call logic finishes
+      5. i1 post-call logic finishes
     """
     execution_order = []
 
@@ -1020,5 +1009,5 @@ def test_apply_interceptors_execution_order():
     response = stub.GetOperation(operations_pb2.GetOperationRequest(name="test_op"))
 
     assert response.name == "test_op"
-    # Verify i2 executed as the outer layer surrounding i1
-    assert execution_order == ["i2_start", "i1_start", "i1_end", "i2_end"]
+    # Verify i1 executed as the outer layer surrounding i2
+    assert execution_order == ["i1_start", "i2_start", "i2_end", "i1_end"]

@@ -432,8 +432,8 @@ def apply_interceptors(
 ) -> grpc.Channel:
     """Applies a sequence of interceptors to a gRPC channel.
 
-    The interceptors are applied in the order provided, wrapping the channel
-    sequentially.
+    The interceptors are applied in the order provided, such that the first
+    interceptor in the sequence is the outermost layer (executes first).
 
     Args:
         channel (grpc.Channel): The channel to intercept.
@@ -445,8 +445,7 @@ def apply_interceptors(
             interceptors were provided.
     """
     if interceptors:
-        for interceptor in interceptors:
-            channel = grpc.intercept_channel(channel, interceptor)
+        return grpc.intercept_channel(channel, *interceptors)
     return channel
 
 
