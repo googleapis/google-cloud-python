@@ -523,10 +523,16 @@ def core_deps_from_source(session, protobuf_implementation):
     while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
         deps_dir = deps_dir.parent
 
-    local_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source if (deps_dir / dep).exists()]
+    local_paths = [
+        str(deps_dir / dep)
+        for dep in core_dependencies_from_source
+        if (deps_dir / dep).exists()
+    ]
     if local_paths:
         session.install(*local_paths, "--no-deps", "--ignore-installed")
-        print(f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}")
+        print(
+            f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}"
+        )
 
     tests_path = os.path.join("tests", "unit")
     session.run(
