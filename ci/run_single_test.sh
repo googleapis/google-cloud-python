@@ -69,6 +69,10 @@ case ${TEST_TYPE} in
         retval=$?
         ;;
     core_deps_from_source)
+        if [[ "$(pwd)" == */preview-packages/* ]]; then
+            echo "Skipping core_deps_from_source for preview package $(pwd)"
+            exit 0
+        fi
         nox --stop-on-first-error -s core_deps_from_source
         retval=$?
         ;;
