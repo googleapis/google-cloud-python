@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from unittest.mock import MagicMock
+import pytest
 from sqlalchemy.testing import eq_
 from sqlalchemy.testing.plugin.plugin_base import fixtures
 from google.cloud.sqlalchemy_spanner.sqlalchemy_spanner import SpannerDialect
@@ -154,3 +155,16 @@ class TestSpannerDialect(fixtures.TestBase):
         eq_(_escape_sql_string_literal("a\\b"), "a\\\\b")
         eq_(_escape_sql_string_literal("a\nb"), "a\\nb")
         eq_(_escape_sql_string_literal("plain"), "plain")
+
+    def test_escape_sql_string_literal_rejects_non_string(self):
+        """A non-string name must fail fast rather than be silently coerced."""
+        from google.cloud.sqlalchemy_spanner.sqlalchemy_spanner import (
+            _escape_sql_string_literal,
+        )
+        from google.cloud.spanner_dbapi.exceptions import ProgrammingError
+
+        with pytest.raises(ProgrammingError):
+            _escape_sql_string_literal(None)
+
+        with pytest.raises(ProgrammingError):
+            _escape_sql_string_literal(123)

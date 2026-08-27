@@ -86,6 +86,11 @@ def _escape_sql_string_literal(value):
     otherwise close the literal so the remainder is parsed as SQL. Escaping the
     backslash, both quote characters and newlines keeps the name contained.
     """
+    if not isinstance(value, str):
+        raise spanner_dbapi.exceptions.ProgrammingError(
+            "Unsupported type for SQL string literal escaping: "
+            "{!r}".format(type(value).__name__)
+        )
     return (
         value.replace("\\", "\\\\")
         .replace("'", "\\'")
@@ -1549,7 +1554,7 @@ class SpannerDialect(DefaultDialect):
                 The schema is ``None`` if no schema is provided.
         """
         table_filter_query = self._get_table_filter_query(filter_names, "tc", True)
-        schema_filter_query = " tc.table_schema = '{schema}' AND".format(
+        schema_filter_query = " tc.table_schema = '{schema}' AND ".format(
             schema=_escape_sql_string_literal(schema or "")
         )
         table_type_query = self._get_table_type_query(kind, True)
