@@ -1513,6 +1513,565 @@ class ChildPublisherServiceClient(metaclass=ChildPublisherServiceClientMeta):
         # Done; return the response.
         return response
 
+    def batch_resend_child_publisher_invitation_emails(
+        self,
+        request: Optional[
+            Union[
+                child_publisher_service.BatchResendChildPublisherInvitationEmailsRequest,
+                dict,
+            ]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        names: Optional[MutableSequence[str]] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> child_publisher_service.BatchResendChildPublisherInvitationEmailsResponse:
+        r"""Batch resends invitation emails to
+        [ChildPublisher][google.ads.admanager.v1.ChildPublisher]s.
+
+        Only expired and pending
+        [ChildPublisher][google.ads.admanager.v1.ChildPublisher]s can be
+        sent invitation emails. Rejected, withdrawn, and accepted
+        [ChildPublisher][google.ads.admanager.v1.ChildPublisher]s will
+        be ignored.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ads import admanager_v1
+
+            def sample_batch_resend_child_publisher_invitation_emails():
+                # Create a client
+                client = admanager_v1.ChildPublisherServiceClient()
+
+                # Initialize request argument(s)
+                request = admanager_v1.BatchResendChildPublisherInvitationEmailsRequest(
+                    parent="parent_value",
+                    names=['names_value1', 'names_value2'],
+                )
+
+                # Make the request
+                response = client.batch_resend_child_publisher_invitation_emails(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.ads.admanager_v1.types.BatchResendChildPublisherInvitationEmailsRequest, dict]):
+                The request object. Request message for
+                [BatchResendChildPublisherInvitationEmails][] method.
+            parent (str):
+                Required. Format: ``networks/{network_code}``
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            names (MutableSequence[str]):
+                Required. Resource names of the
+                [ChildPublisher][google.ads.admanager.v1.ChildPublisher]s
+                that should be resent invitation emails. Format:
+                ``networks/{network_code}/childPublisher/{child_publisher_id}``
+
+                This corresponds to the ``names`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.ads.admanager_v1.types.BatchResendChildPublisherInvitationEmailsResponse:
+                Response message for
+                [BatchResendChildPublisherInvitationEmails][] method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, names]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            child_publisher_service.BatchResendChildPublisherInvitationEmailsRequest,
+        ):
+            request = child_publisher_service.BatchResendChildPublisherInvitationEmailsRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if names is not None:
+                request.names = names
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.batch_resend_child_publisher_invitation_emails
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def batch_renegotiate_child_publisher_agreements(
+        self,
+        request: Optional[
+            Union[
+                child_publisher_service.BatchRenegotiateChildPublisherAgreementsRequest,
+                dict,
+            ]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        requests: Optional[
+            MutableSequence[
+                child_publisher_service.RenegotiateChildPublisherAgreementRequest
+            ]
+        ] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> child_publisher_service.BatchRenegotiateChildPublisherAgreementsResponse:
+        r"""Batch renegotiates
+        [ChildPublisher][google.ads.admanager.v1.ChildPublisher]
+        agreements (i.e., invite with updated terms).
+
+        Only the agreements of rejected or withdrawn
+        [ChildPublisher][google.ads.admanager.v1.ChildPublisher]s can be
+        renegotiated. Expired, pending, and accepted
+        [ChildPublisher][google.ads.admanager.v1.ChildPublisher]s will
+        be ignored.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ads import admanager_v1
+
+            def sample_batch_renegotiate_child_publisher_agreements():
+                # Create a client
+                client = admanager_v1.ChildPublisherServiceClient()
+
+                # Initialize request argument(s)
+                requests = admanager_v1.RenegotiateChildPublisherAgreementRequest()
+                requests.name = "name_value"
+
+                request = admanager_v1.BatchRenegotiateChildPublisherAgreementsRequest(
+                    parent="parent_value",
+                    requests=requests,
+                )
+
+                # Make the request
+                response = client.batch_renegotiate_child_publisher_agreements(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.ads.admanager_v1.types.BatchRenegotiateChildPublisherAgreementsRequest, dict]):
+                The request object. Request message for
+                [BatchRenegotiateChildPublisherAgreements][] method.
+            parent (str):
+                Required. Format: ``networks/{network_code}``
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            requests (MutableSequence[google.ads.admanager_v1.types.RenegotiateChildPublisherAgreementRequest]):
+                Required. The requests to renegotiate
+                [ChildPublisher][google.ads.admanager.v1.ChildPublisher]
+                agreements.
+
+                This corresponds to the ``requests`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.ads.admanager_v1.types.BatchRenegotiateChildPublisherAgreementsResponse:
+                Response message for
+                [BatchRenegotiateChildPublisherAgreements][] method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, requests]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request,
+            child_publisher_service.BatchRenegotiateChildPublisherAgreementsRequest,
+        ):
+            request = (
+                child_publisher_service.BatchRenegotiateChildPublisherAgreementsRequest(
+                    request
+                )
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if requests is not None:
+                request.requests = requests
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.batch_renegotiate_child_publisher_agreements
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def batch_reject_child_publishers(
+        self,
+        request: Optional[
+            Union[child_publisher_service.BatchRejectChildPublishersRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        names: Optional[MutableSequence[str]] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> child_publisher_service.BatchRejectChildPublishersResponse:
+        r"""Batch rejects
+        [ChildPublisher][google.ads.admanager.v1.ChildPublisher]s.
+
+        Only pending or active
+        [ChildPublisher][google.ads.admanager.v1.ChildPublisher]s can be
+        rejected. Expired, rejected, and withdrawn
+        [ChildPublisher][google.ads.admanager.v1.ChildPublisher]s will
+        be ignored.
+
+        This method is only intended to be called in response to a child
+        user rejecting an invitation and exists to support the rejection
+        of [ChildPublisher][google.ads.admanager.v1.ChildPublisher]s
+        that are not yet associated with an Ad Manager network.
+
+        To sever the relationship from the parent publisher's side, use
+        [BatchWithdrawChildPublisher][].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ads import admanager_v1
+
+            def sample_batch_reject_child_publishers():
+                # Create a client
+                client = admanager_v1.ChildPublisherServiceClient()
+
+                # Initialize request argument(s)
+                request = admanager_v1.BatchRejectChildPublishersRequest(
+                    parent="parent_value",
+                    names=['names_value1', 'names_value2'],
+                )
+
+                # Make the request
+                response = client.batch_reject_child_publishers(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.ads.admanager_v1.types.BatchRejectChildPublishersRequest, dict]):
+                The request object. Request message for [BatchRejectChildPublishers][]
+                method.
+            parent (str):
+                Required. Format: ``networks/{network_code}``
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            names (MutableSequence[str]):
+                Required. Resource names of the
+                [ChildPublisher][google.ads.admanager.v1.ChildPublisher]s
+                to reject. Format:
+                ``networks/{network_code}/childPublisher/{child_publisher_id}``
+
+                This corresponds to the ``names`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.ads.admanager_v1.types.BatchRejectChildPublishersResponse:
+                Response message for [BatchRejectChildPublishers][]
+                method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, names]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, child_publisher_service.BatchRejectChildPublishersRequest
+        ):
+            request = child_publisher_service.BatchRejectChildPublishersRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if names is not None:
+                request.names = names
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.batch_reject_child_publishers
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def batch_withdraw_child_publishers(
+        self,
+        request: Optional[
+            Union[child_publisher_service.BatchWithdrawChildPublishersRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        names: Optional[MutableSequence[str]] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> child_publisher_service.BatchWithdrawChildPublishersResponse:
+        r"""Batch withdraws
+        [ChildPublisher][google.ads.admanager.v1.ChildPublisher]s.
+
+        Only expired, pending, and accepted
+        [ChildPublisher][google.ads.admanager.v1.ChildPublisher]s can be
+        withdrawn. Rejected or withdrawn
+        [ChildPublisher][google.ads.admanager.v1.ChildPublisher]s will
+        be ignored.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ads import admanager_v1
+
+            def sample_batch_withdraw_child_publishers():
+                # Create a client
+                client = admanager_v1.ChildPublisherServiceClient()
+
+                # Initialize request argument(s)
+                request = admanager_v1.BatchWithdrawChildPublishersRequest(
+                    parent="parent_value",
+                    names=['names_value1', 'names_value2'],
+                )
+
+                # Make the request
+                response = client.batch_withdraw_child_publishers(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.ads.admanager_v1.types.BatchWithdrawChildPublishersRequest, dict]):
+                The request object. Request message for [BatchWithdrawChildPublishers][]
+                method.
+            parent (str):
+                Required. Format: ``networks/{network_code}``
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            names (MutableSequence[str]):
+                Required. Resource names of the
+                [ChildPublisher][google.ads.admanager.v1.ChildPublisher]s
+                to withdraw. Format:
+                ``networks/{network_code}/childPublisher/{child_publisher_id}``
+
+                This corresponds to the ``names`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.ads.admanager_v1.types.BatchWithdrawChildPublishersResponse:
+                Response message for [BatchWithdrawChildPublishers][]
+                method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, names]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, child_publisher_service.BatchWithdrawChildPublishersRequest
+        ):
+            request = child_publisher_service.BatchWithdrawChildPublishersRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if names is not None:
+                request.names = names
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.batch_withdraw_child_publishers
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def __enter__(self) -> "ChildPublisherServiceClient":
         return self
 

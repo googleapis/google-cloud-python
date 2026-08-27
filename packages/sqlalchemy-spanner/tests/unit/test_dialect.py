@@ -13,10 +13,12 @@
 # limitations under the License.
 
 from unittest.mock import MagicMock
+
 from sqlalchemy import Column, Integer, MetaData, Table
 from sqlalchemy.schema import CreateTable
 from sqlalchemy.testing import eq_
 from sqlalchemy.testing.plugin.plugin_base import fixtures
+
 from google.cloud.sqlalchemy_spanner.sqlalchemy_spanner import SpannerDialect
 
 

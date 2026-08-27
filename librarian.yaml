@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 language: python
-version: v0.38.0
+version: v0.39.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: 8856eed71a9cb2b9829d2617ee57fe2d8871a691
-    sha256: 54104af35306b605a97f7d1b98b9b96f4a507cd18322b44d81f62eca17969b3a
+    commit: 50aad1b835b0b1fd3acec6af91d9c9735787fe11
+    sha256: e58f3198fb96392a89b2850cca67882456f8d231ea4849f16cfb5551a012789d
 tools:
   pip:
     - name: black
@@ -2356,6 +2356,7 @@ libraries:
   - name: google-maps-mapmanagement
     version: 0.1.0
     apis:
+      - path: google/maps/mapmanagement/v2
       - path: google/maps/mapmanagement/v2beta
     copyright_year: "2026"
     python:
