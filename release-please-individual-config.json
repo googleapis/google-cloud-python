@@ -2,6 +2,18 @@
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": true,
   "packages": {
+    "packages/google-cloud-apptopology": {
+      "component": "google-cloud-apptopology",
+      "extra-files": [
+        "google/cloud/apptopology/gapic_version.py",
+        "google/cloud/apptopology_v1/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.apptopology.v1.json",
+          "type": "json"
+        }
+      ]
+    },
     "packages/google-cloud-ftp": {
       "component": "google-cloud-ftp",
       "extra-files": [

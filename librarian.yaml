@@ -420,6 +420,13 @@ libraries:
       - path: google/cloud/appoptimize/v1beta
     python:
       default_version: v1beta
+  - name: google-cloud-apptopology
+    version: 0.0.0
+    apis:
+      - path: google/cloud/apptopology/v1
+    copyright_year: "2026"
+    python:
+      default_version: v1
   - name: google-cloud-artifact-registry
     version: 1.22.0
     apis:
