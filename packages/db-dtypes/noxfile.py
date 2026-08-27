@@ -520,9 +520,7 @@ def core_deps_from_source(session, protobuf_implementation):
     ]
 
     deps_dir = next(
-        p / "packages"
-        for p in CURRENT_DIRECTORY.parents
-        if (p / "packages").is_dir()
+        p / "packages" for p in CURRENT_DIRECTORY.parents if (p / "packages").is_dir()
     )
 
     local_paths = [

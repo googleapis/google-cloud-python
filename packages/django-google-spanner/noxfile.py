@@ -380,9 +380,7 @@ def core_deps_from_source(session, protobuf_implementation):
     ]
 
     deps_dir = next(
-        p / "packages"
-        for p in CURRENT_DIRECTORY.parents
-        if (p / "packages").is_dir()
+        p / "packages" for p in CURRENT_DIRECTORY.parents if (p / "packages").is_dir()
     )
 
     # Batch the pip installation to avoid sequential overhead
@@ -437,9 +435,7 @@ def prerelease_deps(session, protobuf_implementation):
     ]
 
     deps_dir = next(
-        p / "packages"
-        for p in CURRENT_DIRECTORY.parents
-        if (p / "packages").is_dir()
+        p / "packages" for p in CURRENT_DIRECTORY.parents if (p / "packages").is_dir()
     )
 
     parsed_deps = {
