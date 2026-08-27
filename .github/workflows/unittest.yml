@@ -196,6 +196,7 @@ jobs:
         TEST_TYPE: core_deps_from_source
         PY_VERSION: ${{ matrix.python }}
         PACKAGE_LIST: ${{ matrix.package_shard.packages }}
+        NOX_DEFAULT_VENV_BACKEND: "virtualenv"
       run: |
         ci/run_conditional_tests.sh
 
