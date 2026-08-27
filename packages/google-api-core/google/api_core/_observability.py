@@ -16,7 +16,7 @@
 
 """OpenTelemetry helpers for resolving and instantiating interceptors."""
 
-from typing import Any, Optional
+from typing import Any, Callable, Optional, Union
 
 from google.api_core import _feature_gating_helpers
 from google.api_core.client_options import ClientOptions
@@ -54,26 +54,19 @@ def is_otel_capabilities_enabled(
     return False
 
 
-def apply_otel_capabilities_to_channel(
-    channel: Any,
-    client_options: Optional[ClientOptions | dict[str, Any]] = None,
+def _get_otel_interceptor(
+    client_options: Optional[Union[ClientOptions, dict[str, Any]]] = None,
+    is_async: bool = False,
 ) -> Any:
-    """Applies OTel capabilities (like tracing) to the channel.
-
-    Precondition: This function assumes `is_otel_capabilities_enabled` has already
-    been called and returned `True`, i.e. in the Client. At this time
-    this function is not intended to be standalone.
+    """Instantiates a sync or async OpenTelemetry gRPC client interceptor.
 
     Args:
-        channel: The raw gRPC channel to wrap.
         client_options: The client options object or dictionary.
+        is_async: If True, returns an async interceptor (`aio_client_interceptor`),
+            otherwise returns a sync interceptor (`client_interceptor`).
 
     Returns:
-        Any: The intercepted channel.
-
-    Raises:
-        ImportError: If OpenTelemetry packages are not installed and this function
-            is called directly (bypassing the precondition).
+        Any: The instantiated OpenTelemetry client interceptor.
     """
     import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
 
@@ -83,7 +76,65 @@ def apply_otel_capabilities_to_channel(
     elif client_options is not None:
         tracer_provider = getattr(client_options, _TRACER_PROVIDER, None)
 
-    interceptor = otel_grpc.client_interceptor(tracer_provider=tracer_provider)
+    if is_async:
+        return otel_grpc.aio_client_interceptor(tracer_provider=tracer_provider)
+    return otel_grpc.client_interceptor(tracer_provider=tracer_provider)
 
-    # We use OTel's own compatible applier to avoid standard gRPC TypeError.
-    return otel_grpc.intercept_channel(channel, interceptor)
+
+def create_channel_with_otel(
+    channel_factory: Callable[..., Any],
+    client_options: Optional[Union[ClientOptions, dict[str, Any]]] = None,
+    **channel_kwargs: Any,
+) -> Any:
+    """Creates a gRPC channel using the provided factory and applies OTel capabilities if enabled.
+
+    If OpenTelemetry capabilities are enabled (via environment variable or client_options),
+    the created raw channel is intercepted with an OpenTelemetry client interceptor.
+    Otherwise, the raw channel is returned unmodified.
+
+    Args:
+        channel_factory: A callable (such as a Transport's `create_channel` classmethod)
+            that instantiates and returns a raw gRPC channel.
+        client_options: The client options object or dictionary used for feature gating
+            and extracting the tracer provider.
+        **channel_kwargs: Keyword arguments forwarded directly to `channel_factory`.
+
+    Returns:
+        Any: The intercepted or raw gRPC channel.
+    """
+    raw_channel = channel_factory(**channel_kwargs)
+    if is_otel_capabilities_enabled(client_options):
+        import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
+
+        interceptor = _get_otel_interceptor(client_options, is_async=False)
+        return otel_grpc.intercept_channel(raw_channel, interceptor)
+    return raw_channel
+
+
+def create_async_channel_with_otel(
+    channel_factory: Callable[..., Any],
+    client_options: Optional[Union[ClientOptions, dict[str, Any]]] = None,
+    **channel_kwargs: Any,
+) -> Any:
+    """Creates an async gRPC channel using the provided factory with OTel interceptors injected if enabled.
+
+    Because `grpc.aio` channels are immutable after creation, any OpenTelemetry interceptor
+    must be passed into `channel_factory` during instantiation via the `interceptors` keyword argument.
+
+    Args:
+        channel_factory: A callable (such as an Async Transport's `create_channel` classmethod)
+            that instantiates and returns an async gRPC channel.
+        client_options: The client options object or dictionary used for feature gating
+            and extracting the tracer provider.
+        **channel_kwargs: Keyword arguments forwarded directly to `channel_factory`.
+
+    Returns:
+        Any: The instantiated async gRPC channel.
+    """
+    if is_otel_capabilities_enabled(client_options):
+        async_interceptor = _get_otel_interceptor(client_options, is_async=True)
+        interceptors = list(channel_kwargs.pop("interceptors", []) or [])
+        interceptors.append(async_interceptor)
+        channel_kwargs["interceptors"] = interceptors
+
+    return channel_factory(**channel_kwargs)
