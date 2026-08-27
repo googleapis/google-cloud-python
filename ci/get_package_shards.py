@@ -70,8 +70,10 @@ def get_package_weights():
     return weights
 
 
-def get_packages():
+def get_packages(handwritten_only=False):
     """Lists all package directory paths in the repository grouped by package name.
+
+    If handwritten_only is True, includes only non-GAPIC_AUTO libraries.
 
     Returns:
         dict: A dictionary mapping package_name -> list of relative directory paths.
@@ -83,32 +85,20 @@ def get_packages():
             continue
         for d in os.listdir(subdir):
             full_path = os.path.join(subdir, d) + '/'
-            if os.path.isdir(full_path):
-                packages_map[d].append(full_path)
+            if not os.path.isdir(full_path):
+                continue
+            if handwritten_only:
+                meta_file = os.path.join(full_path, ".repo-metadata.json")
+                if os.path.exists(meta_file):
+                    try:
+                        with open(meta_file) as f:
+                            data = json.load(f)
+                            if data.get("library_type") == "GAPIC_AUTO":
+                                continue
+                    except Exception:
+                        pass
+            packages_map[d].append(full_path)
     return packages_map
-
-
-def get_handwritten_packages():
-    """Returns a dictionary of packages that are handwritten / non-GAPIC_AUTO.
-
-    Parses each package's .repo-metadata.json to identify non-GAPIC_AUTO libraries.
-    """
-    all_packages = get_packages()
-    handwritten = collections.defaultdict(list)
-    for pkg_name, paths in all_packages.items():
-        for path in paths:
-            metadata_file = os.path.join(path, ".repo-metadata.json")
-            if os.path.exists(metadata_file):
-                try:
-                    with open(metadata_file) as f:
-                        data = json.load(f)
-                        if data.get("library_type") != "GAPIC_AUTO" or pkg_name.startswith("google-cloud-compute"):
-                            handwritten[pkg_name] = paths
-                            break
-                except Exception:
-                    handwritten[pkg_name] = paths
-                    break
-    return dict(handwritten)
 
 
 def get_packages_to_test():
@@ -169,7 +159,7 @@ def get_packages_to_test():
     }
     if any(pkg in core_packages for pkg in to_test_paths):
         # When a core package changes, test all handwritten packages (non-GAPIC_AUTO)
-        return get_handwritten_packages()
+        return get_packages(handwritten_only=True)
 
     return dict(to_test_paths)
 
