@@ -40,26 +40,33 @@ jobs:
       # Each weight is roughly 1 minute of expected execution time
       # Default for unset packages is 1
       PACKAGE_WEIGHTS: |
-        google-ai-generativelanguage: 4
-        google-auth: 5
-        google-cloud-bigquery: 6
+        django-google-spanner: 2
+        gapic-generator: 3
+        google-ai-generativelanguage: 3
+        google-api-core: 2
+        google-auth: 2
+        google-cloud-bigquery: 4
+        google-cloud-bigquery-storage: 2
         google-cloud-bigtable: 4
         google-cloud-compute: 12
         google-cloud-compute-v1beta: 12
-        google-cloud-dialogflow: 6
-        google-cloud-dialogflow-cx: 6
-        google-cloud-discoveryengine: 8
-        google-cloud-firestore: 6
-        google-cloud-logging: 4
-        google-cloud-monitoring: 4
-        google-cloud-pubsub: 4
-        google-cloud-retail: 5
-        google-cloud-spanner: 6
-        google-cloud-storage: 6
-        google-shopping-merchant-accounts: 4
-        pandas-gbq: 3
-        sqlalchemy-bigquery: 3
-        sqlalchemy-spanner: 3
+        google-cloud-datastore: 3
+        google-cloud-dialogflow: 4
+        google-cloud-dialogflow-cx: 4
+        google-cloud-discoveryengine: 4
+        google-cloud-firestore: 3
+        google-cloud-logging: 3
+        google-cloud-monitoring: 3
+        google-cloud-ndb: 2
+        google-cloud-pubsub: 2
+        google-cloud-retail: 3
+        google-cloud-spanner: 4
+        google-cloud-storage: 4
+        google-shopping-merchant-accounts: 3
+        pandas-gbq: 2
+        proto-plus: 1
+        sqlalchemy-bigquery: 2
+        sqlalchemy-spanner: 2
     steps:
     - name: Checkout
       uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
