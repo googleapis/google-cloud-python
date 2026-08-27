@@ -430,10 +430,10 @@ def apply_interceptors(
     channel: grpc.Channel,
     interceptors: Optional[Sequence[ClientInterceptor]] = None,
 ) -> grpc.Channel:
-    """Applies a sequence of interceptors to a gRPC channel.
+    """Applies client interceptors to a gRPC channel.
 
-    The interceptors are applied in the order provided, such that the first
-    interceptor in the sequence is the outermost layer (executes first).
+    The first interceptor in the sequence is the outermost layer: it
+    executes first on outbound requests and last on inbound responses.
 
     Args:
         channel (grpc.Channel): The channel to intercept.
