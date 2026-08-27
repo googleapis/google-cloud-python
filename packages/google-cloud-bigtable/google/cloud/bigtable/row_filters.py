@@ -17,32 +17,38 @@
 import struct
 
 from google.cloud.bigtable.data.row_filters import (  # noqa: F401
-    RowFilter,
-    SinkFilter,
-    _BoolFilter,
-    PassAllFilter,
-    BlockAllFilter,
-    _RegexFilter,
-    RowKeyRegexFilter,
-    RowSampleFilter,
-    FamilyNameRegexFilter,
-    ColumnQualifierRegexFilter,
-    TimestampRange,
-    TimestampRangeFilter as BaseTimestampRangeFilter,
-    ColumnRangeFilter as BaseColumnRangeFilter,
-    ValueRegexFilter,
-    ValueRangeFilter,
-    ValueBitmaskFilter,
-    _CellCountFilter,
-    CellsRowOffsetFilter,
-    CellsRowLimitFilter,
-    CellsColumnLimitFilter,
-    StripValueTransformerFilter,
     ApplyLabelFilter,
-    _FilterCombination,
+    BlockAllFilter,
+    CellsColumnLimitFilter,
+    CellsRowLimitFilter,
+    CellsRowOffsetFilter,
+    ColumnQualifierRegexFilter,
+    FamilyNameRegexFilter,
+    PassAllFilter,
+    RowFilter,
     RowFilterChain,
     RowFilterUnion,
+    RowKeyRegexFilter,
+    RowSampleFilter,
+    SinkFilter,
+    StripValueTransformerFilter,
+    TimestampRange,
+    ValueBitmaskFilter,
+    ValueRangeFilter,
+    ValueRegexFilter,
+    _BoolFilter,
+    _CellCountFilter,
+    _FilterCombination,
+    _RegexFilter,
+)
+from google.cloud.bigtable.data.row_filters import (
+    ColumnRangeFilter as BaseColumnRangeFilter,
+)
+from google.cloud.bigtable.data.row_filters import (
     ConditionalRowFilter as BaseConditionalRowFilter,
+)
+from google.cloud.bigtable.data.row_filters import (
+    TimestampRangeFilter as BaseTimestampRangeFilter,
 )
 
 _PACK_I64 = struct.Struct(">q").pack
