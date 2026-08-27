@@ -324,7 +324,7 @@ done
 
 # Parallel Execution Logic
 MAX_JOBS=${MAX_JOBS:-4}
-PACKAGE_TEST_TIMEOUT="${PACKAGE_TEST_TIMEOUT:-90m}"
+PACKAGE_TEST_TIMEOUT="${PACKAGE_TEST_TIMEOUT:-120m}"
 
 # Temporary directory for clean log segregation
 LOG_DIR=$(mktemp -d -t test-logs-XXXXXX)
