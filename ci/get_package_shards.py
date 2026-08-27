@@ -22,12 +22,12 @@ contiguous grouping. All directory variants of a package (e.g. packages/foo and
 preview-packages/foo) are kept aligned in the exact same shard.
 """
 
-import os
-import subprocess
+import collections
 import json
 import math
+import os
+import subprocess
 import sys
-import collections
 
 
 def get_package_directories():
@@ -88,6 +88,29 @@ def get_packages():
     return packages_map
 
 
+def get_handwritten_packages():
+    """Returns a dictionary of packages that are handwritten / non-GAPIC_AUTO.
+
+    Parses each package's .repo-metadata.json to identify non-GAPIC_AUTO libraries.
+    """
+    all_packages = get_packages()
+    handwritten = collections.defaultdict(list)
+    for pkg_name, paths in all_packages.items():
+        for path in paths:
+            metadata_file = os.path.join(path, ".repo-metadata.json")
+            if os.path.exists(metadata_file):
+                try:
+                    with open(metadata_file) as f:
+                        data = json.load(f)
+                        if data.get("library_type") != "GAPIC_AUTO" or pkg_name.startswith("google-cloud-compute"):
+                            handwritten[pkg_name] = paths
+                            break
+                except Exception:
+                    handwritten[pkg_name] = paths
+                    break
+    return dict(handwritten)
+
+
 def get_packages_to_test():
     """Determines the dictionary of package names to directory paths that need to be tested.
 
@@ -132,6 +155,22 @@ def get_packages_to_test():
                 if full_path not in to_test_paths[pkg_name]:
                     to_test_paths[pkg_name].append(full_path)
 
+    # Core dependency packages whose changes require testing across downstream handwritten packages
+    core_packages = {
+        "google-api-core",
+        "google-auth",
+        "google-auth-httplib2",
+        "google-auth-oauthlib",
+        "google-cloud-core",
+        "googleapis-common-protos",
+        "grpc-google-iam-v1",
+        "proto-plus",
+        "google-crc32c",
+    }
+    if any(pkg in core_packages for pkg in to_test_paths):
+        # When a core package changes, test all handwritten packages (non-GAPIC_AUTO)
+        return get_handwritten_packages()
+
     return dict(to_test_paths)
 
 
@@ -173,7 +212,7 @@ def group_packages(packages_map):
 
     # Pack packages alphabetically by package name.
     for name, paths, weight in pkg_items:
-        # If adding this package would exceed target weight AND we haven't reached the 
+        # If adding this package would exceed target weight AND we haven't reached the
         # shard limit, start a new shard. Otherwise, keep "stuffing" the current one.
         if current_shard_items and (current_shard_weight + weight > target_weight) and len(shards_list) < max_shards - 1:
             shards_list.append(current_shard_items)
