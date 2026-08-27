@@ -29,6 +29,25 @@ import os
 import subprocess
 import sys
 
+# CI infrastructure and workflow paths that affect test execution
+CI_INFRASTRUCTURE_PREFIXES = (
+    ".github/",
+    "ci/",
+)
+
+# Core dependency packages whose changes affect all downstream handwritten packages
+CORE_PACKAGES = {
+    "google-api-core",
+    "google-auth",
+    "google-auth-httplib2",
+    "google-auth-oauthlib",
+    "google-cloud-core",
+    "googleapis-common-protos",
+    "grpc-google-iam-v1",
+    "proto-plus",
+    "google-crc32c",
+}
+
 
 def get_package_directories():
     """Parses package directory roots from the PACKAGE_DIRS environment variable.
@@ -138,11 +157,6 @@ def get_packages_to_test():
     to_test_paths = collections.defaultdict(list)
     has_ci_change = False
 
-    CI_INFRASTRUCTURE_PREFIXES = (
-        ".github/",
-        "ci/",
-    )
-
     for f in changed_files:
         if f.startswith(CI_INFRASTRUCTURE_PREFIXES):
             has_ci_change = True
@@ -154,19 +168,7 @@ def get_packages_to_test():
                 if full_path not in to_test_paths[pkg_name]:
                     to_test_paths[pkg_name].append(full_path)
 
-    # Core dependency packages whose changes require testing across downstream handwritten packages
-    core_packages = {
-        "google-api-core",
-        "google-auth",
-        "google-auth-httplib2",
-        "google-auth-oauthlib",
-        "google-cloud-core",
-        "googleapis-common-protos",
-        "grpc-google-iam-v1",
-        "proto-plus",
-        "google-crc32c",
-    }
-    has_core_change = any(pkg in core_packages for pkg in to_test_paths)
+    has_core_change = any(pkg in CORE_PACKAGES for pkg in to_test_paths)
 
     # If CI infrastructure or a core dependency was touched, merge all handwritten packages
     if has_ci_change or has_core_change:
