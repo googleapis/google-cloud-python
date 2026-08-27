@@ -1798,13 +1798,19 @@ class TestClient(unittest.TestCase):
         http.request.assert_called_once_with(
             url=mock.ANY,
             method="GET",
-            headers={
-                "x-goog-api-client": expected_user_agent,
-                "Accept-Encoding": "gzip",
-                "User-Agent": expected_user_agent,
-            },
+            headers=mock.ANY,
             data=mock.ANY,
             timeout=DEFAULT_TIMEOUT,
+        )
+        _, kwargs = http.request.call_args
+        actual_headers = {k.lower(): v for k, v in kwargs["headers"].items()}
+        self.assertEqual(
+            actual_headers,
+            {
+                "x-goog-api-client": expected_user_agent,
+                "accept-encoding": "gzip",
+                "user-agent": expected_user_agent,
+            },
         )
         self.assertIn("my-application/1.2.3", expected_user_agent)
 
