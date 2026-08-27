@@ -327,9 +327,6 @@ from .types.cloud_sql_users import (
     UsersListResponse,
 )
 
-api_core.check_python_version("google.cloud.sql_v1beta4")
-api_core.check_dependency_versions("google.cloud.sql_v1beta4")
-
 __all__ = (
     "SqlBackupRunsServiceAsyncClient",
     "SqlBackupsServiceAsyncClient",
@@ -581,3 +578,6 @@ __all__ = (
     "UsersListResponse",
     "Value",
 )
+
+api_core.check_python_version("google.cloud.sql_v1beta4")
+api_core.check_dependency_versions("google.cloud.sql_v1beta4")

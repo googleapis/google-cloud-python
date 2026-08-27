@@ -50,6 +50,7 @@ from google.cloud.sql_v1beta4._compat import (
     get_api_endpoint,
     get_default_mtls_endpoint,
     get_universe_domain,
+    read_environment_variables,
     should_use_client_cert,
 )
 
@@ -318,29 +319,6 @@ class SqlBackupRunsServiceClient(metaclass=SqlBackupRunsServiceClientMeta):
         return api_endpoint, client_cert_source
 
     @staticmethod
-    def _read_environment_variables():
-        """Returns the environment variables used by the client.
-
-        Returns:
-            Tuple[bool, str, str]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE,
-            GOOGLE_API_USE_MTLS_ENDPOINT, and GOOGLE_CLOUD_UNIVERSE_DOMAIN environment variables.
-
-        Raises:
-            ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
-                any of ["true", "false"].
-            google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
-                is not any of ["auto", "never", "always"].
-        """
-        use_client_cert = should_use_client_cert()
-        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
-        universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
-        if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
-        return use_client_cert, use_mtls_endpoint, universe_domain_env
-
-    @staticmethod
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
         """Return the client cert source to be used by the client.
 
@@ -492,13 +470,15 @@ class SqlBackupRunsServiceClient(metaclass=SqlBackupRunsServiceClientMeta):
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
         self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
-            SqlBackupRunsServiceClient._read_environment_variables()
+            read_environment_variables()
         )
         self._client_cert_source = SqlBackupRunsServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
         self._universe_domain = get_universe_domain(
-            universe_domain_opt, self._universe_domain_env
+            universe_domain_opt,
+            self._universe_domain_env,
+            default_universe=SqlBackupRunsServiceClient._DEFAULT_UNIVERSE,
         )
         self._api_endpoint: str = ""  # updated below, depending on `transport`
 
