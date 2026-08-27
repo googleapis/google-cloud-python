@@ -192,14 +192,9 @@ jobs:
         python-version: ${{ matrix.python }}
         cache: 'pip'
         allow-prereleases: true
-    - name: Setup uv
-      uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86 # v5
-      with:
-        enable-cache: true
-        cache-dependency-glob: 'packages/**/testing/constraints*.txt'
-    - name: Install nox and nox-uv
+    - name: Install nox
       run: |
-        uv pip install --system nox nox-uv
+        pip install nox
     - name: Run core_deps_from_source for ${{ matrix.package_shard.description }}
       env:
         BUILD_TYPE: presubmit
