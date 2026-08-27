@@ -476,6 +476,15 @@ def test_secret_manager_service_client_client_options(
 
 
 def test_secret_manager_service_client_otel_channel_injection_enabled():
+    """Proves that when OpenTelemetry tracing is enabled:
+
+    1. SecretManagerServiceClient detects the feature flag via
+       _observability.is_otel_capabilities_enabled.
+    2. The client eagerly invokes _observability.create_channel_with_otel with
+       SecretManagerServiceGrpcTransport.create_channel and client configuration.
+    3. The eagerly created and wrapped OTel channel is injected into the transport's
+       constructor kwargs under the 'channel' key.
+    """
     mock_wrapped_channel = mock.Mock()
 
     with (
@@ -508,6 +517,13 @@ def test_secret_manager_service_client_otel_channel_injection_enabled():
 
 
 def test_secret_manager_service_client_otel_channel_injection_disabled():
+    """Proves that when OpenTelemetry tracing is disabled:
+
+    1. SecretManagerServiceClient checks the feature flag and finds it disabled.
+    2. Eager channel creation via _observability.create_channel_with_otel is skipped.
+    3. No 'channel' argument is passed to the transport constructor, preserving lazy
+       channel initialization in the transport.
+    """
     with (
         mock.patch(
             "google.cloud.secretmanager_v1.services.secret_manager_service.client._observability.is_otel_capabilities_enabled",
@@ -529,6 +545,10 @@ def test_secret_manager_service_client_otel_channel_injection_disabled():
 
 
 def test_secret_manager_service_grpc_transport_interceptors():
+    """Proves that SecretManagerServiceGrpcTransport accepts custom client interceptors
+    and invokes grpc_helpers.apply_interceptors to inject them into the underlying
+    gRPC channel pipeline.
+    """
     mock_interceptor = mock.Mock()
     mock_channel = mock.Mock()
 
