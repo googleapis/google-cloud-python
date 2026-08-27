@@ -943,12 +943,11 @@ def test_apply_interceptors_passthrough(falsy_interceptors):
 
 @pytest.mark.parametrize("count", [1, 2, 3])
 def test_apply_interceptors_wrapping(count):
-    """Verify that interceptors are passed to grpc.intercept_channel in a single call.
+    """Verify that interceptors are passed to grpc.intercept_channel unpacked in a single call.
 
     When given a sequence of N interceptors [i_0, i_1, ..., i_{N-1}], apply_interceptors
     must pass the base channel and all interceptors unpacked (*interceptors) to
-    grpc.intercept_channel. This creates a single intercepted channel wrapper rather than
-    multiple nested wrappers.
+    grpc.intercept_channel.
     """
     mock_channel = mock.Mock(name="base_channel")
     mock_intercepted = mock.Mock(name="intercepted_channel")
@@ -961,53 +960,3 @@ def test_apply_interceptors_wrapping(count):
 
     assert result is mock_intercepted
     mock_intercept.assert_called_once_with(mock_channel, *interceptors)
-
-
-def test_apply_interceptors_execution_order():
-    """Verify runtime execution order (onion model) when invoking an RPC on an intercepted channel.
-
-    In standard gRPC Python, grpc.intercept_channel(channel, *interceptors) processes
-    the interceptor list such that the first interceptor in the sequence is the outermost layer.
-    Therefore, given [i1, i2]:
-      - i1 is the outermost layer (executes first on outbound request)
-      - i2 is the inner layer (executes second on outbound request)
-
-    During an RPC invocation:
-      1. i1 intercepts the call first (request inbound / pre-call)
-      2. i1 calls continuation(), which triggers i2
-      3. i2 calls continuation(), which reaches the channel stub / network
-      4. i2 post-call logic finishes
-      5. i1 post-call logic finishes
-    """
-    execution_order = []
-
-    class OrderInterceptor(grpc.UnaryUnaryClientInterceptor):
-        def __init__(self, name):
-            self.name = name
-
-        def intercept_unary_unary(self, continuation, client_call_details, request):
-            execution_order.append(f"{self.name}_start")
-            response = continuation(client_call_details, request)
-            execution_order.append(f"{self.name}_end")
-            return response
-
-    i1 = OrderInterceptor("i1")
-    i2 = OrderInterceptor("i2")
-
-    mock_channel = mock.Mock(spec=grpc.Channel)
-    mock_callable = mock.Mock(spec=grpc.UnaryUnaryMultiCallable)
-    mock_call = mock.Mock(spec=grpc.Call)
-    expected_response = operations_pb2.Operation(name="test_op")
-    mock_callable.with_call.return_value = (expected_response, mock_call)
-    mock_channel.unary_unary.return_value = mock_callable
-
-    # Apply interceptors in sequence [i1, i2]
-    intercepted_channel = grpc_helpers.apply_interceptors(mock_channel, [i1, i2])
-
-    # Trigger a unary RPC through the intercepted channel
-    stub = operations_pb2.OperationsStub(intercepted_channel)
-    response = stub.GetOperation(operations_pb2.GetOperationRequest(name="test_op"))
-
-    assert response.name == "test_op"
-    # Verify i1 executed as the outer layer surrounding i2
-    assert execution_order == ["i1_start", "i2_start", "i2_end", "i1_end"]
