@@ -133,7 +133,7 @@ def create_async_channel_with_otel(
     """
     if is_otel_capabilities_enabled(client_options):
         async_interceptor = _get_otel_interceptor(client_options, is_async=True)
-        interceptors = list(channel_kwargs.pop("interceptors", []) or [])
+        interceptors = list(channel_kwargs.pop("interceptors", None) or [])
         interceptors.append(async_interceptor)
         channel_kwargs["interceptors"] = interceptors
 

@@ -294,3 +294,76 @@ def test_create_async_channel_with_otel_enabled(monkeypatch):
         target="example.com:443",
         interceptors=[user_interceptor, mock_async_interceptor],
     )
+
+
+def test_create_async_channel_with_otel_none_interceptors(monkeypatch):
+    mock_tracer_provider = object()
+    options = ClientOptions(tracer_provider=mock_tracer_provider)
+
+    mock_async_channel = mock.Mock(name="async_channel")
+    mock_channel_factory = mock.Mock(return_value=mock_async_channel)
+    mock_async_interceptor = mock.Mock(name="otel_async_interceptor")
+
+    mock_otel = mock.Mock()
+    mock_otel_grpc = mock_otel.instrumentation.grpc
+    mock_otel_grpc.aio_client_interceptor.return_value = mock_async_interceptor
+
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(
+        sys.modules, "opentelemetry.instrumentation", mock_otel.instrumentation
+    )
+    monkeypatch.setitem(
+        sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
+    )
+
+    result = _observability.create_async_channel_with_otel(
+        mock_channel_factory,
+        client_options=options,
+        target="example.com:443",
+        interceptors=None,
+    )
+
+    assert result is mock_async_channel
+    mock_otel_grpc.aio_client_interceptor.assert_called_once_with(
+        tracer_provider=mock_tracer_provider
+    )
+    mock_channel_factory.assert_called_once_with(
+        target="example.com:443",
+        interceptors=[mock_async_interceptor],
+    )
+
+
+def test_create_async_channel_with_otel_omitted_interceptors(monkeypatch):
+    mock_tracer_provider = object()
+    options = ClientOptions(tracer_provider=mock_tracer_provider)
+
+    mock_async_channel = mock.Mock(name="async_channel")
+    mock_channel_factory = mock.Mock(return_value=mock_async_channel)
+    mock_async_interceptor = mock.Mock(name="otel_async_interceptor")
+
+    mock_otel = mock.Mock()
+    mock_otel_grpc = mock_otel.instrumentation.grpc
+    mock_otel_grpc.aio_client_interceptor.return_value = mock_async_interceptor
+
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(
+        sys.modules, "opentelemetry.instrumentation", mock_otel.instrumentation
+    )
+    monkeypatch.setitem(
+        sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
+    )
+
+    result = _observability.create_async_channel_with_otel(
+        mock_channel_factory,
+        client_options=options,
+        target="example.com:443",
+    )
+
+    assert result is mock_async_channel
+    mock_otel_grpc.aio_client_interceptor.assert_called_once_with(
+        tracer_provider=mock_tracer_provider
+    )
+    mock_channel_factory.assert_called_once_with(
+        target="example.com:443",
+        interceptors=[mock_async_interceptor],
+    )
