@@ -130,6 +130,9 @@ reap_parallel_results() {
   local failed_count=0
   local timed_out_count=0
   local succeeded_count=0
+  local failed
+  local timed_out
+  local pkg
 
   if [ -z "$LOG_DIR" ]; then
     echo "Error: LOG_DIR is not set."
@@ -179,7 +182,7 @@ reap_parallel_results() {
     # List failed packages
     for failed in "$LOG_DIR"/*.failed; do
       if [ -f "$failed" ]; then
-        local pkg=$(basename "$failed" .failed)
+        pkg=$(basename "$failed" .failed)
         if [ -f "$LOG_DIR/$pkg.timed_out" ]; then
           echo "$pkg (TIMED OUT after ${PACKAGE_TEST_TIMEOUT})"
         else
@@ -189,7 +192,7 @@ reap_parallel_results() {
     done
     for failed in "$LOG_DIR"/*.failed; do
       if [ -f "$failed" ]; then
-        local pkg=$(basename "$failed" .failed)
+        pkg=$(basename "$failed" .failed)
         echo "--------------------------------------------------"
         if [ -f "$LOG_DIR/$pkg.timed_out" ]; then
           echo "@PACKAGE (TIMED OUT after ${PACKAGE_TEST_TIMEOUT}): $pkg"
