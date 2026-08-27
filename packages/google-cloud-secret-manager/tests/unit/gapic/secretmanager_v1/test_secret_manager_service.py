@@ -61,8 +61,6 @@ from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
-from google.oauth2 import service_account
-
 from google.cloud.secretmanager_v1.services.secret_manager_service import (
     SecretManagerServiceAsyncClient,
     SecretManagerServiceClient,
@@ -70,6 +68,7 @@ from google.cloud.secretmanager_v1.services.secret_manager_service import (
     transports,
 )
 from google.cloud.secretmanager_v1.types import resources, service
+from google.oauth2 import service_account
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -473,6 +472,83 @@ def test_secret_manager_service_client_client_options(
             client_info=transports.base.DEFAULT_CLIENT_INFO,
             always_use_jwt_access=True,
             api_audience="https://language.googleapis.com",
+        )
+
+
+def test_secret_manager_service_client_otel_channel_injection_enabled():
+    mock_wrapped_channel = mock.Mock()
+
+    with (
+        mock.patch(
+            "google.cloud.secretmanager_v1.services.secret_manager_service.client._observability.is_otel_capabilities_enabled",
+            return_value=True,
+        ) as mock_is_enabled,
+        mock.patch(
+            "google.cloud.secretmanager_v1.services.secret_manager_service.client._observability.create_channel_with_otel",
+            return_value=mock_wrapped_channel,
+        ) as mock_create_channel_with_otel,
+        mock.patch.object(
+            transports.SecretManagerServiceGrpcTransport, "__init__", return_value=None
+        ) as patched_transport_init,
+    ):
+        client = SecretManagerServiceClient(transport="grpc")
+
+        mock_is_enabled.assert_called_once()
+        mock_create_channel_with_otel.assert_called_once_with(
+            transports.SecretManagerServiceGrpcTransport.create_channel,
+            client_options=client._client_options,
+            host=client._api_endpoint,
+            credentials=None,
+            credentials_file=None,
+            scopes=None,
+            quota_project_id=None,
+        )
+        called_kwargs = patched_transport_init.call_args.kwargs
+        assert called_kwargs.get("channel") is mock_wrapped_channel
+
+
+def test_secret_manager_service_client_otel_channel_injection_disabled():
+    with (
+        mock.patch(
+            "google.cloud.secretmanager_v1.services.secret_manager_service.client._observability.is_otel_capabilities_enabled",
+            return_value=False,
+        ) as mock_is_enabled,
+        mock.patch(
+            "google.cloud.secretmanager_v1.services.secret_manager_service.client._observability.create_channel_with_otel",
+        ) as mock_create_channel_with_otel,
+        mock.patch.object(
+            transports.SecretManagerServiceGrpcTransport, "__init__", return_value=None
+        ) as patched_transport_init,
+    ):
+        SecretManagerServiceClient(transport="grpc")
+
+        mock_is_enabled.assert_called_once()
+        mock_create_channel_with_otel.assert_not_called()
+        called_kwargs = patched_transport_init.call_args.kwargs
+        assert "channel" not in called_kwargs
+
+
+def test_secret_manager_service_grpc_transport_interceptors():
+    mock_interceptor = mock.Mock()
+    mock_channel = mock.Mock()
+
+    with (
+        mock.patch.object(
+            transports.SecretManagerServiceGrpcTransport,
+            "create_channel",
+            return_value=mock_channel,
+        ),
+        mock.patch(
+            "google.api_core.grpc_helpers.apply_interceptors",
+            return_value=mock_channel,
+        ) as mock_apply_interceptors,
+    ):
+        transport = transports.SecretManagerServiceGrpcTransport(
+            interceptors=[mock_interceptor],
+        )
+
+        mock_apply_interceptors.assert_called_once_with(
+            mock_channel, [mock_interceptor]
         )
 
 
