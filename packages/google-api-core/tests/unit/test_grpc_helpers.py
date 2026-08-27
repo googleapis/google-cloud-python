@@ -936,9 +936,9 @@ class TestChannelStub(object):
 @pytest.mark.parametrize("falsy_interceptors", [None, [], ()])
 def test_apply_interceptors_passthrough(falsy_interceptors):
     """Verify that falsy or empty interceptor sequences return the channel unmodified."""
-    mock_channel = mock.Mock()
-    result = grpc_helpers.apply_interceptors(mock_channel, falsy_interceptors)
-    assert result is mock_channel
+    mock_base_channel = mock.Mock(name="base_channel")
+    result = grpc_helpers.apply_interceptors(mock_base_channel, falsy_interceptors)
+    assert result is mock_base_channel
 
 
 @pytest.mark.parametrize("count", [1, 2, 3])
@@ -949,14 +949,16 @@ def test_apply_interceptors_wrapping(count):
     must pass the base channel and all interceptors unpacked (*interceptors) to
     grpc.intercept_channel.
     """
-    mock_channel = mock.Mock(name="base_channel")
-    mock_intercepted = mock.Mock(name="intercepted_channel")
-    interceptors = [mock.Mock(name=f"interceptor_{i}") for i in range(count)]
+    mock_base_channel = mock.Mock(name="base_channel")
+    mock_wrapped_channel = mock.Mock(name="wrapped_channel")
+    mock_interceptors = [mock.Mock(name=f"interceptor_{i}") for i in range(count)]
 
     with mock.patch(
-        "grpc.intercept_channel", return_value=mock_intercepted
-    ) as mock_intercept:
-        result = grpc_helpers.apply_interceptors(mock_channel, interceptors)
+        "grpc.intercept_channel", return_value=mock_wrapped_channel
+    ) as mock_intercept_channel:
+        result = grpc_helpers.apply_interceptors(mock_base_channel, mock_interceptors)
 
-    assert result is mock_intercepted
-    mock_intercept.assert_called_once_with(mock_channel, *interceptors)
+    assert result is mock_wrapped_channel
+    mock_intercept_channel.assert_called_once_with(
+        mock_base_channel, *mock_interceptors
+    )
