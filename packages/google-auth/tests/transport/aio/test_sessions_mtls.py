@@ -353,19 +353,24 @@ class TestSessionsMtls:
         mock_auth_req = mock.AsyncMock()
         mock_resp = mock.Mock()
         import http.client as http_client
+
         mock_resp.status_code = http_client.UNAUTHORIZED
         mock_auth_req.return_value = mock_resp
 
-        session = sessions.AsyncAuthorizedSession(mock_creds, auth_request=mock_auth_req)
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_req
+        )
         session._is_mtls = True
         session._cached_cert = b"old_cert"
 
         new_cert = b"new_cert"
         new_key = b"new_key"
 
-        with mock.patch("google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response") as mock_check, \
-             mock.patch.object(session, "configure_mtls_channel", new_callable=mock.AsyncMock) as mock_conf:
-
+        with mock.patch(
+            "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+        ) as mock_check, mock.patch.object(
+            session, "configure_mtls_channel", new_callable=mock.AsyncMock
+        ) as mock_conf:
             mock_check.return_value = (new_cert, new_key, b"old_fp", b"new_fp")
             mock_conf.side_effect = Exception("Failed to reconfigure")
 
@@ -381,10 +386,13 @@ class TestSessionsMtls:
         mock_auth_req = mock.AsyncMock()
         mock_resp = mock.Mock()
         import http.client as http_client
+
         mock_resp.status_code = http_client.UNAUTHORIZED
         mock_auth_req.return_value = mock_resp
 
-        session = sessions.AsyncAuthorizedSession(mock_creds, auth_request=mock_auth_req)
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_req
+        )
         session._is_mtls = True
         session._cached_cert = b"cached_cert"
 
@@ -402,16 +410,21 @@ class TestSessionsMtls:
         mock_auth_req = mock.AsyncMock()
         mock_resp = mock.Mock()
         import http.client as http_client
+
         mock_resp.status_code = http_client.UNAUTHORIZED
         mock_auth_req.return_value = mock_resp
 
-        session = sessions.AsyncAuthorizedSession(mock_creds, auth_request=mock_auth_req)
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_req
+        )
         session._is_mtls = True
         session._cached_cert = b"old_cert"
 
         with mock.patch(
             "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response",
-        ) as mock_check, mock.patch.object(session, "configure_mtls_channel", new_callable=mock.AsyncMock) as mock_conf:
+        ) as mock_check, mock.patch.object(
+            session, "configure_mtls_channel", new_callable=mock.AsyncMock
+        ) as mock_conf:
             # same fingerprint, so no call to configure_mtls_channel
             mock_check.return_value = (b"new_cert", b"new_key", b"same_fp", b"same_fp")
 

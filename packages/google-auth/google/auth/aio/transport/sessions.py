@@ -28,8 +28,6 @@ from google.auth.aio.transport import mtls
 from google.auth.exceptions import TimeoutError
 import google.auth.transport._mtls_helper
 
-_LOGGER = logging.getLogger(__name__)
-
 if TYPE_CHECKING:  # pragma: NO COVER
     import aiohttp
     from aiohttp import ClientTimeout  # type: ignore
@@ -40,6 +38,8 @@ else:
         from aiohttp import ClientTimeout
     except (ImportError, AttributeError):
         ClientTimeout = None
+
+_LOGGER = logging.getLogger(__name__)
 
 
 # Tracks the internal aiohttp installation and usage
@@ -317,13 +317,13 @@ class AsyncAuthorizedSession:
                 if response.status_code == http_client.UNAUTHORIZED:
                     try:
                         (
-                            call_cert_bytes, 
-                            call_key_bytes, 
-                            cached_fingerprint, 
-                            current_cert_fingerprint
+                            call_cert_bytes,
+                            call_key_bytes,
+                            cached_fingerprint,
+                            current_cert_fingerprint,
                         ) = await mtls._run_in_executor(
                             google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response,
-                            self._cached_cert
+                            self._cached_cert,
                         )
                         if cached_fingerprint != current_cert_fingerprint:
                             try:
@@ -340,10 +340,10 @@ class AsyncAuthorizedSession:
                             except Exception as e:
                                 _LOGGER.warning(
                                     "Failed to reconfigure mTLS channel: %s. Proceeding with original response.",
-                                    e
+                                    e,
                                 )
                         else:
-                             _LOGGER.info(
+                            _LOGGER.info(
                                 "Skipping reconfiguration of mTLS channel because the client"
                                 " certificate has not changed."
                             )
