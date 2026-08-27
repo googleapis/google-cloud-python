@@ -554,9 +554,11 @@ def core_deps_from_source(session, protobuf_implementation):
         "proto-plus",
     ]
 
-    deps_dir = CURRENT_DIRECTORY.parent
-    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
-        deps_dir = deps_dir.parent
+    deps_dir = next(
+        p / "packages"
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "packages").is_dir()
+    )
 
     local_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source if (deps_dir / dep).exists()]
     if local_paths:
@@ -601,9 +603,11 @@ def prerelease_deps(session, protobuf_implementation):
         "google-cloud-spanner",
     ]
 
-    deps_dir = CURRENT_DIRECTORY.parent
-    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
-        deps_dir = deps_dir.parent
+    deps_dir = next(
+        p / "packages"
+        for p in CURRENT_DIRECTORY.parents
+        if (p / "packages").is_dir()
+    )
 
     parsed_deps = {
         dep: re.match(r"^([a-zA-Z0-9_-]+)", dep).group(1) for dep in prerel_deps

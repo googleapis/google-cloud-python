@@ -30,10 +30,10 @@ import subprocess
 import sys
 
 # CI infrastructure and workflow paths that affect test execution
-CI_INFRASTRUCTURE_PREFIXES = (
-    ".github/",
-    "ci/",
-)
+CI_INFRASTRUCTURE_DIRS = {
+    ".github",
+    "ci",
+}
 
 # Core dependency packages whose changes affect all downstream handwritten packages
 CORE_PACKAGES = {
@@ -112,7 +112,7 @@ def get_packages(handwritten_only=False):
                     try:
                         with open(meta_file) as f:
                             data = json.load(f)
-                            if data.get("library_type") == "GAPIC_AUTO":
+                            if isinstance(data, dict) and data.get("library_type") == "GAPIC_AUTO":
                                 continue
                     except Exception:
                         pass
@@ -158,9 +158,9 @@ def get_packages_to_test():
     has_ci_change = False
 
     for f in changed_files:
-        if f.startswith(CI_INFRASTRUCTURE_PREFIXES):
+        parts = os.path.normpath(f).split(os.sep)
+        if parts and parts[0] in CI_INFRASTRUCTURE_DIRS:
             has_ci_change = True
-        parts = f.split('/')
         if len(parts) >= 2 and parts[0] in package_dirs:
             pkg_name = parts[1]
             full_path = f"{parts[0]}/{parts[1]}/"
