@@ -100,3 +100,59 @@ class TestSpannerDialect(fixtures.TestBase):
         eq_(SpannerDialect.max_size, MAX_SIZE)
         eq_(int_from_size("MAX"), 2621440)
         eq_(int_from_size("100"), 100)
+
+    @staticmethod
+    def _mock_connection(rows=None):
+        connection = MagicMock()
+        mock_snapshot = MagicMock()
+        mock_snapshot.execute_sql.return_value = rows if rows is not None else []
+        connection.connection.database.snapshot.return_value.__enter__.return_value = (
+            mock_snapshot
+        )
+        return connection, mock_snapshot
+
+    def test_get_columns_escapes_quote_in_table_name(self):
+        """A single quote in a reflected table name must not break out of the
+        INFORMATION_SCHEMA string literal in get_columns."""
+        dialect = SpannerDialect()
+        connection, mock_snapshot = self._mock_connection()
+
+        dialect.get_columns(connection, table_name="t' OR '1'='1")
+
+        executed_sql = mock_snapshot.execute_sql.call_args[0][0]
+        assert "col.table_name = 't\\' OR \\'1\\'=\\'1'" in executed_sql
+        assert "col.table_name = 't' OR '1'='1'" not in executed_sql
+
+    def test_has_table_escapes_quote_in_table_name(self):
+        """A double quote in a reflected table name must not break out of the
+        INFORMATION_SCHEMA string literal in has_table."""
+        dialect = SpannerDialect()
+        connection, mock_snapshot = self._mock_connection()
+
+        dialect.has_table(connection, table_name='a" OR "1"="1')
+
+        executed_sql = mock_snapshot.execute_sql.call_args[0][0]
+        assert 'TABLE_NAME="a\\" OR \\"1\\"=\\"1"' in executed_sql
+        assert 'TABLE_NAME="a" OR "1"="1"' not in executed_sql
+
+    def test_get_view_definition_escapes_quote(self):
+        """A quote in a reflected view name must not break out of the literal."""
+        dialect = SpannerDialect()
+        connection, mock_snapshot = self._mock_connection(rows=[["def"]])
+
+        dialect.get_view_definition(connection, view_name="v' OR '1'='1")
+
+        executed_sql = mock_snapshot.execute_sql.call_args[0][0]
+        assert "TABLE_NAME='v\\' OR \\'1\\'=\\'1'" in executed_sql
+
+    def test_escape_sql_string_literal(self):
+        """The helper escapes backslashes, both quote styles and newlines."""
+        from google.cloud.sqlalchemy_spanner.sqlalchemy_spanner import (
+            _escape_sql_string_literal,
+        )
+
+        eq_(_escape_sql_string_literal("a'b"), "a\\'b")
+        eq_(_escape_sql_string_literal('a"b'), 'a\\"b')
+        eq_(_escape_sql_string_literal("a\\b"), "a\\\\b")
+        eq_(_escape_sql_string_literal("a\nb"), "a\\nb")
+        eq_(_escape_sql_string_literal("plain"), "plain")

@@ -76,6 +76,25 @@ def reset_connection(dbapi_conn, connection_record, reset_state=None):
 OPERATORS[json_getitem_op] = operator_lookup["json_getitem_op"]
 
 
+def _escape_sql_string_literal(value):
+    """Escape a value for safe inclusion in a GoogleSQL string literal.
+
+    The reflection queries below build ``INFORMATION_SCHEMA`` predicates by
+    interpolating table, schema, view and sequence names into quoted string
+    literals. A name containing a quote (for example, one enumerated from a
+    shared or foreign database and fed back in during reflection) would
+    otherwise close the literal so the remainder is parsed as SQL. Escaping the
+    backslash, both quote characters and newlines keeps the name contained.
+    """
+    return (
+        value.replace("\\", "\\\\")
+        .replace("'", "\\'")
+        .replace('"', '\\"')
+        .replace("\n", "\\n")
+        .replace("\r", "\\r")
+    )
+
+
 # PickleType that can be used with Spanner.
 # Binary values are automatically encoded/decoded to/from base64.
 # Usage:
@@ -972,7 +991,10 @@ class SpannerDialect(DefaultDialect):
         table_filter_query = ""
         if filter_names is not None:
             for table_name in filter_names:
-                query = f"{info_schema_table}.table_name = '{table_name}'"
+                query = (
+                    f"{info_schema_table}.table_name = "
+                    f"'{_escape_sql_string_literal(table_name)}'"
+                )
                 if table_filter_query != "":
                     table_filter_query = table_filter_query + " OR " + query
                 else:
@@ -1104,7 +1126,10 @@ class SpannerDialect(DefaultDialect):
             SELECT view_definition
             FROM information_schema.views
             WHERE TABLE_SCHEMA='{schema_name}' AND TABLE_NAME='{view_name}'
-            """.format(schema_name=schema or "", view_name=view_name)
+            """.format(
+            schema_name=_escape_sql_string_literal(schema or ""),
+            view_name=_escape_sql_string_literal(view_name),
+        )
 
         with connection.connection.database.snapshot() as snap:
             rows = list(snap.execute_sql(sql))
@@ -1144,7 +1169,7 @@ class SpannerDialect(DefaultDialect):
         """
         table_filter_query = self._get_table_filter_query(filter_names, "col", True)
         schema_filter_query = " col.table_schema = '{schema}' AND ".format(
-            schema=schema or ""
+            schema=_escape_sql_string_literal(schema or "")
         )
         table_type_query = self._get_table_type_query(kind, True)
 
@@ -1273,7 +1298,7 @@ class SpannerDialect(DefaultDialect):
         """
         table_filter_query = self._get_table_filter_query(filter_names, "i", True)
         schema_filter_query = " i.table_schema = '{schema}' AND ".format(
-            schema=schema or ""
+            schema=_escape_sql_string_literal(schema or "")
         )
         table_type_query = self._get_table_type_query(kind, True)
 
@@ -1414,7 +1439,7 @@ class SpannerDialect(DefaultDialect):
         """
         table_filter_query = self._get_table_filter_query(filter_names, "tc", True)
         schema_filter_query = " tc.table_schema = '{schema}' AND ".format(
-            schema=schema or ""
+            schema=_escape_sql_string_literal(schema or "")
         )
         table_type_query = self._get_table_type_query(kind, True)
 
@@ -1525,7 +1550,7 @@ class SpannerDialect(DefaultDialect):
         """
         table_filter_query = self._get_table_filter_query(filter_names, "tc", True)
         schema_filter_query = " tc.table_schema = '{schema}' AND".format(
-            schema=schema or ""
+            schema=_escape_sql_string_literal(schema or "")
         )
         table_type_query = self._get_table_type_query(kind, True)
 
@@ -1641,7 +1666,7 @@ class SpannerDialect(DefaultDialect):
 SELECT table_name
 FROM information_schema.tables
 WHERE table_type = 'BASE TABLE' AND table_schema = '{schema}'
-""".format(schema=schema or "")
+""".format(schema=_escape_sql_string_literal(schema or ""))
 
         table_names = []
         with connection.connection.database.snapshot() as snap:
@@ -1677,7 +1702,10 @@ WHERE
     AND tc.TABLE_SCHEMA="{table_schema}"
     AND tc.CONSTRAINT_TYPE = "UNIQUE"
     AND tc.CONSTRAINT_NAME IS NOT NULL
-""".format(table_schema=schema or "", table_name=table_name)
+""".format(
+            table_schema=_escape_sql_string_literal(schema or ""),
+            table_name=_escape_sql_string_literal(table_name),
+        )
 
         cols = []
         with connection.connection.database.snapshot() as snap:
@@ -1710,7 +1738,10 @@ SELECT true
 FROM INFORMATION_SCHEMA.TABLES
 WHERE TABLE_SCHEMA="{table_schema}" AND TABLE_NAME="{table_name}"
 LIMIT 1
-""".format(table_schema=schema or "", table_name=table_name)
+""".format(
+                    table_schema=_escape_sql_string_literal(schema or ""),
+                    table_name=_escape_sql_string_literal(table_name),
+                )
             )
 
             for _ in rows:
@@ -1735,7 +1766,10 @@ LIMIT 1
                 WHERE NAME="{sequence_name}"
                 AND SCHEMA="{schema}"
                 LIMIT 1
-                """.format(sequence_name=sequence_name, schema=schema or "")
+                """.format(
+                    sequence_name=_escape_sql_string_literal(sequence_name),
+                    schema=_escape_sql_string_literal(schema or ""),
+                )
             )
 
             for _ in rows:
