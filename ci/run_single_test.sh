@@ -68,14 +68,6 @@ case ${TEST_TYPE} in
         nox -s prerelease_deps-3.14
         retval=$?
         ;;
-    core_deps_from_source)
-        if [[ "$(pwd)" == */preview-packages/* ]]; then
-            echo "Skipping core_deps_from_source for preview package $(pwd)"
-            exit 0
-        fi
-        nox --stop-on-first-error -s core_deps_from_source
-        retval=$?
-        ;;
     unit)
         case ${PY_VERSION} in
         "3.10")

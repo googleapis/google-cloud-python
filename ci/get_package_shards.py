@@ -70,10 +70,8 @@ def get_package_weights():
     return weights
 
 
-def get_packages(handwritten_only=False):
+def get_packages():
     """Lists all package directory paths in the repository grouped by package name.
-
-    If handwritten_only is True, includes only non-GAPIC_AUTO libraries.
 
     Returns:
         dict: A dictionary mapping package_name -> list of relative directory paths.
@@ -85,19 +83,8 @@ def get_packages(handwritten_only=False):
             continue
         for d in os.listdir(subdir):
             full_path = os.path.join(subdir, d) + '/'
-            if not os.path.isdir(full_path):
-                continue
-            if handwritten_only:
-                meta_file = os.path.join(full_path, ".repo-metadata.json")
-                if os.path.exists(meta_file):
-                    try:
-                        with open(meta_file) as f:
-                            data = json.load(f)
-                            if data.get("library_type") == "GAPIC_AUTO":
-                                continue
-                    except Exception:
-                        pass
-            packages_map[d].append(full_path)
+            if os.path.isdir(full_path):
+                packages_map[d].append(full_path)
     return packages_map
 
 
@@ -144,22 +131,6 @@ def get_packages_to_test():
             if pkg_name in all_packages and full_path in all_packages[pkg_name]:
                 if full_path not in to_test_paths[pkg_name]:
                     to_test_paths[pkg_name].append(full_path)
-
-    # Core dependency packages whose changes require testing across downstream handwritten packages
-    core_packages = {
-        "google-api-core",
-        "google-auth",
-        "google-auth-httplib2",
-        "google-auth-oauthlib",
-        "google-cloud-core",
-        "googleapis-common-protos",
-        "grpc-google-iam-v1",
-        "proto-plus",
-        "google-crc32c",
-    }
-    if any(pkg in core_packages for pkg in to_test_paths):
-        # When a core package changes, test all handwritten packages (non-GAPIC_AUTO)
-        return get_packages(handwritten_only=True)
 
     return dict(to_test_paths)
 

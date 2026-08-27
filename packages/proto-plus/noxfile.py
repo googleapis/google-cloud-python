@@ -167,18 +167,14 @@ def core_deps_from_source(session, implementation):
     # Note: If a dependency is added to the `core_dependencies_from_source` list,
     # the `prerel_deps` list in the `prerelease_deps` nox session should also be updated.
     core_dependencies_from_source = [
-        "google-api-core",
-        "googleapis-common-protos",
+        "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
+        # dependency of google-api-core
+        "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
     ]
 
-    deps_dir = CURRENT_DIRECTORY.parent
-    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
-        deps_dir = deps_dir.parent
-
-    local_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source if (deps_dir / dep).exists()]
-    if local_paths:
-        session.install(*local_paths, "--no-deps", "--ignore-installed")
-        print(f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}")
+    for dep in core_dependencies_from_source:
+        session.install(dep, "--no-deps", "--ignore-installed")
+        print(f"Installed {dep}")
 
     # TODO(https://github.com/googleapis/google-cloud-python/issues/15115): Install protobuf from source at HEAD
     session.install("--pre", "--upgrade", "protobuf")

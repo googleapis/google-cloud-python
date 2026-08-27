@@ -17,8 +17,9 @@ import os
 import pathlib
 import re
 import shutil
-import warnings
+
 from typing import Dict, List
+import warnings
 
 import nox
 
@@ -615,12 +616,9 @@ def core_deps_from_source(session, protobuf_implementation):
         "proto-plus",
     ]
 
-    # Locate the monorepo 'packages' directory containing core dependencies
-    deps_dir = next(
-        p / "packages"
-        for p in CURRENT_DIRECTORY.parents
-        if (p / "packages").is_dir()
-    )
+    deps_dir = CURRENT_DIRECTORY.parent
+    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
+        deps_dir = deps_dir.parent
 
     # Batch the pip installation to avoid sequential overhead
     dep_paths = [str(deps_dir / dep) for dep in core_dependencies_from_source]
