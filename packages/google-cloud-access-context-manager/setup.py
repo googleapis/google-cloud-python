@@ -29,7 +29,7 @@ version = "0.6.1"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
-    "google-api-core[grpc] >= 2.25.0, <3.0.0",
+    "google-api-core[grpc] >= 2.28.0, <3.0.0",
     "protobuf >= 6.33.5, < 8.0.0",
 ]
 
