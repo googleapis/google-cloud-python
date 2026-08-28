@@ -396,7 +396,13 @@ class AsyncAuthorizedSession:
                         await response.close()
                     else:
                         response.close()
-                await self._credentials.refresh(self._auth_request)
+                try:
+                    await self._credentials.refresh(self._auth_request)
+                except exceptions.RefreshError as e:
+                    _LOGGER.debug(
+                        "Credential refresh failed, returning 401 response. Error: %s", e
+                    )
+                    return response
                 kwargs["_auth_retry_count"] = _auth_retry_count + 1
                 return await self.request(
                     method,
