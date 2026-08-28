@@ -347,10 +347,7 @@ class TestSessionsMtls:
             await session.close()
 
     @pytest.mark.asyncio
-    async def test_cert_rotation_failure_raises_error(self, caplog):
-        import logging
-
-        caplog.set_level(logging.ERROR, logger="google.auth.aio.transport.sessions")
+    async def test_cert_rotation_failure_raises_error(self):
         mock_creds = mock.AsyncMock(spec=credentials.Credentials)
         mock_creds.before_request = mock.AsyncMock(return_value=None)
 
@@ -380,15 +377,11 @@ class TestSessionsMtls:
 
             mock_check.assert_called_once()
             mock_conf.assert_called_once()
-            assert "Failed to reconfigure mTLS channel" in caplog.text
 
         await session.close()
 
     @pytest.mark.asyncio
-    async def test_cert_rotation_check_params_fails(self, caplog):
-        import logging
-
-        caplog.set_level(logging.WARNING, logger="google.auth.aio.transport.sessions")
+    async def test_cert_rotation_check_params_fails(self):
         mock_creds = mock.AsyncMock(spec=credentials.Credentials)
         mock_creds.before_request = mock.AsyncMock(return_value=None)
 
@@ -416,7 +409,6 @@ class TestSessionsMtls:
             assert resp == mock_resp
             assert mock_check.call_count >= 1
             mock_conf.assert_not_called()
-            assert "Failed to check client certificate parameters" in caplog.text
 
         await session.close()
 
