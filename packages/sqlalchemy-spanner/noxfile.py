@@ -177,7 +177,7 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS[0])
+@nox.session(python=SYSTEM_COMPLIANCE_MIGRATION_TEST_PYTHON_VERSIONS[0])
 def compliance_test_14(session):
     """Run SQLAlchemy dialect compliance test suite."""
     config_file = f"test_compliance_14_{session.python}_{uuid.uuid4().hex[:6]}.cfg"
