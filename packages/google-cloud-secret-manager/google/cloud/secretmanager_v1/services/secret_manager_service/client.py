@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import functools
 import json
 import logging as std_logging
 import os
@@ -617,18 +618,16 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 "api_audience": self._client_options.api_audience,
             }
 
+            # When OpenTelemetry tracing is enabled, bind create_channel_with_otel
+            # using functools.partial and pass it as the channel factory.
+            # This preserves lazy channel instantiation inside the Transport and avoids
+            # duplicating channel initialization arguments here in the client.
             if transport_init is SecretManagerServiceGrpcTransport:
                 if _observability.is_otel_capabilities_enabled(self._client_options):
-                    transport_kwargs["channel"] = (
-                        _observability.create_channel_with_otel(
-                            SecretManagerServiceGrpcTransport.create_channel,
-                            client_options=self._client_options,
-                            host=self._api_endpoint,
-                            credentials=credentials,
-                            credentials_file=self._client_options.credentials_file,
-                            scopes=self._client_options.scopes,
-                            quota_project_id=self._client_options.quota_project_id,
-                        )
+                    transport_kwargs["channel"] = functools.partial(
+                        _observability.create_channel_with_otel,
+                        SecretManagerServiceGrpcTransport.create_channel,
+                        client_options=self._client_options,
                     )
 
             self._transport = transport_init(**transport_kwargs)
