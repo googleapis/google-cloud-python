@@ -298,6 +298,7 @@ def test_create_async_channel_with_otel_enabled(monkeypatch):
 
 
 def test_create_async_channel_with_otel_none_interceptors(monkeypatch):
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
     mock_tracer_provider = object()
     options = ClientOptions(tracer_provider=mock_tracer_provider)
 
@@ -335,6 +336,7 @@ def test_create_async_channel_with_otel_none_interceptors(monkeypatch):
 
 
 def test_create_async_channel_with_otel_omitted_interceptors(monkeypatch):
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
     mock_tracer_provider = object()
     options = ClientOptions(tracer_provider=mock_tracer_provider)
 
@@ -402,6 +404,7 @@ def test_create_channel_with_otel_partial_application(monkeypatch):
     Transport(channel=partial(...)) without needing to eagerly extract and duplicate
     credentials, scopes, and quota_project_id.
     """
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
     mock_tracer_provider = object()
     options = ClientOptions(tracer_provider=mock_tracer_provider)
 
@@ -476,6 +479,7 @@ def test_create_async_channel_with_otel_partial_application(monkeypatch):
     and called by an Async Transport with positional host and keyword arguments,
     injecting the async OTel interceptor seamlessly into kwargs['interceptors'].
     """
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
     mock_tracer_provider = object()
     options = ClientOptions(tracer_provider=mock_tracer_provider)
 
