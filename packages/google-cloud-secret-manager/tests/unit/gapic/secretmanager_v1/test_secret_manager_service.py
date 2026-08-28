@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import asyncio
+import functools
 import json
 import math
 import os
@@ -480,22 +481,16 @@ def test_secret_manager_service_client_otel_channel_injection_enabled():
 
     1. SecretManagerServiceClient detects the feature flag via
        _observability.is_otel_capabilities_enabled.
-    2. The client eagerly invokes _observability.create_channel_with_otel with
-       SecretManagerServiceGrpcTransport.create_channel and client configuration.
-    3. The eagerly created and wrapped OTel channel is injected into the transport's
-       constructor kwargs under the 'channel' key.
+    2. The client binds _observability.create_channel_with_otel using
+       functools.partial with SecretManagerServiceGrpcTransport.create_channel and client_options.
+    3. The bound channel factory callable is passed into transport kwargs under 'channel',
+       allowing the Transport to initialize the channel lazily with its own parameters.
     """
-    mock_wrapped_channel = mock.Mock()
-
     with (
         mock.patch(
             "google.cloud.secretmanager_v1.services.secret_manager_service.client._observability.is_otel_capabilities_enabled",
             return_value=True,
         ) as mock_is_enabled,
-        mock.patch(
-            "google.cloud.secretmanager_v1.services.secret_manager_service.client._observability.create_channel_with_otel",
-            return_value=mock_wrapped_channel,
-        ) as mock_create_channel_with_otel,
         mock.patch.object(
             transports.SecretManagerServiceGrpcTransport, "__init__", return_value=None
         ) as patched_transport_init,
@@ -503,17 +498,18 @@ def test_secret_manager_service_client_otel_channel_injection_enabled():
         client = SecretManagerServiceClient(transport="grpc")
 
         mock_is_enabled.assert_called_once()
-        mock_create_channel_with_otel.assert_called_once_with(
-            transports.SecretManagerServiceGrpcTransport.create_channel,
-            client_options=client._client_options,
-            host=client._api_endpoint,
-            credentials=None,
-            credentials_file=None,
-            scopes=None,
-            quota_project_id=None,
-        )
         called_kwargs = patched_transport_init.call_args.kwargs
-        assert called_kwargs.get("channel") is mock_wrapped_channel
+        assert "channel" in called_kwargs
+        channel_factory = called_kwargs["channel"]
+        assert isinstance(channel_factory, functools.partial)
+        assert (
+            channel_factory.func
+            is google.cloud.secretmanager_v1.services.secret_manager_service.client._observability.create_channel_with_otel
+        )
+        assert channel_factory.args == (
+            transports.SecretManagerServiceGrpcTransport.create_channel,
+        )
+        assert channel_factory.keywords == {"client_options": client._client_options}
 
 
 def test_secret_manager_service_client_otel_channel_injection_disabled():
