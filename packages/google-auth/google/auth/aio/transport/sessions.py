@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import asyncio
+import collections.abc
 from contextlib import asynccontextmanager
 import functools
 import http.client as http_client
@@ -321,11 +322,17 @@ class AsyncAuthorizedSession:
 
                 if response.status_code not in transport.DEFAULT_RETRYABLE_STATUS_CODES:
                     break
-        
+
         if response.status_code == http_client.UNAUTHORIZED:
             _auth_retry_count = kwargs.pop("_auth_retry_count", 0)
             if _auth_retry_count < 2:
-                is_streaming = data is not None and isinstance(data, (collections.abc.Iterator, collections.abc.AsyncIterable)) or hasattr(data, "read")
+                is_streaming = (
+                    data is not None
+                    and isinstance(
+                        data, (collections.abc.Iterator, collections.abc.AsyncIterable)
+                    )
+                    or hasattr(data, "read")
+                )
                 if getattr(self, "is_mtls", False) and any(
                     prefix in url for prefix in MTLS_URL_PREFIXES
                 ):
@@ -335,7 +342,7 @@ class AsyncAuthorizedSession:
 
                     # Wait in line to acquire the lock
                     async with self._mtls_rotation_lock:
-                        # Check Did another coroutine already reconfigure mTLS 
+                        # Check Did another coroutine already reconfigure mTLS
                         if self._cached_cert != stale_cert:
                             # Yes! Another request already updated the channel
                             pass
@@ -350,19 +357,30 @@ class AsyncAuthorizedSession:
                                     google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response,
                                     self._cached_cert,
                                 )
+                            except Exception as e:
+                                _LOGGER.warning(
+                                    "Failed to check client certificate parameters: %s. Proceeding with original response.",
+                                    e,
+                                )
+                            else:
                                 if cached_fingerprint != current_cert_fingerprint:
                                     try:
                                         _LOGGER.info(
                                             "Client certificate has changed, reconfiguring mTLS "
                                             "channel."
                                         )
-                                        if self._mtls_init_task and self._mtls_init_task.done():
+                                        if (
+                                            self._mtls_init_task
+                                            and self._mtls_init_task.done()
+                                        ):
                                             self._mtls_init_task = None
                                         await self.configure_mtls_channel(
                                             lambda: (call_cert_bytes, call_key_bytes)
                                         )
                                     except Exception as e:
-                                        _LOGGER.error("Failed to reconfigure mTLS channel: %s", e)
+                                        _LOGGER.error(
+                                            "Failed to reconfigure mTLS channel: %s", e
+                                        )
                                         raise exceptions.MutualTLSChannelError(
                                             "Failed to reconfigure mTLS channel"
                                         ) from e
@@ -371,11 +389,6 @@ class AsyncAuthorizedSession:
                                         "Skipping reconfiguration of mTLS channel because the client"
                                         " certificate has not changed."
                                     )
-                            except Exception as e:
-                                _LOGGER.warning(
-                                    "Failed to check client certificate parameters: %s. Proceeding with original response.",
-                                    e,
-                                )
                 if is_streaming:
                     return response
                 if hasattr(response, "close"):
@@ -393,7 +406,7 @@ class AsyncAuthorizedSession:
                     max_allowed_time=max_allowed_time,
                     timeout=timeout,
                     total_attempts=total_attempts,
-                    **kwargs
+                    **kwargs,
                 )
         return response
 
