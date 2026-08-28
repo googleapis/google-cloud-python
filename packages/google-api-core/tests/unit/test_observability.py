@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import functools
 import sys
 from unittest import mock
 
@@ -366,4 +367,155 @@ def test_create_async_channel_with_otel_omitted_interceptors(monkeypatch):
     mock_channel_factory.assert_called_once_with(
         target="example.com:443",
         interceptors=[mock_async_interceptor],
+    )
+
+
+def test_create_channel_with_otel_positional_args(monkeypatch):
+    """Proves that create_channel_with_otel forwards positional arguments (*channel_args)
+    to the underlying channel_factory callable.
+
+    Why this matters: Transports pass host as a positional argument
+    (e.g., channel_init(self._host, credentials=...)), so the helper must pass
+    positional arguments through without argument-binding errors.
+    """
+    mock_raw_channel = mock.Mock(name="raw_channel")
+    mock_channel_factory = mock.Mock(return_value=mock_raw_channel)
+
+    result = _observability.create_channel_with_otel(
+        mock_channel_factory,
+        "example.com:443",  # positional host argument
+        credentials="mock_creds",
+    )
+
+    assert result is mock_raw_channel
+    mock_channel_factory.assert_called_once_with(
+        "example.com:443", credentials="mock_creds"
+    )
+
+
+def test_create_channel_with_otel_partial_application(monkeypatch):
+    """Proves that create_channel_with_otel can be bound with functools.partial
+    (e.g. functools.partial(create_channel_with_otel, channel_factory, client_options=options))
+    and subsequently called by a Transport with positional (*channel_args) and keyword (**channel_kwargs) args.
+
+    Why this matters: This allows Client.__init__ to pass a lazy factory to
+    Transport(channel=partial(...)) without needing to eagerly extract and duplicate
+    credentials, scopes, and quota_project_id.
+    """
+    mock_tracer_provider = object()
+    options = ClientOptions(tracer_provider=mock_tracer_provider)
+
+    mock_raw_channel = mock.Mock(name="raw_channel")
+    mock_wrapped_channel = mock.Mock(name="wrapped_channel")
+    mock_channel_factory = mock.Mock(return_value=mock_raw_channel)
+
+    mock_otel = mock.Mock()
+    mock_otel_grpc = mock_otel.instrumentation.grpc
+    mock_interceptor = mock.Mock()
+
+    mock_otel_grpc.client_interceptor.return_value = mock_interceptor
+    mock_otel_grpc.intercept_channel.return_value = mock_wrapped_channel
+
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(
+        sys.modules, "opentelemetry.instrumentation", mock_otel.instrumentation
+    )
+    monkeypatch.setitem(
+        sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
+    )
+
+    # 1. Client creates lazy factory using functools.partial
+    lazy_factory = functools.partial(
+        _observability.create_channel_with_otel,
+        mock_channel_factory,
+        client_options=options,
+    )
+
+    # 2. Transport invokes the factory passing host positionally and credentials by keyword
+    result = lazy_factory(
+        "secretmanager.googleapis.com:443",
+        credentials="mock_credentials",
+        scopes=["https://www.googleapis.com/auth/cloud-platform"],
+    )
+
+    assert result is mock_wrapped_channel
+    mock_channel_factory.assert_called_once_with(
+        "secretmanager.googleapis.com:443",
+        credentials="mock_credentials",
+        scopes=["https://www.googleapis.com/auth/cloud-platform"],
+    )
+    mock_otel_grpc.client_interceptor.assert_called_once_with(
+        tracer_provider=mock_tracer_provider
+    )
+    mock_otel_grpc.intercept_channel.assert_called_once_with(
+        mock_raw_channel, mock_interceptor
+    )
+
+
+def test_create_async_channel_with_otel_positional_args(monkeypatch):
+    """Proves that create_async_channel_with_otel forwards positional arguments (*channel_args)
+    to the underlying async channel_factory callable.
+    """
+    mock_async_channel = mock.Mock(name="async_channel")
+    mock_channel_factory = mock.Mock(return_value=mock_async_channel)
+
+    result = _observability.create_async_channel_with_otel(
+        mock_channel_factory,
+        "example.com:443",  # positional host argument
+        credentials="mock_creds",
+    )
+
+    assert result is mock_async_channel
+    mock_channel_factory.assert_called_once_with(
+        "example.com:443", credentials="mock_creds"
+    )
+
+
+def test_create_async_channel_with_otel_partial_application(monkeypatch):
+    """Proves that create_async_channel_with_otel can be bound with functools.partial
+    and called by an Async Transport with positional host and keyword arguments,
+    injecting the async OTel interceptor seamlessly into kwargs['interceptors'].
+    """
+    mock_tracer_provider = object()
+    options = ClientOptions(tracer_provider=mock_tracer_provider)
+
+    mock_async_channel = mock.Mock(name="async_channel")
+    mock_channel_factory = mock.Mock(return_value=mock_async_channel)
+    user_interceptor = mock.Mock(name="user_interceptor")
+    mock_async_interceptor = mock.Mock(name="otel_async_interceptor")
+
+    mock_otel = mock.Mock()
+    mock_otel_grpc = mock_otel.instrumentation.grpc
+    mock_otel_grpc.aio_client_interceptor.return_value = mock_async_interceptor
+
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(
+        sys.modules, "opentelemetry.instrumentation", mock_otel.instrumentation
+    )
+    monkeypatch.setitem(
+        sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
+    )
+
+    # 1. Client creates lazy factory using functools.partial
+    lazy_factory = functools.partial(
+        _observability.create_async_channel_with_otel,
+        mock_channel_factory,
+        client_options=options,
+    )
+
+    # 2. Transport invokes the factory passing host positionally and interceptors by keyword
+    result = lazy_factory(
+        "secretmanager.googleapis.com:443",
+        credentials="mock_credentials",
+        interceptors=[user_interceptor],
+    )
+
+    assert result is mock_async_channel
+    mock_otel_grpc.aio_client_interceptor.assert_called_once_with(
+        tracer_provider=mock_tracer_provider
+    )
+    mock_channel_factory.assert_called_once_with(
+        "secretmanager.googleapis.com:443",
+        credentials="mock_credentials",
+        interceptors=[user_interceptor, mock_async_interceptor],
     )

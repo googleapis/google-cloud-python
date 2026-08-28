@@ -83,6 +83,7 @@ def _get_otel_interceptor(
 
 def create_channel_with_otel(
     channel_factory: Callable[..., Any],
+    *channel_args: Any,
     client_options: Optional[Union[ClientOptions, dict[str, Any]]] = None,
     **channel_kwargs: Any,
 ) -> Any:
@@ -97,12 +98,15 @@ def create_channel_with_otel(
             that instantiates and returns a raw gRPC channel.
         client_options: The client options object or dictionary used for feature gating
             and extracting the tracer provider.
+        *channel_args: Positional arguments forwarded directly to `channel_factory` (e.g. `host`).
+            Supporting positional arguments allows this function to be easily bound via
+            `functools.partial` in Client initialization.
         **channel_kwargs: Keyword arguments forwarded directly to `channel_factory`.
 
     Returns:
         Any: The intercepted or raw gRPC channel.
     """
-    raw_channel = channel_factory(**channel_kwargs)
+    raw_channel = channel_factory(*channel_args, **channel_kwargs)
     if is_otel_capabilities_enabled(client_options):
         import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
 
@@ -113,6 +117,7 @@ def create_channel_with_otel(
 
 def create_async_channel_with_otel(
     channel_factory: Callable[..., Any],
+    *channel_args: Any,
     client_options: Optional[Union[ClientOptions, dict[str, Any]]] = None,
     **channel_kwargs: Any,
 ) -> Any:
@@ -126,6 +131,9 @@ def create_async_channel_with_otel(
             that instantiates and returns an async gRPC channel.
         client_options: The client options object or dictionary used for feature gating
             and extracting the tracer provider.
+        *channel_args: Positional arguments forwarded directly to `channel_factory` (e.g. `host`).
+            Supporting positional arguments allows this function to be easily bound via
+            `functools.partial` in Client initialization.
         **channel_kwargs: Keyword arguments forwarded directly to `channel_factory`.
 
     Returns:
@@ -137,4 +145,4 @@ def create_async_channel_with_otel(
         interceptors.append(async_interceptor)
         channel_kwargs["interceptors"] = interceptors
 
-    return channel_factory(**channel_kwargs)
+    return channel_factory(*channel_args, **channel_kwargs)
