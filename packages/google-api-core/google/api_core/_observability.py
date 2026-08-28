@@ -26,7 +26,7 @@ _TRACER_PROVIDER = "tracer_provider"
 
 def is_otel_capabilities_enabled(
     client_options: Optional[ClientOptions | dict[str, Any]] = None,
-    env_var: str = "GOOGLE_CLOUD_PYTHON_TRACING_ENABLED",
+    env_var: str = "GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
 ) -> bool:
     """Checks if OTel capabilities are enabled and installed.
 

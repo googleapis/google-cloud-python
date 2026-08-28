@@ -15,17 +15,19 @@
 import sys
 from unittest import mock
 
+import pytest
 from google.api_core import _observability
+from google.api_core._feature_gating_helpers import FeatureGatingError
 from google.api_core.client_options import ClientOptions
 
 
 def test_is_otel_capabilities_enabled_disabled(monkeypatch):
-    monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "false")
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
     assert not _observability.is_otel_capabilities_enabled()
 
 
 def test_is_otel_capabilities_enabled_otel_missing(monkeypatch):
-    monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "true")
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
     # Simulate OTel not being installed by blocking imports
     monkeypatch.setitem(sys.modules, "opentelemetry.instrumentation.grpc", None)
 
@@ -33,7 +35,7 @@ def test_is_otel_capabilities_enabled_otel_missing(monkeypatch):
 
 
 def test_is_otel_capabilities_enabled_otel_installed(monkeypatch):
-    monkeypatch.setenv("GOOGLE_CLOUD_PYTHON_TRACING_ENABLED", "true")
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
 
     mock_otel = mock.Mock()
     mock_otel_grpc = mock_otel.instrumentation.grpc
@@ -47,6 +49,41 @@ def test_is_otel_capabilities_enabled_otel_installed(monkeypatch):
     )
 
     assert _observability.is_otel_capabilities_enabled()
+
+
+def test_is_otel_capabilities_enabled_experimental_requires_env_var(monkeypatch):
+    """Proves that passing client_options with tracer_provider without the experimental
+    env var set to 'true' raises FeatureGatingError (Fail Fast).
+    """
+    monkeypatch.delenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", raising=False)
+    options = ClientOptions(tracer_provider=object())
+
+    with pytest.raises(
+        FeatureGatingError,
+        match="requires GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
+    ):
+        _observability.is_otel_capabilities_enabled(options)
+
+
+def test_is_otel_capabilities_enabled_experimental_enabled_with_config(monkeypatch):
+    """Proves that when GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED=true and tracer_provider
+    is supplied via client_options, is_otel_capabilities_enabled returns True.
+    """
+    monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
+
+    mock_otel = mock.Mock()
+    mock_otel_grpc = mock_otel.instrumentation.grpc
+
+    monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
+    monkeypatch.setitem(
+        sys.modules, "opentelemetry.instrumentation", mock_otel.instrumentation
+    )
+    monkeypatch.setitem(
+        sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
+    )
+
+    options = ClientOptions(tracer_provider=object())
+    assert _observability.is_otel_capabilities_enabled(options)
 
 
 def test_apply_otel_capabilities_to_channel_enabled_otel_installed(monkeypatch):
