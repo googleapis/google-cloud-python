@@ -34,7 +34,6 @@ replacements:
       "packages/google-cloud-firestore/google/cloud/firestore_v1/__init__.py",
     ]
     before: |
-      import sys\n
       import google.api_core as api_core\n
       from google.cloud.firestore_v1 import gapic_version as package_version
       [\s\S]*?"WriteResult",\n\)
@@ -349,7 +348,6 @@ replacements:
       "packages/google-cloud-firestore/google/cloud/firestore_admin_v1/__init__.py",
     ]
     before: |
-      import sys\n
       import google.api_core as api_core\n
       from google.cloud.firestore_admin_v1 import gapic_version as package_version
       [\s\S]*?"WeeklyRecurrence",\n\)

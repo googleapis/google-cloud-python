@@ -400,7 +400,6 @@ replacements:
       "packages/google-cloud-logging/google/cloud/logging_v2/__init__.py",
     ]
     before: |
-      import sys\n
       import google.api_core as api_core
       [\s\S]*?"WriteLogEntriesResponse",\n\)
     after: |
