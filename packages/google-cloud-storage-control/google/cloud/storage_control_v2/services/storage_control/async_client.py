@@ -39,6 +39,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.storage_control_v2 import gapic_version as package_version
+from google.cloud.storage_control_v2._compat import setup_request_id
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -467,7 +468,7 @@ class StorageControlAsyncClient:
             self._client._transport.create_folder
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile("^(?P<bucket>.*)$")
         regex_match = routing_param_regex.match(request.parent)
@@ -479,7 +480,7 @@ class StorageControlAsyncClient:
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        self._client._setup_request_id(request, "request_id", False)
+        setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -580,7 +581,7 @@ class StorageControlAsyncClient:
             self._client._transport.delete_folder
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
@@ -594,7 +595,7 @@ class StorageControlAsyncClient:
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        self._client._setup_request_id(request, "request_id", False)
+        setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -702,7 +703,7 @@ class StorageControlAsyncClient:
             self._client._transport.get_folder
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
@@ -716,7 +717,7 @@ class StorageControlAsyncClient:
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        self._client._setup_request_id(request, "request_id", False)
+        setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -830,7 +831,7 @@ class StorageControlAsyncClient:
             self._client._transport.list_folders
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile("^(?P<bucket>.*)$")
         regex_match = routing_param_regex.match(request.parent)
@@ -979,7 +980,7 @@ class StorageControlAsyncClient:
             self._client._transport.rename_folder
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
@@ -993,7 +994,7 @@ class StorageControlAsyncClient:
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        self._client._setup_request_id(request, "request_id", False)
+        setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1126,7 +1127,7 @@ class StorageControlAsyncClient:
             self._client._transport.delete_folder_recursive
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
@@ -1140,7 +1141,7 @@ class StorageControlAsyncClient:
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        self._client._setup_request_id(request, "request_id", False)
+        setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1256,7 +1257,7 @@ class StorageControlAsyncClient:
             self._client._transport.get_storage_layout
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
@@ -1270,7 +1271,7 @@ class StorageControlAsyncClient:
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        self._client._setup_request_id(request, "request_id", False)
+        setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1402,7 +1403,7 @@ class StorageControlAsyncClient:
             self._client._transport.create_managed_folder
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile("^(?P<bucket>.*)$")
         regex_match = routing_param_regex.match(request.parent)
@@ -1414,7 +1415,7 @@ class StorageControlAsyncClient:
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        self._client._setup_request_id(request, "request_id", False)
+        setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1514,7 +1515,7 @@ class StorageControlAsyncClient:
             self._client._transport.delete_managed_folder
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
@@ -1528,7 +1529,7 @@ class StorageControlAsyncClient:
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        self._client._setup_request_id(request, "request_id", False)
+        setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1629,7 +1630,7 @@ class StorageControlAsyncClient:
             self._client._transport.get_managed_folder
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
@@ -1643,7 +1644,7 @@ class StorageControlAsyncClient:
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        self._client._setup_request_id(request, "request_id", False)
+        setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1757,7 +1758,7 @@ class StorageControlAsyncClient:
             self._client._transport.list_managed_folders
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile("^(?P<bucket>.*)$")
         regex_match = routing_param_regex.match(request.parent)
@@ -1769,7 +1770,7 @@ class StorageControlAsyncClient:
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        self._client._setup_request_id(request, "request_id", False)
+        setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1906,7 +1907,7 @@ class StorageControlAsyncClient:
             self._client._transport.update_managed_folder
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
@@ -2047,7 +2048,7 @@ class StorageControlAsyncClient:
             self._client._transport.create_anywhere_cache
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile("^(?P<bucket>.*)$")
         regex_match = routing_param_regex.match(request.parent)
@@ -2059,7 +2060,7 @@ class StorageControlAsyncClient:
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        self._client._setup_request_id(request, "request_id", False)
+        setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2202,7 +2203,7 @@ class StorageControlAsyncClient:
             self._client._transport.update_anywhere_cache
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
@@ -2216,7 +2217,7 @@ class StorageControlAsyncClient:
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        self._client._setup_request_id(request, "request_id", False)
+        setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2335,7 +2336,7 @@ class StorageControlAsyncClient:
             self._client._transport.disable_anywhere_cache
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
@@ -2349,7 +2350,7 @@ class StorageControlAsyncClient:
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        self._client._setup_request_id(request, "request_id", False)
+        setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2456,7 +2457,7 @@ class StorageControlAsyncClient:
             self._client._transport.pause_anywhere_cache
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
@@ -2470,7 +2471,7 @@ class StorageControlAsyncClient:
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        self._client._setup_request_id(request, "request_id", False)
+        setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2577,7 +2578,7 @@ class StorageControlAsyncClient:
             self._client._transport.resume_anywhere_cache
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
@@ -2591,7 +2592,7 @@ class StorageControlAsyncClient:
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        self._client._setup_request_id(request, "request_id", False)
+        setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2695,7 +2696,7 @@ class StorageControlAsyncClient:
             self._client._transport.get_anywhere_cache
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
@@ -2709,7 +2710,7 @@ class StorageControlAsyncClient:
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        self._client._setup_request_id(request, "request_id", False)
+        setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2822,7 +2823,7 @@ class StorageControlAsyncClient:
             self._client._transport.list_anywhere_caches
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile("^(?P<bucket>.*)$")
         regex_match = routing_param_regex.match(request.parent)
@@ -2834,7 +2835,7 @@ class StorageControlAsyncClient:
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
-        self._client._setup_request_id(request, "request_id", False)
+        setup_request_id(request, "request_id", False)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2969,7 +2970,7 @@ class StorageControlAsyncClient:
             self._client._transport.create_rapid_cache
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile("^(?P<bucket>.*)$")
         regex_match = routing_param_regex.match(request.parent)
@@ -3116,7 +3117,7 @@ class StorageControlAsyncClient:
             self._client._transport.update_rapid_cache
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
@@ -3250,7 +3251,7 @@ class StorageControlAsyncClient:
             self._client._transport.disable_rapid_cache
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
@@ -3374,7 +3375,7 @@ class StorageControlAsyncClient:
             self._client._transport.get_rapid_cache
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
@@ -3496,7 +3497,7 @@ class StorageControlAsyncClient:
             self._client._transport.list_rapid_caches
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile("^(?P<bucket>.*)$")
         regex_match = routing_param_regex.match(request.parent)
@@ -4397,7 +4398,7 @@ class StorageControlAsyncClient:
             self._client._transport.get_iam_policy
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile("^(?P<bucket>.*)$")
         regex_match = routing_param_regex.match(request.resource)
@@ -4552,7 +4553,7 @@ class StorageControlAsyncClient:
             self._client._transport.set_iam_policy
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile("^(?P<bucket>.*)$")
         regex_match = routing_param_regex.match(request.resource)
@@ -4693,7 +4694,7 @@ class StorageControlAsyncClient:
             self._client._transport.test_iam_permissions
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile("^(?P<bucket>.*)$")
         regex_match = routing_param_regex.match(request.resource)
@@ -5500,7 +5501,7 @@ class StorageControlAsyncClient:
             self._client._transport.view_object_full_context
         ]
 
-        header_params = {}
+        header_params: dict[str, str] = {}
 
         routing_param_regex = re.compile(
             "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
