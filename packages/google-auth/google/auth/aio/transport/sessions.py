@@ -287,6 +287,7 @@ class AsyncAuthorizedSession:
                 google.auth.exceptions.MutualTLSChannelError: If mutual TLS
                 channel reconfiguration fails for any reason during certificate rotation.
         """
+        _auth_retry_count = kwargs.pop("_auth_retry_count", 0)
         if self._mtls_init_task:
             try:
                 await self._mtls_init_task
@@ -324,7 +325,6 @@ class AsyncAuthorizedSession:
                     break
 
         if response.status_code == http_client.UNAUTHORIZED:
-            _auth_retry_count = kwargs.pop("_auth_retry_count", 0)
             if _auth_retry_count < 2:
                 is_streaming = (
                     data is not None
