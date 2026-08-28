@@ -4914,6 +4914,10 @@ def test_insert_rest_call_success(request_type):
                 "host_rewrite": "host_rewrite_value",
                 "path_prefix_rewrite": "path_prefix_rewrite_value",
                 "path_template_rewrite": "path_template_rewrite_value",
+                "regex_rewrite": {
+                    "path_pattern": "path_pattern_value",
+                    "path_substitution": "path_substitution_value",
+                },
             },
             "weighted_backend_services": [
                 {
@@ -5741,6 +5745,10 @@ def test_patch_rest_call_success(request_type):
                 "host_rewrite": "host_rewrite_value",
                 "path_prefix_rewrite": "path_prefix_rewrite_value",
                 "path_template_rewrite": "path_template_rewrite_value",
+                "regex_rewrite": {
+                    "path_pattern": "path_pattern_value",
+                    "path_substitution": "path_substitution_value",
+                },
             },
             "weighted_backend_services": [
                 {
@@ -6400,6 +6408,10 @@ def test_update_rest_call_success(request_type):
                 "host_rewrite": "host_rewrite_value",
                 "path_prefix_rewrite": "path_prefix_rewrite_value",
                 "path_template_rewrite": "path_template_rewrite_value",
+                "regex_rewrite": {
+                    "path_pattern": "path_pattern_value",
+                    "path_substitution": "path_substitution_value",
+                },
             },
             "weighted_backend_services": [
                 {
@@ -6859,6 +6871,10 @@ def test_validate_rest_call_success(request_type):
                     "host_rewrite": "host_rewrite_value",
                     "path_prefix_rewrite": "path_prefix_rewrite_value",
                     "path_template_rewrite": "path_template_rewrite_value",
+                    "regex_rewrite": {
+                        "path_pattern": "path_pattern_value",
+                        "path_substitution": "path_substitution_value",
+                    },
                 },
                 "weighted_backend_services": [
                     {

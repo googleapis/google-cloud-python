@@ -1189,9 +1189,10 @@ class SubscriberRestTransport(_BaseSubscriberRestTransport):
             Args:
                 request (~.pubsub.Subscription):
                     The request object. A subscription resource. If none of ``push_config``,
-                ``bigquery_config``, or ``cloud_storage_config`` is set,
-                then the subscriber will pull and ack messages using API
-                methods. At most one of these fields may be set.
+                ``bigquery_config``, ``cloud_storage_config``, or
+                ``bigtable_config`` is set, then the subscriber will
+                pull and ack messages using API methods. At most one of
+                these fields may be set.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1203,9 +1204,10 @@ class SubscriberRestTransport(_BaseSubscriberRestTransport):
             Returns:
                 ~.pubsub.Subscription:
                     A subscription resource. If none of ``push_config``,
-                ``bigquery_config``, or ``cloud_storage_config`` is set,
-                then the subscriber will pull and ack messages using API
-                methods. At most one of these fields may be set.
+                ``bigquery_config``, ``cloud_storage_config``, or
+                ``bigtable_config`` is set, then the subscriber will
+                pull and ack messages using API methods. At most one of
+                these fields may be set.
 
             """
 
@@ -1730,9 +1732,10 @@ class SubscriberRestTransport(_BaseSubscriberRestTransport):
             Returns:
                 ~.pubsub.Subscription:
                     A subscription resource. If none of ``push_config``,
-                ``bigquery_config``, or ``cloud_storage_config`` is set,
-                then the subscriber will pull and ack messages using API
-                methods. At most one of these fields may be set.
+                ``bigquery_config``, ``cloud_storage_config``, or
+                ``bigtable_config`` is set, then the subscriber will
+                pull and ack messages using API methods. At most one of
+                these fields may be set.
 
             """
 
@@ -2885,9 +2888,10 @@ class SubscriberRestTransport(_BaseSubscriberRestTransport):
             Returns:
                 ~.pubsub.Subscription:
                     A subscription resource. If none of ``push_config``,
-                ``bigquery_config``, or ``cloud_storage_config`` is set,
-                then the subscriber will pull and ack messages using API
-                methods. At most one of these fields may be set.
+                ``bigquery_config``, ``cloud_storage_config``, or
+                ``bigtable_config`` is set, then the subscriber will
+                pull and ack messages using API methods. At most one of
+                these fields may be set.
 
             """
 

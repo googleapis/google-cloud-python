@@ -65,6 +65,7 @@ from google.longrunning import operations_pb2  # type: ignore
 
 from google.ads.admanager_v1.services.audience_segment_service import pagers
 from google.ads.admanager_v1.types import (
+    audience_segment_enums,
     audience_segment_messages,
     audience_segment_service,
 )
@@ -228,6 +229,23 @@ class AudienceSegmentServiceClient(metaclass=AudienceSegmentServiceClientMeta):
         return self._transport
 
     @staticmethod
+    def ad_unit_path(
+        network_code: str,
+        ad_unit: str,
+    ) -> str:
+        """Returns a fully-qualified ad_unit string."""
+        return "networks/{network_code}/adUnits/{ad_unit}".format(
+            network_code=network_code,
+            ad_unit=ad_unit,
+        )
+
+    @staticmethod
+    def parse_ad_unit_path(path: str) -> Dict[str, str]:
+        """Parses a ad_unit path into its component segments."""
+        m = re.match(r"^networks/(?P<network_code>.+?)/adUnits/(?P<ad_unit>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def audience_segment_path(
         network_code: str,
         audience_segment: str,
@@ -248,6 +266,68 @@ class AudienceSegmentServiceClient(metaclass=AudienceSegmentServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def cms_metadata_value_path(
+        network_code: str,
+        cms_metadata_value: str,
+    ) -> str:
+        """Returns a fully-qualified cms_metadata_value string."""
+        return "networks/{network_code}/cmsMetadataValues/{cms_metadata_value}".format(
+            network_code=network_code,
+            cms_metadata_value=cms_metadata_value,
+        )
+
+    @staticmethod
+    def parse_cms_metadata_value_path(path: str) -> Dict[str, str]:
+        """Parses a cms_metadata_value path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/cmsMetadataValues/(?P<cms_metadata_value>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def custom_targeting_key_path(
+        network_code: str,
+        custom_targeting_key: str,
+    ) -> str:
+        """Returns a fully-qualified custom_targeting_key string."""
+        return (
+            "networks/{network_code}/customTargetingKeys/{custom_targeting_key}".format(
+                network_code=network_code,
+                custom_targeting_key=custom_targeting_key,
+            )
+        )
+
+    @staticmethod
+    def parse_custom_targeting_key_path(path: str) -> Dict[str, str]:
+        """Parses a custom_targeting_key path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/customTargetingKeys/(?P<custom_targeting_key>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def custom_targeting_value_path(
+        network_code: str,
+        custom_targeting_value: str,
+    ) -> str:
+        """Returns a fully-qualified custom_targeting_value string."""
+        return "networks/{network_code}/customTargetingValues/{custom_targeting_value}".format(
+            network_code=network_code,
+            custom_targeting_value=custom_targeting_value,
+        )
+
+    @staticmethod
+    def parse_custom_targeting_value_path(path: str) -> Dict[str, str]:
+        """Parses a custom_targeting_value path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/customTargetingValues/(?P<custom_targeting_value>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def network_path(
         network_code: str,
     ) -> str:
@@ -260,6 +340,25 @@ class AudienceSegmentServiceClient(metaclass=AudienceSegmentServiceClientMeta):
     def parse_network_path(path: str) -> Dict[str, str]:
         """Parses a network path into its component segments."""
         m = re.match(r"^networks/(?P<network_code>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def placement_path(
+        network_code: str,
+        placement: str,
+    ) -> str:
+        """Returns a fully-qualified placement string."""
+        return "networks/{network_code}/placements/{placement}".format(
+            network_code=network_code,
+            placement=placement,
+        )
+
+    @staticmethod
+    def parse_placement_path(path: str) -> Dict[str, str]:
+        """Parses a placement path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/placements/(?P<placement>.+?)$", path
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -975,6 +1074,634 @@ class AudienceSegmentServiceClient(metaclass=AudienceSegmentServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def batch_activate_audience_segments(
+        self,
+        request: Optional[
+            Union[audience_segment_service.BatchActivateAudienceSegmentsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        names: Optional[MutableSequence[str]] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> audience_segment_service.BatchActivateAudienceSegmentsResponse:
+        r"""Activates ``AudienceSegment`` objects.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ads import admanager_v1
+
+            def sample_batch_activate_audience_segments():
+                # Create a client
+                client = admanager_v1.AudienceSegmentServiceClient()
+
+                # Initialize request argument(s)
+                request = admanager_v1.BatchActivateAudienceSegmentsRequest(
+                    parent="parent_value",
+                    names=['names_value1', 'names_value2'],
+                )
+
+                # Make the request
+                response = client.batch_activate_audience_segments(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.ads.admanager_v1.types.BatchActivateAudienceSegmentsRequest, dict]):
+                The request object. Request message for ``BatchActivateAudienceSegments``
+                method.
+            parent (str):
+                Required. Format: ``networks/{network_code}``
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            names (MutableSequence[str]):
+                Required. Resource names for the AudienceSegments.
+                Format:
+                ``networks/{network_code}/audienceSegments/{audience_segment_id}``
+
+                This corresponds to the ``names`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.ads.admanager_v1.types.BatchActivateAudienceSegmentsResponse:
+                Response message for BatchActivateAudienceSegments
+                method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, names]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, audience_segment_service.BatchActivateAudienceSegmentsRequest
+        ):
+            request = audience_segment_service.BatchActivateAudienceSegmentsRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if names is not None:
+                request.names = names
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.batch_activate_audience_segments
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def batch_deactivate_audience_segments(
+        self,
+        request: Optional[
+            Union[audience_segment_service.BatchDeactivateAudienceSegmentsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        names: Optional[MutableSequence[str]] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> audience_segment_service.BatchDeactivateAudienceSegmentsResponse:
+        r"""Deactivates ``AudienceSegment`` objects.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ads import admanager_v1
+
+            def sample_batch_deactivate_audience_segments():
+                # Create a client
+                client = admanager_v1.AudienceSegmentServiceClient()
+
+                # Initialize request argument(s)
+                request = admanager_v1.BatchDeactivateAudienceSegmentsRequest(
+                    parent="parent_value",
+                    names=['names_value1', 'names_value2'],
+                )
+
+                # Make the request
+                response = client.batch_deactivate_audience_segments(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.ads.admanager_v1.types.BatchDeactivateAudienceSegmentsRequest, dict]):
+                The request object. Request message for ``BatchDeactivateAudienceSegments``
+                method.
+            parent (str):
+                Required. Format: ``networks/{network_code}``
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            names (MutableSequence[str]):
+                Required. Resource names for the AudienceSegments.
+                Format:
+                ``networks/{network_code}/audienceSegments/{audience_segment_id}``
+
+                This corresponds to the ``names`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.ads.admanager_v1.types.BatchDeactivateAudienceSegmentsResponse:
+                Response message for BatchDeactivateAudienceSegments
+                method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, names]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, audience_segment_service.BatchDeactivateAudienceSegmentsRequest
+        ):
+            request = audience_segment_service.BatchDeactivateAudienceSegmentsRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if names is not None:
+                request.names = names
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.batch_deactivate_audience_segments
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def batch_approve_audience_segments(
+        self,
+        request: Optional[
+            Union[audience_segment_service.BatchApproveAudienceSegmentsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        names: Optional[MutableSequence[str]] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> audience_segment_service.BatchApproveAudienceSegmentsResponse:
+        r"""Approves ``AudienceSegment`` objects.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ads import admanager_v1
+
+            def sample_batch_approve_audience_segments():
+                # Create a client
+                client = admanager_v1.AudienceSegmentServiceClient()
+
+                # Initialize request argument(s)
+                request = admanager_v1.BatchApproveAudienceSegmentsRequest(
+                    parent="parent_value",
+                    names=['names_value1', 'names_value2'],
+                )
+
+                # Make the request
+                response = client.batch_approve_audience_segments(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.ads.admanager_v1.types.BatchApproveAudienceSegmentsRequest, dict]):
+                The request object. Request message for ``BatchApproveAudienceSegments``
+                method.
+            parent (str):
+                Required. Format: ``networks/{network_code}``
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            names (MutableSequence[str]):
+                Required. Resource names for the AudienceSegments.
+                Format:
+                ``networks/{network_code}/audienceSegments/{audience_segment_id}``
+
+                This corresponds to the ``names`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.ads.admanager_v1.types.BatchApproveAudienceSegmentsResponse:
+                Response message for BatchApproveAudienceSegments
+                method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, names]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, audience_segment_service.BatchApproveAudienceSegmentsRequest
+        ):
+            request = audience_segment_service.BatchApproveAudienceSegmentsRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if names is not None:
+                request.names = names
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.batch_approve_audience_segments
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def batch_reject_audience_segments(
+        self,
+        request: Optional[
+            Union[audience_segment_service.BatchRejectAudienceSegmentsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        names: Optional[MutableSequence[str]] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> audience_segment_service.BatchRejectAudienceSegmentsResponse:
+        r"""Rejects ``AudienceSegment`` objects.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ads import admanager_v1
+
+            def sample_batch_reject_audience_segments():
+                # Create a client
+                client = admanager_v1.AudienceSegmentServiceClient()
+
+                # Initialize request argument(s)
+                request = admanager_v1.BatchRejectAudienceSegmentsRequest(
+                    parent="parent_value",
+                    names=['names_value1', 'names_value2'],
+                )
+
+                # Make the request
+                response = client.batch_reject_audience_segments(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.ads.admanager_v1.types.BatchRejectAudienceSegmentsRequest, dict]):
+                The request object. Request message for ``BatchRejectAudienceSegments``
+                method.
+            parent (str):
+                Required. Format: ``networks/{network_code}``
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            names (MutableSequence[str]):
+                Required. Resource names for the AudienceSegments.
+                Format:
+                ``networks/{network_code}/audienceSegments/{audience_segment_id}``
+
+                This corresponds to the ``names`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.ads.admanager_v1.types.BatchRejectAudienceSegmentsResponse:
+                Response message for BatchRejectAudienceSegments method.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, names]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, audience_segment_service.BatchRejectAudienceSegmentsRequest
+        ):
+            request = audience_segment_service.BatchRejectAudienceSegmentsRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if names is not None:
+                request.names = names
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.batch_reject_audience_segments
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def batch_populate_audience_segments(
+        self,
+        request: Optional[
+            Union[audience_segment_service.BatchPopulateAudienceSegmentsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        names: Optional[MutableSequence[str]] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> audience_segment_service.BatchPopulateAudienceSegmentsResponse:
+        r"""Populates ``AudienceSegment`` objects.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ads import admanager_v1
+
+            def sample_batch_populate_audience_segments():
+                # Create a client
+                client = admanager_v1.AudienceSegmentServiceClient()
+
+                # Initialize request argument(s)
+                request = admanager_v1.BatchPopulateAudienceSegmentsRequest(
+                    parent="parent_value",
+                    names=['names_value1', 'names_value2'],
+                )
+
+                # Make the request
+                response = client.batch_populate_audience_segments(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.ads.admanager_v1.types.BatchPopulateAudienceSegmentsRequest, dict]):
+                The request object. Request message for ``BatchPopulateAudienceSegments``
+                method.
+            parent (str):
+                Required. Format: ``networks/{network_code}``
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            names (MutableSequence[str]):
+                Required. Resource names for the AudienceSegments.
+                Format:
+                ``networks/{network_code}/audienceSegments/{audience_segment_id}``
+
+                This corresponds to the ``names`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.ads.admanager_v1.types.BatchPopulateAudienceSegmentsResponse:
+                Response message for BatchPopulateAudienceSegments
+                method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, names]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, audience_segment_service.BatchPopulateAudienceSegmentsRequest
+        ):
+            request = audience_segment_service.BatchPopulateAudienceSegmentsRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if names is not None:
+                request.names = names
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.batch_populate_audience_segments
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,

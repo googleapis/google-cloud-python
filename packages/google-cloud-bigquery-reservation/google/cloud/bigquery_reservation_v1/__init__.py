@@ -81,6 +81,7 @@ from .types.reservation import (
     UpdateAssignmentRequest,
     UpdateBiReservationRequest,
     UpdateCapacityCommitmentRequest,
+    UpdateReservationGroupRequest,
     UpdateReservationRequest,
 )
 
@@ -211,5 +212,6 @@ __all__ = (
     "UpdateAssignmentRequest",
     "UpdateBiReservationRequest",
     "UpdateCapacityCommitmentRequest",
+    "UpdateReservationGroupRequest",
     "UpdateReservationRequest",
 )

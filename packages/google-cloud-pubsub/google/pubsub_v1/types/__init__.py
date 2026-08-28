@@ -21,6 +21,7 @@ from .pubsub import (
     BigQueryConfig,
     BigtableConfig,
     CloudStorageConfig,
+    Compression,
     CreateSnapshotRequest,
     DeadLetterPolicy,
     DeleteSnapshotRequest,
@@ -72,6 +73,7 @@ from .pubsub import (
 )
 from .schema import (
     CommitSchemaRequest,
+    CompiledProtoSchema,
     CreateSchemaRequest,
     DeleteSchemaRequest,
     DeleteSchemaRevisionRequest,
@@ -105,6 +107,7 @@ __all__ = (
     "BigQueryConfig",
     "BigtableConfig",
     "CloudStorageConfig",
+    "Compression",
     "CreateSnapshotRequest",
     "DeadLetterPolicy",
     "DeleteSnapshotRequest",
@@ -154,6 +157,7 @@ __all__ = (
     "UpdateSubscriptionRequest",
     "UpdateTopicRequest",
     "CommitSchemaRequest",
+    "CompiledProtoSchema",
     "CreateSchemaRequest",
     "DeleteSchemaRequest",
     "DeleteSchemaRevisionRequest",

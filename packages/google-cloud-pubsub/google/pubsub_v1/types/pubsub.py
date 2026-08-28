@@ -34,6 +34,7 @@ __protobuf__ = proto.module(
         "PlatformLogsSettings",
         "IngestionFailureEvent",
         "JavaScriptUDF",
+        "Compression",
         "AIInference",
         "MessageTransform",
         "Topic",
@@ -259,6 +260,12 @@ class IngestionDataSourceSettings(proto.Message):
                     The Kinesis stream does not exist.
                 CONSUMER_NOT_FOUND (5):
                     The Kinesis consumer does not exist.
+                CONFLICTING_REGION_CONSTRAINTS (6):
+                    Indicates an error state where the ingestion
+                    source cannot be processed because the selected
+                    ingestion region is not permitted by the
+                    Regional Access Boundary (RAB) restrictions on
+                    the project's service account.
             """
 
             STATE_UNSPECIFIED = 0
@@ -267,6 +274,7 @@ class IngestionDataSourceSettings(proto.Message):
             PUBLISH_PERMISSION_DENIED = 3
             STREAM_NOT_FOUND = 4
             CONSUMER_NOT_FOUND = 5
+            CONFLICTING_REGION_CONSTRAINTS = 6
 
         state: "IngestionDataSourceSettings.AwsKinesis.State" = proto.Field(
             proto.ENUM,
@@ -364,6 +372,12 @@ class IngestionDataSourceSettings(proto.Message):
                 TOO_MANY_OBJECTS (5):
                     The Cloud Storage bucket has too many
                     objects, ingestion will be paused.
+                CONFLICTING_REGION_CONSTRAINTS (8):
+                    Indicates an error state where the ingestion
+                    source cannot be processed because the selected
+                    ingestion region is not permitted by the
+                    Regional Access Boundary (RAB) restrictions on
+                    the project's service account.
             """
 
             STATE_UNSPECIFIED = 0
@@ -372,6 +386,7 @@ class IngestionDataSourceSettings(proto.Message):
             PUBLISH_PERMISSION_DENIED = 3
             BUCKET_NOT_FOUND = 4
             TOO_MANY_OBJECTS = 5
+            CONFLICTING_REGION_CONSTRAINTS = 8
 
         class TextFormat(proto.Message):
             r"""Configuration for reading Cloud Storage data in text format. Each
@@ -509,6 +524,12 @@ class IngestionDataSourceSettings(proto.Message):
                 RESOURCE_GROUP_NOT_FOUND (7):
                     The provided Event Hubs resource group
                     couldn't be found.
+                CONFLICTING_REGION_CONSTRAINTS (8):
+                    Indicates an error state where the ingestion
+                    source cannot be processed because the selected
+                    ingestion region is not permitted by the
+                    Regional Access Boundary (RAB) restrictions on
+                    the project's service account.
             """
 
             STATE_UNSPECIFIED = 0
@@ -519,6 +540,7 @@ class IngestionDataSourceSettings(proto.Message):
             EVENT_HUB_NOT_FOUND = 5
             SUBSCRIPTION_NOT_FOUND = 6
             RESOURCE_GROUP_NOT_FOUND = 7
+            CONFLICTING_REGION_CONSTRAINTS = 8
 
         state: "IngestionDataSourceSettings.AzureEventHubs.State" = proto.Field(
             proto.ENUM,
@@ -601,6 +623,12 @@ class IngestionDataSourceSettings(proto.Message):
                     The provided MSK cluster wasn't found.
                 TOPIC_NOT_FOUND (5):
                     The provided topic wasn't found.
+                CONFLICTING_REGION_CONSTRAINTS (6):
+                    Indicates an error state where the ingestion
+                    source cannot be processed because the selected
+                    ingestion region is not permitted by the
+                    Regional Access Boundary (RAB) restrictions on
+                    the project's service account.
             """
 
             STATE_UNSPECIFIED = 0
@@ -609,6 +637,7 @@ class IngestionDataSourceSettings(proto.Message):
             PUBLISH_PERMISSION_DENIED = 3
             CLUSTER_NOT_FOUND = 4
             TOPIC_NOT_FOUND = 5
+            CONFLICTING_REGION_CONSTRAINTS = 6
 
         state: "IngestionDataSourceSettings.AwsMsk.State" = proto.Field(
             proto.ENUM,
@@ -680,6 +709,12 @@ class IngestionDataSourceSettings(proto.Message):
                     The provided cluster wasn't found.
                 TOPIC_NOT_FOUND (6):
                     The provided topic wasn't found.
+                CONFLICTING_REGION_CONSTRAINTS (7):
+                    Indicates an error state where the ingestion
+                    source cannot be processed because the selected
+                    ingestion region is not permitted by the
+                    Regional Access Boundary (RAB) restrictions on
+                    the project's service account.
             """
 
             STATE_UNSPECIFIED = 0
@@ -689,6 +724,7 @@ class IngestionDataSourceSettings(proto.Message):
             UNREACHABLE_BOOTSTRAP_SERVER = 4
             CLUSTER_NOT_FOUND = 5
             TOPIC_NOT_FOUND = 6
+            CONFLICTING_REGION_CONSTRAINTS = 7
 
         state: "IngestionDataSourceSettings.ConfluentCloud.State" = proto.Field(
             proto.ENUM,
@@ -1352,6 +1388,60 @@ class JavaScriptUDF(proto.Message):
     )
 
 
+class Compression(proto.Message):
+    r"""Configuration for compressing/decompressing message data
+    using a user-specified compression algorithm.
+
+    Attributes:
+        compression_algorithm (google.pubsub_v1.types.Compression.CompressionAlgorithm):
+            Required. Specifies the compression algorithm
+            to use.
+        compression_mode (google.pubsub_v1.types.Compression.CompressionMode):
+            Required. Specifies whether to compress or
+            decompress the message.
+    """
+
+    class CompressionAlgorithm(proto.Enum):
+        r"""The compression algorithm to use.
+
+        Values:
+            COMPRESSION_ALGORITHM_UNSPECIFIED (0):
+                Unspecified algorithm.
+            ZLIB (1):
+                ZLIB compression.
+        """
+
+        COMPRESSION_ALGORITHM_UNSPECIFIED = 0
+        ZLIB = 1
+
+    class CompressionMode(proto.Enum):
+        r"""The mode of the compression SMT.
+
+        Values:
+            COMPRESSION_MODE_UNSPECIFIED (0):
+                Unspecified mode.
+            COMPRESS (1):
+                Compress.
+            DECOMPRESS (2):
+                Decompress.
+        """
+
+        COMPRESSION_MODE_UNSPECIFIED = 0
+        COMPRESS = 1
+        DECOMPRESS = 2
+
+    compression_algorithm: CompressionAlgorithm = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=CompressionAlgorithm,
+    )
+    compression_mode: CompressionMode = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=CompressionMode,
+    )
+
+
 class AIInference(proto.Message):
     r"""Configuration for making inference requests against Vertex AI
     models.
@@ -1433,6 +1523,10 @@ class MessageTransform(proto.Message):
             a unique ``function_name``.
 
             This field is a member of `oneof`_ ``transform``.
+        compression (google.pubsub_v1.types.Compression):
+            Optional. Compression/Decompression.
+
+            This field is a member of `oneof`_ ``transform``.
         ai_inference (google.pubsub_v1.types.AIInference):
             Optional. AI Inference. Specifies the Vertex
             AI endpoint that inference requests built from
@@ -1453,6 +1547,12 @@ class MessageTransform(proto.Message):
         number=2,
         oneof="transform",
         message="JavaScriptUDF",
+    )
+    compression: "Compression" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="transform",
+        message="Compression",
     )
     ai_inference: "AIInference" = proto.Field(
         proto.MESSAGE,
@@ -1527,16 +1627,11 @@ class Topic(proto.Message):
             messages published to the topic. Transforms are
             applied in the order specified.
         tags (MutableMapping[str, str]):
-            Optional. Input only. Immutable. Tag
-            keys/values directly bound to this resource. For
-            example:
-
-              "123/environment": "production",
-              "123/costCenter": "marketing"
-            See
-            https://docs.cloud.google.com/pubsub/docs/tags
-            for more information on using tags with Pub/Sub
-            resources.
+            Optional. Input only. Immutable. Tag keys/values directly
+            bound to this resource. For example: "123/environment":
+            "production", "123/costCenter": "marketing" See
+            https://{$universe.dns_names.final_documentation_domain}/pubsub/docs/tags
+            for more information on using tags with Pub/Sub resources.
     """
 
     class State(proto.Enum):
@@ -1978,9 +2073,9 @@ class DetachSubscriptionResponse(proto.Message):
 
 class Subscription(proto.Message):
     r"""A subscription resource. If none of ``push_config``,
-    ``bigquery_config``, or ``cloud_storage_config`` is set, then the
-    subscriber will pull and ack messages using API methods. At most one
-    of these fields may be set.
+    ``bigquery_config``, ``cloud_storage_config``, or
+    ``bigtable_config`` is set, then the subscriber will pull and ack
+    messages using API methods. At most one of these fields may be set.
 
     Attributes:
         name (str):
@@ -2149,16 +2244,11 @@ class Subscription(proto.Message):
             subscribers. Transforms are applied in the order
             specified.
         tags (MutableMapping[str, str]):
-            Optional. Input only. Immutable. Tag
-            keys/values directly bound to this resource. For
-            example:
-
-              "123/environment": "production",
-              "123/costCenter": "marketing"
-            See
-            https://docs.cloud.google.com/pubsub/docs/tags
-            for more information on using tags with Pub/Sub
-            resources.
+            Optional. Input only. Immutable. Tag keys/values directly
+            bound to this resource. For example: "123/environment":
+            "production", "123/costCenter": "marketing" See
+            https://{$universe.dns_names.final_documentation_domain}/pubsub/docs/tags
+            for more information on using tags with Pub/Sub resources.
     """
 
     class State(proto.Enum):
@@ -2587,12 +2677,15 @@ class BigQueryConfig(proto.Message):
             columns while all other message properties (other than data)
             are written to a JSON object in the attributes column.
         drop_unknown_fields (bool):
-            Optional. When true and use_topic_schema is true, any fields
-            that are a part of the topic schema that are not part of the
-            BigQuery table schema are dropped when writing to BigQuery.
+            Optional. If true and ``use_topic_schema`` is true, drops
+            any fields that are part of the topic schema that are not
+            part of the BigQuery table schema when writing to BigQuery.
             Otherwise, the schemas must be kept in sync and any messages
             with extra fields are not written and remain in the
-            subscription's backlog.
+            subscription's backlog. If true and ``use_table_schema`` is
+            true, drops any fields in the message that are not part of
+            the BigQuery table schema when writing to BigQuery.
+            Otherwise, the write to BigQuery will fail.
         state (google.pubsub_v1.types.BigQueryConfig.State):
             Output only. An output-only field that
             indicates whether or not the subscription can
@@ -2685,12 +2778,13 @@ class BigQueryConfig(proto.Message):
 
 
 class BigtableConfig(proto.Message):
-    r"""Configuration for a Bigtable subscription. The Pub/Sub
-    message will be written to a Bigtable row as follows:
+    r"""Configuration for a Bigtable subscription. The Pub/Sub message will
+    be written to a Bigtable row as follows:
 
-    - row key: subscription name and message ID delimited by #.
-    - columns: message bytes written to a single column family
-      "data" with an   empty-string column qualifier.
+    - row key: subscription name, message ID hash, and message ID
+      delimited by ``#``.
+    - columns: message bytes written to a single column family ``data``
+      with an empty-string column qualifier.
     - cell timestamp: the message publish timestamp.
 
     Attributes:
@@ -2738,16 +2832,17 @@ class BigtableConfig(proto.Message):
                 The subscription can actively send messages
                 to Bigtable.
             NOT_FOUND (2):
-                Cannot write to Bigtable because the
-                instance, table, or app profile does not exist.
+                Unused in the current implementation.
+                Placeholder for future use.
             APP_PROFILE_MISCONFIGURED (3):
-                Cannot write to Bigtable because the app
-                profile is not configured for single-cluster
-                routing.
+                Unused in the current implementation.
+                Placeholder for future use.
             PERMISSION_DENIED (4):
                 Cannot write to Bigtable because of permission denied
                 errors. This can happen if:
 
+                - The Bigtable instance, table, or app profile does not
+                  exist.
                 - The Pub/Sub service agent has not been granted the
                   `appropriate Bigtable IAM permission
                   bigtable.tables.mutateRows <{$universe.dns_names.final_documentation_domain}/bigtable/docs/access-control#permissions>`__
@@ -2755,10 +2850,10 @@ class BigtableConfig(proto.Message):
                   project
                   (`instructions <{$universe.dns_names.final_documentation_domain}/service-usage/docs/enable-disable>`__)
             SCHEMA_MISMATCH (5):
-                Cannot write to Bigtable because of a missing
-                column family ("data") or if there is no
-                structured row key for the subscription name +
-                message ID.
+                Cannot write to Bigtable because of a missing column family
+                (``data``), or if there is no structured row key for the
+                subscription name + message ID, if because the app profile
+                is not configured for single-cluster routing.
             IN_TRANSIT_LOCATION_RESTRICTION (6):
                 Cannot write to the destination because enforce_in_transit
                 is set to true and the destination locations are not in the
@@ -3587,16 +3682,11 @@ class CreateSnapshotRequest(proto.Message):
             Optional. See `Creating and managing
             labels <https://cloud.google.com/pubsub/docs/labels>`__.
         tags (MutableMapping[str, str]):
-            Optional. Input only. Immutable. Tag
-            keys/values directly bound to this resource. For
-            example:
-
-              "123/environment": "production",
-              "123/costCenter": "marketing"
-            See
-            https://docs.cloud.google.com/pubsub/docs/tags
-            for more information on using tags with Pub/Sub
-            resources.
+            Optional. Input only. Immutable. Tag keys/values directly
+            bound to this resource. For example: "123/environment":
+            "production", "123/costCenter": "marketing" See
+            https://{$universe.dns_names.final_documentation_domain}/pubsub/docs/tags
+            for more information on using tags with Pub/Sub resources.
     """
 
     name: str = proto.Field(

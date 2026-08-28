@@ -7603,6 +7603,10 @@ def test_create_schema_rest_call_success(request_type):
         "name": "name_value",
         "type_": 1,
         "definition": "definition_value",
+        "compiled_proto_schema": {
+            "root_message": "root_message_value",
+            "compiled_bytes": b"compiled_bytes_blob",
+        },
         "revision_id": "revision_id_value",
         "revision_create_time": {"seconds": 751, "nanos": 543},
     }

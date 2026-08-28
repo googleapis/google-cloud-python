@@ -2355,6 +2355,25 @@
         }
       }
     },
+    "ManagedRulesets": {
+      "clients": {
+        "rest": {
+          "libraryClient": "ManagedRulesetsClient",
+          "rpcs": {
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            }
+          }
+        }
+      }
+    },
     "NetworkAttachments": {
       "clients": {
         "rest": {

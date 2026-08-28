@@ -2253,7 +2253,8 @@ class ReportDefinition(proto.Message):
                 Corresponds to "Demand subchannel value" in the Ad Manager
                 UI (when showing API fields).
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``ENUM``
             DEMAND_SUBCHANNEL_NAME (23):
@@ -2261,7 +2262,8 @@ class ReportDefinition(proto.Message):
 
                 Corresponds to "Demand subchannel" in the Ad Manager UI.
 
-                Compatible with the following report types: ``HISTORICAL``
+                Compatible with the following report types: ``HISTORICAL``,
+                ``ON_PLATFORM_MULTICALL``
 
                 Data format: ``STRING``
             DEVICE (226):
@@ -2561,6 +2563,15 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``STRING``
+            HIGH_ENGAGEMENT_ADS_ALLOWED (838):
+                High engagement ads allowed.
+
+                Corresponds to "High engagement ads allowed" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``BOOLEAN``
             HOUR (100):
                 Breaks down reporting data by hour in one day.
 
@@ -5188,6 +5199,24 @@ class ReportDefinition(proto.Message):
                 Compatible with the following report types: ``HISTORICAL``
 
                 Data format: ``STRING``
+            WEB_INTERSTITIAL_TRIGGER_TYPE (826):
+                Web interstitial trigger type.
+
+                Corresponds to "Web interstitial trigger type value" in the
+                Ad Manager UI (when showing API fields).
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``ENUM``
+            WEB_INTERSTITIAL_TRIGGER_TYPE_NAME (827):
+                Localized name of the web interstitial trigger type.
+
+                Corresponds to "Web interstitial trigger type" in the Ad
+                Manager UI.
+
+                Compatible with the following report types: ``HISTORICAL``
+
+                Data format: ``STRING``
             WEB_PROPERTY_CODE (730):
                 Web property code
 
@@ -6761,6 +6790,7 @@ class ReportDefinition(proto.Message):
         HBT_YIELD_PARTNER_NAME = 660
         HEADER_BIDDER_INTEGRATION_TYPE = 718
         HEADER_BIDDER_INTEGRATION_TYPE_NAME = 719
+        HIGH_ENGAGEMENT_ADS_ALLOWED = 838
         HOUR = 100
         IMPRESSION_COUNTING_METHOD = 577
         IMPRESSION_COUNTING_METHOD_NAME = 578
@@ -7032,6 +7062,8 @@ class ReportDefinition(proto.Message):
         VIDEO_SDK_VERSION_NAME = 441
         VIDEO_STITCHER_TYPE = 752
         VIDEO_STITCHER_TYPE_NAME = 753
+        WEB_INTERSTITIAL_TRIGGER_TYPE = 826
+        WEB_INTERSTITIAL_TRIGGER_TYPE_NAME = 827
         WEB_PROPERTY_CODE = 730
         WEEK = 5
         YIELD_GROUP_BUYER_NAME = 184
@@ -13269,7 +13301,7 @@ class ReportDefinition(proto.Message):
                     The entire previous 6 calendar months
                     preceding the calendar month the report is run.
                 LAST_12_MONTHS (20):
-                    The entire previous 6 calendar months
+                    The entire previous 12 calendar months
                     preceding the calendar month the report is run.
                 ALL_AVAILABLE (21):
                     From 3 years before the report is run, to the

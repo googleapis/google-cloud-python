@@ -16,15 +16,15 @@ version: v0.39.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: 8856eed71a9cb2b9829d2617ee57fe2d8871a691
-    sha256: 54104af35306b605a97f7d1b98b9b96f4a507cd18322b44d81f62eca17969b3a
+    commit: 50aad1b835b0b1fd3acec6af91d9c9735787fe11
+    sha256: e58f3198fb96392a89b2850cca67882456f8d231ea4849f16cfb5551a012789d
 tools:
   pip:
     - name: black
       version: 23.7.0
       package: black[jupyter]==23.7.0
     - name: gapic-generator
-      version: 1.37.1
+      version: 1.39.0
     - name: isort
       version: 5.11.0
     - name: nox
@@ -554,6 +554,7 @@ libraries:
   - name: google-cloud-biglake-hive
     version: 0.3.2
     apis:
+      - path: google/cloud/biglake/hive/v1
       - path: google/cloud/biglake/hive/v1beta
     python:
       default_version: v1beta
@@ -1998,6 +1999,19 @@ libraries:
     python:
       library_type: GAPIC_COMBO
       metadata_name_override: speech
+      default_version: v1
+  - name: google-cloud-sql
+    version: 0.0.0
+    apis:
+      - path: google/cloud/sql/v1
+      - path: google/cloud/sql/v1beta4
+    copyright_year: "2026"
+    python:
+      opt_args_by_api:
+        google/cloud/sql/v1:
+          - resource-name-alias=backupdr.googleapis.com/Backup:BackupDRBackup
+        google/cloud/sql/v1beta4:
+          - resource-name-alias=backupdr.googleapis.com/Backup:BackupDRBackup
       default_version: v1
   - name: google-cloud-storage
     version: 3.14.0
