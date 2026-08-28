@@ -484,10 +484,10 @@ def system(session, test_type):
             "Credentials or emulator host must be set via environment variable"
         )
 
-    if os.environ.get("RUN_COMPLIANCE_TESTS", "true") == "false" and not os.environ.get(
+    if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false" and not os.environ.get(
         "SPANNER_EMULATOR_HOST", ""
     ):
-        session.skip("RUN_COMPLIANCE_TESTS is set to false, skipping")
+        session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
 
     if test_type == "system" and session.python not in SYSTEM_TEST_PYTHON_VERSIONS:
         session.skip("Standard system tests configured to run exclusively on 3.12")
