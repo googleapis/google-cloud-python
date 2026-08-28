@@ -231,7 +231,7 @@ class _SetDeleteRow(Row):
         else:
             delete_kwargs = {}
             if time_range is not None:
-                delete_kwargs["time_range"] = time_range.to_pb()
+                delete_kwargs["time_range"] = time_range._to_pb()
 
             to_append = []
             for column in columns:
@@ -602,7 +602,7 @@ class ConditionalRow(_SetDeleteRow):
         resp = data_client.check_and_mutate_row(
             table_name=self._table.name,
             row_key=self._row_key,
-            predicate_filter=self._filter.to_pb(),
+            predicate_filter=self._filter._to_pb(),
             app_profile_id=self._table._app_profile_id,
             true_mutations=true_mutations,
             false_mutations=false_mutations,

@@ -88,6 +88,10 @@ class DataformRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_checkout_workspace_branch(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_commit_repository_changes(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -176,6 +180,14 @@ class DataformRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_branch(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_branch(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_folder(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -228,6 +240,14 @@ class DataformRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_fetch_current_workspace_branch(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_fetch_current_workspace_branch(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_fetch_file_diff(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -265,6 +285,14 @@ class DataformRestInterceptor:
                 return request, metadata
 
             def post_fetch_repository_history(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_fetch_workspace_branches(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_fetch_workspace_branches(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -580,6 +608,14 @@ class DataformRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_sync_workspace_refs(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_sync_workspace_refs(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_test_iam_permissions(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -701,6 +737,20 @@ class DataformRestInterceptor:
         `post_cancel_workflow_invocation_with_metadata`.
         """
         return response, metadata
+
+    def pre_checkout_workspace_branch(
+        self,
+        request: dataform.CheckoutWorkspaceBranchRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.CheckoutWorkspaceBranchRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for checkout_workspace_branch
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
 
     def pre_commit_repository_changes(
         self,
@@ -1234,6 +1284,52 @@ class DataformRestInterceptor:
         """
         return response, metadata
 
+    def pre_delete_branch(
+        self,
+        request: dataform.DeleteBranchRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.DeleteBranchRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for delete_branch
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_delete_branch(
+        self, response: dataform.DeleteBranchResponse
+    ) -> dataform.DeleteBranchResponse:
+        """Post-rpc interceptor for delete_branch
+
+        DEPRECATED. Please use the `post_delete_branch_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_delete_branch` interceptor runs
+        before the `post_delete_branch_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_branch_with_metadata(
+        self,
+        response: dataform.DeleteBranchResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dataform.DeleteBranchResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_branch
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_delete_branch_with_metadata`
+        interceptor in new development instead of the `post_delete_branch` interceptor.
+        When both interceptors are used, this `post_delete_branch_with_metadata` interceptor runs after the
+        `post_delete_branch` interceptor. The (possibly modified) response returned by
+        `post_delete_branch` will be passed to
+        `post_delete_branch_with_metadata`.
+        """
+        return response, metadata
+
     def pre_delete_folder(
         self,
         request: dataform.DeleteFolderRequest,
@@ -1475,6 +1571,58 @@ class DataformRestInterceptor:
         before they are sent to the Dataform server.
         """
         return request, metadata
+
+    def pre_fetch_current_workspace_branch(
+        self,
+        request: dataform.FetchCurrentWorkspaceBranchRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.FetchCurrentWorkspaceBranchRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for fetch_current_workspace_branch
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_fetch_current_workspace_branch(
+        self, response: dataform.FetchCurrentWorkspaceBranchResponse
+    ) -> dataform.FetchCurrentWorkspaceBranchResponse:
+        """Post-rpc interceptor for fetch_current_workspace_branch
+
+        DEPRECATED. Please use the `post_fetch_current_workspace_branch_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_fetch_current_workspace_branch` interceptor runs
+        before the `post_fetch_current_workspace_branch_with_metadata` interceptor.
+        """
+        return response
+
+    def post_fetch_current_workspace_branch_with_metadata(
+        self,
+        response: dataform.FetchCurrentWorkspaceBranchResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.FetchCurrentWorkspaceBranchResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for fetch_current_workspace_branch
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_current_workspace_branch_with_metadata`
+        interceptor in new development instead of the `post_fetch_current_workspace_branch` interceptor.
+        When both interceptors are used, this `post_fetch_current_workspace_branch_with_metadata` interceptor runs after the
+        `post_fetch_current_workspace_branch` interceptor. The (possibly modified) response returned by
+        `post_fetch_current_workspace_branch` will be passed to
+        `post_fetch_current_workspace_branch_with_metadata`.
+        """
+        return response, metadata
 
     def pre_fetch_file_diff(
         self,
@@ -1719,6 +1867,56 @@ class DataformRestInterceptor:
         `post_fetch_repository_history` interceptor. The (possibly modified) response returned by
         `post_fetch_repository_history` will be passed to
         `post_fetch_repository_history_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_fetch_workspace_branches(
+        self,
+        request: dataform.FetchWorkspaceBranchesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.FetchWorkspaceBranchesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for fetch_workspace_branches
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_fetch_workspace_branches(
+        self, response: dataform.FetchWorkspaceBranchesResponse
+    ) -> dataform.FetchWorkspaceBranchesResponse:
+        """Post-rpc interceptor for fetch_workspace_branches
+
+        DEPRECATED. Please use the `post_fetch_workspace_branches_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_fetch_workspace_branches` interceptor runs
+        before the `post_fetch_workspace_branches_with_metadata` interceptor.
+        """
+        return response
+
+    def post_fetch_workspace_branches_with_metadata(
+        self,
+        response: dataform.FetchWorkspaceBranchesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.FetchWorkspaceBranchesResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for fetch_workspace_branches
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_fetch_workspace_branches_with_metadata`
+        interceptor in new development instead of the `post_fetch_workspace_branches` interceptor.
+        When both interceptors are used, this `post_fetch_workspace_branches_with_metadata` interceptor runs after the
+        `post_fetch_workspace_branches` interceptor. The (possibly modified) response returned by
+        `post_fetch_workspace_branches` will be passed to
+        `post_fetch_workspace_branches_with_metadata`.
         """
         return response, metadata
 
@@ -3598,6 +3796,56 @@ class DataformRestInterceptor:
         """
         return response, metadata
 
+    def pre_sync_workspace_refs(
+        self,
+        request: dataform.SyncWorkspaceRefsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.SyncWorkspaceRefsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for sync_workspace_refs
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Dataform server.
+        """
+        return request, metadata
+
+    def post_sync_workspace_refs(
+        self, response: dataform.SyncWorkspaceRefsResponse
+    ) -> dataform.SyncWorkspaceRefsResponse:
+        """Post-rpc interceptor for sync_workspace_refs
+
+        DEPRECATED. Please use the `post_sync_workspace_refs_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the Dataform server but before
+        it is returned to user code. This `post_sync_workspace_refs` interceptor runs
+        before the `post_sync_workspace_refs_with_metadata` interceptor.
+        """
+        return response
+
+    def post_sync_workspace_refs_with_metadata(
+        self,
+        response: dataform.SyncWorkspaceRefsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dataform.SyncWorkspaceRefsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for sync_workspace_refs
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the Dataform server but before it is returned to user code.
+
+        We recommend only using this `post_sync_workspace_refs_with_metadata`
+        interceptor in new development instead of the `post_sync_workspace_refs` interceptor.
+        When both interceptors are used, this `post_sync_workspace_refs_with_metadata` interceptor runs after the
+        `post_sync_workspace_refs` interceptor. The (possibly modified) response returned by
+        `post_sync_workspace_refs` will be passed to
+        `post_sync_workspace_refs_with_metadata`.
+        """
+        return response, metadata
+
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
@@ -4423,6 +4671,118 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     },
                 )
             return resp
+
+    class _CheckoutWorkspaceBranch(
+        _BaseDataformRestTransport._BaseCheckoutWorkspaceBranch, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.CheckoutWorkspaceBranch")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.CheckoutWorkspaceBranchRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ):
+            r"""Call the checkout workspace branch method over HTTP.
+
+            Args:
+                request (~.dataform.CheckoutWorkspaceBranchRequest):
+                    The request object. ``CheckoutWorkspaceBranch`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = _BaseDataformRestTransport._BaseCheckoutWorkspaceBranch._get_http_options()
+
+            request, metadata = self._interceptor.pre_checkout_workspace_branch(
+                request, metadata
+            )
+            transcoded_request = _BaseDataformRestTransport._BaseCheckoutWorkspaceBranch._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDataformRestTransport._BaseCheckoutWorkspaceBranch._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDataformRestTransport._BaseCheckoutWorkspaceBranch._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1beta1.DataformClient.CheckoutWorkspaceBranch",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "CheckoutWorkspaceBranch",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._CheckoutWorkspaceBranch._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
 
     class _CommitRepositoryChanges(
         _BaseDataformRestTransport._BaseCommitRepositoryChanges, DataformRestStub
@@ -6130,6 +6490,158 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
+    class _DeleteBranch(_BaseDataformRestTransport._BaseDeleteBranch, DataformRestStub):
+        def __hash__(self):
+            return hash("DataformRestTransport.DeleteBranch")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.DeleteBranchRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> dataform.DeleteBranchResponse:
+            r"""Call the delete branch method over HTTP.
+
+            Args:
+                request (~.dataform.DeleteBranchRequest):
+                    The request object. ``DeleteBranch`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.dataform.DeleteBranchResponse:
+                    ``DeleteBranch`` response message.
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseDeleteBranch._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_branch(request, metadata)
+            transcoded_request = (
+                _BaseDataformRestTransport._BaseDeleteBranch._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = _BaseDataformRestTransport._BaseDeleteBranch._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDataformRestTransport._BaseDeleteBranch._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1beta1.DataformClient.DeleteBranch",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "DeleteBranch",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._DeleteBranch._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.DeleteBranchResponse()
+            pb_resp = dataform.DeleteBranchResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_branch(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_branch_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.DeleteBranchResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1beta1.DataformClient.delete_branch",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "DeleteBranch",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _DeleteFolder(_BaseDataformRestTransport._BaseDeleteFolder, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.DeleteFolder")
@@ -7357,6 +7869,158 @@ class DataformRestTransport(_BaseDataformRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+    class _FetchCurrentWorkspaceBranch(
+        _BaseDataformRestTransport._BaseFetchCurrentWorkspaceBranch, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.FetchCurrentWorkspaceBranch")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.FetchCurrentWorkspaceBranchRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> dataform.FetchCurrentWorkspaceBranchResponse:
+            r"""Call the fetch current workspace
+            branch method over HTTP.
+
+                Args:
+                    request (~.dataform.FetchCurrentWorkspaceBranchRequest):
+                        The request object. Request message for ``FetchCurrentWorkspaceBranch``
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.dataform.FetchCurrentWorkspaceBranchResponse:
+                        Response message for ``FetchCurrentWorkspaceBranch``
+                    method.
+
+            """
+
+            http_options = _BaseDataformRestTransport._BaseFetchCurrentWorkspaceBranch._get_http_options()
+
+            request, metadata = self._interceptor.pre_fetch_current_workspace_branch(
+                request, metadata
+            )
+            transcoded_request = _BaseDataformRestTransport._BaseFetchCurrentWorkspaceBranch._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDataformRestTransport._BaseFetchCurrentWorkspaceBranch._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1beta1.DataformClient.FetchCurrentWorkspaceBranch",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "FetchCurrentWorkspaceBranch",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._FetchCurrentWorkspaceBranch._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.FetchCurrentWorkspaceBranchResponse()
+            pb_resp = dataform.FetchCurrentWorkspaceBranchResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_fetch_current_workspace_branch(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = (
+                self._interceptor.post_fetch_current_workspace_branch_with_metadata(
+                    resp, response_metadata
+                )
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        dataform.FetchCurrentWorkspaceBranchResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1beta1.DataformClient.fetch_current_workspace_branch",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "FetchCurrentWorkspaceBranch",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _FetchFileDiff(
         _BaseDataformRestTransport._BaseFetchFileDiff, DataformRestStub
     ):
@@ -8089,6 +8753,152 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     extra={
                         "serviceName": "google.cloud.dataform.v1beta1.Dataform",
                         "rpcName": "FetchRepositoryHistory",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _FetchWorkspaceBranches(
+        _BaseDataformRestTransport._BaseFetchWorkspaceBranches, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.FetchWorkspaceBranches")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.FetchWorkspaceBranchesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> dataform.FetchWorkspaceBranchesResponse:
+            r"""Call the fetch workspace branches method over HTTP.
+
+            Args:
+                request (~.dataform.FetchWorkspaceBranchesRequest):
+                    The request object. Request message for ``FetchWorkspaceBranches`` method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.dataform.FetchWorkspaceBranchesResponse:
+                    Response message for ``FetchWorkspaceBranches`` method.
+            """
+
+            http_options = _BaseDataformRestTransport._BaseFetchWorkspaceBranches._get_http_options()
+
+            request, metadata = self._interceptor.pre_fetch_workspace_branches(
+                request, metadata
+            )
+            transcoded_request = _BaseDataformRestTransport._BaseFetchWorkspaceBranches._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDataformRestTransport._BaseFetchWorkspaceBranches._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1beta1.DataformClient.FetchWorkspaceBranches",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "FetchWorkspaceBranches",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._FetchWorkspaceBranches._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.FetchWorkspaceBranchesResponse()
+            pb_resp = dataform.FetchWorkspaceBranchesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_fetch_workspace_branches(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_fetch_workspace_branches_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.FetchWorkspaceBranchesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1beta1.DataformClient.fetch_workspace_branches",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "FetchWorkspaceBranches",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -14102,6 +14912,160 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
+    class _SyncWorkspaceRefs(
+        _BaseDataformRestTransport._BaseSyncWorkspaceRefs, DataformRestStub
+    ):
+        def __hash__(self):
+            return hash("DataformRestTransport.SyncWorkspaceRefs")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: dataform.SyncWorkspaceRefsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> dataform.SyncWorkspaceRefsResponse:
+            r"""Call the sync workspace refs method over HTTP.
+
+            Args:
+                request (~.dataform.SyncWorkspaceRefsRequest):
+                    The request object. ``SyncWorkspaceRefs`` request message.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.dataform.SyncWorkspaceRefsResponse:
+                    ``SyncWorkspaceRefs`` response message.
+            """
+
+            http_options = (
+                _BaseDataformRestTransport._BaseSyncWorkspaceRefs._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_sync_workspace_refs(
+                request, metadata
+            )
+            transcoded_request = _BaseDataformRestTransport._BaseSyncWorkspaceRefs._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDataformRestTransport._BaseSyncWorkspaceRefs._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDataformRestTransport._BaseSyncWorkspaceRefs._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataform_v1beta1.DataformClient.SyncWorkspaceRefs",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "SyncWorkspaceRefs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataformRestTransport._SyncWorkspaceRefs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dataform.SyncWorkspaceRefsResponse()
+            pb_resp = dataform.SyncWorkspaceRefsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_sync_workspace_refs(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_sync_workspace_refs_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataform.SyncWorkspaceRefsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataform_v1beta1.DataformClient.sync_workspace_refs",
+                    extra={
+                        "serviceName": "google.cloud.dataform.v1beta1.Dataform",
+                        "rpcName": "SyncWorkspaceRefs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _TestIamPermissions(
         _BaseDataformRestTransport._BaseTestIamPermissions, DataformRestStub
     ):
@@ -15355,6 +16319,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
         )  # type: ignore
 
     @property
+    def checkout_workspace_branch(
+        self,
+    ) -> Callable[[dataform.CheckoutWorkspaceBranchRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CheckoutWorkspaceBranch(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
     def commit_repository_changes(
         self,
     ) -> Callable[
@@ -15466,6 +16440,14 @@ class DataformRestTransport(_BaseDataformRestTransport):
         return self._CreateWorkspace(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_branch(
+        self,
+    ) -> Callable[[dataform.DeleteBranchRequest], dataform.DeleteBranchResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteBranch(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_folder(
         self,
     ) -> Callable[[dataform.DeleteFolderRequest], empty_pb2.Empty]:
@@ -15552,6 +16534,19 @@ class DataformRestTransport(_BaseDataformRestTransport):
         return self._DeleteWorkspace(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def fetch_current_workspace_branch(
+        self,
+    ) -> Callable[
+        [dataform.FetchCurrentWorkspaceBranchRequest],
+        dataform.FetchCurrentWorkspaceBranchResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._FetchCurrentWorkspaceBranch(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
     def fetch_file_diff(
         self,
     ) -> Callable[[dataform.FetchFileDiffRequest], dataform.FetchFileDiffResponse]:
@@ -15599,6 +16594,19 @@ class DataformRestTransport(_BaseDataformRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchRepositoryHistory(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
+
+    @property
+    def fetch_workspace_branches(
+        self,
+    ) -> Callable[
+        [dataform.FetchWorkspaceBranchesRequest],
+        dataform.FetchWorkspaceBranchesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._FetchWorkspaceBranches(
             self._session, self._host, self._interceptor
         )  # type: ignore
 
@@ -15962,6 +16970,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def sync_workspace_refs(
+        self,
+    ) -> Callable[
+        [dataform.SyncWorkspaceRefsRequest], dataform.SyncWorkspaceRefsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SyncWorkspaceRefs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def test_iam_permissions(

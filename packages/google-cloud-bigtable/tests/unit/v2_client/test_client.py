@@ -414,6 +414,7 @@ def test_client_veneer_data_client_not_initialized():
 
 def test_client_veneer_data_client_not_initialized_w_client_info():
     import copy
+
     from google.api_core.gapic_v1.client_info import ClientInfo
 
     from google.cloud.bigtable import __version__

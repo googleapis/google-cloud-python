@@ -1,7 +1,7 @@
 {
-  "packages/bigframes": "2.48.0",
-  "packages/google-cloud-workloadidentity": "0.1.0",
   "packages/google-cloud-ftp": "0.1.0",
+  "packages/google-cloud-workloadidentity": "0.1.0",
   "packages/google-crc32c": "1.8.0",
+  "packages/google-maps-mapmanagement": "0.1.0",
   "preview-packages/google-cloud-compute": "1.51.0-preview.1"
 }

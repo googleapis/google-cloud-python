@@ -57,6 +57,7 @@ from google.apps.chat_v1.types import (
     event_payload,
     group,
     history_state,
+    markup_syntax,
     matched_url,
     membership,
     message,

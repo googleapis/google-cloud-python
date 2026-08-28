@@ -53,10 +53,9 @@ class CreateSubscriberRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource where this
-            subscriber will be created. Format:
-            projects/{project} Example:
-            projects/my-project-123
+            Required. The parent resource where this subscriber will be
+            created. Format: projects/{project_number} Example:
+            projects/1234567890
         subscriber (google.devicesandservices.health_v4.types.CreateSubscriberPayload):
             Required. The subscriber to create.
         subscriber_id (str):
@@ -270,7 +269,7 @@ class ListSubscriptionsRequest(proto.Message):
             - ``data_type``
 
             The ``user`` identifier (e.g., ``user1`` in ``users/user1``)
-            refers to the public ``healthUserId``
+            refers to the public ``health_user_id``
 
             Example: user = "users/user1" Example: user = "users/user1"
             OR user = "users/user2" Example: user = "users/user1" AND
@@ -500,13 +499,13 @@ class Subscription(proto.Message):
             /`a-z <[a-z0-9-]{2,34}[a-z0-9]>`__/) or system-generated
             otherwise.
         data_types (MutableSequence[str]):
-            Optional. Data types subscribed to.
-            A subscriber will only receive notifications for
-            data types that are declared here.
-            A subscription can only subscribe to the data
-            types of the subscriber. Supported data types
-            are: "altitude", "distance", "floors", "sleep",
-            "steps", "weight".
+            Optional. Data types subscribed to. A subscriber will only
+            receive notifications for data types that are declared here.
+            A subscription can only subscribe to the data types of the
+            subscriber. The values should be in the format
+            "users/{health_user_id}/dataTypes/{data_type}" where
+            ``{data_type}`` is one of "altitude", "distance", "floors",
+            "sleep", "steps", "weight".
         user (str):
             Immutable. The resource name of the user for whom this
             subscription is active. Format: ``users/{user}`` where

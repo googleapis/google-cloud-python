@@ -620,6 +620,20 @@ class SupportEventSubscriptionServiceRestTransport(
                 Returns:
                     ~.gcs_support_event_subscription.SupportEventSubscription:
                         A support event subscription.
+
+                    You can also manage support event subscriptions using
+                    other tools:
+
+                    - ```gcloud support support-event-subscriptions`` </sdk/gcloud/reference/support/support-event-subscriptions>`__
+                      (or
+                      ```gcloud beta`` </sdk/gcloud/reference/beta/support/support-event-subscriptions>`__
+                      for beta)
+                    - `Terraform
+                      ``google_cloud_support_support_event_subscription`` <https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription>`__
+                      (or `google-beta
+                      provider <https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription>`__
+                      for beta)
+
             """
 
             http_options = _BaseSupportEventSubscriptionServiceRestTransport._BaseCreateSupportEventSubscription._get_http_options()
@@ -780,6 +794,20 @@ class SupportEventSubscriptionServiceRestTransport(
                 Returns:
                     ~.support_event_subscription.SupportEventSubscription:
                         A support event subscription.
+
+                    You can also manage support event subscriptions using
+                    other tools:
+
+                    - ```gcloud support support-event-subscriptions`` </sdk/gcloud/reference/support/support-event-subscriptions>`__
+                      (or
+                      ```gcloud beta`` </sdk/gcloud/reference/beta/support/support-event-subscriptions>`__
+                      for beta)
+                    - `Terraform
+                      ``google_cloud_support_support_event_subscription`` <https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription>`__
+                      (or `google-beta
+                      provider <https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription>`__
+                      for beta)
+
             """
 
             http_options = _BaseSupportEventSubscriptionServiceRestTransport._BaseDeleteSupportEventSubscription._get_http_options()
@@ -1054,6 +1082,20 @@ class SupportEventSubscriptionServiceRestTransport(
                 Returns:
                     ~.support_event_subscription.SupportEventSubscription:
                         A support event subscription.
+
+                    You can also manage support event subscriptions using
+                    other tools:
+
+                    - ```gcloud support support-event-subscriptions`` </sdk/gcloud/reference/support/support-event-subscriptions>`__
+                      (or
+                      ```gcloud beta`` </sdk/gcloud/reference/beta/support/support-event-subscriptions>`__
+                      for beta)
+                    - `Terraform
+                      ``google_cloud_support_support_event_subscription`` <https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription>`__
+                      (or `google-beta
+                      provider <https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription>`__
+                      for beta)
+
             """
 
             http_options = _BaseSupportEventSubscriptionServiceRestTransport._BaseGetSupportEventSubscription._get_http_options()
@@ -1367,6 +1409,20 @@ class SupportEventSubscriptionServiceRestTransport(
                 Returns:
                     ~.support_event_subscription.SupportEventSubscription:
                         A support event subscription.
+
+                    You can also manage support event subscriptions using
+                    other tools:
+
+                    - ```gcloud support support-event-subscriptions`` </sdk/gcloud/reference/support/support-event-subscriptions>`__
+                      (or
+                      ```gcloud beta`` </sdk/gcloud/reference/beta/support/support-event-subscriptions>`__
+                      for beta)
+                    - `Terraform
+                      ``google_cloud_support_support_event_subscription`` <https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription>`__
+                      (or `google-beta
+                      provider <https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription>`__
+                      for beta)
+
             """
 
             http_options = _BaseSupportEventSubscriptionServiceRestTransport._BaseUndeleteSupportEventSubscription._get_http_options()
@@ -1530,6 +1586,20 @@ class SupportEventSubscriptionServiceRestTransport(
                 Returns:
                     ~.gcs_support_event_subscription.SupportEventSubscription:
                         A support event subscription.
+
+                    You can also manage support event subscriptions using
+                    other tools:
+
+                    - ```gcloud support support-event-subscriptions`` </sdk/gcloud/reference/support/support-event-subscriptions>`__
+                      (or
+                      ```gcloud beta`` </sdk/gcloud/reference/beta/support/support-event-subscriptions>`__
+                      for beta)
+                    - `Terraform
+                      ``google_cloud_support_support_event_subscription`` <https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_support_support_event_subscription>`__
+                      (or `google-beta
+                      provider <https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/cloud_support_support_event_subscription>`__
+                      for beta)
+
             """
 
             http_options = _BaseSupportEventSubscriptionServiceRestTransport._BaseUpdateSupportEventSubscription._get_http_options()

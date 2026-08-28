@@ -78,6 +78,7 @@ from google.apps.chat_v1.types.event_payload import (
 )
 from google.apps.chat_v1.types.group import Group
 from google.apps.chat_v1.types.history_state import HistoryState
+from google.apps.chat_v1.types.markup_syntax import MarkupSyntax
 from google.apps.chat_v1.types.matched_url import MatchedUrl
 from google.apps.chat_v1.types.membership import (
     CreateMembershipRequest,
@@ -234,6 +235,7 @@ __all__ = (
     "SpaceUpdatedEventData",
     "Group",
     "HistoryState",
+    "MarkupSyntax",
     "MatchedUrl",
     "CreateMembershipRequest",
     "DeleteMembershipRequest",

@@ -2762,7 +2762,11 @@ def test_set_iam_policy_rest_flattened():
             project="project_value",
             resource="resource_value",
             global_set_policy_request_resource=compute.GlobalSetPolicyRequest(
-                bindings=[compute.Binding(binding_id="binding_id_value")]
+                bindings=[
+                    compute.Binding(
+                        condition=compute.Expr(description="description_value")
+                    )
+                ]
             ),
         )
         mock_args.update(sample_request)
@@ -2804,7 +2808,11 @@ def test_set_iam_policy_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             resource="resource_value",
             global_set_policy_request_resource=compute.GlobalSetPolicyRequest(
-                bindings=[compute.Binding(binding_id="binding_id_value")]
+                bindings=[
+                    compute.Binding(
+                        condition=compute.Expr(description="description_value")
+                    )
+                ]
             ),
         )
 
@@ -3912,7 +3920,6 @@ def test_get_iam_policy_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = compute.Policy(
             etag="etag_value",
-            iam_owned=True,
             version=774,
         )
 
@@ -3931,7 +3938,6 @@ def test_get_iam_policy_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Policy)
     assert response.etag == "etag_value"
-    assert response.iam_owned is True
     assert response.version == 774
 
 
@@ -4428,7 +4434,6 @@ def test_set_iam_policy_rest_call_success(request_type):
     request_init["global_set_policy_request_resource"] = {
         "bindings": [
             {
-                "binding_id": "binding_id_value",
                 "condition": {
                     "description": "description_value",
                     "expression": "expression_value",
@@ -4449,20 +4454,14 @@ def test_set_iam_policy_rest_call_success(request_type):
                                 "exempted_members_value1",
                                 "exempted_members_value2",
                             ],
-                            "ignore_child_exemptions": True,
                             "log_type": "log_type_value",
                         }
-                    ],
-                    "exempted_members": [
-                        "exempted_members_value1",
-                        "exempted_members_value2",
                     ],
                     "service": "service_value",
                 }
             ],
             "bindings": {},
             "etag": "etag_value",
-            "iam_owned": True,
             "version": 774,
         },
     }
@@ -4548,7 +4547,6 @@ def test_set_iam_policy_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = compute.Policy(
             etag="etag_value",
-            iam_owned=True,
             version=774,
         )
 
@@ -4567,7 +4565,6 @@ def test_set_iam_policy_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Policy)
     assert response.etag == "etag_value"
-    assert response.iam_owned is True
     assert response.version == 774
 
 

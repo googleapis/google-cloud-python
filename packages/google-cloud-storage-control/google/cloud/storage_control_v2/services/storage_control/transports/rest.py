@@ -131,6 +131,14 @@ class StorageControlRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_disable_rapid_cache(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_disable_rapid_cache(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_anywhere_cache(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -1929,6 +1937,24 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
         ) -> storage_control.AnywhereCache:
             raise NotImplementedError(
                 "Method DisableAnywhereCache is not available over REST transport"
+            )
+
+    class _DisableRapidCache(
+        _BaseStorageControlRestTransport._BaseDisableRapidCache, StorageControlRestStub
+    ):
+        def __hash__(self):
+            return hash("StorageControlRestTransport.DisableRapidCache")
+
+        def __call__(
+            self,
+            request: storage_control.DisableRapidCacheRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            raise NotImplementedError(
+                "Method DisableRapidCache is not available over REST transport"
             )
 
     class _GetAnywhereCache(
@@ -4729,6 +4755,14 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DisableAnywhereCache(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def disable_rapid_cache(
+        self,
+    ) -> Callable[[storage_control.DisableRapidCacheRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DisableRapidCache(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_anywhere_cache(
