@@ -184,8 +184,7 @@ def print_summary_table(ps, title, request_count):
 
 
 def run_all(argv=None):
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    output_dir = script_dir if os.path.exists(os.path.join(script_dir, "README.md")) else "/usr/local/google/home/suvham/workspace/cloudPython/google-cloud-python/packages/google-cloud-spanner/profiler_results"
+    output_dir = os.path.dirname(os.path.abspath(__file__)) or os.getcwd()
     os.makedirs(output_dir, exist_ok=True)
 
     print(f"Initializing Spanner Client for {PROJECT} / {INSTANCE} / {DATABASE}...")

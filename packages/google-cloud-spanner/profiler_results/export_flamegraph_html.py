@@ -303,8 +303,7 @@ def generate_flamegraph_html(prof_path, html_path, title):
 
 
 def main():
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    profile_dir = script_dir if os.path.exists(os.path.join(script_dir, "spanner_point_select_c1.prof")) else "/usr/local/google/home/suvham/workspace/cloudPython/google-cloud-python/packages/google-cloud-spanner/profiler_results"
+    profile_dir = os.path.dirname(os.path.abspath(__file__)) or os.getcwd()
 
     scenarios = [
         ("spanner_point_select_c1.prof", "spanner_point_select_c1.html", "Scenario 1: Point Select (Concurrency = 1) - Real Spanner"),
