@@ -318,61 +318,84 @@ class AsyncAuthorizedSession:
                         url, method, data, headers, actual_timeout, **kwargs
                     )
                 )
-                if response.status_code == http_client.UNAUTHORIZED:
-                    if getattr(self, "is_mtls", False) and any(
-                        prefix in url for prefix in MTLS_URL_PREFIXES
-                    ):
-                        # Snapshot the stale certificate state BEFORE acquiring the lock.
-                        # This represents the cert that caused the 401 rejection.
-                        stale_cert = self._cached_cert
-
-                        # Wait in line to acquire the lock
-                        async with self._mtls_rotation_lock:
-                            # Check Did another coroutine already reconfigure mTLS 
-                            if self._cached_cert != stale_cert:
-                                # Yes! Another request already updated the channel
-                                pass
-                            else:
-                                try:
-                                    (
-                                        call_cert_bytes,
-                                        call_key_bytes,
-                                        cached_fingerprint,
-                                        current_cert_fingerprint,
-                                    ) = await mtls._run_in_executor(
-                                        google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response,
-                                        self._cached_cert,
-                                    )
-                                    if cached_fingerprint != current_cert_fingerprint:
-                                        try:
-                                            _LOGGER.info(
-                                                "Client certificate has changed, reconfiguring mTLS "
-                                                "channel."
-                                            )
-                                            if self._mtls_init_task and self._mtls_init_task.done():
-                                                self._mtls_init_task = None
-                                            await self.configure_mtls_channel(
-                                                lambda: (call_cert_bytes, call_key_bytes)
-                                            )
-                                            continue
-                                        except Exception as e:
-                                            _LOGGER.error("Failed to reconfigure mTLS channel: %s", e)
-                                            raise exceptions.MutualTLSChannelError(
-                                                "Failed to reconfigure mTLS channel"
-                                            ) from e
-                                    else:
-                                        _LOGGER.info(
-                                            "Skipping reconfiguration of mTLS channel because the client"
-                                            " certificate has not changed."
-                                        )
-                                except Exception as e:
-                                    _LOGGER.warning(
-                                        "Failed to check client certificate parameters: %s. Proceeding with original response.",
-                                        e,
-                                    )
 
                 if response.status_code not in transport.DEFAULT_RETRYABLE_STATUS_CODES:
                     break
+        
+        if response.status_code == http_client.UNAUTHORIZED:
+            _auth_retry_count = kwargs.pop("_auth_retry_count", 0)
+            if _auth_retry_count < 2:
+                is_streaming = data is not None and isinstance(data, (collections.abc.Iterator, collections.abc.AsyncIterable)) or hasattr(data, "read")
+                if getattr(self, "is_mtls", False) and any(
+                    prefix in url for prefix in MTLS_URL_PREFIXES
+                ):
+                    # Snapshot the stale certificate state BEFORE acquiring the lock.
+                    # This represents the cert that caused the 401 rejection.
+                    stale_cert = self._cached_cert
+
+                    # Wait in line to acquire the lock
+                    async with self._mtls_rotation_lock:
+                        # Check Did another coroutine already reconfigure mTLS 
+                        if self._cached_cert != stale_cert:
+                            # Yes! Another request already updated the channel
+                            pass
+                        else:
+                            try:
+                                (
+                                    call_cert_bytes,
+                                    call_key_bytes,
+                                    cached_fingerprint,
+                                    current_cert_fingerprint,
+                                ) = await mtls._run_in_executor(
+                                    google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response,
+                                    self._cached_cert,
+                                )
+                                if cached_fingerprint != current_cert_fingerprint:
+                                    try:
+                                        _LOGGER.info(
+                                            "Client certificate has changed, reconfiguring mTLS "
+                                            "channel."
+                                        )
+                                        if self._mtls_init_task and self._mtls_init_task.done():
+                                            self._mtls_init_task = None
+                                        await self.configure_mtls_channel(
+                                            lambda: (call_cert_bytes, call_key_bytes)
+                                        )
+                                        continue
+                                    except Exception as e:
+                                        _LOGGER.error("Failed to reconfigure mTLS channel: %s", e)
+                                        raise exceptions.MutualTLSChannelError(
+                                            "Failed to reconfigure mTLS channel"
+                                        ) from e
+                                else:
+                                    _LOGGER.info(
+                                        "Skipping reconfiguration of mTLS channel because the client"
+                                        " certificate has not changed."
+                                    )
+                            except Exception as e:
+                                _LOGGER.warning(
+                                    "Failed to check client certificate parameters: %s. Proceeding with original response.",
+                                    e,
+                                )
+                if is_streaming:
+                    return response
+                if hasattr(response, "close"):
+                    if asyncio.iscoroutinefunction(response.close):
+                        await response.close()
+                    else:
+                        response.close()
+                await self._credentials.refresh(self._auth_request)
+                kwargs["_auth_retry_count"] = _auth_retry_count + 1
+                return await self.request(
+                    method,
+                    url,
+                    data=data,
+                    headers=headers,
+                    max_allowed_time=max_allowed_time,
+                    timeout=timeout,
+                    total_attempts=total_attempts,
+                    **kwargs
+                )
         return response
 
     @functools.wraps(request)
