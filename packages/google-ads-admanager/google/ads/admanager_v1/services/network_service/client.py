@@ -61,10 +61,15 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.ads.admanager_v1.services.network_service import pagers
-from google.ads.admanager_v1.types import network_messages, network_service
+from google.ads.admanager_v1.types import (
+    network_messages,
+    network_service,
+    third_party_data_declaration,
+)
 
 from .transports.base import DEFAULT_CLIENT_INFO, NetworkServiceTransport
 from .transports.rest import NetworkServiceRestTransport
@@ -242,6 +247,23 @@ class NetworkServiceClient(metaclass=NetworkServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def default_third_party_data_declaration_path(
+        network_code: str,
+    ) -> str:
+        """Returns a fully-qualified default_third_party_data_declaration string."""
+        return "networks/{network_code}/defaultThirdPartyDataDeclaration".format(
+            network_code=network_code,
+        )
+
+    @staticmethod
+    def parse_default_third_party_data_declaration_path(path: str) -> Dict[str, str]:
+        """Parses a default_third_party_data_declaration path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/defaultThirdPartyDataDeclaration$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def network_path(
         network_code: str,
     ) -> str:
@@ -254,6 +276,28 @@ class NetworkServiceClient(metaclass=NetworkServiceClientMeta):
     def parse_network_path(path: str) -> Dict[str, str]:
         """Parses a network path into its component segments."""
         m = re.match(r"^networks/(?P<network_code>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def third_party_company_path(
+        network_code: str,
+        third_party_company: str,
+    ) -> str:
+        """Returns a fully-qualified third_party_company string."""
+        return (
+            "networks/{network_code}/thirdPartyCompanies/{third_party_company}".format(
+                network_code=network_code,
+                third_party_company=third_party_company,
+            )
+        )
+
+    @staticmethod
+    def parse_third_party_company_path(path: str) -> Dict[str, str]:
+        """Parses a third_party_company path into its component segments."""
+        m = re.match(
+            r"^networks/(?P<network_code>.+?)/thirdPartyCompanies/(?P<third_party_company>.+?)$",
+            path,
+        )
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -923,6 +967,332 @@ class NetworkServiceClient(metaclass=NetworkServiceClientMeta):
             method=rpc,
             request=request,
             response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_network(
+        self,
+        request: Optional[Union[network_service.UpdateNetworkRequest, dict]] = None,
+        *,
+        network: Optional[network_messages.Network] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> network_messages.Network:
+        r"""Updates a ``Network`` object. Currently, only the network
+        display name can be updated.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ads import admanager_v1
+
+            def sample_update_network():
+                # Create a client
+                client = admanager_v1.NetworkServiceClient()
+
+                # Initialize request argument(s)
+                request = admanager_v1.UpdateNetworkRequest(
+                )
+
+                # Make the request
+                response = client.update_network(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.ads.admanager_v1.types.UpdateNetworkRequest, dict]):
+                The request object. Request for the ``UpdateNetwork`` method.
+            network (google.ads.admanager_v1.types.Network):
+                Required. The ``Network`` to update.
+
+                The ``Network``'s ``name`` is used to identify the
+                ``Network`` to update.
+
+                This corresponds to the ``network`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Optional. The list of fields to
+                update.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.ads.admanager_v1.types.Network:
+                The Network resource.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [network, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, network_service.UpdateNetworkRequest):
+            request = network_service.UpdateNetworkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if network is not None:
+                request.network = network
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_network]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("network.name", request.network.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def provision_test_network(
+        self,
+        request: Optional[
+            Union[network_service.ProvisionTestNetworkRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> network_messages.Network:
+        r"""Provisions a test network associated with the current user. Only
+        one test network can be provisioned per user.
+
+        Before the test network can be used, you must complete setup in
+        the Ad Manager UI. If the test network's owner is a service
+        account, you must add a non-service account user by calling
+        UserService.CreateUser.
+
+        Test networks are limited in the following ways:
+
+        - Test networks have a maximum of 10,000 objects per entity
+          type.
+        - Test networks cannot serve ads.
+        - Reports on serving data have zero rows.
+        - Forecast service results contain mock data.
+        - Test networks do not have Ad Manager 360 or premium features
+          enabled.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ads import admanager_v1
+
+            def sample_provision_test_network():
+                # Create a client
+                client = admanager_v1.NetworkServiceClient()
+
+                # Initialize request argument(s)
+                request = admanager_v1.ProvisionTestNetworkRequest(
+                )
+
+                # Make the request
+                response = client.provision_test_network(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.ads.admanager_v1.types.ProvisionTestNetworkRequest, dict]):
+                The request object. Request for the ``ProvisionTestNetwork`` method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.ads.admanager_v1.types.Network:
+                The Network resource.
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, network_service.ProvisionTestNetworkRequest):
+            request = network_service.ProvisionTestNetworkRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.provision_test_network]
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_default_third_party_data_declaration(
+        self,
+        request: Optional[
+            Union[network_service.GetDefaultThirdPartyDataDeclarationRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> network_messages.DefaultThirdPartyDataDeclaration:
+        r"""Returns the [DefaultThirdPartyDataDeclaration] for this network.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ads import admanager_v1
+
+            def sample_get_default_third_party_data_declaration():
+                # Create a client
+                client = admanager_v1.NetworkServiceClient()
+
+                # Initialize request argument(s)
+                request = admanager_v1.GetDefaultThirdPartyDataDeclarationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_default_third_party_data_declaration(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.ads.admanager_v1.types.GetDefaultThirdPartyDataDeclarationRequest, dict]):
+                The request object. Request for the ``GetDefaultThirdPartyDataDeclaration``
+                method.
+            name (str):
+                Required. Resource name of
+                DefaultThirdPartyDataDeclaration. Format:
+                networks/{network_code}/defaultThirdPartyDataDeclaration
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.ads.admanager_v1.types.DefaultThirdPartyDataDeclaration:
+                The DefaultThirdPartyDataDeclaration singleton resource.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(
+            request, network_service.GetDefaultThirdPartyDataDeclarationRequest
+        ):
+            request = network_service.GetDefaultThirdPartyDataDeclarationRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_default_third_party_data_declaration
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,

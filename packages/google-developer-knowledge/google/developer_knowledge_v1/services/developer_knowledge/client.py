@@ -898,6 +898,10 @@ class DeveloperKnowledgeClient(metaclass=DeveloperKnowledgeClientMeta):
                 Example:
                 ``documents/docs.cloud.google.com/storage/docs/creating-buckets``
 
+                The name must not exceed 500 characters; values longer
+                than 500 characters will result in an
+                ``INVALID_ARGUMENT`` error.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -911,9 +915,10 @@ class DeveloperKnowledgeClient(metaclass=DeveloperKnowledgeClientMeta):
 
         Returns:
             google.developer_knowledge_v1.types.Document:
-                A Document represents a piece of
-                content from the Developer Knowledge
-                corpus.
+                A Document represents a page of
+                documentation in the Developer Knowledge
+                corpus, like the page at
+                https://docs.cloud.google.com/storage/docs/creating-buckets.
 
         """
         # Create or coerce a protobuf request object.

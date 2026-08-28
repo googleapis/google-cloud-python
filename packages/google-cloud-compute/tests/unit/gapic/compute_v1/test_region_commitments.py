@@ -3298,6 +3298,10 @@ def test_insert_rest_call_success(request_type):
                 "reservation_sharing_policy": {
                     "service_share_type": "service_share_type_value"
                 },
+                "resource_metadata": {
+                    "api_version": "api_version_value",
+                    "resource_type": "resource_type_value",
+                },
                 "resource_policies": {},
                 "resource_status": {
                     "health_info": {
@@ -3816,6 +3820,10 @@ def test_update_rest_call_success(request_type):
                 "protection_tier": "protection_tier_value",
                 "reservation_sharing_policy": {
                     "service_share_type": "service_share_type_value"
+                },
+                "resource_metadata": {
+                    "api_version": "api_version_value",
+                    "resource_type": "resource_type_value",
                 },
                 "resource_policies": {},
                 "resource_status": {
