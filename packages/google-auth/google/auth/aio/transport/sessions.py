@@ -361,7 +361,6 @@ class AsyncAuthorizedSession:
                                         await self.configure_mtls_channel(
                                             lambda: (call_cert_bytes, call_key_bytes)
                                         )
-                                        continue
                                     except Exception as e:
                                         _LOGGER.error("Failed to reconfigure mTLS channel: %s", e)
                                         raise exceptions.MutualTLSChannelError(
