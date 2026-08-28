@@ -1,6 +1,10 @@
 """Converts Python cProfile / .prof files into standalone interactive HTML Flame Graphs.
 
-No external pip dependencies required - runs entirely on Python standard library.
+Fixes:
+- Uses global flamegraph() constructor with fallback and graceful error messaging
+- Dynamically resolves working directory
+- Lightweight JSON payload (~100-300 KB) for instant browser rendering
+- Zero external pip dependencies required
 """
 
 import io
@@ -17,50 +21,41 @@ def pstats_to_tree(pstats_file):
 
     all_funcs = ps.stats
 
-    # Build caller -> callee map and callee -> caller map
-    callees_map = {}  # caller -> {callee: (cc, nc, tt, ct)}
-    callers_map = {}  # callee -> {caller: (cc, nc, tt, ct)}
+    # Build caller -> callee map
+    callees_map = {}
 
     for func, (cc, nc, tt, ct, callers) in all_funcs.items():
         func_name = f"{func[0]}:{func[1]}({func[2]})"
-        callers_map[func_name] = callers
         for caller_func, caller_info in callers.items():
             if isinstance(caller_func, tuple):
                 c_name = f"{caller_func[0]}:{caller_func[1]}({caller_func[2]})"
             else:
                 c_name = str(caller_func)
             if c_name not in callees_map:
-                callees_map[c_name] = {}
-            callees_map[c_name][func_name] = caller_info
+                callees_map[c_name] = []
+            callees_map[c_name].append((func, ct, tt, cc))
 
-    # Find top entry functions (highest cumulative time)
+    # Sort callees by cumulative time
+    for c_name in callees_map:
+        callees_map[c_name].sort(key=lambda x: x[1], reverse=True)
+
     sorted_funcs = sorted(all_funcs.items(), key=lambda x: x[1][3], reverse=True)
+    total_time = ps.total_tt
+    min_cutoff = max(0.05, total_time * 0.008)
 
-    visited_path = set()
-
-    def build_node(func_tuple, current_depth=0, max_depth=30):
+    def build_node(func_tuple, visited, current_depth=0, max_depth=8):
         file_name, line_no, func_name = func_tuple
         node_id = f"{file_name}:{line_no}({func_name})"
         cc, nc, tt, ct, callers = all_funcs.get(func_tuple, (1, 1, 0, 0, {}))
 
         children = []
-        if current_depth < max_depth and node_id in callees_map and node_id not in visited_path:
-            visited_path.add(node_id)
-            for child_name, child_info in sorted(
-                callees_map[node_id].items(),
-                key=lambda x: x[1][3] if len(x[1]) > 3 else x[1][0],
-                reverse=True,
-            ):
-                child_tuple = None
-                for f_tup in all_funcs:
-                    if f"{f_tup[0]}:{f_tup[1]}({f_tup[2]})" == child_name:
-                        child_tuple = f_tup
-                        break
-                if child_tuple and child_tuple != func_tuple:
-                    child_node = build_node(child_tuple, current_depth + 1, max_depth)
+        if current_depth < max_depth and node_id in callees_map and node_id not in visited:
+            visited_next = visited | {node_id}
+            for child_tuple, child_ct, child_tt, child_cc in callees_map[node_id][:5]:
+                if child_ct >= min_cutoff and child_tuple != func_tuple:
+                    child_node = build_node(child_tuple, visited_next, current_depth + 1, max_depth)
                     if child_node["value"] > 0:
                         children.append(child_node)
-            visited_path.remove(node_id)
 
         return {
             "name": f"{func_name} [{file_name}:{line_no}]",
@@ -70,11 +65,11 @@ def pstats_to_tree(pstats_file):
             "children": children,
         }
 
-    # Find roots (top level runners)
+    # Find root entry points
     top_entries = []
     for func_tuple, (cc, nc, tt, ct, callers) in sorted_funcs:
         file_name = func_tuple[0]
-        if any(top_pattern in file_name for top_pattern in ["run_cpu_profiler_suite", "runners.py", "profile_suite"]):
+        if any(p in file_name for p in ["spanner_cpu_profile_suite", "run_point_select", "run_limit_1000", "runners.py", "app.py"]):
             top_entries.append(func_tuple)
             if len(top_entries) >= 3:
                 break
@@ -82,8 +77,7 @@ def pstats_to_tree(pstats_file):
     if not top_entries and sorted_funcs:
         top_entries = [sorted_funcs[0][0]]
 
-    root_children = [build_node(t, 1) for t in top_entries]
-    total_time = ps.total_tt
+    root_children = [build_node(t, set(), 1) for t in top_entries]
 
     root = {
         "name": f"Total Profiled Workload ({total_time:.3f}s)",
@@ -99,7 +93,6 @@ def generate_flamegraph_html(prof_path, html_path, title):
     """Generates a standalone, fully interactive HTML flame graph with D3-flame-graph."""
     tree_data, total_time, ps = pstats_to_tree(prof_path)
 
-    # Top 20 functions summary table
     s = io.StringIO()
     ps.stream = s
     ps.sort_stats("cumulative").print_stats(20)
@@ -195,6 +188,15 @@ def generate_flamegraph_html(prof_path, html_path, title):
       font-size: 13px;
       line-height: 1.4;
     }}
+    .error-box {{
+      display: none;
+      padding: 12px 16px;
+      background: #fce8e6;
+      color: #c5221f;
+      border-radius: 4px;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }}
   </style>
 </head>
 <body>
@@ -214,6 +216,7 @@ def generate_flamegraph_html(prof_path, html_path, title):
       <button class="secondary" onclick="clearSearch()">Clear</button>
       <button class="secondary" onclick="resetZoom()">Reset Zoom</button>
     </div>
+    <div id="error-box" class="error-box"></div>
     <div id="details">Hover over a function to view time and call metrics</div>
     <div id="chart"></div>
   </div>
@@ -228,42 +231,66 @@ def generate_flamegraph_html(prof_path, html_path, title):
   <script>
     const data = {json.dumps(tree_data)};
 
-    const flamegraph = d3.flamegraph()
-      .width(document.getElementById('chart').offsetWidth || 1100)
-      .cellHeight(20)
-      .transitionDuration(400)
-      .minFrameSize(2)
-      .transitionEase(d3.easeCubic)
-      .sort(true)
-      .title("")
-      .onClick(function (d) {{
-        console.info("Clicked on " + d.data.name);
-      }})
-      .setDetailsElement(document.getElementById("details"));
+    let flamegraphInstance = null;
 
-    d3.select("#chart")
-      .datum(data)
-      .call(flamegraph);
+    try {{
+      // Correct constructor resolution: global flamegraph() or d3.flamegraph()
+      const createFlamegraph = (typeof flamegraph === 'function') 
+        ? flamegraph 
+        : (typeof d3 !== 'undefined' && typeof d3.flamegraph === 'function' ? d3.flamegraph : null);
 
-    window.addEventListener('resize', () => {{
-      flamegraph.width(document.getElementById('chart').offsetWidth);
-      d3.select("#chart").call(flamegraph);
-    }});
+      if (!createFlamegraph) {{
+        throw new Error("Flamegraph library failed to load. Please check internet access for CDN scripts.");
+      }}
+
+      flamegraphInstance = createFlamegraph()
+        .width(document.getElementById('chart').offsetWidth || 1100)
+        .cellHeight(20)
+        .transitionDuration(400)
+        .minFrameSize(2)
+        .transitionEase(d3.easeCubic)
+        .sort(true)
+        .title("")
+        .onClick(function (d) {{
+          console.info("Clicked on " + d.data.name);
+        }})
+        .setDetailsElement(document.getElementById("details"));
+
+      d3.select("#chart")
+        .datum(data)
+        .call(flamegraphInstance);
+
+      window.addEventListener('resize', () => {{
+        if (flamegraphInstance) {{
+          flamegraphInstance.width(document.getElementById('chart').offsetWidth);
+          d3.select("#chart").call(flamegraphInstance);
+        }}
+      }});
+    }} catch (err) {{
+      console.error("Error initializing flamegraph:", err);
+      const errBox = document.getElementById("error-box");
+      errBox.style.display = "block";
+      errBox.textContent = "Error rendering flame graph: " + err.message;
+    }}
 
     function search() {{
       const term = document.getElementById("search").value;
-      if (term) {{
-        flamegraph.search(term);
+      if (term && flamegraphInstance) {{
+        flamegraphInstance.search(term);
       }}
     }}
 
     function clearSearch() {{
       document.getElementById("search").value = "";
-      flamegraph.clear();
+      if (flamegraphInstance) {{
+        flamegraphInstance.clear();
+      }}
     }}
 
     function resetZoom() {{
-      flamegraph.resetZoom();
+      if (flamegraphInstance) {{
+        flamegraphInstance.resetZoom();
+      }}
     }}
   </script>
 </body>
@@ -276,12 +303,13 @@ def generate_flamegraph_html(prof_path, html_path, title):
 
 
 def main():
-    profile_dir = "/usr/local/google/home/suvham/workspace/cloudPython/google-cloud-python/packages/google-cloud-spanner/profiler_results"
-    
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    profile_dir = script_dir if os.path.exists(os.path.join(script_dir, "spanner_point_select_c1.prof")) else "/usr/local/google/home/suvham/workspace/cloudPython/google-cloud-python/packages/google-cloud-spanner/profiler_results"
+
     scenarios = [
-        ("spanner_point_select_c1.prof", "spanner_point_select_c1.html", "Scenario 1: Point Select (Concurrency = 1)"),
-        ("spanner_point_select_c32.prof", "spanner_point_select_c32.html", "Scenario 2: Point Select (Concurrency = 32)"),
-        ("spanner_limit1000_c1.prof", "spanner_limit1000_c1.html", "Scenario 3: LIMIT 1000 Streaming Read (12 Columns)"),
+        ("spanner_point_select_c1.prof", "spanner_point_select_c1.html", "Scenario 1: Point Select (Concurrency = 1) - Real Spanner"),
+        ("spanner_point_select_c32.prof", "spanner_point_select_c32.html", "Scenario 2: Point Select (Concurrency = 32) - Real Spanner"),
+        ("spanner_limit1000_c1.prof", "spanner_limit1000_c1.html", "Scenario 3: LIMIT 1000 Read (11 Columns) - Real Spanner"),
     ]
 
     for prof_name, html_name, title in scenarios:

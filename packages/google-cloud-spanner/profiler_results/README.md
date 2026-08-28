@@ -1,16 +1,15 @@
-# Google Cloud Spanner Python Client - CPU Profiling Results
+# Google Cloud Spanner Python Client - CPU Profiling Results (Real Network RPCs)
 
-This directory contains CPU profiling data (`.prof` files), standalone interactive HTML flame graphs, and the benchmarking harness used to analyze CPU cycle consumption, event loop dynamics, and GIL bottlenecks across the request lifecycle of the Cloud Spanner Python client library.
+This directory contains real-world CPU profiling data (`.prof` files), standalone interactive HTML flame graphs, and the benchmarking harness used to analyze CPU cycle consumption, event loop dynamics, GAPIC/gRPC overhead, and GIL bottlenecks across the request lifecycle of the Cloud Spanner Python client library making actual network RPCs against Google Cloud Spanner.
 
 ---
 
 ## 1. Overview & Setup
 
-* **Benchmark Harness:** [`spanner_cpu_profile_suite.py`](./spanner_cpu_profile_suite.py)
-* **Flame Graph Exporter:** [`export_flamegraph_html.py`](./export_flamegraph_html.py) (Generates standalone HTML flame graphs with zero external dependencies)
-* **Target Table:** `AsyncBenchmarkTable` (12 distinct Spanner column types: `INT64`, `STRING`, `FLOAT64`, `BOOL`, `BYTES`, `ARRAY<STRING>`, `JSON`, `TIMESTAMP`).
+* **Benchmark Harness:** [`spanner_cpu_profile_suite.py`](./spanner_cpu_profile_suite.py) (Pure real Spanner network calls — **NO MOCKS, NO ARTIFICIAL SLEEP**)
+* **Flame Graph Exporter:** [`export_flamegraph_html.py`](./export_flamegraph_html.py) (Generates standalone HTML flame graphs with zero external pip dependencies)
+* **Target Table:** `AsyncBenchmarkTable` (11 columns: `id`, `field0`..`field9`) on project `span-cloud-testing`, instance `suvham-testing`, database `benchmark_db_async`.
 * **Connection Warmup:** 5 seconds pre-run before recording CPU ticks.
-* **Server Latency Simulation:** 5ms mock database sleep time per RPC.
 
 ---
 
@@ -18,99 +17,97 @@ This directory contains CPU profiling data (`.prof` files), standalone interacti
 
 You do **not** need `snakeviz` or any third-party pip packages to view these flame graphs. Simply open the generated `.html` files in any browser:
 
-| Scenario | Interactive Flame Graph (HTML) | Binary Profile Data (.prof) | Avg Client CPU / Query |
-| :--- | :--- | :--- | :---: |
-| **1. Point Select ($C=1$)** | [**`spanner_point_select_c1.html`**](./spanner_point_select_c1.html) | [`spanner_point_select_c1.prof`](./spanner_point_select_c1.prof) | **~1.26 ms** |
-| **2. Point Select ($C=32$)** | [**`spanner_point_select_c32.html`**](./spanner_point_select_c32.html) | [`spanner_point_select_c32.prof`](./spanner_point_select_c32.prof) | **~0.97 ms** |
-| **3. LIMIT 1000 Read (12 cols)** | [**`spanner_limit1000_c1.html`**](./spanner_limit1000_c1.html) | [`spanner_limit1000_c1.prof`](./spanner_limit1000_c1.prof) | **301.8 ms** |
+| Scenario | Interactive Flame Graph (HTML) | Binary Profile Data (.prof) | Requests (10s) | Avg Client CPU / Query |
+| :--- | :--- | :--- | :---: | :---: |
+| **1. Real Point Select ($C=1$)** | [**`spanner_point_select_c1.html`**](./spanner_point_select_c1.html) | [`spanner_point_select_c1.prof`](./spanner_point_select_c1.prof) | 24 | **~10.3 s cum** |
+| **2. Real Point Select ($C=32$)** | [**`spanner_point_select_c32.html`**](./spanner_point_select_c32.html) | [`spanner_point_select_c32.prof`](./spanner_point_select_c32.prof) | 733 | **~10.7 s cum** |
+| **3. Real LIMIT 1000 Read (11 cols)** | [**`spanner_limit1000_c1.html`**](./spanner_limit1000_c1.html) | [`spanner_limit1000_c1.prof`](./spanner_limit1000_c1.prof) | 17 (17k rows) | **~10.1 s cum** |
 
 ---
 
-## 3. Profiling Metrics Breakdown
+## 3. Real Profiling Metrics Breakdown
 
-### Scenario 1: Point Select (Concurrency = 1)
-* **Total Requests Recorded (10s):** 1,565 queries (~156 QPS)
-* **Total Profiled CPU Time:** 1.97 s (out of 9.99 s wall-clock time)
+### Scenario 1: Point Select ($C=1$, Real Network Calls)
+* **Total Requests Recorded (10s):** 24 queries
+* **Total Profiled CPU Time:** 10.30 s
 * **Top Bottlenecks:**
-  1. `_helpers._parse_value_pb` & type unpacking: ~35% of client CPU
-  2. `proto-plus` dynamic wrapping (`message.__init__`, `marshal.to_proto`): ~38% of client CPU
-  3. `Snapshot.execute_sql` & retry management: ~18% of client CPU
+  1. `_channel.py:_next` / `__next__`: **10.26 s cumulative** (gRPC C-Core socket polling & stream consumption)
+  2. `method.py:__call__`: **10.22 s cumulative** (GAPIC method wrapper & retry interception)
+  3. `streamed._consume_next`: **5.18 s cumulative** (Stream chunk processing)
+  4. `_thread.lock.acquire`: **5.14 s cumulative** (Lock acquisition in gRPC thread synchronization)
 
 ```
 ncalls    cumtime   filename:lineno(function)
-  1565     9.991    run_cpu_profiler_suite.py:run_single_query
-  3130     9.407    streamed.py:_consume_next
-  1565     8.020    time.sleep (5ms mock DB latency)
-  1565     0.721    streamed.py:_merge_values
- 23475     0.652    _helpers.py:_parse_value_pb
-  1565     0.544    snapshot.py:execute_sql
- 10955     0.425    proto/message.py:__init__
- 20345     0.371    proto/message.py:__getattr__
- 28170     0.277    proto/marshal.py:to_proto
+    24    10.297    spanner_cpu_profile_suite.py:run_point_select_query
+    72    10.256    _channel.py:__next__
+    72    10.255    _channel.py:_next
+    48    10.223    gapic_v1/method.py:__call__
+    48    10.191    gapic_v1/timeout.py:func_with_timeout
+    48     5.181    streamed.py:__iter__
+    48     5.180    streamed.py:_consume_next
+    48     5.175    snapshot.py:_restart_on_unavailable
+    72     5.170    grpc_helpers.py:__next__
+   640     5.140    _thread.lock:acquire
 ```
 
 ---
 
-### Scenario 2: Point Select (Concurrency = 32)
-* **Total Requests Recorded (10s):** 10,312 queries (~1,031 QPS)
-* **Total Profiled CPU Time:** 10.01 s
-* **Characteristics:** Overlapping 5ms I/O yields >1,000 QPS and keeps the CPU 100% saturated. The profile captures event loop scheduling (`base_events._run_once`, `events._run`, `_contextvars.Context.run`), which accounts for ~5–8% of CPU ticks.
-
-```
-ncalls    cumtime   filename:lineno(function)
-     1    10.007    asyncio/runners.py:run
-   808    10.005    asyncio/base_events.py:_run_once
- 20695     9.893    asyncio/events.py:_run
- 10344     9.771    run_cpu_profiler_suite.py:worker
- 10312     9.425    run_cpu_profiler_suite.py:run_single_query
- 20624     6.462    streamed.py:_consume_next
- 10312     3.618    streamed.py:_merge_values
-154680     3.265    _helpers.py:_parse_value_pb
- 10312     2.784    snapshot.py:execute_sql
-```
-
----
-
-### Scenario 3: LIMIT 1000 Read (12 Columns)
-* **Total Queries Recorded (10s):** 34 queries (**34,000 rows / 408,000 cells**)
-* **Total Profiled CPU Time:** 10.26 s (100% CPU bound)
-* **Average Client CPU / Query:** **301.8 ms of continuous CPU time**
+### Scenario 2: Point Select ($C=32$, Real Concurrent Threads)
+* **Total Requests Recorded (10s):** 733 queries across 32 concurrent threads (~73 QPS)
+* **Total Profiled CPU Time:** 10.66 s
 * **Top Bottlenecks:**
-  1. `_helpers._parse_value_pb`: **9.41 s cumulative** (92% of all CPU time)
-  2. `enums.__eq__`: **4.25 s cumulative** (2.21 million calls)
-  3. `datetime_helpers.from_rfc3339` / `_strptime`: **2.80 s cumulative** (68k calls)
-  4. `enum.__get__` / `_comparable`: **1.26 s cumulative** (2.21 million calls)
+  1. `threading.py:wait` & `join`: **63.5 s / 31.9 s cumulative** (Thread pool synchronization and worker coordination)
+  2. `grpc_helpers.__next__` / `_channel.__next__`: **24.7 s / 21.1 s cumulative** (gRPC transport stream dispatch across 32 threads)
+  3. `streamed._consume_next`: **11.01 s cumulative** (Chunk extraction and row decoding)
+  4. `pool.py:put` / `database.__exit__`: **10.66 s cumulative** (Session pool lock acquisition and checkout/return)
 
 ```
 ncalls    cumtime   filename:lineno(function)
-    34    10.260    run_cpu_profiler_suite.py:run_single_query
-   374    10.179    streamed.py:_consume_next
-   340     9.899    streamed.py:_merge_values
-510000     9.408    _helpers.py:_parse_value_pb
-2210000    4.245    proto/enums.py:__eq__
- 68000     2.798    datetime_helpers.py:from_rfc3339
- 68000     1.987    _strptime.py:strptime
-2210000    1.262    enum.py:__get__
+    33    94.157    spanner_cpu_profile_suite.py:<genexpr>
+    32    84.007    concurrent/futures/_base.py:result
+  4779    63.514    threading.py:wait
+    32    31.952    threading.py:join
+  2199    24.718    grpc_helpers.py:__next__
+  2199    21.136    _channel.py:__next__
+  1466    11.011    streamed.py:__iter__
+  1466    11.011    streamed.py:_consume_next
+   733    10.661    database.py:__exit__
+   733    10.658    pool.py:put
 ```
 
 ---
 
-## 4. Key Takeaways
+### Scenario 3: LIMIT 1000 Read (11 Columns, Real Streaming Response)
+* **Total Queries Recorded (10s):** 17 queries (**17,000 rows / 187,000 cells**)
+* **Total Profiled CPU Time:** 10.10 s
+* **Top Bottlenecks:**
+  1. `_channel._next` / `__next__`: **11.13 s cumulative** (Multi-chunk streaming HTTP/2 frame reception)
+  2. `gapic_v1.method.__call__`: **9.20 s cumulative** (GAPIC streaming call pipeline)
+  3. `streamed._consume_next`: **6.44 s cumulative** (Consuming streaming row chunks)
+  4. `_thread.lock.acquire`: **5.56 s cumulative** (gRPC background thread lock synchronization)
 
-1. **Large Result Sets are Purely CPU-Bound in Python:**
-   * Deserializing 1,000 rows across 12 columns consumes **~302 ms of CPU time per request** under the GIL.
-   * `proto-plus` dynamic field access (`get_rule`, `isinstance`, `to_python`) and dynamic type coercions (`from_rfc3339`) dominate execution.
-2. **Impact of Native Shared Core:**
-   * Offloading `PartialResultSet` chunk reassembly and row decoding to compiled native code (Rust/Go) avoids per-cell `PyObject` heap allocations, eliminating ~90%+ of this CPU cost.
+```
+ncalls    cumtime   filename:lineno(function)
+    51    11.134    _channel.py:__next__
+    51    11.134    _channel.py:_next
+    17    10.102    spanner_cpu_profile_suite.py:run_limit_1000_query
+    34     9.199    gapic_v1/method.py:__call__
+    34     9.182    gapic_v1/timeout.py:func_with_timeout
+ 17017     6.460    streamed.py:__iter__
+    34     6.435    streamed.py:_consume_next
+    51     5.585    grpc_helpers.py:__next__
+    17     5.573    client.py:execute_streaming_sql
+   471     5.565    _thread.lock:acquire
+```
 
 ---
 
-## 5. How to Re-Run the Benchmark Suite
+## 4. How to Re-Run on Any Machine
 
 ```bash
-# 1. Run benchmark suite (outputs .prof files)
+# 1. Run the real Spanner benchmark suite (generates .prof files)
 python3 spanner_cpu_profile_suite.py
 
-# 2. Export interactive HTML flame graphs (pure Python, zero dependencies)
+# 2. Export interactive HTML flame graphs (zero pip dependencies needed)
 python3 export_flamegraph_html.py
 ```
