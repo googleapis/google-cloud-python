@@ -524,6 +524,16 @@ def system(session, test_type):
             )
 
 
+@nox.session(python=SYSTEM_COMPLIANCE_MIGRATION_TEST_PYTHON_VERSIONS)
+@nox.parametrize(
+    "test_type",
+    ["compliance_14", "compliance_20"],
+)
+def compliance(session, test_type):
+    """Run SQLAlchemy dialect compliance test suite."""
+    system(session, test_type=test_type)
+
+
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
     """Run the type checker."""
