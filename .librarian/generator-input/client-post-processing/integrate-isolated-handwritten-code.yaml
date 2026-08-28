@@ -44,15 +44,14 @@ replacements:
       packages/google-cloud-vision/google/cloud/vision_v1p3beta1/__init__.py,
       packages/google-cloud-vision/google/cloud/vision_v1p4beta1/__init__.py,
     ]    
-    before: |
-      \)\n
-      __all__ = \(
+    before: '(?<!Feature = Feature\n\n\n)__all__ = \('
     after: |
-      )\n\n
       @add_single_feature_methods
       class ImageAnnotatorClient(VisionHelpers, IacImageAnnotatorClient):
           __doc__ = IacImageAnnotatorClient.__doc__
-          Feature = Feature\n\n
+          Feature = Feature
+
+
       __all__ = (
     count: 5
   - paths: [

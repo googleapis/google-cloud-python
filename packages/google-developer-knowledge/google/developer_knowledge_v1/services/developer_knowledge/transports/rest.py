@@ -28,6 +28,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.developer_knowledge_v1._compat import transcode_request
 from google.developer_knowledge_v1.types import developerknowledge
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -480,19 +481,16 @@ class DeveloperKnowledgeRestTransport(_BaseDeveloperKnowledgeRestTransport):
             """
 
             http_options = _BaseDeveloperKnowledgeRestTransport._BaseAnswerQuery._get_http_options()
-
             request, metadata = self._interceptor.pre_answer_query(request, metadata)
-            transcoded_request = _BaseDeveloperKnowledgeRestTransport._BaseAnswerQuery._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseDeveloperKnowledgeRestTransport._BaseAnswerQuery._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperKnowledgeRestTransport._BaseAnswerQuery._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperKnowledgeRestTransport._BaseAnswerQuery,
+                    "_BaseAnswerQuery__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -633,17 +631,18 @@ class DeveloperKnowledgeRestTransport(_BaseDeveloperKnowledgeRestTransport):
             """
 
             http_options = _BaseDeveloperKnowledgeRestTransport._BaseBatchGetDocuments._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_get_documents(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperKnowledgeRestTransport._BaseBatchGetDocuments._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperKnowledgeRestTransport._BaseBatchGetDocuments._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperKnowledgeRestTransport._BaseBatchGetDocuments,
+                    "_BaseBatchGetDocuments__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -785,15 +784,16 @@ class DeveloperKnowledgeRestTransport(_BaseDeveloperKnowledgeRestTransport):
             """
 
             http_options = _BaseDeveloperKnowledgeRestTransport._BaseGetDocument._get_http_options()
-
             request, metadata = self._interceptor.pre_get_document(request, metadata)
-            transcoded_request = _BaseDeveloperKnowledgeRestTransport._BaseGetDocument._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperKnowledgeRestTransport._BaseGetDocument._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperKnowledgeRestTransport._BaseGetDocument,
+                    "_BaseGetDocument__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -931,17 +931,18 @@ class DeveloperKnowledgeRestTransport(_BaseDeveloperKnowledgeRestTransport):
             """
 
             http_options = _BaseDeveloperKnowledgeRestTransport._BaseSearchDocumentChunks._get_http_options()
-
             request, metadata = self._interceptor.pre_search_document_chunks(
                 request, metadata
             )
-            transcoded_request = _BaseDeveloperKnowledgeRestTransport._BaseSearchDocumentChunks._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseDeveloperKnowledgeRestTransport._BaseSearchDocumentChunks._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseDeveloperKnowledgeRestTransport._BaseSearchDocumentChunks,
+                    "_BaseSearchDocumentChunks__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(

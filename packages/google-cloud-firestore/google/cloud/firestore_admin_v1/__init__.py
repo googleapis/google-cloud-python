@@ -64,3 +64,6 @@ __all__ = (
     "UpdateFieldRequest",
     "FirestoreAdminClient",
 )
+
+api_core.check_python_version("google.cloud.firestore_admin_v1")
+api_core.check_dependency_versions("google.cloud.firestore_admin_v1")

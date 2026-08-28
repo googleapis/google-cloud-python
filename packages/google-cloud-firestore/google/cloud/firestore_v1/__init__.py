@@ -188,3 +188,6 @@ __all__: List[str] = [
     "WriteBatch",
     "WriteOption",
 ]
+
+api_core.check_python_version("google.cloud.firestore_v1")
+api_core.check_dependency_versions("google.cloud.firestore_v1")

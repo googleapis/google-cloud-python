@@ -59,3 +59,6 @@ __all__ = (
     "TextEntry",
     "types",
 )
+
+api_core.check_python_version("google.cloud.logging_v2")
+api_core.check_dependency_versions("google.cloud.logging_v2")

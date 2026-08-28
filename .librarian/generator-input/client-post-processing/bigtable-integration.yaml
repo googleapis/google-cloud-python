@@ -252,14 +252,21 @@ replacements:
   - paths: [
       packages/google-cloud-bigtable/google/cloud/bigtable_admin_v2/__init__.py
     ]
-    before: '"UpdateTableRequest",\n\)\n\Z'
-    after: |
+    before: |-
+      "UpdateTableRequest",
+      \)
+
+      api_core\.check_python_version
+    after: |-
       "UpdateTableRequest",
       )
 
       from .overlay import *  # noqa: F403
 
       __all__ += overlay.__all__  # noqa: F405
+
+
+      api_core.check_python_version
     count: 1
   - paths: [
       packages/google-cloud-bigtable/google/cloud/bigtable_admin/__init__.py
