@@ -399,7 +399,7 @@ class AsyncAuthorizedSession:
                     return response
                 try:
                     await self._credentials.refresh(self._auth_request)
-                except exceptions.RefreshError as e:
+                except (exceptions.RefreshError, getattr(exceptions, "InvalidOperation", Exception)) as e:
                     _LOGGER.debug(
                         "Credential refresh failed, returning 401 response. Error: %s",
                         e,
