@@ -333,62 +333,68 @@ class AsyncAuthorizedSession:
                     )
                     or hasattr(data, "read")
                 )
-                if getattr(self, "is_mtls", False) and any(
-                    prefix in url for prefix in MTLS_URL_PREFIXES
-                ):
+                is_mtls_endpoint = False
+                if getattr(self, "is_mtls", False):
+                    hostname = urllib.parse.urlsplit(url).hostname
+                    if hostname:
+                        is_mtls_endpoint = any(
+                            hostname == prefix or hostname.endswith("." + prefix)
+                            for prefix in MTLS_URL_PREFIXES
+                        )
                     # Snapshot the stale certificate state BEFORE acquiring the lock.
                     # This represents the cert that caused the 401 rejection.
-                    stale_cert = self._cached_cert
-
-                    # Wait in line to acquire the lock
-                    async with self._mtls_rotation_lock:
-                        # Check Did another coroutine already reconfigure mTLS
-                        if self._cached_cert != stale_cert:
-                            # Yes! Another request already updated the channel
-                            pass
-                        else:
-                            try:
-                                (
-                                    call_cert_bytes,
-                                    call_key_bytes,
-                                    cached_fingerprint,
-                                    current_cert_fingerprint,
-                                ) = await mtls._run_in_executor(
-                                    google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response,
-                                    self._cached_cert,
-                                )
-                            except Exception as e:
-                                _LOGGER.warning(
-                                    "Failed to check client certificate parameters: %s. Proceeding with original response.",
-                                    e,
-                                )
+                    if is_mtls_endpoint:
+                        stale_cert = self._cached_cert
+    
+                        # Wait in line to acquire the lock
+                        async with self._mtls_rotation_lock:
+                            # Check Did another coroutine already reconfigure mTLS
+                            if self._cached_cert != stale_cert:
+                                # Yes! Another request already updated the channel
+                                pass
                             else:
-                                if cached_fingerprint != current_cert_fingerprint:
-                                    try:
-                                        _LOGGER.info(
-                                            "Client certificate has changed, reconfiguring mTLS "
-                                            "channel."
-                                        )
-                                        if (
-                                            self._mtls_init_task
-                                            and self._mtls_init_task.done()
-                                        ):
-                                            self._mtls_init_task = None
-                                        await self.configure_mtls_channel(
-                                            lambda: (call_cert_bytes, call_key_bytes)
-                                        )
-                                    except Exception as e:
-                                        _LOGGER.error(
-                                            "Failed to reconfigure mTLS channel: %s", e
-                                        )
-                                        raise exceptions.MutualTLSChannelError(
-                                            "Failed to reconfigure mTLS channel"
-                                        ) from e
-                                else:
-                                    _LOGGER.info(
-                                        "Skipping reconfiguration of mTLS channel because the client"
-                                        " certificate has not changed."
+                                try:
+                                    (
+                                        call_cert_bytes,
+                                        call_key_bytes,
+                                        cached_fingerprint,
+                                        current_cert_fingerprint,
+                                    ) = await mtls._run_in_executor(
+                                        google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response,
+                                        self._cached_cert,
                                     )
+                                except Exception as e:
+                                    _LOGGER.warning(
+                                        "Failed to check client certificate parameters: %s. Proceeding with original response.",
+                                        e,
+                                    )
+                                else:
+                                    if cached_fingerprint != current_cert_fingerprint:
+                                        try:
+                                            _LOGGER.info(
+                                                "Client certificate has changed, reconfiguring mTLS "
+                                                "channel."
+                                            )
+                                            if (
+                                                self._mtls_init_task
+                                                and self._mtls_init_task.done()
+                                            ):
+                                                self._mtls_init_task = None
+                                            await self.configure_mtls_channel(
+                                                lambda: (call_cert_bytes, call_key_bytes)
+                                            )
+                                        except Exception as e:
+                                            _LOGGER.error(
+                                                "Failed to reconfigure mTLS channel: %s", e
+                                            )
+                                            raise exceptions.MutualTLSChannelError(
+                                                "Failed to reconfigure mTLS channel"
+                                            ) from e
+                                    else:
+                                        _LOGGER.info(
+                                            "Skipping reconfiguration of mTLS channel because the client"
+                                            " certificate has not changed."
+                                        )
                 if is_streaming:
                     return response
                 if hasattr(response, "close"):
