@@ -397,11 +397,6 @@ class AsyncAuthorizedSession:
                                         )
                 if is_streaming:
                     return response
-                if hasattr(response, "close"):
-                    if asyncio.iscoroutinefunction(response.close):
-                        await response.close()
-                    else:
-                        response.close()
                 try:
                     await self._credentials.refresh(self._auth_request)
                 except exceptions.RefreshError as e:
@@ -410,6 +405,13 @@ class AsyncAuthorizedSession:
                         e,
                     )
                     return response
+
+                if hasattr(response, "close"):
+                    if asyncio.iscoroutinefunction(response.close):
+                        await response.close()
+                    else:
+                        response.close()
+                
                 kwargs["_auth_retry_count"] = _auth_retry_count + 1
                 return await self.request(
                     method,
