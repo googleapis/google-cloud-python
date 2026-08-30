@@ -389,6 +389,11 @@ class AsyncAuthorizedSession:
                                             _LOGGER.error(
                                                 "Failed to reconfigure mTLS channel: %s", e
                                             )
+                                            if hasattr(response, "close"):
+                                                if asyncio.iscoroutinefunction(response.close):
+                                                    await response.close()
+                                                else:
+                                                    response.close()
                                             raise exceptions.MutualTLSChannelError(
                                                 "Failed to reconfigure mTLS channel"
                                             ) from e
