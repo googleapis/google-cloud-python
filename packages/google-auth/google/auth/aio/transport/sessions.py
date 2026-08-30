@@ -149,6 +149,7 @@ class AsyncAuthorizedSession:
         self._is_mtls = False
         self._mtls_init_task = None
         self._cached_cert = None
+        self._old_auth_requests = []
         if _auth_request is None:
             raise exceptions.TransportError(
                 "`auth_request` must either be configured or the external package `aiohttp` must be installed to use the default value."
@@ -211,12 +212,8 @@ class AsyncAuthorizedSession:
 
                             old_auth_request = self._auth_request
                             self._auth_request = AiohttpRequest(session=new_session)
+                            self._old_auth_requests.append(old_auth_request)
 
-                            try:
-                                await old_auth_request.close()
-                            except Exception:
-                                # Suppress so it doesn't abort the mTLS configuration
-                                pass
                         else:
                             is_mtls = False
                             warnings.warn(
@@ -713,3 +710,10 @@ class AsyncAuthorizedSession:
             except asyncio.CancelledError:
                 pass
         await self._auth_request.close()
+
+        for old_request in self._old_auth_requests:
+            try:
+                await old_request.close()
+            except Exception:
+                pass
+        self._old_auth_requests.clear()
