@@ -352,7 +352,6 @@ class AsyncAuthorizedSession:
                         async with self._mtls_rotation_lock:
                             # Check Did another coroutine already reconfigure mTLS
                             if self._cached_cert != stale_cert:
-                                # Yes! Another request already updated the channel
                                 pass
                             else:
                                 try:
@@ -370,6 +369,7 @@ class AsyncAuthorizedSession:
                                         "Failed to check client certificate parameters: %s. Proceeding with original response.",
                                         e,
                                     )
+                                    return response
                                 else:
                                     if cached_fingerprint != current_cert_fingerprint:
                                         try:
