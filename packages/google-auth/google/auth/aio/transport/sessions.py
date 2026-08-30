@@ -297,6 +297,7 @@ class AsyncAuthorizedSession:
         )
         if headers is None:
             headers = {}
+        start_time = time.monotonic()
         async with timeout_guard(max_allowed_time) as with_timeout:
             await with_timeout(
                 # Note: before_request will attempt to refresh credentials if expired.
@@ -417,12 +418,14 @@ class AsyncAuthorizedSession:
                         response.close()
                 
                 kwargs["_auth_retry_count"] = _auth_retry_count + 1
+                elapsed_time = time.monotonic() - start_time
+                remaining_time = max(0.0, max_allowed_time - elapsed_time)
                 return await self.request(
                     method,
                     url,
                     data=data,
                     headers=headers,
-                    max_allowed_time=max_allowed_time,
+                    max_allowed_time=remaining_time,
                     timeout=timeout,
                     total_attempts=total_attempts,
                     **kwargs,
