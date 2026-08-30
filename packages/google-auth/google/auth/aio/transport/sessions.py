@@ -154,7 +154,7 @@ class AsyncAuthorizedSession:
                 "`auth_request` must either be configured or the external package `aiohttp` must be installed to use the default value."
             )
         self._auth_request = _auth_request
-        self._mtls_rotation_lock = asyncio.Lock()
+        self._mtls_rotation_lock = None
 
     async def configure_mtls_channel(self, client_cert_callback=None):
         """Configure the client certificate and key for SSL connection.
@@ -345,8 +345,10 @@ class AsyncAuthorizedSession:
                     # This represents the cert that caused the 401 rejection.
                     if is_mtls_endpoint:
                         stale_cert = self._cached_cert
-    
-                        # Wait in line to acquire the lock
+                
+                        if self._mtls_rotation_lock is None:
+                            self._mtls_rotation_lock = asyncio.Lock()
+
                         async with self._mtls_rotation_lock:
                             # Check Did another coroutine already reconfigure mTLS
                             if self._cached_cert != stale_cert:
