@@ -3,7 +3,7 @@ SQLAlchemy Dialect for BigQuery
 
 |GA| |pypi| |versions|
 
-`SQLALchemy Dialects`_
+`SQLAlchemy Dialects`_
 
 - `Dialect Documentation`_
 - `Product Documentation`_

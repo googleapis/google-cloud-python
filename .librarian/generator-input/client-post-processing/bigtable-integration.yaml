@@ -211,10 +211,10 @@ replacements:
       packages/google-cloud-bigtable/testing/constraints-3.10.txt,
     ]
     before: |
-        google-api-core==2.25.0
+        google-api-core==2.28.0
         google-auth==2.14.1
     after: |
-        google-api-core==2.25.0
+        google-api-core==2.28.0
         google-cloud-core==2.0.0
         grpc-google-iam-v1==0.14.2
         google-crc32c==1.6.0
@@ -252,7 +252,9 @@ replacements:
   - paths: [
       packages/google-cloud-bigtable/google/cloud/bigtable_admin_v2/__init__.py
     ]
-    before: '"UpdateTableRequest",\n\)\n\Z'
+    before: |
+      "UpdateTableRequest",\n\)\n
+      api_core.check_python_version\("google.cloud.bigtable_admin_v2"\)
     after: |
       "UpdateTableRequest",
       )
@@ -260,6 +262,8 @@ replacements:
       from .overlay import *  # noqa: F403
 
       __all__ += overlay.__all__  # noqa: F405
+
+      api_core.check_python_version("google.cloud.bigtable_admin_v2")
     count: 1
   - paths: [
       packages/google-cloud-bigtable/google/cloud/bigtable_admin/__init__.py
@@ -665,6 +669,7 @@ replacements:
 
           hostport = "localhost:8789"
           session.env["BIGTABLE_EMULATOR_HOST"] = hostport
+          session.env["GOOGLE_CLOUD_PROJECT"] = "emulated-test-project"
 
           p = subprocess.Popen(
               ["gcloud", "beta", "emulators", "bigtable", "start", "--host-port", hostport]
