@@ -23,7 +23,9 @@ from typing import (
     Iterator,
     Optional,
     Sequence,
+    TypeAlias,
     TypeVar,
+    cast,
     get_args,
 )
 
@@ -43,7 +45,7 @@ _STREAM_WRAP_CLASSES = (grpc.UnaryStreamMultiCallable, grpc.StreamStreamMultiCal
 P = TypeVar("P")
 
 # Type alias representing any client-side gRPC interceptor
-ClientInterceptor = (
+ClientInterceptor: TypeAlias = (
     grpc.UnaryUnaryClientInterceptor
     | grpc.UnaryStreamClientInterceptor
     | grpc.StreamUnaryClientInterceptor
@@ -54,10 +56,10 @@ ClientInterceptor = (
 _CLIENT_INTERCEPTOR_CLASSES = get_args(ClientInterceptor)
 
 # Type alias representing a channel-wrapping callable
-ChannelWrapperCallable = Callable[[grpc.Channel], grpc.Channel]
+ChannelWrapperCallable: TypeAlias = Callable[[grpc.Channel], grpc.Channel]
 
 # Generic type alias representing any channel wrapper (interceptor or callable)
-ChannelWrapper = ClientInterceptor | ChannelWrapperCallable
+ChannelWrapper: TypeAlias = ClientInterceptor | ChannelWrapperCallable
 
 
 def _patch_callable_name(callable_):
@@ -476,7 +478,8 @@ def apply_channel_wrappers(
         if isinstance(wrapper, _CLIENT_INTERCEPTOR_CLASSES):
             modified_channel = grpc.intercept_channel(modified_channel, wrapper)
         elif callable(wrapper):
-            modified_channel = wrapper(modified_channel)
+            wrapper_callable = cast(ChannelWrapperCallable, wrapper)
+            modified_channel = wrapper_callable(modified_channel)
         else:
             raise TypeError(
                 f"Expected ChannelWrapper (ClientInterceptor or Callable[[Channel], Channel]), got {type(wrapper).__name__}"
