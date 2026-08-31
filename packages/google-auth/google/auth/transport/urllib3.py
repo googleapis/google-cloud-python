@@ -438,6 +438,11 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             and _credential_refresh_attempt < self._max_refresh_attempts
         ):
             if response.status == http_client.UNAUTHORIZED:
+                MTLS_URL_PREFIXES = ["mtls.googleapis.com", "mtls.sandbox.googleapis.com"]
+                use_mtls = getattr(self, "_is_mtls", False) and any(
+                    prefix in url for prefix in MTLS_URL_PREFIXES
+                )
+            
                 if use_mtls:
                     with self._reauth_lock:
                         (
