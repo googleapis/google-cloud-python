@@ -808,11 +808,13 @@ def check_use_client_cert():
     return False
 
 
-def check_parameters_for_unauthorized_response(cached_cert):
+def check_parameters_for_unauthorized_response(cached_cert, client_cert_callback=None):
     """Returns the cached and current cert fingerprint for reconfiguring mTLS.
 
     Args:
         cached_cert(bytes): The cached client certificate.
+        client_cert_callback(Optional[Callable[[], (bytes, bytes)]]): 
+            The optional callback that returns the client certificate and private key bytes.
 
     Returns:
         bytes: The client callback cert bytes.
@@ -820,7 +822,10 @@ def check_parameters_for_unauthorized_response(cached_cert):
         str: The base64-encoded SHA256 cached fingerprint.
         str: The base64-encoded SHA256 current cert fingerprint.
     """
-    call_cert_bytes, call_key_bytes = call_client_cert_callback()
+    if client_cert_callback:
+        call_cert_bytes, call_key_bytes = client_cert_callback()
+    else:
+        call_cert_bytes, call_key_bytes = call_client_cert_callback()
     cert_obj = _agent_identity_utils.parse_certificate(call_cert_bytes)
     current_cert_fingerprint = _agent_identity_utils.calculate_certificate_fingerprint(
         cert_obj
