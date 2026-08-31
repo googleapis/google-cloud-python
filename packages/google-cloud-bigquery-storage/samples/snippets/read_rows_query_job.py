@@ -16,6 +16,7 @@
 from typing import Iterable, Optional
 
 import pyarrow
+
 from google.cloud import bigquery, bigquery_storage_v1
 
 
