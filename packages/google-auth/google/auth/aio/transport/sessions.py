@@ -149,6 +149,7 @@ class AsyncAuthorizedSession:
         self._is_mtls = False
         self._mtls_init_task = None
         self._cached_cert = None
+        self._client_cert_callback = None 
         self._old_auth_requests = []
         if _auth_request is None:
             raise exceptions.TransportError(
@@ -183,6 +184,7 @@ class AsyncAuthorizedSession:
                 creation failed for any reason.
         """
         if self._mtls_init_task is None:
+            self._client_cert_callback = client_cert_callback
 
             async def _do_configure():
                 # Run the blocking check in an executor
@@ -361,6 +363,7 @@ class AsyncAuthorizedSession:
                                     ) = await mtls._run_in_executor(
                                         google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response,
                                         self._cached_cert,
+                                        self._client_cert_callback,
                                     )
                                 except Exception as e:
                                     _LOGGER.warning(
