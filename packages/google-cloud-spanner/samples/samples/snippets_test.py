@@ -216,7 +216,9 @@ def test_create_and_update_instance_default_backup_schedule_type(
 def test_create_instance_partition(capsys, instance_partition_instance_id):
     # Unable to use create_instance since it has editions set where partitions are unsupported.
     # The minimal requirement for editions is ENTERPRISE_PLUS for the paritions to get supported.
-    snippets.create_instance_with_processing_units(instance_partition_instance_id, 1000)
+    retry_429(snippets.create_instance_with_processing_units)(
+        instance_partition_instance_id, 1000
+    )
     retry_429(snippets.create_instance_partition)(
         instance_partition_instance_id, "my-instance-partition"
     )
