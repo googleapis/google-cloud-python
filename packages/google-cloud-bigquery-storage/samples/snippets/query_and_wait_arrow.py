@@ -15,9 +15,9 @@
 # [START bigquerystorage_query_and_wait_arrow]
 from typing import Iterable
 
+import pyarrow
 from google.cloud import bigquery
 from google.cloud.bigquery import enums
-import pyarrow
 
 
 def query_and_wait_arrow() -> Iterable[pyarrow.RecordBatch]:

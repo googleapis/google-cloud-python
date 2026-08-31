@@ -13,11 +13,10 @@
 # limitations under the License.
 
 # [START bigquerystorage_read_rows_query_job]
-from typing import Iterable
+from typing import Iterable, Optional
 
-from google.cloud import bigquery
-from google.cloud import bigquery_storage_v1
 import pyarrow
+from google.cloud import bigquery, bigquery_storage_v1
 
 
 def read_rows_query_job() -> Iterable[pyarrow.RecordBatch]:
