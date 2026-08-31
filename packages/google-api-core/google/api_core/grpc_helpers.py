@@ -24,7 +24,6 @@ from typing import (
     Optional,
     Sequence,
     TypeVar,
-    Union,
     get_args,
 )
 
@@ -44,12 +43,12 @@ _STREAM_WRAP_CLASSES = (grpc.UnaryStreamMultiCallable, grpc.StreamStreamMultiCal
 P = TypeVar("P")
 
 # Type alias representing any client-side gRPC interceptor
-ClientInterceptor = Union[
-    grpc.UnaryUnaryClientInterceptor,
-    grpc.UnaryStreamClientInterceptor,
-    grpc.StreamUnaryClientInterceptor,
-    grpc.StreamStreamClientInterceptor,
-]
+ClientInterceptor = (
+    grpc.UnaryUnaryClientInterceptor
+    | grpc.UnaryStreamClientInterceptor
+    | grpc.StreamUnaryClientInterceptor
+    | grpc.StreamStreamClientInterceptor
+)
 
 # Runtime tuple of gRPC client interceptor base classes for isinstance checks
 _CLIENT_INTERCEPTOR_CLASSES = get_args(ClientInterceptor)
@@ -58,7 +57,7 @@ _CLIENT_INTERCEPTOR_CLASSES = get_args(ClientInterceptor)
 ChannelWrapperCallable = Callable[[grpc.Channel], grpc.Channel]
 
 # Generic type alias representing any channel wrapper (interceptor or callable)
-ChannelWrapper = Union[ClientInterceptor, ChannelWrapperCallable]
+ChannelWrapper = ClientInterceptor | ChannelWrapperCallable
 
 
 def _patch_callable_name(callable_):
@@ -447,7 +446,7 @@ def _modify_target_for_direct_path(target: str) -> str:
 
 def apply_channel_wrappers(
     channel: grpc.Channel,
-    wrappers: Optional[Sequence[ChannelWrapper]] = None,
+    wrappers: Sequence[ChannelWrapper] | None = None,
 ) -> grpc.Channel:
     """Applies channel wrappers (client interceptors or channel-wrapping callables) to a gRPC channel.
 
@@ -472,6 +471,7 @@ def apply_channel_wrappers(
         return channel
 
     modified_channel = channel
+    # Reverse the inputs to align with the behavior of grpc.create_channel(*interceptors)
     for wrapper in reversed(list(wrappers)):
         if isinstance(wrapper, _CLIENT_INTERCEPTOR_CLASSES):
             modified_channel = grpc.intercept_channel(modified_channel, wrapper)
