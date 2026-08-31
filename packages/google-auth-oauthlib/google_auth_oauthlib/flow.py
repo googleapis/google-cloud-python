@@ -242,8 +242,7 @@ class Flow(object):
         kwargs.setdefault("access_type", "offline")
         if self.code_verifier is None and self.autogenerate_code_verifier:
             chars = ascii_letters + digits + "-._~"
-            rnd = 
-temRandom()
+            rnd = SystemRandom()
             random_verifier = [rnd.choice(chars) for _ in range(0, 128)]
             self.code_verifier = "".join(random_verifier)
 
