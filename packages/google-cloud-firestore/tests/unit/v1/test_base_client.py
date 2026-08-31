@@ -248,6 +248,17 @@ def test_baseclient__emulator_channel():
             ],
         )
 
+    with mock.patch("grpc.aio.insecure_channel") as aio_insecure_channel:
+        channel = client._emulator_channel(FirestoreGrpcAsyncIOTransport)
+        aio_insecure_channel.assert_called_once_with(
+            emulator_host,
+            options=[
+                ("Authorization", "Bearer test"),
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
 
 def test_baseclient__target_helper_w_emulator_host():
     emulator_host = "localhost:8081"
