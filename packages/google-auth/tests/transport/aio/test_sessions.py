@@ -255,7 +255,7 @@ class TestAsyncAuthorizedSession(object):
     async def test_request_max_allowed_time_exceeded_error(self):
         auth_request = MockRequest(side_effect=TransportError)
         authed_session = sessions.AsyncAuthorizedSession(self.credentials, auth_request)
-        with patch("time.monotonic", side_effect=[0, 1, 1]):
+        with patch("time.monotonic", side_effect=[0, 1, 1, 1, 1, 1, 1, 1]):
             with pytest.raises(TimeoutError):
                 await authed_session.request("GET", self.TEST_URL, max_allowed_time=1)
 

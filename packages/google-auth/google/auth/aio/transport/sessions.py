@@ -20,6 +20,7 @@ import http.client as http_client
 import logging
 import time
 from typing import Mapping, Optional, TYPE_CHECKING, Union
+import urllib
 import warnings
 
 from google.auth import _exponential_backoff, exceptions
@@ -149,7 +150,7 @@ class AsyncAuthorizedSession:
         self._is_mtls = False
         self._mtls_init_task = None
         self._cached_cert = None
-        self._client_cert_callback = None 
+        self._client_cert_callback = None
         self._old_auth_requests = []
         if _auth_request is None:
             raise exceptions.TransportError(
@@ -345,7 +346,7 @@ class AsyncAuthorizedSession:
                     # This represents the cert that caused the 401 rejection.
                     if is_mtls_endpoint:
                         stale_cert = self._cached_cert
-                
+
                         if self._mtls_rotation_lock is None:
                             self._mtls_rotation_lock = asyncio.Lock()
 
@@ -384,14 +385,20 @@ class AsyncAuthorizedSession:
                                             ):
                                                 self._mtls_init_task = None
                                             await self.configure_mtls_channel(
-                                                lambda: (call_cert_bytes, call_key_bytes)
+                                                lambda: (
+                                                    call_cert_bytes,
+                                                    call_key_bytes,
+                                                )
                                             )
                                         except Exception as e:
                                             _LOGGER.error(
-                                                "Failed to reconfigure mTLS channel: %s", e
+                                                "Failed to reconfigure mTLS channel: %s",
+                                                e,
                                             )
                                             if hasattr(response, "close"):
-                                                if asyncio.iscoroutinefunction(response.close):
+                                                if asyncio.iscoroutinefunction(
+                                                    response.close
+                                                ):
                                                     await response.close()
                                                 else:
                                                     response.close()
@@ -407,7 +414,10 @@ class AsyncAuthorizedSession:
                     return response
                 try:
                     await self._credentials.refresh(self._auth_request)
-                except (exceptions.RefreshError, getattr(exceptions, "InvalidOperation", Exception)) as e:
+                except (
+                    exceptions.RefreshError,
+                    getattr(exceptions, "InvalidOperation", Exception),
+                ) as e:
                     _LOGGER.debug(
                         "Credential refresh failed, returning 401 response. Error: %s",
                         e,
@@ -419,7 +429,7 @@ class AsyncAuthorizedSession:
                         await response.close()
                     else:
                         response.close()
-                
+
                 kwargs["_auth_retry_count"] = _auth_retry_count + 1
                 elapsed_time = time.monotonic() - start_time
                 remaining_time = max(0.0, max_allowed_time - elapsed_time)

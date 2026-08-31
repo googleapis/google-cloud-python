@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
 import http.client as http_client
 import json
 import os
@@ -583,10 +584,8 @@ class TestSessionsMtls:
 
         await session.close()
 
-    
-        @pytest.mark.asyncio
+    @pytest.mark.asyncio
     async def test_cert_rotation_skips_retry_for_streaming(self):
-        """Covers the `if is_streaming:` branch which bypasses retry for streaming data."""
         mock_creds = mock.AsyncMock(spec=credentials.Credentials)
         mock_creds.before_request = mock.AsyncMock(return_value=None)
         mock_creds.refresh = mock.AsyncMock()
@@ -648,7 +647,7 @@ class TestSessionsMtls:
             "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
         ) as mock_check, mock.patch.object(
             session, "configure_mtls_channel", new_callable=mock.AsyncMock
-        ) as mock_conf:
+        ):
             mock_check.return_value = (b"new", b"new", b"old_fp", b"new_fp")
 
             resp = await session.request(
@@ -686,7 +685,7 @@ class TestSessionsMtls:
             "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
         ) as mock_check, mock.patch.object(
             session, "configure_mtls_channel", new_callable=mock.AsyncMock
-        ) as mock_conf:
+        ):
             # Yield new fingerprints to trigger reconfiguration branches
             mock_check.return_value = (b"new", b"new", b"old_fp", b"new_fp")
 
@@ -730,6 +729,5 @@ class TestSessionsMtls:
         mock_old_req_1.close.assert_called_once()
         mock_old_req_2.close.assert_called_once()
         mock_old_req_3_fails.close.assert_called_once()
-        
         # Ensure the list was cleared
         assert len(session._old_auth_requests) == 0

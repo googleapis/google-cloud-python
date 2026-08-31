@@ -813,7 +813,7 @@ def check_parameters_for_unauthorized_response(cached_cert, client_cert_callback
 
     Args:
         cached_cert(bytes): The cached client certificate.
-        client_cert_callback(Optional[Callable[[], (bytes, bytes)]]): 
+        client_cert_callback(Optional[Callable[[], (bytes, bytes)]]):
             The optional callback that returns the client certificate and private key bytes.
 
     Returns:
