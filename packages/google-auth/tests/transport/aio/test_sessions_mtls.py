@@ -574,6 +574,7 @@ class TestSessionsMtls:
         ) as mock_check, mock.patch.object(
             session, "configure_mtls_channel", new_callable=mock.AsyncMock
         ) as mock_conf:
+            # ...a 401 on a regular domain bypasses checks and just returns the 401 locally
             resp = await session.request("GET", "https://pubsub.googleapis.com/test")
 
             assert resp == mock_resp_401
@@ -581,3 +582,154 @@ class TestSessionsMtls:
             mock_conf.assert_not_called()
 
         await session.close()
+
+    
+        @pytest.mark.asyncio
+    async def test_cert_rotation_skips_retry_for_streaming(self):
+        """Covers the `if is_streaming:` branch which bypasses retry for streaming data."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_creds.before_request = mock.AsyncMock(return_value=None)
+        mock_creds.refresh = mock.AsyncMock()
+
+        mock_resp = mock.Mock()
+        mock_resp.status_code = http_client.UNAUTHORIZED
+        mock_auth_req = mock.AsyncMock(return_value=mock_resp)
+
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_req
+        )
+        session._is_mtls = True
+        session._cached_cert = b"old_cert"
+
+        # Simulate a streaming object (hasattr(data, 'read'))
+        class MockStream:
+            def read(self):
+                pass
+
+        with mock.patch(
+            "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+        ) as mock_check, mock.patch.object(
+            session, "configure_mtls_channel", new_callable=mock.AsyncMock
+        ) as mock_conf:
+            mock_check.return_value = (b"new", b"new", b"old_fp", b"new_fp")
+
+            resp = await session.request(
+                "GET", "https://pubsub.mtls.googleapis.com/test", data=MockStream()
+            )
+
+            assert resp == mock_resp
+            mock_conf.assert_called_once()
+            # Because it is streaming, it skips credentials refresh and retry
+            mock_creds.refresh.assert_not_called()
+
+        await session.close()
+
+    @pytest.mark.asyncio
+    async def test_cert_rotation_credential_refresh_fails(self):
+        """Covers the except block for RefreshError when credentials fail to refresh."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_creds.before_request = mock.AsyncMock(return_value=None)
+        # Simulate a credentials refresh failure
+        mock_creds.refresh = mock.AsyncMock(
+            side_effect=exceptions.RefreshError("Refresh failed")
+        )
+
+        mock_resp = mock.Mock()
+        mock_resp.status_code = http_client.UNAUTHORIZED
+        mock_auth_req = mock.AsyncMock(return_value=mock_resp)
+
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_req
+        )
+        session._is_mtls = True
+        session._cached_cert = b"old_cert"
+
+        with mock.patch(
+            "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+        ) as mock_check, mock.patch.object(
+            session, "configure_mtls_channel", new_callable=mock.AsyncMock
+        ) as mock_conf:
+            mock_check.return_value = (b"new", b"new", b"old_fp", b"new_fp")
+
+            resp = await session.request(
+                "GET", "https://pubsub.mtls.googleapis.com/test"
+            )
+
+            # It should catch the RefreshError and return the 401 response directly
+            assert resp == mock_resp
+            mock_creds.refresh.assert_called_once()
+            # Ensure it didn't retry the request by checking auth_request was only called once
+            mock_auth_req.assert_called_once()
+
+        await session.close()
+
+    @pytest.mark.asyncio
+    async def test_cert_rotation_max_retries_exceeded(self):
+        """Covers the `if _auth_retry_count < 2:` max retry limit."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_creds.before_request = mock.AsyncMock(return_value=None)
+        mock_creds.refresh = mock.AsyncMock(return_value=None)
+
+        mock_resp = mock.Mock()
+        mock_resp.status_code = http_client.UNAUTHORIZED
+        mock_resp.close = mock.AsyncMock()
+        # Always return 401
+        mock_auth_req = mock.AsyncMock(return_value=mock_resp)
+
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_req
+        )
+        session._is_mtls = True
+        session._cached_cert = b"old_cert"
+
+        with mock.patch(
+            "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+        ) as mock_check, mock.patch.object(
+            session, "configure_mtls_channel", new_callable=mock.AsyncMock
+        ) as mock_conf:
+            # Yield new fingerprints to trigger reconfiguration branches
+            mock_check.return_value = (b"new", b"new", b"old_fp", b"new_fp")
+
+            resp = await session.request(
+                "GET", "https://pubsub.mtls.googleapis.com/test"
+            )
+
+            assert resp == mock_resp
+            # Expecting exactly 3 requests (Initial try, Retry 1, Retry 2).
+            # When _auth_retry_count reaches 2, it drops out of the retry condition.
+            assert mock_auth_req.call_count == 3
+            # It should have checked the cert twice before hitting the retry cap
+            assert mock_check.call_count == 2
+            # Verify the stale response is closed before the retry
+            assert mock_resp.close.call_count == 2
+
+        await session.close()
+
+    @pytest.mark.asyncio
+    async def test_session_close_cleans_old_auth_requests(self):
+        """Covers the loop in the `close()` method that drains `_old_auth_requests`."""
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock.AsyncMock()
+        )
+
+        # Manually inject mocked old requests simulating past channel reconfigurations
+        mock_old_req_1 = mock.AsyncMock()
+        mock_old_req_2 = mock.AsyncMock()
+        mock_old_req_3_fails = mock.AsyncMock()
+        mock_old_req_3_fails.close.side_effect = Exception("Close error")
+
+        session._old_auth_requests.extend(
+            [mock_old_req_1, mock_old_req_2, mock_old_req_3_fails]
+        )
+
+        # Triggers `await old_request.close()` for each item
+        await session.close()
+
+        # Ensure all were called
+        mock_old_req_1.close.assert_called_once()
+        mock_old_req_2.close.assert_called_once()
+        mock_old_req_3_fails.close.assert_called_once()
+        
+        # Ensure the list was cleared
+        assert len(session._old_auth_requests) == 0
