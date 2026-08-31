@@ -17,104 +17,99 @@ This directory contains real-world CPU profiling data (`.prof` files), standalon
 
 You do **not** need `snakeviz` or any third-party pip packages to view these flame graphs. Simply open the generated `.html` files in any browser:
 
-| Scenario | Interactive Flame Graph (HTML) | Binary Profile Data (.prof) | Requests (10s) | Avg Pure Client CPU / Query |
-| :--- | :--- | :--- | :--- | :---: |
-| **1. Real Point Select ($C=1$, Sync)** | [**`spanner_point_select_c1.html`**](./spanner_point_select_c1.html) | [`spanner_point_select_c1.prof`](./spanner_point_select_c1.prof) | 24 | **~7.63 ms** |
-| **2. Real Point Select ($C=32$, Async Full Row Parsing)** | [**`spanner_point_select_c32.html`**](./spanner_point_select_c32.html) | [`spanner_point_select_c32.prof`](./spanner_point_select_c32.prof) | 1,462 | **~1.42 ms** |
-| **3. Real LIMIT 1000 Read (11 cols, Sync)** | [**`spanner_limit1000_c1.html`**](./spanner_limit1000_c1.html) | [`spanner_limit1000_c1.prof`](./spanner_limit1000_c1.prof) | 11 (11k rows) | **~355.06 ms** |
-| **4. Real Point Select ($C=32$ Threads, Multi-Threading GIL)** | [**`spanner_point_select_c32_threads.html`**](./spanner_point_select_c32_threads.html) | [`spanner_point_select_c32_threads.prof`](./spanner_point_select_c32_threads.prof) | 691 | **~10.10 ms** |
+| Scenario | Interactive Flame Graph (HTML) | Binary Profile Data (.prof) | Requests (10s) | Throughput (QPS) | Avg Pure Client CPU / Query | Concurrency Model |
+| :--- | :--- | :--- | :---: | :---: | :---: | :--- |
+| **1. Real Point Select ($C=1$, Sync)** | [**`spanner_point_select_c1.html`**](./spanner_point_select_c1.html) | [`spanner_point_select_c1.prof`](./spanner_point_select_c1.prof) | 757 | **75.7 QPS** | **~6.87 ms** | Single-Threaded Sync |
+| **2. Real Point Select ($C=32$, High-Level Async)** | [**`spanner_point_select_c32.html`**](./spanner_point_select_c32.html) | [`spanner_point_select_c32.prof`](./spanner_point_select_c32.prof) | 1,160 | **116.0 QPS** | **~6.65 ms** | **32 Async Coroutines (1 OS Thread)** |
+| **3. Real LIMIT 1000 Read (11 cols, Sync)** | [**`spanner_limit1000_c1.html`**](./spanner_limit1000_c1.html) | [`spanner_limit1000_c1.prof`](./spanner_limit1000_c1.prof) | 89 (89k rows) | **8.9 QPS** *(8,900 rows/s)* | **~64.27 ms** | Single-Threaded Sync |
+| **4. Real Point Select ($C=32$ Threads, Multi-Threading GIL)** | [**`spanner_point_select_c32_threads.html`**](./spanner_point_select_c32_threads.html) | [`spanner_point_select_c32_threads.prof`](./spanner_point_select_c32_threads.prof) | 1,043 | **104.3 QPS** | **~7.31 ms** | **32 Preemptive OS Threads (Multi-Threading)** |
 
 ---
 
 ## 3. Pure CPU Profiling Metrics Breakdown (YAPPI CPU Clock)
 
 ### Scenario 1: Point Select ($C=1$, Sync, Full Row Parsing)
-* **Total Requests Recorded (10s):** 24 queries
-* **Total Pure CPU Time:** 0.1830 s (Avg: **7.63 ms pure CPU per query**)
+* **Total Requests Recorded (10s):** 757 queries (**75.7 QPS**)
+* **Total Pure CPU Time:** 5.2016 s (Avg: **6.87 ms pure CPU per query**)
 * **Top CPU Bottlenecks:**
-  1. `streamed.py:_consume_next` / `__iter__`: **0.167 s cumulative** (Stream chunk processing & row parsing)
-  2. `snapshot.py:_restart_on_unavailable`: **0.163 s cumulative** (GAPIC snapshot wrapper)
-  3. `threading.py:Thread.start` / `Event.wait`: **0.124 s / 0.115 s cumulative** (gRPC worker coordination)
-  4. `client.py:execute_streaming_sql`: **0.113 s cumulative** (SQL execution dispatch)
-  5. `_channel.py:create`: **0.081 s cumulative** (RPC call creation)
+  1. `streamed.py:_consume_next` / `__iter__`: **4.274 s cumulative** (Stream chunk processing & row decoding)
+  2. `snapshot.py:_restart_on_unavailable`: **3.992 s cumulative** (GAPIC snapshot wrapper & retry logic)
+  3. `client.py:execute_streaming_sql`: **1.238 s cumulative** (SQL execution dispatch)
+  4. `method.py:_GapicCallable.__call__`: **1.135 s cumulative** (GAPIC unary stream callable)
+  5. `message.py:QueryOptions.__init__` / `__getattr__`: **1.621 s cumulative** (SQL query options validation)
 
 ---
 
-### Scenario 2: Point Select ($C=32$, Spanner Async Client, Full Row Parsing)
-* **Total Requests Recorded (10s):** 1,462 queries across 32 concurrent coroutines
-* **Total Pure CPU Time:** 2.0797 s (Avg: **1.42 ms pure CPU per query**)
+### Scenario 2: Point Select ($C=32$, High-Level Spanner Async Client)
+* **Total Requests Recorded (10s):** 1,160 queries across 32 concurrent coroutines (**116.0 QPS**)
+* **Total Pure CPU Time:** 7.7174 s (Avg: **6.65 ms pure CPU per query**)
 * **Top CPU Bottlenecks:**
-  1. `base_events._run_once`: **5.924 s cumulative / 0.106 s tottime** (AsyncIO event loop task dispatch)
-  2. `events.Handle._run`: **5.141 s cumulative / 0.043 s tottime** (Task coroutine execution)
-  3. `_call.UnaryStreamCall._send_unary_request`: **3.350 s cumulative / 0.183 s tottime** (gRPC AsyncIO unary request serialization)
-  4. `threading.Thread.start` / `Event.wait`: **2.964 s / 2.833 s cumulative** (gRPC C-Core background thread signaling)
-  5. `run_single_async_query_with_parsing`: **1.474 s cumulative / 0.097 s tottime** (Query wrapper & row decoding)
-  6. `selectors.EpollSelector.select`: **0.588 s cumulative / 0.046 s tottime** (epoll event dispatch compute)
-  7. `grpc_helpers_async.error_remapped_callable`: **0.452 s cumulative / 0.030 s tottime** (Error interceptor)
-  8. `_helpers._parse_value_pb`: **0.200 s cumulative / 0.069 s tottime** (**16,082 calls** decoding cells)
+  1. `base_events._run_once` & `events.Handle._run`: **9.034 s / 8.514 s cumulative** (AsyncIO event loop task scheduling)
+  2. `streamed.py:StreamedResultSet.__aiter__` / `_consume_next`: **5.073 s / 5.038 s cumulative** (Async chunk stream decoding)
+  3. `snapshot.py:_restart_on_unavailable`: **4.469 s cumulative** (Async snapshot retry supervisor)
+  4. `marshal.py:Marshal.to_proto` & `to_python`: **1.625 s cumulative** (Protobuf message marshaling)
+  5. `message.py:QueryOptions.__init__` & `__getattr__`: **2.451 s cumulative** (Query options initialization)
+  6. `_opentelemetry_tracing.py:trace_call` & `metrics_capture.py`: **1.824 s cumulative** (Observability & metrics capture)
 
 ```
 ncalls  tottime  cumtime  filename:lineno(function)
-  9503    0.106    5.924  base_events.py:1970(_UnixSelectorEventLoop._run_once)
- 19081    0.043    5.141  events.py:87(Handle._run)
-  1462    0.183    3.350  _call.py:639(UnaryStreamCall._send_unary_request)
-  1462    0.008    2.964  threading.py:978(Thread.start)
-  1462    0.007    2.833  threading.py:660(Event.wait)
-  1462    0.018    2.815  threading.py:346(Condition.wait)
-    32    0.075    1.556  spanner_cpu_profile_suite.py:152(async_worker_loop_gapic)
-  1462    0.097    1.474  spanner_cpu_profile_suite.py:117(run_single_async_query_with_parsing)
-  9504    0.046    0.588  selectors.py:435(EpollSelector.select)
-  1462    0.030    0.452  grpc_helpers_async.py:161(error_remapped_callable)
- 16082    0.069    0.200  _helpers.py:244(_parse_value_pb)
+  5862    0.197    9.034  base_events.py:1845(_UnixSelectorEventLoop._run_once)
+ 18687    0.082    8.514  events.py:78(Handle._run)
+    32    0.032    7.015  spanner_cpu_profile_suite.py:173(async_worker_loop_high_level)
+  1160    0.046    6.981  spanner_cpu_profile_suite.py:162(run_single_async_query_high_level)
+  1160    0.032    5.119  spanner_cpu_profile_suite.py:169(<listcomp>)
+  1160    0.033    5.073  streamed.py:193(StreamedResultSet.__aiter__)
+  1160    0.061    5.038  streamed.py:166(StreamedResultSet._consume_next)
+   0/1    0.094    4.469  snapshot.py:72(_restart_on_unavailable)
+  1160    0.073    1.524  snapshot.py:339(Snapshot.execute_sql)
+  8120    0.166    1.325  message.py:611(QueryOptions.__init__)
+ 17400    0.168    1.126  message.py:806(QueryOptions.__getattr__)
+ 20880    0.249    1.078  marshal.py:199(Marshal.to_proto)
+  2320    0.076    0.978  _opentelemetry_tracing.py:58(trace_call)
+  2320    0.031    0.846  metrics_capture.py:77(MetricsCapture.__exit__)
 ```
 
 ---
 
 ### Scenario 3: LIMIT 1000 Read (11 Columns, Sync, Full Row Parsing)
-* **Total Queries Recorded (10s):** 11 queries (**11,000 rows / 121,000 field values**)
-* **Total Pure CPU Time:** 3.9057 s (Avg: **355.06 ms pure CPU per query**)
+* **Total Queries Recorded (10s):** 89 queries (**8.9 QPS / 8,900 rows/s**) [89,000 rows / 979,000 field values]
+* **Total Pure CPU Time:** 5.7203 s (Avg: **64.27 ms pure CPU per query**)
 * **What Exploded:**
-  * `_parse_value_pb` and `TypeCode.__eq__` exploded to **3.280 s cumulative (84.0% of total client CPU time)**!
-  * Over 121,000 protobuf values were unpacked, invoking 121,000 enum property lookups and comparisons in Python.
+  * `StreamedResultSet._merge_values`: **3.589 s self-CPU time (62.7% of total client CPU time)** merging raw Protobuf values into row chunks.
 
 ```
 ncalls  tottime  cumtime  filename:lineno(function)
-    11    0.020    4.504  spanner_cpu_profile_suite.py:71(run_limit_1000_query_sync)
- 11011    0.055    4.430  streamed.py:145(StreamedResultSet.__iter__)
-    22    0.024    4.327  streamed.py:118(StreamedResultSet._consume_next)
-    11    0.676    4.227  streamed.py:96(StreamedResultSet._merge_values)
-121000    0.980    3.280  _helpers.py:244(_parse_value_pb)
-121000    0.978    2.075  enums.py:125(TypeCode.__eq__)
-121000    0.455    0.761  enum.py:199(property.__get__)
-121000    0.337    0.337  enums.py:118(TypeCode._comparable)
-121000    0.306    0.306  enum.py:1337(TypeCode.value)
-    22    0.000    0.106  method.py:81(_GapicCallable.__call__)
+    89    0.131    8.596  spanner_cpu_profile_suite.py:74(run_limit_1000_query_sync)
+ 89089    0.354    8.314  streamed.py:169(StreamedResultSet.__iter__)
+    89    0.909    7.834  streamed.py:150(StreamedResultSet._consume_next)
+    89    3.589    6.394  streamed.py:111(StreamedResultSet._merge_values)
+   178    0.007    0.530  snapshot.py:75(_restart_on_unavailable)
+   178    0.003    0.262  threading.py:964(run)
+    89    0.077    0.208  _channel.py:1722(channel_spin)
 ```
 
 ---
 
 ### Scenario 4: Point Select with 32 OS Threads (Multi-Threading & GIL Contention)
-* **Total Requests Recorded (10s):** 691 queries across 32 OS threads
-* **Total Pure CPU Time (All 32 Threads):** 6.982 s (Avg: **10.10 ms pure CPU per query**)
-* **Total GIL Wait Time (All 32 Threads):** **6.763 s** (Avg: **0.211 s / thread**)
-* **GIL Contention Ratio:** **49.2% of active compute phases**
+* **Total Requests Recorded (10s):** 1,043 queries across 32 OS threads (**104.3 QPS**)
+* **Total Pure CPU Time (All 32 Threads):** 7.6277 s (Avg: **7.31 ms pure CPU per query**)
+* **Total GIL Wait Time (All 32 Threads):** **7.3893 s** (Avg: **0.231 s queue delay / thread**)
+* **GIL Contention Ratio:** **49.21% of active compute phases**
 
 ```
 ncalls  tottime  cumtime  filename:lineno(function)
-  1437    0.002    7.791  threading.py:1006(Thread.run)
-    32    0.004    6.987  spanner_cpu_profile_suite.py:285(worker_thread_loop)
-   691    0.005    6.956  spanner_cpu_profile_suite.py:63(run_point_select_query_sync)
-  1404    0.015    5.021  method.py:81(_GapicCallable.__call__)
-  1404    0.029    4.839  timeout.py:87(func_with_timeout)
-  1382    0.005    4.186  streamed.py:145(StreamedResultSet.__iter__)
-  1382    0.001    4.180  streamed.py:118(StreamedResultSet._consume_next)
-  1382    0.022    4.136  snapshot.py:51(_restart_on_unavailable)
-   691    0.021    3.002  client.py:1363(SpannerClient.execute_streaming_sql)
-   691    0.005    2.681  grpc_helpers.py:126(error_remapped_callable)
- 14068    0.005    2.410  threading.py:322(Condition.__enter__)
-   691    0.003    2.302  database.py:1237(SnapshotCheckout.__enter__)
-   691    0.001    2.295  pool.py:303(BurstyPool.get)
-   669    0.005    2.218  session.py:152(Session.exists)
+  1077    0.024    9.541  threading.py:964(run)
+    32    0.059    8.297  spanner_cpu_profile_suite.py:285(worker_thread_loop)
+  1043    0.034    8.206  spanner_cpu_profile_suite.py:63(run_point_select_query_sync)
+  2086    0.016    6.412  streamed.py:169(StreamedResultSet.__iter__)
+  1043    0.037    6.394  streamed.py:150(StreamedResultSet._consume_next)
+  2086    0.078    5.997  snapshot.py:75(_restart_on_unavailable)
+  1043    0.041    2.002  client.py:1453(SpannerClient.execute_streaming_sql)
+  1044    0.040    1.843  method.py:151(_GapicCallable.__call__)
+  1044    0.015    1.614  timeout.py:101(func_with_timeout)
+  1043    0.021    1.579  grpc_helpers.py:140(error_remapped_callable)
+  1043    0.077    1.470  snapshot.py:415(Snapshot.execute_sql)
+  7301    0.159    1.245  message.py:611(QueryOptions.__init__)
 ```
 
 ---
