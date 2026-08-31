@@ -62,6 +62,8 @@ from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
+from google.oauth2 import service_account
+
 from google.cloud.secretmanager_v1.services.secret_manager_service import (
     SecretManagerServiceAsyncClient,
     SecretManagerServiceClient,
@@ -69,7 +71,6 @@ from google.cloud.secretmanager_v1.services.secret_manager_service import (
     transports,
 )
 from google.cloud.secretmanager_v1.types import resources, service
-from google.oauth2 import service_account
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -479,73 +480,57 @@ def test_secret_manager_service_client_client_options(
 def test_secret_manager_service_client_otel_channel_injection_enabled():
     """Proves that when OpenTelemetry tracing is enabled:
 
-    1. SecretManagerServiceClient detects the feature flag via
-       _observability.is_otel_capabilities_enabled.
-    2. The client binds _observability.create_channel_with_otel using
-       functools.partial with SecretManagerServiceGrpcTransport.create_channel and client_options.
-    3. The bound channel factory callable is passed into transport kwargs under 'channel',
-       allowing the Transport to initialize the channel lazily with its own parameters.
+    1. SecretManagerServiceClient obtains the channel wrapper via
+       _observability.get_otel_channel_wrapper passing client_options.
+    2. The wrapper is passed into transport kwargs under 'wrappers',
+       allowing the Transport to apply it via apply_channel_wrappers.
     """
+    mock_wrapper = mock.Mock()
     with (
         mock.patch(
-            "google.cloud.secretmanager_v1.services.secret_manager_service.client._observability.is_otel_capabilities_enabled",
-            return_value=True,
-        ) as mock_is_enabled,
+            "google.cloud.secretmanager_v1.services.secret_manager_service.client._observability.get_otel_channel_wrapper",
+            return_value=mock_wrapper,
+        ) as mock_get_wrapper,
         mock.patch.object(
             transports.SecretManagerServiceGrpcTransport, "__init__", return_value=None
         ) as patched_transport_init,
     ):
         client = SecretManagerServiceClient(transport="grpc")
 
-        mock_is_enabled.assert_called_once()
+        mock_get_wrapper.assert_called_once_with(client._client_options)
         called_kwargs = patched_transport_init.call_args.kwargs
-        assert "channel" in called_kwargs
-        channel_factory = called_kwargs["channel"]
-        assert isinstance(channel_factory, functools.partial)
-        assert (
-            channel_factory.func
-            is google.cloud.secretmanager_v1.services.secret_manager_service.client._observability.create_channel_with_otel
-        )
-        assert channel_factory.args == (
-            transports.SecretManagerServiceGrpcTransport.create_channel,
-        )
-        assert channel_factory.keywords == {"client_options": client._client_options}
+        assert "wrappers" in called_kwargs
+        assert called_kwargs["wrappers"] == [mock_wrapper]
 
 
 def test_secret_manager_service_client_otel_channel_injection_disabled():
     """Proves that when OpenTelemetry tracing is disabled:
 
-    1. SecretManagerServiceClient checks the feature flag and finds it disabled.
-    2. Eager channel creation via _observability.create_channel_with_otel is skipped.
-    3. No 'channel' argument is passed to the transport constructor, preserving lazy
-       channel initialization in the transport.
+    1. SecretManagerServiceClient checks for an OTel wrapper and receives None.
+    2. No 'wrappers' argument is passed to the transport constructor.
     """
     with (
         mock.patch(
-            "google.cloud.secretmanager_v1.services.secret_manager_service.client._observability.is_otel_capabilities_enabled",
-            return_value=False,
-        ) as mock_is_enabled,
-        mock.patch(
-            "google.cloud.secretmanager_v1.services.secret_manager_service.client._observability.create_channel_with_otel",
-        ) as mock_create_channel_with_otel,
+            "google.cloud.secretmanager_v1.services.secret_manager_service.client._observability.get_otel_channel_wrapper",
+            return_value=None,
+        ) as mock_get_wrapper,
         mock.patch.object(
             transports.SecretManagerServiceGrpcTransport, "__init__", return_value=None
         ) as patched_transport_init,
     ):
-        SecretManagerServiceClient(transport="grpc")
+        client = SecretManagerServiceClient(transport="grpc")
 
-        mock_is_enabled.assert_called_once()
-        mock_create_channel_with_otel.assert_not_called()
+        mock_get_wrapper.assert_called_once_with(client._client_options)
         called_kwargs = patched_transport_init.call_args.kwargs
-        assert "channel" not in called_kwargs
+        assert "wrappers" not in called_kwargs
 
 
-def test_secret_manager_service_grpc_transport_interceptors():
-    """Proves that SecretManagerServiceGrpcTransport accepts custom client interceptors
-    and invokes grpc_helpers.apply_interceptors to inject them into the underlying
-    gRPC channel pipeline.
+def test_secret_manager_service_grpc_transport_wrappers():
+    """Proves that SecretManagerServiceGrpcTransport accepts channel wrappers
+    and invokes grpc_helpers.apply_channel_wrappers to apply them to the underlying
+    gRPC channel.
     """
-    mock_interceptor = mock.Mock()
+    mock_wrapper = mock.Mock()
     mock_channel = mock.Mock()
 
     with (
@@ -555,17 +540,34 @@ def test_secret_manager_service_grpc_transport_interceptors():
             return_value=mock_channel,
         ),
         mock.patch(
-            "google.api_core.grpc_helpers.apply_interceptors",
+            "google.api_core.grpc_helpers.apply_channel_wrappers",
             return_value=mock_channel,
-        ) as mock_apply_interceptors,
+        ) as mock_apply_wrappers,
     ):
-        transport = transports.SecretManagerServiceGrpcTransport(
-            interceptors=[mock_interceptor],
+        transports.SecretManagerServiceGrpcTransport(
+            wrappers=[mock_wrapper],
         )
 
-        mock_apply_interceptors.assert_called_once_with(
-            mock_channel, [mock_interceptor]
+        mock_apply_wrappers.assert_called_once_with(mock_channel, [mock_wrapper])
+
+
+def test_secret_manager_service_grpc_transport_custom_channel_wrappers():
+    """Proves that SecretManagerServiceGrpcTransport wraps explicitly passed custom channels
+    using grpc_helpers.apply_channel_wrappers.
+    """
+    mock_wrapper = mock.Mock()
+    mock_custom_channel = mock.Mock(spec=grpc.Channel)
+
+    with mock.patch(
+        "google.api_core.grpc_helpers.apply_channel_wrappers",
+        return_value=mock_custom_channel,
+    ) as mock_apply_wrappers:
+        transports.SecretManagerServiceGrpcTransport(
+            channel=mock_custom_channel,
+            wrappers=[mock_wrapper],
         )
+
+        mock_apply_wrappers.assert_called_once_with(mock_custom_channel, [mock_wrapper])
 
 
 @pytest.mark.parametrize(
