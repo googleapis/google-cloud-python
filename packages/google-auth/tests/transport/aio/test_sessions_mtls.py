@@ -402,7 +402,7 @@ class TestSessionsMtls:
         ) as mock_check, mock.patch.object(
             session, "configure_mtls_channel", new_callable=mock.AsyncMock
         ) as mock_conf:
-            mock_check.side_effect = Exception("Failed to check params")
+            mock_check.side_effect = exceptions.MutualTLSChannelError("Failed to check params")
 
             resp = await session.request(
                 "GET", "https://pubsub.mtls.googleapis.com/test"
