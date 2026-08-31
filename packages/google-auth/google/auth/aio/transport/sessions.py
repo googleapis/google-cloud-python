@@ -20,7 +20,7 @@ import http.client as http_client
 import logging
 import time
 from typing import Mapping, Optional, TYPE_CHECKING, Union
-import urllib
+import urllib.parse
 import warnings
 
 from google.auth import _exponential_backoff, exceptions
