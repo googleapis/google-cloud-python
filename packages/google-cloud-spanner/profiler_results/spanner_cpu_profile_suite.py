@@ -4,9 +4,9 @@ Measures pure CPU time (excluding I/O wait, socket polling, and network latency)
 NO MOCKS, NO ARTIFICIAL SLEEP — All calls hit real Cloud Spanner backend.
 
 Scenarios:
-1. Point select with single concurrency (Concurrency = 1, Sync, Pure CPU Clock)
-2. Point select with 32 concurrency (Concurrency = 32, AsyncIO, Pure CPU Clock)
-3. LIMIT 1000 read for an 11-column table (AsyncBenchmarkTable, Sync, Pure CPU Clock)
+1. Point select with single concurrency (Concurrency = 1, Sync SDK, Pure CPU Clock)
+2. Point select with 32 concurrency (Concurrency = 32, Async SDK with Full Row Parsing, Pure CPU Clock)
+3. LIMIT 1000 read for an 11-column table (AsyncBenchmarkTable, Sync SDK, Pure CPU Clock)
 
 Saves pstat/prof binaries and generates formatted summary reports.
 """
@@ -26,9 +26,23 @@ except ImportError:
 
 import yappi
 from google.cloud import spanner
+from google.cloud import spanner_v1
+from google.cloud.spanner_v1 import _helpers
 from google.cloud.spanner_v1 import param_types
 from google.cloud.spanner_v1.services.spanner.async_client import SpannerAsyncClient
 from google.cloud.spanner_v1.types import ExecuteSqlRequest
+from google.cloud.spanner_v1.types.result_set import PartialResultSet
+
+try:
+    from google.cloud.spanner_v1._async.client import Client as HighLevelAsyncClient
+    from google.cloud.spanner_v1._async.pool import BurstyPool as AsyncBurstyPool
+except ImportError:
+    try:
+        from google.cloud.spanner_v1 import AsyncClient as HighLevelAsyncClient
+        from google.cloud.spanner_v1 import AsyncBurstyPool
+    except ImportError:
+        HighLevelAsyncClient = None
+        AsyncBurstyPool = None
 
 PROJECT = "span-cloud-testing"
 INSTANCE = "suvham-testing"
@@ -41,7 +55,7 @@ PROFILE_DURATION_SEC = 10.0
 
 
 # -----------------------------------------------------------------------------
-# Scenario 1 & 3: Synchronous Client Queries
+# Scenario 1 & 3: Synchronous Client Queries (High-Level SDK)
 # -----------------------------------------------------------------------------
 def run_point_select_query_sync(database, user_id="user-0"):
     with database.snapshot() as snapshot:
@@ -98,50 +112,98 @@ def run_scenario_1_point_select_c1(database, output_prof_path):
 
 
 # -----------------------------------------------------------------------------
-# Scenario 2: Spanner Async Client (32 Concurrent Coroutines on Event Loop, CPU Clock)
+# Scenario 2: Async Client with Full Row Parsing (32 Concurrency)
 # -----------------------------------------------------------------------------
-async def run_single_async_query(async_client, session_name, user_id="user-0"):
+async def run_single_async_query_with_parsing(async_client, session_name, user_id="user-0"):
     request = ExecuteSqlRequest(
         session=session_name,
         sql=f"SELECT * FROM {TABLE} WHERE id = '{user_id}'",
     )
     stream = await async_client.execute_streaming_sql(request=request)
-    chunk_count = 0
+    
+    # Fully decode rows into Python objects (measuring real customer row deserialization)
+    rows = []
+    metadata = None
+    width = 0
+    current_row = []
+    
     async for partial_result_set in stream:
-        chunk_count += len(partial_result_set.values)
-    return chunk_count
+        pb = PartialResultSet.pb(partial_result_set)
+        if metadata is None and pb.metadata.row_type.fields:
+            metadata = pb.metadata
+            fields = metadata.row_type.fields
+            width = len(fields)
+        
+        if metadata and pb.values:
+            fields = metadata.row_type.fields
+            index = len(current_row)
+            for val in pb.values:
+                f = fields[index]
+                parsed_val = _helpers._parse_value_pb(val, f.type_, f.name)
+                current_row.append(parsed_val)
+                index += 1
+                if index == width:
+                    rows.append(current_row)
+                    current_row = []
+                    index = 0
+    return len(rows)
 
 
-async def async_worker_loop(async_client, session_name, worker_id, stop_time):
+async def async_worker_loop_gapic(async_client, session_name, worker_id, stop_time):
     count = 0
     while time.time() < stop_time:
-        await run_single_async_query(async_client, session_name, f"user-{worker_id % 100}")
+        await run_single_async_query_with_parsing(async_client, session_name, f"user-{worker_id % 100}")
+        count += 1
+    return count
+
+
+async def run_single_async_query_high_level(async_database, user_id="user-0"):
+    async with async_database.snapshot() as snapshot:
+        results = await snapshot.execute_sql(
+            f"SELECT * FROM {TABLE} WHERE id = @id",
+            params={"id": user_id},
+            param_types={"id": param_types.STRING},
+        )
+        rows = [row async for row in results]
+        return len(rows)
+
+
+async def async_worker_loop_high_level(async_database, worker_id, stop_time):
+    count = 0
+    while time.time() < stop_time:
+        await run_single_async_query_high_level(async_database, f"user-{worker_id % 100}")
         count += 1
     return count
 
 
 async def execute_async_scenario_2(output_prof_path, concurrency=32):
     print("\n" + "=" * 80)
-    print(f"SCENARIO 2: Real Spanner Async Client with {concurrency} Concurrency (C={concurrency}, AsyncIO, Pure CPU Clock)")
+    print(f"SCENARIO 2: Real Spanner Async Client with {concurrency} Concurrency (C={concurrency}, Full Row Parsing, Pure CPU Clock)")
     print("=" * 80)
 
-    print(f"[*] Initializing SpannerAsyncClient (grpc.aio transport) for {DB_PATH}...")
-    async_client = SpannerAsyncClient()
-    
-    print(f"[*] Creating async sessions for {concurrency} workers...")
-    sessions = await asyncio.gather(*[async_client.create_session(database=DB_PATH) for _ in range(concurrency)])
-    session_names = [s.name for s in sessions]
-    print(f"[+] Successfully created {len(session_names)} async sessions.")
+    use_high_level = HighLevelAsyncClient is not None
+    if use_high_level:
+        print(f"[*] Initializing high-level spanner_v1.AsyncClient for {PROJECT} / {INSTANCE} / {DATABASE}...")
+        async_client = HighLevelAsyncClient(project=PROJECT)
+        async_instance = async_client.instance(INSTANCE)
+        pool = AsyncBurstyPool(target_size=concurrency) if AsyncBurstyPool else None
+        async_database = async_instance.database(DATABASE, pool=pool) if pool else async_instance.database(DATABASE)
+        worker_fn = lambda wid, st: async_worker_loop_high_level(async_database, wid, st)
+    else:
+        print(f"[*] Initializing SpannerAsyncClient (grpc.aio transport) for {DB_PATH}...")
+        async_client = SpannerAsyncClient()
+        print(f"[*] Creating async sessions for {concurrency} workers...")
+        sessions = await asyncio.gather(*[async_client.create_session(database=DB_PATH) for _ in range(concurrency)])
+        session_names = [s.name for s in sessions]
+        print(f"[+] Successfully created {len(session_names)} async sessions.")
+        worker_fn = lambda wid, st: async_worker_loop_gapic(async_client, session_names[wid], wid, st)
 
     # 1. Warmup for 5 seconds across 32 concurrent coroutines
-    print(f"[*] Warming up 32 concurrent coroutines on event loop for {WARMUP_DURATION_SEC} seconds...")
+    print(f"[*] Warming up {concurrency} concurrent coroutines on event loop for {WARMUP_DURATION_SEC} seconds...")
     warmup_end = time.time() + WARMUP_DURATION_SEC
-    warmup_tasks = [
-        async_worker_loop(async_client, session_names[i], i, warmup_end)
-        for i in range(concurrency)
-    ]
+    warmup_tasks = [worker_fn(i, warmup_end) for i in range(concurrency)]
     warmup_results = await asyncio.gather(*warmup_tasks)
-    print(f"[+] Warmup completed: {sum(warmup_results)} total requests executed across 32 coroutines.")
+    print(f"[+] Warmup completed: {sum(warmup_results)} total requests executed across {concurrency} coroutines.")
 
     # 2. Profile pure CPU time across all 32 coroutines
     print(f"[*] Profiling pure CPU time across all {concurrency} coroutines for {PROFILE_DURATION_SEC} seconds...")
@@ -150,10 +212,7 @@ async def execute_async_scenario_2(output_prof_path, concurrency=32):
     yappi.start()
 
     prof_end = time.time() + PROFILE_DURATION_SEC
-    profile_tasks = [
-        async_worker_loop(async_client, session_names[i], i, prof_end)
-        for i in range(concurrency)
-    ]
+    profile_tasks = [worker_fn(i, prof_end) for i in range(concurrency)]
     profile_results = await asyncio.gather(*profile_tasks)
     yappi.stop()
 
@@ -171,7 +230,7 @@ def run_scenario_2_point_select_c32_async(output_prof_path, concurrency=32):
 
 
 # -----------------------------------------------------------------------------
-# Scenario 3: LIMIT 1000 Read (Sync, CPU Clock)
+# Scenario 3: LIMIT 1000 Read (Sync SDK, CPU Clock)
 # -----------------------------------------------------------------------------
 def run_scenario_3_limit_1000_c1(database, output_prof_path):
     """Scenario 3: LIMIT 1000 Read for 11-column table (Real Spanner, CPU Clock)."""
@@ -236,7 +295,7 @@ def run_all(argv=None):
 
     os.makedirs(output_dir, exist_ok=True)
 
-    print(f"Initializing Spanner Client for {PROJECT} / {INSTANCE} / {DATABASE}...")
+    print(f"Initializing Sync Spanner Client for {PROJECT} / {INSTANCE} / {DATABASE}...")
     client = spanner.Client(project=PROJECT)
     instance = client.instance(INSTANCE)
     database = instance.database(DATABASE)
@@ -247,7 +306,7 @@ def run_all(argv=None):
 
     f2 = os.path.join(output_dir, "spanner_point_select_c32.prof")
     ps2, cnt2 = run_scenario_2_point_select_c32_async(f2, concurrency=32)
-    print_summary_table(ps2, "Scenario 2: Point Select C=32 (Real Spanner, AsyncIO Pure CPU)", cnt2)
+    print_summary_table(ps2, "Scenario 2: Point Select C=32 (Real Spanner, Async Full Row Parsing)", cnt2)
 
     f3 = os.path.join(output_dir, "spanner_limit1000_c1.prof")
     ps3, cnt3 = run_scenario_3_limit_1000_c1(database, f3)
