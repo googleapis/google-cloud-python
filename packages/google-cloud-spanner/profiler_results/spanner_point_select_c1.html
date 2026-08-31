@@ -104,7 +104,7 @@
     <h1>Scenario 1: Point Select (Concurrency = 1) - Real Spanner</h1>
     <div class="meta">
       <strong>Source Profile:</strong> <code>spanner_point_select_c1.prof</code> |
-      <strong>Total Profiled CPU Time:</strong> 10.2965 seconds |
+      <strong>Total Profiled CPU Time:</strong> 0.1019 seconds |
       <strong>Interactive:</strong> Click any frame to zoom in, click root or 'Reset Zoom' to zoom out.
     </div>
   </div>
@@ -123,34 +123,34 @@
 
   <div class="card">
     <h2>Top 20 Functions by Cumulative CPU Time</h2>
-    <pre>Fri Aug 28 09:05:08 2026    /usr/local/google/home/suvham/workspace/cloudPython/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c1.prof
+    <pre>Mon Aug 31 08:07:55 2026    /usr/local/google/home/suvham/workspace/cloudPython/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c1.prof
 
-         37191 function calls (36871 primitive calls) in 10.297 seconds
+         18349 function calls (18373 primitive calls) in 0.102 seconds
 
    Ordered by: cumulative time
-   List reduced from 235 to 20 due to restriction <20>
+   List reduced from 178 to 20 due to restriction <20>
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-       24    0.001    0.000   10.297    0.429 spanner_cpu_profile_suite.py:35(run_point_select_query)
-       72    0.000    0.000   10.256    0.142 _channel.py:537(__next__)
-       72    0.002    0.000   10.255    0.142 _channel.py:923(_next)
-       48    0.015    0.000   10.223    0.213 method.py:81(__call__)
-       48    0.001    0.000   10.191    0.212 timeout.py:87(func_with_timeout)
-       48    0.000    0.000    5.181    0.108 streamed.py:145(__iter__)
-       48    0.001    0.000    5.180    0.108 streamed.py:118(_consume_next)
-  408/192    0.002    0.000    5.176    0.027 {built-in method builtins.next}
-       48    0.001    0.000    5.175    0.108 snapshot.py:51(_restart_on_unavailable)
-       72    0.001    0.000    5.170    0.072 grpc_helpers.py:70(__next__)
-      188    0.004    0.000    5.146    0.027 threading.py:346(wait)
-  640/568    5.102    0.008    5.140    0.009 {method 'acquire' of '_thread.lock' objects}
-       24    0.001    0.000    5.133    0.214 client.py:1363(execute_streaming_sql)
-      116    0.001    0.000    5.128    0.044 _common.py:109(_wait_once)
-       48    0.001    0.000    5.113    0.107 _common.py:119(wait)
-       24    0.000    0.000    5.100    0.212 database.py:1237(__enter__)
-       24    0.000    0.000    5.099    0.212 pool.py:303(get)
-       24    0.001    0.000    5.099    0.212 session.py:152(exists)
-       24    0.001    0.000    5.098    0.212 grpc_helpers.py:126(error_remapped_callable)
-       24    0.001    0.000    5.097    0.212 client.py:952(get_session)
+       23    0.001    0.000    0.244    0.011 spanner_cpu_profile_suite.py:46(run_point_select_query_sync)
+       46    0.000    0.000    0.177    0.004 method.py:81(_GapicCallable.__call__)
+       46    0.004    0.000    0.175    0.004 timeout.py:87(func_with_timeout)
+      194    0.000    0.000    0.159    0.001 threading.py:346(Condition.wait)
+       46    0.000    0.000    0.158    0.003 streamed.py:145(StreamedResultSet.__iter__)
+       46    0.000    0.000    0.158    0.003 streamed.py:118(StreamedResultSet._consume_next)
+       46    0.001    0.000    0.156    0.003 snapshot.py:51(_restart_on_unavailable)
+       69    0.000    0.000    0.125    0.002 threading.py:978(Thread.start)
+       69    0.000    0.000    0.121    0.002 threading.py:660(Event.wait)
+       23    0.000    0.000    0.109    0.005 client.py:1363(SpannerClient.execute_streaming_sql)
+       23    0.000    0.000    0.105    0.005 grpc_helpers.py:126(error_remapped_callable)
+       23    0.000    0.000    0.088    0.004 _channel.py:1350(_UnaryStreamMultiCallable.__call__)
+       23    0.004    0.000    0.080    0.003 _channel.py:1733(create)
+       23    0.001    0.000    0.071    0.003 database.py:1237(SnapshotCheckout.__enter__)
+       23    0.000    0.000    0.070    0.003 session.py:152(Session.exists)
+       23    0.000    0.000    0.070    0.003 pool.py:303(BurstyPool.get)
+       23    0.001    0.000    0.070    0.003 client.py:952(SpannerClient.get_session)
+       23    0.002    0.000    0.068    0.003 retry_unary.py:71(retry_target)
+       23    0.000    0.000    0.068    0.003 retry_unary.py:273(retry_wrapped_func)
+       23    0.000    0.000    0.067    0.003 grpc_helpers.py:38(error_remapped_callable)
 
 
 </pre>
@@ -159,7 +159,7 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/d3-flame-graph@4.1.3/dist/d3-flamegraph.min.js"></script>
   <script>
-    const data = {"name": "Total Profiled Workload (10.297s)", "value": 10.2965, "self_time": 0.0, "calls": 1, "children": [{"name": "run_point_select_query [spanner_cpu_profile_suite.py:35]", "value": 10.2966, "self_time": 0.0006, "calls": 24, "children": [{"name": "__iter__ [streamed.py:145]", "value": 5.1806, "self_time": 0.0003, "calls": 48, "children": [{"name": "_consume_next [streamed.py:118]", "value": 5.1803, "self_time": 0.001, "calls": 48, "children": [{"name": "<built-in method builtins.next> [~:0]", "value": 5.176, "self_time": 0.0018, "calls": 192, "children": [{"name": "__next__ [_channel.py:537]", "value": 10.256, "self_time": 0.0003, "calls": 72, "children": [{"name": "_next [_channel.py:923]", "value": 10.2555, "self_time": 0.0024, "calls": 72, "children": [{"name": "wait [_common.py:119]", "value": 5.1131, "self_time": 0.0006, "calls": 48, "children": [{"name": "_wait_once [_common.py:109]", "value": 5.128, "self_time": 0.0007, "calls": 116, "children": []}]}]}]}, {"name": "_restart_on_unavailable [snapshot.py:51]", "value": 5.1746, "self_time": 0.0006, "calls": 48, "children": [{"name": "__next__ [grpc_helpers.py:70]", "value": 5.1697, "self_time": 0.0005, "calls": 72, "children": [{"name": "<built-in method builtins.next> [~:0]", "value": 5.176, "self_time": 0.0018, "calls": 192, "children": []}]}, {"name": "execute_streaming_sql [client.py:1363]", "value": 5.133, "self_time": 0.0009, "calls": 24, "children": [{"name": "__call__ [method.py:81]", "value": 10.2234, "self_time": 0.0149, "calls": 48, "children": [{"name": "func_with_timeout [timeout.py:87]", "value": 10.1908, "self_time": 0.0009, "calls": 48, "children": []}, {"name": "retry_wrapped_func [retry_unary.py:273]", "value": 5.0911, "self_time": 0.0002, "calls": 24, "children": []}]}]}]}]}]}]}, {"name": "__enter__ [database.py:1237]", "value": 5.0999, "self_time": 0.0002, "calls": 24, "children": [{"name": "get [pool.py:303]", "value": 5.0994, "self_time": 0.0001, "calls": 24, "children": [{"name": "exists [session.py:152]", "value": 5.099, "self_time": 0.0007, "calls": 24, "children": [{"name": "get_session [client.py:952]", "value": 5.0972, "self_time": 0.0008, "calls": 24, "children": [{"name": "__call__ [method.py:81]", "value": 10.2234, "self_time": 0.0149, "calls": 48, "children": [{"name": "func_with_timeout [timeout.py:87]", "value": 10.1908, "self_time": 0.0009, "calls": 48, "children": [{"name": "error_remapped_callable [grpc_helpers.py:126]", "value": 5.0985, "self_time": 0.0006, "calls": 24, "children": []}, {"name": "error_remapped_callable [grpc_helpers.py:38]", "value": 5.0897, "self_time": 0.0003, "calls": 24, "children": []}]}, {"name": "retry_wrapped_func [retry_unary.py:273]", "value": 5.0911, "self_time": 0.0002, "calls": 24, "children": [{"name": "retry_target [retry_unary.py:71]", "value": 5.0909, "self_time": 0.0003, "calls": 24, "children": []}]}]}]}]}]}]}]}]};
+    const data = {"name": "Total Profiled Workload (0.102s)", "value": 0.1019, "self_time": 0.0, "calls": 1, "children": [{"name": "run_point_select_query_sync [spanner_cpu_profile_suite.py:46]", "value": 0.2436, "self_time": 0.0009, "calls": 23, "children": [{"name": "StreamedResultSet.__iter__ [streamed.py:145]", "value": 0.1581, "self_time": 0.0, "calls": 46, "children": [{"name": "StreamedResultSet._consume_next [streamed.py:118]", "value": 0.1581, "self_time": 0.0, "calls": 46, "children": []}]}, {"name": "SnapshotCheckout.__enter__ [database.py:1237]", "value": 0.0711, "self_time": 0.0007, "calls": 23, "children": [{"name": "BurstyPool.get [pool.py:303]", "value": 0.0704, "self_time": 0.0, "calls": 23, "children": [{"name": "Session.exists [session.py:152]", "value": 0.0704, "self_time": 0.0, "calls": 23, "children": [{"name": "SpannerClient.get_session [client.py:952]", "value": 0.0704, "self_time": 0.0007, "calls": 23, "children": [{"name": "_GapicCallable.__call__ [method.py:81]", "value": 0.1769, "self_time": 0.0, "calls": 46, "children": [{"name": "func_with_timeout [timeout.py:87]", "value": 0.1753, "self_time": 0.0036, "calls": 46, "children": [{"name": "error_remapped_callable [grpc_helpers.py:126]", "value": 0.1049, "self_time": 0.0, "calls": 23, "children": []}, {"name": "error_remapped_callable [grpc_helpers.py:38]", "value": 0.0668, "self_time": 0.0, "calls": 23, "children": []}]}, {"name": "retry_wrapped_func [retry_unary.py:273]", "value": 0.0684, "self_time": 0.0, "calls": 23, "children": [{"name": "retry_target [retry_unary.py:71]", "value": 0.0684, "self_time": 0.0017, "calls": 23, "children": []}]}]}]}]}]}]}]}]};
 
     let flamegraphInstance = null;
 
