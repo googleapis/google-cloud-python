@@ -16,6 +16,7 @@ import sys
 from unittest import mock
 
 import pytest
+
 from google.api_core import _observability
 from google.api_core._feature_gating_helpers import FeatureGatingError
 from google.api_core.client_options import ClientOptions
