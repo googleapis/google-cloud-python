@@ -151,13 +151,13 @@ class AsyncAuthorizedSession:
         self._mtls_init_task = None
         self._cached_cert = None
         self._client_cert_callback = None
-        self._old_auth_requests = []
+        self._old_auth_requests = []  # type: list
         if _auth_request is None:
             raise exceptions.TransportError(
                 "`auth_request` must either be configured or the external package `aiohttp` must be installed to use the default value."
             )
         self._auth_request = _auth_request
-        self._mtls_rotation_lock = None
+        self._mtls_rotation_lock = None  # type: Optional[asyncio.Lock]
 
     async def configure_mtls_channel(self, client_cert_callback=None):
         """Configure the client certificate and key for SSL connection.

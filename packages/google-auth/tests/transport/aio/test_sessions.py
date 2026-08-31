@@ -105,7 +105,9 @@ class TestTimeoutGuard(object):
         self, simple_async_task
     ):
         task = False
-        with patch("time.monotonic", side_effect=[0, 0.25, 0.75]):
+        with patch(
+            "time.monotonic", side_effect=lambda it=iter([0, 0.25]): next(it, 0.75)
+        ):
             with patch("asyncio.wait_for", lambda coro, _: coro):
                 async with self.make_timeout_guard(
                     timeout=self.default_timeout
@@ -255,7 +257,7 @@ class TestAsyncAuthorizedSession(object):
     async def test_request_max_allowed_time_exceeded_error(self):
         auth_request = MockRequest(side_effect=TransportError)
         authed_session = sessions.AsyncAuthorizedSession(self.credentials, auth_request)
-        with patch("time.monotonic", side_effect=[0, 1, 1, 1, 1, 1, 1, 1]):
+        with patch("time.monotonic", side_effect=[0, 0] + [2] * 10):
             with pytest.raises(TimeoutError):
                 await authed_session.request("GET", self.TEST_URL, max_allowed_time=1)
 
