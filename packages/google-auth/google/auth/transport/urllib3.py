@@ -472,7 +472,6 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
                                 raise exceptions.MutualTLSChannelError(
                                     "Failed to reconfigure mTLS channel"
                                 ) from e
-
                         else:
                             _LOGGER.info(
                                 "Skipping reconfiguration of mTLS channel because the "
