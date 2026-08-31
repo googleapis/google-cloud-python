@@ -5961,7 +5961,7 @@ class TestRowIterator(unittest.TestCase):
                 "gl-python/3.10.0",
             )
 
-    def test_to_dataframe_delegated_when_user_agent_update_fails_logs_warning(self):
+    def test_to_dataframe_delegated_when_user_agent_update_fails_logs_debug(self):
         pytest.importorskip("db_dtypes")
         pandas = pytest.importorskip("pandas")
         mock_pandas_gbq = mock.Mock()
@@ -5990,7 +5990,7 @@ class TestRowIterator(unittest.TestCase):
                 False,
             ),
             mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),
-            mock.patch("google.cloud.bigquery.table._LOGGER.warning") as mock_log,
+            mock.patch("google.cloud.bigquery.table._LOGGER.debug") as mock_log,
         ):
             row_iterator = self._make_one_from_data((("name", "STRING"),), (("foo",),))
             row_iterator.client = mock_client

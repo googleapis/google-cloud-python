@@ -3006,7 +3006,7 @@ class RowIterator(HTTPIterator):
                         )
                         client_info.user_agent = f"{ua} pandas-gbq/{version}".strip()
             except Exception as exc:
-                _LOGGER.warning("Failed to update telemetry user-agent: %s", exc)
+                _LOGGER.debug("Failed to update telemetry user-agent: %s", exc)
 
         with warnings.catch_warnings():
             warnings.filterwarnings(
