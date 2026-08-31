@@ -14,8 +14,7 @@
 
 import os
 from datetime import datetime, timedelta, timezone
-
-from typing import Union, Tuple
+from typing import Tuple, Union
 
 from google.api_core.exceptions import NotFound
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
