@@ -442,7 +442,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
                 use_mtls = getattr(self, "_is_mtls", False) and any(
                     prefix in url for prefix in MTLS_URL_PREFIXES
                 )
-            
+
                 if use_mtls:
                     with self._reauth_lock:
                         (
