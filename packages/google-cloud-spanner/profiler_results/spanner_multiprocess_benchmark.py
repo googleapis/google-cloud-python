@@ -157,11 +157,15 @@ def run_parent_orchestrator(output_prof_path, num_processes=4, threads_per_proce
     # -------------------------------------------------------------------------
     print(f"[*] Warming up {num_processes} processes ({total_concurrency} total threads) for {WARMUP_DURATION_SEC} seconds...")
     warmup_procs = []
-    executable = sys.argv[0]
+    
+    script_path = os.path.abspath(__file__)
+    if sys.argv[0].endswith(".py") or not os.access(sys.argv[0], os.X_OK):
+        cmd_prefix = [sys.executable, script_path]
+    else:
+        cmd_prefix = [sys.argv[0]]
 
     for p_idx in range(num_processes):
-        cmd = [
-            executable,
+        cmd = cmd_prefix + [
             f"--worker_proc_idx={p_idx}",
             f"--threads_per_proc={threads_per_process}",
             f"--duration_sec={WARMUP_DURATION_SEC}",
@@ -188,8 +192,7 @@ def run_parent_orchestrator(output_prof_path, num_processes=4, threads_per_proce
     
     parent_start_wall = time.perf_counter()
     for p_idx in range(num_processes):
-        cmd = [
-            executable,
+        cmd = cmd_prefix + [
             f"--worker_proc_idx={p_idx}",
             f"--threads_per_proc={threads_per_process}",
             f"--duration_sec={PROFILE_DURATION_SEC}",
