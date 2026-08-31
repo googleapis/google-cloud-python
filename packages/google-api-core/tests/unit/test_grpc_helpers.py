@@ -933,32 +933,100 @@ class TestChannelStub(object):
         assert channel.close() is None
 
 
-@pytest.mark.parametrize("falsy_interceptors", [None, [], ()])
-def test_apply_interceptors_passthrough(falsy_interceptors):
-    """Verify that falsy or empty interceptor sequences return the channel unmodified."""
+@pytest.mark.parametrize("falsy_wrappers", [None, [], ()])
+def test_apply_channel_wrappers_passthrough(falsy_wrappers):
+    """Verify that falsy or empty wrapper sequences return the channel unmodified."""
     mock_base_channel = mock.Mock(name="base_channel")
-    result = grpc_helpers.apply_interceptors(mock_base_channel, falsy_interceptors)
+    result = grpc_helpers.apply_channel_wrappers(mock_base_channel, falsy_wrappers)
     assert result is mock_base_channel
 
 
-@pytest.mark.parametrize("count", [1, 2, 3])
-def test_apply_interceptors_wrapping(count):
-    """Verify that interceptors are passed to grpc.intercept_channel unpacked in a single call.
+def test_apply_channel_wrappers_grpc_client_interceptors():
+    """Verify that standard gRPC ClientInterceptor instances are applied via grpc.intercept_channel."""
 
-    When given a sequence of N interceptors [i_0, i_1, ..., i_{N-1}], apply_interceptors
-    must pass the base channel and all interceptors unpacked (*interceptors) to
-    grpc.intercept_channel.
-    """
+    class DummyUnaryInterceptor(grpc.UnaryUnaryClientInterceptor):
+        def intercept_unary_unary(self, continuation, client_call_details, request):
+            return continuation(client_call_details, request)
+
+    class DummyStreamInterceptor(grpc.StreamStreamClientInterceptor):
+        def intercept_stream_stream(
+            self, continuation, client_call_details, request_iterator
+        ):
+            return continuation(client_call_details, request_iterator)
+
+    interceptor1 = DummyUnaryInterceptor()
+    interceptor2 = DummyStreamInterceptor()
+
     mock_base_channel = mock.Mock(name="base_channel")
-    mock_wrapped_channel = mock.Mock(name="wrapped_channel")
-    mock_interceptors = [mock.Mock(name=f"interceptor_{i}") for i in range(count)]
+    mock_chan_after_i2 = mock.Mock(name="chan_after_i2")
+    mock_chan_after_i1 = mock.Mock(name="chan_after_i1")
 
     with mock.patch(
-        "grpc.intercept_channel", return_value=mock_wrapped_channel
-    ) as mock_intercept_channel:
-        result = grpc_helpers.apply_interceptors(mock_base_channel, mock_interceptors)
+        "grpc.intercept_channel",
+        side_effect=[mock_chan_after_i2, mock_chan_after_i1],
+    ) as mock_intercept:
+        result = grpc_helpers.apply_channel_wrappers(
+            mock_base_channel, [interceptor1, interceptor2]
+        )
 
-    assert result is mock_wrapped_channel
-    mock_intercept_channel.assert_called_once_with(
-        mock_base_channel, *mock_interceptors
+    assert result is mock_chan_after_i1
+    assert mock_intercept.call_count == 2
+    # Executed in reverse order so interceptor1 is outermost
+    mock_intercept.assert_has_calls(
+        [
+            mock.call(mock_base_channel, interceptor2),
+            mock.call(mock_chan_after_i2, interceptor1),
+        ]
     )
+
+
+def test_apply_channel_wrappers_callables():
+    """Verify that channel-wrapping callables Callable[[Channel], Channel] are invoked in sequence."""
+    mock_base_channel = mock.Mock(name="base_channel")
+    mock_chan_1 = mock.Mock(name="chan_1")
+    mock_chan_2 = mock.Mock(name="chan_2")
+
+    wrapper1 = mock.Mock(side_effect=lambda ch: mock_chan_2)
+    wrapper2 = mock.Mock(side_effect=lambda ch: mock_chan_1)
+
+    result = grpc_helpers.apply_channel_wrappers(
+        mock_base_channel, [wrapper1, wrapper2]
+    )
+
+    assert result is mock_chan_2
+    # Executed in reverse order: wrapper2 runs first on base channel, then wrapper1
+    wrapper2.assert_called_once_with(mock_base_channel)
+    wrapper1.assert_called_once_with(mock_chan_1)
+
+
+def test_apply_channel_wrappers_interspersed():
+    """Verify that a mixed sequence of gRPC interceptors and channel wrapper callables are applied."""
+
+    class DummyUnaryInterceptor(grpc.UnaryUnaryClientInterceptor):
+        def intercept_unary_unary(self, continuation, client_call_details, request):
+            return continuation(client_call_details, request)
+
+    interceptor = DummyUnaryInterceptor()
+    mock_base_channel = mock.Mock(name="base_channel")
+    mock_chan_after_wrapper = mock.Mock(name="chan_after_wrapper")
+    mock_chan_after_interceptor = mock.Mock(name="chan_after_interceptor")
+
+    wrapper = mock.Mock(return_value=mock_chan_after_wrapper)
+
+    with mock.patch(
+        "grpc.intercept_channel", return_value=mock_chan_after_interceptor
+    ) as mock_intercept:
+        result = grpc_helpers.apply_channel_wrappers(
+            mock_base_channel, [interceptor, wrapper]
+        )
+
+    assert result is mock_chan_after_interceptor
+    wrapper.assert_called_once_with(mock_base_channel)
+    mock_intercept.assert_called_once_with(mock_chan_after_wrapper, interceptor)
+
+
+def test_apply_channel_wrappers_invalid_type_raises():
+    """Verify that passing an invalid object that is neither an interceptor nor callable raises TypeError."""
+    mock_base_channel = mock.Mock(name="base_channel")
+    with pytest.raises(TypeError, match="Expected ChannelWrapper"):
+        grpc_helpers.apply_channel_wrappers(mock_base_channel, [12345])

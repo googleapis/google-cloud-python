@@ -17,7 +17,16 @@
 import collections
 import functools
 import warnings
-from typing import Generic, Iterator, Optional, Sequence, TypeVar, Union
+from typing import (
+    Callable,
+    Generic,
+    Iterator,
+    Optional,
+    Sequence,
+    TypeVar,
+    Union,
+    get_args,
+)
 
 import google.auth
 import google.auth.credentials
@@ -40,6 +49,15 @@ ClientInterceptor = Union[
     grpc.StreamUnaryClientInterceptor,
     grpc.StreamStreamClientInterceptor,
 ]
+
+# Runtime tuple of gRPC client interceptor base classes for isinstance checks
+_CLIENT_INTERCEPTOR_CLASSES = get_args(ClientInterceptor)
+
+# Type alias representing a channel-wrapping callable
+ChannelWrapperCallable = Callable[[grpc.Channel], grpc.Channel]
+
+# Generic type alias representing any channel wrapper (interceptor or callable)
+ChannelWrapper = Union[ClientInterceptor, ChannelWrapperCallable]
 
 
 def _patch_callable_name(callable_):
@@ -426,27 +444,44 @@ def _modify_target_for_direct_path(target: str) -> str:
     return target
 
 
-def apply_interceptors(
+def apply_channel_wrappers(
     channel: grpc.Channel,
-    interceptors: Optional[Sequence[ClientInterceptor]] = None,
+    wrappers: Optional[Sequence[ChannelWrapper]] = None,
 ) -> grpc.Channel:
-    """Applies client interceptors to a gRPC channel.
+    """Applies channel wrappers (client interceptors or channel-wrapping callables) to a gRPC channel.
 
-    The first interceptor in the sequence is the outermost layer: it
-    executes first on outbound requests and last on inbound responses.
+    Executes in reverse order so the first wrapper in the sequence becomes the
+    outermost layer on outbound requests and the innermost layer on inbound responses.
 
     Args:
-        channel (grpc.Channel): The channel to intercept.
-        interceptors (Optional[Sequence[ClientInterceptor]]): An optional sequence
-            of client interceptors to apply.
+        channel (grpc.Channel): The channel to wrap.
+        wrappers (Optional[Sequence[ChannelWrapper]]):
+            An optional sequence of client interceptors or channel-wrapping
+            callables to apply.
 
     Returns:
-        grpc.Channel: The intercepted channel, or the original channel if no
-            interceptors were provided.
+        grpc.Channel: The wrapped channel, or the original channel if no
+            wrappers were provided.
+
+    Raises:
+        TypeError: If an item in ``wrappers`` is neither a gRPC ClientInterceptor
+            nor a Callable[[Channel], Channel].
     """
-    if interceptors:
-        return grpc.intercept_channel(channel, *interceptors)
-    return channel
+    if not wrappers:
+        return channel
+
+    modified_channel = channel
+    for wrapper in reversed(list(wrappers)):
+        if isinstance(wrapper, _CLIENT_INTERCEPTOR_CLASSES):
+            modified_channel = grpc.intercept_channel(modified_channel, wrapper)
+        elif callable(wrapper):
+            modified_channel = wrapper(modified_channel)
+        else:
+            raise TypeError(
+                f"Expected ChannelWrapper (ClientInterceptor or Callable[[Channel], Channel]), got {type(wrapper).__name__}"
+            )
+
+    return modified_channel
 
 
 _MethodCall = collections.namedtuple(
