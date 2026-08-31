@@ -29,6 +29,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.ads.admanager_v1._compat import transcode_request
 from google.ads.admanager_v1.types import native_style_messages, native_style_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -699,21 +700,18 @@ class NativeStyleServiceRestTransport(_BaseNativeStyleServiceRestTransport):
             """
 
             http_options = _BaseNativeStyleServiceRestTransport._BaseBatchActivateNativeStyles._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_activate_native_styles(
                 request, metadata
             )
-            transcoded_request = _BaseNativeStyleServiceRestTransport._BaseBatchActivateNativeStyles._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNativeStyleServiceRestTransport._BaseBatchActivateNativeStyles._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNativeStyleServiceRestTransport._BaseBatchActivateNativeStyles._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNativeStyleServiceRestTransport._BaseBatchActivateNativeStyles,
+                    "_BaseBatchActivateNativeStyles__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -855,21 +853,18 @@ class NativeStyleServiceRestTransport(_BaseNativeStyleServiceRestTransport):
             """
 
             http_options = _BaseNativeStyleServiceRestTransport._BaseBatchArchiveNativeStyles._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_archive_native_styles(
                 request, metadata
             )
-            transcoded_request = _BaseNativeStyleServiceRestTransport._BaseBatchArchiveNativeStyles._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNativeStyleServiceRestTransport._BaseBatchArchiveNativeStyles._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNativeStyleServiceRestTransport._BaseBatchArchiveNativeStyles._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNativeStyleServiceRestTransport._BaseBatchArchiveNativeStyles,
+                    "_BaseBatchArchiveNativeStyles__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1013,21 +1008,18 @@ class NativeStyleServiceRestTransport(_BaseNativeStyleServiceRestTransport):
             """
 
             http_options = _BaseNativeStyleServiceRestTransport._BaseBatchCreateNativeStyles._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_create_native_styles(
                 request, metadata
             )
-            transcoded_request = _BaseNativeStyleServiceRestTransport._BaseBatchCreateNativeStyles._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNativeStyleServiceRestTransport._BaseBatchCreateNativeStyles._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNativeStyleServiceRestTransport._BaseBatchCreateNativeStyles._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNativeStyleServiceRestTransport._BaseBatchCreateNativeStyles,
+                    "_BaseBatchCreateNativeStyles__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1174,21 +1166,18 @@ class NativeStyleServiceRestTransport(_BaseNativeStyleServiceRestTransport):
             """
 
             http_options = _BaseNativeStyleServiceRestTransport._BaseBatchDeactivateNativeStyles._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_deactivate_native_styles(
                 request, metadata
             )
-            transcoded_request = _BaseNativeStyleServiceRestTransport._BaseBatchDeactivateNativeStyles._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNativeStyleServiceRestTransport._BaseBatchDeactivateNativeStyles._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNativeStyleServiceRestTransport._BaseBatchDeactivateNativeStyles._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNativeStyleServiceRestTransport._BaseBatchDeactivateNativeStyles,
+                    "_BaseBatchDeactivateNativeStyles__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1330,21 +1319,18 @@ class NativeStyleServiceRestTransport(_BaseNativeStyleServiceRestTransport):
             """
 
             http_options = _BaseNativeStyleServiceRestTransport._BaseBatchUpdateNativeStyles._get_http_options()
-
             request, metadata = self._interceptor.pre_batch_update_native_styles(
                 request, metadata
             )
-            transcoded_request = _BaseNativeStyleServiceRestTransport._BaseBatchUpdateNativeStyles._get_transcoded_request(
-                http_options, request
-            )
-
-            body = _BaseNativeStyleServiceRestTransport._BaseBatchUpdateNativeStyles._get_request_body_json(
-                transcoded_request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNativeStyleServiceRestTransport._BaseBatchUpdateNativeStyles._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNativeStyleServiceRestTransport._BaseBatchUpdateNativeStyles,
+                    "_BaseBatchUpdateNativeStyles__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1491,17 +1477,18 @@ class NativeStyleServiceRestTransport(_BaseNativeStyleServiceRestTransport):
             """
 
             http_options = _BaseNativeStyleServiceRestTransport._BaseGetNativeStyle._get_http_options()
-
             request, metadata = self._interceptor.pre_get_native_style(
                 request, metadata
             )
-            transcoded_request = _BaseNativeStyleServiceRestTransport._BaseGetNativeStyle._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNativeStyleServiceRestTransport._BaseGetNativeStyle._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNativeStyleServiceRestTransport._BaseGetNativeStyle,
+                    "_BaseGetNativeStyle__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1640,17 +1627,18 @@ class NativeStyleServiceRestTransport(_BaseNativeStyleServiceRestTransport):
             """
 
             http_options = _BaseNativeStyleServiceRestTransport._BaseListNativeStyles._get_http_options()
-
             request, metadata = self._interceptor.pre_list_native_styles(
                 request, metadata
             )
-            transcoded_request = _BaseNativeStyleServiceRestTransport._BaseListNativeStyles._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNativeStyleServiceRestTransport._BaseListNativeStyles._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNativeStyleServiceRestTransport._BaseListNativeStyles,
+                    "_BaseListNativeStyles__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=True,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1873,17 +1861,18 @@ class NativeStyleServiceRestTransport(_BaseNativeStyleServiceRestTransport):
             """
 
             http_options = _BaseNativeStyleServiceRestTransport._BaseCancelOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            transcoded_request = _BaseNativeStyleServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNativeStyleServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNativeStyleServiceRestTransport._BaseCancelOperation,
+                    "_BaseCancelOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
@@ -1989,15 +1978,16 @@ class NativeStyleServiceRestTransport(_BaseNativeStyleServiceRestTransport):
             """
 
             http_options = _BaseNativeStyleServiceRestTransport._BaseGetOperation._get_http_options()
-
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseNativeStyleServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
-
-            # Jsonify the query params
-            query_params = _BaseNativeStyleServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
+            transcoded_request, body, query_params = transcode_request(
+                http_options,
+                request,
+                required_fields_default_values=getattr(
+                    _BaseNativeStyleServiceRestTransport._BaseGetOperation,
+                    "_BaseGetOperation__REQUIRED_FIELDS_DEFAULT_VALUES",
+                    None,
+                ),
+                rest_numeric_enums=False,
             )
 
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
