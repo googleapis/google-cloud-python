@@ -1157,7 +1157,7 @@ class TestAuthorizedSessionMTLSReauth:
         session = google.auth.transport.requests.AuthorizedSession(credentials)
         session._is_mtls = True
         session._cached_cert = b"cert"
-        
+
         mock_session_request.side_effect = [
             mock.Mock(status_code=http_client.UNAUTHORIZED),
             mock.Mock(status_code=http_client.OK),
@@ -1169,7 +1169,7 @@ class TestAuthorizedSessionMTLSReauth:
             "same_fingerprint",
         )
         session.configure_mtls_channel = mock.Mock()
-        
+
         session.request("GET", "https://example.mtls.googleapis.com/")
 
         session.configure_mtls_channel.assert_not_called()
