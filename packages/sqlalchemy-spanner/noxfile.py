@@ -188,7 +188,7 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS[0])
+@nox.session(python=SYSTEM_COMPLIANCE_MIGRATION_TEST_PYTHON_VERSIONS[0])
 def compliance_test_14(session):
     """Run SQLAlchemy dialect compliance test suite."""
     config_file = f"test_compliance_14_{session.python}_{uuid.uuid4().hex[:6]}.cfg"
@@ -495,10 +495,10 @@ def system(session, test_type):
             "Credentials or emulator host must be set via environment variable"
         )
 
-    if os.environ.get("RUN_COMPLIANCE_TESTS", "true") == "false" and not os.environ.get(
+    if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false" and not os.environ.get(
         "SPANNER_EMULATOR_HOST", ""
     ):
-        session.skip("RUN_COMPLIANCE_TESTS is set to false, skipping")
+        session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
 
     if test_type == "system" and session.python not in SYSTEM_TEST_PYTHON_VERSIONS:
         session.skip("Standard system tests configured to run exclusively on 3.12")
@@ -533,6 +533,16 @@ def system(session, test_type):
                 config_file,
                 success_codes=[0, 1],
             )
+
+
+@nox.session(python=SYSTEM_COMPLIANCE_MIGRATION_TEST_PYTHON_VERSIONS)
+@nox.parametrize(
+    "test_type",
+    ["compliance_14", "compliance_20"],
+)
+def compliance(session, test_type):
+    """Run SQLAlchemy dialect compliance test suite."""
+    system(session, test_type=test_type)
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
