@@ -104,7 +104,7 @@
     <h1>Scenario 3: LIMIT 1000 Read (11 Columns) - Real Spanner</h1>
     <div class="meta">
       <strong>Source Profile:</strong> <code>spanner_limit1000_c1.prof</code> |
-      <strong>Total Profiled CPU Time:</strong> 3.9057 seconds |
+      <strong>Total Profiled CPU Time:</strong> 5.3510 seconds |
       <strong>Interactive:</strong> Click any frame to zoom in, click root or 'Reset Zoom' to zoom out.
     </div>
   </div>
@@ -123,34 +123,34 @@
 
   <div class="card">
     <h2>Top 20 Functions by Cumulative CPU Time</h2>
-    <pre>Mon Aug 31 14:01:04 2026    /usr/local/google/home/suvham/workspace/cloudPython/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_limit1000_c1.prof
+    <pre>Mon Aug 31 18:17:43 2026    /home/suvham_google_com/workspace/cloud-python/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_limit1000_c1.prof
 
-         624019 function calls (624020 primitive calls) in 3.906 seconds
+         168913 function calls (169494 primitive calls) in 5.351 seconds
 
    Ordered by: cumulative time
-   List reduced from 177 to 20 due to restriction <20>
+   List reduced from 316 to 20 due to restriction <20>
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-       11    0.020    0.002    4.504    0.409 spanner_cpu_profile_suite.py:71(run_limit_1000_query_sync)
-    11011    0.055    0.000    4.430    0.000 streamed.py:145(StreamedResultSet.__iter__)
-       22    0.024    0.001    4.327    0.197 streamed.py:118(StreamedResultSet._consume_next)
-       11    0.676    0.061    4.227    0.384 streamed.py:96(StreamedResultSet._merge_values)
-   121000    0.980    0.000    3.280    0.000 _helpers.py:244(_parse_value_pb)
-   121000    0.978    0.000    2.075    0.000 enums.py:125(TypeCode.__eq__)
-   121000    0.455    0.000    0.761    0.000 enum.py:199(property.__get__)
-   121000    0.337    0.000    0.337    0.000 enums.py:118(TypeCode._comparable)
-   121000    0.306    0.000    0.306    0.000 enum.py:1337(TypeCode.value)
-       22    0.000    0.000    0.106    0.005 method.py:81(_GapicCallable.__call__)
-       22    0.000    0.000    0.090    0.004 timeout.py:87(func_with_timeout)
-       22    0.000    0.000    0.077    0.003 snapshot.py:51(_restart_on_unavailable)
-       11    0.000    0.000    0.062    0.006 client.py:1363(SpannerClient.execute_streaming_sql)
-       11    0.000    0.000    0.058    0.005 grpc_helpers.py:126(error_remapped_callable)
-       91    0.000    0.000    0.056    0.001 threading.py:346(Condition.wait)
-       11    0.004    0.000    0.048    0.004 _channel.py:1350(_UnaryStreamMultiCallable.__call__)
-       11    0.000    0.000    0.048    0.004 client.py:952(SpannerClient.get_session)
-       11    0.000    0.000    0.048    0.004 session.py:152(Session.exists)
-       11    0.000    0.000    0.048    0.004 pool.py:303(BurstyPool.get)
-       11    0.000    0.000    0.048    0.004 database.py:1237(SnapshotCheckout.__enter__)
+       83    0.124    0.001    8.065    0.097 spanner_cpu_profile_suite.py:71(run_limit_1000_query_sync)
+    83083    0.333    0.000    7.798    0.000 streamed.py:169(StreamedResultSet.__iter__)
+       83    0.740    0.009    7.345    0.088 streamed.py:150(StreamedResultSet._consume_next)
+       83    3.465    0.042    6.112    0.074 streamed.py:111(StreamedResultSet._merge_values)
+      166    0.007    0.000    0.493    0.003 snapshot.py:75(_restart_on_unavailable)
+      166    0.003    0.000    0.248    0.001 threading.py:964(run)
+       83    0.073    0.001    0.199    0.002 _channel.py:1722(channel_spin)
+       83    0.001    0.000    0.161    0.002 cross_sync.py:331(run_if_async)
+       83    0.003    0.000    0.160    0.002 client.py:1453(SpannerClient.execute_streaming_sql)
+       83    0.003    0.000    0.147    0.002 method.py:151(_GapicCallable.__call__)
+       83    0.001    0.000    0.129    0.002 timeout.py:101(func_with_timeout)
+       83    0.001    0.000    0.126    0.002 grpc_helpers.py:140(error_remapped_callable)
+       83    0.005    0.000    0.112    0.001 snapshot.py:415(Snapshot.execute_sql)
+      332    0.005    0.000    0.106    0.000 _channel.py:238(handle_event)
+       83    0.001    0.000    0.100    0.001 _interceptor.py:410(_UnaryStreamMultiCallable.__call__)
+       83    0.001    0.000    0.099    0.001 client.py:94(MetricsInterceptor.intercept_unary_stream)
+       83    0.003    0.000    0.098    0.001 metrics_interceptor.py:102(MetricsInterceptor.intercept)
+      581    0.013    0.000    0.096    0.000 message.py:611(QueryOptions.__init__)
+      166    0.001    0.000    0.094    0.001 metrics_interceptor.py:238(_StreamingResponseWrapper.__next__)
+       83    0.000    0.000    0.089    0.001 client.py:135(new_fn)
 
 
 </pre>
@@ -159,7 +159,7 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/d3-flame-graph@4.1.3/dist/d3-flamegraph.min.js"></script>
   <script>
-    const data = {"name": "Total Profiled Workload (3.906s)", "value": 3.9057, "self_time": 0.0, "calls": 1, "children": [{"name": "run_limit_1000_query_sync [spanner_cpu_profile_suite.py:71]", "value": 4.5042, "self_time": 0.02, "calls": 11, "children": [{"name": "StreamedResultSet.__iter__ [streamed.py:145]", "value": 4.4303, "self_time": 0.0548, "calls": 11011, "children": [{"name": "StreamedResultSet._consume_next [streamed.py:118]", "value": 4.3274, "self_time": 0.0236, "calls": 22, "children": [{"name": "StreamedResultSet._merge_values [streamed.py:96]", "value": 4.227, "self_time": 0.6762, "calls": 11, "children": [{"name": "_parse_value_pb [_helpers.py:244]", "value": 3.28, "self_time": 0.9802, "calls": 121000, "children": [{"name": "TypeCode.__eq__ [enums.py:125]", "value": 2.0753, "self_time": 0.9778, "calls": 121000, "children": [{"name": "property.__get__ [enum.py:199]", "value": 0.7608, "self_time": 0.4548, "calls": 121000, "children": [{"name": "TypeCode.value [enum.py:1337]", "value": 0.306, "self_time": 0.306, "calls": 121000, "children": []}]}, {"name": "TypeCode._comparable [enums.py:118]", "value": 0.3366, "self_time": 0.3366, "calls": 121000, "children": []}]}]}]}]}]}]}]};
+    const data = {"name": "Total Profiled Workload (5.351s)", "value": 5.351, "self_time": 0.0, "calls": 1, "children": [{"name": "run_limit_1000_query_sync [spanner_cpu_profile_suite.py:71]", "value": 8.0651, "self_time": 0.1238, "calls": 83, "children": [{"name": "StreamedResultSet.__iter__ [streamed.py:169]", "value": 7.798, "self_time": 0.3326, "calls": 83083, "children": [{"name": "StreamedResultSet._consume_next [streamed.py:150]", "value": 7.3453, "self_time": 0.7401, "calls": 83, "children": [{"name": "StreamedResultSet._merge_values [streamed.py:111]", "value": 6.1117, "self_time": 3.4655, "calls": 83, "children": []}, {"name": "_restart_on_unavailable [snapshot.py:75]", "value": 0.4931, "self_time": 0.0065, "calls": 166, "children": [{"name": "run_if_async [cross_sync.py:331]", "value": 0.1605, "self_time": 0.001, "calls": 83, "children": [{"name": "SpannerClient.execute_streaming_sql [client.py:1453]", "value": 0.1596, "self_time": 0.0035, "calls": 83, "children": [{"name": "_GapicCallable.__call__ [method.py:151]", "value": 0.1468, "self_time": 0.0032, "calls": 83, "children": [{"name": "func_with_timeout [timeout.py:101]", "value": 0.1287, "self_time": 0.0012, "calls": 83, "children": []}]}, {"name": "QueryOptions.__getattr__ [message.py:806]", "value": 0.0866, "self_time": 0.0126, "calls": 1245, "children": []}]}]}, {"name": "QueryOptions.__getattr__ [message.py:806]", "value": 0.0866, "self_time": 0.0126, "calls": 1245, "children": []}, {"name": "Snapshot._update_for_result_set_pb [snapshot.py:902]", "value": 0.0791, "self_time": 0.0025, "calls": 83, "children": [{"name": "QueryOptions.__getattr__ [message.py:806]", "value": 0.0866, "self_time": 0.0126, "calls": 1245, "children": []}]}, {"name": "_StreamingResponseIterator.__next__ [grpc_helpers.py:84]", "value": 0.0731, "self_time": 0.0012, "calls": 166, "children": []}, {"name": "MetricsCapture.__exit__ [metrics_capture.py:77]", "value": 0.0715, "self_time": 0.003, "calls": 166, "children": [{"name": "MetricsTracer.record_operation_completion [metrics_tracer.py:380]", "value": 0.0654, "self_time": 0.0058, "calls": 166, "children": []}]}]}]}]}, {"name": "Snapshot.execute_sql [snapshot.py:415]", "value": 0.1121, "self_time": 0.0049, "calls": 83, "children": [{"name": "QueryOptions.__init__ [message.py:611]", "value": 0.0964, "self_time": 0.0126, "calls": 581, "children": [{"name": "Marshal.to_proto [marshal.py:199]", "value": 0.0775, "self_time": 0.0169, "calls": 1494, "children": []}]}]}]}]};
 
     let flamegraphInstance = null;
 

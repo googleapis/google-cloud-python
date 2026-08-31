@@ -187,7 +187,7 @@ async def execute_async_scenario_2(output_prof_path, concurrency=32):
         async_client = HighLevelAsyncClient(project=PROJECT)
         async_instance = async_client.instance(INSTANCE)
         pool = AsyncBurstyPool(target_size=concurrency) if AsyncBurstyPool else None
-        async_database = async_instance.database(DATABASE, pool=pool) if pool else async_instance.database(DATABASE)
+        async_database = await async_instance.database(DATABASE, pool=pool) if pool else async_instance.database(DATABASE)
         worker_fn = lambda wid, st: async_worker_loop_high_level(async_database, wid, st)
     else:
         print(f"[*] Initializing SpannerAsyncClient (grpc.aio transport) for {DB_PATH}...")
