@@ -151,7 +151,7 @@ class AsyncAuthorizedSession:
         self._mtls_init_task = None
         self._cached_cert = None
         self._client_cert_callback = None
-        self._old_auth_requests = []  # type: list
+        self._old_auth_requests: list[transport.Request] = []
         if _auth_request is None:
             raise exceptions.TransportError(
                 "`auth_request` must either be configured or the external package `aiohttp` must be installed to use the default value."
@@ -327,11 +327,8 @@ class AsyncAuthorizedSession:
 
         if response.status_code == http_client.UNAUTHORIZED:
             if _auth_retry_count < 2:
-                is_streaming = (
-                    data is not None
-                    and isinstance(
-                        data, (collections.abc.Iterator, collections.abc.AsyncIterable)
-                    )
+                is_streaming = data is not None and (
+                    isinstance(data, (collections.abc.Iterator, collections.abc.AsyncIterable))
                     or hasattr(data, "read")
                 )
                 is_mtls_endpoint = False
@@ -366,7 +363,13 @@ class AsyncAuthorizedSession:
                                         self._cached_cert,
                                         self._client_cert_callback,
                                     )
-                                except Exception as e:
+                                except (
+                                    exceptions.ClientCertError,
+                                    exceptions.MutualTLSChannelError,
+                                    OSError,
+                                    ValueError,
+                                    ImportError,
+                                ) as e:
                                     _LOGGER.warning(
                                         "Failed to check client certificate parameters: %s. Proceeding with original response.",
                                         e,
