@@ -384,6 +384,7 @@ class TestSessionsMtls:
     async def test_cert_rotation_check_params_fails(self):
         mock_creds = mock.AsyncMock(spec=credentials.Credentials)
         mock_creds.before_request = mock.AsyncMock(return_value=None)
+        mock_creds.refresh = mock.AsyncMock()
 
         mock_resp = mock.Mock()
         mock_resp.status_code = http_client.UNAUTHORIZED
@@ -407,7 +408,8 @@ class TestSessionsMtls:
             )
 
             assert resp == mock_resp
-            assert mock_check.call_count >= 1
+            mock_check.assert_called_once()
+            mock_creds.refresh.assert_not_called()
             mock_conf.assert_not_called()
 
         await session.close()
@@ -499,6 +501,60 @@ class TestSessionsMtls:
         await session.close()
 
     @pytest.mark.asyncio
+    async def test_cert_rotation_lock_contention(self):
+        mock_creds = mock.AsyncMock(spec=credentials.Credentials)
+        mock_creds.before_request = mock.AsyncMock(return_value=None)
+        mock_creds.refresh = mock.AsyncMock(return_value=None)
+
+        mock_resp_401 = mock.Mock()
+        mock_resp_401.status_code = http_client.UNAUTHORIZED
+        mock_auth_req = mock.AsyncMock(return_value=mock_resp_401)
+
+        session = sessions.AsyncAuthorizedSession(
+            mock_creds, auth_request=mock_auth_req
+        )
+        session._is_mtls = True
+        session._cached_cert = b"old_cert"
+
+        new_cert = b"new_cert"
+        new_key = b"new_key"
+
+        async def mock_configure_mtls_channel(*args, **kwargs):
+            # Introduce a small delay to guarantee lock contention from asyncio.gather tasks
+            await asyncio.sleep(0.01)
+            # Simulate the channel update to ensure following tasks take the skip branch
+            session._cached_cert = new_cert
+
+        def mock_check_side_effect(cached_cert, callback):
+            # Return new fingerprints on first check, but matching fingerprints on retries
+            if cached_cert == b"old_cert":
+                return (new_cert, new_key, b"old_fp", b"new_fp")
+            return (new_cert, new_key, b"new_fp", b"new_fp")
+
+        with mock.patch(
+            "google.auth.transport._mtls_helper.check_parameters_for_unauthorized_response"
+        ) as mock_check, mock.patch.object(
+            session, "configure_mtls_channel", new_callable=mock.AsyncMock
+        ) as mock_conf:
+            mock_check.side_effect = mock_check_side_effect
+            mock_conf.side_effect = mock_configure_mtls_channel
+
+            # Launch multiple concurrent requests triggering 401s
+            tasks = [
+                session.request("GET", "https://pubsub.mtls.googleapis.com/test")
+                for _ in range(3)
+            ]
+            responses = await asyncio.gather(*tasks)
+
+            for resp in responses:
+                assert resp == mock_resp_401
+
+            # Confirm the channel is only reconfigured once across all concurrent requests
+            mock_conf.assert_called_once()
+
+        await session.close()
+
+    @pytest.mark.asyncio
     async def test_non_mtls_url_bypasses_rotation(self):
         mock_creds = mock.AsyncMock(spec=credentials.Credentials)
         mock_resp_401 = mock.Mock()
@@ -518,7 +574,6 @@ class TestSessionsMtls:
         ) as mock_check, mock.patch.object(
             session, "configure_mtls_channel", new_callable=mock.AsyncMock
         ) as mock_conf:
-            # ...a 401 on a regular domain bypasses checks and just returns the 401 locally
             resp = await session.request("GET", "https://pubsub.googleapis.com/test")
 
             assert resp == mock_resp_401
