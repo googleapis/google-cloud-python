@@ -310,6 +310,7 @@ def main():
         ("spanner_point_select_c32.prof", "spanner_point_select_c32.html", "Scenario 2: Point Select (Concurrency = 32 Coroutines) - Real Spanner"),
         ("spanner_limit1000_c1.prof", "spanner_limit1000_c1.html", "Scenario 3: LIMIT 1000 Read (11 Columns) - Real Spanner"),
         ("spanner_point_select_c32_threads.prof", "spanner_point_select_c32_threads.html", "Scenario 4: Point Select Multi-Threaded (C=32 Threads) - Real Spanner & GIL Contention"),
+        ("spanner_point_select_c32_multiprocess.prof", "spanner_point_select_c32_multiprocess.html", "Scenario 5: Multi-Processing (4 Procs x 8 Threads = 32 Concurrency) - Real Spanner"),
     ]
 
     for prof_name, html_name, title in scenarios:
