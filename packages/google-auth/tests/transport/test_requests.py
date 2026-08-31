@@ -1127,6 +1127,7 @@ class TestAuthorizedSessionMTLSReauth:
         mock_response = mock.Mock(status_code=http_client.UNAUTHORIZED)
         mock_success_response = mock.Mock(status_code=http_client.OK)
         mock_session_request.side_effect = [mock_response, mock_success_response]
+        real_lock = threading.Lock()
         session._reauth_lock = real_lock
         mock_check_params.return_value = (
             b"new_cert_bytes",
