@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import functools
 import json
 import logging as std_logging
 import os
@@ -44,6 +43,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.secretmanager_v1 import gapic_version as package_version
 from google.cloud.secretmanager_v1._compat import (
     get_api_endpoint,
     get_default_mtls_endpoint,
@@ -73,6 +73,7 @@ import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
+
 from google.cloud.secretmanager_v1.services.secret_manager_service import pagers
 from google.cloud.secretmanager_v1.types import resources, service
 
@@ -618,17 +619,14 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 "api_audience": self._client_options.api_audience,
             }
 
-            # When OpenTelemetry tracing is enabled, bind create_channel_with_otel
-            # using functools.partial and pass it as the channel factory.
-            # This preserves lazy channel instantiation inside the Transport and avoids
-            # duplicating channel initialization arguments here in the client.
+            # When OpenTelemetry tracing is enabled, obtain the channel wrapper
+            # and pass it to the transport.
             if transport_init is SecretManagerServiceGrpcTransport:
-                if _observability.is_otel_capabilities_enabled(self._client_options):
-                    transport_kwargs["channel"] = functools.partial(
-                        _observability.create_channel_with_otel,
-                        SecretManagerServiceGrpcTransport.create_channel,
-                        client_options=self._client_options,
-                    )
+                otel_wrapper = _observability.get_otel_channel_wrapper(
+                    self._client_options
+                )
+                if otel_wrapper is not None:
+                    transport_kwargs["wrappers"] = [otel_wrapper]
 
             self._transport = transport_init(**transport_kwargs)
 
