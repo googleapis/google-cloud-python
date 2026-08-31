@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Scenario 4: Point Select Multi-Threaded (C=32 Threads) - Real Spanner & GIL Contention - CPU Flame Graph</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/d3-flame-graph@4.1.3/dist/d3-flamegraph.css">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 24px;
+      background: #f8f9fa;
+      color: #202124;
+    }
+    .header {
+      background: #ffffff;
+      padding: 20px 24px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 24px;
+      color: #1a73e8;
+    }
+    .meta {
+      font-size: 14px;
+      color: #5f6368;
+    }
+    .card {
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      margin-bottom: 24px;
+    }
+    .controls {
+      margin-bottom: 16px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    input[type="text"] {
+      padding: 8px 12px;
+      border: 1px solid #dadce0;
+      border-radius: 4px;
+      font-size: 14px;
+      width: 280px;
+    }
+    button {
+      padding: 8px 16px;
+      background: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    button:hover {
+      background: #1557b0;
+    }
+    button.secondary {
+      background: #f1f3f4;
+      color: #3c4043;
+    }
+    button.secondary:hover {
+      background: #e8eaed;
+    }
+    #details {
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #1a73e8;
+      min-height: 20px;
+    }
+    #chart {
+      width: 100%;
+      min-height: 500px;
+    }
+    pre {
+      background: #202124;
+      color: #e8eaed;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .error-box {
+      display: none;
+      padding: 12px 16px;
+      background: #fce8e6;
+      color: #c5221f;
+      border-radius: 4px;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Scenario 4: Point Select Multi-Threaded (C=32 Threads) - Real Spanner & GIL Contention</h1>
+    <div class="meta">
+      <strong>Source Profile:</strong> <code>spanner_point_select_c32_threads.prof</code> |
+      <strong>Total Profiled CPU Time:</strong> 3.3686 seconds |
+      <strong>Interactive:</strong> Click any frame to zoom in, click root or 'Reset Zoom' to zoom out.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="controls">
+      <input type="text" id="search" placeholder="Search function or module...">
+      <button onclick="search()">Search</button>
+      <button class="secondary" onclick="clearSearch()">Clear</button>
+      <button class="secondary" onclick="resetZoom()">Reset Zoom</button>
+    </div>
+    <div id="error-box" class="error-box"></div>
+    <div id="details">Hover over a function to view time and call metrics</div>
+    <div id="chart"></div>
+  </div>
+
+  <div class="card">
+    <h2>Top 20 Functions by Cumulative CPU Time</h2>
+    <pre>Mon Aug 31 18:53:11 2026    /usr/local/google/home/suvham/workspace/cloudPython/google-cloud-python/packages/google-cloud-spanner/profiler_results/spanner_point_select_c32_threads.prof
+
+         540261 function calls (540953 primitive calls) in 3.369 seconds
+
+   Ordered by: cumulative time
+   List reduced from 208 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     1437    0.002    0.000    7.791    0.005 threading.py:1006(Thread.run)
+       32    0.004    0.000    6.987    0.218 spanner_cpu_profile_suite.py:285(worker_thread_loop)
+      691    0.005    0.000    6.956    0.010 spanner_cpu_profile_suite.py:63(run_point_select_query_sync)
+     1404    0.015    0.000    5.021    0.004 method.py:81(_GapicCallable.__call__)
+     1404    0.029    0.000    4.839    0.003 timeout.py:87(func_with_timeout)
+     1382    0.005    0.000    4.186    0.003 streamed.py:145(StreamedResultSet.__iter__)
+     1382    0.001    0.000    4.180    0.003 streamed.py:118(StreamedResultSet._consume_next)
+     1382    0.022    0.000    4.136    0.003 snapshot.py:51(_restart_on_unavailable)
+      691    0.021    0.000    3.002    0.004 client.py:1363(SpannerClient.execute_streaming_sql)
+      691    0.005    0.000    2.681    0.004 grpc_helpers.py:126(error_remapped_callable)
+    14068    0.005    0.000    2.410    0.000 threading.py:322(Condition.__enter__)
+      691    0.003    0.000    2.302    0.003 database.py:1237(SnapshotCheckout.__enter__)
+      691    0.001    0.000    2.295    0.003 pool.py:303(BurstyPool.get)
+      669    0.005    0.000    2.218    0.003 session.py:152(Session.exists)
+      669    0.010    0.000    2.195    0.003 client.py:952(SpannerClient.get_session)
+      713    0.007    0.000    2.136    0.003 retry_unary.py:71(retry_target)
+      713    0.000    0.000    2.136    0.003 retry_unary.py:273(retry_wrapped_func)
+      713    0.001    0.000    2.121    0.003 grpc_helpers.py:38(error_remapped_callable)
+      713    0.002    0.000    2.120    0.003 _channel.py:1147(_UnaryUnaryMultiCallable.__call__)
+      713    0.731    0.001    2.117    0.003 _channel.py:1110(_UnaryUnaryMultiCallable._blocking)
+
+
+</pre>
+  </div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-flame-graph@4.1.3/dist/d3-flamegraph.min.js"></script>
+  <script>
+    const data = {"name": "Total Profiled Workload (3.369s)", "value": 3.3686, "self_time": 0.0, "calls": 1, "children": [{"name": "worker_thread_loop [spanner_cpu_profile_suite.py:285]", "value": 6.9868, "self_time": 0.0042, "calls": 32, "children": [{"name": "run_point_select_query_sync [spanner_cpu_profile_suite.py:63]", "value": 6.9561, "self_time": 0.0046, "calls": 691, "children": [{"name": "StreamedResultSet.__iter__ [streamed.py:145]", "value": 4.1864, "self_time": 0.0053, "calls": 1382, "children": [{"name": "StreamedResultSet._consume_next [streamed.py:118]", "value": 4.1804, "self_time": 0.0007, "calls": 1382, "children": [{"name": "pb [message.py:318]", "value": 0.0581, "self_time": 0.042, "calls": 17988, "children": []}]}]}, {"name": "SnapshotCheckout.__enter__ [database.py:1237]", "value": 2.3021, "self_time": 0.0028, "calls": 691, "children": [{"name": "BurstyPool.get [pool.py:303]", "value": 2.295, "self_time": 0.0014, "calls": 691, "children": [{"name": "Session.exists [session.py:152]", "value": 2.2177, "self_time": 0.0046, "calls": 669, "children": [{"name": "SpannerClient.get_session [client.py:952]", "value": 2.1948, "self_time": 0.0102, "calls": 669, "children": [{"name": "_GapicCallable.__call__ [method.py:81]", "value": 5.0207, "self_time": 0.0153, "calls": 1404, "children": [{"name": "func_with_timeout [timeout.py:87]", "value": 4.8393, "self_time": 0.0293, "calls": 1404, "children": []}, {"name": "retry_wrapped_func [retry_unary.py:273]", "value": 2.136, "self_time": 0.0, "calls": 713, "children": []}, {"name": "_apply_decorators [method.py:32]", "value": 0.1435, "self_time": 0.0154, "calls": 1404, "children": []}]}, {"name": "CreateSessionRequest.__init__ [message.py:610]", "value": 0.3279, "self_time": 0.0429, "calls": 3780, "children": [{"name": "Marshal.to_proto [marshal.py:202]", "value": 0.3519, "self_time": 0.0853, "calls": 13151, "children": []}, {"name": "CreateSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0941, "self_time": 0.0174, "calls": 15118, "children": []}]}, {"name": "CreateSessionRequest.__getattr__ [message.py:799]", "value": 0.1555, "self_time": 0.0254, "calls": 6628, "children": [{"name": "Marshal.to_python [marshal.py:178]", "value": 0.102, "self_time": 0.0187, "calls": 9718, "children": []}, {"name": "CreateSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0941, "self_time": 0.0174, "calls": 15118, "children": []}]}, {"name": "GetSessionRequest.__init__ [message.py:610]", "value": 0.1521, "self_time": 0.023, "calls": 1770, "children": [{"name": "Marshal.to_proto [marshal.py:202]", "value": 0.3519, "self_time": 0.0853, "calls": 13151, "children": []}, {"name": "GetSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0508, "self_time": 0.0213, "calls": 7060, "children": []}]}, {"name": "to_grpc_metadata [routing_header.py:39]", "value": 0.1425, "self_time": 0.0068, "calls": 1404, "children": [{"name": "to_routing_header [routing_header.py:20]", "value": 0.1356, "self_time": 0.0203, "calls": 1404, "children": []}]}]}]}, {"name": "Session.create [session.py:119]", "value": 0.061, "self_time": 0.0005, "calls": 22, "children": [{"name": "CreateSessionRequest.__init__ [message.py:610]", "value": 0.3279, "self_time": 0.0429, "calls": 3780, "children": [{"name": "Marshal.to_proto [marshal.py:202]", "value": 0.3519, "self_time": 0.0853, "calls": 13151, "children": [{"name": "Marshal.get_rule [marshal.py:162]", "value": 0.1461, "self_time": 0.0733, "calls": 22178, "children": []}]}, {"name": "CreateSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0941, "self_time": 0.0174, "calls": 15118, "children": [{"name": "Field.pb_type [fields.py:129]", "value": 0.1063, "self_time": 0.0478, "calls": 22178, "children": []}]}]}, {"name": "CreateSessionRequest.__getattr__ [message.py:799]", "value": 0.1555, "self_time": 0.0254, "calls": 6628, "children": [{"name": "Marshal.to_python [marshal.py:178]", "value": 0.102, "self_time": 0.0187, "calls": 9718, "children": [{"name": "Marshal.get_rule [marshal.py:162]", "value": 0.1461, "self_time": 0.0733, "calls": 22178, "children": []}]}, {"name": "CreateSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0941, "self_time": 0.0174, "calls": 15118, "children": [{"name": "Field.pb_type [fields.py:129]", "value": 0.1063, "self_time": 0.0478, "calls": 22178, "children": []}]}]}, {"name": "SpannerClient.create_session [client.py:710]", "value": 0.0605, "self_time": 0.0, "calls": 22, "children": [{"name": "_GapicCallable.__call__ [method.py:81]", "value": 5.0207, "self_time": 0.0153, "calls": 1404, "children": [{"name": "func_with_timeout [timeout.py:87]", "value": 4.8393, "self_time": 0.0293, "calls": 1404, "children": []}, {"name": "retry_wrapped_func [retry_unary.py:273]", "value": 2.136, "self_time": 0.0, "calls": 713, "children": []}, {"name": "_apply_decorators [method.py:32]", "value": 0.1435, "self_time": 0.0154, "calls": 1404, "children": []}]}, {"name": "CreateSessionRequest.__getattr__ [message.py:799]", "value": 0.1555, "self_time": 0.0254, "calls": 6628, "children": [{"name": "Marshal.to_python [marshal.py:178]", "value": 0.102, "self_time": 0.0187, "calls": 9718, "children": []}, {"name": "CreateSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0941, "self_time": 0.0174, "calls": 15118, "children": []}]}, {"name": "to_grpc_metadata [routing_header.py:39]", "value": 0.1425, "self_time": 0.0068, "calls": 1404, "children": [{"name": "to_routing_header [routing_header.py:20]", "value": 0.1356, "self_time": 0.0203, "calls": 1404, "children": []}]}]}]}]}]}, {"name": "Snapshot.execute_sql [snapshot.py:338]", "value": 0.3878, "self_time": 0.0146, "calls": 691, "children": [{"name": "CreateSessionRequest.__init__ [message.py:610]", "value": 0.3279, "self_time": 0.0429, "calls": 3780, "children": [{"name": "Marshal.to_proto [marshal.py:202]", "value": 0.3519, "self_time": 0.0853, "calls": 13151, "children": [{"name": "Marshal.get_rule [marshal.py:162]", "value": 0.1461, "self_time": 0.0733, "calls": 22178, "children": []}]}, {"name": "CreateSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0941, "self_time": 0.0174, "calls": 15118, "children": [{"name": "Field.pb_type [fields.py:129]", "value": 0.1063, "self_time": 0.0478, "calls": 22178, "children": [{"name": "pb [message.py:318]", "value": 0.0581, "self_time": 0.042, "calls": 17988, "children": []}]}]}]}, {"name": "GetSessionRequest.__init__ [message.py:610]", "value": 0.1521, "self_time": 0.023, "calls": 1770, "children": [{"name": "Marshal.to_proto [marshal.py:202]", "value": 0.3519, "self_time": 0.0853, "calls": 13151, "children": [{"name": "Marshal.get_rule [marshal.py:162]", "value": 0.1461, "self_time": 0.0733, "calls": 22178, "children": []}]}, {"name": "GetSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0508, "self_time": 0.0213, "calls": 7060, "children": [{"name": "Field.pb_type [fields.py:129]", "value": 0.1063, "self_time": 0.0478, "calls": 22178, "children": [{"name": "pb [message.py:318]", "value": 0.0581, "self_time": 0.042, "calls": 17988, "children": []}]}]}]}]}, {"name": "SnapshotCheckout.__exit__ [database.py:1242]", "value": 0.0735, "self_time": 0.0023, "calls": 691, "children": [{"name": "BurstyPool.put [pool.py:321]", "value": 0.0712, "self_time": 0.0008, "calls": 691, "children": [{"name": "Session.delete [session.py:184]", "value": 0.0652, "self_time": 0.0, "calls": 22, "children": [{"name": "SpannerClient.delete_session [client.py:1173]", "value": 0.0652, "self_time": 0.0, "calls": 22, "children": [{"name": "_GapicCallable.__call__ [method.py:81]", "value": 5.0207, "self_time": 0.0153, "calls": 1404, "children": [{"name": "func_with_timeout [timeout.py:87]", "value": 4.8393, "self_time": 0.0293, "calls": 1404, "children": []}, {"name": "retry_wrapped_func [retry_unary.py:273]", "value": 2.136, "self_time": 0.0, "calls": 713, "children": []}, {"name": "_apply_decorators [method.py:32]", "value": 0.1435, "self_time": 0.0154, "calls": 1404, "children": []}]}, {"name": "CreateSessionRequest.__init__ [message.py:610]", "value": 0.3279, "self_time": 0.0429, "calls": 3780, "children": [{"name": "Marshal.to_proto [marshal.py:202]", "value": 0.3519, "self_time": 0.0853, "calls": 13151, "children": []}, {"name": "CreateSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0941, "self_time": 0.0174, "calls": 15118, "children": []}]}, {"name": "CreateSessionRequest.__getattr__ [message.py:799]", "value": 0.1555, "self_time": 0.0254, "calls": 6628, "children": [{"name": "Marshal.to_python [marshal.py:178]", "value": 0.102, "self_time": 0.0187, "calls": 9718, "children": []}, {"name": "CreateSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0941, "self_time": 0.0174, "calls": 15118, "children": []}]}, {"name": "GetSessionRequest.__init__ [message.py:610]", "value": 0.1521, "self_time": 0.023, "calls": 1770, "children": [{"name": "Marshal.to_proto [marshal.py:202]", "value": 0.3519, "self_time": 0.0853, "calls": 13151, "children": []}, {"name": "GetSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0508, "self_time": 0.0213, "calls": 7060, "children": []}]}, {"name": "to_grpc_metadata [routing_header.py:39]", "value": 0.1425, "self_time": 0.0068, "calls": 1404, "children": [{"name": "to_routing_header [routing_header.py:20]", "value": 0.1356, "self_time": 0.0203, "calls": 1404, "children": []}]}]}]}]}]}]}]}, {"name": "run_point_select_query_sync [spanner_cpu_profile_suite.py:63]", "value": 6.9561, "self_time": 0.0046, "calls": 691, "children": [{"name": "StreamedResultSet.__iter__ [streamed.py:145]", "value": 4.1864, "self_time": 0.0053, "calls": 1382, "children": [{"name": "StreamedResultSet._consume_next [streamed.py:118]", "value": 4.1804, "self_time": 0.0007, "calls": 1382, "children": [{"name": "pb [message.py:318]", "value": 0.0581, "self_time": 0.042, "calls": 17988, "children": []}]}]}, {"name": "SnapshotCheckout.__enter__ [database.py:1237]", "value": 2.3021, "self_time": 0.0028, "calls": 691, "children": [{"name": "BurstyPool.get [pool.py:303]", "value": 2.295, "self_time": 0.0014, "calls": 691, "children": [{"name": "Session.exists [session.py:152]", "value": 2.2177, "self_time": 0.0046, "calls": 669, "children": [{"name": "SpannerClient.get_session [client.py:952]", "value": 2.1948, "self_time": 0.0102, "calls": 669, "children": [{"name": "_GapicCallable.__call__ [method.py:81]", "value": 5.0207, "self_time": 0.0153, "calls": 1404, "children": [{"name": "func_with_timeout [timeout.py:87]", "value": 4.8393, "self_time": 0.0293, "calls": 1404, "children": [{"name": "error_remapped_callable [grpc_helpers.py:126]", "value": 2.6812, "self_time": 0.0047, "calls": 691, "children": []}, {"name": "error_remapped_callable [grpc_helpers.py:38]", "value": 2.1208, "self_time": 0.0005, "calls": 713, "children": []}]}, {"name": "retry_wrapped_func [retry_unary.py:273]", "value": 2.136, "self_time": 0.0, "calls": 713, "children": [{"name": "retry_target [retry_unary.py:71]", "value": 2.136, "self_time": 0.0068, "calls": 713, "children": []}]}, {"name": "_apply_decorators [method.py:32]", "value": 0.1435, "self_time": 0.0154, "calls": 1404, "children": [{"name": "TimeToDeadlineTimeout.__call__ [timeout.py:74]", "value": 0.0984, "self_time": 0.0062, "calls": 1404, "children": []}]}]}, {"name": "CreateSessionRequest.__init__ [message.py:610]", "value": 0.3279, "self_time": 0.0429, "calls": 3780, "children": [{"name": "Marshal.to_proto [marshal.py:202]", "value": 0.3519, "self_time": 0.0853, "calls": 13151, "children": [{"name": "Marshal.get_rule [marshal.py:162]", "value": 0.1461, "self_time": 0.0733, "calls": 22178, "children": []}]}, {"name": "CreateSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0941, "self_time": 0.0174, "calls": 15118, "children": [{"name": "Field.pb_type [fields.py:129]", "value": 0.1063, "self_time": 0.0478, "calls": 22178, "children": []}]}]}, {"name": "CreateSessionRequest.__getattr__ [message.py:799]", "value": 0.1555, "self_time": 0.0254, "calls": 6628, "children": [{"name": "Marshal.to_python [marshal.py:178]", "value": 0.102, "self_time": 0.0187, "calls": 9718, "children": [{"name": "Marshal.get_rule [marshal.py:162]", "value": 0.1461, "self_time": 0.0733, "calls": 22178, "children": []}]}, {"name": "CreateSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0941, "self_time": 0.0174, "calls": 15118, "children": [{"name": "Field.pb_type [fields.py:129]", "value": 0.1063, "self_time": 0.0478, "calls": 22178, "children": []}]}]}, {"name": "GetSessionRequest.__init__ [message.py:610]", "value": 0.1521, "self_time": 0.023, "calls": 1770, "children": [{"name": "Marshal.to_proto [marshal.py:202]", "value": 0.3519, "self_time": 0.0853, "calls": 13151, "children": [{"name": "Marshal.get_rule [marshal.py:162]", "value": 0.1461, "self_time": 0.0733, "calls": 22178, "children": []}]}, {"name": "GetSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0508, "self_time": 0.0213, "calls": 7060, "children": [{"name": "Field.pb_type [fields.py:129]", "value": 0.1063, "self_time": 0.0478, "calls": 22178, "children": []}]}]}, {"name": "to_grpc_metadata [routing_header.py:39]", "value": 0.1425, "self_time": 0.0068, "calls": 1404, "children": [{"name": "to_routing_header [routing_header.py:20]", "value": 0.1356, "self_time": 0.0203, "calls": 1404, "children": [{"name": "_urlencode_param [routing_header.py:58]", "value": 0.1121, "self_time": 0.0048, "calls": 1383, "children": []}]}]}]}]}, {"name": "Session.create [session.py:119]", "value": 0.061, "self_time": 0.0005, "calls": 22, "children": [{"name": "CreateSessionRequest.__init__ [message.py:610]", "value": 0.3279, "self_time": 0.0429, "calls": 3780, "children": [{"name": "Marshal.to_proto [marshal.py:202]", "value": 0.3519, "self_time": 0.0853, "calls": 13151, "children": [{"name": "Marshal.get_rule [marshal.py:162]", "value": 0.1461, "self_time": 0.0733, "calls": 22178, "children": []}]}, {"name": "CreateSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0941, "self_time": 0.0174, "calls": 15118, "children": [{"name": "Field.pb_type [fields.py:129]", "value": 0.1063, "self_time": 0.0478, "calls": 22178, "children": [{"name": "pb [message.py:318]", "value": 0.0581, "self_time": 0.042, "calls": 17988, "children": []}]}]}]}, {"name": "CreateSessionRequest.__getattr__ [message.py:799]", "value": 0.1555, "self_time": 0.0254, "calls": 6628, "children": [{"name": "Marshal.to_python [marshal.py:178]", "value": 0.102, "self_time": 0.0187, "calls": 9718, "children": [{"name": "Marshal.get_rule [marshal.py:162]", "value": 0.1461, "self_time": 0.0733, "calls": 22178, "children": []}]}, {"name": "CreateSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0941, "self_time": 0.0174, "calls": 15118, "children": [{"name": "Field.pb_type [fields.py:129]", "value": 0.1063, "self_time": 0.0478, "calls": 22178, "children": [{"name": "pb [message.py:318]", "value": 0.0581, "self_time": 0.042, "calls": 17988, "children": []}]}]}]}, {"name": "SpannerClient.create_session [client.py:710]", "value": 0.0605, "self_time": 0.0, "calls": 22, "children": [{"name": "_GapicCallable.__call__ [method.py:81]", "value": 5.0207, "self_time": 0.0153, "calls": 1404, "children": [{"name": "func_with_timeout [timeout.py:87]", "value": 4.8393, "self_time": 0.0293, "calls": 1404, "children": [{"name": "error_remapped_callable [grpc_helpers.py:126]", "value": 2.6812, "self_time": 0.0047, "calls": 691, "children": []}, {"name": "error_remapped_callable [grpc_helpers.py:38]", "value": 2.1208, "self_time": 0.0005, "calls": 713, "children": []}]}, {"name": "retry_wrapped_func [retry_unary.py:273]", "value": 2.136, "self_time": 0.0, "calls": 713, "children": [{"name": "retry_target [retry_unary.py:71]", "value": 2.136, "self_time": 0.0068, "calls": 713, "children": []}]}, {"name": "_apply_decorators [method.py:32]", "value": 0.1435, "self_time": 0.0154, "calls": 1404, "children": [{"name": "TimeToDeadlineTimeout.__call__ [timeout.py:74]", "value": 0.0984, "self_time": 0.0062, "calls": 1404, "children": []}]}]}, {"name": "CreateSessionRequest.__getattr__ [message.py:799]", "value": 0.1555, "self_time": 0.0254, "calls": 6628, "children": [{"name": "Marshal.to_python [marshal.py:178]", "value": 0.102, "self_time": 0.0187, "calls": 9718, "children": [{"name": "Marshal.get_rule [marshal.py:162]", "value": 0.1461, "self_time": 0.0733, "calls": 22178, "children": []}]}, {"name": "CreateSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0941, "self_time": 0.0174, "calls": 15118, "children": [{"name": "Field.pb_type [fields.py:129]", "value": 0.1063, "self_time": 0.0478, "calls": 22178, "children": []}]}]}, {"name": "to_grpc_metadata [routing_header.py:39]", "value": 0.1425, "self_time": 0.0068, "calls": 1404, "children": [{"name": "to_routing_header [routing_header.py:20]", "value": 0.1356, "self_time": 0.0203, "calls": 1404, "children": [{"name": "_urlencode_param [routing_header.py:58]", "value": 0.1121, "self_time": 0.0048, "calls": 1383, "children": []}]}]}]}]}]}]}, {"name": "Snapshot.execute_sql [snapshot.py:338]", "value": 0.3878, "self_time": 0.0146, "calls": 691, "children": [{"name": "CreateSessionRequest.__init__ [message.py:610]", "value": 0.3279, "self_time": 0.0429, "calls": 3780, "children": [{"name": "Marshal.to_proto [marshal.py:202]", "value": 0.3519, "self_time": 0.0853, "calls": 13151, "children": [{"name": "Marshal.get_rule [marshal.py:162]", "value": 0.1461, "self_time": 0.0733, "calls": 22178, "children": []}]}, {"name": "CreateSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0941, "self_time": 0.0174, "calls": 15118, "children": [{"name": "Field.pb_type [fields.py:129]", "value": 0.1063, "self_time": 0.0478, "calls": 22178, "children": [{"name": "pb [message.py:318]", "value": 0.0581, "self_time": 0.042, "calls": 17988, "children": []}]}]}]}, {"name": "GetSessionRequest.__init__ [message.py:610]", "value": 0.1521, "self_time": 0.023, "calls": 1770, "children": [{"name": "Marshal.to_proto [marshal.py:202]", "value": 0.3519, "self_time": 0.0853, "calls": 13151, "children": [{"name": "Marshal.get_rule [marshal.py:162]", "value": 0.1461, "self_time": 0.0733, "calls": 22178, "children": []}]}, {"name": "GetSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0508, "self_time": 0.0213, "calls": 7060, "children": [{"name": "Field.pb_type [fields.py:129]", "value": 0.1063, "self_time": 0.0478, "calls": 22178, "children": [{"name": "pb [message.py:318]", "value": 0.0581, "self_time": 0.042, "calls": 17988, "children": []}]}]}]}]}, {"name": "SnapshotCheckout.__exit__ [database.py:1242]", "value": 0.0735, "self_time": 0.0023, "calls": 691, "children": [{"name": "BurstyPool.put [pool.py:321]", "value": 0.0712, "self_time": 0.0008, "calls": 691, "children": [{"name": "Session.delete [session.py:184]", "value": 0.0652, "self_time": 0.0, "calls": 22, "children": [{"name": "SpannerClient.delete_session [client.py:1173]", "value": 0.0652, "self_time": 0.0, "calls": 22, "children": [{"name": "_GapicCallable.__call__ [method.py:81]", "value": 5.0207, "self_time": 0.0153, "calls": 1404, "children": [{"name": "func_with_timeout [timeout.py:87]", "value": 4.8393, "self_time": 0.0293, "calls": 1404, "children": [{"name": "error_remapped_callable [grpc_helpers.py:126]", "value": 2.6812, "self_time": 0.0047, "calls": 691, "children": []}, {"name": "error_remapped_callable [grpc_helpers.py:38]", "value": 2.1208, "self_time": 0.0005, "calls": 713, "children": []}]}, {"name": "retry_wrapped_func [retry_unary.py:273]", "value": 2.136, "self_time": 0.0, "calls": 713, "children": [{"name": "retry_target [retry_unary.py:71]", "value": 2.136, "self_time": 0.0068, "calls": 713, "children": []}]}, {"name": "_apply_decorators [method.py:32]", "value": 0.1435, "self_time": 0.0154, "calls": 1404, "children": [{"name": "TimeToDeadlineTimeout.__call__ [timeout.py:74]", "value": 0.0984, "self_time": 0.0062, "calls": 1404, "children": []}]}]}, {"name": "CreateSessionRequest.__init__ [message.py:610]", "value": 0.3279, "self_time": 0.0429, "calls": 3780, "children": [{"name": "Marshal.to_proto [marshal.py:202]", "value": 0.3519, "self_time": 0.0853, "calls": 13151, "children": [{"name": "Marshal.get_rule [marshal.py:162]", "value": 0.1461, "self_time": 0.0733, "calls": 22178, "children": []}]}, {"name": "CreateSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0941, "self_time": 0.0174, "calls": 15118, "children": [{"name": "Field.pb_type [fields.py:129]", "value": 0.1063, "self_time": 0.0478, "calls": 22178, "children": []}]}]}, {"name": "CreateSessionRequest.__getattr__ [message.py:799]", "value": 0.1555, "self_time": 0.0254, "calls": 6628, "children": [{"name": "Marshal.to_python [marshal.py:178]", "value": 0.102, "self_time": 0.0187, "calls": 9718, "children": [{"name": "Marshal.get_rule [marshal.py:162]", "value": 0.1461, "self_time": 0.0733, "calls": 22178, "children": []}]}, {"name": "CreateSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0941, "self_time": 0.0174, "calls": 15118, "children": [{"name": "Field.pb_type [fields.py:129]", "value": 0.1063, "self_time": 0.0478, "calls": 22178, "children": []}]}]}, {"name": "GetSessionRequest.__init__ [message.py:610]", "value": 0.1521, "self_time": 0.023, "calls": 1770, "children": [{"name": "Marshal.to_proto [marshal.py:202]", "value": 0.3519, "self_time": 0.0853, "calls": 13151, "children": [{"name": "Marshal.get_rule [marshal.py:162]", "value": 0.1461, "self_time": 0.0733, "calls": 22178, "children": []}]}, {"name": "GetSessionRequest._get_pb_type_from_key [message.py:684]", "value": 0.0508, "self_time": 0.0213, "calls": 7060, "children": [{"name": "Field.pb_type [fields.py:129]", "value": 0.1063, "self_time": 0.0478, "calls": 22178, "children": []}]}]}, {"name": "to_grpc_metadata [routing_header.py:39]", "value": 0.1425, "self_time": 0.0068, "calls": 1404, "children": [{"name": "to_routing_header [routing_header.py:20]", "value": 0.1356, "self_time": 0.0203, "calls": 1404, "children": [{"name": "_urlencode_param [routing_header.py:58]", "value": 0.1121, "self_time": 0.0048, "calls": 1383, "children": []}]}]}]}]}]}]}]}]};
+
+    let flamegraphInstance = null;
+
+    try {
+      // Correct constructor resolution: global flamegraph() or d3.flamegraph()
+      const createFlamegraph = (typeof flamegraph === 'function') 
+        ? flamegraph 
+        : (typeof d3 !== 'undefined' && typeof d3.flamegraph === 'function' ? d3.flamegraph : null);
+
+      if (!createFlamegraph) {
+        throw new Error("Flamegraph library failed to load. Please check internet access for CDN scripts.");
+      }
+
+      flamegraphInstance = createFlamegraph()
+        .width(document.getElementById('chart').offsetWidth || 1100)
+        .cellHeight(20)
+        .transitionDuration(400)
+        .minFrameSize(2)
+        .transitionEase(d3.easeCubic)
+        .sort(true)
+        .title("")
+        .onClick(function (d) {
+          console.info("Clicked on " + d.data.name);
+        })
+        .setDetailsElement(document.getElementById("details"));
+
+      d3.select("#chart")
+        .datum(data)
+        .call(flamegraphInstance);
+
+      window.addEventListener('resize', () => {
+        if (flamegraphInstance) {
+          flamegraphInstance.width(document.getElementById('chart').offsetWidth);
+          d3.select("#chart").call(flamegraphInstance);
+        }
+      });
+    } catch (err) {
+      console.error("Error initializing flamegraph:", err);
+      const errBox = document.getElementById("error-box");
+      errBox.style.display = "block";
+      errBox.textContent = "Error rendering flame graph: " + err.message;
+    }
+
+    function search() {
+      const term = document.getElementById("search").value;
+      if (term && flamegraphInstance) {
+        flamegraphInstance.search(term);
+      }
+    }
+
+    function clearSearch() {
+      document.getElementById("search").value = "";
+      if (flamegraphInstance) {
+        flamegraphInstance.clear();
+      }
+    }
+
+    function resetZoom() {
+      if (flamegraphInstance) {
+        flamegraphInstance.resetZoom();
+      }
+    }
+  </script>
+</body>
+</html>

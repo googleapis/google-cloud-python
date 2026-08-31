@@ -307,8 +307,9 @@ def main():
 
     scenarios = [
         ("spanner_point_select_c1.prof", "spanner_point_select_c1.html", "Scenario 1: Point Select (Concurrency = 1) - Real Spanner"),
-        ("spanner_point_select_c32.prof", "spanner_point_select_c32.html", "Scenario 2: Point Select (Concurrency = 32) - Real Spanner"),
+        ("spanner_point_select_c32.prof", "spanner_point_select_c32.html", "Scenario 2: Point Select (Concurrency = 32 Coroutines) - Real Spanner"),
         ("spanner_limit1000_c1.prof", "spanner_limit1000_c1.html", "Scenario 3: LIMIT 1000 Read (11 Columns) - Real Spanner"),
+        ("spanner_point_select_c32_threads.prof", "spanner_point_select_c32_threads.html", "Scenario 4: Point Select Multi-Threaded (C=32 Threads) - Real Spanner & GIL Contention"),
     ]
 
     for prof_name, html_name, title in scenarios:

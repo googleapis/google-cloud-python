@@ -22,6 +22,7 @@ You do **not** need `snakeviz` or any third-party pip packages to view these fla
 | **1. Real Point Select ($C=1$, Sync)** | [**`spanner_point_select_c1.html`**](./spanner_point_select_c1.html) | [`spanner_point_select_c1.prof`](./spanner_point_select_c1.prof) | 24 | **~7.63 ms** |
 | **2. Real Point Select ($C=32$, Async Full Row Parsing)** | [**`spanner_point_select_c32.html`**](./spanner_point_select_c32.html) | [`spanner_point_select_c32.prof`](./spanner_point_select_c32.prof) | 1,462 | **~1.42 ms** |
 | **3. Real LIMIT 1000 Read (11 cols, Sync)** | [**`spanner_limit1000_c1.html`**](./spanner_limit1000_c1.html) | [`spanner_limit1000_c1.prof`](./spanner_limit1000_c1.prof) | 11 (11k rows) | **~355.06 ms** |
+| **4. Real Point Select ($C=32$ Threads, Multi-Threading GIL)** | [**`spanner_point_select_c32_threads.html`**](./spanner_point_select_c32_threads.html) | [`spanner_point_select_c32_threads.prof`](./spanner_point_select_c32_threads.prof) | 691 | **~10.10 ms** |
 
 ---
 
@@ -92,10 +93,36 @@ ncalls  tottime  cumtime  filename:lineno(function)
 
 ---
 
+### Scenario 4: Point Select with 32 OS Threads (Multi-Threading & GIL Contention)
+* **Total Requests Recorded (10s):** 691 queries across 32 OS threads
+* **Total Pure CPU Time (All 32 Threads):** 6.982 s (Avg: **10.10 ms pure CPU per query**)
+* **Total GIL Wait Time (All 32 Threads):** **6.763 s** (Avg: **0.211 s / thread**)
+* **GIL Contention Ratio:** **49.2% of active compute phases**
+
+```
+ncalls  tottime  cumtime  filename:lineno(function)
+  1437    0.002    7.791  threading.py:1006(Thread.run)
+    32    0.004    6.987  spanner_cpu_profile_suite.py:285(worker_thread_loop)
+   691    0.005    6.956  spanner_cpu_profile_suite.py:63(run_point_select_query_sync)
+  1404    0.015    5.021  method.py:81(_GapicCallable.__call__)
+  1404    0.029    4.839  timeout.py:87(func_with_timeout)
+  1382    0.005    4.186  streamed.py:145(StreamedResultSet.__iter__)
+  1382    0.001    4.180  streamed.py:118(StreamedResultSet._consume_next)
+  1382    0.022    4.136  snapshot.py:51(_restart_on_unavailable)
+   691    0.021    3.002  client.py:1363(SpannerClient.execute_streaming_sql)
+   691    0.005    2.681  grpc_helpers.py:126(error_remapped_callable)
+ 14068    0.005    2.410  threading.py:322(Condition.__enter__)
+   691    0.003    2.302  database.py:1237(SnapshotCheckout.__enter__)
+   691    0.001    2.295  pool.py:303(BurstyPool.get)
+   669    0.005    2.218  session.py:152(Session.exists)
+```
+
+---
+
 ## 4. How to Re-Run on Any Machine
 
 ```bash
-# 1. Run the real Spanner benchmark suite (generates .prof files)
+# 1. Run the real Spanner benchmark suite (generates all 4 .prof files)
 python3 spanner_cpu_profile_suite.py
 
 # 2. Export interactive HTML flame graphs (zero pip dependencies needed)

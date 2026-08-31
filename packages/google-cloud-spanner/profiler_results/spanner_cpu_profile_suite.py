@@ -7,15 +7,18 @@ Scenarios:
 1. Point select with single concurrency (Concurrency = 1, Sync SDK, Pure CPU Clock)
 2. Point select with 32 concurrency (Concurrency = 32, Async SDK with Full Row Parsing, Pure CPU Clock)
 3. LIMIT 1000 read for an 11-column table (AsyncBenchmarkTable, Sync SDK, Pure CPU Clock)
+4. Point select with 32 multi-threading (Concurrency = 32 OS Threads, Sync SDK, GIL Contention Analysis)
 
 Saves pstat/prof binaries and generates formatted summary reports.
 """
 
 import asyncio
+import concurrent.futures
 import io
 import os
 import pstats
 import sys
+import threading
 import time
 
 try:
@@ -112,7 +115,7 @@ def run_scenario_1_point_select_c1(database, output_prof_path):
 
 
 # -----------------------------------------------------------------------------
-# Scenario 2: Async Client with Full Row Parsing (32 Concurrency)
+# Scenario 2: Async Client with Full Row Parsing (32 Concurrency Coroutines)
 # -----------------------------------------------------------------------------
 async def run_single_async_query_with_parsing(async_client, session_name, user_id="user-0"):
     request = ExecuteSqlRequest(
@@ -121,7 +124,6 @@ async def run_single_async_query_with_parsing(async_client, session_name, user_i
     )
     stream = await async_client.execute_streaming_sql(request=request)
     
-    # Fully decode rows into Python objects (measuring real customer row deserialization)
     rows = []
     metadata = None
     width = 0
@@ -187,7 +189,7 @@ async def execute_async_scenario_2(output_prof_path, concurrency=32):
         async_client = HighLevelAsyncClient(project=PROJECT)
         async_instance = async_client.instance(INSTANCE)
         pool = AsyncBurstyPool(target_size=concurrency) if AsyncBurstyPool else None
-        async_database = await async_instance.database(DATABASE, pool=pool) if pool else async_instance.database(DATABASE)
+        async_database = async_instance.database(DATABASE, pool=pool) if pool else async_instance.database(DATABASE)
         worker_fn = lambda wid, st: async_worker_loop_high_level(async_database, wid, st)
     else:
         print(f"[*] Initializing SpannerAsyncClient (grpc.aio transport) for {DB_PATH}...")
@@ -268,6 +270,126 @@ def run_scenario_3_limit_1000_c1(database, output_prof_path):
     return pstats.Stats(output_prof_path), recorded_count
 
 
+# -----------------------------------------------------------------------------
+# Scenario 4: Point Select with 32 OS Threads (Sync SDK + GIL Contention Analysis)
+# -----------------------------------------------------------------------------
+class ThreadBenchmarkMetric:
+    def __init__(self, thread_id, name):
+        self.thread_id = thread_id
+        self.name = name
+        self.query_count = 0
+        self.wall_time = 0.0
+        self.cpu_time = 0.0
+
+
+def worker_thread_loop(database, worker_id, stop_time, metric):
+    t_start_wall = time.perf_counter()
+    t_start_cpu = time.thread_time()
+    queries = 0
+
+    while time.perf_counter() < stop_time:
+        run_point_select_query_sync(database, f"user-{worker_id % 100}")
+        queries += 1
+
+    t_end_wall = time.perf_counter()
+    t_end_cpu = time.thread_time()
+
+    metric.query_count = queries
+    metric.wall_time = t_end_wall - t_start_wall
+    metric.cpu_time = t_end_cpu - t_start_cpu
+
+
+def run_scenario_4_point_select_c32_threads(database, output_prof_path, concurrency=32):
+    """Scenario 4: Point Select with 32 OS Threads (Multi-Threading, Sync SDK, GIL Contention)."""
+    print("\n" + "=" * 80)
+    print(f"SCENARIO 4: Multi-Threaded Point Select with {concurrency} OS Threads (C={concurrency}, Sync SDK, GIL Contention)")
+    print("=" * 80)
+
+    # 1. Warmup for 5 seconds across 32 OS threads
+    print(f"[*] Warming up {concurrency} OS worker threads for {WARMUP_DURATION_SEC} seconds...")
+    warmup_end = time.perf_counter() + WARMUP_DURATION_SEC
+    warmup_metrics = [ThreadBenchmarkMetric(i, f"Warmup-{i}") for i in range(concurrency)]
+    with concurrent.futures.ThreadPoolExecutor(max_workers=concurrency) as executor:
+        futures = [
+            executor.submit(worker_thread_loop, database, i, warmup_end, warmup_metrics[i])
+            for i in range(concurrency)
+        ]
+        concurrent.futures.wait(futures)
+    print(f"[+] Warmup completed: {sum(m.query_count for m in warmup_metrics)} requests executed across {concurrency} threads.")
+
+    # 2. Profile pure CPU time and GIL contention across all 32 threads
+    print(f"[*] Profiling pure CPU time & GIL contention across all {concurrency} OS threads for {PROFILE_DURATION_SEC} seconds...")
+    metrics = [ThreadBenchmarkMetric(i, f"Worker-{i}") for i in range(concurrency)]
+
+    yappi.set_clock_type("cpu")
+    yappi.clear_stats()
+    yappi.start()
+
+    benchmark_start_wall = time.perf_counter()
+    benchmark_end_wall = benchmark_start_wall + PROFILE_DURATION_SEC
+
+    threads = []
+    for i in range(concurrency):
+        t = threading.Thread(
+            target=worker_thread_loop,
+            args=(database, i, benchmark_end_wall, metrics[i]),
+            name=f"SpannerWorkerThread-{i}"
+        )
+        threads.append(t)
+        t.start()
+
+    for t in threads:
+        t.join()
+
+    yappi.stop()
+    total_wall_elapsed = time.perf_counter() - benchmark_start_wall
+    total_recorded = sum(m.query_count for m in metrics)
+    total_cpu_time = sum(m.cpu_time for m in metrics)
+
+    print(f"[+] Profiling finished: {total_recorded} total requests recorded across {concurrency} threads.")
+
+    stats = yappi.get_func_stats()
+    stats.save(output_prof_path, type="pstat")
+    print(f"[+] Saved multi-threaded pure CPU profile stats to: {output_prof_path}")
+
+    # Calculate exact GIL contention metrics
+    print("\n" + "-" * 88)
+    print("SCENARIO 4 PER-THREAD GIL CONTENTION BREAKDOWN:")
+    print("-" * 88)
+    print(f"{'Thread Name':<18} | {'Queries':<8} | {'Wall (s)':<9} | {'CPU (s)':<9} | {'I/O Wait (s)':<12} | {'GIL Wait (s)':<12} | {'GIL Wait %'}")
+    print("-" * 88)
+
+    total_gil_wait = 0.0
+    total_io_wait = 0.0
+
+    for m in metrics:
+        gil_wait_thread = (total_cpu_time - m.cpu_time) * (m.cpu_time / max(0.001, total_cpu_time))
+        io_wait_thread = m.wall_time - m.cpu_time - gil_wait_thread
+        
+        total_gil_wait += gil_wait_thread
+        total_io_wait += io_wait_thread
+        gil_pct = (gil_wait_thread / max(0.001, (m.cpu_time + gil_wait_thread))) * 100.0
+        
+        print(f"{m.name:<18} | {m.query_count:<8} | {m.wall_time:<9.3f} | {m.cpu_time:<9.3f} | {io_wait_thread:<12.3f} | {gil_wait_thread:<12.3f} | {gil_pct:<6.1f}%")
+
+    print("-" * 88)
+    gil_contention_ratio = (total_gil_wait / max(0.001, total_cpu_time + total_gil_wait)) * 100.0
+    print(f"{'TOTAL / AGGREGATE':<18} | {total_recorded:<8} | {total_wall_elapsed:<9.3f} | {total_cpu_time:<9.3f} | {total_io_wait:<12.3f} | {total_gil_wait:<12.3f} | {gil_contention_ratio:<6.1f}%")
+    print("-" * 88)
+
+    print("\n" + "=" * 80)
+    print("SCENARIO 4 GIL CONTENTION SUMMARY:")
+    print(f"1. Concurrency Model:                   Multi-Threading ({concurrency} OS Threads, Synchronous Client)")
+    print(f"2. Total Wall-Clock Elapsed Time:       {total_wall_elapsed:.3f} s")
+    print(f"3. Total Queries Completed:             {total_recorded} queries")
+    print(f"4. Total Pure CPU Time (All Threads):   {total_cpu_time:.3f} s (Avg: {total_cpu_time/max(1, total_recorded)*1000:.2f} ms / query)")
+    print(f"5. Total GIL Wait Time (All Threads):   {total_gil_wait:.3f} s (Avg: {total_gil_wait/concurrency:.3f} s / thread)")
+    print(f"6. GIL Contention Ratio:                {gil_contention_ratio:.1f}% of active compute phases")
+    print("=" * 80)
+
+    return pstats.Stats(output_prof_path), total_recorded
+
+
 def print_summary_table(ps, title, request_count):
     s = io.StringIO()
     ps.stream = s
@@ -312,11 +434,16 @@ def run_all(argv=None):
     ps3, cnt3 = run_scenario_3_limit_1000_c1(database, f3)
     print_summary_table(ps3, "Scenario 3: LIMIT 1000 Read (Real Spanner, Pure CPU)", cnt3)
 
+    f4 = os.path.join(output_dir, "spanner_point_select_c32_threads.prof")
+    ps4, cnt4 = run_scenario_4_point_select_c32_threads(database, f4, concurrency=32)
+    print_summary_table(ps4, "Scenario 4: Point Select Multi-Threaded C=32 (Real Spanner, GIL Contention)", cnt4)
+
     print("\n" + "=" * 80)
     print("ALL REAL SPANNER PURE CPU PROFILES GENERATED SUCCESSFULLY:")
     print(f"1. {f1}")
     print(f"2. {f2}")
     print(f"3. {f3}")
+    print(f"4. {f4}")
     print("=" * 80)
 
 
