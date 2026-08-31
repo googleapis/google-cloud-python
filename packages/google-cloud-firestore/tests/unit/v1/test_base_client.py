@@ -127,6 +127,41 @@ def test_baseclient__firestore_api_helper_wo_emulator():
     )
 
 
+def test_baseclient__firestore_api_helper_async_wo_emulator():
+    from google.cloud.firestore_v1.services.firestore.transports.grpc_asyncio import (
+        FirestoreGrpcAsyncIOTransport,
+    )
+
+    client = _make_default_base_client()
+    client_options = client._client_options = mock.Mock()
+    target = client._target
+    assert client._firestore_api_internal is None
+
+    transport_class = mock.Mock(spec=FirestoreGrpcAsyncIOTransport)
+    client_class = mock.Mock()
+    client_module = mock.Mock()
+
+    api = client._firestore_api_helper(transport_class, client_class, client_module)
+
+    assert api is client_class.return_value
+    assert client._firestore_api_internal is api
+    channel_options = [
+        ("grpc.keepalive_time_ms", 30000),
+        ("grpc.max_send_message_length", -1),
+        ("grpc.max_receive_message_length", -1),
+    ]
+    transport_class.create_channel.assert_called_once_with(
+        target, credentials=client._credentials, options=channel_options
+    )
+    transport_class.assert_called_once_with(
+        host=target,
+        channel=transport_class.create_channel.return_value,
+    )
+    client_class.assert_called_once_with(
+        transport=transport_class.return_value, client_options=client_options
+    )
+
+
 def test_baseclient__firestore_api_helper_w_emulator():
     emulator_host = "localhost:8081"
     with mock.patch("os.getenv") as getenv:
