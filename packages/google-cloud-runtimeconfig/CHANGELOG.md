@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-runtimeconfig/#history
 
+## [0.37.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-runtimeconfig-v0.37.0...google-cloud-runtimeconfig-v0.37.1) (2026-08-21)
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
 ## [0.37.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-runtimeconfig-v0.36.1...google-cloud-runtimeconfig-v0.37.0) (2026-05-06)
 
 

@@ -1,4 +1,7 @@
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
@@ -35,13 +38,14 @@ jobs:
     - name: Run docs
       env:
         BUILD_TYPE: presubmit
-        TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
+        TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref || github.ref_name }}
         TEST_TYPE: docs
         # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
         PY_VERSION: "unused"
       run: |
         ci/run_conditional_tests.sh
   docfx:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -63,7 +67,7 @@ jobs:
     - name: Run docfx
       env:
         BUILD_TYPE: presubmit
-        TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref }}
+        TARGET_BRANCH: ${{ github.base_ref || github.event.merge_group.base_ref || github.ref_name }}
         TEST_TYPE: docfx
         # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
         PY_VERSION: "unused"

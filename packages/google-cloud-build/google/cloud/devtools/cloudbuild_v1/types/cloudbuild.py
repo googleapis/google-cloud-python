@@ -1563,6 +1563,12 @@ class Dependency(proto.Message):
             dest_path (str):
                 Required. Where should the files be placed on
                 the worker.
+            fetch_tags (bool):
+                Optional. True if remote tags should be
+                fetched too (default false). Note: when depth is
+                1 (default), git fetch only retrieves tags
+                pointing to commits within the shallow boundary.
+                Set depth to -1 to fetch all historical tags.
         """
 
         repository: "Dependency.GitSourceRepository" = proto.Field(
@@ -1585,6 +1591,10 @@ class Dependency(proto.Message):
         dest_path: str = proto.Field(
             proto.STRING,
             number=5,
+        )
+        fetch_tags: bool = proto.Field(
+            proto.BOOL,
+            number=6,
         )
 
     class GitSourceRepository(proto.Message):

@@ -50,10 +50,10 @@ from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
 from google.protobuf.message import Message
 from grpc import Channel
 
-from google.cloud.bigtable.client import _DEFAULT_BIGTABLE_EMULATOR_CLIENT
 from google.cloud.bigtable.data._cross_sync import CrossSync
 from google.cloud.bigtable.data._helpers import (
     _CONCURRENCY_LIMIT,
+    _DEFAULT_BIGTABLE_EMULATOR_CLIENT,
     TABLE_DEFAULT,
     _align_timeouts,
     _attempt_timeout_generator,
@@ -68,13 +68,13 @@ from google.cloud.bigtable.data._metrics import (
     ActiveOperationMetric,
     BigtableClientSideMetricsController,
     OperationType,
-    tracked_retry,
 )
 from google.cloud.bigtable.data._metrics.handlers._base import MetricsHandler
 from google.cloud.bigtable.data._metrics.handlers.gcp_exporter import (
     BigtableMetricsExporter,
     GoogleCloudMetricsHandler,
 )
+from google.cloud.bigtable.data._metrics.tracked_retry import tracked_retry
 from google.cloud.bigtable.data.exceptions import (
     FailedQueryShardError,
     ShardedReadRowsExceptionGroup,
@@ -218,9 +218,15 @@ class BigtableDataClientAsync(ClientWithProject):
         """
         if "pool_size" in kwargs:
             warnings.warn("pool_size no longer supported")
-        # set up client info headers for veneer library
-        self.client_info = DEFAULT_CLIENT_INFO
-        self.client_info.client_library_version = self._client_version()
+
+        # set up client info headers for veneer library. _client_info is for internal use only,
+        # for the legacy client shim.
+        if kwargs.get("_client_info"):
+            self.client_info = kwargs["_client_info"]
+        else:
+            self.client_info = DEFAULT_CLIENT_INFO
+            self.client_info.client_library_version = self._client_version()
+
         # parse client options
         if type(client_options) is dict:
             client_options = client_options_lib.from_dict(client_options)
@@ -271,6 +277,10 @@ class BigtableDataClientAsync(ClientWithProject):
                 "is the default."
             )
         self._is_closed = CrossSync.Event()
+        # Private argument, for internal use only
+        self._disable_background_refresh = bool(
+            kwargs.get("_disable_background_refresh", False)
+        )
         handlers: list[MetricsHandler] = []
         if self._emulator_host is None:
             try:
@@ -402,6 +412,7 @@ class BigtableDataClientAsync(ClientWithProject):
             not self._channel_refresh_task
             and not self._emulator_host
             and not self._is_closed.is_set()
+            and not self._disable_background_refresh
         ):
             # raise error if not in an event loop in async client
             CrossSync.verify_async_event_loop()

@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.57.0](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.56.3...google-auth-v2.57.0) (2026-08-21)
+
+
+### Features
+
+* **auth:** add deprecation warning for grpcio &lt; 1.83.0 (PQC support) ([#18070](https://github.com/googleapis/google-cloud-python/issues/18070)) ([68bdaba](https://github.com/googleapis/google-cloud-python/commit/68bdaba04c706706bf614587adbda0774d15d81d))
+
+
+### Bug Fixes
+
+* **auth:** parse hostname for mTLS and PSC endpoint certificate rotat… ([#18153](https://github.com/googleapis/google-cloud-python/issues/18153)) ([b642373](https://github.com/googleapis/google-cloud-python/commit/b6423734a2470acd01a7081a4133e4373206f325))
+* **auth:** prevent TypeError and support home-dir cert fallback for X… ([#18016](https://github.com/googleapis/google-cloud-python/issues/18016)) ([b9a1379](https://github.com/googleapis/google-cloud-python/commit/b9a1379fd673a1cf3b8c1676400ed9789e12de6a))
+
+
+### Documentation
+
+* **handwritten:** centralize CONTRIBUTING.rst pointers ([#17642](https://github.com/googleapis/google-cloud-python/issues/17642)) ([23b9499](https://github.com/googleapis/google-cloud-python/commit/23b94994bd5251493b81d91657d1f79a5d3c4b97))
+
 ## [2.56.3](https://github.com/googleapis/google-cloud-python/compare/google-auth-v2.56.2...google-auth-v2.56.3) (2026-08-06)
 
 

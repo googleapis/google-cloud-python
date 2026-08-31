@@ -48,6 +48,7 @@ Services for Google Cloud Compute v1beta API
     licenses
     machine_images
     machine_types
+    managed_rulesets
     network_attachments
     network_edge_security_services
     network_endpoint_groups

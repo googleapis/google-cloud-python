@@ -1369,7 +1369,8 @@ class SearchSpacesRequest(proto.Message):
             When ``useAdminAccess`` is set to ``false``:
 
             - ``create_time DESC``
-            - ``relevance DESC``
+            - ``relevance DESC`` `Developer
+              Preview <https://developers.google.com/workspace/preview>`__.
     """
 
     use_admin_access: bool = proto.Field(

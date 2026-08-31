@@ -76,6 +76,7 @@ from google.apps.chat_v1.types import (
     event_payload,
     group,
     history_state,
+    markup_syntax,
     matched_url,
     membership,
     message,
@@ -108,6 +109,18 @@ CRED_INFO_JSON = {
     "principal": "service-account@example.com",
 }
 CRED_INFO_STRING = json.dumps(CRED_INFO_JSON)
+
+
+@pytest.fixture(autouse=True)
+def disable_mtls_env():
+    with mock.patch.dict(
+        os.environ,
+        {
+            "GOOGLE_API_USE_CLIENT_CERTIFICATE": "false",
+            "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE": "false",
+        },
+    ):
+        yield
 
 
 async def mock_async_gen(data, chunk_size=1):
@@ -165,190 +178,6 @@ def set_event_loop():
             asyncio.set_event_loop(None)
 
 
-def test__get_default_mtls_endpoint():
-    api_endpoint = "example.googleapis.com"
-    api_mtls_endpoint = "example.mtls.googleapis.com"
-    sandbox_endpoint = "example.sandbox.googleapis.com"
-    sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
-    non_googleapi = "api.example.com"
-    custom_endpoint = ".custom"
-
-    assert ChatServiceClient._get_default_mtls_endpoint(None) is None
-    assert (
-        ChatServiceClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    )
-    assert (
-        ChatServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        ChatServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        ChatServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert ChatServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
-    assert (
-        ChatServiceClient._get_default_mtls_endpoint(custom_endpoint) == custom_endpoint
-    )
-
-
-def test__read_environment_variables():
-    assert ChatServiceClient._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert ChatServiceClient._read_environment_variables() == (True, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert ChatServiceClient._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-            with pytest.raises(ValueError) as excinfo:
-                ChatServiceClient._read_environment_variables()
-            assert (
-                str(excinfo.value)
-                == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        else:
-            assert ChatServiceClient._read_environment_variables() == (
-                False,
-                "auto",
-                None,
-            )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert ChatServiceClient._read_environment_variables() == (False, "never", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert ChatServiceClient._read_environment_variables() == (
-            False,
-            "always",
-            None,
-        )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert ChatServiceClient._read_environment_variables() == (False, "auto", None)
-
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError) as excinfo:
-            ChatServiceClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert ChatServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            "foo.com",
-        )
-
-
-def test_use_client_cert_effective():
-    # Test case 1: Test when `should_use_client_cert` returns True.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=True
-        ):
-            assert ChatServiceClient._use_client_cert_effective() is True
-
-    # Test case 2: Test when `should_use_client_cert` returns False.
-    # We mock the `should_use_client_cert` function to simulate a scenario where
-    # the google-auth library supports automatic mTLS and determines that a
-    # client certificate should NOT be used.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch(
-            "google.auth.transport.mtls.should_use_client_cert", return_value=False
-        ):
-            assert ChatServiceClient._use_client_cert_effective() is False
-
-    # Test case 3: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-            assert ChatServiceClient._use_client_cert_effective() is True
-
-    # Test case 4: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}
-        ):
-            assert ChatServiceClient._use_client_cert_effective() is False
-
-    # Test case 5: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
-            assert ChatServiceClient._use_client_cert_effective() is True
-
-    # Test case 6: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}
-        ):
-            assert ChatServiceClient._use_client_cert_effective() is False
-
-    # Test case 7: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
-            assert ChatServiceClient._use_client_cert_effective() is True
-
-    # Test case 8: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}
-        ):
-            assert ChatServiceClient._use_client_cert_effective() is False
-
-    # Test case 9: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
-    # In this case, the method should return False, which is the default value.
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, clear=True):
-            assert ChatServiceClient._use_client_cert_effective() is False
-
-    # Test case 10: Test when `should_use_client_cert` is unavailable and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should raise a ValueError as the environment variable must be either
-    # "true" or "false".
-    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            with pytest.raises(ValueError):
-                ChatServiceClient._use_client_cert_effective()
-
-    # Test case 11: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
-    # The method should return False as the environment variable is set to an invalid value.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(
-            os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}
-        ):
-            assert ChatServiceClient._use_client_cert_effective() is False
-
-    # Test case 12: Test when `should_use_client_cert` is available and the
-    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
-    # the GOOGLE_API_CONFIG environment variable is unset.
-    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
-        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
-            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
-                assert ChatServiceClient._use_client_cert_effective() is False
-
-
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
@@ -380,97 +209,6 @@ def test__get_client_cert_source():
                 )
                 is mock_provided_cert_source
             )
-
-
-@mock.patch.object(
-    ChatServiceClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ChatServiceClient),
-)
-@mock.patch.object(
-    ChatServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ChatServiceAsyncClient),
-)
-def test__get_api_endpoint():
-    api_override = "foo.com"
-    mock_client_cert_source = mock.Mock()
-    default_universe = ChatServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = ChatServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
-    mock_universe = "bar.com"
-    mock_endpoint = ChatServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
-
-    assert (
-        ChatServiceClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        ChatServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
-        == ChatServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        ChatServiceClient._get_api_endpoint(None, None, default_universe, "auto")
-        == default_endpoint
-    )
-    assert (
-        ChatServiceClient._get_api_endpoint(None, None, default_universe, "always")
-        == ChatServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        ChatServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == ChatServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        ChatServiceClient._get_api_endpoint(None, None, mock_universe, "never")
-        == mock_endpoint
-    )
-    assert (
-        ChatServiceClient._get_api_endpoint(None, None, default_universe, "never")
-        == default_endpoint
-    )
-
-    with pytest.raises(MutualTLSChannelError) as excinfo:
-        ChatServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
-
-
-def test__get_universe_domain():
-    client_universe_domain = "foo.com"
-    universe_domain_env = "bar.com"
-
-    assert (
-        ChatServiceClient._get_universe_domain(
-            client_universe_domain, universe_domain_env
-        )
-        == client_universe_domain
-    )
-    assert (
-        ChatServiceClient._get_universe_domain(None, universe_domain_env)
-        == universe_domain_env
-    )
-    assert (
-        ChatServiceClient._get_universe_domain(None, None)
-        == ChatServiceClient._DEFAULT_UNIVERSE
-    )
-
-    with pytest.raises(ValueError) as excinfo:
-        ChatServiceClient._get_universe_domain("", None)
-    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
 
 
 @pytest.mark.parametrize(
@@ -970,6 +708,7 @@ def test_chat_service_client_get_mtls_endpoint_and_cert_source(client_class):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", None)
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
@@ -1024,6 +763,7 @@ def test_chat_service_client_get_mtls_endpoint_and_cert_source(client_class):
         for config_data, expected_cert_source in test_cases:
             env = os.environ.copy()
             env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            env.pop("CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE", "")
             with mock.patch.dict(os.environ, env, clear=True):
                 config_filename = "mock_certificate_config.json"
                 config_file_content = json.dumps(config_data)
@@ -1336,6 +1076,9 @@ def test_chat_service_client_create_channel_credentials_file(
                 "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
                 "https://www.googleapis.com/auth/chat.admin.spaces",
                 "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.memberships.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.messages.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.spaces.readonly",
                 "https://www.googleapis.com/auth/chat.app.delete",
                 "https://www.googleapis.com/auth/chat.app.memberships",
                 "https://www.googleapis.com/auth/chat.app.memberships.readonly",
@@ -1407,6 +1150,7 @@ def test_create_message(request_type, transport: str = "grpc"):
             thread_reply=True,
             silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
+            markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
         )
         response = client.create_message(request)
 
@@ -1426,6 +1170,7 @@ def test_create_message(request_type, transport: str = "grpc"):
     assert response.thread_reply is True
     assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
+    assert response.markup_syntax == markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT
 
 
 def test_create_message_non_empty_request_with_auto_populated_field():
@@ -1571,6 +1316,7 @@ async def test_create_message_async(request_type, transport: str = "grpc_asyncio
                 thread_reply=True,
                 silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
+                markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
             )
         )
         response = await client.create_message(request)
@@ -1591,6 +1337,7 @@ async def test_create_message_async(request_type, transport: str = "grpc_asyncio
     assert response.thread_reply is True
     assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
+    assert response.markup_syntax == markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT
 
 
 def test_create_message_field_headers():
@@ -3167,6 +2914,7 @@ def test_get_message(request_type, transport: str = "grpc"):
             thread_reply=True,
             silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
+            markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
         )
         response = client.get_message(request)
 
@@ -3186,6 +2934,7 @@ def test_get_message(request_type, transport: str = "grpc"):
     assert response.thread_reply is True
     assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
+    assert response.markup_syntax == markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT
 
 
 def test_get_message_non_empty_request_with_auto_populated_field():
@@ -3325,6 +3074,7 @@ async def test_get_message_async(request_type, transport: str = "grpc_asyncio"):
                 thread_reply=True,
                 silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
+                markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
             )
         )
         response = await client.get_message(request)
@@ -3345,6 +3095,7 @@ async def test_get_message_async(request_type, transport: str = "grpc_asyncio"):
     assert response.thread_reply is True
     assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
+    assert response.markup_syntax == markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT
 
 
 def test_get_message_field_headers():
@@ -3515,6 +3266,7 @@ def test_update_message(request_type, transport: str = "grpc"):
             thread_reply=True,
             silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
+            markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
         )
         response = client.update_message(request)
 
@@ -3534,6 +3286,7 @@ def test_update_message(request_type, transport: str = "grpc"):
     assert response.thread_reply is True
     assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
+    assert response.markup_syntax == markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT
 
 
 def test_update_message_non_empty_request_with_auto_populated_field():
@@ -3669,6 +3422,7 @@ async def test_update_message_async(request_type, transport: str = "grpc_asyncio
                 thread_reply=True,
                 silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
+                markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
             )
         )
         response = await client.update_message(request)
@@ -3689,6 +3443,7 @@ async def test_update_message_async(request_type, transport: str = "grpc_asyncio
     assert response.thread_reply is True
     assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
+    assert response.markup_syntax == markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT
 
 
 def test_update_message_field_headers():
@@ -18925,29 +18680,30 @@ def test_create_message_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_message._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateMessage,
+        "_BaseCreateMessage__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_message._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "create_message_notification_options",
-            "message_id",
-            "message_reply_option",
-            "request_id",
-            "thread_key",
+            "createMessageNotificationOptions",
+            "messageId",
+            "messageReplyOption",
+            "requestId",
+            "threadKey",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -18994,31 +18750,6 @@ def test_create_message_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_message_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_message._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "createMessageNotificationOptions",
-                "messageId",
-                "messageReplyOption",
-                "requestId",
-                "threadKey",
-            )
-        )
-        & set(
-            (
-                "parent",
-                "message",
-            )
-        )
-    )
 
 
 def test_create_message_rest_flattened():
@@ -19130,29 +18861,31 @@ def test_list_messages_rest_required_fields(request_type=message.ListMessagesReq
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_messages._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListMessages,
+        "_BaseListMessages__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_messages._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
-            "page_size",
-            "page_token",
-            "show_deleted",
+            "markupSyntax",
+            "orderBy",
+            "pageSize",
+            "pageToken",
+            "showDeleted",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -19198,26 +18931,6 @@ def test_list_messages_rest_required_fields(request_type=message.ListMessagesReq
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_messages_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_messages._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "orderBy",
-                "pageSize",
-                "pageToken",
-                "showDeleted",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_messages_rest_flattened():
@@ -19393,30 +19106,31 @@ def test_list_memberships_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_memberships._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListMemberships,
+        "_BaseListMemberships__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_memberships._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
-            "show_groups",
-            "show_invited",
-            "use_admin_access",
+            "pageSize",
+            "pageToken",
+            "showGroups",
+            "showInvited",
+            "useAdminAccess",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -19462,27 +19176,6 @@ def test_list_memberships_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_memberships_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_memberships._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-                "showGroups",
-                "showInvited",
-                "useAdminAccess",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_memberships_rest_flattened():
@@ -19658,21 +19351,22 @@ def test_get_membership_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_membership._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetMembership,
+        "_BaseGetMembership__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_membership._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("use_admin_access",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("useAdminAccess",))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -19718,15 +19412,6 @@ def test_get_membership_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_membership_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_membership._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("useAdminAccess",)) & set(("name",)))
 
 
 def test_get_membership_rest_flattened():
@@ -19834,19 +19519,22 @@ def test_get_message_rest_required_fields(request_type=message.GetMessageRequest
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_message._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetMessage,
+        "_BaseGetMessage__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_message._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("markupSyntax",))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -19892,15 +19580,6 @@ def test_get_message_rest_required_fields(request_type=message.GetMessageRequest
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_message_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_message._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_message_rest_flattened():
@@ -20009,24 +19688,25 @@ def test_update_message_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_message._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateMessage,
+        "_BaseUpdateMessage__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_message._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "allow_missing",
-            "update_mask",
+            "allowMissing",
+            "updateMask",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
@@ -20071,28 +19751,6 @@ def test_update_message_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_message_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_message._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "allowMissing",
-                "updateMask",
-            )
-        )
-        & set(
-            (
-                "message",
-                "updateMask",
-            )
-        )
-    )
 
 
 def test_update_message_rest_flattened():
@@ -20202,21 +19860,22 @@ def test_delete_message_rest_required_fields(request_type=message.DeleteMessageR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_message._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteMessage,
+        "_BaseDeleteMessage__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_message._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("force",))
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -20259,15 +19918,6 @@ def test_delete_message_rest_required_fields(request_type=message.DeleteMessageR
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_message_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_message._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("force",)) & set(("name",)))
 
 
 def test_delete_message_rest_flattened():
@@ -20376,20 +20026,20 @@ def test_search_messages_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).search_messages._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseSearchMessages,
+        "_BaseSearchMessages__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
     jsonified_request["filter"] = "filter_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).search_messages._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -20438,23 +20088,6 @@ def test_search_messages_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_search_messages_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.search_messages._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "parent",
-                "filter",
-            )
-        )
-    )
 
 
 def test_search_messages_rest_flattened():
@@ -20630,19 +20263,19 @@ def test_get_attachment_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_attachment._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetAttachment,
+        "_BaseGetAttachment__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_attachment._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -20688,15 +20321,6 @@ def test_get_attachment_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_attachment_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_attachment._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_attachment_rest_flattened():
@@ -20810,20 +20434,20 @@ def test_upload_attachment_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).upload_attachment._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUploadAttachment,
+        "_BaseUploadAttachment__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
     jsonified_request["filename"] = "filename_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).upload_attachment._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -20872,23 +20496,6 @@ def test_upload_attachment_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_upload_attachment_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.upload_attachment._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "parent",
-                "filename",
-            )
-        )
-    )
 
 
 def test_list_spaces_rest_use_cached_wrapped_rpc():
@@ -21041,9 +20648,14 @@ def test_search_spaces_rest_required_fields(request_type=space.SearchSpacesReque
     # verify fields with default values are dropped
     assert "query" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).search_spaces._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseSearchSpaces,
+        "_BaseSearchSpaces__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -21052,20 +20664,16 @@ def test_search_spaces_rest_required_fields(request_type=space.SearchSpacesReque
 
     jsonified_request["query"] = "query_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).search_spaces._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "order_by",
-            "page_size",
-            "page_token",
+            "orderBy",
+            "pageSize",
+            "pageToken",
             "query",
-            "use_admin_access",
+            "useAdminAccess",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "query" in jsonified_request
@@ -21117,26 +20725,6 @@ def test_search_spaces_rest_required_fields(request_type=space.SearchSpacesReque
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_search_spaces_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.search_spaces._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "orderBy",
-                "pageSize",
-                "pageToken",
-                "query",
-                "useAdminAccess",
-            )
-        )
-        & set(("query",))
-    )
 
 
 def test_search_spaces_rest_pager(transport: str = "rest"):
@@ -21252,21 +20840,22 @@ def test_get_space_rest_required_fields(request_type=space.GetSpaceRequest):
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_space._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetSpace,
+        "_BaseGetSpace__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_space._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("use_admin_access",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("useAdminAccess",))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -21312,15 +20901,6 @@ def test_get_space_rest_required_fields(request_type=space.GetSpaceRequest):
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_space_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_space._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("useAdminAccess",)) & set(("name",)))
 
 
 def test_get_space_rest_flattened():
@@ -21427,19 +21007,20 @@ def test_create_space_rest_required_fields(request_type=gc_space.CreateSpaceRequ
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_space._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateSpace,
+        "_BaseCreateSpace__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_space._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("requestId",))
 
     # verify required fields with non-default values are left alone
 
@@ -21484,15 +21065,6 @@ def test_create_space_rest_required_fields(request_type=gc_space.CreateSpaceRequ
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_space_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_space._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("requestId",)) & set(("space",)))
 
 
 def test_create_space_rest_flattened():
@@ -21597,17 +21169,17 @@ def test_set_up_space_rest_required_fields(request_type=space_setup.SetUpSpaceRe
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_up_space._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseSetUpSpace,
+        "_BaseSetUpSpace__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_up_space._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
@@ -21652,15 +21224,6 @@ def test_set_up_space_rest_required_fields(request_type=space_setup.SetUpSpaceRe
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_set_up_space_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.set_up_space._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("space",)))
 
 
 def test_update_space_rest_use_cached_wrapped_rpc():
@@ -21711,24 +21274,25 @@ def test_update_space_rest_required_fields(request_type=gc_space.UpdateSpaceRequ
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_space._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateSpace,
+        "_BaseUpdateSpace__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_space._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "update_mask",
-            "use_admin_access",
+            "updateMask",
+            "useAdminAccess",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
@@ -21773,28 +21337,6 @@ def test_update_space_rest_required_fields(request_type=gc_space.UpdateSpaceRequ
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_space_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_space._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "updateMask",
-                "useAdminAccess",
-            )
-        )
-        & set(
-            (
-                "space",
-                "updateMask",
-            )
-        )
-    )
 
 
 def test_update_space_rest_flattened():
@@ -21904,21 +21446,22 @@ def test_delete_space_rest_required_fields(request_type=space.DeleteSpaceRequest
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_space._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteSpace,
+        "_BaseDeleteSpace__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_space._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("use_admin_access",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("useAdminAccess",))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -21961,15 +21504,6 @@ def test_delete_space_rest_required_fields(request_type=space.DeleteSpaceRequest
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_space_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_space._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("useAdminAccess",)) & set(("name",)))
 
 
 def test_delete_space_rest_flattened():
@@ -22082,19 +21616,19 @@ def test_complete_import_space_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).complete_import_space._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCompleteImportSpace,
+        "_BaseCompleteImportSpace__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).complete_import_space._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -22141,15 +21675,6 @@ def test_complete_import_space_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_complete_import_space_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.complete_import_space._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_find_direct_message_rest_use_cached_wrapped_rpc():
@@ -22208,9 +21733,14 @@ def test_find_direct_message_rest_required_fields(
     # verify fields with default values are dropped
     assert "name" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).find_direct_message._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseFindDirectMessage,
+        "_BaseFindDirectMessage__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -22219,12 +21749,8 @@ def test_find_direct_message_rest_required_fields(
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).find_direct_message._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("name",))
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -22276,15 +21802,6 @@ def test_find_direct_message_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_find_direct_message_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.find_direct_message._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("name",)) & set(("name",)))
 
 
 def test_find_group_chats_rest_use_cached_wrapped_rpc():
@@ -22442,21 +21959,22 @@ def test_create_membership_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_membership._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateMembership,
+        "_BaseCreateMembership__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_membership._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("use_admin_access",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("useAdminAccess",))
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -22503,23 +22021,6 @@ def test_create_membership_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_membership_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_membership._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("useAdminAccess",))
-        & set(
-            (
-                "parent",
-                "membership",
-            )
-        )
-    )
 
 
 def test_create_membership_rest_flattened():
@@ -22632,24 +22133,25 @@ def test_update_membership_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_membership._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateMembership,
+        "_BaseUpdateMembership__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_membership._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "update_mask",
-            "use_admin_access",
+            "updateMask",
+            "useAdminAccess",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
@@ -22694,28 +22196,6 @@ def test_update_membership_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_membership_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_membership._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "updateMask",
-                "useAdminAccess",
-            )
-        )
-        & set(
-            (
-                "membership",
-                "updateMask",
-            )
-        )
-    )
 
 
 def test_update_membership_rest_flattened():
@@ -22830,21 +22310,22 @@ def test_delete_membership_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_membership._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteMembership,
+        "_BaseDeleteMembership__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_membership._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("use_admin_access",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("useAdminAccess",))
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -22890,15 +22371,6 @@ def test_delete_membership_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_membership_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_membership._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("useAdminAccess",)) & set(("name",)))
 
 
 def test_delete_membership_rest_flattened():
@@ -23008,19 +22480,19 @@ def test_create_reaction_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_reaction._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateReaction,
+        "_BaseCreateReaction__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_reaction._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -23067,23 +22539,6 @@ def test_create_reaction_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_reaction_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_reaction._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "parent",
-                "reaction",
-            )
-        )
-    )
 
 
 def test_create_reaction_rest_flattened():
@@ -23196,27 +22651,28 @@ def test_list_reactions_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_reactions._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListReactions,
+        "_BaseListReactions__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_reactions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -23262,24 +22718,6 @@ def test_list_reactions_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_reactions_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_reactions._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_reactions_rest_flattened():
@@ -23454,19 +22892,19 @@ def test_delete_reaction_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_reaction._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteReaction,
+        "_BaseDeleteReaction__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_reaction._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -23509,15 +22947,6 @@ def test_delete_reaction_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_reaction_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_reaction._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_delete_reaction_rest_flattened():
@@ -23629,17 +23058,17 @@ def test_create_custom_emoji_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_custom_emoji._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateCustomEmoji,
+        "_BaseCreateCustomEmoji__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_custom_emoji._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
@@ -23684,15 +23113,6 @@ def test_create_custom_emoji_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_custom_emoji_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_custom_emoji._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("customEmoji",)))
 
 
 def test_create_custom_emoji_rest_flattened():
@@ -23804,19 +23224,19 @@ def test_get_custom_emoji_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_custom_emoji._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetCustomEmoji,
+        "_BaseGetCustomEmoji__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_custom_emoji._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -23862,15 +23282,6 @@ def test_get_custom_emoji_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_custom_emoji_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_custom_emoji._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_custom_emoji_rest_flattened():
@@ -24088,19 +23499,19 @@ def test_delete_custom_emoji_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_custom_emoji._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteCustomEmoji,
+        "_BaseDeleteCustomEmoji__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_custom_emoji._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -24143,15 +23554,6 @@ def test_delete_custom_emoji_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_custom_emoji_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_custom_emoji._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_delete_custom_emoji_rest_flattened():
@@ -24263,19 +23665,19 @@ def test_get_space_read_state_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_space_read_state._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetSpaceReadState,
+        "_BaseGetSpaceReadState__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_space_read_state._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -24321,15 +23723,6 @@ def test_get_space_read_state_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_space_read_state_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_space_read_state._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_space_read_state_rest_flattened():
@@ -24444,19 +23837,20 @@ def test_update_space_read_state_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_space_read_state._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateSpaceReadState,
+        "_BaseUpdateSpaceReadState__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_space_read_state._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -24501,23 +23895,6 @@ def test_update_space_read_state_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_space_read_state_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_space_read_state._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("updateMask",))
-        & set(
-            (
-                "spaceReadState",
-                "updateMask",
-            )
-        )
-    )
 
 
 def test_update_space_read_state_rest_flattened():
@@ -24638,19 +24015,19 @@ def test_get_thread_read_state_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_thread_read_state._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetThreadReadState,
+        "_BaseGetThreadReadState__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_thread_read_state._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -24696,15 +24073,6 @@ def test_get_thread_read_state_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_thread_read_state_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_thread_read_state._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_thread_read_state_rest_flattened():
@@ -24820,19 +24188,19 @@ def test_get_availability_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_availability._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetAvailability,
+        "_BaseGetAvailability__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_availability._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -24878,15 +24246,6 @@ def test_get_availability_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_availability_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_availability._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_availability_rest_flattened():
@@ -24996,19 +24355,19 @@ def test_mark_as_active_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).mark_as_active._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseMarkAsActive,
+        "_BaseMarkAsActive__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).mark_as_active._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -25055,15 +24414,6 @@ def test_mark_as_active_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_mark_as_active_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.mark_as_active._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_mark_as_away_rest_use_cached_wrapped_rpc():
@@ -25115,19 +24465,19 @@ def test_mark_as_away_rest_required_fields(request_type=availability.MarkAsAwayR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).mark_as_away._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseMarkAsAway,
+        "_BaseMarkAsAway__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).mark_as_away._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -25174,15 +24524,6 @@ def test_mark_as_away_rest_required_fields(request_type=availability.MarkAsAwayR
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_mark_as_away_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.mark_as_away._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_mark_as_do_not_disturb_rest_use_cached_wrapped_rpc():
@@ -25241,19 +24582,19 @@ def test_mark_as_do_not_disturb_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).mark_as_do_not_disturb._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseMarkAsDoNotDisturb,
+        "_BaseMarkAsDoNotDisturb__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).mark_as_do_not_disturb._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -25300,15 +24641,6 @@ def test_mark_as_do_not_disturb_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_mark_as_do_not_disturb_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.mark_as_do_not_disturb._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_update_availability_rest_use_cached_wrapped_rpc():
@@ -25365,19 +24697,20 @@ def test_update_availability_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_availability._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateAvailability,
+        "_BaseUpdateAvailability__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_availability._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -25422,23 +24755,6 @@ def test_update_availability_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_availability_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_availability._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("updateMask",))
-        & set(
-            (
-                "availability",
-                "updateMask",
-            )
-        )
-    )
 
 
 def test_update_availability_rest_flattened():
@@ -25551,19 +24867,19 @@ def test_get_space_event_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_space_event._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetSpaceEvent,
+        "_BaseGetSpaceEvent__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_space_event._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -25609,15 +24925,6 @@ def test_get_space_event_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_space_event_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_space_event._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_space_event_rest_flattened():
@@ -25731,9 +25038,14 @@ def test_list_space_events_rest_required_fields(
     # verify fields with default values are dropped
     assert "filter" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_space_events._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListSpaceEvents,
+        "_BaseListSpaceEvents__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -25743,18 +25055,14 @@ def test_list_space_events_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["filter"] = "filter_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_space_events._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -25808,29 +25116,6 @@ def test_list_space_events_rest_required_fields(
             ]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_space_events_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_space_events._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(
-            (
-                "parent",
-                "filter",
-            )
-        )
-    )
 
 
 def test_list_space_events_rest_flattened():
@@ -26013,19 +25298,19 @@ def test_get_space_notification_setting_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_space_notification_setting._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseGetSpaceNotificationSetting,
+        "_BaseGetSpaceNotificationSetting__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_space_notification_setting._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -26073,17 +25358,6 @@ def test_get_space_notification_setting_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_get_space_notification_setting_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_space_notification_setting._get_unset_required_fields(
-        {}
-    )
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_get_space_notification_setting_rest_flattened():
@@ -26203,19 +25477,20 @@ def test_update_space_notification_setting_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_space_notification_setting._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateSpaceNotificationSetting,
+        "_BaseUpdateSpaceNotificationSetting__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_space_notification_setting._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -26262,25 +25537,6 @@ def test_update_space_notification_setting_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_space_notification_setting_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.update_space_notification_setting._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(("updateMask",))
-        & set(
-            (
-                "spaceNotificationSetting",
-                "updateMask",
-            )
-        )
-    )
 
 
 def test_update_space_notification_setting_rest_flattened():
@@ -26406,19 +25662,19 @@ def test_create_section_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_section._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseCreateSection,
+        "_BaseCreateSection__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_section._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -26465,23 +25721,6 @@ def test_create_section_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_create_section_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_section._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "parent",
-                "section",
-            )
-        )
-    )
 
 
 def test_create_section_rest_flattened():
@@ -26591,19 +25830,19 @@ def test_delete_section_rest_required_fields(request_type=section.DeleteSectionR
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_section._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseDeleteSection,
+        "_BaseDeleteSection__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_section._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -26646,15 +25885,6 @@ def test_delete_section_rest_required_fields(request_type=section.DeleteSectionR
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_delete_section_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_section._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_delete_section_rest_flattened():
@@ -26761,19 +25991,20 @@ def test_update_section_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_section._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseUpdateSection,
+        "_BaseUpdateSection__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_section._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
+    assert not set(unset_fields) - set(("updateMask",))
 
     # verify required fields with non-default values are left alone
 
@@ -26818,23 +26049,6 @@ def test_update_section_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_update_section_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_section._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("updateMask",))
-        & set(
-            (
-                "section",
-                "updateMask",
-            )
-        )
-    )
 
 
 def test_update_section_rest_flattened():
@@ -26944,26 +26158,27 @@ def test_list_sections_rest_required_fields(request_type=section.ListSectionsReq
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_sections._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListSections,
+        "_BaseListSections__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_sections._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -27009,23 +26224,6 @@ def test_list_sections_rest_required_fields(request_type=section.ListSectionsReq
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_sections_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_sections._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_sections_rest_flattened():
@@ -27201,19 +26399,19 @@ def test_position_section_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).position_section._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BasePositionSection,
+        "_BasePositionSection__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).position_section._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -27260,15 +26458,6 @@ def test_position_section_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_position_section_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.position_section._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 def test_list_section_items_rest_use_cached_wrapped_rpc():
@@ -27326,27 +26515,28 @@ def test_list_section_items_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_section_items._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseListSectionItems,
+        "_BaseListSectionItems__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_section_items._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "page_size",
-            "page_token",
+            "pageSize",
+            "pageToken",
         )
     )
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
@@ -27392,24 +26582,6 @@ def test_list_section_items_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_list_section_items_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_section_items._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 def test_list_section_items_rest_flattened():
@@ -27586,20 +26758,20 @@ def test_move_section_item_rest_required_fields(
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).move_section_item._get_unset_required_fields(jsonified_request)
+    default_values = getattr(
+        transport_class._BaseMoveSectionItem,
+        "_BaseMoveSectionItem__REQUIRED_FIELDS_DEFAULT_VALUES",
+        {},
+    )
+    unset_fields = {
+        k: v for k, v in default_values.items() if k not in jsonified_request
+    }
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
     jsonified_request["targetSection"] = "target_section_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).move_section_item._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
@@ -27648,23 +26820,6 @@ def test_move_section_item_rest_required_fields(
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert sorted(expected_params) == sorted(actual_params)
-
-
-def test_move_section_item_rest_unset_required_fields():
-    transport = transports.ChatServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.move_section_item._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "name",
-                "targetSection",
-            )
-        )
-    )
 
 
 def test_move_section_item_rest_flattened():
@@ -28888,6 +28043,7 @@ async def test_create_message_empty_call_grpc_asyncio():
                 thread_reply=True,
                 silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
+                markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
             )
         )
         await client.create_message(request=None)
@@ -29002,6 +28158,7 @@ async def test_get_message_empty_call_grpc_asyncio():
                 thread_reply=True,
                 silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
+                markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
             )
         )
         await client.get_message(request=None)
@@ -29035,6 +28192,7 @@ async def test_update_message_empty_call_grpc_asyncio():
                 thread_reply=True,
                 silent=True,
                 client_assigned_message_id="client_assigned_message_id_value",
+                markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
             )
         )
         await client.update_message(request=None)
@@ -30808,6 +29966,7 @@ def test_create_message_rest_call_success(request_type):
         },
         "attached_gifs": [{"uri": "uri_value"}],
         "accessory_widgets": [{"button_list": {}}],
+        "markup_syntax": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -30890,6 +30049,7 @@ def test_create_message_rest_call_success(request_type):
             thread_reply=True,
             silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
+            markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
         )
 
         # Wrap the value into a proper Response obj
@@ -30914,6 +30074,7 @@ def test_create_message_rest_call_success(request_type):
     assert response.thread_reply is True
     assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
+    assert response.markup_syntax == markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -31426,6 +30587,7 @@ def test_get_message_rest_call_success(request_type):
             thread_reply=True,
             silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
+            markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
         )
 
         # Wrap the value into a proper Response obj
@@ -31450,6 +30612,7 @@ def test_get_message_rest_call_success(request_type):
     assert response.thread_reply is True
     assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
+    assert response.markup_syntax == markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -32042,6 +31205,7 @@ def test_update_message_rest_call_success(request_type):
         },
         "attached_gifs": [{"uri": "uri_value"}],
         "accessory_widgets": [{"button_list": {}}],
+        "markup_syntax": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -32124,6 +31288,7 @@ def test_update_message_rest_call_success(request_type):
             thread_reply=True,
             silent=True,
             client_assigned_message_id="client_assigned_message_id_value",
+            markup_syntax=markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT,
         )
 
         # Wrap the value into a proper Response obj
@@ -32148,6 +31313,7 @@ def test_update_message_rest_call_success(request_type):
     assert response.thread_reply is True
     assert response.silent is True
     assert response.client_assigned_message_id == "client_assigned_message_id_value"
+    assert response.markup_syntax == markup_syntax.MarkupSyntax.MARKUP_SYNTAX_CHAT
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -39983,6 +39149,9 @@ def test_chat_service_base_transport_with_credentials_file():
                 "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
                 "https://www.googleapis.com/auth/chat.admin.spaces",
                 "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.memberships.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.messages.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.spaces.readonly",
                 "https://www.googleapis.com/auth/chat.app.delete",
                 "https://www.googleapis.com/auth/chat.app.memberships",
                 "https://www.googleapis.com/auth/chat.app.memberships.readonly",
@@ -40046,6 +39215,9 @@ def test_chat_service_auth_adc():
                 "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
                 "https://www.googleapis.com/auth/chat.admin.spaces",
                 "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.memberships.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.messages.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.spaces.readonly",
                 "https://www.googleapis.com/auth/chat.app.delete",
                 "https://www.googleapis.com/auth/chat.app.memberships",
                 "https://www.googleapis.com/auth/chat.app.memberships.readonly",
@@ -40103,6 +39275,9 @@ def test_chat_service_transport_auth_adc(transport_class):
                 "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
                 "https://www.googleapis.com/auth/chat.admin.spaces",
                 "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.memberships.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.messages.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.spaces.readonly",
                 "https://www.googleapis.com/auth/chat.app.delete",
                 "https://www.googleapis.com/auth/chat.app.memberships",
                 "https://www.googleapis.com/auth/chat.app.memberships.readonly",
@@ -40193,6 +39368,9 @@ def test_chat_service_transport_create_channel(transport_class, grpc_helpers):
                 "https://www.googleapis.com/auth/chat.admin.memberships.readonly",
                 "https://www.googleapis.com/auth/chat.admin.spaces",
                 "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.memberships.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.messages.readonly",
+                "https://www.googleapis.com/auth/chat.app.all.spaces.readonly",
                 "https://www.googleapis.com/auth/chat.app.delete",
                 "https://www.googleapis.com/auth/chat.app.memberships",
                 "https://www.googleapis.com/auth/chat.app.memberships.readonly",

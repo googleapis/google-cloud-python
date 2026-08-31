@@ -2,8 +2,17 @@
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": true,
   "packages": {
-    "packages/bigframes": {
-      "component": "bigframes"
+    "packages/google-cloud-ftp": {
+      "component": "google-cloud-ftp",
+      "extra-files": [
+        "google/cloud/ftp/gapic_version.py",
+        "google/cloud/ftp_v1/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.ftp.v1.json",
+          "type": "json"
+        }
+      ]
     },
     "packages/google-cloud-workloadidentity": {
       "component": "google-cloud-workloadidentity",
@@ -17,20 +26,26 @@
         }
       ]
     },
-    "packages/google-cloud-ftp": {
-      "component": "google-cloud-ftp",
+    "packages/google-crc32c": {
+      "component": "google-crc32c"
+    },
+    "packages/google-maps-mapmanagement": {
+      "component": "google-maps-mapmanagement",
       "extra-files": [
-        "google/cloud/ftp/gapic_version.py",
-        "google/cloud/ftp_v1/gapic_version.py",
+        "google/maps/mapmanagement/gapic_version.py",
+        "google/maps/mapmanagement_v2/gapic_version.py",
+        "google/maps/mapmanagement_v2beta/gapic_version.py",
         {
           "jsonpath": "$.clientLibrary.version",
-          "path": "samples/generated_samples/snippet_metadata_google.cloud.ftp.v1.json",
+          "path": "samples/generated_samples/snippet_metadata_google.maps.mapmanagement.v2.json",
+          "type": "json"
+        },
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.maps.mapmanagement.v2beta.json",
           "type": "json"
         }
       ]
-    },
-    "packages/google-crc32c": {
-      "component": "google-crc32c"
     },
     "preview-packages/google-cloud-compute": {
       "draft-pull-request": true,

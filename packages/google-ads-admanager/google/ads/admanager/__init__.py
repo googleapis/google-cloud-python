@@ -122,6 +122,9 @@ from google.ads.admanager_v1.services.mobile_device_service.client import (
 from google.ads.admanager_v1.services.mobile_device_submodel_service.client import (
     MobileDeviceSubmodelServiceClient,
 )
+from google.ads.admanager_v1.services.native_style_service.client import (
+    NativeStyleServiceClient,
+)
 from google.ads.admanager_v1.services.network_service.client import NetworkServiceClient
 from google.ads.admanager_v1.services.operating_system_service.client import (
     OperatingSystemServiceClient,
@@ -288,8 +291,24 @@ from google.ads.admanager_v1.types.application_service import (
     UpdateApplicationRequest,
 )
 from google.ads.admanager_v1.types.applied_label import AppliedLabel
+from google.ads.admanager_v1.types.audience_segment_enums import (
+    AudienceSegmentApprovalStatusEnum,
+    AudienceSegmentLicenseTypeEnum,
+    AudienceSegmentStatusEnum,
+    AudienceSegmentTypeEnum,
+)
 from google.ads.admanager_v1.types.audience_segment_messages import AudienceSegment
 from google.ads.admanager_v1.types.audience_segment_service import (
+    BatchActivateAudienceSegmentsRequest,
+    BatchActivateAudienceSegmentsResponse,
+    BatchApproveAudienceSegmentsRequest,
+    BatchApproveAudienceSegmentsResponse,
+    BatchDeactivateAudienceSegmentsRequest,
+    BatchDeactivateAudienceSegmentsResponse,
+    BatchPopulateAudienceSegmentsRequest,
+    BatchPopulateAudienceSegmentsResponse,
+    BatchRejectAudienceSegmentsRequest,
+    BatchRejectAudienceSegmentsResponse,
     GetAudienceSegmentRequest,
     ListAudienceSegmentsRequest,
     ListAudienceSegmentsResponse,
@@ -350,12 +369,21 @@ from google.ads.admanager_v1.types.child_publisher_messages import ChildPublishe
 from google.ads.admanager_v1.types.child_publisher_service import (
     BatchCreateChildPublishersRequest,
     BatchCreateChildPublishersResponse,
+    BatchRejectChildPublishersRequest,
+    BatchRejectChildPublishersResponse,
+    BatchRenegotiateChildPublisherAgreementsRequest,
+    BatchRenegotiateChildPublisherAgreementsResponse,
+    BatchResendChildPublisherInvitationEmailsRequest,
+    BatchResendChildPublisherInvitationEmailsResponse,
     BatchUpdateChildPublishersRequest,
     BatchUpdateChildPublishersResponse,
+    BatchWithdrawChildPublishersRequest,
+    BatchWithdrawChildPublishersResponse,
     CreateChildPublisherRequest,
     GetChildPublisherRequest,
     ListChildPublishersRequest,
     ListChildPublishersResponse,
+    RenegotiateChildPublisherAgreementRequest,
     UpdateChildPublisherRequest,
 )
 from google.ads.admanager_v1.types.cms_metadata_key_enums import (
@@ -819,11 +847,36 @@ from google.ads.admanager_v1.types.mobile_device_submodel_service import (
     ListMobileDeviceSubmodelsRequest,
     ListMobileDeviceSubmodelsResponse,
 )
-from google.ads.admanager_v1.types.network_messages import Network
+from google.ads.admanager_v1.types.native_style_enums import NativeStyleStatusEnum
+from google.ads.admanager_v1.types.native_style_messages import NativeStyle
+from google.ads.admanager_v1.types.native_style_service import (
+    BatchActivateNativeStylesRequest,
+    BatchActivateNativeStylesResponse,
+    BatchArchiveNativeStylesRequest,
+    BatchArchiveNativeStylesResponse,
+    BatchCreateNativeStylesRequest,
+    BatchCreateNativeStylesResponse,
+    BatchDeactivateNativeStylesRequest,
+    BatchDeactivateNativeStylesResponse,
+    BatchUpdateNativeStylesRequest,
+    BatchUpdateNativeStylesResponse,
+    CreateNativeStyleRequest,
+    GetNativeStyleRequest,
+    ListNativeStylesRequest,
+    ListNativeStylesResponse,
+    UpdateNativeStyleRequest,
+)
+from google.ads.admanager_v1.types.network_messages import (
+    DefaultThirdPartyDataDeclaration,
+    Network,
+)
 from google.ads.admanager_v1.types.network_service import (
+    GetDefaultThirdPartyDataDeclarationRequest,
     GetNetworkRequest,
     ListNetworksRequest,
     ListNetworksResponse,
+    ProvisionTestNetworkRequest,
+    UpdateNetworkRequest,
 )
 from google.ads.admanager_v1.types.nielsen_ctv_pacing_enum import NielsenCtvPacingEnum
 from google.ads.admanager_v1.types.non_guaranteed_deal_priority import (
@@ -1192,6 +1245,7 @@ __all__ = (
     "MobileCarrierServiceClient",
     "MobileDeviceServiceClient",
     "MobileDeviceSubmodelServiceClient",
+    "NativeStyleServiceClient",
     "NetworkServiceClient",
     "OperatingSystemServiceClient",
     "OperatingSystemVersionServiceClient",
@@ -1307,7 +1361,21 @@ __all__ = (
     "ListApplicationsResponse",
     "UpdateApplicationRequest",
     "AppliedLabel",
+    "AudienceSegmentApprovalStatusEnum",
+    "AudienceSegmentLicenseTypeEnum",
+    "AudienceSegmentStatusEnum",
+    "AudienceSegmentTypeEnum",
     "AudienceSegment",
+    "BatchActivateAudienceSegmentsRequest",
+    "BatchActivateAudienceSegmentsResponse",
+    "BatchApproveAudienceSegmentsRequest",
+    "BatchApproveAudienceSegmentsResponse",
+    "BatchDeactivateAudienceSegmentsRequest",
+    "BatchDeactivateAudienceSegmentsResponse",
+    "BatchPopulateAudienceSegmentsRequest",
+    "BatchPopulateAudienceSegmentsResponse",
+    "BatchRejectAudienceSegmentsRequest",
+    "BatchRejectAudienceSegmentsResponse",
     "GetAudienceSegmentRequest",
     "ListAudienceSegmentsRequest",
     "ListAudienceSegmentsResponse",
@@ -1350,12 +1418,21 @@ __all__ = (
     "ChildPublisher",
     "BatchCreateChildPublishersRequest",
     "BatchCreateChildPublishersResponse",
+    "BatchRejectChildPublishersRequest",
+    "BatchRejectChildPublishersResponse",
+    "BatchRenegotiateChildPublisherAgreementsRequest",
+    "BatchRenegotiateChildPublisherAgreementsResponse",
+    "BatchResendChildPublisherInvitationEmailsRequest",
+    "BatchResendChildPublisherInvitationEmailsResponse",
     "BatchUpdateChildPublishersRequest",
     "BatchUpdateChildPublishersResponse",
+    "BatchWithdrawChildPublishersRequest",
+    "BatchWithdrawChildPublishersResponse",
     "CreateChildPublisherRequest",
     "GetChildPublisherRequest",
     "ListChildPublishersRequest",
     "ListChildPublishersResponse",
+    "RenegotiateChildPublisherAgreementRequest",
     "UpdateChildPublisherRequest",
     "CmsMetadataKeyStatusEnum",
     "CmsMetadataKey",
@@ -1691,10 +1768,31 @@ __all__ = (
     "GetMobileDeviceSubmodelRequest",
     "ListMobileDeviceSubmodelsRequest",
     "ListMobileDeviceSubmodelsResponse",
+    "NativeStyleStatusEnum",
+    "NativeStyle",
+    "BatchActivateNativeStylesRequest",
+    "BatchActivateNativeStylesResponse",
+    "BatchArchiveNativeStylesRequest",
+    "BatchArchiveNativeStylesResponse",
+    "BatchCreateNativeStylesRequest",
+    "BatchCreateNativeStylesResponse",
+    "BatchDeactivateNativeStylesRequest",
+    "BatchDeactivateNativeStylesResponse",
+    "BatchUpdateNativeStylesRequest",
+    "BatchUpdateNativeStylesResponse",
+    "CreateNativeStyleRequest",
+    "GetNativeStyleRequest",
+    "ListNativeStylesRequest",
+    "ListNativeStylesResponse",
+    "UpdateNativeStyleRequest",
+    "DefaultThirdPartyDataDeclaration",
     "Network",
+    "GetDefaultThirdPartyDataDeclarationRequest",
     "GetNetworkRequest",
     "ListNetworksRequest",
     "ListNetworksResponse",
+    "ProvisionTestNetworkRequest",
+    "UpdateNetworkRequest",
     "NielsenCtvPacingEnum",
     "NonGuaranteedDealPriority",
     "OperatingSystem",

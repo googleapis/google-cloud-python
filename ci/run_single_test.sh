@@ -71,28 +71,28 @@ case ${TEST_TYPE} in
     unit)
         case ${PY_VERSION} in
         "3.10")
-            nox -s unit-3.10
+            nox --stop-on-first-error -s unit-3.10
             retval=$?
             ;;
         "3.11")
-            nox -s unit-3.11
+            nox --stop-on-first-error -s unit-3.11
             retval=$?
             ;;
         "3.12")
-            nox -s unit-3.12
+            nox --stop-on-first-error -s unit-3.12
             retval=$?
             ;;
         "3.13")
-            nox -s unit-3.13
+            nox --stop-on-first-error -s unit-3.13
             retval=$?
             ;;
         "3.14")
-            nox -s unit-3.14
+            nox --stop-on-first-error -s unit-3.14
             retval=$?
             ;;
         "3.15")
             # This is needed to speed up builds
-            nox --force-venv-backend uv -s unit-3.15
+            nox --stop-on-first-error --force-venv-backend uv -s unit-3.15
             retval=$?
             ;;
         *)
@@ -212,7 +212,7 @@ case ${TEST_TYPE} in
         fi
         ;;
     *)
-        nox -s ${TEST_TYPE}
+        nox --stop-on-first-error -s ${TEST_TYPE}
         retval=$?
         ;;
     esac

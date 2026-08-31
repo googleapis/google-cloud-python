@@ -175,19 +175,17 @@ def test_mutations_batcher_context_manager_flushed_when_closed():
 
 @mock.patch("google.cloud.bigtable.batcher.threading.Timer")
 @mock.patch("google.cloud.bigtable.batcher.MutationsBatcher.flush")
-def test_mutations_batcher_flush_interval(mocked_flush, mocked_timer):
+def test_mutations_batcher_flush_interval_does_not_start_timer(
+    mocked_flush, mocked_timer
+):
+    # ``flush_interval`` is accepted for backwards compatibility but no longer
+    # starts a background timer. Constructing the batcher must not create a
+    # timer or trigger a flush.
     table = _Table(TABLE_NAME)
-    flush_interval = 0.5
-    mutation_batcher = MutationsBatcher(table=table, flush_interval=flush_interval)
+    MutationsBatcher(table=table, flush_interval=0.5)
 
-    mocked_timer.assert_called_once_with(flush_interval, mutation_batcher.flush)
-    mocked_timer.return_value.start.assert_called_once_with()
+    mocked_timer.assert_not_called()
     mocked_flush.assert_not_called()
-
-    # Manually invoke the timer callback to verify it calls flush
-    timer_callback = mocked_timer.call_args[0][1]
-    timer_callback()
-    mocked_flush.assert_called_once_with()
 
 
 def test_mutations_batcher_response_with_error_codes():
@@ -265,6 +263,38 @@ def test_batch_completed_callback_ignores_cancelled_future():
 
         assert cancelled_future not in mutation_batcher.futures_mapping
         assert mutation_batcher.exceptions.qsize() == 0
+
+
+def test_mutations_batcher_close_surfaces_errors_when_final_flush_raises():
+    """If the final flush in ``close()`` raises, ``close()`` must still shut
+    down the executor and surface every accumulated error -- including ones
+    already captured from async flushes -- instead of letting the flush
+    exception mask them and abort cleanup (silent data loss)."""
+    from google.api_core.exceptions import PermissionDenied, ServiceUnavailable
+
+    with mock.patch("tests.unit.v2_client.test_batcher._Table") as mocked_table:
+        table = mocked_table.return_value
+        mutation_batcher = MutationsBatcher(table=table)
+
+        # Simulate an error already captured earlier (e.g. from an async flush).
+        prior_error = ServiceUnavailable("earlier async failure")
+        mutation_batcher.exceptions.put(prior_error)
+
+        # The row stays queued (below flush_count), so it is only flushed by
+        # close(); make that final flush raise.
+        row = DirectRow(row_key=b"row_key")
+        row.set_cell("cf1", b"c1", b"1")
+        mutation_batcher.mutate(row)
+        table.mutate_rows.side_effect = PermissionDenied("denied")
+
+        with pytest.raises(MutationsBatchError) as exc:
+            mutation_batcher.close()
+
+        # both the pre-existing and the flush-time errors are reported
+        assert prior_error in exc.value.exc
+        assert any(isinstance(e, PermissionDenied) for e in exc.value.exc)
+        # cleanup still ran despite the flush raising
+        assert mutation_batcher._executor._shutdown is True
 
 
 def test_flow_control_event_is_set_when_not_blocked():

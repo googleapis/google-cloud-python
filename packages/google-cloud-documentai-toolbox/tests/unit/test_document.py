@@ -949,6 +949,23 @@ def test_export_hocr_str_with_escape_characters():
     assert actual_hocr == expected
 
 
+def test_export_hocr_str_escapes_title():
+    wrapped_document = document.Document.from_document_path(
+        document_path="tests/unit/resources/0/toolbox_invoice_test-0.json"
+    )
+
+    actual_hocr = wrapped_document.export_hocr_str(
+        title="</title><script>alert(1)</script>"
+    )
+
+    assert "<script>alert(1)</script>" not in actual_hocr
+
+    element = ElementTree.fromstring(actual_hocr)
+    assert element is not None
+    title_element = element.find(".//{http://www.w3.org/1999/xhtml}title")
+    assert title_element.text == "</title><script>alert(1)</script>"
+
+
 def test_document_to_merged_documentai_document(get_bytes_multiple_files_mock):
     wrapped_document = document.Document.from_gcs(
         gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/1/"
