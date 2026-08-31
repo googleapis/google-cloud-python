@@ -384,7 +384,9 @@ class AsyncAuthorizedSession:
                                                 and self._mtls_init_task.done()
                                             ):
                                                 self._mtls_init_task = None
-                                            await self.configure_mtls_channel(self._client_cert_callback)
+                                            await self.configure_mtls_channel(
+                                                self._client_cert_callback
+                                            )
                                         except Exception as e:
                                             _LOGGER.error(
                                                 "Failed to reconfigure mTLS channel: %s",
