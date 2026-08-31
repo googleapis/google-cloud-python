@@ -416,7 +416,7 @@ class TestSessionsMtls:
         await session.close()
 
     @pytest.mark.asyncio
-    async def test_no_cert_rotation_when_cert_match_and_mTLS_enabled(self):
+    async def test_no_cert_rotation_when_cert_matches_and_mtls_enabled(self):
         mock_creds = mock.AsyncMock(spec=credentials.Credentials)
         mock_creds.before_request = mock.AsyncMock(return_value=None)
 
