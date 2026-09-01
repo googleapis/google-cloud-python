@@ -581,6 +581,7 @@ class TestSessionsMtls:
 
         def mock_check_side_effect(cached_cert, callback):
             import time
+
             # Introduce a small delay to guarantee lock contention from asyncio.gather tasks
             time.sleep(0.01)
             # Return matching fingerprints to skip reconfiguration
@@ -617,7 +618,7 @@ class TestSessionsMtls:
         mock_creds = mock.AsyncMock(spec=credentials.Credentials)
         mock_creds.before_request = mock.AsyncMock(return_value=None)
         mock_creds.refresh = mock.AsyncMock(return_value=None)
-        
+
         mock_resp_401 = mock.Mock()
         mock_resp_401.status_code = http_client.UNAUTHORIZED
         mock_auth_req = mock.AsyncMock(return_value=mock_resp_401)
@@ -641,13 +642,12 @@ class TestSessionsMtls:
             assert resp == mock_resp_401
             mock_check.assert_not_called()
             mock_conf.assert_not_called()
-            
+
             # Verify the standard retry behavior executed
             assert mock_creds.refresh.call_count == 2
             assert mock_auth_req.call_count == 3
 
         await session.close()
-
 
     @pytest.mark.asyncio
     async def test_cert_rotation_skips_retry_for_streaming(self):
