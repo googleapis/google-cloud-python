@@ -160,6 +160,8 @@ class AsyncAuthorizedSession:
             )
         self._auth_request = _auth_request
         self._mtls_rotation_lock = None  # type: Optional[asyncio.Lock]
+        self._mtls_check_counter = 0
+
 
     async def configure_mtls_channel(self, client_cert_callback=None):
         """Configure the client certificate and key for SSL connection.
@@ -360,10 +362,13 @@ class AsyncAuthorizedSession:
     
                             if self._mtls_rotation_lock is None:
                                 self._mtls_rotation_lock = asyncio.Lock()
+                            # Snapshot the counter state BEFORE acquiring the lock.
+                            check_counter_at_error = self._mtls_check_counter
     
                             async with self._mtls_rotation_lock:
-                                # Check Did another coroutine already reconfigure mTLS
-                                if self._cached_cert != stale_cert:
+                                # Check if another coroutine already reconfigured mTLS or 
+                                # ran the validation check.
+                                if self._mtls_check_counter > check_counter_at_error:
                                     pass
                                 else:
                                     try:
@@ -424,6 +429,9 @@ class AsyncAuthorizedSession:
                                                 "Skipping reconfiguration of mTLS channel because the client"
                                                 " certificate has not changed."
                                             )
+                                    finally:
+                                        # Always increment so waiting tasks skip the check block
+                                        self._mtls_check_counter += 1
                     if is_streaming:
                         return response
                     try:
