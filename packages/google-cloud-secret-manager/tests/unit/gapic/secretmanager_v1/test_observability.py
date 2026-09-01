@@ -22,7 +22,6 @@ import pytest
 from google.api_core import _observability
 from google.api_core._feature_gating_helpers import FeatureGatingError
 from google.auth.credentials import AnonymousCredentials
-
 from google.cloud.secretmanager_v1 import (
     SecretManagerServiceAsyncClient,
     SecretManagerServiceClient,
@@ -204,26 +203,26 @@ def test_otel_tracing_feature_gating_error(
         )
 
 
-def test_otel_tracing_custom_channel_with_wrappers(
+def test_otel_tracing_custom_channel_with_interceptors(
     fake_grpc_server,
     otel_in_memory,
     monkeypatch,
 ):
-    """Verify that when a custom channel is passed explicitly to the transport with wrappers,
+    """Verify that when a custom channel is passed explicitly to the transport with interceptors,
     OpenTelemetry tracing wraps the custom channel and records spans.
     """
     provider, exporter = otel_in_memory
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
 
-    otel_wrapper = _observability.get_otel_channel_wrapper(
+    otel_interceptor = _observability.get_otel_interceptor(
         {"tracer_provider": provider}
     )
-    assert otel_wrapper is not None
+    assert otel_interceptor is not None
 
     custom_channel = grpc.insecure_channel(fake_grpc_server)
     transport = SecretManagerServiceGrpcTransport(
         channel=custom_channel,
-        wrappers=[otel_wrapper],
+        interceptors=[otel_interceptor],
     )
     client = SecretManagerServiceClient(
         transport=transport,
@@ -235,15 +234,15 @@ def test_otel_tracing_custom_channel_with_wrappers(
         pass
 
     spans = exporter.get_finished_spans()
-    assert len(spans) > 0, "No spans recorded on custom channel with OTel wrapper!"
+    assert len(spans) > 0, "No spans recorded on custom channel with OTel interceptor!"
 
 
-def test_custom_interceptors_and_wrappers_execution(
+def test_custom_interceptors_execution(
     fake_grpc_server,
     insecure_channel_patch,
 ):
     """Verify that SecretManagerServiceGrpcTransport executes both gRPC ClientInterceptor instances
-    and Callable[[Channel], Channel] wrappers on real RPC calls to a local server.
+    and Callable[[Channel], Channel] interceptor callables on real RPC calls to a local server.
     """
     execution_order = []
 
@@ -252,14 +251,14 @@ def test_custom_interceptors_and_wrappers_execution(
             execution_order.append("interceptor")
             return continuation(client_call_details, request)
 
-    def tracking_wrapper(ch: grpc.Channel) -> grpc.Channel:
-        execution_order.append("wrapper")
+    def tracking_callable(ch: grpc.Channel) -> grpc.Channel:
+        execution_order.append("callable")
         return ch
 
     interceptor = TrackingInterceptor()
     transport = SecretManagerServiceGrpcTransport(
         host=fake_grpc_server,
-        wrappers=[interceptor, tracking_wrapper],
+        interceptors=[interceptor, tracking_callable],
         credentials=AnonymousCredentials(),
     )
     client = SecretManagerServiceClient(
@@ -271,7 +270,7 @@ def test_custom_interceptors_and_wrappers_execution(
     except Exception:
         pass
 
-    assert "wrapper" in execution_order
+    assert "callable" in execution_order
     assert "interceptor" in execution_order
 
 
