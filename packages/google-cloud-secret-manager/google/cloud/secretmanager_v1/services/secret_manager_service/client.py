@@ -73,7 +73,6 @@ import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-
 from google.cloud.secretmanager_v1.services.secret_manager_service import pagers
 from google.cloud.secretmanager_v1.types import resources, service
 
@@ -619,14 +618,14 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 "api_audience": self._client_options.api_audience,
             }
 
-            # When OpenTelemetry tracing is enabled, obtain the channel wrapper
+            # When OpenTelemetry tracing is enabled, obtain the channel interceptor
             # and pass it to the transport.
             if transport_init is SecretManagerServiceGrpcTransport:
-                otel_wrapper = _observability.get_otel_channel_wrapper(
+                otel_interceptor = _observability.get_otel_interceptor(
                     self._client_options
                 )
-                if otel_wrapper is not None:
-                    transport_kwargs["wrappers"] = [otel_wrapper]
+                if otel_interceptor is not None:
+                    transport_kwargs["interceptors"] = [otel_interceptor]
 
             self._transport = transport_init(**transport_kwargs)
 
