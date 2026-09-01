@@ -188,7 +188,7 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-@nox.session(python=UNIT_TEST_PYTHON_VERSIONS[0])
+@nox.session(python=SYSTEM_COMPLIANCE_MIGRATION_TEST_PYTHON_VERSIONS[0])
 def compliance_test_14(session):
     """Run SQLAlchemy dialect compliance test suite."""
     config_file = f"test_compliance_14_{session.python}_{uuid.uuid4().hex[:6]}.cfg"
@@ -495,10 +495,10 @@ def system(session, test_type):
             "Credentials or emulator host must be set via environment variable"
         )
 
-    if os.environ.get("RUN_COMPLIANCE_TESTS", "true") == "false" and not os.environ.get(
+    if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false" and not os.environ.get(
         "SPANNER_EMULATOR_HOST", ""
     ):
-        session.skip("RUN_COMPLIANCE_TESTS is set to false, skipping")
+        session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
 
     if test_type == "system" and session.python not in SYSTEM_TEST_PYTHON_VERSIONS:
         session.skip("Standard system tests configured to run exclusively on 3.12")
@@ -535,6 +535,16 @@ def system(session, test_type):
             )
 
 
+@nox.session(python=SYSTEM_COMPLIANCE_MIGRATION_TEST_PYTHON_VERSIONS)
+@nox.parametrize(
+    "test_type",
+    ["compliance_14", "compliance_20"],
+)
+def compliance(session, test_type):
+    """Run SQLAlchemy dialect compliance test suite."""
+    system(session, test_type=test_type)
+
+
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def mypy(session):
     """Run the type checker."""
@@ -558,16 +568,27 @@ def core_deps_from_source(session, protobuf_implementation):
     session.install(".")
 
     core_dependencies_from_source = [
-        "googleapis-common-protos @ git+https://github.com/googleapis/google-cloud-python#egg=googleapis-common-protos&subdirectory=packages/googleapis-common-protos",
-        "google-api-core @ git+https://github.com/googleapis/google-cloud-python#egg=google-api-core&subdirectory=packages/google-api-core",
-        "google-auth @ git+https://github.com/googleapis/google-cloud-python#egg=google-auth&subdirectory=packages/google-auth",
-        "grpc-google-iam-v1 @ git+https://github.com/googleapis/google-cloud-python#egg=grpc-google-iam-v1&subdirectory=packages/grpc-google-iam-v1",
-        "proto-plus @ git+https://github.com/googleapis/google-cloud-python#egg=proto-plus&subdirectory=packages/proto-plus",
+        "googleapis-common-protos",
+        "google-api-core",
+        "google-auth",
+        "grpc-google-iam-v1",
+        "proto-plus",
     ]
 
-    for dep in core_dependencies_from_source:
-        session.install(dep, "--no-deps", "--ignore-installed")
-        print(f"Installed {dep}")
+    deps_dir = next(
+        p / "packages" for p in CURRENT_DIRECTORY.parents if (p / "packages").is_dir()
+    )
+
+    local_paths = [
+        str(deps_dir / dep)
+        for dep in core_dependencies_from_source
+        if (deps_dir / dep).exists()
+    ]
+    if local_paths:
+        session.install(*local_paths, "--no-deps", "--ignore-installed")
+        print(
+            f"Installed {', '.join(core_dependencies_from_source)} locally from {deps_dir}"
+        )
 
     tests_path = os.path.join("tests", "unit")
     session.run(
@@ -607,9 +628,9 @@ def prerelease_deps(session, protobuf_implementation):
         "google-cloud-spanner",
     ]
 
-    deps_dir = CURRENT_DIRECTORY.parent
-    while deps_dir.name != "packages" and deps_dir.parent != deps_dir:
-        deps_dir = deps_dir.parent
+    deps_dir = next(
+        p / "packages" for p in CURRENT_DIRECTORY.parents if (p / "packages").is_dir()
+    )
 
     parsed_deps = {
         dep: re.match(r"^([a-zA-Z0-9_-]+)", dep).group(1) for dep in prerel_deps
