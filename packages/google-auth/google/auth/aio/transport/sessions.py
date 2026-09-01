@@ -42,7 +42,7 @@ else:
         ClientTimeout = None
 
 _LOGGER = logging.getLogger(__name__)
-MTLS_URL_PREFIXES = ["mtls.googleapis.com", "mtls.sandbox.googleapis.com"]
+_MTLS_URL_PREFIXES = ["mtls.googleapis.com", "mtls.sandbox.googleapis.com"]
 
 
 # Tracks the internal aiohttp installation and usage
@@ -159,7 +159,7 @@ class AsyncAuthorizedSession:
                 "`auth_request` must either be configured or the external package `aiohttp` must be installed to use the default value."
             )
         self._auth_request = _auth_request
-        self._mtls_rotation_lock = None  # type: Optional[asyncio.Lock]
+        self._mtls_rotation_lock: Optional[asyncio.Lock] = None
         self._mtls_check_counter = 0
 
     async def configure_mtls_channel(self, client_cert_callback=None):
@@ -353,7 +353,7 @@ class AsyncAuthorizedSession:
                         if hostname:
                             is_mtls_endpoint = any(
                                 hostname == prefix or hostname.endswith("." + prefix)
-                                for prefix in MTLS_URL_PREFIXES
+                                for prefix in _MTLS_URL_PREFIXES
                             )
                         # Snapshot the stale certificate state BEFORE acquiring the lock.
                         # This represents the cert that caused the 401 rejection.
