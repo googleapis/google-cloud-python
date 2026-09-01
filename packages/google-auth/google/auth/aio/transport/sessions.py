@@ -328,7 +328,9 @@ class AsyncAuthorizedSession:
         if response.status_code == http_client.UNAUTHORIZED:
             if _auth_retry_count < 2:
                 is_streaming = data is not None and (
-                    isinstance(data, (collections.abc.Iterator, collections.abc.AsyncIterable))
+                    isinstance(
+                        data, (collections.abc.Iterator, collections.abc.AsyncIterable)
+                    )
                     or hasattr(data, "read")
                 )
                 is_mtls_endpoint = False
