@@ -127,6 +127,9 @@ if CrossSync.is_async:
     from google.cloud.bigtable.data._async._accelerator_client import (
         _AsyncAcceleratorClient as AcceleratorClientType,
     )
+    from google.cloud.bigtable.data._async._accelerator_health import (
+        _AsyncAcceleratorHealthMonitor as AcceleratorHealthMonitorType,
+    )
     from google.cloud.bigtable.data._async._swappable_channel import (
         AsyncSwappableChannel as SwappableChannelType,
     )
@@ -147,6 +150,9 @@ else:
 
     from google.cloud.bigtable.data._sync_autogen._accelerator_client import (  # noqa: F401
         _AcceleratorClient as AcceleratorClientType,
+    )
+    from google.cloud.bigtable.data._sync_autogen._accelerator_health import (  # noqa: F401
+        _AcceleratorHealthMonitor as AcceleratorHealthMonitorType,
     )
     from google.cloud.bigtable.data._sync_autogen._swappable_channel import (  # noqa: F401
         SwappableChannel as SwappableChannelType,
@@ -1354,9 +1360,12 @@ class _DataApiTargetAsync(abc.ABC):
         # controlled by the client's ``use_accelerator`` option.
         self._accelerator_daemon: AcceleratorDaemon | None = None
         self._accelerator_client: AcceleratorClientType | None = None
-        # Sticky fallback policy: a daemon that cannot serve a routed RPC
-        # (UNIMPLEMENTED / dead subprocess) is transparently bypassed in favor
-        # of the native client. See ``_accelerator/_fallback.py``.
+        self._accelerator_health: AcceleratorHealthMonitorType | None = None
+        # Fallback policy: a daemon that cannot serve a routed RPC
+        # (UNIMPLEMENTED / dead subprocess) is permanently bypassed in favor of
+        # the native client, and one that is merely too starved to answer its
+        # own health check is bypassed until it recovers. See
+        # ``_accelerator/_fallback.py`` and ``_async/_accelerator_health.py``.
         self._accelerator_breaker = AcceleratorBreaker()
         if self.client._use_accelerator is not False:
             # None (default) or True: attempt to start. ``True`` is an explicit
@@ -1462,6 +1471,23 @@ class _DataApiTargetAsync(abc.ABC):
         except BaseException:
             server.close()
             raise
+        try:
+            self._accelerator_health = AcceleratorHealthMonitorType(
+                self._accelerator_client, self._accelerator_breaker
+            )
+            self._accelerator_health.start()
+        except Exception as exc:
+            # Monitoring is an optimization on top of a working accelerator, so
+            # failing to start it must not take the accelerator down with it —
+            # and must not leave this method raising after the daemon has been
+            # adopted, which would strand the subprocess.
+            warnings.warn(
+                "Could not start the accelerator health monitor; the "
+                f"accelerator will run without health-based fallback: {exc}",
+                RuntimeWarning,
+                stacklevel=2,
+            )
+            self._accelerator_health = None
 
     def _use_accelerator(self, method_name: str) -> bool:
         """Whether this call should be routed through the accelerator daemon.
@@ -2345,6 +2371,18 @@ class _DataApiTargetAsync(abc.ABC):
         """
         Called to close the Table instance and release any resources held by it.
         """
+        self._metrics.close()
+        if self._register_instance_future:
+            self._register_instance_future.cancel()
+        self.client._remove_instance_registration(
+            self.instance_id, self.app_profile_id, id(self)
+        )
+        # Stop the monitor before the channel it probes over goes away.
+        if self._accelerator_health is not None:
+            try:
+                await self._accelerator_health.close()
+            finally:
+                self._accelerator_health = None
         if self._accelerator_client is not None:
             try:
                 await self._accelerator_client.close()
