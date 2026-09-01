@@ -1262,7 +1262,6 @@ class TestMtlsHelper:
             generate_encrypted_key=True
         )
 
-
 class TestSecureCertKeyPaths(object):
     def test_tier1_pass_through(self):
         with _mtls_helper.secure_cert_key_paths(
