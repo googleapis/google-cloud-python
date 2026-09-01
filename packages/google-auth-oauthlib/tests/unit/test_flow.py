@@ -23,6 +23,7 @@ import time
 import urllib
 import webbrowser
 import wsgiref.simple_server
+from functools import partial
 from unittest import mock
 
 import pytest
