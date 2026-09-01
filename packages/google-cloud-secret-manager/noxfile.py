@@ -72,7 +72,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
 ]
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = [
-    "../google-api-core[tracing,testing]",
+    "../google-api-core",
 ]
 UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = []
@@ -277,19 +277,27 @@ def install_unittest_dependencies(session, *constraints):
 
 @nox.session(python=ALL_PYTHON)
 @nox.parametrize(
-    "protobuf_implementation",
-    ["python", "upb"],
+    ["protobuf_implementation", "install_otel"],
+    [
+        ("python", True),
+        ("python", False),
+        ("upb", True),
+        ("upb", False),
+    ],
 )
-def unit(session, protobuf_implementation):
+def unit(session, protobuf_implementation, install_otel):
     # Install all test dependencies, then install this package in-place.
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
+    if install_otel:
+        session.install("../google-api-core[tracing,testing]")
+
     install_unittest_dependencies(session, "-c", constraints_path)
 
     # Run py.test against the unit tests.
-    session.run(
+    pytest_args = [
         "py.test",
         "--quiet",
         f"--junitxml=unit_{session.python}_sponge_log.xml",
@@ -299,8 +307,14 @@ def unit(session, protobuf_implementation):
         "--cov-config=.coveragerc",
         "--cov-report=",
         "--cov-fail-under=0",
-        os.path.join("tests", "unit"),
-        *session.posargs,
+    ]
+    if not session.posargs:
+        pytest_args.append(os.path.join("tests", "unit"))
+    else:
+        pytest_args.extend(session.posargs)
+
+    session.run(
+        *pytest_args,
         env={
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
         },
