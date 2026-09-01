@@ -35,7 +35,6 @@ import google.auth.transport.grpc
 import google.auth.transport.requests
 import google.protobuf
 import grpc
-
 from google.api_core import exceptions, general_helpers
 
 # The list of gRPC Callable interfaces that return iterators.
@@ -55,11 +54,11 @@ ClientInterceptor: TypeAlias = (
 # Runtime tuple of gRPC client interceptor base classes for isinstance checks
 _CLIENT_INTERCEPTOR_CLASSES = get_args(ClientInterceptor)
 
-# Type alias representing a channel-wrapping callable
-ChannelWrapperCallable: TypeAlias = Callable[[grpc.Channel], grpc.Channel]
+# Type alias representing a channel-intercepting callable
+ClientInterceptorCallable: TypeAlias = Callable[[grpc.Channel], grpc.Channel]
 
-# Generic type alias representing any channel wrapper (interceptor or callable)
-ChannelWrapper: TypeAlias = ClientInterceptor | ChannelWrapperCallable
+# Generic type alias representing any client interceptor (standard interceptor or callable)
+ClientInterceptorType: TypeAlias = ClientInterceptor | ClientInterceptorCallable
 
 
 def _patch_callable_name(callable_):
@@ -446,43 +445,43 @@ def _modify_target_for_direct_path(target: str) -> str:
     return target
 
 
-def apply_channel_wrappers(
+def apply_channel_interceptors(
     channel: grpc.Channel,
-    wrappers: Sequence[ChannelWrapper] | None = None,
+    interceptors: Sequence[ClientInterceptorType] | None = None,
 ) -> grpc.Channel:
-    """Applies channel wrappers (client interceptors or channel-wrapping callables) to a gRPC channel.
+    """Applies client interceptors or channel-intercepting callables to a gRPC channel.
 
-    Executes in reverse order so the first wrapper in the sequence becomes the
-    outermost layer on outbound requests and the innermost layer on inbound responses.
+    Executes in reverse order so the first interceptor in the sequence becomes the
+    outermost layer on outbound requests and the innermost layer on inbound responses,
+    aligning with the behavior of ``grpc.intercept_channel``.
 
     Args:
-        channel (grpc.Channel): The channel to wrap.
-        wrappers (Optional[Sequence[ChannelWrapper]]):
-            An optional sequence of client interceptors or channel-wrapping
-            callables to apply.
+        channel (grpc.Channel): The channel to intercept.
+        interceptors (Optional[Sequence[Union[ClientInterceptor, Callable[[grpc.Channel], grpc.Channel]]]]):
+            Additional interceptors (or callables that apply interceptors) to apply to the gRPC channel.
 
     Returns:
-        grpc.Channel: The wrapped channel, or the original channel if no
-            wrappers were provided.
+        grpc.Channel: The intercepted channel, or the original channel if no
+            interceptors were provided.
 
     Raises:
-        TypeError: If an item in ``wrappers`` is neither a gRPC ClientInterceptor
+        TypeError: If an item in ``interceptors`` is neither a gRPC ClientInterceptor
             nor a Callable[[Channel], Channel].
     """
-    if not wrappers:
+    if not interceptors:
         return channel
 
     modified_channel = channel
     # Reverse the inputs to align with the behavior of grpc.create_channel(*interceptors)
-    for wrapper in reversed(list(wrappers)):
-        if isinstance(wrapper, _CLIENT_INTERCEPTOR_CLASSES):
-            modified_channel = grpc.intercept_channel(modified_channel, wrapper)
-        elif callable(wrapper):
-            wrapper_callable = cast(ChannelWrapperCallable, wrapper)
-            modified_channel = wrapper_callable(modified_channel)
+    for interceptor in reversed(list(interceptors)):
+        if isinstance(interceptor, _CLIENT_INTERCEPTOR_CLASSES):
+            modified_channel = grpc.intercept_channel(modified_channel, interceptor)
+        elif callable(interceptor):
+            interceptor_callable = cast(ClientInterceptorCallable, interceptor)
+            modified_channel = interceptor_callable(modified_channel)
         else:
             raise TypeError(
-                f"Expected ChannelWrapper (ClientInterceptor or Callable[[Channel], Channel]), got {type(wrapper).__name__}"
+                f"Expected ClientInterceptor or Callable[[Channel], Channel], got {type(interceptor).__name__}"
             )
 
     return modified_channel

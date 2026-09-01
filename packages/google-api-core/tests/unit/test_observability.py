@@ -16,7 +16,6 @@ import sys
 from unittest import mock
 
 import pytest
-
 from google.api_core import _observability
 from google.api_core._feature_gating_helpers import FeatureGatingError
 from google.api_core.client_options import ClientOptions
@@ -178,18 +177,18 @@ def test_get_otel_interceptor_async(monkeypatch):
     )
 
 
-def test_get_otel_channel_wrapper_disabled(monkeypatch):
+def test_get_otel_interceptor_disabled(monkeypatch):
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "false")
-    assert _observability.get_otel_channel_wrapper() is None
+    assert _observability.get_otel_interceptor() is None
 
 
-def test_get_otel_channel_wrapper_otel_missing(monkeypatch):
+def test_get_otel_interceptor_otel_missing(monkeypatch):
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
     monkeypatch.setitem(sys.modules, "opentelemetry.instrumentation.grpc", None)
-    assert _observability.get_otel_channel_wrapper() is None
+    assert _observability.get_otel_interceptor() is None
 
 
-def test_get_otel_channel_wrapper_enabled(monkeypatch):
+def test_get_otel_interceptor_enabled(monkeypatch):
     monkeypatch.setenv("GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED", "true")
     mock_tracer_provider = object()
     options = ClientOptions(tracer_provider=mock_tracer_provider)
@@ -212,22 +211,22 @@ def test_get_otel_channel_wrapper_enabled(monkeypatch):
         sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
     )
 
-    wrapper = _observability.get_otel_channel_wrapper(client_options=options)
-    assert callable(wrapper)
+    interceptor = _observability.get_otel_interceptor(client_options=options)
+    assert callable(interceptor)
 
     mock_otel_grpc.client_interceptor.assert_called_once_with(
         tracer_provider=mock_tracer_provider
     )
 
-    result = wrapper(mock_raw_channel)
+    result = interceptor(mock_raw_channel)
     assert result is mock_wrapped_channel
     mock_otel_grpc.intercept_channel.assert_called_once_with(
         mock_raw_channel, mock_interceptor
     )
 
 
-def test_get_otel_channel_wrapper_with_apply_channel_wrappers(monkeypatch):
-    """Proves that get_otel_channel_wrapper integrates seamlessly into apply_channel_wrappers."""
+def test_get_otel_interceptor_with_apply_channel_interceptors(monkeypatch):
+    """Proves that get_otel_interceptor integrates seamlessly into apply_channel_interceptors."""
     pytest.importorskip("grpc")
     from google.api_core import grpc_helpers
 
@@ -253,11 +252,11 @@ def test_get_otel_channel_wrapper_with_apply_channel_wrappers(monkeypatch):
         sys.modules, "opentelemetry.instrumentation.grpc", mock_otel_grpc
     )
 
-    otel_wrapper = _observability.get_otel_channel_wrapper(client_options=options)
-    assert callable(otel_wrapper)
+    otel_interceptor = _observability.get_otel_interceptor(client_options=options)
+    assert callable(otel_interceptor)
 
-    result = grpc_helpers.apply_channel_wrappers(
-        mock_raw_channel, wrappers=[otel_wrapper]
+    result = grpc_helpers.apply_channel_interceptors(
+        mock_raw_channel, interceptors=[otel_interceptor]
     )
     assert result is mock_wrapped_channel
     mock_otel_grpc.intercept_channel.assert_called_once_with(
