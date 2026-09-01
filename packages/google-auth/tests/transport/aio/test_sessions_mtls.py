@@ -612,7 +612,7 @@ class TestSessionsMtls:
 
         await session.close()
 
-        @pytest.mark.asyncio
+    @pytest.mark.asyncio
     async def test_non_mtls_url_bypasses_rotation(self):
         mock_creds = mock.AsyncMock(spec=credentials.Credentials)
         mock_creds.before_request = mock.AsyncMock(return_value=None)
