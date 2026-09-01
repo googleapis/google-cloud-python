@@ -162,7 +162,6 @@ class AsyncAuthorizedSession:
         self._mtls_rotation_lock = None  # type: Optional[asyncio.Lock]
         self._mtls_check_counter = 0
 
-
     async def configure_mtls_channel(self, client_cert_callback=None):
         """Configure the client certificate and key for SSL connection.
 
@@ -332,20 +331,21 @@ class AsyncAuthorizedSession:
         if response.status_code == http_client.UNAUTHORIZED:
             if _auth_retry_count < 2:
                 if max_allowed_time is not None:
-                     elapsed = time.monotonic() - start_time
-                     remaining_time = max(0.0, max_allowed_time - elapsed)
-                     if remaining_time == 0.0:
-                         raise google.auth.exceptions.TimeoutError(
-                             "Timeout exceeded before credential refresh could begin"
-                         )
+                    elapsed = time.monotonic() - start_time
+                    remaining_time = max(0.0, max_allowed_time - elapsed)
+                    if remaining_time == 0.0:
+                        raise google.auth.exceptions.TimeoutError(
+                            "Timeout exceeded before credential refresh could begin"
+                        )
                 else:
-                     remaining_time = None
+                    remaining_time = None
                 is_streaming = data is not None and (
                     isinstance(
                         data, (collections.abc.Iterator, collections.abc.AsyncIterable)
                     )
                     or hasattr(data, "read")
                 )
+
                 async def _recover_auth_state():
                     is_mtls_endpoint = False
                     if getattr(self, "is_mtls", False):
@@ -359,14 +359,14 @@ class AsyncAuthorizedSession:
                         # This represents the cert that caused the 401 rejection.
                         if is_mtls_endpoint:
                             stale_cert = self._cached_cert
-    
+
                             if self._mtls_rotation_lock is None:
                                 self._mtls_rotation_lock = asyncio.Lock()
                             # Snapshot the counter state BEFORE acquiring the lock.
                             check_counter_at_error = self._mtls_check_counter
-    
+
                             async with self._mtls_rotation_lock:
-                                # Check if another coroutine already reconfigured mTLS or 
+                                # Check if another coroutine already reconfigured mTLS or
                                 # ran the validation check.
                                 if self._mtls_check_counter > check_counter_at_error:
                                     pass
@@ -395,7 +395,10 @@ class AsyncAuthorizedSession:
                                         )
                                         return response
                                     else:
-                                        if cached_fingerprint != current_cert_fingerprint:
+                                        if (
+                                            cached_fingerprint
+                                            != current_cert_fingerprint
+                                        ):
                                             try:
                                                 _LOGGER.info(
                                                     "Client certificate has changed, reconfiguring mTLS "
@@ -445,12 +448,14 @@ class AsyncAuthorizedSession:
                             e,
                         )
                         return response
-    
+
                     # Return None to explicitly signal successful recovery
                     return None
 
                 async with timeout_guard(remaining_time) as auth_with_timeout:
-                    early_return_response = await auth_with_timeout(_recover_auth_state())
+                    early_return_response = await auth_with_timeout(
+                        _recover_auth_state()
+                    )
                 # If it returned a response (meaning streaming or error), bail out
                 if early_return_response is not None:
                     return early_return_response
@@ -462,7 +467,9 @@ class AsyncAuthorizedSession:
                         response.close()
 
                 if max_allowed_time is not None:
-                    remaining_time = max(0.0, max_allowed_time - (time.monotonic() - start_time))
+                    remaining_time = max(
+                        0.0, max_allowed_time - (time.monotonic() - start_time)
+                    )
                     if remaining_time == 0.0:
                         raise google.auth.exceptions.TimeoutError(
                             "Timeout exceeded before retrying the request"
