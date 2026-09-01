@@ -6,8 +6,8 @@
 
 import os
 
-from django.db.backends.base.base import BaseDatabaseWrapper
 from asgiref.sync import sync_to_async
+from django.db.backends.base.base import BaseDatabaseWrapper
 from google.cloud import spanner, spanner_dbapi
 
 from .client import DatabaseClient
