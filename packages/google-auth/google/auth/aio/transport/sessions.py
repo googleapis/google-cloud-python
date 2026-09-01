@@ -358,7 +358,6 @@ class AsyncAuthorizedSession:
                         # Snapshot the stale certificate state BEFORE acquiring the lock.
                         # This represents the cert that caused the 401 rejection.
                         if is_mtls_endpoint:
-                            stale_cert = self._cached_cert
 
                             if self._mtls_rotation_lock is None:
                                 self._mtls_rotation_lock = asyncio.Lock()
