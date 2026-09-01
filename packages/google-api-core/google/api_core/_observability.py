@@ -16,7 +16,6 @@
 
 """OpenTelemetry helpers for resolving and instantiating interceptors."""
 
-import functools
 from typing import TYPE_CHECKING, Any, Callable
 
 from google.api_core import _feature_gating_helpers
@@ -83,7 +82,7 @@ def _get_otel_interceptor(
         tracer_provider = getattr(client_options, _TRACER_PROVIDER, None)
 
     if is_async:
-        return otel_grpc.aio_client_interceptor(tracer_provider=tracer_provider)
+        return otel_grpc.aio_client_interceptors(tracer_provider=tracer_provider)
     return otel_grpc.client_interceptor(tracer_provider=tracer_provider)
 
 
@@ -106,7 +105,11 @@ def get_otel_channel_wrapper(
     import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
 
     interceptor = _get_otel_interceptor(client_options, is_async=False)
-    return functools.partial(otel_grpc.intercept_channel, interceptor=interceptor)
+
+    def channel_wrapper(channel: Any) -> Any:
+        return otel_grpc.intercept_channel(channel, interceptor)
+
+    return channel_wrapper
 
 
 def get_otel_async_interceptor(

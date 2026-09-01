@@ -160,8 +160,8 @@ def test_get_otel_interceptor_async(monkeypatch):
 
     mock_otel = mock.Mock()
     mock_otel_grpc = mock_otel.instrumentation.grpc
-    mock_async_interceptor = mock.Mock()
-    mock_otel_grpc.aio_client_interceptor.return_value = mock_async_interceptor
+    mock_async_interceptors = [mock.Mock()]
+    mock_otel_grpc.aio_client_interceptors.return_value = mock_async_interceptors
 
     monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
     monkeypatch.setitem(
@@ -172,8 +172,8 @@ def test_get_otel_interceptor_async(monkeypatch):
     )
 
     result = _observability._get_otel_interceptor(client_options=options, is_async=True)
-    assert result is mock_async_interceptor
-    mock_otel_grpc.aio_client_interceptor.assert_called_once_with(
+    assert result is mock_async_interceptors
+    mock_otel_grpc.aio_client_interceptors.assert_called_once_with(
         tracer_provider=mock_tracer_provider
     )
 
@@ -222,7 +222,7 @@ def test_get_otel_channel_wrapper_enabled(monkeypatch):
     result = wrapper(mock_raw_channel)
     assert result is mock_wrapped_channel
     mock_otel_grpc.intercept_channel.assert_called_once_with(
-        mock_raw_channel, interceptor=mock_interceptor
+        mock_raw_channel, mock_interceptor
     )
 
 
@@ -261,7 +261,7 @@ def test_get_otel_channel_wrapper_with_apply_channel_wrappers(monkeypatch):
     )
     assert result is mock_wrapped_channel
     mock_otel_grpc.intercept_channel.assert_called_once_with(
-        mock_raw_channel, interceptor=mock_interceptor
+        mock_raw_channel, mock_interceptor
     )
 
 
@@ -281,11 +281,11 @@ def test_get_otel_async_interceptor_enabled(monkeypatch):
     mock_tracer_provider = object()
     options = ClientOptions(tracer_provider=mock_tracer_provider)
 
-    mock_async_interceptor = mock.Mock(name="otel_async_interceptor")
+    mock_async_interceptors = [mock.Mock(name="otel_async_interceptor")]
 
     mock_otel = mock.Mock()
     mock_otel_grpc = mock_otel.instrumentation.grpc
-    mock_otel_grpc.aio_client_interceptor.return_value = mock_async_interceptor
+    mock_otel_grpc.aio_client_interceptors.return_value = mock_async_interceptors
 
     monkeypatch.setitem(sys.modules, "opentelemetry", mock_otel)
     monkeypatch.setitem(
@@ -296,7 +296,7 @@ def test_get_otel_async_interceptor_enabled(monkeypatch):
     )
 
     result = _observability.get_otel_async_interceptor(client_options=options)
-    assert result is mock_async_interceptor
-    mock_otel_grpc.aio_client_interceptor.assert_called_once_with(
+    assert result is mock_async_interceptors
+    mock_otel_grpc.aio_client_interceptors.assert_called_once_with(
         tracer_provider=mock_tracer_provider
     )
