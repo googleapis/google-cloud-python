@@ -16,13 +16,20 @@
 
 from __future__ import absolute_import
 
+import functools
 import logging
 import warnings
 
+
 from google.auth import exceptions
+from google.auth import transport
 from google.auth.transport import _mtls_helper
+from google.auth.transport import mtls_interceptor‎
 from google.auth.transport import mtls
 from google.oauth2 import service_account
+
+from typing import Optional
+
 
 try:
     import grpc  # type: ignore
@@ -283,6 +290,7 @@ def secure_authorized_channel(
         )
 
     # If SSL credentials are not explicitly set, try client_cert_callback and ADC.
+    cached_cert: Optional[bytes] = None
     if not ssl_credentials:
         use_client_cert = _mtls_helper.check_use_client_cert()
         if use_client_cert and client_cert_callback:
@@ -291,10 +299,12 @@ def secure_authorized_channel(
             ssl_credentials = grpc.ssl_channel_credentials(
                 certificate_chain=cert, private_key=key
             )
+            cached_cert = cert
         elif use_client_cert:
             # Use application default SSL credentials.
-            adc_ssl_credentils = SslCredentials()
-            ssl_credentials = adc_ssl_credentils.ssl_credentials
+            adc_ssl_credentials = SslCredentials()
+            ssl_credentials = adc_ssl_credentials.ssl_credentials
+            cached_cert = adc_ssl_credentials._cached_cert
         else:
             ssl_credentials = grpc.ssl_channel_credentials()
 
@@ -302,8 +312,23 @@ def secure_authorized_channel(
     composite_credentials = grpc.composite_channel_credentials(
         ssl_credentials, google_auth_credentials
     )
-
-    return grpc.secure_channel(target, composite_credentials, **kwargs)
+    is_recreation = kwargs.pop("_is_recreation", False)
+    channel = grpc.secure_channel(target, composite_credentials, **kwargs)
+    # Avoid wrapping if mTLS is disabled or if this is a channel recreation call
+    if cached_cert and not is_recreation:
+        # Package arguments so the channel can be recreated later
+        create_channel_fn = functools.partial(
+            secure_authorized_channel,
+            credentials=credentials,
+            request=request,
+            target=target,
+            _is_recreation=True, # Hidden flag to stop recursion
+            **kwargs
+        )
+        wrapper = mtls_interceptor.MTLSRefreshingChannel(target, create_channel_fn, channel, cached_cert)
+        interceptor = mtls_interceptor.CertRotationInterceptor(wrapper=wrapper)
+        return grpc.intercept_channel(wrapper, interceptor)
+    return channel
 
 
 class SslCredentials:
@@ -327,6 +352,7 @@ class SslCredentials:
 
     def __init__(self):
         use_client_cert = _mtls_helper.check_use_client_cert()
+        self._cached_cert = None
         if not use_client_cert:
             self._is_mtls = False
         else:
@@ -355,6 +381,7 @@ class SslCredentials:
                     self._ssl_credentials = grpc.ssl_channel_credentials(
                         certificate_chain=cert, private_key=key
                     )
+                    self._cached_cert = cert
                 else:
                     self._ssl_credentials = grpc.ssl_channel_credentials()
                     self._is_mtls = False

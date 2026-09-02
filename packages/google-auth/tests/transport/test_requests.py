@@ -744,7 +744,7 @@ class TestAuthorizedSession(object):
         with mock.patch.object(
             google.auth.transport._mtls_helper,
             "call_client_cert_callback",
-            return_value=(new_cert, new_key),
+            return_value=(new_cert, new_key, None),
         ) as mock_callback:
             result = authed_session.request("GET", self.MTLS_TEST_URL)
 
@@ -783,7 +783,7 @@ class TestAuthorizedSession(object):
         with mock.patch.object(
             google.auth.transport._mtls_helper,
             "call_client_cert_callback",
-            return_value=(new_cert, new_key),
+            return_value=(new_cert, new_key, None),
         ):
             result = authed_session.request("GET", self.MTLS_TEST_URL)
 
@@ -816,7 +816,7 @@ class TestAuthorizedSession(object):
         with mock.patch.object(
             google.auth.transport._mtls_helper,
             "call_client_cert_callback",
-            return_value=(new_cert, new_key),
+            return_value=(new_cert, new_key, None),
         ) as mock_callback:
             result = authed_session.request("GET", self.TEST_URL)
 
@@ -866,7 +866,7 @@ class TestAuthorizedSession(object):
         with mock.patch.object(
             google.auth.transport._mtls_helper,
             "call_client_cert_callback",
-            return_value=(new_cert, new_key),
+            return_value=(new_cert, new_key, None),
         ):
             with mock.patch.object(
                 authed_session,

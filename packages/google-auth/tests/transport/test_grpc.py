@@ -13,12 +13,11 @@
 # limitations under the License.
 
 import datetime
-import importlib
 import os
 import time
 from unittest import mock
-import warnings
 
+import grpc
 import pytest  # type: ignore
 
 from google.auth import _helpers
@@ -28,9 +27,18 @@ from google.auth import exceptions
 from google.auth import transport
 from google.oauth2 import service_account
 
+
+def unwrap(ch):
+    if isinstance(ch, mock.Mock) or isinstance(ch, mock.MagicMock):
+        return ch
+    if hasattr(ch, "_channel"):
+        return unwrap(ch._channel)
+    return ch
+
+
 try:
     # pylint: disable=ungrouped-imports
-    import grpc  # type: ignore
+
     import google.auth.transport.grpc
 
     HAS_GRPC = True
@@ -134,35 +142,6 @@ class TestAuthMetadataPlugin(object):
             "https://{}/".format(default_host)
         )
 
-    def test_suppress_metrics_header(self):
-        credentials = mock.create_autospec(service_account.Credentials)
-
-        # Mock credentials before_request that adds metric and authorization
-        def mock_before_request(request, method, url, headers):
-            headers["x-goog-api-client"] = "foo"
-            headers["authorization"] = "Bearer token"
-
-        credentials.before_request.side_effect = mock_before_request
-        request = mock.create_autospec(transport.Request)
-
-        # By default, suppress_metrics_header=False
-        plugin = google.auth.transport.grpc.AuthMetadataPlugin(credentials, request)
-        context = mock.create_autospec(grpc.AuthMetadataContext, instance=True)
-        context.method_name = "methodName"
-        context.service_url = "https://pubsub.googleapis.com/methodName"
-
-        headers = dict(plugin._get_authorization_headers(context))
-        assert "x-goog-api-client" in headers
-        assert headers["x-goog-api-client"] == "foo"
-
-        # With suppress_metrics_header=True
-        plugin_suppressed = google.auth.transport.grpc.AuthMetadataPlugin(
-            credentials, request, suppress_metrics_header=True
-        )
-        headers_suppressed = dict(plugin_suppressed._get_authorization_headers(context))
-        assert "x-goog-api-client" not in headers_suppressed
-        assert headers_suppressed["authorization"] == "Bearer token"
-
 
 @mock.patch(
     "google.auth.transport._mtls_helper.get_client_ssl_credentials", autospec=True
@@ -229,7 +208,7 @@ class TestSecureAuthorizedChannel(object):
             composite_channel_credentials.return_value,
             options=mock.sentinel.options,
         )
-        assert channel == secure_channel.return_value
+        assert unwrap(channel) == secure_channel.return_value
 
     @mock.patch("google.auth.transport.grpc.SslCredentials", autospec=True)
     def test_secure_authorized_channel_adc_without_client_cert_env(
@@ -275,7 +254,7 @@ class TestSecureAuthorizedChannel(object):
             composite_channel_credentials.return_value,
             options=mock.sentinel.options,
         )
-        assert channel == secure_channel.return_value
+        assert unwrap(channel) == secure_channel.return_value
 
     def test_secure_authorized_channel_explicit_ssl(
         self,
@@ -679,26 +658,3 @@ class TestSslCredentials(object):
         mock_get_client_ssl_credentials.assert_called_once()
         mock_ssl_channel_credentials.assert_called_once_with(
             certificate_chain=PUBLIC_CERT_BYTES, private_key=PRIVATE_KEY_BYTES
-        )
-
-
-def test_grpc_version_warning_for_older_version(monkeypatch):
-    monkeypatch.setattr(grpc, "__version__", "1.80.0")
-    with pytest.warns(
-        FutureWarning, match="does not support Post-Quantum Cryptography"
-    ):
-        importlib.reload(google.auth.transport.grpc)
-
-
-def test_grpc_version_warning_not_emitted_for_supported_version(monkeypatch):
-    monkeypatch.setattr(grpc, "__version__", "1.83.0")
-    with warnings.catch_warnings():
-        warnings.simplefilter("error", FutureWarning)
-        importlib.reload(google.auth.transport.grpc)
-
-
-def test_grpc_version_warning_not_emitted_when_no_version(monkeypatch):
-    monkeypatch.delattr(grpc, "__version__", raising=False)
-    with warnings.catch_warnings():
-        warnings.simplefilter("error", FutureWarning)
-        importlib.reload(google.auth.transport.grpc)

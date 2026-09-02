@@ -440,6 +440,7 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
                     (
                         call_cert_bytes,
                         call_key_bytes,
+                        _,
                         cached_fingerprint,
                         current_cert_fingerprint,
                     ) = _mtls_helper.check_parameters_for_unauthorized_response(
