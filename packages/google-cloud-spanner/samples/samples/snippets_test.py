@@ -18,6 +18,7 @@ import uuid
 from google.api_core import exceptions
 from google.cloud import spanner
 from google.cloud.spanner_admin_database_v1.types.common import DatabaseDialect
+from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
 import pytest
 from test_utils.retry import RetryErrors
 
@@ -216,8 +217,6 @@ def test_create_and_update_instance_default_backup_schedule_type(
 def test_create_instance_partition(
     capsys, instance_partition_instance_id, multi_region_instance_config
 ):
-    from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
-
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_partition_instance_id)
     try:
