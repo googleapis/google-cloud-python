@@ -750,7 +750,10 @@ class Table(object):
 
         # The data client cannot take in zero or null values for deadline, so we set it to
         # the default if that is the case.
-        if retry.deadline is None:
+        if retry is None:
+            operation_timeout = TABLE_DEFAULT.MUTATE_ROWS
+            retryable_errors = []
+        elif retry.deadline is None:
             operation_timeout = TABLE_DEFAULT.MUTATE_ROWS
 
         # To adhere to the retry strategy of do-nothing being achievable with a deadline
@@ -762,12 +765,21 @@ class Table(object):
             operation_timeout = retry.deadline
 
         attempt_timeout = timeout
-        mutation_entries = [
-            RowMutationEntry(row.row_key, row._get_mutations()) for row in rows
-        ]
-        return_statuses = [status_pb2.Status(code=code_pb2.Code.OK)] * len(
-            mutation_entries
-        )  # By default, return status OKs for everything
+        mutation_entries = []
+        for row in rows:
+            if not isinstance(row, DirectRow):
+                raise TypeError(
+                    "Bulk processing can not be applied for conditional or append mutations."
+                )
+            if row.table is not None and row.table.name != self.name:
+                raise TableMismatchError(
+                    "Row %s is a part of %s table. Current table: %s"
+                    % (row.row_key, row.table.name, self.name)
+                )
+            mutation_entries.append(RowMutationEntry(row.row_key, row._get_mutations()))
+        return_statuses = [
+            status_pb2.Status(code=code_pb2.OK) for _ in range(len(mutation_entries))
+        ]  # By default, return status OKs for everything
 
         try:
             self._table_impl.bulk_mutate_rows(
@@ -809,7 +821,7 @@ class Table(object):
             )
 
         return status_pb2.Status(
-            code=code_pb2.Code.UNKNOWN,
+            code=code_pb2.UNKNOWN,
             message=str(error),
         )
 
