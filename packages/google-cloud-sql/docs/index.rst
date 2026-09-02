@@ -3,7 +3,7 @@
 .. include:: multiprocessing.rst
 
 This package includes clients for multiple versions of Cloud SQL Admin.
-By default, you will get version ``sql_v1``.
+By default, you will get version ``sqladmin_v1``.
 
 
 API Reference
@@ -11,16 +11,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    sql_v1/services_
-    sql_v1/types_
-
-API Reference
--------------
-.. toctree::
-    :maxdepth: 2
-
-    sql_v1beta4/services_
-    sql_v1beta4/types_
+    sqladmin_v1/services_
+    sqladmin_v1/types_
 
 API Reference
 -------------

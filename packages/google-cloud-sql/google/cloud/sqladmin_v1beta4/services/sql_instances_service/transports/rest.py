@@ -6406,11 +6406,10 @@ class SqlInstancesServiceRestTransport(_BaseSqlInstancesServiceRestTransport):
 
             resp = self._interceptor.post_pre_check_major_version_upgrade(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_pre_check_major_version_upgrade_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_pre_check_major_version_upgrade_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -9144,11 +9143,10 @@ class SqlInstancesServiceRestTransport(_BaseSqlInstancesServiceRestTransport):
 
             resp = self._interceptor.post_verify_external_sync_settings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_verify_external_sync_settings_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_verify_external_sync_settings_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
