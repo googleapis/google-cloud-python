@@ -1,7 +1,7 @@
 {
   "packages/google-cloud-apptopology": "0.1.0",
   "packages/google-cloud-ftp": "0.1.0",
-  "packages/google-cloud-sql": "0.0.0",
+  "packages/google-cloud-sql": "0.1.0",
   "packages/google-cloud-workloadidentity": "0.1.0",
   "packages/google-crc32c": "1.8.0",
   "packages/google-maps-mapmanagement": "0.1.1",
