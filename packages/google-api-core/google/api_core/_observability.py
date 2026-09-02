@@ -16,17 +16,23 @@
 
 """OpenTelemetry helpers for resolving and instantiating interceptors."""
 
-from typing import Any, Optional
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any, Callable, Sequence
 
 from google.api_core import _feature_gating_helpers
 from google.api_core.client_options import ClientOptions
+
+if TYPE_CHECKING:
+    # flake8: grpc is imported only for static analysis and type annotations
+    import grpc  # noqa: F401
 
 _TRACER_PROVIDER = "tracer_provider"
 
 
 def is_otel_capabilities_enabled(
-    client_options: Optional[ClientOptions | dict[str, Any]] = None,
-    env_var: str = "GOOGLE_CLOUD_PYTHON_TRACING_ENABLED",
+    client_options: ClientOptions | dict[str, Any] | None = None,
+    env_var: str = "GOOGLE_SDK_EXPERIMENTAL_PYTHON_TRACING_ENABLED",
 ) -> bool:
     """Checks if OTel capabilities are enabled and installed.
 
@@ -54,26 +60,19 @@ def is_otel_capabilities_enabled(
     return False
 
 
-def apply_otel_capabilities_to_channel(
-    channel: Any,
-    client_options: Optional[ClientOptions | dict[str, Any]] = None,
+def _get_otel_interceptor(
+    client_options: ClientOptions | dict[str, Any] | None = None,
+    is_async: bool = False,
 ) -> Any:
-    """Applies OTel capabilities (like tracing) to the channel.
-
-    Precondition: This function assumes `is_otel_capabilities_enabled` has already
-    been called and returned `True`, i.e. in the Client. At this time
-    this function is not intended to be standalone.
+    """Instantiates a sync or async OpenTelemetry gRPC client interceptor.
 
     Args:
-        channel: The raw gRPC channel to wrap.
         client_options: The client options object or dictionary.
+        is_async: If True, returns an async interceptor (`aio_client_interceptors`),
+            otherwise returns a sync interceptor (`client_interceptor`).
 
     Returns:
-        Any: The intercepted channel.
-
-    Raises:
-        ImportError: If OpenTelemetry packages are not installed and this function
-            is called directly (bypassing the precondition).
+        Any: The instantiated OpenTelemetry client interceptor.
     """
     import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
 
@@ -83,7 +82,51 @@ def apply_otel_capabilities_to_channel(
     elif client_options is not None:
         tracer_provider = getattr(client_options, _TRACER_PROVIDER, None)
 
-    interceptor = otel_grpc.client_interceptor(tracer_provider=tracer_provider)
+    if is_async:
+        return otel_grpc.aio_client_interceptors(tracer_provider=tracer_provider)
+    return otel_grpc.client_interceptor(tracer_provider=tracer_provider)
 
-    # We use OTel's own compatible applier to avoid standard gRPC TypeError.
-    return otel_grpc.intercept_channel(channel, interceptor)
+
+def get_otel_interceptor(
+    client_options: ClientOptions | dict[str, Any] | None = None,
+) -> Callable[[grpc.Channel], grpc.Channel] | None:
+    """Returns an interceptor callable that wraps a sync gRPC channel with OpenTelemetry tracing.
+
+    Args:
+        client_options: The client options object or dictionary used for feature gating
+            and extracting the tracer provider.
+
+    Returns:
+        Optional[Callable[[grpc.Channel], grpc.Channel]]: An interceptor callable if OpenTelemetry
+            tracing is enabled and installed, None otherwise.
+    """
+    if not is_otel_capabilities_enabled(client_options):
+        return None
+
+    import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
+
+    interceptor = _get_otel_interceptor(client_options, is_async=False)
+
+    def otel_interceptor(channel: grpc.Channel) -> grpc.Channel:
+        return otel_grpc.intercept_channel(channel, interceptor)
+
+    return otel_interceptor
+
+
+def get_otel_async_interceptor(
+    client_options: ClientOptions | dict[str, Any] | None = None,
+) -> Sequence[grpc.aio.ClientInterceptor] | None:
+    """Returns async gRPC client interceptors for OpenTelemetry tracing.
+
+    Args:
+        client_options: The client options object or dictionary used for feature gating
+            and extracting the tracer provider.
+
+    Returns:
+        Optional[Sequence[grpc.aio.ClientInterceptor]]: Instantiated OpenTelemetry async
+            client interceptors if tracing is enabled and installed, None otherwise.
+    """
+    if not is_otel_capabilities_enabled(client_options):
+        return None
+
+    return _get_otel_interceptor(client_options, is_async=True)
