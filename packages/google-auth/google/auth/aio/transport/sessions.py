@@ -301,14 +301,13 @@ class AsyncAuthorizedSession:
         retries = _exponential_backoff.AsyncExponentialBackoff(
             total_attempts=total_attempts,
         )
-        if headers is None:
-            headers = {}
+        request_headers = dict(headers) if headers is not None else {}
         start_time = time.monotonic()
         async with timeout_guard(max_allowed_time) as with_timeout:
             await with_timeout(
                 # Note: before_request will attempt to refresh credentials if expired.
                 self._credentials.before_request(
-                    self._auth_request, method, url, headers
+                    self._auth_request, method, url, request_headers
                 )
             )
             actual_timeout: float = 0.0
@@ -321,7 +320,7 @@ class AsyncAuthorizedSession:
             async for _ in retries:  # pragma: no branch
                 response = await with_timeout(
                     self._auth_request(
-                        url, method, data, headers, actual_timeout, **kwargs
+                        url, method, data, request_headers, actual_timeout, **kwargs
                     )
                 )
 
