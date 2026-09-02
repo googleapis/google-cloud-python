@@ -24,8 +24,12 @@ from google.api_core import _feature_gating_helpers
 from google.api_core.client_options import ClientOptions
 
 if TYPE_CHECKING:
-    # flake8: grpc is imported only for static analysis and type annotations
+    # flake8: grpc, trace, and ClientInterceptor are imported only for static analysis and type annotations
+    # The `# noqa: F401` comment avoids flake8 "imported but not used" errors.
     import grpc  # noqa: F401
+    import opentelemetry.trace  # noqa: F401
+
+    from google.api_core.grpc_helpers import ClientInterceptor  # noqa: F401
 
 _TRACER_PROVIDER = "tracer_provider"
 
@@ -60,31 +64,23 @@ def is_otel_capabilities_enabled(
     return False
 
 
-def _get_otel_interceptor(
+def _get_tracer_provider(
     client_options: ClientOptions | dict[str, Any] | None = None,
-    is_async: bool = False,
-) -> Any:
-    """Instantiates a sync or async OpenTelemetry gRPC client interceptor.
+) -> opentelemetry.trace.TracerProvider | None:
+    """Extracts the OpenTelemetry tracer provider from client options if present.
 
     Args:
         client_options: The client options object or dictionary.
-        is_async: If True, returns an async interceptor (`aio_client_interceptors`),
-            otherwise returns a sync interceptor (`client_interceptor`).
 
     Returns:
-        Any: The instantiated OpenTelemetry client interceptor.
+        opentelemetry.trace.TracerProvider | None: The tracer provider if present,
+            None otherwise.
     """
-    import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
-
-    tracer_provider = None
     if isinstance(client_options, dict):
-        tracer_provider = client_options.get(_TRACER_PROVIDER)
+        return client_options.get(_TRACER_PROVIDER)
     elif client_options is not None:
-        tracer_provider = getattr(client_options, _TRACER_PROVIDER, None)
-
-    if is_async:
-        return otel_grpc.aio_client_interceptors(tracer_provider=tracer_provider)
-    return otel_grpc.client_interceptor(tracer_provider=tracer_provider)
+        return getattr(client_options, _TRACER_PROVIDER, None)
+    return None
 
 
 def get_otel_interceptor(
@@ -97,7 +93,7 @@ def get_otel_interceptor(
             and extracting the tracer provider.
 
     Returns:
-        Optional[Callable[[grpc.Channel], grpc.Channel]]: An interceptor callable if OpenTelemetry
+        Callable[[grpc.Channel], grpc.Channel] | None: An interceptor callable if OpenTelemetry
             tracing is enabled and installed, None otherwise.
     """
     if not is_otel_capabilities_enabled(client_options):
@@ -105,7 +101,9 @@ def get_otel_interceptor(
 
     import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
 
-    interceptor = _get_otel_interceptor(client_options, is_async=False)
+    interceptor: ClientInterceptor = otel_grpc.client_interceptor(
+        tracer_provider=_get_tracer_provider(client_options)
+    )
 
     def otel_interceptor(channel: grpc.Channel) -> grpc.Channel:
         return otel_grpc.intercept_channel(channel, interceptor)
@@ -123,10 +121,15 @@ def get_otel_async_interceptor(
             and extracting the tracer provider.
 
     Returns:
-        Optional[Sequence[grpc.aio.ClientInterceptor]]: Instantiated OpenTelemetry async
+        Sequence[grpc.aio.ClientInterceptor] | None: Instantiated OpenTelemetry async
             client interceptors if tracing is enabled and installed, None otherwise.
     """
     if not is_otel_capabilities_enabled(client_options):
         return None
 
-    return _get_otel_interceptor(client_options, is_async=True)
+    # Ignored by mypy: Optional dependency only loaded if early-return is skipped
+    import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
+
+    return otel_grpc.aio_client_interceptors(
+        tracer_provider=_get_tracer_provider(client_options)
+    )
