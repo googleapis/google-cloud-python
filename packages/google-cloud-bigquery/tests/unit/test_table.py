@@ -5961,11 +5961,6 @@ class TestRowIterator(unittest.TestCase):
                 "gl-python/3.10.0",
             )
 
-    @pytest.fixture
-    def _caplog(self, caplog):
-        self._caplog = caplog
-
-    @pytest.mark.usefixtures("_caplog")
     def test_to_dataframe_delegated_when_user_agent_update_fails_logs_debug(self):
         pytest.importorskip("db_dtypes")
         pandas = pytest.importorskip("pandas")
@@ -5984,7 +5979,6 @@ class TestRowIterator(unittest.TestCase):
         mock_client = _mock_client()
         mock_client._connection = mock.Mock(_client_info=ReadOnlyClientInfo())
 
-        self._caplog.set_level(logging.DEBUG, logger="google.cloud.bigquery.table")
         with (
             mock.patch(
                 "google.cloud.bigquery._versions_helpers.PandasGBQVersions.is_delegation_supported",
@@ -5996,6 +5990,7 @@ class TestRowIterator(unittest.TestCase):
                 False,
             ),
             mock.patch.dict(sys.modules, {"pandas_gbq": mock_pandas_gbq}),
+            self.assertLogs("google.cloud.bigquery.table", level="DEBUG") as cm,
         ):
             row_iterator = self._make_one_from_data((("name", "STRING"),), (("foo",),))
             row_iterator.client = mock_client
@@ -6003,8 +5998,8 @@ class TestRowIterator(unittest.TestCase):
             df = row_iterator.to_dataframe(progress_bar_type="tqdm", timeout=5.0)
 
             self.assertIsInstance(df, pandas.DataFrame)
-            self.assertIn(
-                "Failed to update telemetry user-agent", self._caplog.text
+            self.assertTrue(
+                any("Failed to update telemetry user-agent" in msg for msg in cm.output)
             )
 
     def test_to_geodataframe_updates_user_agent(self):
