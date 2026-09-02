@@ -5557,6 +5557,7 @@ def test_create_job_rest_call_success(request_type):
                         "network": "network_value",
                         "subnetwork": "subnetwork_value",
                         "no_external_ip_address": True,
+                        "nic_type": 1,
                     }
                 ]
             },

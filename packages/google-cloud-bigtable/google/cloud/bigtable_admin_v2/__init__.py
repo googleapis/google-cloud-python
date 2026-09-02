@@ -157,6 +157,7 @@ from .types.instance import (
 )
 from .types.table import (
     AuthorizedView,
+    AvroSchema,
     Backup,
     BackupInfo,
     ChangeStreamConfig,
@@ -181,6 +182,7 @@ __all__ = (
     "AuthorizedView",
     "AutoscalingLimits",
     "AutoscalingTargets",
+    "AvroSchema",
     "Backup",
     "BackupInfo",
     "BaseBigtableTableAdminClient",

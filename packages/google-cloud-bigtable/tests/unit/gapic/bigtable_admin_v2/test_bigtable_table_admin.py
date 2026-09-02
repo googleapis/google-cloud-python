@@ -26568,6 +26568,7 @@ def test_create_schema_bundle_rest_call_success(request_type):
     request_init["schema_bundle"] = {
         "name": "name_value",
         "proto_schema": {"proto_descriptors": b"proto_descriptors_blob"},
+        "avro_schema": {"json_schemas": ["json_schemas_value1", "json_schemas_value2"]},
         "etag": "etag_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -26776,6 +26777,7 @@ def test_update_schema_bundle_rest_call_success(request_type):
     request_init["schema_bundle"] = {
         "name": "projects/sample1/instances/sample2/tables/sample3/schemaBundles/sample4",
         "proto_schema": {"proto_descriptors": b"proto_descriptors_blob"},
+        "avro_schema": {"json_schemas": ["json_schemas_value1", "json_schemas_value2"]},
         "etag": "etag_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

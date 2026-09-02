@@ -142,6 +142,7 @@ from google.cloud.bigtable_admin_v2.types.instance import (
 )
 from google.cloud.bigtable_admin_v2.types.table import (
     AuthorizedView,
+    AvroSchema,
     Backup,
     BackupInfo,
     ChangeStreamConfig,
@@ -270,6 +271,7 @@ __all__ = (
     "LogicalView",
     "MaterializedView",
     "AuthorizedView",
+    "AvroSchema",
     "Backup",
     "BackupInfo",
     "ChangeStreamConfig",
