@@ -396,6 +396,7 @@ class AsyncAuthorizedSession:
                                             cached_fingerprint
                                             != current_cert_fingerprint
                                         ):
+                                            saved_callback = self._client_cert_callback
                                             try:
                                                 _LOGGER.info(
                                                     "Client certificate has changed, reconfiguring mTLS "
@@ -407,7 +408,7 @@ class AsyncAuthorizedSession:
                                                 ):
                                                     self._mtls_init_task = None
                                                 await self.configure_mtls_channel(
-                                                    self._client_cert_callback
+                                                    lambda: (call_cert_bytes, call_key_bytes)
                                                 )
                                             except Exception as e:
                                                 _LOGGER.error(
@@ -424,6 +425,8 @@ class AsyncAuthorizedSession:
                                                 raise exceptions.MutualTLSChannelError(
                                                     "Failed to reconfigure mTLS channel"
                                                 ) from e
+                                            finally:
+                                                self._client_cert_callback = saved_callback
                                         else:
                                             _LOGGER.info(
                                                 "Skipping reconfiguration of mTLS channel because the client"
