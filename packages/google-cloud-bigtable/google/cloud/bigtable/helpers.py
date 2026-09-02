@@ -48,10 +48,15 @@ class _MappableAttributesMixin:
         super(_MappableAttributesMixin, self).__init__(*args, **new_kwargs)
 
     def __getattr__(self, name):
+        if name == "_attribute_map":
+            raise AttributeError
         if name not in self._attribute_map:
             raise AttributeError
         return getattr(self, self._attribute_map[name])
 
     def __setattr__(self, name, value):
+        if name == "_attribute_map":
+            super(_MappableAttributesMixin, self).__setattr__(name, value)
+            return
         attribute = self._attribute_map.get(name, name)
         super(_MappableAttributesMixin, self).__setattr__(attribute, value)
