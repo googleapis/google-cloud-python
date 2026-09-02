@@ -375,8 +375,8 @@ class AsyncAuthorizedSession:
                                             cached_fingerprint,
                                             current_cert_fingerprint,
                                         ) = await mtls.check_parameters_for_unauthorized_response(
-                                             self._client_cert_callback,
-                                             self._cached_cert,
+                                            self._client_cert_callback,
+                                            self._cached_cert,
                                         )
                                     except (
                                         exceptions.ClientCertError,
@@ -393,7 +393,8 @@ class AsyncAuthorizedSession:
                                     else:
                                         if (
                                             current_cert_fingerprint is not None
-                                            and cached_fingerprint != current_cert_fingerprint
+                                            and cached_fingerprint
+                                            != current_cert_fingerprint
                                         ):
                                             saved_callback = self._client_cert_callback
                                             try:
@@ -407,7 +408,10 @@ class AsyncAuthorizedSession:
                                                 ):
                                                     self._mtls_init_task = None
                                                 await self.configure_mtls_channel(
-                                                    lambda: (call_cert_bytes, call_key_bytes)
+                                                    lambda: (
+                                                        call_cert_bytes,
+                                                        call_key_bytes,
+                                                    )
                                                 )
                                             except Exception as e:
                                                 _LOGGER.error(
@@ -425,7 +429,9 @@ class AsyncAuthorizedSession:
                                                     "Failed to reconfigure mTLS channel"
                                                 ) from e
                                             finally:
-                                                self._client_cert_callback = saved_callback
+                                                self._client_cert_callback = (
+                                                    saved_callback
+                                                )
                                         else:
                                             _LOGGER.info(
                                                 "Skipping reconfiguration of mTLS channel because the client"
