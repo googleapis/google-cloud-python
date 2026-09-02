@@ -464,7 +464,15 @@ class DirectRow(_SetDeleteRow):
         :returns: A response status (`google.rpc.status_pb2.Status`)
                   representing success or failure of the row committed.
         :raises: ValueError: if no mutations have been created in the row
+                 or if the number of mutations is greater than 100,000.
         """
+        num_mutations = len(self._get_mutations())
+        if num_mutations > MAX_MUTATIONS:
+            raise ValueError(
+                "Number of mutations exceeds the maximum "
+                "allowable %d." % (MAX_MUTATIONS,)
+            )
+
         try:
             self._table._table_impl.mutate_row(self.row_key, self._get_mutations())
             return status_pb2.Status(code=code_pb2.OK)
@@ -475,7 +483,7 @@ class DirectRow(_SetDeleteRow):
                 if e.grpc_status_code is not None
                 else code_pb2.UNKNOWN,
                 message=e.message,
-                details=e.details,
+                details=getattr(e, "details", []),
             )
         finally:
             self.clear()

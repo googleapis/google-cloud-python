@@ -16,8 +16,8 @@ version: v0.40.0
 repo: googleapis/google-cloud-python
 sources:
   googleapis:
-    commit: 50aad1b835b0b1fd3acec6af91d9c9735787fe11
-    sha256: e58f3198fb96392a89b2850cca67882456f8d231ea4849f16cfb5551a012789d
+    commit: 00ff8fcb95cafbac573cc449b0d1a039244f1b4b
+    sha256: 4adc70162aadcea34de8e9ec269851bca7486fa8dca31d70dc43cdeb1e7a2617
 tools:
   pip:
     - name: black
@@ -2009,7 +2009,7 @@ libraries:
       metadata_name_override: speech
       default_version: v1
   - name: google-cloud-sql
-    version: 0.1.0
+    version: 0.1.1
     apis:
       - path: google/cloud/sql/v1
       - path: google/cloud/sql/v1beta4
@@ -2017,8 +2017,10 @@ libraries:
     python:
       opt_args_by_api:
         google/cloud/sql/v1:
+          - python-gapic-name=sqladmin
           - resource-name-alias=backupdr.googleapis.com/Backup:BackupDRBackup
         google/cloud/sql/v1beta4:
+          - python-gapic-name=sqladmin
           - resource-name-alias=backupdr.googleapis.com/Backup:BackupDRBackup
       default_version: v1
   - name: google-cloud-storage

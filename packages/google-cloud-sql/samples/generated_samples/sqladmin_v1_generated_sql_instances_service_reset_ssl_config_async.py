@@ -31,15 +31,15 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import sql_v1
+from google.cloud import sqladmin_v1
 
 
 async def sample_reset_ssl_config():
     # Create a client
-    client = sql_v1.SqlInstancesServiceAsyncClient()
+    client = sqladmin_v1.SqlInstancesServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = sql_v1.SqlInstancesResetSslConfigRequest()
+    request = sqladmin_v1.SqlInstancesResetSslConfigRequest()
 
     # Make the request
     response = await client.reset_ssl_config(request=request)

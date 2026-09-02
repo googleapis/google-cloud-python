@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-sql",
-    "version": "0.1.0"
+    "version": "0.1.1"
   },
   "snippets": [
     {
@@ -16,10 +16,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlBackupRunsServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlBackupRunsServiceAsyncClient",
           "shortName": "SqlBackupRunsServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlBackupRunsServiceAsyncClient.delete",
+        "fullName": "google.cloud.sqladmin_v1.SqlBackupRunsServiceAsyncClient.delete",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlBackupRunsService.Delete",
           "service": {
@@ -31,7 +31,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlBackupRunsDeleteRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlBackupRunsDeleteRequest"
           },
           {
             "name": "retry",
@@ -46,7 +46,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "delete"
       },
       "description": "Sample for Delete",
@@ -92,10 +92,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlBackupRunsServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlBackupRunsServiceClient",
           "shortName": "SqlBackupRunsServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlBackupRunsServiceClient.delete",
+        "fullName": "google.cloud.sqladmin_v1.SqlBackupRunsServiceClient.delete",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlBackupRunsService.Delete",
           "service": {
@@ -107,7 +107,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlBackupRunsDeleteRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlBackupRunsDeleteRequest"
           },
           {
             "name": "retry",
@@ -122,7 +122,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "delete"
       },
       "description": "Sample for Delete",
@@ -169,10 +169,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlBackupRunsServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlBackupRunsServiceAsyncClient",
           "shortName": "SqlBackupRunsServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlBackupRunsServiceAsyncClient.get",
+        "fullName": "google.cloud.sqladmin_v1.SqlBackupRunsServiceAsyncClient.get",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlBackupRunsService.Get",
           "service": {
@@ -184,7 +184,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlBackupRunsGetRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlBackupRunsGetRequest"
           },
           {
             "name": "retry",
@@ -199,7 +199,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.BackupRun",
+        "resultType": "google.cloud.sqladmin_v1.types.BackupRun",
         "shortName": "get"
       },
       "description": "Sample for Get",
@@ -245,10 +245,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlBackupRunsServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlBackupRunsServiceClient",
           "shortName": "SqlBackupRunsServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlBackupRunsServiceClient.get",
+        "fullName": "google.cloud.sqladmin_v1.SqlBackupRunsServiceClient.get",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlBackupRunsService.Get",
           "service": {
@@ -260,7 +260,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlBackupRunsGetRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlBackupRunsGetRequest"
           },
           {
             "name": "retry",
@@ -275,7 +275,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.BackupRun",
+        "resultType": "google.cloud.sqladmin_v1.types.BackupRun",
         "shortName": "get"
       },
       "description": "Sample for Get",
@@ -322,10 +322,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlBackupRunsServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlBackupRunsServiceAsyncClient",
           "shortName": "SqlBackupRunsServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlBackupRunsServiceAsyncClient.insert",
+        "fullName": "google.cloud.sqladmin_v1.SqlBackupRunsServiceAsyncClient.insert",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlBackupRunsService.Insert",
           "service": {
@@ -337,7 +337,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlBackupRunsInsertRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlBackupRunsInsertRequest"
           },
           {
             "name": "retry",
@@ -352,7 +352,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "insert"
       },
       "description": "Sample for Insert",
@@ -398,10 +398,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlBackupRunsServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlBackupRunsServiceClient",
           "shortName": "SqlBackupRunsServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlBackupRunsServiceClient.insert",
+        "fullName": "google.cloud.sqladmin_v1.SqlBackupRunsServiceClient.insert",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlBackupRunsService.Insert",
           "service": {
@@ -413,7 +413,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlBackupRunsInsertRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlBackupRunsInsertRequest"
           },
           {
             "name": "retry",
@@ -428,7 +428,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "insert"
       },
       "description": "Sample for Insert",
@@ -475,10 +475,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlBackupRunsServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlBackupRunsServiceAsyncClient",
           "shortName": "SqlBackupRunsServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlBackupRunsServiceAsyncClient.list",
+        "fullName": "google.cloud.sqladmin_v1.SqlBackupRunsServiceAsyncClient.list",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlBackupRunsService.List",
           "service": {
@@ -490,7 +490,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlBackupRunsListRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlBackupRunsListRequest"
           },
           {
             "name": "retry",
@@ -505,7 +505,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.services.sql_backup_runs_service.pagers.ListAsyncPager",
+        "resultType": "google.cloud.sqladmin_v1.services.sql_backup_runs_service.pagers.ListAsyncPager",
         "shortName": "list"
       },
       "description": "Sample for List",
@@ -551,10 +551,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlBackupRunsServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlBackupRunsServiceClient",
           "shortName": "SqlBackupRunsServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlBackupRunsServiceClient.list",
+        "fullName": "google.cloud.sqladmin_v1.SqlBackupRunsServiceClient.list",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlBackupRunsService.List",
           "service": {
@@ -566,7 +566,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlBackupRunsListRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlBackupRunsListRequest"
           },
           {
             "name": "retry",
@@ -581,7 +581,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.services.sql_backup_runs_service.pagers.ListPager",
+        "resultType": "google.cloud.sqladmin_v1.services.sql_backup_runs_service.pagers.ListPager",
         "shortName": "list"
       },
       "description": "Sample for List",
@@ -628,10 +628,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlBackupsServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlBackupsServiceAsyncClient",
           "shortName": "SqlBackupsServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlBackupsServiceAsyncClient.create_backup",
+        "fullName": "google.cloud.sqladmin_v1.SqlBackupsServiceAsyncClient.create_backup",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlBackupsService.CreateBackup",
           "service": {
@@ -643,7 +643,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.CreateBackupRequest"
+            "type": "google.cloud.sqladmin_v1.types.CreateBackupRequest"
           },
           {
             "name": "parent",
@@ -651,7 +651,7 @@
           },
           {
             "name": "backup",
-            "type": "google.cloud.sql_v1.types.Backup"
+            "type": "google.cloud.sqladmin_v1.types.Backup"
           },
           {
             "name": "retry",
@@ -666,7 +666,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "create_backup"
       },
       "description": "Sample for CreateBackup",
@@ -712,10 +712,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlBackupsServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlBackupsServiceClient",
           "shortName": "SqlBackupsServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlBackupsServiceClient.create_backup",
+        "fullName": "google.cloud.sqladmin_v1.SqlBackupsServiceClient.create_backup",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlBackupsService.CreateBackup",
           "service": {
@@ -727,7 +727,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.CreateBackupRequest"
+            "type": "google.cloud.sqladmin_v1.types.CreateBackupRequest"
           },
           {
             "name": "parent",
@@ -735,7 +735,7 @@
           },
           {
             "name": "backup",
-            "type": "google.cloud.sql_v1.types.Backup"
+            "type": "google.cloud.sqladmin_v1.types.Backup"
           },
           {
             "name": "retry",
@@ -750,7 +750,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "create_backup"
       },
       "description": "Sample for CreateBackup",
@@ -797,10 +797,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlBackupsServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlBackupsServiceAsyncClient",
           "shortName": "SqlBackupsServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlBackupsServiceAsyncClient.delete_backup",
+        "fullName": "google.cloud.sqladmin_v1.SqlBackupsServiceAsyncClient.delete_backup",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlBackupsService.DeleteBackup",
           "service": {
@@ -812,7 +812,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.DeleteBackupRequest"
+            "type": "google.cloud.sqladmin_v1.types.DeleteBackupRequest"
           },
           {
             "name": "name",
@@ -831,7 +831,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "delete_backup"
       },
       "description": "Sample for DeleteBackup",
@@ -877,10 +877,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlBackupsServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlBackupsServiceClient",
           "shortName": "SqlBackupsServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlBackupsServiceClient.delete_backup",
+        "fullName": "google.cloud.sqladmin_v1.SqlBackupsServiceClient.delete_backup",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlBackupsService.DeleteBackup",
           "service": {
@@ -892,7 +892,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.DeleteBackupRequest"
+            "type": "google.cloud.sqladmin_v1.types.DeleteBackupRequest"
           },
           {
             "name": "name",
@@ -911,7 +911,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "delete_backup"
       },
       "description": "Sample for DeleteBackup",
@@ -958,10 +958,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlBackupsServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlBackupsServiceAsyncClient",
           "shortName": "SqlBackupsServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlBackupsServiceAsyncClient.get_backup",
+        "fullName": "google.cloud.sqladmin_v1.SqlBackupsServiceAsyncClient.get_backup",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlBackupsService.GetBackup",
           "service": {
@@ -973,7 +973,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.GetBackupRequest"
+            "type": "google.cloud.sqladmin_v1.types.GetBackupRequest"
           },
           {
             "name": "name",
@@ -992,7 +992,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Backup",
+        "resultType": "google.cloud.sqladmin_v1.types.Backup",
         "shortName": "get_backup"
       },
       "description": "Sample for GetBackup",
@@ -1038,10 +1038,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlBackupsServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlBackupsServiceClient",
           "shortName": "SqlBackupsServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlBackupsServiceClient.get_backup",
+        "fullName": "google.cloud.sqladmin_v1.SqlBackupsServiceClient.get_backup",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlBackupsService.GetBackup",
           "service": {
@@ -1053,7 +1053,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.GetBackupRequest"
+            "type": "google.cloud.sqladmin_v1.types.GetBackupRequest"
           },
           {
             "name": "name",
@@ -1072,7 +1072,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Backup",
+        "resultType": "google.cloud.sqladmin_v1.types.Backup",
         "shortName": "get_backup"
       },
       "description": "Sample for GetBackup",
@@ -1119,10 +1119,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlBackupsServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlBackupsServiceAsyncClient",
           "shortName": "SqlBackupsServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlBackupsServiceAsyncClient.list_backups",
+        "fullName": "google.cloud.sqladmin_v1.SqlBackupsServiceAsyncClient.list_backups",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlBackupsService.ListBackups",
           "service": {
@@ -1134,7 +1134,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.ListBackupsRequest"
+            "type": "google.cloud.sqladmin_v1.types.ListBackupsRequest"
           },
           {
             "name": "parent",
@@ -1153,7 +1153,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.services.sql_backups_service.pagers.ListBackupsAsyncPager",
+        "resultType": "google.cloud.sqladmin_v1.services.sql_backups_service.pagers.ListBackupsAsyncPager",
         "shortName": "list_backups"
       },
       "description": "Sample for ListBackups",
@@ -1199,10 +1199,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlBackupsServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlBackupsServiceClient",
           "shortName": "SqlBackupsServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlBackupsServiceClient.list_backups",
+        "fullName": "google.cloud.sqladmin_v1.SqlBackupsServiceClient.list_backups",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlBackupsService.ListBackups",
           "service": {
@@ -1214,7 +1214,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.ListBackupsRequest"
+            "type": "google.cloud.sqladmin_v1.types.ListBackupsRequest"
           },
           {
             "name": "parent",
@@ -1233,7 +1233,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.services.sql_backups_service.pagers.ListBackupsPager",
+        "resultType": "google.cloud.sqladmin_v1.services.sql_backups_service.pagers.ListBackupsPager",
         "shortName": "list_backups"
       },
       "description": "Sample for ListBackups",
@@ -1280,10 +1280,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlBackupsServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlBackupsServiceAsyncClient",
           "shortName": "SqlBackupsServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlBackupsServiceAsyncClient.update_backup",
+        "fullName": "google.cloud.sqladmin_v1.SqlBackupsServiceAsyncClient.update_backup",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlBackupsService.UpdateBackup",
           "service": {
@@ -1295,11 +1295,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.UpdateBackupRequest"
+            "type": "google.cloud.sqladmin_v1.types.UpdateBackupRequest"
           },
           {
             "name": "backup",
-            "type": "google.cloud.sql_v1.types.Backup"
+            "type": "google.cloud.sqladmin_v1.types.Backup"
           },
           {
             "name": "update_mask",
@@ -1318,7 +1318,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "update_backup"
       },
       "description": "Sample for UpdateBackup",
@@ -1364,10 +1364,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlBackupsServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlBackupsServiceClient",
           "shortName": "SqlBackupsServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlBackupsServiceClient.update_backup",
+        "fullName": "google.cloud.sqladmin_v1.SqlBackupsServiceClient.update_backup",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlBackupsService.UpdateBackup",
           "service": {
@@ -1379,11 +1379,11 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.UpdateBackupRequest"
+            "type": "google.cloud.sqladmin_v1.types.UpdateBackupRequest"
           },
           {
             "name": "backup",
-            "type": "google.cloud.sql_v1.types.Backup"
+            "type": "google.cloud.sqladmin_v1.types.Backup"
           },
           {
             "name": "update_mask",
@@ -1402,7 +1402,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "update_backup"
       },
       "description": "Sample for UpdateBackup",
@@ -1449,10 +1449,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlConnectServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlConnectServiceAsyncClient",
           "shortName": "SqlConnectServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlConnectServiceAsyncClient.generate_ephemeral_cert",
+        "fullName": "google.cloud.sqladmin_v1.SqlConnectServiceAsyncClient.generate_ephemeral_cert",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlConnectService.GenerateEphemeralCert",
           "service": {
@@ -1464,7 +1464,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.GenerateEphemeralCertRequest"
+            "type": "google.cloud.sqladmin_v1.types.GenerateEphemeralCertRequest"
           },
           {
             "name": "retry",
@@ -1479,7 +1479,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.GenerateEphemeralCertResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.GenerateEphemeralCertResponse",
         "shortName": "generate_ephemeral_cert"
       },
       "description": "Sample for GenerateEphemeralCert",
@@ -1525,10 +1525,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlConnectServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlConnectServiceClient",
           "shortName": "SqlConnectServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlConnectServiceClient.generate_ephemeral_cert",
+        "fullName": "google.cloud.sqladmin_v1.SqlConnectServiceClient.generate_ephemeral_cert",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlConnectService.GenerateEphemeralCert",
           "service": {
@@ -1540,7 +1540,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.GenerateEphemeralCertRequest"
+            "type": "google.cloud.sqladmin_v1.types.GenerateEphemeralCertRequest"
           },
           {
             "name": "retry",
@@ -1555,7 +1555,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.GenerateEphemeralCertResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.GenerateEphemeralCertResponse",
         "shortName": "generate_ephemeral_cert"
       },
       "description": "Sample for GenerateEphemeralCert",
@@ -1602,10 +1602,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlConnectServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlConnectServiceAsyncClient",
           "shortName": "SqlConnectServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlConnectServiceAsyncClient.get_connect_settings",
+        "fullName": "google.cloud.sqladmin_v1.SqlConnectServiceAsyncClient.get_connect_settings",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlConnectService.GetConnectSettings",
           "service": {
@@ -1617,7 +1617,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.GetConnectSettingsRequest"
+            "type": "google.cloud.sqladmin_v1.types.GetConnectSettingsRequest"
           },
           {
             "name": "retry",
@@ -1632,7 +1632,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.ConnectSettings",
+        "resultType": "google.cloud.sqladmin_v1.types.ConnectSettings",
         "shortName": "get_connect_settings"
       },
       "description": "Sample for GetConnectSettings",
@@ -1678,10 +1678,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlConnectServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlConnectServiceClient",
           "shortName": "SqlConnectServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlConnectServiceClient.get_connect_settings",
+        "fullName": "google.cloud.sqladmin_v1.SqlConnectServiceClient.get_connect_settings",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlConnectService.GetConnectSettings",
           "service": {
@@ -1693,7 +1693,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.GetConnectSettingsRequest"
+            "type": "google.cloud.sqladmin_v1.types.GetConnectSettingsRequest"
           },
           {
             "name": "retry",
@@ -1708,7 +1708,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.ConnectSettings",
+        "resultType": "google.cloud.sqladmin_v1.types.ConnectSettings",
         "shortName": "get_connect_settings"
       },
       "description": "Sample for GetConnectSettings",
@@ -1755,10 +1755,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlConnectServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlConnectServiceAsyncClient",
           "shortName": "SqlConnectServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlConnectServiceAsyncClient.resolve_connect_settings",
+        "fullName": "google.cloud.sqladmin_v1.SqlConnectServiceAsyncClient.resolve_connect_settings",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlConnectService.ResolveConnectSettings",
           "service": {
@@ -1770,7 +1770,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.ResolveConnectSettingsRequest"
+            "type": "google.cloud.sqladmin_v1.types.ResolveConnectSettingsRequest"
           },
           {
             "name": "retry",
@@ -1785,7 +1785,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.ConnectSettings",
+        "resultType": "google.cloud.sqladmin_v1.types.ConnectSettings",
         "shortName": "resolve_connect_settings"
       },
       "description": "Sample for ResolveConnectSettings",
@@ -1831,10 +1831,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlConnectServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlConnectServiceClient",
           "shortName": "SqlConnectServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlConnectServiceClient.resolve_connect_settings",
+        "fullName": "google.cloud.sqladmin_v1.SqlConnectServiceClient.resolve_connect_settings",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlConnectService.ResolveConnectSettings",
           "service": {
@@ -1846,7 +1846,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.ResolveConnectSettingsRequest"
+            "type": "google.cloud.sqladmin_v1.types.ResolveConnectSettingsRequest"
           },
           {
             "name": "retry",
@@ -1861,7 +1861,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.ConnectSettings",
+        "resultType": "google.cloud.sqladmin_v1.types.ConnectSettings",
         "shortName": "resolve_connect_settings"
       },
       "description": "Sample for ResolveConnectSettings",
@@ -1908,10 +1908,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlDatabasesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceAsyncClient",
           "shortName": "SqlDatabasesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlDatabasesServiceAsyncClient.delete",
+        "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceAsyncClient.delete",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlDatabasesService.Delete",
           "service": {
@@ -1923,7 +1923,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlDatabasesDeleteRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlDatabasesDeleteRequest"
           },
           {
             "name": "retry",
@@ -1938,7 +1938,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "delete"
       },
       "description": "Sample for Delete",
@@ -1984,10 +1984,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlDatabasesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceClient",
           "shortName": "SqlDatabasesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlDatabasesServiceClient.delete",
+        "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceClient.delete",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlDatabasesService.Delete",
           "service": {
@@ -1999,7 +1999,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlDatabasesDeleteRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlDatabasesDeleteRequest"
           },
           {
             "name": "retry",
@@ -2014,7 +2014,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "delete"
       },
       "description": "Sample for Delete",
@@ -2061,10 +2061,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlDatabasesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceAsyncClient",
           "shortName": "SqlDatabasesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlDatabasesServiceAsyncClient.get",
+        "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceAsyncClient.get",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlDatabasesService.Get",
           "service": {
@@ -2076,7 +2076,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlDatabasesGetRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlDatabasesGetRequest"
           },
           {
             "name": "retry",
@@ -2091,7 +2091,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Database",
+        "resultType": "google.cloud.sqladmin_v1.types.Database",
         "shortName": "get"
       },
       "description": "Sample for Get",
@@ -2137,10 +2137,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlDatabasesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceClient",
           "shortName": "SqlDatabasesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlDatabasesServiceClient.get",
+        "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceClient.get",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlDatabasesService.Get",
           "service": {
@@ -2152,7 +2152,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlDatabasesGetRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlDatabasesGetRequest"
           },
           {
             "name": "retry",
@@ -2167,7 +2167,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Database",
+        "resultType": "google.cloud.sqladmin_v1.types.Database",
         "shortName": "get"
       },
       "description": "Sample for Get",
@@ -2214,10 +2214,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlDatabasesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceAsyncClient",
           "shortName": "SqlDatabasesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlDatabasesServiceAsyncClient.insert",
+        "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceAsyncClient.insert",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlDatabasesService.Insert",
           "service": {
@@ -2229,7 +2229,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlDatabasesInsertRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlDatabasesInsertRequest"
           },
           {
             "name": "retry",
@@ -2244,7 +2244,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "insert"
       },
       "description": "Sample for Insert",
@@ -2290,10 +2290,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlDatabasesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceClient",
           "shortName": "SqlDatabasesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlDatabasesServiceClient.insert",
+        "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceClient.insert",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlDatabasesService.Insert",
           "service": {
@@ -2305,7 +2305,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlDatabasesInsertRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlDatabasesInsertRequest"
           },
           {
             "name": "retry",
@@ -2320,7 +2320,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "insert"
       },
       "description": "Sample for Insert",
@@ -2367,10 +2367,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlDatabasesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceAsyncClient",
           "shortName": "SqlDatabasesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlDatabasesServiceAsyncClient.list",
+        "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceAsyncClient.list",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlDatabasesService.List",
           "service": {
@@ -2382,7 +2382,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlDatabasesListRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlDatabasesListRequest"
           },
           {
             "name": "retry",
@@ -2397,7 +2397,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.DatabasesListResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.DatabasesListResponse",
         "shortName": "list"
       },
       "description": "Sample for List",
@@ -2443,10 +2443,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlDatabasesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceClient",
           "shortName": "SqlDatabasesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlDatabasesServiceClient.list",
+        "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceClient.list",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlDatabasesService.List",
           "service": {
@@ -2458,7 +2458,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlDatabasesListRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlDatabasesListRequest"
           },
           {
             "name": "retry",
@@ -2473,7 +2473,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.DatabasesListResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.DatabasesListResponse",
         "shortName": "list"
       },
       "description": "Sample for List",
@@ -2520,10 +2520,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlDatabasesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceAsyncClient",
           "shortName": "SqlDatabasesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlDatabasesServiceAsyncClient.patch",
+        "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceAsyncClient.patch",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlDatabasesService.Patch",
           "service": {
@@ -2535,7 +2535,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlDatabasesUpdateRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlDatabasesUpdateRequest"
           },
           {
             "name": "retry",
@@ -2550,7 +2550,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "patch"
       },
       "description": "Sample for Patch",
@@ -2596,10 +2596,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlDatabasesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceClient",
           "shortName": "SqlDatabasesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlDatabasesServiceClient.patch",
+        "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceClient.patch",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlDatabasesService.Patch",
           "service": {
@@ -2611,7 +2611,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlDatabasesUpdateRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlDatabasesUpdateRequest"
           },
           {
             "name": "retry",
@@ -2626,7 +2626,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "patch"
       },
       "description": "Sample for Patch",
@@ -2673,10 +2673,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlDatabasesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceAsyncClient",
           "shortName": "SqlDatabasesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlDatabasesServiceAsyncClient.update",
+        "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceAsyncClient.update",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlDatabasesService.Update",
           "service": {
@@ -2688,7 +2688,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlDatabasesUpdateRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlDatabasesUpdateRequest"
           },
           {
             "name": "retry",
@@ -2703,7 +2703,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "update"
       },
       "description": "Sample for Update",
@@ -2749,10 +2749,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlDatabasesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceClient",
           "shortName": "SqlDatabasesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlDatabasesServiceClient.update",
+        "fullName": "google.cloud.sqladmin_v1.SqlDatabasesServiceClient.update",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlDatabasesService.Update",
           "service": {
@@ -2764,7 +2764,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlDatabasesUpdateRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlDatabasesUpdateRequest"
           },
           {
             "name": "retry",
@@ -2779,7 +2779,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "update"
       },
       "description": "Sample for Update",
@@ -2826,10 +2826,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlFlagsServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlFlagsServiceAsyncClient",
           "shortName": "SqlFlagsServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlFlagsServiceAsyncClient.list",
+        "fullName": "google.cloud.sqladmin_v1.SqlFlagsServiceAsyncClient.list",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlFlagsService.List",
           "service": {
@@ -2841,7 +2841,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlFlagsListRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlFlagsListRequest"
           },
           {
             "name": "retry",
@@ -2856,7 +2856,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.FlagsListResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.FlagsListResponse",
         "shortName": "list"
       },
       "description": "Sample for List",
@@ -2902,10 +2902,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlFlagsServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlFlagsServiceClient",
           "shortName": "SqlFlagsServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlFlagsServiceClient.list",
+        "fullName": "google.cloud.sqladmin_v1.SqlFlagsServiceClient.list",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlFlagsService.List",
           "service": {
@@ -2917,7 +2917,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlFlagsListRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlFlagsListRequest"
           },
           {
             "name": "retry",
@@ -2932,7 +2932,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.FlagsListResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.FlagsListResponse",
         "shortName": "list"
       },
       "description": "Sample for List",
@@ -2979,10 +2979,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.acquire_ssrs_lease",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.acquire_ssrs_lease",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.AcquireSsrsLease",
           "service": {
@@ -2994,7 +2994,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesAcquireSsrsLeaseRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesAcquireSsrsLeaseRequest"
           },
           {
             "name": "retry",
@@ -3009,7 +3009,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.SqlInstancesAcquireSsrsLeaseResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.SqlInstancesAcquireSsrsLeaseResponse",
         "shortName": "acquire_ssrs_lease"
       },
       "description": "Sample for AcquireSsrsLease",
@@ -3055,10 +3055,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.acquire_ssrs_lease",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.acquire_ssrs_lease",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.AcquireSsrsLease",
           "service": {
@@ -3070,7 +3070,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesAcquireSsrsLeaseRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesAcquireSsrsLeaseRequest"
           },
           {
             "name": "retry",
@@ -3085,7 +3085,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.SqlInstancesAcquireSsrsLeaseResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.SqlInstancesAcquireSsrsLeaseResponse",
         "shortName": "acquire_ssrs_lease"
       },
       "description": "Sample for AcquireSsrsLease",
@@ -3132,10 +3132,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.add_entra_id_certificate",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.add_entra_id_certificate",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.AddEntraIdCertificate",
           "service": {
@@ -3147,7 +3147,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesAddEntraIdCertificateRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesAddEntraIdCertificateRequest"
           },
           {
             "name": "retry",
@@ -3162,7 +3162,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "add_entra_id_certificate"
       },
       "description": "Sample for AddEntraIdCertificate",
@@ -3208,10 +3208,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.add_entra_id_certificate",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.add_entra_id_certificate",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.AddEntraIdCertificate",
           "service": {
@@ -3223,7 +3223,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesAddEntraIdCertificateRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesAddEntraIdCertificateRequest"
           },
           {
             "name": "retry",
@@ -3238,7 +3238,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "add_entra_id_certificate"
       },
       "description": "Sample for AddEntraIdCertificate",
@@ -3285,10 +3285,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.add_server_ca",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.add_server_ca",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.AddServerCa",
           "service": {
@@ -3300,7 +3300,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesAddServerCaRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesAddServerCaRequest"
           },
           {
             "name": "retry",
@@ -3315,7 +3315,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "add_server_ca"
       },
       "description": "Sample for AddServerCa",
@@ -3361,10 +3361,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.add_server_ca",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.add_server_ca",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.AddServerCa",
           "service": {
@@ -3376,7 +3376,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesAddServerCaRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesAddServerCaRequest"
           },
           {
             "name": "retry",
@@ -3391,7 +3391,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "add_server_ca"
       },
       "description": "Sample for AddServerCa",
@@ -3438,10 +3438,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.add_server_certificate",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.add_server_certificate",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.AddServerCertificate",
           "service": {
@@ -3453,7 +3453,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesAddServerCertificateRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesAddServerCertificateRequest"
           },
           {
             "name": "retry",
@@ -3468,7 +3468,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "add_server_certificate"
       },
       "description": "Sample for AddServerCertificate",
@@ -3514,10 +3514,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.add_server_certificate",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.add_server_certificate",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.AddServerCertificate",
           "service": {
@@ -3529,7 +3529,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesAddServerCertificateRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesAddServerCertificateRequest"
           },
           {
             "name": "retry",
@@ -3544,7 +3544,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "add_server_certificate"
       },
       "description": "Sample for AddServerCertificate",
@@ -3591,10 +3591,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.clone",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.clone",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Clone",
           "service": {
@@ -3606,7 +3606,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesCloneRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesCloneRequest"
           },
           {
             "name": "retry",
@@ -3621,7 +3621,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "clone"
       },
       "description": "Sample for Clone",
@@ -3667,10 +3667,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.clone",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.clone",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Clone",
           "service": {
@@ -3682,7 +3682,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesCloneRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesCloneRequest"
           },
           {
             "name": "retry",
@@ -3697,7 +3697,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "clone"
       },
       "description": "Sample for Clone",
@@ -3744,10 +3744,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.create_ephemeral",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.create_ephemeral",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.CreateEphemeral",
           "service": {
@@ -3759,7 +3759,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesCreateEphemeralCertRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesCreateEphemeralCertRequest"
           },
           {
             "name": "retry",
@@ -3774,7 +3774,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.SslCert",
+        "resultType": "google.cloud.sqladmin_v1.types.SslCert",
         "shortName": "create_ephemeral"
       },
       "description": "Sample for CreateEphemeral",
@@ -3820,10 +3820,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.create_ephemeral",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.create_ephemeral",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.CreateEphemeral",
           "service": {
@@ -3835,7 +3835,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesCreateEphemeralCertRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesCreateEphemeralCertRequest"
           },
           {
             "name": "retry",
@@ -3850,7 +3850,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.SslCert",
+        "resultType": "google.cloud.sqladmin_v1.types.SslCert",
         "shortName": "create_ephemeral"
       },
       "description": "Sample for CreateEphemeral",
@@ -3897,10 +3897,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.delete",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.delete",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Delete",
           "service": {
@@ -3912,7 +3912,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesDeleteRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesDeleteRequest"
           },
           {
             "name": "retry",
@@ -3927,7 +3927,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "delete"
       },
       "description": "Sample for Delete",
@@ -3973,10 +3973,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.delete",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.delete",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Delete",
           "service": {
@@ -3988,7 +3988,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesDeleteRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesDeleteRequest"
           },
           {
             "name": "retry",
@@ -4003,7 +4003,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "delete"
       },
       "description": "Sample for Delete",
@@ -4050,10 +4050,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.demote_master",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.demote_master",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.DemoteMaster",
           "service": {
@@ -4065,7 +4065,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesDemoteMasterRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesDemoteMasterRequest"
           },
           {
             "name": "retry",
@@ -4080,7 +4080,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "demote_master"
       },
       "description": "Sample for DemoteMaster",
@@ -4126,10 +4126,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.demote_master",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.demote_master",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.DemoteMaster",
           "service": {
@@ -4141,7 +4141,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesDemoteMasterRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesDemoteMasterRequest"
           },
           {
             "name": "retry",
@@ -4156,7 +4156,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "demote_master"
       },
       "description": "Sample for DemoteMaster",
@@ -4203,10 +4203,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.demote",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.demote",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Demote",
           "service": {
@@ -4218,7 +4218,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesDemoteRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesDemoteRequest"
           },
           {
             "name": "retry",
@@ -4233,7 +4233,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "demote"
       },
       "description": "Sample for Demote",
@@ -4279,10 +4279,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.demote",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.demote",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Demote",
           "service": {
@@ -4294,7 +4294,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesDemoteRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesDemoteRequest"
           },
           {
             "name": "retry",
@@ -4309,7 +4309,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "demote"
       },
       "description": "Sample for Demote",
@@ -4356,10 +4356,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.execute_sql",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.execute_sql",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.ExecuteSql",
           "service": {
@@ -4371,7 +4371,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesExecuteSqlRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesExecuteSqlRequest"
           },
           {
             "name": "retry",
@@ -4386,7 +4386,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.SqlInstancesExecuteSqlResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.SqlInstancesExecuteSqlResponse",
         "shortName": "execute_sql"
       },
       "description": "Sample for ExecuteSql",
@@ -4432,10 +4432,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.execute_sql",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.execute_sql",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.ExecuteSql",
           "service": {
@@ -4447,7 +4447,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesExecuteSqlRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesExecuteSqlRequest"
           },
           {
             "name": "retry",
@@ -4462,7 +4462,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.SqlInstancesExecuteSqlResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.SqlInstancesExecuteSqlResponse",
         "shortName": "execute_sql"
       },
       "description": "Sample for ExecuteSql",
@@ -4509,10 +4509,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.export",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.export",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Export",
           "service": {
@@ -4524,7 +4524,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesExportRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesExportRequest"
           },
           {
             "name": "retry",
@@ -4539,7 +4539,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "export"
       },
       "description": "Sample for Export",
@@ -4585,10 +4585,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.export",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.export",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Export",
           "service": {
@@ -4600,7 +4600,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesExportRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesExportRequest"
           },
           {
             "name": "retry",
@@ -4615,7 +4615,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "export"
       },
       "description": "Sample for Export",
@@ -4662,10 +4662,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.failover",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.failover",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Failover",
           "service": {
@@ -4677,7 +4677,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesFailoverRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesFailoverRequest"
           },
           {
             "name": "retry",
@@ -4692,7 +4692,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "failover"
       },
       "description": "Sample for Failover",
@@ -4738,10 +4738,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.failover",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.failover",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Failover",
           "service": {
@@ -4753,7 +4753,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesFailoverRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesFailoverRequest"
           },
           {
             "name": "retry",
@@ -4768,7 +4768,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "failover"
       },
       "description": "Sample for Failover",
@@ -4815,10 +4815,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.get_disk_shrink_config",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.get_disk_shrink_config",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.GetDiskShrinkConfig",
           "service": {
@@ -4830,7 +4830,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesGetDiskShrinkConfigRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesGetDiskShrinkConfigRequest"
           },
           {
             "name": "retry",
@@ -4845,7 +4845,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.SqlInstancesGetDiskShrinkConfigResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.SqlInstancesGetDiskShrinkConfigResponse",
         "shortName": "get_disk_shrink_config"
       },
       "description": "Sample for GetDiskShrinkConfig",
@@ -4891,10 +4891,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.get_disk_shrink_config",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.get_disk_shrink_config",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.GetDiskShrinkConfig",
           "service": {
@@ -4906,7 +4906,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesGetDiskShrinkConfigRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesGetDiskShrinkConfigRequest"
           },
           {
             "name": "retry",
@@ -4921,7 +4921,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.SqlInstancesGetDiskShrinkConfigResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.SqlInstancesGetDiskShrinkConfigResponse",
         "shortName": "get_disk_shrink_config"
       },
       "description": "Sample for GetDiskShrinkConfig",
@@ -4968,10 +4968,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.get_latest_recovery_time",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.get_latest_recovery_time",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.GetLatestRecoveryTime",
           "service": {
@@ -4983,7 +4983,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesGetLatestRecoveryTimeRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesGetLatestRecoveryTimeRequest"
           },
           {
             "name": "retry",
@@ -4998,7 +4998,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.SqlInstancesGetLatestRecoveryTimeResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.SqlInstancesGetLatestRecoveryTimeResponse",
         "shortName": "get_latest_recovery_time"
       },
       "description": "Sample for GetLatestRecoveryTime",
@@ -5044,10 +5044,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.get_latest_recovery_time",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.get_latest_recovery_time",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.GetLatestRecoveryTime",
           "service": {
@@ -5059,7 +5059,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesGetLatestRecoveryTimeRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesGetLatestRecoveryTimeRequest"
           },
           {
             "name": "retry",
@@ -5074,7 +5074,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.SqlInstancesGetLatestRecoveryTimeResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.SqlInstancesGetLatestRecoveryTimeResponse",
         "shortName": "get_latest_recovery_time"
       },
       "description": "Sample for GetLatestRecoveryTime",
@@ -5121,10 +5121,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.get",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.get",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Get",
           "service": {
@@ -5136,7 +5136,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesGetRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesGetRequest"
           },
           {
             "name": "retry",
@@ -5151,7 +5151,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.DatabaseInstance",
+        "resultType": "google.cloud.sqladmin_v1.types.DatabaseInstance",
         "shortName": "get"
       },
       "description": "Sample for Get",
@@ -5197,10 +5197,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.get",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.get",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Get",
           "service": {
@@ -5212,7 +5212,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesGetRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesGetRequest"
           },
           {
             "name": "retry",
@@ -5227,7 +5227,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.DatabaseInstance",
+        "resultType": "google.cloud.sqladmin_v1.types.DatabaseInstance",
         "shortName": "get"
       },
       "description": "Sample for Get",
@@ -5274,10 +5274,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.import_",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.import_",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Import",
           "service": {
@@ -5289,7 +5289,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesImportRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesImportRequest"
           },
           {
             "name": "retry",
@@ -5304,7 +5304,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "import_"
       },
       "description": "Sample for Import",
@@ -5350,10 +5350,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.import_",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.import_",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Import",
           "service": {
@@ -5365,7 +5365,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesImportRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesImportRequest"
           },
           {
             "name": "retry",
@@ -5380,7 +5380,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "import_"
       },
       "description": "Sample for Import",
@@ -5427,10 +5427,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.insert",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.insert",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Insert",
           "service": {
@@ -5442,7 +5442,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesInsertRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesInsertRequest"
           },
           {
             "name": "retry",
@@ -5457,7 +5457,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "insert"
       },
       "description": "Sample for Insert",
@@ -5503,10 +5503,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.insert",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.insert",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Insert",
           "service": {
@@ -5518,7 +5518,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesInsertRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesInsertRequest"
           },
           {
             "name": "retry",
@@ -5533,7 +5533,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "insert"
       },
       "description": "Sample for Insert",
@@ -5580,10 +5580,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.list_entra_id_certificates",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.list_entra_id_certificates",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.ListEntraIdCertificates",
           "service": {
@@ -5595,7 +5595,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesListEntraIdCertificatesRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesListEntraIdCertificatesRequest"
           },
           {
             "name": "retry",
@@ -5610,7 +5610,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.InstancesListEntraIdCertificatesResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.InstancesListEntraIdCertificatesResponse",
         "shortName": "list_entra_id_certificates"
       },
       "description": "Sample for ListEntraIdCertificates",
@@ -5656,10 +5656,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.list_entra_id_certificates",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.list_entra_id_certificates",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.ListEntraIdCertificates",
           "service": {
@@ -5671,7 +5671,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesListEntraIdCertificatesRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesListEntraIdCertificatesRequest"
           },
           {
             "name": "retry",
@@ -5686,7 +5686,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.InstancesListEntraIdCertificatesResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.InstancesListEntraIdCertificatesResponse",
         "shortName": "list_entra_id_certificates"
       },
       "description": "Sample for ListEntraIdCertificates",
@@ -5733,10 +5733,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.list_server_cas",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.list_server_cas",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.ListServerCas",
           "service": {
@@ -5748,7 +5748,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesListServerCasRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesListServerCasRequest"
           },
           {
             "name": "retry",
@@ -5763,7 +5763,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.InstancesListServerCasResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.InstancesListServerCasResponse",
         "shortName": "list_server_cas"
       },
       "description": "Sample for ListServerCas",
@@ -5809,10 +5809,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.list_server_cas",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.list_server_cas",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.ListServerCas",
           "service": {
@@ -5824,7 +5824,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesListServerCasRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesListServerCasRequest"
           },
           {
             "name": "retry",
@@ -5839,7 +5839,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.InstancesListServerCasResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.InstancesListServerCasResponse",
         "shortName": "list_server_cas"
       },
       "description": "Sample for ListServerCas",
@@ -5886,10 +5886,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.list_server_certificates",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.list_server_certificates",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.ListServerCertificates",
           "service": {
@@ -5901,7 +5901,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesListServerCertificatesRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesListServerCertificatesRequest"
           },
           {
             "name": "retry",
@@ -5916,7 +5916,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.InstancesListServerCertificatesResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.InstancesListServerCertificatesResponse",
         "shortName": "list_server_certificates"
       },
       "description": "Sample for ListServerCertificates",
@@ -5962,10 +5962,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.list_server_certificates",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.list_server_certificates",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.ListServerCertificates",
           "service": {
@@ -5977,7 +5977,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesListServerCertificatesRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesListServerCertificatesRequest"
           },
           {
             "name": "retry",
@@ -5992,7 +5992,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.InstancesListServerCertificatesResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.InstancesListServerCertificatesResponse",
         "shortName": "list_server_certificates"
       },
       "description": "Sample for ListServerCertificates",
@@ -6039,10 +6039,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.list",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.list",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.List",
           "service": {
@@ -6054,7 +6054,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesListRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesListRequest"
           },
           {
             "name": "retry",
@@ -6069,7 +6069,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.services.sql_instances_service.pagers.ListAsyncPager",
+        "resultType": "google.cloud.sqladmin_v1.services.sql_instances_service.pagers.ListAsyncPager",
         "shortName": "list"
       },
       "description": "Sample for List",
@@ -6115,10 +6115,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.list",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.list",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.List",
           "service": {
@@ -6130,7 +6130,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesListRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesListRequest"
           },
           {
             "name": "retry",
@@ -6145,7 +6145,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.services.sql_instances_service.pagers.ListPager",
+        "resultType": "google.cloud.sqladmin_v1.services.sql_instances_service.pagers.ListPager",
         "shortName": "list"
       },
       "description": "Sample for List",
@@ -6192,10 +6192,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.patch",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.patch",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Patch",
           "service": {
@@ -6207,7 +6207,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesPatchRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesPatchRequest"
           },
           {
             "name": "retry",
@@ -6222,7 +6222,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "patch"
       },
       "description": "Sample for Patch",
@@ -6268,10 +6268,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.patch",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.patch",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Patch",
           "service": {
@@ -6283,7 +6283,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesPatchRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesPatchRequest"
           },
           {
             "name": "retry",
@@ -6298,7 +6298,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "patch"
       },
       "description": "Sample for Patch",
@@ -6345,10 +6345,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.perform_disk_shrink",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.perform_disk_shrink",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.PerformDiskShrink",
           "service": {
@@ -6360,7 +6360,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesPerformDiskShrinkRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesPerformDiskShrinkRequest"
           },
           {
             "name": "retry",
@@ -6375,7 +6375,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "perform_disk_shrink"
       },
       "description": "Sample for PerformDiskShrink",
@@ -6421,10 +6421,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.perform_disk_shrink",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.perform_disk_shrink",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.PerformDiskShrink",
           "service": {
@@ -6436,7 +6436,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesPerformDiskShrinkRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesPerformDiskShrinkRequest"
           },
           {
             "name": "retry",
@@ -6451,7 +6451,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "perform_disk_shrink"
       },
       "description": "Sample for PerformDiskShrink",
@@ -6498,10 +6498,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.point_in_time_restore",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.point_in_time_restore",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.PointInTimeRestore",
           "service": {
@@ -6513,7 +6513,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesPointInTimeRestoreRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesPointInTimeRestoreRequest"
           },
           {
             "name": "retry",
@@ -6528,7 +6528,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "point_in_time_restore"
       },
       "description": "Sample for PointInTimeRestore",
@@ -6574,10 +6574,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.point_in_time_restore",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.point_in_time_restore",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.PointInTimeRestore",
           "service": {
@@ -6589,7 +6589,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesPointInTimeRestoreRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesPointInTimeRestoreRequest"
           },
           {
             "name": "retry",
@@ -6604,7 +6604,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "point_in_time_restore"
       },
       "description": "Sample for PointInTimeRestore",
@@ -6651,10 +6651,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.pre_check_major_version_upgrade",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.pre_check_major_version_upgrade",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.PreCheckMajorVersionUpgrade",
           "service": {
@@ -6666,7 +6666,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesPreCheckMajorVersionUpgradeRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesPreCheckMajorVersionUpgradeRequest"
           },
           {
             "name": "retry",
@@ -6681,7 +6681,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "pre_check_major_version_upgrade"
       },
       "description": "Sample for PreCheckMajorVersionUpgrade",
@@ -6727,10 +6727,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.pre_check_major_version_upgrade",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.pre_check_major_version_upgrade",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.PreCheckMajorVersionUpgrade",
           "service": {
@@ -6742,7 +6742,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesPreCheckMajorVersionUpgradeRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesPreCheckMajorVersionUpgradeRequest"
           },
           {
             "name": "retry",
@@ -6757,7 +6757,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "pre_check_major_version_upgrade"
       },
       "description": "Sample for PreCheckMajorVersionUpgrade",
@@ -6804,10 +6804,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.promote_replica",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.promote_replica",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.PromoteReplica",
           "service": {
@@ -6819,7 +6819,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesPromoteReplicaRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesPromoteReplicaRequest"
           },
           {
             "name": "retry",
@@ -6834,7 +6834,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "promote_replica"
       },
       "description": "Sample for PromoteReplica",
@@ -6880,10 +6880,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.promote_replica",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.promote_replica",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.PromoteReplica",
           "service": {
@@ -6895,7 +6895,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesPromoteReplicaRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesPromoteReplicaRequest"
           },
           {
             "name": "retry",
@@ -6910,7 +6910,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "promote_replica"
       },
       "description": "Sample for PromoteReplica",
@@ -6957,10 +6957,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.reencrypt",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.reencrypt",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Reencrypt",
           "service": {
@@ -6972,7 +6972,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesReencryptRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesReencryptRequest"
           },
           {
             "name": "retry",
@@ -6987,7 +6987,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "reencrypt"
       },
       "description": "Sample for Reencrypt",
@@ -7033,10 +7033,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.reencrypt",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.reencrypt",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Reencrypt",
           "service": {
@@ -7048,7 +7048,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesReencryptRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesReencryptRequest"
           },
           {
             "name": "retry",
@@ -7063,7 +7063,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "reencrypt"
       },
       "description": "Sample for Reencrypt",
@@ -7110,10 +7110,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.release_ssrs_lease",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.release_ssrs_lease",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.ReleaseSsrsLease",
           "service": {
@@ -7125,7 +7125,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesReleaseSsrsLeaseRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesReleaseSsrsLeaseRequest"
           },
           {
             "name": "retry",
@@ -7140,7 +7140,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.SqlInstancesReleaseSsrsLeaseResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.SqlInstancesReleaseSsrsLeaseResponse",
         "shortName": "release_ssrs_lease"
       },
       "description": "Sample for ReleaseSsrsLease",
@@ -7186,10 +7186,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.release_ssrs_lease",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.release_ssrs_lease",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.ReleaseSsrsLease",
           "service": {
@@ -7201,7 +7201,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesReleaseSsrsLeaseRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesReleaseSsrsLeaseRequest"
           },
           {
             "name": "retry",
@@ -7216,7 +7216,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.SqlInstancesReleaseSsrsLeaseResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.SqlInstancesReleaseSsrsLeaseResponse",
         "shortName": "release_ssrs_lease"
       },
       "description": "Sample for ReleaseSsrsLease",
@@ -7263,10 +7263,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.reschedule_maintenance",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.reschedule_maintenance",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.RescheduleMaintenance",
           "service": {
@@ -7278,7 +7278,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesRescheduleMaintenanceRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesRescheduleMaintenanceRequest"
           },
           {
             "name": "retry",
@@ -7293,7 +7293,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "reschedule_maintenance"
       },
       "description": "Sample for RescheduleMaintenance",
@@ -7339,10 +7339,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.reschedule_maintenance",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.reschedule_maintenance",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.RescheduleMaintenance",
           "service": {
@@ -7354,7 +7354,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesRescheduleMaintenanceRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesRescheduleMaintenanceRequest"
           },
           {
             "name": "retry",
@@ -7369,7 +7369,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "reschedule_maintenance"
       },
       "description": "Sample for RescheduleMaintenance",
@@ -7416,10 +7416,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.reset_replica_size",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.reset_replica_size",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.ResetReplicaSize",
           "service": {
@@ -7431,7 +7431,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesResetReplicaSizeRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesResetReplicaSizeRequest"
           },
           {
             "name": "retry",
@@ -7446,7 +7446,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "reset_replica_size"
       },
       "description": "Sample for ResetReplicaSize",
@@ -7492,10 +7492,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.reset_replica_size",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.reset_replica_size",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.ResetReplicaSize",
           "service": {
@@ -7507,7 +7507,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesResetReplicaSizeRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesResetReplicaSizeRequest"
           },
           {
             "name": "retry",
@@ -7522,7 +7522,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "reset_replica_size"
       },
       "description": "Sample for ResetReplicaSize",
@@ -7569,10 +7569,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.reset_ssl_config",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.reset_ssl_config",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.ResetSslConfig",
           "service": {
@@ -7584,7 +7584,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesResetSslConfigRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesResetSslConfigRequest"
           },
           {
             "name": "retry",
@@ -7599,7 +7599,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "reset_ssl_config"
       },
       "description": "Sample for ResetSslConfig",
@@ -7645,10 +7645,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.reset_ssl_config",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.reset_ssl_config",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.ResetSslConfig",
           "service": {
@@ -7660,7 +7660,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesResetSslConfigRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesResetSslConfigRequest"
           },
           {
             "name": "retry",
@@ -7675,7 +7675,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "reset_ssl_config"
       },
       "description": "Sample for ResetSslConfig",
@@ -7722,10 +7722,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.restart",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.restart",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Restart",
           "service": {
@@ -7737,7 +7737,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesRestartRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesRestartRequest"
           },
           {
             "name": "retry",
@@ -7752,7 +7752,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "restart"
       },
       "description": "Sample for Restart",
@@ -7798,10 +7798,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.restart",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.restart",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Restart",
           "service": {
@@ -7813,7 +7813,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesRestartRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesRestartRequest"
           },
           {
             "name": "retry",
@@ -7828,7 +7828,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "restart"
       },
       "description": "Sample for Restart",
@@ -7875,10 +7875,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.restore_backup",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.restore_backup",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.RestoreBackup",
           "service": {
@@ -7890,7 +7890,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesRestoreBackupRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesRestoreBackupRequest"
           },
           {
             "name": "retry",
@@ -7905,7 +7905,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "restore_backup"
       },
       "description": "Sample for RestoreBackup",
@@ -7951,10 +7951,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.restore_backup",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.restore_backup",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.RestoreBackup",
           "service": {
@@ -7966,7 +7966,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesRestoreBackupRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesRestoreBackupRequest"
           },
           {
             "name": "retry",
@@ -7981,7 +7981,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "restore_backup"
       },
       "description": "Sample for RestoreBackup",
@@ -8028,10 +8028,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.rotate_entra_id_certificate",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.rotate_entra_id_certificate",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.RotateEntraIdCertificate",
           "service": {
@@ -8043,7 +8043,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesRotateEntraIdCertificateRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesRotateEntraIdCertificateRequest"
           },
           {
             "name": "retry",
@@ -8058,7 +8058,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "rotate_entra_id_certificate"
       },
       "description": "Sample for RotateEntraIdCertificate",
@@ -8104,10 +8104,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.rotate_entra_id_certificate",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.rotate_entra_id_certificate",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.RotateEntraIdCertificate",
           "service": {
@@ -8119,7 +8119,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesRotateEntraIdCertificateRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesRotateEntraIdCertificateRequest"
           },
           {
             "name": "retry",
@@ -8134,7 +8134,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "rotate_entra_id_certificate"
       },
       "description": "Sample for RotateEntraIdCertificate",
@@ -8181,10 +8181,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.rotate_server_ca",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.rotate_server_ca",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.RotateServerCa",
           "service": {
@@ -8196,7 +8196,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesRotateServerCaRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesRotateServerCaRequest"
           },
           {
             "name": "retry",
@@ -8211,7 +8211,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "rotate_server_ca"
       },
       "description": "Sample for RotateServerCa",
@@ -8257,10 +8257,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.rotate_server_ca",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.rotate_server_ca",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.RotateServerCa",
           "service": {
@@ -8272,7 +8272,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesRotateServerCaRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesRotateServerCaRequest"
           },
           {
             "name": "retry",
@@ -8287,7 +8287,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "rotate_server_ca"
       },
       "description": "Sample for RotateServerCa",
@@ -8334,10 +8334,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.rotate_server_certificate",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.rotate_server_certificate",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.RotateServerCertificate",
           "service": {
@@ -8349,7 +8349,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesRotateServerCertificateRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesRotateServerCertificateRequest"
           },
           {
             "name": "retry",
@@ -8364,7 +8364,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "rotate_server_certificate"
       },
       "description": "Sample for RotateServerCertificate",
@@ -8410,10 +8410,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.rotate_server_certificate",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.rotate_server_certificate",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.RotateServerCertificate",
           "service": {
@@ -8425,7 +8425,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesRotateServerCertificateRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesRotateServerCertificateRequest"
           },
           {
             "name": "retry",
@@ -8440,7 +8440,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "rotate_server_certificate"
       },
       "description": "Sample for RotateServerCertificate",
@@ -8487,10 +8487,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.start_external_sync",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.start_external_sync",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.StartExternalSync",
           "service": {
@@ -8502,7 +8502,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesStartExternalSyncRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesStartExternalSyncRequest"
           },
           {
             "name": "retry",
@@ -8517,7 +8517,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "start_external_sync"
       },
       "description": "Sample for StartExternalSync",
@@ -8563,10 +8563,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.start_external_sync",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.start_external_sync",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.StartExternalSync",
           "service": {
@@ -8578,7 +8578,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesStartExternalSyncRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesStartExternalSyncRequest"
           },
           {
             "name": "retry",
@@ -8593,7 +8593,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "start_external_sync"
       },
       "description": "Sample for StartExternalSync",
@@ -8640,10 +8640,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.start_replica",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.start_replica",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.StartReplica",
           "service": {
@@ -8655,7 +8655,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesStartReplicaRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesStartReplicaRequest"
           },
           {
             "name": "retry",
@@ -8670,7 +8670,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "start_replica"
       },
       "description": "Sample for StartReplica",
@@ -8716,10 +8716,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.start_replica",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.start_replica",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.StartReplica",
           "service": {
@@ -8731,7 +8731,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesStartReplicaRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesStartReplicaRequest"
           },
           {
             "name": "retry",
@@ -8746,7 +8746,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "start_replica"
       },
       "description": "Sample for StartReplica",
@@ -8793,10 +8793,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.stop_replica",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.stop_replica",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.StopReplica",
           "service": {
@@ -8808,7 +8808,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesStopReplicaRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesStopReplicaRequest"
           },
           {
             "name": "retry",
@@ -8823,7 +8823,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "stop_replica"
       },
       "description": "Sample for StopReplica",
@@ -8869,10 +8869,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.stop_replica",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.stop_replica",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.StopReplica",
           "service": {
@@ -8884,7 +8884,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesStopReplicaRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesStopReplicaRequest"
           },
           {
             "name": "retry",
@@ -8899,7 +8899,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "stop_replica"
       },
       "description": "Sample for StopReplica",
@@ -8946,10 +8946,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.switchover",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.switchover",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Switchover",
           "service": {
@@ -8961,7 +8961,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesSwitchoverRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesSwitchoverRequest"
           },
           {
             "name": "retry",
@@ -8976,7 +8976,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "switchover"
       },
       "description": "Sample for Switchover",
@@ -9022,10 +9022,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.switchover",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.switchover",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Switchover",
           "service": {
@@ -9037,7 +9037,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesSwitchoverRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesSwitchoverRequest"
           },
           {
             "name": "retry",
@@ -9052,7 +9052,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "switchover"
       },
       "description": "Sample for Switchover",
@@ -9099,10 +9099,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.truncate_log",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.truncate_log",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.TruncateLog",
           "service": {
@@ -9114,7 +9114,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesTruncateLogRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesTruncateLogRequest"
           },
           {
             "name": "retry",
@@ -9129,7 +9129,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "truncate_log"
       },
       "description": "Sample for TruncateLog",
@@ -9175,10 +9175,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.truncate_log",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.truncate_log",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.TruncateLog",
           "service": {
@@ -9190,7 +9190,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesTruncateLogRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesTruncateLogRequest"
           },
           {
             "name": "retry",
@@ -9205,7 +9205,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "truncate_log"
       },
       "description": "Sample for TruncateLog",
@@ -9252,10 +9252,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.update",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.update",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Update",
           "service": {
@@ -9267,7 +9267,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesUpdateRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesUpdateRequest"
           },
           {
             "name": "retry",
@@ -9282,7 +9282,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "update"
       },
       "description": "Sample for Update",
@@ -9328,10 +9328,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.update",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.update",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.Update",
           "service": {
@@ -9343,7 +9343,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesUpdateRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesUpdateRequest"
           },
           {
             "name": "retry",
@@ -9358,7 +9358,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "update"
       },
       "description": "Sample for Update",
@@ -9405,10 +9405,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient",
           "shortName": "SqlInstancesServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceAsyncClient.verify_external_sync_settings",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceAsyncClient.verify_external_sync_settings",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.VerifyExternalSyncSettings",
           "service": {
@@ -9420,7 +9420,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesVerifyExternalSyncSettingsRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesVerifyExternalSyncSettingsRequest"
           },
           {
             "name": "retry",
@@ -9435,7 +9435,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.SqlInstancesVerifyExternalSyncSettingsResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.SqlInstancesVerifyExternalSyncSettingsResponse",
         "shortName": "verify_external_sync_settings"
       },
       "description": "Sample for VerifyExternalSyncSettings",
@@ -9481,10 +9481,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient",
           "shortName": "SqlInstancesServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlInstancesServiceClient.verify_external_sync_settings",
+        "fullName": "google.cloud.sqladmin_v1.SqlInstancesServiceClient.verify_external_sync_settings",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlInstancesService.VerifyExternalSyncSettings",
           "service": {
@@ -9496,7 +9496,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlInstancesVerifyExternalSyncSettingsRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlInstancesVerifyExternalSyncSettingsRequest"
           },
           {
             "name": "retry",
@@ -9511,7 +9511,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.SqlInstancesVerifyExternalSyncSettingsResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.SqlInstancesVerifyExternalSyncSettingsResponse",
         "shortName": "verify_external_sync_settings"
       },
       "description": "Sample for VerifyExternalSyncSettings",
@@ -9558,10 +9558,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlOperationsServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlOperationsServiceAsyncClient",
           "shortName": "SqlOperationsServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlOperationsServiceAsyncClient.cancel",
+        "fullName": "google.cloud.sqladmin_v1.SqlOperationsServiceAsyncClient.cancel",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlOperationsService.Cancel",
           "service": {
@@ -9573,7 +9573,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlOperationsCancelRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlOperationsCancelRequest"
           },
           {
             "name": "retry",
@@ -9631,10 +9631,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlOperationsServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlOperationsServiceClient",
           "shortName": "SqlOperationsServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlOperationsServiceClient.cancel",
+        "fullName": "google.cloud.sqladmin_v1.SqlOperationsServiceClient.cancel",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlOperationsService.Cancel",
           "service": {
@@ -9646,7 +9646,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlOperationsCancelRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlOperationsCancelRequest"
           },
           {
             "name": "retry",
@@ -9705,10 +9705,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlOperationsServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlOperationsServiceAsyncClient",
           "shortName": "SqlOperationsServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlOperationsServiceAsyncClient.get",
+        "fullName": "google.cloud.sqladmin_v1.SqlOperationsServiceAsyncClient.get",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlOperationsService.Get",
           "service": {
@@ -9720,7 +9720,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlOperationsGetRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlOperationsGetRequest"
           },
           {
             "name": "retry",
@@ -9735,7 +9735,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "get"
       },
       "description": "Sample for Get",
@@ -9781,10 +9781,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlOperationsServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlOperationsServiceClient",
           "shortName": "SqlOperationsServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlOperationsServiceClient.get",
+        "fullName": "google.cloud.sqladmin_v1.SqlOperationsServiceClient.get",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlOperationsService.Get",
           "service": {
@@ -9796,7 +9796,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlOperationsGetRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlOperationsGetRequest"
           },
           {
             "name": "retry",
@@ -9811,7 +9811,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "get"
       },
       "description": "Sample for Get",
@@ -9858,10 +9858,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlOperationsServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlOperationsServiceAsyncClient",
           "shortName": "SqlOperationsServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlOperationsServiceAsyncClient.list",
+        "fullName": "google.cloud.sqladmin_v1.SqlOperationsServiceAsyncClient.list",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlOperationsService.List",
           "service": {
@@ -9873,7 +9873,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlOperationsListRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlOperationsListRequest"
           },
           {
             "name": "retry",
@@ -9888,7 +9888,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.services.sql_operations_service.pagers.ListAsyncPager",
+        "resultType": "google.cloud.sqladmin_v1.services.sql_operations_service.pagers.ListAsyncPager",
         "shortName": "list"
       },
       "description": "Sample for List",
@@ -9934,10 +9934,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlOperationsServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlOperationsServiceClient",
           "shortName": "SqlOperationsServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlOperationsServiceClient.list",
+        "fullName": "google.cloud.sqladmin_v1.SqlOperationsServiceClient.list",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlOperationsService.List",
           "service": {
@@ -9949,7 +9949,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlOperationsListRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlOperationsListRequest"
           },
           {
             "name": "retry",
@@ -9964,7 +9964,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.services.sql_operations_service.pagers.ListPager",
+        "resultType": "google.cloud.sqladmin_v1.services.sql_operations_service.pagers.ListPager",
         "shortName": "list"
       },
       "description": "Sample for List",
@@ -10011,10 +10011,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlSslCertsServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlSslCertsServiceAsyncClient",
           "shortName": "SqlSslCertsServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlSslCertsServiceAsyncClient.delete",
+        "fullName": "google.cloud.sqladmin_v1.SqlSslCertsServiceAsyncClient.delete",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlSslCertsService.Delete",
           "service": {
@@ -10026,7 +10026,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlSslCertsDeleteRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlSslCertsDeleteRequest"
           },
           {
             "name": "retry",
@@ -10041,7 +10041,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "delete"
       },
       "description": "Sample for Delete",
@@ -10087,10 +10087,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlSslCertsServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlSslCertsServiceClient",
           "shortName": "SqlSslCertsServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlSslCertsServiceClient.delete",
+        "fullName": "google.cloud.sqladmin_v1.SqlSslCertsServiceClient.delete",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlSslCertsService.Delete",
           "service": {
@@ -10102,7 +10102,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlSslCertsDeleteRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlSslCertsDeleteRequest"
           },
           {
             "name": "retry",
@@ -10117,7 +10117,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "delete"
       },
       "description": "Sample for Delete",
@@ -10164,10 +10164,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlSslCertsServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlSslCertsServiceAsyncClient",
           "shortName": "SqlSslCertsServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlSslCertsServiceAsyncClient.get",
+        "fullName": "google.cloud.sqladmin_v1.SqlSslCertsServiceAsyncClient.get",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlSslCertsService.Get",
           "service": {
@@ -10179,7 +10179,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlSslCertsGetRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlSslCertsGetRequest"
           },
           {
             "name": "retry",
@@ -10194,7 +10194,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.SslCert",
+        "resultType": "google.cloud.sqladmin_v1.types.SslCert",
         "shortName": "get"
       },
       "description": "Sample for Get",
@@ -10240,10 +10240,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlSslCertsServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlSslCertsServiceClient",
           "shortName": "SqlSslCertsServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlSslCertsServiceClient.get",
+        "fullName": "google.cloud.sqladmin_v1.SqlSslCertsServiceClient.get",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlSslCertsService.Get",
           "service": {
@@ -10255,7 +10255,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlSslCertsGetRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlSslCertsGetRequest"
           },
           {
             "name": "retry",
@@ -10270,7 +10270,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.SslCert",
+        "resultType": "google.cloud.sqladmin_v1.types.SslCert",
         "shortName": "get"
       },
       "description": "Sample for Get",
@@ -10317,10 +10317,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlSslCertsServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlSslCertsServiceAsyncClient",
           "shortName": "SqlSslCertsServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlSslCertsServiceAsyncClient.insert",
+        "fullName": "google.cloud.sqladmin_v1.SqlSslCertsServiceAsyncClient.insert",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlSslCertsService.Insert",
           "service": {
@@ -10332,7 +10332,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlSslCertsInsertRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlSslCertsInsertRequest"
           },
           {
             "name": "retry",
@@ -10347,7 +10347,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.SslCertsInsertResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.SslCertsInsertResponse",
         "shortName": "insert"
       },
       "description": "Sample for Insert",
@@ -10393,10 +10393,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlSslCertsServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlSslCertsServiceClient",
           "shortName": "SqlSslCertsServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlSslCertsServiceClient.insert",
+        "fullName": "google.cloud.sqladmin_v1.SqlSslCertsServiceClient.insert",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlSslCertsService.Insert",
           "service": {
@@ -10408,7 +10408,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlSslCertsInsertRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlSslCertsInsertRequest"
           },
           {
             "name": "retry",
@@ -10423,7 +10423,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.SslCertsInsertResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.SslCertsInsertResponse",
         "shortName": "insert"
       },
       "description": "Sample for Insert",
@@ -10470,10 +10470,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlSslCertsServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlSslCertsServiceAsyncClient",
           "shortName": "SqlSslCertsServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlSslCertsServiceAsyncClient.list",
+        "fullName": "google.cloud.sqladmin_v1.SqlSslCertsServiceAsyncClient.list",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlSslCertsService.List",
           "service": {
@@ -10485,7 +10485,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlSslCertsListRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlSslCertsListRequest"
           },
           {
             "name": "retry",
@@ -10500,7 +10500,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.SslCertsListResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.SslCertsListResponse",
         "shortName": "list"
       },
       "description": "Sample for List",
@@ -10546,10 +10546,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlSslCertsServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlSslCertsServiceClient",
           "shortName": "SqlSslCertsServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlSslCertsServiceClient.list",
+        "fullName": "google.cloud.sqladmin_v1.SqlSslCertsServiceClient.list",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlSslCertsService.List",
           "service": {
@@ -10561,7 +10561,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlSslCertsListRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlSslCertsListRequest"
           },
           {
             "name": "retry",
@@ -10576,7 +10576,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.SslCertsListResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.SslCertsListResponse",
         "shortName": "list"
       },
       "description": "Sample for List",
@@ -10623,10 +10623,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlTiersServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlTiersServiceAsyncClient",
           "shortName": "SqlTiersServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlTiersServiceAsyncClient.list",
+        "fullName": "google.cloud.sqladmin_v1.SqlTiersServiceAsyncClient.list",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlTiersService.List",
           "service": {
@@ -10638,7 +10638,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlTiersListRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlTiersListRequest"
           },
           {
             "name": "retry",
@@ -10653,7 +10653,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.TiersListResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.TiersListResponse",
         "shortName": "list"
       },
       "description": "Sample for List",
@@ -10699,10 +10699,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlTiersServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlTiersServiceClient",
           "shortName": "SqlTiersServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlTiersServiceClient.list",
+        "fullName": "google.cloud.sqladmin_v1.SqlTiersServiceClient.list",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlTiersService.List",
           "service": {
@@ -10714,7 +10714,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlTiersListRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlTiersListRequest"
           },
           {
             "name": "retry",
@@ -10729,7 +10729,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.TiersListResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.TiersListResponse",
         "shortName": "list"
       },
       "description": "Sample for List",
@@ -10776,10 +10776,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlUsersServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlUsersServiceAsyncClient",
           "shortName": "SqlUsersServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlUsersServiceAsyncClient.delete",
+        "fullName": "google.cloud.sqladmin_v1.SqlUsersServiceAsyncClient.delete",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlUsersService.Delete",
           "service": {
@@ -10791,7 +10791,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlUsersDeleteRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlUsersDeleteRequest"
           },
           {
             "name": "retry",
@@ -10806,7 +10806,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "delete"
       },
       "description": "Sample for Delete",
@@ -10852,10 +10852,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlUsersServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlUsersServiceClient",
           "shortName": "SqlUsersServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlUsersServiceClient.delete",
+        "fullName": "google.cloud.sqladmin_v1.SqlUsersServiceClient.delete",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlUsersService.Delete",
           "service": {
@@ -10867,7 +10867,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlUsersDeleteRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlUsersDeleteRequest"
           },
           {
             "name": "retry",
@@ -10882,7 +10882,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "delete"
       },
       "description": "Sample for Delete",
@@ -10929,10 +10929,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlUsersServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlUsersServiceAsyncClient",
           "shortName": "SqlUsersServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlUsersServiceAsyncClient.get",
+        "fullName": "google.cloud.sqladmin_v1.SqlUsersServiceAsyncClient.get",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlUsersService.Get",
           "service": {
@@ -10944,7 +10944,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlUsersGetRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlUsersGetRequest"
           },
           {
             "name": "retry",
@@ -10959,7 +10959,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.User",
+        "resultType": "google.cloud.sqladmin_v1.types.User",
         "shortName": "get"
       },
       "description": "Sample for Get",
@@ -11005,10 +11005,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlUsersServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlUsersServiceClient",
           "shortName": "SqlUsersServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlUsersServiceClient.get",
+        "fullName": "google.cloud.sqladmin_v1.SqlUsersServiceClient.get",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlUsersService.Get",
           "service": {
@@ -11020,7 +11020,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlUsersGetRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlUsersGetRequest"
           },
           {
             "name": "retry",
@@ -11035,7 +11035,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.User",
+        "resultType": "google.cloud.sqladmin_v1.types.User",
         "shortName": "get"
       },
       "description": "Sample for Get",
@@ -11082,10 +11082,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlUsersServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlUsersServiceAsyncClient",
           "shortName": "SqlUsersServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlUsersServiceAsyncClient.insert",
+        "fullName": "google.cloud.sqladmin_v1.SqlUsersServiceAsyncClient.insert",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlUsersService.Insert",
           "service": {
@@ -11097,7 +11097,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlUsersInsertRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlUsersInsertRequest"
           },
           {
             "name": "retry",
@@ -11112,7 +11112,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "insert"
       },
       "description": "Sample for Insert",
@@ -11158,10 +11158,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlUsersServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlUsersServiceClient",
           "shortName": "SqlUsersServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlUsersServiceClient.insert",
+        "fullName": "google.cloud.sqladmin_v1.SqlUsersServiceClient.insert",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlUsersService.Insert",
           "service": {
@@ -11173,7 +11173,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlUsersInsertRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlUsersInsertRequest"
           },
           {
             "name": "retry",
@@ -11188,7 +11188,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "insert"
       },
       "description": "Sample for Insert",
@@ -11235,10 +11235,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlUsersServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlUsersServiceAsyncClient",
           "shortName": "SqlUsersServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlUsersServiceAsyncClient.list",
+        "fullName": "google.cloud.sqladmin_v1.SqlUsersServiceAsyncClient.list",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlUsersService.List",
           "service": {
@@ -11250,7 +11250,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlUsersListRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlUsersListRequest"
           },
           {
             "name": "retry",
@@ -11265,7 +11265,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.UsersListResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.UsersListResponse",
         "shortName": "list"
       },
       "description": "Sample for List",
@@ -11311,10 +11311,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlUsersServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlUsersServiceClient",
           "shortName": "SqlUsersServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlUsersServiceClient.list",
+        "fullName": "google.cloud.sqladmin_v1.SqlUsersServiceClient.list",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlUsersService.List",
           "service": {
@@ -11326,7 +11326,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlUsersListRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlUsersListRequest"
           },
           {
             "name": "retry",
@@ -11341,7 +11341,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.UsersListResponse",
+        "resultType": "google.cloud.sqladmin_v1.types.UsersListResponse",
         "shortName": "list"
       },
       "description": "Sample for List",
@@ -11388,10 +11388,10 @@
       "clientMethod": {
         "async": true,
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlUsersServiceAsyncClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlUsersServiceAsyncClient",
           "shortName": "SqlUsersServiceAsyncClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlUsersServiceAsyncClient.update",
+        "fullName": "google.cloud.sqladmin_v1.SqlUsersServiceAsyncClient.update",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlUsersService.Update",
           "service": {
@@ -11403,7 +11403,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlUsersUpdateRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlUsersUpdateRequest"
           },
           {
             "name": "retry",
@@ -11418,7 +11418,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "update"
       },
       "description": "Sample for Update",
@@ -11464,10 +11464,10 @@
       "canonical": true,
       "clientMethod": {
         "client": {
-          "fullName": "google.cloud.sql_v1.SqlUsersServiceClient",
+          "fullName": "google.cloud.sqladmin_v1.SqlUsersServiceClient",
           "shortName": "SqlUsersServiceClient"
         },
-        "fullName": "google.cloud.sql_v1.SqlUsersServiceClient.update",
+        "fullName": "google.cloud.sqladmin_v1.SqlUsersServiceClient.update",
         "method": {
           "fullName": "google.cloud.sql.v1.SqlUsersService.Update",
           "service": {
@@ -11479,7 +11479,7 @@
         "parameters": [
           {
             "name": "request",
-            "type": "google.cloud.sql_v1.types.SqlUsersUpdateRequest"
+            "type": "google.cloud.sqladmin_v1.types.SqlUsersUpdateRequest"
           },
           {
             "name": "retry",
@@ -11494,7 +11494,7 @@
             "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
-        "resultType": "google.cloud.sql_v1.types.Operation",
+        "resultType": "google.cloud.sqladmin_v1.types.Operation",
         "shortName": "update"
       },
       "description": "Sample for Update",

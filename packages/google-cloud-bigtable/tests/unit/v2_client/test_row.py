@@ -503,6 +503,23 @@ def test_direct_row_commit_with_invalid_argument():
     api.mutate_row.assert_not_called()
 
 
+def test_direct_row_commit_too_many_mutations():
+    from google.cloud._testing import _Monkey
+
+    from google.cloud.bigtable import row as MUT
+
+    row_key = b"row_key"
+    table = object()
+    row = _make_direct_row(row_key, table)
+    row._mutations = [1, 2, 3]
+    num_mutations = len(row._mutations)
+    with _Monkey(MUT, MAX_MUTATIONS=num_mutations - 1):
+        with pytest.raises(
+            ValueError, match="Number of mutations exceeds the maximum allowable"
+        ):
+            row.commit()
+
+
 def _make_conditional_row(*args, **kwargs):
     from google.cloud.bigtable.row import ConditionalRow
 
