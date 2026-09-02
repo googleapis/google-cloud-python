@@ -225,7 +225,7 @@ def test_create_instance_partition(
             instance_id=instance_partition_instance_id,
             instance=spanner_instance_admin.Instance(
                 config=multi_region_instance_config,
-                display_name="Instance for instance partition test",
+                display_name="Partition test instance",
                 node_count=1,
                 edition=spanner_instance_admin.Instance.Edition.ENTERPRISE_PLUS,
             ),
