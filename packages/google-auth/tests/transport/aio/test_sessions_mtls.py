@@ -527,13 +527,10 @@ class TestSessionsMtls:
         new_key = b"new_key"
 
         async def mock_configure_mtls_channel(*args, **kwargs):
-            # Introduce a small delay to guarantee lock contention from asyncio.gather tasks
             await asyncio.sleep(0.01)
-            # Simulate the channel update to ensure following tasks take the skip branch
             session._cached_cert = new_cert
 
-        def mock_check_side_effect(cached_cert, callback):
-            # Return new fingerprints on first check, but matching fingerprints on retries
+        async def mock_check_side_effect(callback, cached_cert):
             if cached_cert == b"old_cert":
                 return (new_cert, new_key, b"old_fp", b"new_fp")
             return (new_cert, new_key, b"new_fp", b"new_fp")
@@ -547,7 +544,6 @@ class TestSessionsMtls:
             mock_check.side_effect = mock_check_side_effect
             mock_conf.side_effect = mock_configure_mtls_channel
 
-            # Launch multiple concurrent requests triggering 401s
             tasks = [
                 session.request("GET", "https://pubsub.mtls.googleapis.com/test")
                 for _ in range(3)
@@ -557,7 +553,6 @@ class TestSessionsMtls:
             for resp in responses:
                 assert resp == mock_resp_401
 
-            # Confirm the channel is only reconfigured once across all concurrent requests
             mock_conf.assert_called_once()
 
         await session.close()
@@ -573,7 +568,6 @@ class TestSessionsMtls:
         mock_resp_200 = mock.Mock()
         mock_resp_200.status_code = http_client.OK
 
-        # Return 401 for the first 3 requests, then 200 for the retries.
         mock_auth_req = mock.AsyncMock(
             side_effect=[mock_resp_401] * 3 + [mock_resp_200] * 3
         )
@@ -584,12 +578,9 @@ class TestSessionsMtls:
         session._is_mtls = True
         session._cached_cert = b"old_cert"
 
-        def mock_check_side_effect(cached_cert, callback):
-            import time
-
-            # Introduce a small delay to guarantee lock contention from asyncio.gather tasks
-            time.sleep(0.01)
-            # Return matching fingerprints to skip reconfiguration
+        # FIX: async def + await asyncio.sleep to allow concurrent lock contention
+        async def mock_check_side_effect(callback, cached_cert):
+            await asyncio.sleep(0.01)
             return (b"old_cert", b"old_key", b"old_fp", b"old_fp")
 
         with mock.patch(
@@ -600,7 +591,6 @@ class TestSessionsMtls:
         ) as mock_conf:
             mock_check.side_effect = mock_check_side_effect
 
-            # Launch multiple concurrent requests triggering 401s
             tasks = [
                 session.request("GET", "https://pubsub.mtls.googleapis.com/test")
                 for _ in range(3)
@@ -610,11 +600,8 @@ class TestSessionsMtls:
             for resp in responses:
                 assert resp == mock_resp_200
 
-            # Confirm that the cert parameters were only checked once across the concurrent requests
             mock_check.assert_called_once()
-            # Because fingerprints match, reconfiguration should not happen
             mock_conf.assert_not_called()
-            # Credentials should still be refreshed for each task as they fall back to normal refresh logic
             assert mock_creds.refresh.call_count == 3
 
         await session.close()
