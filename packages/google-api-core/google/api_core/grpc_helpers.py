@@ -35,7 +35,6 @@ import google.auth.transport.grpc
 import google.auth.transport.requests
 import google.protobuf
 import grpc
-
 from google.api_core import exceptions, general_helpers
 
 # The list of gRPC Callable interfaces that return iterators.
@@ -54,12 +53,6 @@ ClientInterceptor: TypeAlias = (
 
 # Runtime tuple of gRPC client interceptor base classes for isinstance checks
 _CLIENT_INTERCEPTOR_CLASSES = get_args(ClientInterceptor)
-
-# Type alias representing a channel-intercepting callable
-ClientInterceptorCallable: TypeAlias = Callable[[grpc.Channel], grpc.Channel]
-
-# Generic type alias representing any client interceptor (standard interceptor or callable)
-ClientInterceptorType: TypeAlias = ClientInterceptor | ClientInterceptorCallable
 
 
 def _patch_callable_name(callable_):
@@ -448,7 +441,9 @@ def _modify_target_for_direct_path(target: str) -> str:
 
 def apply_channel_interceptors(
     channel: grpc.Channel,
-    interceptors: Sequence[ClientInterceptorType] | None = None,
+    interceptors: (
+        Sequence[ClientInterceptor | Callable[[grpc.Channel], grpc.Channel]] | None
+    ) = None,
 ) -> grpc.Channel:
     """Applies client interceptors or channel-intercepting callables to a gRPC channel.
 
@@ -478,7 +473,9 @@ def apply_channel_interceptors(
         if isinstance(interceptor, _CLIENT_INTERCEPTOR_CLASSES):
             modified_channel = grpc.intercept_channel(modified_channel, interceptor)
         elif callable(interceptor):
-            interceptor_callable = cast(ClientInterceptorCallable, interceptor)
+            interceptor_callable = cast(
+                Callable[[grpc.Channel], grpc.Channel], interceptor
+            )
             modified_channel = interceptor_callable(modified_channel)
         else:
             raise TypeError(

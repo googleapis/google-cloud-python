@@ -16,15 +16,16 @@
 
 """OpenTelemetry helpers for resolving and instantiating interceptors."""
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Any, Callable
 
 from google.api_core import _feature_gating_helpers
 from google.api_core.client_options import ClientOptions
 
 if TYPE_CHECKING:
-    from google.api_core.grpc_helpers import ClientInterceptorCallable
-else:
-    ClientInterceptorCallable = Callable[[Any], Any]
+    # flake8: grpc is imported only for static analysis and type annotations
+    import grpc  # noqa: F401
 
 _TRACER_PROVIDER = "tracer_provider"
 
@@ -88,7 +89,7 @@ def _get_otel_interceptor(
 
 def get_otel_interceptor(
     client_options: ClientOptions | dict[str, Any] | None = None,
-) -> ClientInterceptorCallable | None:
+) -> Callable[[grpc.Channel], grpc.Channel] | None:
     """Returns an interceptor callable that wraps a sync gRPC channel with OpenTelemetry tracing.
 
     Args:
@@ -96,7 +97,7 @@ def get_otel_interceptor(
             and extracting the tracer provider.
 
     Returns:
-        Optional[ClientInterceptorCallable]: An interceptor callable if OpenTelemetry
+        Optional[Callable[[grpc.Channel], grpc.Channel]]: An interceptor callable if OpenTelemetry
             tracing is enabled and installed, None otherwise.
     """
     if not is_otel_capabilities_enabled(client_options):
@@ -106,7 +107,7 @@ def get_otel_interceptor(
 
     interceptor = _get_otel_interceptor(client_options, is_async=False)
 
-    def otel_interceptor(channel: Any) -> Any:
+    def otel_interceptor(channel: grpc.Channel) -> grpc.Channel:
         return otel_grpc.intercept_channel(channel, interceptor)
 
     return otel_interceptor
