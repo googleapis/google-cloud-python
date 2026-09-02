@@ -172,6 +172,11 @@ class RowRange(_MappableAttributesMixin, BaseRowRange):
         """Convert row range object to dict which can be passed to
         google.bigtable.v2.RowRange add method.
         """
-        return {
-            descriptor.name: value for descriptor, value in self._pb._pb.ListFields()
-        }
+        range_kwargs = {}
+        if self.start_key is not None:
+            key = "start_key_closed" if self.start_is_inclusive else "start_key_open"
+            range_kwargs[key] = self.start_key
+        if self.end_key is not None:
+            key = "end_key_closed" if self.end_is_inclusive else "end_key_open"
+            range_kwargs[key] = self.end_key
+        return range_kwargs

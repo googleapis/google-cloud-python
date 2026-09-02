@@ -553,6 +553,7 @@ def _make_cell_pb(value):
 
 def test_partial_rows_data_legacy_constructor_fallback():
     import warnings
+
     from google.cloud.bigtable.row_data import PartialRowsData
 
     read_method = object()
@@ -575,6 +576,7 @@ def test_partial_rows_data_legacy_constructor_fallback():
 
 def test_partial_rows_data_keyword_generator():
     import warnings
+
     from google.cloud.bigtable.row_data import PartialRowsData
 
     generator = _make_generator([])
@@ -589,6 +591,7 @@ def test_partial_rows_data_keyword_generator():
 
 def test_partial_rows_data_deprecated_properties():
     import warnings
+
     from google.cloud.bigtable.row_data import PartialRowsData
 
     generator = _make_generator([])
@@ -612,8 +615,3 @@ def test_partial_rows_data_deprecated_properties():
         assert f"The `{attr}` attribute on `PartialRowsData` is deprecated" in str(
             warned[0].message
         )
-
-
-
-
-
