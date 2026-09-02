@@ -126,6 +126,7 @@ def get_otel_async_interceptor(
     if not is_otel_capabilities_enabled(client_options):
         return None
 
+    # Ignored by mypy: Optional dependency only loaded if early-return is skipped
     import opentelemetry.instrumentation.grpc as otel_grpc  # type: ignore[import-not-found]
 
     return otel_grpc.aio_client_interceptors(
